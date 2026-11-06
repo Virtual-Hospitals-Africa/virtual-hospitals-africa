@@ -1,0 +1,246 @@
+{
+ "page": 32,
+ "lisp_file": "32-sexual-assault-and-or-rape.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "raped"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if woman"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if man"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "plans"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "raped"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if woman"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "within last 5 days"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "within last 5 days"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if man"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "last 3 days"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "last 3 days"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "plans"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm"
+  }
+ ]
+}

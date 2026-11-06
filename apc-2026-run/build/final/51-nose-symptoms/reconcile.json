@@ -1,0 +1,95 @@
+{
+  "page": 51,
+  "base": "B",
+  "decisions": [
+    {
+      "role": "trigger",
+      "difference": "A: (clinical_finding (snomed_concept \"Nose finding\" \"finding\"))  vs  B: (or Nasal discharge, Nasal congestion, Bleeding from nose)",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Nose finding\" \"finding\"))",
+      "reason": "The box says \"patient with nose symptoms\", a general complaint; Will's briefing prefers the general concept in due_to because descendants match, and all three of B's concepts are descendants of Nose finding.",
+      "unsettled": false
+    },
+    {
+      "role": "trigger",
+      "difference": "A: second task \"Check for causes of blocked or runny nose\" due_to (or Nasal discharge, Nasal obstruction)  vs  B: \"Check for causes of nose symptoms\" due_to (or Nasal discharge, Nasal congestion, Bleeding from nose)",
+      "choice": "new",
+      "final_expr": "\"Check for causes of nose symptoms\" with due_to (clinical_finding (snomed_concept \"Nose finding\" \"finding\"))",
+      "reason": "The causes task covers the approach box (diphtheria, for any nose symptom) and both symptom columns (blocked/runny and bleeding), so it takes the page's general \"nose symptoms\" trigger.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: urgent task also checks for diphtheria features, column symptoms, sneezing, itch  vs  B: urgent task checks only the red-box items; the rest is in a separate causes task",
+      "choice": "B",
+      "final_expr": "(check_for Injury of head, Nasal discharge + Clear + Watery) in the urgent task",
+      "reason": "Only \"Head injury with clear watery discharge from nose\" is in the red box; diphtheria sits in the \"not needing urgent attention\" approach box.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (clinical_finding (snomed_concept \"Nasal obstruction\" \"disorder\"))  vs  B: (clinical_finding (snomed_concept \"Nasal congestion\" \"finding\"))",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Nasal congestion\" \"finding\"))",
+      "reason": "\"Blocked nose\" on the page is a symptom; Nasal congestion is the finding form, Nasal obstruction a disorder (A said no finding form exists, but Nasal congestion exists). Applied in check_for and in the common cold, acute viral infection, sinusitis and allergic rhinitis rules.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: Bleeding from nose in check_for  vs  B: Bleeding from nose only as task trigger",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Bleeding from nose\" \"finding\"))",
+      "reason": "With the general Nose finding trigger, the \"Bleeding nose\" column finding is checked for so the possible allergic rhinitis rule has recorded evidence; Nasal congestion was added to check_for the same way.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (clinical_finding Sneezing)  vs  B: (clinical_finding Sneezing (qualifier Recurrent))",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+      "reason": "The page says \"Recurrent sneezing\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: onset >= 4 weeks of itchy/runny/blocked nose unqualified  vs  B: the same with (qualifier Recurrent) on each (and Recurrent forms in check_for)",
+      "choice": "B",
+      "final_expr": "(>= (onset (clinical_finding ... (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks)) for each of itchy, runny, blocked nose",
+      "reason": "\"Recurrent sneezing or itchy/runny/blocked nose most days\" can be read with \"Recurrent\" applying to all four; B keeps the page's word, but the page does not settle whether it distributes.",
+      "unsettled": true
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (active_condition (snomed_concept \"Fever\" \"finding\"))  vs  B: (clinical_finding (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\"))) in the diphtheria rule",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+      "reason": "The page says \"mild fever\"; B keeps \"mild\" and checks for that form (the rule is possible, so it is exempt from the anchoring constraint).",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: no headache criterion in sinusitis  vs  B: (clinical_finding Headache)",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Headache\" \"finding\"))",
+      "reason": "\"headache worse on bending forward\" is one of the page's listed sinusitis features; general Headache (a common symptom) is closer to the page than dropping it, and the \"worse on bending\" part is recorded under Could not model.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: no rubbing criterion in the nosebleed allergic rhinitis rule  vs  B: (or (Repetitive rubbing of body parts, site Nasal structure) (Itching, site Nasal structure))",
+      "choice": "B",
+      "final_expr": "(or (clinical_finding (snomed_concept \"Repetitive rubbing of body parts\" \"finding\") (finding_site (snomed_concept \"Nasal structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Itching\" \"finding\") (finding_site (snomed_concept \"Nasal structure\" \"body structure\"))))",
+      "reason": "The page says \"continually rubbing or itchy nose\"; B encodes both alternatives, and rubbing is an existing concept (its behavioural parent is noted as a SNOMED fit question).",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (and Nose finding, Injury of head, clear watery Nasal discharge)  vs  B: (and Injury of head, clear watery Nasal discharge)",
+      "choice": "B",
+      "final_expr": "(and (clinical_finding (snomed_concept \"Injury of head\" \"disorder\")) (clinical_finding (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\"))))",
+      "reason": "The clear watery discharge from the nose is itself a nose symptom (a descendant of Nose finding), so A's extra clause is redundant.",
+      "unsettled": false
+    }
+  ],
+  "notes": "Both builds passed. The final build is B's except for the entry trigger: both check tasks use the general Nose finding (A's choice), and Nasal congestion and Bleeding from nose move from B's triggers into the causes task's check_for. The rule set, Fever-onset anchors, the common cold/acute viral infection logic, the postnasal drip and the diphtheria concept are the same in both builds. A's flowchart and questions are merged into B's files; A's open questions (CSF rhinorrhoea, sinusitis and/or, common cold No branch with unrecorded negatives) are kept."
+}

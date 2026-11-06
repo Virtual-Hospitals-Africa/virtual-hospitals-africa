@@ -1,0 +1,298 @@
+# git -C ~/Developer/vha-build log -1 --format='%H %s'  (2026-11-05 10:14 EST)
+211b16110c052b68f77f0c7a501b08cd344033ff test fixes
+
+# git -C ~/Developer/vha-build status --short
+ D s_expression/rules/apc-adult/132-hypertension.lisp
+ D s_expression/rules/apc-adult/137-ischaemic-heart-disease.lisp
+ D s_expression/rules/apc-adult/139-peripheral-vascular-disease.lisp
+ D s_expression/rules/apc-adult/159-antenatal-care.lisp
+ D s_expression/rules/apc-adult/16-decreased-consciousness.lisp
+ D s_expression/rules/apc-adult/164-postnatal-care.lisp
+ D s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp
+ D s_expression/rules/apc-adult/19-seizures.lisp
+ D s_expression/rules/apc-adult/20-anaphylaxis.lisp
+ D s_expression/rules/apc-adult/21-burns.lisp
+ D s_expression/rules/apc-adult/22-bites-and-stings.lisp
+ D s_expression/rules/apc-adult/24-fever.lisp
+ D s_expression/rules/apc-adult/25-lump-swelling-in-neck-axilla-or-groin.lisp
+ D s_expression/rules/apc-adult/26-weakness-or-tiredness.lisp
+ D s_expression/rules/apc-adult/27-pallor-and-anaemia.lisp
+ D s_expression/rules/apc-adult/28-collapse-falls.lisp
+ D s_expression/rules/apc-adult/29-dizziness.lisp
+ D s_expression/rules/apc-adult/30-headache.lisp
+ D s_expression/rules/apc-adult/30-headache.xlisp
+ D s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp
+ D s_expression/rules/apc-adult/32-face-symptoms.lisp
+ D s_expression/rules/apc-adult/33-ear-symptoms.lisp
+ D s_expression/rules/apc-adult/34-nose-symptoms.lisp
+ D s_expression/rules/apc-adult/35-mouth-or-throat-symptoms.lisp
+ D s_expression/rules/apc-adult/36-gum-teeth-symptoms.lisp
+ D s_expression/rules/apc-adult/37-chest-pain.lisp
+ D s_expression/rules/apc-adult/38-cough-or-difficulty-breathing.lisp
+ D s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp
+ D s_expression/rules/apc-adult/40-covid-19-diagnosis.lisp
+ D s_expression/rules/apc-adult/41-acute-covid-19.lisp
+ D s_expression/rules/apc-adult/42-ongoing-covid-19-symptoms.lisp
+ D s_expression/rules/apc-adult/44-abdominal-pain.lisp
+ D s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp
+ D s_expression/rules/apc-adult/46-diarrhoea.lisp
+ D s_expression/rules/apc-adult/48-constipation-and-anal-symptoms.lisp
+ D s_expression/rules/apc-adult/50-genital-symptoms-man.lisp
+ D s_expression/rules/apc-adult/51-abnormal-vaginal-discharge.lisp
+ D s_expression/rules/apc-adult/57-abnormal-vaginal-bleeding.lisp
+ D s_expression/rules/apc-adult/59-urinary-symptoms.lisp
+ D s_expression/rules/apc-adult/62-joint-symptoms.lisp
+ D s_expression/rules/apc-adult/63-back-pain.lisp
+ D s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp
+ D s_expression/rules/apc-adult/65-leg-symptoms.lisp
+ D s_expression/rules/apc-adult/66-foot-symptoms.lisp
+ D s_expression/rules/apc-adult/67-skin-symptoms.lisp
+ D s_expression/rules/apc-adult/73-drug-rash.lisp
+ D s_expression/rules/apc-adult/74-skin-lumps.lisp
+ D s_expression/rules/apc-adult/75-skin-ulcer-or-non-healing-wound.lisp
+ D s_expression/rules/apc-adult/78-crusts-or-flaky-skin.lisp
+ D s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp
+ D s_expression/rules/apc-adult/80-scalp-symptoms.lisp
+ D s_expression/rules/apc-adult/82-nail-symptoms.lisp
+ D s_expression/rules/apc-adult/83-self-harm-or-suicide.lisp
+ D s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp
+ M s_expression/system_diagnosis_rules.ts
+ M s_expression/system_priority_evaluations.ts
+ M s_expression/tasks.ts
+ M test/shared/compiled_s_expressions.test.ts
+?? s_expression/rules/apc-adult/102-tuberculosis-tb-diagnosis-flowchart.md
+?? s_expression/rules/apc-adult/102-tuberculosis-tb-diagnosis-remaining-questions.md
+?? s_expression/rules/apc-adult/102-tuberculosis-tb-diagnosis.lisp
+?? s_expression/rules/apc-adult/11-initial-assessment-of-the-patient-flowchart.md
+?? s_expression/rules/apc-adult/11-initial-assessment-of-the-patient-remaining-questions.md
+?? s_expression/rules/apc-adult/11-initial-assessment-of-the-patient.lisp
+?? s_expression/rules/apc-adult/111-rifampicin-resistant-tb-rr-tb-routine-care-remaining-questions.md
+?? s_expression/rules/apc-adult/111-rifampicin-resistant-tb-rr-tb-routine-care.lisp
+?? s_expression/rules/apc-adult/122-hiv-post-exposure-prophylaxis-pep-flowchart.md
+?? s_expression/rules/apc-adult/122-hiv-post-exposure-prophylaxis-pep-remaining-questions.md
+?? s_expression/rules/apc-adult/122-hiv-post-exposure-prophylaxis-pep.lisp
+?? s_expression/rules/apc-adult/130-hiv-routine-care-cont-5-flowchart.md
+?? s_expression/rules/apc-adult/130-hiv-routine-care-cont-5-remaining-questions.md
+?? s_expression/rules/apc-adult/130-hiv-routine-care-cont-5.lisp
+?? s_expression/rules/apc-adult/14-observation-post-vaccination-flowchart.md
+?? s_expression/rules/apc-adult/14-observation-post-vaccination-remaining-questions.md
+?? s_expression/rules/apc-adult/14-observation-post-vaccination.lisp
+?? s_expression/rules/apc-adult/145-diabetes-routine-care-flowchart.md
+?? s_expression/rules/apc-adult/145-diabetes-routine-care-remaining-questions.md
+?? s_expression/rules/apc-adult/145-diabetes-routine-care.lisp
+?? s_expression/rules/apc-adult/148-hypertension-diagnosis-flowchart.md
+?? s_expression/rules/apc-adult/148-hypertension-diagnosis-remaining-questions.md
+?? s_expression/rules/apc-adult/148-hypertension-diagnosis.lisp
+?? s_expression/rules/apc-adult/15-collapse-following-vaccination-flowchart.md
+?? s_expression/rules/apc-adult/15-collapse-following-vaccination-remaining-questions.md
+?? s_expression/rules/apc-adult/15-collapse-following-vaccination.lisp
+?? s_expression/rules/apc-adult/151-heart-failure-routine-care-remaining-questions.md
+?? s_expression/rules/apc-adult/151-heart-failure-routine-care.lisp
+?? s_expression/rules/apc-adult/152-stroke-routine-care-remaining-questions.md
+?? s_expression/rules/apc-adult/152-stroke-routine-care.lisp
+?? s_expression/rules/apc-adult/154-peripheral-vascular-disease-pvd-remaining-questions.md
+?? s_expression/rules/apc-adult/154-peripheral-vascular-disease-pvd.lisp
+?? s_expression/rules/apc-adult/158-the-mentally-ill-patient-needing-treatment-or-admi-flowchart.md
+?? s_expression/rules/apc-adult/158-the-mentally-ill-patient-needing-treatment-or-admi-remaining-questions.md
+?? s_expression/rules/apc-adult/158-the-mentally-ill-patient-needing-treatment-or-admi.lisp
+?? s_expression/rules/apc-adult/16-the-emergency-patient-flowchart.md
+?? s_expression/rules/apc-adult/16-the-emergency-patient-remaining-questions.md
+?? s_expression/rules/apc-adult/16-the-emergency-patient.lisp
+?? s_expression/rules/apc-adult/17-cardiopulmonary-resuscitation-cpr-flowchart.md
+?? s_expression/rules/apc-adult/17-cardiopulmonary-resuscitation-cpr-remaining-questions.md
+?? s_expression/rules/apc-adult/17-cardiopulmonary-resuscitation-cpr.lisp
+?? s_expression/rules/apc-adult/170-contraception-remaining-questions.md
+?? s_expression/rules/apc-adult/170-contraception.lisp
+?? s_expression/rules/apc-adult/176-manage-the-patient-requesting-a-termination-of-pre-flowchart.md
+?? s_expression/rules/apc-adult/176-manage-the-patient-requesting-a-termination-of-pre-remaining-questions.md
+?? s_expression/rules/apc-adult/176-manage-the-patient-requesting-a-termination-of-pre.lisp
+?? s_expression/rules/apc-adult/177-routine-antenatal-care-flowchart.md
+?? s_expression/rules/apc-adult/177-routine-antenatal-care-remaining-questions.md
+?? s_expression/rules/apc-adult/177-routine-antenatal-care.lisp
+?? s_expression/rules/apc-adult/18-decreased-consciousness-flowchart.md
+?? s_expression/rules/apc-adult/18-decreased-consciousness-remaining-questions.md
+?? s_expression/rules/apc-adult/18-decreased-consciousness.lisp
+?? s_expression/rules/apc-adult/181-routine-antenatal-care-cont-5-remaining-questions.md
+?? s_expression/rules/apc-adult/181-routine-antenatal-care-cont-5.lisp
+?? s_expression/rules/apc-adult/182-routine-postnatal-care-remaining-questions.md
+?? s_expression/rules/apc-adult/182-routine-postnatal-care.lisp
+?? s_expression/rules/apc-adult/19-assess-and-manage-glucose-flowchart.md
+?? s_expression/rules/apc-adult/19-assess-and-manage-glucose-remaining-questions.md
+?? s_expression/rules/apc-adult/19-assess-and-manage-glucose.lisp
+?? s_expression/rules/apc-adult/196-protect-yourself-from-occupational-infection-remaining-questions.md
+?? s_expression/rules/apc-adult/196-protect-yourself-from-occupational-infection.lisp
+?? s_expression/rules/apc-adult/197-protect-yourself-from-occupational-stress-remaining-questions.md
+?? s_expression/rules/apc-adult/197-protect-yourself-from-occupational-stress.lisp
+?? s_expression/rules/apc-adult/20-seizures-fits-flowchart.md
+?? s_expression/rules/apc-adult/20-seizures-fits-remaining-questions.md
+?? s_expression/rules/apc-adult/20-seizures-fits.lisp
+?? s_expression/rules/apc-adult/21-seizures-fits-cont-2-flowchart.md
+?? s_expression/rules/apc-adult/21-seizures-fits-cont-2-remaining-questions.md
+?? s_expression/rules/apc-adult/21-seizures-fits-cont-2.lisp
+?? s_expression/rules/apc-adult/22-wheeze-tight-chest-flowchart.md
+?? s_expression/rules/apc-adult/22-wheeze-tight-chest-remaining-questions.md
+?? s_expression/rules/apc-adult/22-wheeze-tight-chest.lisp
+?? s_expression/rules/apc-adult/23-cough-or-difficulty-breathing-flowchart.md
+?? s_expression/rules/apc-adult/23-cough-or-difficulty-breathing-remaining-questions.md
+?? s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp
+?? s_expression/rules/apc-adult/24-chest-pain-flowchart.md
+?? s_expression/rules/apc-adult/24-chest-pain-remaining-questions.md
+?? s_expression/rules/apc-adult/24-chest-pain.lisp
+?? s_expression/rules/apc-adult/26-palpitations-flowchart.md
+?? s_expression/rules/apc-adult/26-palpitations-remaining-questions.md
+?? s_expression/rules/apc-adult/26-palpitations.lisp
+?? s_expression/rules/apc-adult/27-poisoning-overdose-flowchart.md
+?? s_expression/rules/apc-adult/27-poisoning-overdose-remaining-questions.md
+?? s_expression/rules/apc-adult/27-poisoning-overdose.lisp
+?? s_expression/rules/apc-adult/28-anaphylaxis-flowchart.md
+?? s_expression/rules/apc-adult/28-anaphylaxis-remaining-questions.md
+?? s_expression/rules/apc-adult/28-anaphylaxis.lisp
+?? s_expression/rules/apc-adult/29-bites-and-stings-flowchart.md
+?? s_expression/rules/apc-adult/29-bites-and-stings-remaining-questions.md
+?? s_expression/rules/apc-adult/29-bites-and-stings.lisp
+?? s_expression/rules/apc-adult/30-the-injured-patient-remaining-questions.md
+?? s_expression/rules/apc-adult/30-the-injured-patient.lisp
+?? s_expression/rules/apc-adult/31-burns-remaining-questions.md
+?? s_expression/rules/apc-adult/31-burns.lisp
+?? s_expression/rules/apc-adult/32-sexual-assault-and-or-rape-remaining-questions.md
+?? s_expression/rules/apc-adult/32-sexual-assault-and-or-rape.lisp
+?? s_expression/rules/apc-adult/33-traumatised-abused-patient-remaining-questions.md
+?? s_expression/rules/apc-adult/33-traumatised-abused-patient.lisp
+?? s_expression/rules/apc-adult/34-self-harm-or-suicide-flowchart.md
+?? s_expression/rules/apc-adult/34-self-harm-or-suicide-remaining-questions.md
+?? s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp
+?? s_expression/rules/apc-adult/35-aggressive-disruptive-behaviour-flowchart.md
+?? s_expression/rules/apc-adult/35-aggressive-disruptive-behaviour-remaining-questions.md
+?? s_expression/rules/apc-adult/35-aggressive-disruptive-behaviour.lisp
+?? s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour-flowchart.md
+?? s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour-remaining-questions.md
+?? s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour.lisp
+?? s_expression/rules/apc-adult/38-fever-flowchart.md
+?? s_expression/rules/apc-adult/38-fever-remaining-questions.md
+?? s_expression/rules/apc-adult/38-fever.lisp
+?? s_expression/rules/apc-adult/39-malaria-flowchart.md
+?? s_expression/rules/apc-adult/39-malaria-remaining-questions.md
+?? s_expression/rules/apc-adult/39-malaria.lisp
+?? s_expression/rules/apc-adult/40-mpox-diagnosis-and-management-flowchart.md
+?? s_expression/rules/apc-adult/40-mpox-diagnosis-and-management-remaining-questions.md
+?? s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp
+?? s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin-flowchart.md
+?? s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin-remaining-questions.md
+?? s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp
+?? s_expression/rules/apc-adult/43-weakness-or-tiredness-flowchart.md
+?? s_expression/rules/apc-adult/43-weakness-or-tiredness-remaining-questions.md
+?? s_expression/rules/apc-adult/43-weakness-or-tiredness.lisp
+?? s_expression/rules/apc-adult/44-pallor-and-anaemia-flowchart.md
+?? s_expression/rules/apc-adult/44-pallor-and-anaemia-remaining-questions.md
+?? s_expression/rules/apc-adult/44-pallor-and-anaemia.lisp
+?? s_expression/rules/apc-adult/45-collapse-falls-flowchart.md
+?? s_expression/rules/apc-adult/45-collapse-falls-remaining-questions.md
+?? s_expression/rules/apc-adult/45-collapse-falls.lisp
+?? s_expression/rules/apc-adult/46-dizziness-flowchart.md
+?? s_expression/rules/apc-adult/46-dizziness-remaining-questions.md
+?? s_expression/rules/apc-adult/46-dizziness.lisp
+?? s_expression/rules/apc-adult/47-headache-flowchart.md
+?? s_expression/rules/apc-adult/47-headache-remaining-questions.md
+?? s_expression/rules/apc-adult/47-headache.lisp
+?? s_expression/rules/apc-adult/48-eye-vision-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/48-eye-vision-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/48-eye-vision-symptoms.lisp
+?? s_expression/rules/apc-adult/49-face-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/49-face-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/49-face-symptoms.lisp
+?? s_expression/rules/apc-adult/51-nose-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/51-nose-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/51-nose-symptoms.lisp
+?? s_expression/rules/apc-adult/52-mouth-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/52-mouth-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/52-mouth-symptoms.lisp
+?? s_expression/rules/apc-adult/53-throat-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/53-throat-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/53-throat-symptoms.lisp
+?? s_expression/rules/apc-adult/54-gum-teeth-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/54-gum-teeth-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/54-gum-teeth-symptoms.lisp
+?? s_expression/rules/apc-adult/55-breast-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/55-breast-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/55-breast-symptoms.lisp
+?? s_expression/rules/apc-adult/56-abdominal-pain-flowchart.md
+?? s_expression/rules/apc-adult/56-abdominal-pain-remaining-questions.md
+?? s_expression/rules/apc-adult/56-abdominal-pain.lisp
+?? s_expression/rules/apc-adult/57-nausea-vomiting-flowchart.md
+?? s_expression/rules/apc-adult/57-nausea-vomiting-remaining-questions.md
+?? s_expression/rules/apc-adult/57-nausea-vomiting.lisp
+?? s_expression/rules/apc-adult/58-diarrhoea-flowchart.md
+?? s_expression/rules/apc-adult/58-diarrhoea-remaining-questions.md
+?? s_expression/rules/apc-adult/58-diarrhoea.lisp
+?? s_expression/rules/apc-adult/59-cholera-flowchart.md
+?? s_expression/rules/apc-adult/59-cholera-remaining-questions.md
+?? s_expression/rules/apc-adult/59-cholera.lisp
+?? s_expression/rules/apc-adult/60-constipation-flowchart.md
+?? s_expression/rules/apc-adult/60-constipation-remaining-questions.md
+?? s_expression/rules/apc-adult/60-constipation.lisp
+?? s_expression/rules/apc-adult/61-anal-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/61-anal-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/61-anal-symptoms.lisp
+?? s_expression/rules/apc-adult/63-genital-symptoms-in-a-man-flowchart.md
+?? s_expression/rules/apc-adult/63-genital-symptoms-in-a-man-remaining-questions.md
+?? s_expression/rules/apc-adult/63-genital-symptoms-in-a-man.lisp
+?? s_expression/rules/apc-adult/64-abnormal-vaginal-discharge-flowchart.md
+?? s_expression/rules/apc-adult/64-abnormal-vaginal-discharge-remaining-questions.md
+?? s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp
+?? s_expression/rules/apc-adult/69-urinary-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/69-urinary-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/69-urinary-symptoms.lisp
+?? s_expression/rules/apc-adult/73-abnormal-vaginal-bleeding-flowchart.md
+?? s_expression/rules/apc-adult/73-abnormal-vaginal-bleeding-remaining-questions.md
+?? s_expression/rules/apc-adult/73-abnormal-vaginal-bleeding.lisp
+?? s_expression/rules/apc-adult/77-joint-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/77-joint-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/77-joint-symptoms.lisp
+?? s_expression/rules/apc-adult/78-back-pain-flowchart.md
+?? s_expression/rules/apc-adult/78-back-pain-remaining-questions.md
+?? s_expression/rules/apc-adult/78-back-pain.lisp
+?? s_expression/rules/apc-adult/79-neck-pain-flowchart.md
+?? s_expression/rules/apc-adult/79-neck-pain-remaining-questions.md
+?? s_expression/rules/apc-adult/79-neck-pain.lisp
+?? s_expression/rules/apc-adult/80-leg-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/80-leg-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/80-leg-symptoms.lisp
+?? s_expression/rules/apc-adult/81-foot-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/81-foot-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/81-foot-symptoms.lisp
+?? s_expression/rules/apc-adult/82-skin-symptoms-flowchart.md
+?? s_expression/rules/apc-adult/82-skin-symptoms-remaining-questions.md
+?? s_expression/rules/apc-adult/82-skin-symptoms.lisp
+?? s_expression/rules/apc-adult/83-painful-skin-flowchart.md
+?? s_expression/rules/apc-adult/83-painful-skin-remaining-questions.md
+?? s_expression/rules/apc-adult/83-painful-skin.lisp
+?? s_expression/rules/apc-adult/84-generalised-itchy-rash-flowchart.md
+?? s_expression/rules/apc-adult/84-generalised-itchy-rash-remaining-questions.md
+?? s_expression/rules/apc-adult/84-generalised-itchy-rash.lisp
+?? s_expression/rules/apc-adult/85-localised-itchy-rash-flowchart.md
+?? s_expression/rules/apc-adult/85-localised-itchy-rash-remaining-questions.md
+?? s_expression/rules/apc-adult/85-localised-itchy-rash.lisp
+?? s_expression/rules/apc-adult/86-itch-with-no-rash-flowchart.md
+?? s_expression/rules/apc-adult/86-itch-with-no-rash-remaining-questions.md
+?? s_expression/rules/apc-adult/86-itch-with-no-rash.lisp
+?? s_expression/rules/apc-adult/87-generalised-non-itchy-rash-flowchart.md
+?? s_expression/rules/apc-adult/87-generalised-non-itchy-rash-remaining-questions.md
+?? s_expression/rules/apc-adult/87-generalised-non-itchy-rash.lisp
+?? s_expression/rules/apc-adult/88-drug-rash-flowchart.md
+?? s_expression/rules/apc-adult/88-drug-rash-remaining-questions.md
+?? s_expression/rules/apc-adult/88-drug-rash.lisp
+?? s_expression/rules/apc-adult/89-skin-lump-s-flowchart.md
+?? s_expression/rules/apc-adult/89-skin-lump-s-remaining-questions.md
+?? s_expression/rules/apc-adult/89-skin-lump-s.lisp
+?? s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis-flowchart.md
+?? s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis-remaining-questions.md
+?? s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp
+?? s_expression/rules/apc-adult/93-crusts-or-flaky-skin-flowchart.md
+?? s_expression/rules/apc-adult/93-crusts-or-flaky-skin-remaining-questions.md
+?? s_expression/rules/apc-adult/93-crusts-or-flaky-skin.lisp
+?? s_expression/rules/apc-adult/94-changes-in-skin-colour-flowchart.md
+?? s_expression/rules/apc-adult/94-changes-in-skin-colour-remaining-questions.md
+?? s_expression/rules/apc-adult/94-changes-in-skin-colour.lisp
+?? s_expression/rules/apc-adult/98-low-mood-stress-or-anxiety-flowchart.md
+?? s_expression/rules/apc-adult/98-low-mood-stress-or-anxiety-remaining-questions.md
+?? s_expression/rules/apc-adult/98-low-mood-stress-or-anxiety.lisp

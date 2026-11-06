@@ -1,0 +1,216 @@
+{
+ "page": 61,
+ "lisp_file": "61-anal-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-6afff593"
+   ],
+   "quote": "anal symptoms"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "lump on anus"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "Extremely painful"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+   "element_keys": [
+    "p61-19415dc4"
+   ],
+   "quote": "Unable to pass stool"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "painless bleeding"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "passing mucus"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "unable to pass stools despite feeling the need to (tenesmus)"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-cc98a7aa"
+   ],
+   "quote": "Suspected worms"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent anal symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "anal itch worse at night"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "Approach to the patient with anal symptoms"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "painless bleeding"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "passing mucus"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "unable to pass stools despite feeling the need to (tenesmus)"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infective proctitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "treat for sexually transmitted proctitis"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "If worm is thin and white"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "anal itch worse at night"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Enterobiasis\" \"disorder\") probable)",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "pinworm likely"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-6afff593"
+   ],
+   "quote": "anal symptoms"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "lump on anus"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "Extremely painful"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+   "element_keys": [
+    "p61-19415dc4"
+   ],
+   "quote": "Unable to pass stool"
+  }
+ ]
+}

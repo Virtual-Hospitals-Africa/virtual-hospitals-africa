@@ -1,0 +1,706 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 182,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    269.8
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p182-rb1-e01",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "bbox": [
+    249.6,
+    91.5,
+    592.3,
+    102.6
+   ],
+   "key": "p182-2de4d887"
+  },
+  {
+   "id": "p182-rb1-e02",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 6,
+   "parent": null,
+   "text": "Heavy bleeding (soaks pad in < 5 minutes), postpartum haemorrhage likely",
+   "bbox": [
+    91.6,
+    101.9,
+    388.0,
+    112.9
+   ],
+   "key": "p182-5c0aae53"
+  },
+  {
+   "id": "p182-rb1-e03",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Perineal tear extending to anus or rectum",
+   "bbox": [
+    417.6,
+    102.1,
+    582.0,
+    112.9
+   ],
+   "key": "p182-33c2c260"
+  },
+  {
+   "id": "p182-rb1-e04",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Hb < 6",
+   "bbox": [
+    610.3,
+    102.1,
+    641.3,
+    112.9
+   ],
+   "key": "p182-919613b7"
+  },
+  {
+   "id": "p182-rb1-e05",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 6,
+   "parent": null,
+   "text": "Recent seizure, up to 1 week postpartum, treat as eclampsia 177",
+   "bbox": [
+    91.6,
+    111.9,
+    351.9,
+    122.9
+   ],
+   "key": "p182-e5efd0e8"
+  },
+  {
+   "id": "p182-rb1-e06",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/systolic BP < 80",
+   "bbox": [
+    417.6,
+    112.1,
+    511.0,
+    122.9
+   ],
+   "key": "p182-42a235ac"
+  },
+  {
+   "id": "p182-rb1-e07",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Pallor with respiratory rate ≥ 30, dizzy, faint or chest pain",
+   "bbox": [
+    610.3,
+    112.1,
+    739.9,
+    132.9
+   ],
+   "key": "p182-f7b92a8f"
+  },
+  {
+   "id": "p182-rb1-e08",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 6,
+   "parent": null,
+   "text": "Unwell and temperature ≥ 38°C",
+   "bbox": [
+    91.6,
+    122.1,
+    217.6,
+    132.9
+   ],
+   "key": "p182-8f6e592c"
+  },
+  {
+   "id": "p182-rb1-e09",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the postnatal patient (within 6 weeks of delivery) with any of:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Pulse ≥ 100",
+   "bbox": [
+    417.6,
+    122.1,
+    467.0,
+    132.9
+   ],
+   "key": "p182-534de764"
+  },
+  {
+   "id": "p182-rb1-e10",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    133.6,
+    158.2,
+    144.6
+   ],
+   "key": "p182-d1b77116"
+  },
+  {
+   "id": "p182-rb1-e11",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    143.8,
+    579.2,
+    154.6
+   ],
+   "key": "p182-6ecfd766"
+  },
+  {
+   "id": "p182-rb1-e12",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If postpartum haemorrhage likely, call for help. This is a life-threatening condition and requires immediate management and referral:",
+   "bbox": [
+    51.2,
+    153.6,
+    566.0,
+    164.6
+   ],
+   "key": "p182-9ba8a4da"
+  },
+  {
+   "id": "p182-rb1-e13",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Massage uterus, remove clots from vagina and empty bladder (with catheter if needed).",
+   "bbox": [
+    56.9,
+    163.8,
+    395.7,
+    174.6
+   ],
+   "key": "p182-067d2ae3"
+  },
+  {
+   "id": "p182-rb1-e14",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Give oxytocin 10units IM if not already given after baby delivered. Then give oxytocin 20units in 1L sodium chloride 0.9% at 250mL/hour IV in a 2nd IV line.",
+   "bbox": [
+    56.9,
+    173.8,
+    670.3,
+    184.6
+   ],
+   "key": "p182-4f614e19"
+  },
+  {
+   "id": "p182-rb1-e15",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Give tranexamic acid 1g in 200mL sodium chloride 0.9% IV over 10 minutes, if available. If no doctor available, nurse to get telephonic prescription from doctor.",
+   "bbox": [
+    56.9,
+    183.8,
+    681.2,
+    194.6
+   ],
+   "key": "p182-843f6622"
+  },
+  {
+   "id": "p182-rb1-e16",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Ensure placenta is delivered. If controlled cord traction fails, try manual delivery. If uterus still soft after this:",
+   "bbox": [
+    56.9,
+    193.8,
+    469.7,
+    204.6
+   ],
+   "key": "p182-8a857146"
+  },
+  {
+   "id": "p182-rb1-e17",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 3,
+   "parent": "p182-rb1-e16",
+   "text": "Give ergometrine 0.5mg IM or oxytocin/ergometrine 5units/0.5mg (1mL) IM and continuously massage uterus. Avoid if eclampsia, pre-eclampsia, known hypertension or heart disease unless bleeding is life-threatening. Repeat after 10–15 minutes if no response to 1st dose.",
+   "bbox": [
+    62.5,
+    203.8,
+    779.9,
+    224.6
+   ],
+   "key": "p182-40f09ecd"
+  },
+  {
+   "id": "p182-rb1-e18",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 3,
+   "parent": "p182-rb1-e16",
+   "text": "Only if oxytocin and oxytocin/ergometrine unavailable, give misoprostol 600mcg rectally or sublingually.",
+   "bbox": [
+    62.5,
+    223.8,
+    475.6,
+    234.6
+   ],
+   "key": "p182-a8c01fc4"
+  },
+  {
+   "id": "p182-rb1-e19",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Repair any bleeding tears. If still bleeding heavily, insert balloon catheter2 into uterus, inflate with 400-500mL saline, clamp catheter and pack vagina with swabs to prevent expulsion.",
+   "bbox": [
+    56.9,
+    233.8,
+    754.8,
+    244.6
+   ],
+   "key": "p182-c9accffd"
+  },
+  {
+   "id": "p182-rb1-e20",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 2,
+   "parent": "p182-rb1-e12",
+   "text": "Apply bimanual compression3 during transfer.",
+   "bbox": [
+    56.9,
+    243.8,
+    236.7,
+    254.6
+   ],
+   "key": "p182-8b76a20b"
+  },
+  {
+   "id": "p182-rb1-e21",
+   "page": 182,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 133.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If unwell and temperature ≥ 38°C, give ceftriaxone 1g IV4/IM. If painful abdomen or foul-smelling vaginal discharge, also give metronidazole 400mg orally.",
+   "bbox": [
+    51.2,
+    253.8,
+    656.4,
+    264.6
+   ],
+   "key": "p182-d1604824"
+  },
+  {
+   "id": "p182-out-e01",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ROUTINE POSTNATAL CARE",
+   "bbox": [
+    309.0,
+    48.4,
+    532.9,
+    70.7
+   ],
+   "key": "p182-568a682c"
+  },
+  {
+   "id": "p182-out-e02",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2If balloon catheter unavailable, make condom catheter: slip open condom over large Foley's catheter and tie with string at the base. 3Bimanual compression: insert clenched fist into vagina, with back of hand posteriorly. Place other hand on abdomen behind uterus and squeeze uterus firmly between two hands. 4Do not mix Ringer's lactate and IV ceftriaxone. 5One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 6Avoid IUD if chorioamnionitis, rupture of membranes for > 18 hours or postpartum haemorrhage.",
+   "bbox": [
+    34.0,
+    527.3,
+    801.8,
+    551.8
+   ],
+   "key": "p182-ba801413"
+  },
+  {
+   "id": "p182-out-e03",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient and her baby 6 hours, 6 days, and 6 weeks after delivery",
+   "bbox": [
+    272.6,
+    278.8,
+    571.1,
+    290.0
+   ],
+   "key": "p182-d40d1699"
+  },
+  {
+   "id": "p182-out-e04",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess When to assess Note",
+   "bbox": [
+    39.7,
+    294.2,
+    202.0,
+    305.2
+   ],
+   "key": "p182-db5c7d88"
+  },
+  {
+   "id": "p182-out-e05",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Symptoms Every visit Manage patient’s symptoms as on symptom page. Manage baby’s symptoms with IMCI guide.",
+   "bbox": [
+    39.7,
+    308.6,
+    503.0,
+    318.8
+   ],
+   "key": "p182-74ccad96"
+  },
+  {
+   "id": "p182-out-e06",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TB Every visit If TB preventive treatment (TPT) deferred during pregnancy, reassess for TPT after delivery 100.",
+   "bbox": [
+    39.7,
+    321.7,
+    513.2,
+    332.5
+   ],
+   "key": "p182-cc99e5b5"
+  },
+  {
+   "id": "p182-out-e07",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mental health Every visit • If patient has suicidal thoughts or plans, previous mental illness, recent bereavement, trauma, sexual abuse/violence, no social/family support, financial difficulty 159. • If low mood, stress or anxiety 98.",
+   "bbox": [
+    39.7,
+    335.4,
+    759.1,
+    356.3
+   ],
+   "key": "p182-7e46488f"
+  },
+  {
+   "id": "p182-out-e08",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Substance use Every visit In the past year, has patient drunk ≥ 4 drinks5/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+   "bbox": [
+    39.7,
+    359.2,
+    694.8,
+    370.0
+   ],
+   "key": "p182-b8140c36"
+  },
+  {
+   "id": "p182-out-e09",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Family planning Every visit Assess patient’s contraceptive needs 170. Ideally, insert IUD within 48 hours of delivery if no contraindications6 or insert subdermal implant/start injectable/POP at any stage after delivery, or offer tubal ligation if appropriate. Avoid COC pill for 6 weeks after delivery and for 6 months if breastfeeding.",
+   "bbox": [
+    39.7,
+    372.9,
+    797.6,
+    393.7
+   ],
+   "key": "p182-d8cbee9c"
+  },
+  {
+   "id": "p182-out-e10",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Infant feeding Every visit If breastfeeding, check for breast problems 55. Check that baby latches well. If formula feeding, ensure correct mixing of formula and water.",
+   "bbox": [
+    39.7,
+    396.7,
+    665.6,
+    407.5
+   ],
+   "key": "p182-7c78e24c"
+  },
+  {
+   "id": "p182-out-e11",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Baby Every visit • Assess and manage baby according to IMCI guide. • Ensure baby gets immunisations at birth and 6 weeks. If patient known to have TB, hepatitis B or syphilis, prevent infections in the newborn 185.",
+   "bbox": [
+    39.7,
+    410.8,
+    690.0,
+    431.0
+   ],
+   "key": "p182-97b003a3"
+  },
+  {
+   "id": "p182-out-e12",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Psychosocial risk Every visit Patient at risk of mental health problem if any of: patient not interacting with baby, difficult life event in last year, unplanned pregnancy, unsupportive partner, violence at home, no social/family support, previous depression/anxiety, < 20 years, no money for food, patient is a refugee or has long-term health conditions. Refer to social worker.",
+   "bbox": [
+    39.7,
+    434.4,
+    796.2,
+    454.6
+   ],
+   "key": "p182-5a670463"
+  },
+  {
+   "id": "p182-out-e13",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Abdomen and perineum",
+   "bbox": [
+    39.7,
+    457.9,
+    91.0,
+    478.1
+   ],
+   "key": "p182-8b10b689"
+  },
+  {
+   "id": "p182-out-e14",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Every visit • If painful abdomen or foul-smelling vaginal discharge, discuss/refer same day. • If perineal or abdominal wound, check healing. Advise salt baths twice daily in warm water for perineal wounds. If red/warm/painful/swollen/foul-smell/oozing pus, discuss/refer.",
+   "bbox": [
+    112.0,
+    457.9,
+    791.6,
+    478.1
+   ],
+   "key": "p182-30d597ad"
+  },
+  {
+   "id": "p182-out-e15",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP Every visit If BP ≥ 140/90, allow patient to rest for 1 hour, then recheck BP. If ≤ 1 week postpartum and BP still ≥ 140/90, discuss same day. If > 1 week postpartum and BP ≥ 140/90 148.",
+   "bbox": [
+    39.7,
+    481.1,
+    780.1,
+    491.9
+   ],
+   "key": "p182-a8fbc6a3"
+  },
+  {
+   "id": "p182-out-e16",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BMI Every visit Patient’s BMI = weight (kg) ÷ height (m) ÷ height (m). If < 18.5, arrange nutritional support.",
+   "bbox": [
+    39.7,
+    495.2,
+    491.4,
+    505.4
+   ],
+   "key": "p182-296b1e4f"
+  },
+  {
+   "id": "p182-out-e17",
+   "page": 182,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Continue to assess the postnatal patient and baby 183",
+   "bbox": [
+    311.6,
+    510.7,
+    530.3,
+    521.7
+   ],
+   "key": "p182-592d38de"
+  }
+ ]
+}

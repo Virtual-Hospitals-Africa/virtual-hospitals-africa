@@ -1,0 +1,1280 @@
+{
+ "page": 24,
+ "lisp_file": "24-chest-pain.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent chest pain signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "Pulse irregular"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cfc52572"
+   ],
+   "quote": "Severe pain"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort in centre"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "left side of chest"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "Pain radiates to neck"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "jaw"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "Nausea"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "Pallor"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "sweating"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cada55f5"
+   ],
+   "quote": "Known with ischaemic heart disease"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "smoker"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "hypertension"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "high cholesterol"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "family history"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Record known cardiovascular disease risk for chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Record known cardiovascular disease risk for chest pain",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %)",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "known CVD risk > 20%"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "lying down"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "palpation"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "breathing deeply"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+   "element_keys": [
+    "p24-515b498b"
+   ],
+   "quote": "Occurs at rest"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-fd721edb"
+   ],
+   "quote": "Worse"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-fd721edb"
+   ],
+   "quote": "lasts longer than usual"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-5e24c9c9"
+   ],
+   "quote": "Is patient known with stable angina"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "sudden breathlessness"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "more resonant"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "decreased breath sounds"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "deviated trachea"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "coughing sputum"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "worse on lying down"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-515b498b",
+    "p24-7aed0b2e"
+   ],
+   "quote": "Occurs at rest"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-fd721edb",
+    "p24-7aed0b2e"
+   ],
+   "quote": "Worse"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-fd721edb",
+    "p24-7aed0b2e"
+   ],
+   "quote": "lasts longer than usual"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+   "element_keys": [
+    "p24-3a576c94"
+   ],
+   "quote": "Lasts ≥ 10 minutes"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-5e24c9c9",
+    "p24-5e84e28f"
+   ],
+   "quote": "Is patient known with stable angina"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute coronary syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-a3901d71"
+   ],
+   "quote": "Acute coronary syndrome (heart attack or unstable angina) likely"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "worse on lying down"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-515b498b",
+    "p24-9a945014"
+   ],
+   "quote": "Occurs at rest"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-fd721edb",
+    "p24-9a945014"
+   ],
+   "quote": "Worse"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-fd721edb",
+    "p24-9a945014"
+   ],
+   "quote": "lasts longer than usual"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+   "element_keys": [
+    "p24-3a576c94",
+    "p24-9a945014"
+   ],
+   "quote": "Lasts ≥ 10 minutes No"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-5e24c9c9",
+    "p24-5e84e28f",
+    "p24-242dd16b"
+   ],
+   "quote": "Is patient known with stable angina"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-f4f574d5",
+    "p24-cc976758"
+   ],
+   "quote": "Patient has stable angina."
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "lying down"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "palpation"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "breathing deeply"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "sudden breathlessness"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "more resonant"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "decreased breath sounds"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "deviated trachea"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "tension pneumothorax likely"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "chest pain worse on breathing deeply"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "coughing sputum"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pneumonia\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "pneumonia likely"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "Respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "< 90/60"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "< 90/60"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "Pulse irregular"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "> 100"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "< 50"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cfc52572"
+   ],
+   "quote": "Severe pain"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort in centre"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "left side of chest"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "Pain radiates to neck"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "jaw"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "Nausea"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "Pallor"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "sweating"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cada55f5"
+   ],
+   "quote": "Known with ischaemic heart disease"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "smoker"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "hypertension"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "high cholesterol"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %) 20)",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "known CVD risk > 20%"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "family history"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: probable acute coronary syndrome in chest pain",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute coronary syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p24-a3901d71"
+   ],
+   "quote": "Acute coronary syndrome (heart attack or unstable angina) likely. Manage and refer urgently"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "lying down"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "breathing deeply"
+  }
+ ]
+}

@@ -1,0 +1,1070 @@
+[
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p61-19415dc4",
+  "text": "Unable to pass stool because of anal symptoms",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Does not defecate' (300377009, under 'Finding related to ability to defecate') is the closest concept; searches for 'unable to pass stool' / 'unable to defecate' return nothing closer. The causal clause 'because of anal symptoms' is approximated by the outer (and Anal finding ...), which is the best the language can do. Because 'Does not defecate' is not under 'Anal finding', this branch fires only when an anal finding is recorded separately, which matches the page's intent.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [],
+    "problem": "'Does not defecate' is a loose rendering of 'unable to pass stool'; it states a behaviour, not inability, and the 'because of anal symptoms' link is only carried by the Anal finding AND. No closer concept found via search ('unable to defecate' returns nothing). Borderline acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Unable to pass stool' is encoded as 'Does not defecate' (parent: Finding related to ability to defecate), and 'because of anal symptoms' is expressed by the AND with Anal finding. There is no closer concept for 'unable to defecate'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p61-cc98a7aa",
+  "text": "Lump/pile Suspected worms Is worm flat and white with worm segments (blunt ended)?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "The Yes branch (flat, white, segmented worm -> tapeworm) is not encoded in any rule; only the No branch (pinworm) is.",
+     "'Lump/pile' branch label: routing to management only, nothing to encode."
+    ],
+    "problem": "The worm question's No branch is captured by the pinworm rule (Worms in stool + pruritus ani at night), but nothing captures the Yes branch. Worm morphology cannot be expressed in SNOMED (searches for 'segmented worm', 'proglottid' give only organism concepts), so an exact encoding is impossible, but a probable tapeworm rule anchored on 'Worms in stool' (which is already in check_for) would carry the conclusion; see p61-f783de97.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "tapeworm branch: flat white segmented worm"
+    ],
+    "problem": "Worm-morphology decision (flat/white/segmented vs thin) only partly used: pinworm rule uses 'Worms in stool' but there is no way to distinguish segmented worm; the Yes branch is not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "The flat/white/segmented-worm decision is not encoded: the Yes branch (tapeworm) is absent and the No branch is not a condition of the pinworm rule"
+    ],
+    "problem": "Only the generic 'Worms in stool' finding is captured; the discriminating question the flowchart asks is lost.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p61-f783de97",
+  "text": "Tapeworm likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "No diagnosis rule for tapeworm at any certainty."
+    ],
+    "problem": "No rule diagnoses tapeworm. SNOMED has (snomed_concept \"Infection caused by Taenia\" \"disorder\") (76172008, synonym taeniasis) and the broader (snomed_concept \"Cestode infection\" \"disorder\") (86133004). The page's discriminator (flat, white, blunt-ended segments) is not representable, so the honest encoding is a rule on 'Worms in stool' alone (possible, or probable if the builders accept that the morphology question is answered by the nurse before recording), and a remaining-questions note. As written, a nurse who records 'Worms in stool' without night-time anal itch gets no diagnosis at all, and 'Worms in stool' is consumed only by the pinworm rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'Tapeworm likely' has no probable diagnosis rule (e.g. Taeniasis, with worm segments in stool). Page states it as an 'X likely' conclusion.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable diagnosis of tapeworm infection (e.g. 'Cestode infection' or 'Infection caused by Taenia', both of which exist), with Worms in stool plus the flat/segmented worm as evidence"
+    ],
+    "problem": "No rule encodes the tapeworm conclusion. The feature 'flat segmented worm' has no precoordinated finding (only the organisms 'Proglottid of Taenia ...'), so the builders may have dropped it, but it is not noted as not representable in the rules.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p61-e1b77ac5",
+  "text": "• If worm is thin and white, with anal itch worse at night, pinworm likely: give single dose mebendazole 100mg (and repeat dose after 2 weeks) or give single dose albendazole 400mg. • If other worm or unsure: give single dose mebendazole 500mg or single dose albendazole 400mg.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as probable 'Enterobiasis' (synonyms pinworm/threadworm, the right concept) from 'Worms in stool' and 'Pruritus ani' qualified 'Night time' (synonyms 'Nocturnal', 'At night', so the qualifier reads as 'worse at night' as well as the language allows). The 'thin and white' worm morphology is not representable in SNOMED and its absence is acceptable; the conjunction matches the page since the page reaches this box only after a worm is suspected. Mebendazole/albendazole doses and the 'other worm or unsure' arm are management and correctly not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "thin white worm criterion",
+     "other worm/unsure branch"
+    ],
+    "problem": "'Pinworm likely' encoded as probable Enterobiasis requiring Worms in stool AND night-time pruritus ani. Page: thin white worm with anal itch worse at night. 'Worms in stool' conflates worm visibility with morphology; thin/white and 'anal itch worse at night' as qualifier on pruritus is reasonable. Pruritus ani coded semantic tag 'disorder' used as finding.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'thin and white' worm description",
+     "No-branch condition (worm NOT flat/segmented)"
+    ],
+    "problem": "The rule fires on any worms in stool plus night-time anal itch. A patient with tapeworm segments and night itch would be labelled probable pinworm, against the flowchart. The concept (Enterobiasis), the night-itch qualifier and AND logic are otherwise right.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p61-0da38d79",
+  "text": "Approach to the patient with anal symptoms not needing urgent attention • If patient has anal sex, ask about genital symptoms and treat partner 62. If painless bleeding, passing mucus or unable to pass stools despite feeling the need to (tenesmus), treat for sexually transmitted proctitis: give sing",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "The anal-sex context: on the page the proctitis sentence sits inside the bullet 'If patient has anal sex, ...', and the APC intends the STI-proctitis treatment for patients who have anal sex. The rule has no such condition; SNOMED has (clinical_finding (snomed_concept \"Anal penetration\" \"finding\")) which could carry it."
+    ],
+    "problem": "The three criteria are correctly or-ed and all three are in check_for ('Painless rectal bleeding', 'Mucus in stool', 'Tenesmus of anus and/or rectum' are exact fits). 'Infective proctitis' is broader than 'sexually transmitted proctitis' (its children include candidal and tuberculous proctitis as well as chlamydial and gonococcal), but SNOMED has no 'sexually transmitted proctitis' concept, so it is the closest parent. The 'ask about genital symptoms and treat partner -> 62', the antibiotic doses, the penicillin-allergy substitution and 'If diarrhoea -> 58' are management/cross-reference and rightly not encoded. Whether the anal-sex precondition is required is arguable (a clinician may read the second sentence as applying to all anal-symptom patients), hence partial at medium confidence rather than error.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'If patient has anal sex' not a trigger (management only); tenesmus defined as 'unable to pass stools despite feeling the need' encoded only as a separate Tenesmus concept"
+    ],
+    "problem": "Proctitis rule: painless bleeding/mucus/tenesmus all encoded as OR inside Anal finding AND, diagnosis 'Infective proctitis' probable. Page says 'sexually transmitted proctitis'; no STI-specific concept used (search shows only generic Infective proctitis, acceptable). Gating on 'Anal finding' is an extra condition the page does not state, and the page text is not 'not needing urgent attention' (no exclusion of the urgent rule).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The three alternatives (painless bleeding, passing mucus, tenesmus) are ORed correctly and anchored to anal symptoms. No 'sexually transmitted proctitis' concept exists; 'Infective proctitis' is a reasonable parent and better than the gonococcal-only concept. The 'anal sex' context is not used as evidence, and the page does not make it a condition for treatment.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c003",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page attributes the extreme pain to the lump itself ('Extremely painful lump on anus'); splitting it into an independent 'severe anal pain' finding lets a painless lump plus severe pain from another cause (e.g. a fissure) satisfy the pair. No precoordinated SNOMED concept exists, so the decomposition is an acceptable approximation.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Extremely painful lump'; 'Severe' qualifier on anal pain is a reasonable but pain is tied to the lump (perianal lump with severe pain), not free-standing anal pain.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'Extremely painful' becomes severe anal pain. It is acceptable as a check item, though the pain belongs to the lump.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c004",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page's criterion is 'Unable to pass stool BECAUSE OF anal symptoms'; the causal qualifier is dropped, so ordinary constipation (which the page itself routes to lactulose / page 60, not to urgent referral) matches once any anal finding is present. No closer SNOMED concept found (searched 'unable to pass stool', 'unable to defecate', 'obstructed defecation').",
+    "fix": "Keep the concept but record the gap; 'Does not defecate' is the nearest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Unable to pass stool because of anal symptoms' (obstructed/unable) is encoded as 'Does not defecate' which means not defecating, not inability; no mention of the 'because of anal symptoms' causation.",
+    "fix": "Use a concept meaning unable/difficulty defecating (e.g. search 'unable to defecate'/'constipation' variants) or keep with the Anal finding conjunct",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'unable to pass stool because of anal symptoms', which is an obstruction or pain-related inability. 'Does not defecate' drops the 'because of anal symptoms' causal qualifier. It also overlaps the non-urgent tenesmus wording 'unable to pass stools despite feeling the need to', so a tenesmus patient may be wrongly flagged Urgent.",
+    "fix": "Keep the concept but make sure the urgent trigger cannot be satisfied by tenesmus alone, for example by documenting it as distinct from 'Tenesmus of anus and/or rectum'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c005",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Also 'rectal' bleeding vs page 'painless bleeding'.",
+    "fix": "Remove from urgent check_for",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c006",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task.",
+    "fix": "Remove from urgent check_for",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Passing mucus' rectally in proctitis is a discharge from the anus or rectum, not necessarily mucus mixed in stool.",
+    "fix": "Consider (snomed_concept \"Discharge from anus\" \"finding\"). 'Mucus in stool' is an acceptable alternative.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c007",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Tenesmus is also glossed by the page as 'unable to pass stools despite feeling the need', which differs from the urgent 'unable to pass stool'.",
+    "fix": "Remove from urgent check_for",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "The page names tenesmus explicitly.",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c008",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page 'Suspected worms' is an examination branch of the non-urgent approach, and worms are seen at the anus, not necessarily in stool. Not urgent.",
+    "fix": "Remove from urgent check_for",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Suspected worms' covers worms seen at the anus, perianally or in stool, and the page's next branch depends on the worm's appearance (flat, white and segmented, or thin and white). Those discriminators are not checked for.",
+    "fix": "Keep 'Worms in stool' and add the worm-appearance discriminators needed for the tapeworm and pinworm branches.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c009",
+  "text": "Check for urgent anal symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Itch worse at night is a pinworm feature in the non-urgent branch.",
+    "fix": "Remove from urgent check_for",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'Anal itch worse at night' becomes Pruritus ani at night time. 'Worse at' is softened to 'at', which is acceptable.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c010",
+  "text": "Diagnose probable sexually transmitted proctitis from anal symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "On the page the proctitis sentence sits inside the bullet 'If patient has anal sex, ask about genital symptoms and treat partner 62. If painless bleeding, passing mucus or ... (tenesmus), treat for sexually transmitted proctitis'. The anal-sex context is the natural precondition and is not encoded; as written, any patient with painless rectal bleeding (most often haemorrhoids, which the page handles under Lump/pile) gets a probable STI proctitis diagnosis.",
+    "fix": "Add (clinical_finding (snomed_concept \"Anal penetration\" \"finding\")) to the and, and check for it in the task; or downgrade the rule to possible if the clinician reads the sentence as unconditional.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page condition is anal symptoms NOT needing urgent attention; the rule has no exclusion of the urgent criteria, so it would fire alongside Urgent. Also the 'Anal finding' conjunct is redundant given the or-list.",
+    "fix": "Add (not urgent criteria) or drop the Anal finding conjunct",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c011",
+  "text": "Diagnose probable sexually transmitted proctitis from anal symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says painless bleeding; concept is rectal bleeding, painless - acceptable, but site is rectal vs anal.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c012",
+  "text": "Diagnose probable sexually transmitted proctitis from anal symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c006: passing mucus per rectum is not the same as mucus in stool.",
+    "fix": "Consider (snomed_concept \"Discharge from anus\" \"finding\").",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c013",
+  "text": "Diagnose probable sexually transmitted proctitis from anal symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines tenesmus as 'unable to pass stools despite feeling the need'; concept 'Tenesmus of anus and/or rectum' is fine, but quote is the gloss.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c014",
+  "text": "Diagnose probable sexually transmitted proctitis from anal symptoms :: (diagnosis (snomed_concept \"Infective proctitis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'treat for sexually transmitted proctitis', a management instruction, not 'likely'; probable is a stretch (possible would be closer). Also 'Infective proctitis' is broader than sexually transmitted proctitis.",
+    "fix": "Consider possible, or a more specific STI proctitis concept",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Infective proctitis' is broader than sexually transmitted proctitis: its children include TB of rectum, candidal and Helicobacter proctitis. SNOMED has no single sexually transmitted proctitis concept, so this is the closest parent. The page also says 'treat for', not 'likely', so 'probable' is an interpretation of a syndromic-treatment instruction.",
+    "fix": "Keep 'Infective proctitis' and note that the gonococcal and chlamydial children are the page's intent. Consider whether 'possible' fits the 'treat for' wording better.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c015",
+  "text": "Diagnose probable pinworm from anal itch at night :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page's discriminator is worm morphology ('thin and white', as opposed to 'flat and white with worm segments' = tapeworm); 'Worms in stool' carries no morphology, so a tapeworm patient who also has night-time anal itch would be labelled probable pinworm. No SNOMED concept for worm morphology was found, so this is the best available approximation but it loses the Yes/No branch of the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page condition is 'worm is thin and white' seen by the patient/examiner, not 'Worms in stool'; the worm-appearance (thin, white) is not captured and the 'flat, segmented' tapeworm branch would also match 'worms in stool'.",
+    "fix": "Use a concept for worm seen at anus / thin white worm",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The quote is 'If worm is thin and white', but the condition only says worms are present. It drops the 'thin and white' appearance and the 'not flat or segmented' branch that separates pinworm from tapeworm. Pinworms are also typically seen perianally rather than in stool.",
+    "fix": "Add a worm-appearance discriminator (thin, white, not flat or segmented), or accept the loss of specificity and say so.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Urgent: anal symptoms with extremely painful lump or unable to pass stool :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: the page's pain belongs to the lump; the and-pair (lump AND severe anal pain) is a reasonable but not exact rendering of 'extremely painful lump'.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As claim c003: pain belongs to the lump.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "The AND structure with the lump is correct, though it does not tie the pain to the lump.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Urgent: anal symptoms with extremely painful lump or unable to pass stool :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c004: 'because of anal symptoms' is dropped, so a constipated patient with any unrelated anal finding (e.g. itch) is escalated to Urgent, which the page does not intend.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As claim c004: 'Does not defecate' vs 'unable to pass stool because of anal symptoms'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "It drops 'because of anal symptoms' and is not separated from the non-urgent tenesmus wording ('unable to pass stools despite feeling the need to'). A proctitis patient with tenesmus who records 'does not defecate' would be escalated to Urgent.",
+    "fix": "Document or guard the distinction from tenesmus. No closer SNOMED concept exists (Obstipation is a disorder and is narrower).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) probable tapeworm rule",
+  "text": "The 'Suspected worms' flowchart has two conclusions, 'Tapeworm likely' (Yes) and 'pinworm likely' (No); only the No branch is encoded. 'Worms in stool' is in check_for but is consumed only by the pinworm rule, so a worm without night-time itch produces no diagnosis. SNOMED offers 'Infection caused by Taenia' (disorder) or 'Cestode infection' (disorder).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+  "text": "The page places the proctitis criteria inside the 'If patient has anal sex' bullet; the rule drops that context and fires on any anal-symptom patient with painless bleeding, mucus or tenesmus. 'Anal penetration' (finding) exists in SNOMED to carry it. Also 'treat for' is encoded as a probable diagnosis, which is a defensible reading but should be recorded as a decision.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent anal symptom conditions",
+  "text": "The trigger 'Anal finding' is a narrow SNOMED hierarchy (anal reflex, tone, patency, 'Anal pain', 'Disorder of anus'). Five of the eight check_for items ('Perianal lump', 'Does not defecate', 'Painless rectal bleeding', 'Mucus in stool', 'Tenesmus', 'Worms in stool') are not descendants of it, so the task and every rule anchored on it depend on the nurse separately recording 'Anal finding' (or Anal pain / a disorder of anus). This is the briefing's accepted pattern for complaints that are not common symptoms, but it should be in the remaining-questions file.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+  "text": "No defect found: trigger present, two branches match the two red-box criteria, criteria not merged across boxes, level Urgent matches 'refer same day'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(not representable) anaemia likely from Hb thresholds",
+  "text": "'If Hb < 12 (woman) or < 13 (man), anaemia likely' cannot be written because haemoglobin has no unit in the language; should be listed under 'Could not model'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) tapeworm",
+  "text": "'Tapeworm likely' (flat white segmented worm) has no probable diagnosis rule; the Yes branch of the worm decision is lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pinworm from anal itch at night",
+  "text": "'Worms in stool' cannot capture the morphology question (thin white vs flat segmented), so the same finding would also support tapeworm; no discrimination between branches.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis",
+  "text": "Adds a conjunct 'Anal finding' that the page does not state, and does not exclude urgent cases (page says 'not needing urgent attention'); concept is generic Infective proctitis rather than STI-specific.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task: Check for urgent anal symptom conditions",
+  "text": "Task described as urgent but check_for also lists non-urgent diagnostic items (rectal bleeding, mucus, tenesmus, worms, night itch), mixing triage and diagnostic checks; all are used by some rule so none orphaned. Anal itch/ulcer/wart/crack/lump-without-pain branches not captured (management-only).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent priority evaluation",
+  "text": "'Does not defecate' is loose for 'unable to pass stool because of anal symptoms'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) tapeworm",
+  "text": "The Yes branch of 'Is worm flat and white with worm segments?' → 'Tapeworm likely' is lost entirely; no probable rule and no check_for item for a flat/segmented worm.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pinworm from anal itch at night",
+  "text": "It ignores the flowchart branch: pinworm sits on the No branch (worm not flat/segmented, thin and white), but the rule fires on any 'Worms in stool' plus night itch, so a tapeworm patient with night itch would get probable Enterobiasis.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis / Urgent priority",
+  "text": "The page defines tenesmus as 'unable to pass stools despite feeling the need to' (non-urgent proctitis), while the red box's 'unable to pass stool because of anal symptoms' is Urgent. Recording 'Does not defecate' and 'Tenesmus' depends on the health worker telling these apart; nothing in the rules guides it. The proctitis rule is also probable although the page only says 'treat for'.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent anal symptom conditions",
+  "text": "The anchor 'Anal finding' is not a common symptom or warning sign. The task only fires if anal complaints are recorded under that concept or a descendant (descendants also include 'Anus normal').",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent anal symptom conditions",
+  "text": "Type and trigger are right, but the task is misnamed ('urgent') while most of its items feed non-urgent diagnoses. It does not check for the anal-sex context the proctitis sentence hangs on (Anal penetration), nor for anything that would support the page's other 'likely' diagnoses (tapeworm: flat white segmented worm; anaemia: Hb < 12 woman / < 13 man). Note also that 'Perianal lump' and 'Tenesmus of anus and/or rectum' are not SNOMED descendants of 'Anal finding', so a patient recorded with only one of those will not trigger this task.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+  "text": "Or-structure of the three findings is faithful, but the rule omits the 'If patient has anal sex' context in whose bullet the proctitis instruction sits, so probable infective proctitis fires on any painless rectal bleeding, including haemorrhoidal bleeding that the page sends to the Lump/pile column. The page says 'treat for', not 'likely'; probable is defensible as a syndromic working diagnosis but a clinician should confirm the level.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Diagnose probable tapeworm",
+  "text": "The page has 'Tapeworm likely' when the worm is flat and white with blunt-ended segments (Yes branch of the worm question). This 'X likely' has no rule. (snomed_concept \"Infection caused by Taenia\" \"disorder\") exists (also \"Cestode infection\" \"disorder\"); the evidence would have to be 'Worms in stool' since morphology has no concept, which would then collide with the pinworm rule, so at minimum a remaining-questions note is needed.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Diagnose probable anaemia in worm infestation",
+  "text": "The worm branch says 'Check Hb. If Hb < 12 (woman) or < 13 (man), anaemia likely 44'. This 'X likely' (with a measure task for Hb) is absent. (snomed_concept \"Anemia\" \"disorder\") exists; no 'Hemoglobin' observable entity was found in the release, which may be why it was skipped, but the gap should be recorded.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent anal symptom conditions",
+  "text": "Task named 'urgent' but check_for includes six non-urgent items (bleeding, mucus, tenesmus, worms, nocturnal itch) from the not-urgent approach; the red box has only lump+severe pain and unable to pass stool. Also the urgent items in the red-box are management ('manage pain, refer same day') with no task for that.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+  "text": "No exclusion of urgent presentations; 'probable' for a 'treat for' instruction is questionable; redundant Anal finding conjunct. Page does not require anal sex.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pinworm from anal itch at night",
+  "text": "'Worms in stool' does not match 'worm thin and white'; conjunct also matches tapeworm cases. Otherwise pinworm likely is correctly probable.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent anal symptom conditions",
+  "text": "The task type and trigger are right, but the check list lacks the page's other discriminators: worm appearance (flat, white and segmented for tapeworm, thin and white for pinworm) and Hb for 'anaemia likely'. The title says 'urgent' but the list also contains non-urgent findings, which is only cosmetic.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+  "text": "The OR structure of bleeding, mucus and tenesmus is faithful. The page says 'treat for sexually transmitted proctitis', not 'likely', so probable versus possible is debatable. 'Infective proctitis' is broader than the page's sexually transmitted proctitis. The rule may also have been meant to be scoped by the preceding 'If patient has anal sex' sentence, which is ambiguous on the page.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pinworm from anal itch at night",
+  "text": "The type and 'likely' → probable mapping are correct. The rule does not encode 'thin and white' or the No branch of 'flat and white with segments?', so any worms plus night-time itch gives pinworm, including a flat segmented tapeworm.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) Tapeworm likely",
+  "text": "The page states 'Tapeworm likely' when the worm is flat and white with segments (blunt ended), but there is no probable diagnosis rule for it. A cestode or Taenia concept is available, for example (snomed_concept \"Cestode infection\" \"disorder\") or (snomed_concept \"Infection caused by Taenia\" \"disorder\").",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Anaemia likely",
+  "text": "The page states 'If Hb < 12 (woman) or < 13 (man), anaemia likely' in the worm-management box, and there is no rule for it. It may be deferred to page 44, but the page's own 'likely' is not encoded.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "rule_description",
+  "text": "A: \"Urgent: anal symptoms with very painful lump or unable to pass stool\"  vs  B: \"Urgent: anal symptoms with painful lump or unable to pass stool\"",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "\"Urgent: anal symptoms with extremely painful lump or unable to pass stool\"",
+    "reason": "The red box says \"Extremely painful lump on anus\", so the description uses the page's own word.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "rule_description",
+  "text": "A: task \"Check for urgent anal symptoms and their causes\", diagnosis rules \"(anal symptoms)\"  vs  B: \"Check for urgent anal symptom conditions\", \"from anal symptoms\" / \"from anal itch at night\"",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "Wording only; B's pinworm description names the page's evidence (\"anal itch worse at night\"), and the logic is identical.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "slug": "61-anal-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "elements_not_encoded",
+  "text": "A: 5 elements not encoded  vs  B: 6 (adds the 'Refer if: abdominal tenderness/pain ... larva migrans' element as management_step)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "The page's 'Refer if' line is referral criteria with no 'likely' statement, so it belongs in elements_not_encoded as management.",
+    "unsettled": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,28 @@
+{
+ "page": 63,
+ "base": "B",
+ "decisions": [
+  {"role": "trigger", "difference": "A: (Male genitalia finding)  vs  B: (or (Male genitalia finding) (Urethral discharge))", "choice": "B",
+   "final_expr": "(or (clinical_finding (snomed_concept \"Male genitalia finding\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")))",
+   "reason": "The page treats urethral discharge as one of the man's \"genital symptoms\" (its first approach column), and Urethral discharge is not a descendant of Male genitalia finding, so without it a discharge-only man gets no check.", "unsettled": false},
+  {"role": "priority_condition", "difference": "A: complaint = (Male genitalia finding)  vs  B: complaint = (or (Male genitalia finding) (Urethral discharge))", "choice": "B",
+   "final_expr": "(or (clinical_finding (snomed_concept \"Male genitalia finding\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")))",
+   "reason": "Same complaint as the trigger: \"the man with genital symptoms\" includes urethral discharge.", "unsettled": false},
+  {"role": "check_for", "difference": "A: (Urethral discharge)  vs  B: absent", "choice": "B",
+   "final_expr": "",
+   "reason": "\"Check for urethral discharge\" is on the page, but with urethral discharge in the trigger a check_for of it is self-referential (Will's constraint, confirmed by page_check); the finding stays in the trigger and the urethritis rule.", "unsettled": false},
+  {"role": "check_for + diagnosis_condition", "difference": "A: (Injury of scrotum), (Injury of testis)  vs  B: (Traumatic injury)", "choice": "both",
+   "final_expr": "(clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")) (clinical_finding (snomed_concept \"Injury of scrotum\" \"disorder\")) (clinical_finding (snomed_concept \"Injury of testis\" \"disorder\"))",
+   "reason": "The page says \"preceding trauma\" without a site, which B's Traumatic injury matches, but Injury of scrotum/testis are not its descendants in SNOMED, so a recorded scrotal injury would otherwise be missed.", "unsettled": true},
+  {"role": "check_for + diagnosis_condition", "difference": "A: absent  vs  B: (Overexertion and strenuous movements) event", "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Overexertion and strenuous movements\" \"event\"))",
+   "reason": "The page names \"strenuous activity\" as a torsion criterion and this is the only exact SNOMED match; it passes the database check, though it is an event rather than a finding.", "unsettled": true},
+  {"role": "check_for + diagnosis_condition", "difference": "A: absent  vs  B: (Testicle out of place)", "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Testicle out of place\" \"finding\"))",
+   "reason": "Page: \"affected testicle higher\"; no exact concept exists and Testicle out of place is the closest (broader) finding, better than leaving the criterion out.", "unsettled": true},
+  {"role": "check_for + diagnosis_condition", "difference": "A: absent  vs  B: (Testes - transverse lie)", "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Testes - transverse lie\" \"finding\"))",
+   "reason": "Page: \"rotated\"; a transverse lie is the recorded finding of a rotated testicle, and leaving it out makes the rule fire less often than the page intends.", "unsettled": false}
+ ],
+ "notes": "Both builds passed; base is B, which encodes every torsion criterion the page lists and includes urethral discharge in the complaint. Rule descriptions are B's. Adding urethral discharge to check_for (A) was tried and rejected by page_check as SELF-REFERENTIAL check_for. All other conditions (paraphimosis, priapism >= 4 hours, urethritis, balanitis, possible testicular cancer, Urgent rule) were identical in both builds. Remaining questions are B's, plus A's torsion-pain question and the reconciler's questions on trauma site and the strenuous-activity event."
+}

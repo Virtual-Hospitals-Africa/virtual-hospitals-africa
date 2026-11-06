@@ -1,0 +1,359 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/42-lump-swelling-in-neck-axilla-or-groin",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/42-lump-swelling-in-neck-axilla-or-groin",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible mpox in patient with lymphadenopathy"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable aneurysm from pulsating lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable hidradenitis suppurativa from recurrent abscesses in axilla, groin or perineum"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable incarcerated/strangulated inguinal hernia from lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable inguinal hernia from lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable lymphadenopathy from lump in neck, axilla or groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable thyroid mass from lump in neck"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm"
+  },
+  {
+   "atom": "task",
+   "description": "Check for hidradenitis suppurativa in patient with lump/swelling in axilla"
+  },
+  {
+   "atom": "task",
+   "description": "Check for mpox in patient with lymphadenopathy"
+  },
+  {
+   "atom": "task",
+   "description": "Check for site of lump/swelling in neck, axilla or groin"
+  },
+  {
+   "atom": "task",
+   "description": "Check for thyroid mass in patient with lump/swelling in neck"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent lump/swelling in groin conditions"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable aneurysm, pulsating lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable inguinal hernia, lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable strangulated inguinal hernia, lump in groin"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable thyroid mass, lump in neck moving on swallowing"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm"
+  },
+  {
+   "atom": "task",
+   "description": "Check for causes of lump/swelling in neck, axilla or groin"
+  },
+  {
+   "atom": "task",
+   "description": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin)"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent lump/swelling in groin conditions"
+  }
+ ],
+ "conditions_A": 84,
+ "conditions_B": 98,
+ "conditions_in_both": 65,
+ "agreement": 0.714,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of axilla\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of neck\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(active_condition (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of body region\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse in inguinal canal\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of axilla\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of groin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of perineum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in axilla\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\") (qualifier (snomed_concept \"Irreducible\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of axilla\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    }
+   ]
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [
+    "(active_condition (snomed_concept \"Strangulated inguinal hernia\" \"disorder\"))"
+   ],
+   "both": [
+    "(active_condition (snomed_concept \"Aneurysm\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Irreducible inguinal hernia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse in inguinal canal\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse in inguinal canal\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse in inguinal canal\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\"))))"
+   ],
+   "only_B": [
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of axilla\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of groin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of perineum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\") (qualifier (snomed_concept \"Irreducible\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in axilla\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "both": [
+    "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+    "(active_condition (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\") (qualifier (snomed_concept \"Irreducible\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Groin mass\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of axilla\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+     "B": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\"))))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\"))))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\"))))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\"))))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\"))))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\"))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\"))))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [
+    "(diagnosis (snomed_concept \"Strangulated inguinal hernia\" \"disorder\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Aneurysm\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Hidradenitis suppurativa\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Inguinal hernia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Irreducible inguinal hernia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Lymphadenopathy\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Mass of thyroid gland\" \"finding\") probable)",
+    "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

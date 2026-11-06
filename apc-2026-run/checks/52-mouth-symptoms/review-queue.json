@@ -1,0 +1,2265 @@
+[
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-bc9c8706",
+  "text": "If sudden face/tongue swelling and any of: wheeze, difficulty breathing, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts present with the page's logic: (1) sudden face swelling = Swelling + Face structure + Sudden onset; (2) sudden tongue swelling = Swelling + Tongue structure + Sudden onset; (3) wheeze = Wheezing; (4) difficulty breathing; (5) BP < 90/60 = SBP < 90 mmHg OR DBP < 60 mmHg (house convention, same as the gold page); (6) dizziness; (7) collapse; (8) abdominal pain; (9) vomiting = Finding of vomiting; (10) exposure to possible allergen = exposure to Drug or medicament, exposure to Food, Insect bite - wound, Insect sting (the footnote's list); (11) 'check for anaphylaxis 28' = a possible Anaphylaxis diagnosis rule (the pre-screen pattern that triggers page 20's check task). The and/or nesting matches 'swelling AND any of'. The footnote's 'within the past few hours' window is judged under p52-8bb2e5b7.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' time window on allergen exposure (footnote 1) lost",
+     "'check for anaphylaxis' cross-reference only via a separate possible-anaphylaxis rule (acceptable)"
+    ],
+    "problem": "Sudden face/tongue swelling AND any-of list is encoded correctly as and/or in the Urgent rule and the possible anaphylaxis rule, with BP <90/60 as systolic<90 or diastolic<60. Weaknesses: exposure to medication/food/insect bite-sting has no recency, so any past exposure or any insect bite finding with swelling triggers Urgent; 'Insect bite - wound' is a wound concept, a looser fit than an allergen exposure. Face and tongue swelling split into two sudden-onset findings, which is fine.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts are present: sudden face swelling OR sudden tongue swelling (Swelling + finding_site + Sudden onset), AND any of wheeze, difficulty breathing, BP < 90/60 (systolic < 90 OR diastolic < 60, as in the gold), dizziness, collapse, abdominal pain, vomiting, and allergen exposure (drug, food, insect bite, insect sting from footnote 1). This combination feeds both the Urgent priority and a 'possible Anaphylaxis' rule, which matches 'check for anaphylaxis'. The allergen recency ('within the past few hours') is judged under the footnote element.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-4efd11f8",
+  "text": "Refer urgently.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Level Urgent matches the page's 'Refer urgently'; the page does not escalate to Emergency.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Refer urgently is the Urgent priority outcome",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step: 'Refer urgently' is an action. The Urgent priority level already reflects it.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p52-8bb2e5b7",
+  "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2Add 2.5mL (½ teaspoon) of table salt to 200mL lukewarm water.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' time window on the exposure / bite / sting"
+    ],
+    "problem": "Medication, food and insect bite/sting are all encoded. The time window is not: the language has (< (onset <clinical_finding>) (time_ago N hours)) for clinical_finding subjects (usable for Insect bite - wound / Insect sting in the due_to), but 'a few hours' gives no number and the exposure (finding ...) form is not an onset subject, so this is at best approximable. The gold anaphylaxis page omits it too. Low consequence.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' time window"
+    ],
+    "problem": "Allergen definition encoded as medication, food, insect bite/sting, but the recency window is lost.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' recency is not encoded (onset/time_ago could approximate it; 'few hours' is vague)."
+    ],
+    "problem": "Medication, food and insect bite/sting are all encoded, the last as the common-symptom findings 'Insect bite - wound' and 'Insect sting' rather than as an exposure. Without recency, an old insect bite or any drug exposure plus sudden swelling still meets the criterion. This has low impact, because sudden face/tongue swelling is also required.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p52-90ebb0f9",
+  "text": "Approach to the patient with mouth symptoms not needing urgent attention • If on abacavir, check for abacavir hypersensitivity reaction (AHR) 131. If swelling of lips 49. If gum or tooth problem 54. • Ask about dry mouth. Wear a mask while examining the mouth and check for redness, white patches, bl",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'If on abacavir, check for abacavir hypersensitivity reaction (AHR) 131': no possible-diagnosis rule and no check_for item for abacavir exposure",
+     "'check for redness': no redness/erythema finding in the check_for list"
+    ],
+    "problem": "By the house standard 'check for X' / 'consider X' becomes a possible rule, the same pre-screen pattern the file already uses for anaphylaxis. SNOMED has 'Abacavir' (substance, 387005008) for an exposure finding and 'Hypersensitivity to abacavir' (finding) / 'Allergy to abacavir' (finding), so a rule of the form (and Mouth symptoms (finding Exposure-to Abacavir)) -> possible AHR was expressible, subject to whether a finding-category concept is accepted as a diagnosis. Redness: 'Erythema' exists as both finding and morphologic abnormality and could carry a finding_site. Everything else in the check list is present: Xerostomia, White patches on oral mucosa, Blister at Lip structure / Oral cavity structure, Ulcer of mouth, Fissure at Structure of angle of mouth.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [
+     "'Ask about dry mouth' is covered by the Xerostomia check item",
+     "abacavir / lip swelling / gum or tooth cross-references not encoded (acceptable)"
+    ],
+    "problem": "cross_reference_only",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'If on abacavir, check for abacavir hypersensitivity reaction': no possible rule (SNOMED has 'Hypersensitivity to abacavir' (finding)). This is inconsistent with how 'check for anaphylaxis' was handled.",
+     "'check for redness': redness is never checked for (it is also missing from the 'Red, cracked corners' branch)."
+    ],
+    "problem": "The exam list (white patches, blisters, ulcers, cracks, dry mouth) is in the check_for task. The abacavir and AHR screen is absent.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-5df93871",
+  "text": "If difficulty or pain on swallowing,",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Difficulty' and 'pain' on swallowing are two parts, both encoded (Difficulty swallowing; Swallowing painful, whose synonym is odynophagia) and joined with or. The rule conjoins them with white patches, which follows the page layout (the box hangs off the white-patches column); a reader who takes the box as free-standing would drop that conjunct, so confidence medium on the and.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "borderline_see_next",
+    "parts_missing": [],
+    "problem": "Fragment, judged together with p52-0fc2af12.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as an OR of 'Difficulty swallowing' and 'Swallowing painful', both checked for. The criterion is nested under white patches, which follows the page's column layout (the oesophageal box sits under the white-patches branch). Clinically, oesophageal candida can occur without visible oral plaques, so a clinician should confirm the nesting.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p52-bbb94b7f",
+  "text": "Red, cracked corners of mouth",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Red' (the page says red AND cracked corners; only cracks are encoded)"
+    ],
+    "problem": "Encoded as Fissure at Structure of angle of mouth, which captures 'cracked corners of mouth' well. Redness is dropped, so the angular cheilitis rule fires on a crack alone. 'Erythema' (morphologic abnormality or finding) with finding_site Structure of angle of mouth was available for the missing conjunct. Low clinical consequence, but the page's examination list names redness separately.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Red'"
+    ],
+    "problem": "Cracked corners encoded as Fissure at angle of mouth; redness absent. Acceptable simplification.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Red' (erythema at the angles) is not encoded."
+    ],
+    "problem": "'Cracked corners' is encoded as Fissure at 'Structure of angle of mouth', which is a good choice. Redness is dropped. This has low impact because fissuring at the angles is the main discriminator.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-f33bc9c8",
+  "text": "Angular cheilitis/stomatitis likely • Apply zinc and castor oil ointment 8 hourly. • If patient also has oral candida, treat as in adjacent column and apply clotrimazole cream 12 hourly for 2 weeks. • If crusts and blisters around mouth, impetigo likely 93. • If very itchy, contact dermatitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Part 1, angular cheilitis likely: probable Angular cheilitis (disorder; synonym angular stomatitis) from the fissure finding. Part 2, impetigo likely: probable Impetigo from fissure AND Crust at perioral skin AND Blister at perioral skin; the page says 'crusts and blisters', so and is the literal reading. Part 3, contact dermatitis likely: probable Contact dermatitis from fissure AND Itching with Severe qualifier; 'very itchy' -> Severe is a fair rendering. Conditioning parts 2 and 3 on the fissure (the column's entry criterion) follows the page's layout. All evidence is checked for in the same file. See rule-level note on the three rules co-firing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "anaemia likely via Hb (not_representable)",
+     "Candida co-infection branch (management only)"
+    ],
+    "problem": "Angular cheilitis probable is fine. Impetigo rule wrongly requires the angle-of-mouth fissure AND crusts AND blisters, but the page says 'crusts and blisters around mouth' with no fissure requirement, and the 'and' of crust+blister is arguably too strict. Contact dermatitis rule requires fissure + severe itching; the page says only 'very itchy', which fissure is not required for. Both rules need to be independent of the fissure criterion, or at least be or-based.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "There are three probable rules, all nested under cracked corners, which follows the column. Impetigo requires crust AND blister on perioral skin, matching 'crusts and blisters'. Contact dermatitis requires Itching with Severe qualifier for 'very itchy'. The itching has no site; this is minor. Impetigo is nested under angular fissure, which follows the page layout, but perioral impetigo without cracked corners would be missed.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p52-8ff03199",
+  "text": "Painful blisters on lips/mouth",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful'"
+    ],
+    "problem": "Blister at Lip structure OR Blister at Oral cavity structure covers 'blisters on lips/mouth'. 'Painful' is not encoded; SNOMED has no 'Painful' qualifier value, so the only approximation would be an additional Pain finding at the same site. Consequence is low: the herpes rule fires on any oral/lip blister, which is slightly broader than the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful' qualifier"
+    ],
+    "problem": "Blister on lip or oral cavity encoded; pain not required.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful' is not encoded. Any blister on the lip or in the oral cavity makes herpes simplex probable."
+    ],
+    "problem": "Blister sites are encoded as Lip structure OR Oral cavity structure, with the pain qualifier dropped. 'Painful mouth' (finding) exists and could be required alongside.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-ae0edce1",
+  "text": "Herpes simplex likely • Test for HIV 124. • Advise to rinse mouth with salt water2 for one minute twice a day. • Apply petroleum jelly to blisters on lips. • For pain, give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • If extensive, apply tetracaine 0.5% gel to",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Herpes simplex' (disorder) is the page's own term; 'Herpes labialis' exists but is narrower than lips/mouth.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'painful' (from branch label)"
+    ],
+    "problem": "Herpes simplex probable from lip or oral blisters. Other items (HIV, aciclovir, referral) are management. 'Herpes simplex' concept is broad but acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The rule type and logic are right. The concept is generic 'Herpes simplex' (disorder), which also covers anogenital and CNS disease. The closer child 'Oral herpes simplex infection' (disorder) exists, but the page itself says only 'Herpes simplex', so this is a minor point.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p52-875ea910",
+  "text": "Painful ulcer/s with central white patch",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful'",
+     "'with central white patch'"
+    ],
+    "problem": "Encoded as the bare 'Ulcer of mouth' (disorder). Both of the page's discriminators are dropped, and because descendants match automatically in due_to, any recorded mouth ulcer, including 'Traumatic oral ulceration' and 'Drug-induced oral ulceration', will produce a probable aphthous ulcer diagnosis. The page's examination list says only 'ulcers', so the check_for item itself is fine; the loss is in the diagnosis rule's evidence. No precoordinated 'painful ulcer with white centre' concept exists, but the appearance could have been noted as an approximation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful'",
+     "'central white patch'"
+    ],
+    "problem": "Branch label is encoded as plain 'Ulcer of mouth', which is non-specific. Any mouth ulcer yields probable aphthous ulcer, and the distinguishing central white patch and pain are dropped.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Painful' is not encoded.",
+     "'with central white patch' is not encoded."
+    ],
+    "problem": "Only the generic 'Ulcer of mouth' is required. So any oral ulcer, including traumatic, HIV-related, malignant or herpetic ulceration, makes aphthous ulcer PROBABLE. Both discriminators that the page uses to separate aphthous ulcers from other ulcers are lost.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-9328b2ad",
+  "text": "Aphthous ulcer/s likely • Apply tetracaine 0.5% gel on ulcers 6 hourly. • Refer if: - Ulcer > 1cm - Not healed within",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Diagnosis concept 'Aphthous ulcer of mouth' (disorder) is right and is a descendant of Ulcer of mouth. See p52-875ea910 for the over-broad evidence.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "central white patch / painful",
+     "referral criteria ulcer >1cm, not healed in 10 days (management/refer)"
+    ],
+    "problem": "Rule fires on any mouth ulcer, so it will also fire for ulcers that are not aphthous.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The conclusion and rule type are right (the evidence weakness is recorded under p52-875ea910). The referral criteria (ulcer > 1 cm, not healed within 10 days) are management and are not encoded, which is acceptable under the no-manage-tasks rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p52-5b65a1c4",
+  "text": "• If thirst, urinary frequency, weight loss, check for diabetes 19. • If runny or blocked nose 51. • Look for and treat oral candida (see adjacent). • Review medication: furosemide, amitriptyline, chlorphenamine, antipsychotics and morphine can cause dry mouth. Discuss with doctor. • Advise to sip f",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Possible Diabetes mellitus from Xerostomia AND (Increased thirst OR Increased frequency of urination OR Weight decreased). The page's comma list is read as 'any of', which is the generous reading for a possible rule and defensible. The three symptoms are checked for. Medication-induced dry mouth (furosemide, amitriptyline, chlorphenamine, antipsychotics, morphine) has no 'X likely' on the page and is out of scope by the standard, though an exposure-to-drug check would have been expressible.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Look for oral candida' in dry mouth (no link from Xerostomia to Candidiasis of mouth, even possible)",
+     "Medication-induced dry mouth (furosemide, amitriptyline, chlorphenamine, antipsychotics, morphine) not encoded"
+    ],
+    "problem": "Diabetes is encoded as a possible diagnosis from Xerostomia plus thirst, urinary frequency or weight loss. The page says 'check for diabetes', so possible is reasonable. The runny/blocked nose cross-reference (51) is not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Possible Diabetes mellitus requires Xerostomia AND any of increased thirst, increased frequency of urination or weight decreased. Reading the comma list as 'any of' is reasonable. Borderline omission: 'furosemide, amitriptyline, chlorphenamine, antipsychotics and morphine can cause dry mouth' could support a possible 'Drug-induced xerostomia' (disorder), but the page frames it as a medication review, so treating it as management is defensible.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c004",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c011",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c012",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'exposure to possible allergen' with footnote 'medication, food or insect bite/sting within the past few hours'; 'Food' as a bare substance matches any eating and the 'past few hours' window is dropped (gold page 20 uses specific foods).",
+    "fix": "Keep if the house pattern needs a generic food trigger; otherwise use the page-20 food substances (Fish, Milk, Eggs (edible), Peanut, Tree nut) and note the timing window as unmodellable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c013",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c014",
+  "text": "Check for urgent mouth symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c017",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Difficulty/pain on swallowing is a branch of the oesophageal candida box, not in the page's 'check for redness, white patches, blisters, ulcers or cracks' list for this task.",
+    "fix": "Drop from the check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swallowing painful\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Difficulty/pain on swallowing is a branch of the oesophageal candida box, not in the page's 'check for redness, white patches, blisters, ulcers or cracks' list for this task.",
+    "fix": "Drop from the check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c019",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page heading is 'Painful blisters on lips/mouth'; the 'painful' qualifier is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c020",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page heading is 'Painful blisters on lips/mouth'; the 'painful' qualifier is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of mouth\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page heading is 'Painful ulcer/s with central white patch'; 'Ulcer of mouth' is broader (any mouth ulcer), dropping both 'painful' and 'central white patch'.",
+    "fix": "No precoordinated concept found; at least add a qualifier/note so any mouth ulcer does not become aphthous ulcer probable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page column is \"Painful ulcer/s with central white patch\"; \"Ulcer of mouth\" drops both pain and the central white patch.",
+    "fix": "Add pain and central white patch qualifiers, or a closer concept",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c022",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"Red, cracked corners of mouth\"; redness is dropped, only the fissure is encoded.",
+    "fix": "Optionally add erythema at Structure of angle of mouth",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c023",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Crusts are not in the page's check list (redness, white patches, blisters, ulcers, cracks); they only appear in the impetigo branch.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c024",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Blisters' in the check list is general; the perioral skin site is from the impetigo branch.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Itch, thirst, urinary frequency and weight loss are branch details, not part of the page's mouth check list (dry mouth is asked about).",
+    "fix": "Drop from the task's check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Very itchy\" sits in the cracked-corners-of-mouth column; Itching has no finding site, so severe itching anywhere matches.",
+    "fix": "Add (finding_site (snomed_concept \"Structure of angle of mouth\" \"body structure\")) or perioral skin",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c027",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Itch, thirst, urinary frequency and weight loss are branch details, not part of the page's mouth check list (dry mouth is asked about).",
+    "fix": "Drop from the task's check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c028",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Itch, thirst, urinary frequency and weight loss are branch details, not part of the page's mouth check list (dry mouth is asked about).",
+    "fix": "Drop from the task's check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c029",
+  "text": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Itch, thirst, urinary frequency and weight loss are branch details, not part of the page's mouth check list (dry mouth is asked about).",
+    "fix": "Drop from the task's check_for list.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c032",
+  "text": "Diagnose probable oesophageal candida (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'If difficulty or pain on swallowing, oesophageal candida likely' as its own box; it does not require white patches. Extra condition narrows the rule.",
+    "fix": "Remove the white-patches condition.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c036",
+  "text": "Diagnose probable herpes simplex (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page heading is 'Painful blisters on lips/mouth'; 'painful' dropped, so any lip/mouth blister (e.g. traumatic, impetigo) makes herpes simplex probable.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page column is 'Painful blisters'; pain is dropped.",
+    "fix": "Add Pain qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page heading is \"Painful blisters on lips/mouth\"; \"painful\" is dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c037",
+  "text": "Diagnose probable herpes simplex (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page heading is 'Painful blisters on lips/mouth'; 'painful' dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page column is 'Painful blisters'; pain is dropped.",
+    "fix": "Add Pain qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page heading is \"Painful blisters on lips/mouth\"; \"painful\" is dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c038",
+  "text": "Diagnose probable herpes simplex (mouth symptoms page) :: (diagnosis (snomed_concept \"Herpes simplex\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Herpes simplex likely' in the lips/mouth column; 'Herpes simplex' is the whole-body disorder. Closer concepts exist: (snomed_concept \"Oral herpes simplex infection\" \"disorder\") and (snomed_concept \"Herpes labialis\" \"disorder\"), both is_a Herpes simplex.",
+    "fix": "(snomed_concept \"Oral herpes simplex infection\" \"disorder\")",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Herpes simplex\" is the generic disorder; the page means oral/labial herpes simplex.",
+    "fix": "Use (snomed_concept \"Oral herpes simplex infection\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c039",
+  "text": "Diagnose probable aphthous ulcer (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of mouth\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c021: any 'Ulcer of mouth' yields aphthous ulcer probable, but the page requires painful ulcer/s with a central white patch.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: painful ulcer/s with central white patch. 'Ulcer of mouth' drops painful and the central white patch, so any mouth ulcer yields probable aphthous ulcer.",
+    "fix": "Add pain and central white patch if a concept or qualifier exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Diagnostic trigger for aphthous ulcer is \"Painful ulcer/s with central white patch\"; plain \"Ulcer of mouth\" makes any mouth ulcer (e.g. herpetic, traumatic) a probable aphthous ulcer.",
+    "fix": "AND in pain (e.g. (snomed_concept \"Painful mouth\" \"finding\")) and the central white patch feature",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c041",
+  "text": "Diagnose probable angular cheilitis (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Column heading says 'Red, cracked'; redness dropped (minor).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Red, cracked corners\" encoded as fissure only; redness dropped.",
+    "fix": "Add erythema at angle of mouth",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c043",
+  "text": "Diagnose probable impetigo around the mouth (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'If crusts and blisters around mouth, impetigo likely'. Angular fissure is not required for impetigo; it is only the column the bullet sits in.",
+    "fix": "Remove the fissure condition.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c047",
+  "text": "Diagnose probable contact dermatitis at corners of mouth (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page bullet is 'If very itchy, contact dermatitis likely' within the cracked corners column; fissure is column context. Plausible but an added requirement.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c048",
+  "text": "Diagnose probable contact dermatitis at corners of mouth (mouth symptoms page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Itching has no finding site; severe itching anywhere (with cracked mouth corners) would fire contact dermatitis.",
+    "fix": "Add finding site angle of mouth / perioral skin",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c056",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c057",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c066",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c067",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Generic 'Food' exposure and the footnote's 'within the past few hours' window dropped (see c012).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c068",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c069",
+  "text": "Diagnose possible anaphylaxis from mouth symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c073",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c074",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated closer concept exists for face/tongue swelling; Swelling+finding site is acceptable but less specific.",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") / (snomed_concept \"Tongue swelling\" \"finding\") with the Sudden onset qualifier",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c083",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c084",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Generic 'Food' exposure and the footnote's 'within the past few hours' window dropped (see c012); this feeds an Urgent priority.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c085",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c086",
+  "text": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote 1 limits allergen exposure to 'within the past few hours'; the timing window is dropped and the page does not give insect bite/sting as an 'exposure' (the encoding treats bite/sting as a plain finding).",
+    "fix": "Add a time window of the past few hours to the exposures if the grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote limits allergen exposure to \"within the past few hours\"; the timing window is dropped, so any past exposure to medication/food/insect bite qualifies.",
+    "fix": "Add a timing qualifier/window (past few hours) to the exposure conditions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer (mouth symptoms page)",
+  "text": "Evidence is the bare 'Ulcer of mouth' (disorder), so every mouth ulcer and every descendant (traumatic, drug-induced, thermal/chemical burn ulceration, recurrent ulcer) yields a probable aphthous ulcer. The page's discriminators 'painful' and 'with central white patch' are lost. This is the one probable rule on the page whose trigger is materially broader than the page.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) possible abacavir hypersensitivity reaction",
+  "text": "The approach box says 'If on abacavir, check for abacavir hypersensitivity reaction (AHR) 131'. By the house standard this is a 'consider X' and should be a possible rule triggered by mouth symptoms plus abacavir exposure, the same pre-screen pattern used for anaphylaxis in this file. 'Abacavir' (substance) and 'Hypersensitivity to abacavir' / 'Allergy to abacavir' (finding) exist in SNOMED; whether a finding-category concept is accepted as a diagnosis would need confirming. No rule or check_for item exists for it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable angular cheilitis / impetigo around the mouth / contact dermatitis at corners of mouth",
+  "text": "All three share the fissure trigger with no exclusions, so a patient with cracked corners plus perioral crusts and blisters receives probable angular cheilitis AND probable impetigo, and one with severe itching receives probable angular cheilitis AND probable contact dermatitis. The page frames impetigo and contact dermatitis as alternative conclusions ('If crusts and blisters ... impetigo likely', 'If very itchy, contact dermatitis likely'). The language has (not ...) to express the exclusion. Reasonable people could leave this as is.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs; Diagnose possible anaphylaxis from mouth symptoms",
+  "text": "'Mouth symptoms' (finding) is the due_to of both tasks and a conjunct in the priority evaluation and the possible rule, but it is not checked for anywhere in this file and is not among the listed common symptoms or warning signs. Test constraint 5 (every priority-evaluation evidence must be checked for in the same file, or be a vital/warning sign/common symptom/probable active_condition) may reject it unless another page records it; the house brief's own pattern '(and <presenting complaint> (or ...))' invites exactly this, so this may be a known, accepted gap. Cannot verify without the VHA repo.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth",
+  "text": "The page's examination list is 'redness, white patches, blisters, ulcers or cracks'; redness has no check_for item, and 'red' is also dropped from the 'Red, cracked corners of mouth' trigger for angular cheilitis. 'Erythema' with a finding_site was available.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs",
+  "text": "Footnote 1's 'within the past few hours' on the allergen exposure is not encoded. Only approximable (no number on 'few'; exposure findings are not onset subjects), and the gold anaphylaxis page omits it too.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable impetigo around the mouth",
+  "text": "Requires angle-of-mouth fissure AND crust AND blister. Page says only 'crusts and blisters around mouth' for impetigo. Impetigo cannot fire from perioral crusts/blisters alone.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer",
+  "text": "Triggered by any Ulcer of mouth; the page's branch is a painful ulcer with a central white patch. Over-fires.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable contact dermatitis at corners of mouth",
+  "text": "Requires fissure; page says only 'very itchy'. Under-fires.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent / possible anaphylaxis rules",
+  "text": "Allergen exposure has no recency (past few hours), and 'Insect bite - wound' is a loose concept for exposure to possible allergen. Over-fires for Urgent.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable oesophageal candida",
+  "text": "Hard-requires white patches in mouth; the page only requires difficulty or pain on swallowing.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check mouth ... task",
+  "text": "Two check_for items (Itching severe, Crust, Blister perioral) are fine, but 'Weight decreased' etc. exist only to support the diabetes rule; there is no check/diagnosis for oral candida within dry mouth or medication-induced dry mouth.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer (mouth symptoms page)",
+  "text": "Any 'Ulcer of mouth' makes aphthous ulcer probable, with no requirement for pain or a central white patch. This over-diagnoses aphthous ulcer for every oral ulcer, including ones the page would not call aphthous.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable herpes simplex (mouth symptoms page)",
+  "text": "'Painful' is dropped, so any lip or oral blister makes herpes simplex probable. The generic 'Herpes simplex' concept is used where 'Oral herpes simplex infection' exists.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(page approach line) abacavir -> check for AHR",
+  "text": "'Check for anaphylaxis' was encoded as a possible diagnosis, but 'If on abacavir, check for abacavir hypersensitivity reaction' was not, although it has the same form. 'Hypersensitivity to abacavir' (finding) exists. This is inconsistent; at minimum it should be a decision recorded in the remaining-questions file.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent mouth symptom conditions / Check mouth for white patches... / Urgent priority / possible anaphylaxis",
+  "text": "Every task and rule is anchored on 'Mouth symptoms' (finding), which is not a recorded common symptom or warning sign. Nothing fires unless that exact finding is recorded. This is consistent with the house standard's fallback, but it should be noted.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable oesophageal candida / Diagnose probable impetigo around the mouth",
+  "text": "Both are nested under their column's entry finding: white patches, and fissure at the angles of the mouth. This follows the page layout but misses dysphagia/odynophagia without oral plaques, and perioral crusts and blisters without cracked corners. A clinician should confirm.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable herpes simplex (mouth symptoms page)",
+  "text": "Trigger is any blister on lips or in the mouth; page says 'Painful blisters'. Diagnosis concept is the general 'Herpes simplex' where 'Oral herpes simplex infection' exists. Type and probable level are right.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer (mouth symptoms page)",
+  "text": "Trigger 'Ulcer of mouth' is broader than the page's 'Painful ulcer/s with central white patch': every recorded mouth ulcer becomes aphthous ulcer probable. Type and probable level are right.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent mouth symptom conditions",
+  "text": "Check list mixes in exposure items without the time window; the page red box is a priority rule, the check task duplicates it.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth",
+  "text": "Check list includes swallowing, itch, crusts, thirst, urinary frequency and weight loss that are branch details, not the page's check list. Redness is not encoded.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable oesophageal candida (mouth symptoms page)",
+  "text": "Wrongly requires white patches; page triggers on difficulty or pain on swallowing alone.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer (mouth symptoms page)",
+  "text": "Any mouth ulcer triggers; page needs painful ulcer with central white patch.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable impetigo around the mouth (mouth symptoms page)",
+  "text": "Requires angle-of-mouth fissure which the page does not; page says crusts and blisters around mouth.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing)",
+  "text": "Page's 'anaemia likely' (Hb <12 g/dL woman, <13 g/dL man) with sex-specific thresholds is not encoded; also no rule for 'swelling of lips' or abacavir hypersensitivity reaction checks (cross-references).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check mouth for white patches, blisters, ulcers, cracks and dry mouth",
+  "text": "Page asks to check for redness and (if no better/uncertain) Hb; neither is in the check list, so the anaemia branch cannot be reached. Ulcer and blister items drop 'painful'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable herpes simplex (mouth symptoms page)",
+  "text": "Diagnosis concept is generic Herpes simplex rather than oral herpes; 'painful' dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable aphthous ulcer (mouth symptoms page)",
+  "text": "Trigger is any mouth ulcer; page requires painful ulcer(s) with central white patch. Over-fires probable aphthous ulcer.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable contact dermatitis at corners of mouth (mouth symptoms page)",
+  "text": "Severe itching has no finding site.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) anaemia likely",
+  "text": "Page says 'If no better or uncertain of cause: Check Hb. If < 12g/dL (woman) or < 13g/dL (man), anaemia likely' — an 'X likely' with no probable-anaemia diagnosis rule.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+    "reason": "\"Dry mouth\" is the column heading this line sits under, so the diabetes check needs it. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+    "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" names thirst. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+    "reason": "The same line names urinary frequency. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+    "reason": "The same line names weight loss. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "reason": "The page says only \"If very itchy\" with no site, so A's siteless itch is closer to its words; the rule still requires the cracked corners of the mouth.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+    "reason": "\"Dry mouth\" is the column heading this line sits under, so the diabetes check needs it. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+    "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" names thirst. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+    "reason": "The same line names urinary frequency. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+    "reason": "The same line names weight loss. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "reason": "The page says only \"If very itchy\" with no site, so A's siteless itch is closer to its words; the rule still requires the cracked corners of the mouth.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "slug": "52-mouth-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: (diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)",
+    "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" is a check-for prompt, which both builders encoded as a possible diagnosis for \"check for anaphylaxis 28\"; B dropped it as a pointer.",
+    "unsettled": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,1946 @@
+[
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p197-d2f8e7be",
+  "text": "The health worker with any of the above may have substance misuse, stress, depression/anxiety or burnout and would benefit from referral for assessment and follow-up.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'stress' as a possible diagnosis is not encoded. 'Stress' (finding, 'Stress at work' is its child) and 'Occupation-related stress disorder' (disorder) both exist. Arguably redundant because the trigger already is Stress at work, but the page lists it as a distinct conclusion"
+    ],
+    "problem": "Four possible rules exist with sound concepts: 'Substance misuse behavior' (finding), 'Depressive disorder' (disorder), 'Anxiety disorder' (disorder), 'Physical AND emotional exhaustion state' (disorder; SNOMED synonym burnout, and a child of Anxiety disorder, so the burnout rule is subsumed by the anxiety rule in SNOMED terms). Each is correctly structured as (and Stress-at-work (or any screening item)), which is the literal reading of 'any of the above'. The referral step is management and correctly omitted.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "stress as a diagnosis"
+    ],
+    "problem": "Four possible diagnoses encoded, but 'stress' not encoded as a diagnosis; also every diagnosis uses the identical full trigger list, so nothing distinguishes substance misuse (alcohol/drug items) from depression (mood items) from burnout (performance items). Page is itself undifferentiated, so this is borderline.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'stress' as a diagnosis: arguably implied by the trigger 'Stress at work', so no separate rule is needed. Flagged only.",
+     "The red-box items, which are also 'above', are not evidence for any possible diagnosis. Intoxication should at least feed substance misuse, and suicidal thoughts should feed depression."
+    ],
+    "problem": "Four possible rules are encoded: substance misuse ('Substance misuse behavior'), depression ('Depressive disorder'), anxiety ('Anxiety disorder') and burnout ('Physical AND emotional exhaustion state', which SNOMED matches as a burnout synonym). The 'may have' wording means possible, which is correct. Each rule uses the full or-list, matching 'any of the above'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p197-39e778a5",
+  "text": "Identify occupational stress in yourself and your colleagues Possible alcohol or drug problem • In the past year, have you/colleague: drunk ≥ 4 drinks1/ session, used illegal drugs or misused prescription or over- the-counter medications? • Smells of alcohol",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Time window 'in the past year' for (a)-(c): not encoded (an onset comparison such as (< (onset ...) (time_ago 1 year)) is available in due_to but was not used; arguably not_representable in check_for)",
+     "The threshold '>= 4 drinks per session' is approximated by the concept 'Heavy drinking session' with no number; the language has no drink-count unit, so this is the best available approximation and is acceptable",
+     "The column's specific mapping (alcohol/drug findings -> possible alcohol or drug problem) is not preserved: the substance-misuse rule fires on any item from any of the five columns (e.g. Fatigue alone), see rule-level problems"
+    ],
+    "problem": "Concepts are good: 'Heavy drinking session' (228325006), 'Illicit drug use' (307052004), 'Misuse of medication' (788165003, covers prescription and OTC), 'Smell of alcohol on breath' (28045007). The conclusion is encoded as possible 'Substance misuse behavior' (finding, 415658005), a reasonable match for 'alcohol or drug problem' / 'substance misuse'. What is lost is the column structure: the rule's evidence is the full list of all 19 screening findings rather than this column's four.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "4-drink threshold / past-year window"
+    ],
+    "problem": "'drunk >= 4 drinks per session in the past year' mapped to 'Heavy drinking session' (the 4-drink threshold and 1-year window are lost, not representable as a unit but not noted). Items are only 'or' members; no rule marks the box as an indicator of stress itself.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "The '>= 4 drinks/session' threshold and the 'in the past year' time window are not encoded. 'Heavy drinking session' carries no count, and the language has no unit for drinks, so the threshold itself is not representable."
+    ],
+    "problem": "Four parts. (1) Drinking >= 4 drinks per session maps to 'Heavy drinking session', which is acceptable but approximate. (2) Illegal drugs maps to 'Illicit drug use', correct. (3) Misused prescription or OTC medication maps to 'Misuse of medication', correct. (4) Smells of alcohol maps to 'Smell of alcohol on breath', correct. All four are in the check_for list and in the substance-misuse or-list.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p197-72a4dffb",
+  "text": "Recent distressing event • Diagnosis of long-term condition • Bereavement • Needlestick injury • Traumatic event",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Diagnosis of long-term condition' is not encoded anywhere. A representable approximation exists, e.g. (clinical_finding (snomed_concept \"Chronic disease\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) following the house standard's 'New' qualifier pattern"
+    ],
+    "problem": "Three of four parts are correct: 'Bereavement' (74506000), 'Accidental needle stick injury' (disorder, child of Sharps injury), 'Traumatic event' (event, 773760007). Minor: 'Traumatic event' is an 'event'-category concept wrapped in clinical_finding; the grammar accepts any category there but the gold standard only uses finding/disorder/morphologic abnormality, so it should be confirmed that the runtime records it. The first bullet, 'Diagnosis of long-term condition', is simply missing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Diagnosis of long-term condition"
+    ],
+    "problem": "'Diagnosis of long-term condition' is not encoded.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Diagnosis of long-term condition' is missing from both the check_for list and the rules. 'Chronic disease' (disorder) exists in SNOMED and could carry a 'New' qualifier."
+    ],
+    "problem": "Bereavement, Needlestick injury and Traumatic event are encoded ('Accidental needle stick injury', 'Traumatic event' event). One of the four bullets is dropped.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p197-83fbfff8",
+  "text": "Poor attendance at work • Frequent absenteeism • Frequent lateness • Often takes sick leave",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Frequent lateness' is not encoded. I searched SNOMED for late/lateness/tardiness/punctual and found no suitable finding, so this is a SNOMED gap rather than a builder oversight; it should at least be recorded as not representable"
+    ],
+    "problem": "'Absenteeism at work' (360484006) and 'Excess sick leave' (276076006, child of Medical problems at work) fit well. 'Frequent' is not expressed but SNOMED has no frequency form for absenteeism and 'Excess sick leave' carries the 'often' sense.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Frequent lateness"
+    ],
+    "problem": "'Frequent lateness' not encoded; 'Frequent' qualifier lost.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Frequent lateness' is not encoded. I found no SNOMED concept for lateness or poor timekeeping, so it may be not_representable, but the gap is not visible in the rules."
+    ],
+    "problem": "'Frequent absenteeism' maps to 'Absenteeism at work' and 'Often takes sick leave' maps to 'Excess sick leave'. Both are fine.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for urgent features and signs of occupational stress in the health worker :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Alcohol or drug intoxication at work'; the workplace context is dropped. Concept is otherwise right (Alcohol intoxication is a descendant) though its children also include opioid/nicotine poisonings.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent features and signs of occupational stress in the health worker :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Inappropriate behaviour at work'; the workplace context is dropped and no SNOMED concept carries it. Concept itself is right.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c004",
+  "text": "Check for urgent features and signs of occupational stress in the health worker :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Aggressive or violent behaviour at work'; the workplace context is dropped. Concept itself is right (and is a VHA warning sign).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c005",
+  "text": "Check for urgent features and signs of occupational stress in the health worker :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Right concept for 'violent behaviour' (SNOMED synonym), but 'at work' is dropped; also a child of Aggressive behavior, so it is redundant in the due_to (descendants match) and only adds a separate ask in check_for.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c008",
+  "text": "Check for urgent features and signs of occupational stress in the health worker :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+    "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page criterion is drunk >=4 drinks per session in the past year; concept carries no threshold or timeframe, so any report of heavy drinking fires it.",
+    "fix": "Keep concept but note the >=4 drinks / past-year threshold in the question text.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c027",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the health worker with ANY of the listed signs may have substance misuse/stress/depression/anxiety/burnout; it does not require occupational stress as a prerequisite, so the AND gate is an added condition.",
+    "fix": "Drop the Stress at work gate, or make it explicit as a design choice.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c028",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+    "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page criterion is drunk >=4 drinks per session in the past year; concept carries no threshold or timeframe, so any report of heavy drinking fires it.",
+    "fix": "Keep concept but note the >=4 drinks / past-year threshold in the question text.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Heavy drinking session\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c029",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past year' window is implicit in a currently recorded finding.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Illicit drug use\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c030",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Misuse of medication\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c036",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Depressed mood\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c037",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Feeling hopeless\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c038",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Loss of interest\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c039",
+  "text": "Diagnose possible substance misuse in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'little ... pleasure in doing things' is anhedonia.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Anhedonia\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c048",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the health worker with ANY of the listed signs may have substance misuse/stress/depression/anxiety/burnout; it does not require occupational stress as a prerequisite, so the AND gate is an added condition.",
+    "fix": "Drop the Stress at work gate, or make it explicit as a design choice.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c049",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+    "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page criterion is drunk >=4 drinks per session in the past year; concept carries no threshold or timeframe, so any report of heavy drinking fires it.",
+    "fix": "Keep concept but note the >=4 drinks / past-year threshold in the question text.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Heavy drinking session\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past year' window is implicit in a currently recorded finding.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Illicit drug use\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c051",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Misuse of medication\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c057",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Depressed mood\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c058",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Feeling hopeless\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c059",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Loss of interest\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c060",
+  "text": "Diagnose possible depression in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'little ... pleasure in doing things' is anhedonia.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Anhedonia\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c069",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the health worker with ANY of the listed signs may have substance misuse/stress/depression/anxiety/burnout; it does not require occupational stress as a prerequisite, so the AND gate is an added condition.",
+    "fix": "Drop the Stress at work gate, or make it explicit as a design choice.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c070",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+    "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page criterion is drunk >=4 drinks per session in the past year; concept carries no threshold or timeframe, so any report of heavy drinking fires it.",
+    "fix": "Keep concept but note the >=4 drinks / past-year threshold in the question text.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Heavy drinking session\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c071",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past year' window is implicit in a currently recorded finding.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Illicit drug use\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c072",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Misuse of medication\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c078",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Depressed mood\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c079",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Feeling hopeless\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c080",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Loss of interest\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c081",
+  "text": "Diagnose possible anxiety in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'little ... pleasure in doing things' is anhedonia.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Anhedonia\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c090",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the health worker with ANY of the listed signs may have substance misuse/stress/depression/anxiety/burnout; it does not require occupational stress as a prerequisite, so the AND gate is an added condition.",
+    "fix": "Drop the Stress at work gate, or make it explicit as a design choice.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c091",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+    "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page criterion is drunk >=4 drinks per session in the past year; concept carries no threshold or timeframe, so any report of heavy drinking fires it.",
+    "fix": "Keep concept but note the >=4 drinks / past-year threshold in the question text.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Heavy drinking session\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c092",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past year' window is implicit in a currently recorded finding.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Illicit drug use\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c093",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past year\" for this; the one-year window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Misuse of medication\" \"finding\"))) (time_ago 1 year)) or accept as unexpressible.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c099",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Depressed mood\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c100",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Feeling hopeless\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c101",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Loss of interest\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c102",
+  "text": "Diagnose possible burnout in health worker with occupational stress :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'little ... pleasure in doing things' is anhedonia.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks \"In the past month\" for this; the one-month window is dropped.",
+    "fix": "Add (< (onset (clinical_finding (snomed_concept \"Anhedonia\" \"finding\"))) (time_ago 1 month)).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c112",
+  "text": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Alcohol or drug intoxication at work'; the workplace context is dropped. Concept is otherwise right (Alcohol intoxication is a descendant) though its children also include opioid/nicotine poisonings.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Red box specifies the behaviour/intoxication occurs \"at work\"; the at-work context is not encoded (relies on Stress at work co-occurring).",
+    "fix": "Accept, or add an at-work qualifier if the grammar supports one.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c113",
+  "text": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Inappropriate behaviour at work'; the workplace context is dropped and no SNOMED concept carries it. Concept itself is right.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Red box specifies the behaviour/intoxication occurs \"at work\"; the at-work context is not encoded (relies on Stress at work co-occurring).",
+    "fix": "Accept, or add an at-work qualifier if the grammar supports one.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c114",
+  "text": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Aggressive or violent behaviour at work'; the workplace context is dropped. Concept itself is right (and is a VHA warning sign).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Red box specifies the behaviour/intoxication occurs \"at work\"; the at-work context is not encoded (relies on Stress at work co-occurring).",
+    "fix": "Accept, or add an at-work qualifier if the grammar supports one.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c115",
+  "text": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Right concept for 'violent behaviour' (SNOMED synonym), but 'at work' is dropped; also a child of Aggressive behavior, so it is redundant in the due_to (descendants match) and only adds a separate ask in check_for.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Red box specifies the behaviour/intoxication occurs \"at work\"; the at-work context is not encoded (relies on Stress at work co-occurring).",
+    "fix": "Accept, or add an at-work qualifier if the grammar supports one.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible substance misuse / depression / anxiety / burnout in health worker with occupational stress",
+  "text": "The four possible-diagnosis rules are byte-identical in their evidence: (and Stress-at-work (or <all 19 screening findings>)). The page's column structure is flattened away, so 'Fatigue' alone yields possible substance misuse, depression, anxiety and burnout at once, and the column heading 'Possible alcohol or drug problem' (which is itself a 'possible X' conclusion attached to only its own four findings) is not preserved. The footer's 'any of the above may have ...' justifies a broad reading, but a closer encoding would evidence substance misuse from the alcohol/drug column (with the others as broad fallbacks) so the specific conclusion the page draws is kept.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent features and signs of occupational stress in the health worker (check_for)",
+  "text": "Two screening items are absent from the check_for and therefore from every rule: 'Diagnosis of long-term condition' (representable, e.g. Chronic disease + New qualifier) and 'Frequent lateness' (no SNOMED concept found; a not_representable note is the appropriate handling).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible ... (footer conclusions)",
+  "text": "The footer names five conclusions (substance misuse, stress, depression, anxiety, burnout); 'stress' has no possible-diagnosis rule. Low because the trigger is already 'Stress at work'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All rules (due_to anchoring)",
+  "text": "Every rule is anchored on (clinical_finding (snomed_concept \"Stress at work\" \"finding\")), which is not a recorded common symptom or warning sign, and nothing else on the page records it. The page is also about the health worker, not the patient, so whether these rules can ever fire in a patient encounter is a question for the clinician/remaining-questions file. Not a wrong encoding, but the house standard asks for this to be flagged.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: health worker with occupational stress ... (red box)",
+  "text": "All four red-box criteria are qualified 'at work' on the page; no item carries that context. The language has no clean way to express it (an 'Occupational' qualifier value exists but is not an established pattern), so this is a limitation to record rather than an error.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent features ... :: (clinical_finding (snomed_concept \"Traumatic event\" \"event\"))",
+  "text": "An 'event'-category concept inside clinical_finding. The grammar's category validator accepts it, but no gold-standard rule does this; confirm the runtime records and matches it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All four system_diagnosis_rules",
+  "text": "Each requires 'Stress at work' AND any one of the identify-stress indicators, but the page uses those indicators to identify occupational stress itself; a worker with mood change but no prior stress finding gets no diagnosis. Circular trigger.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "possible substance misuse / depression / anxiety / burnout",
+  "text": "Identical 19-item OR lists on all four; no differentiation by symptom group (alcohol items for substance misuse, mood for depression/anxiety, performance for burnout). Over-triggering.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for",
+  "text": "Missing 'Diagnosis of long-term condition' and 'Frequent lateness' items; the urgent items are included in check_for as intended.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "diagnoses",
+  "text": "No diagnosis for 'stress' though the page lists it among likely conditions.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All four possible diagnosis rules",
+  "text": "Each rule requires 'Stress at work' AND one of the signs. On the page, these signs are how occupational stress is identified ('Identify occupational stress in yourself and your colleagues'), and the conclusion applies to 'the health worker with any of the above'. Requiring a prior 'Stress at work' finding is circular: a colleague showing these signs without a recorded 'Stress at work' finding never triggers the rules. The check_for task has the same problem, because it is triggered only by 'Stress at work'.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible substance misuse / depression / anxiety / burnout",
+  "text": "All four rules share one identical or-list of 19 items, so mood signs alone trigger possible substance misuse and drinking alone triggers possible anxiety. This matches the page's literal 'any of the above ... may have', so it is not an error, but it is very non-specific.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "check_for: Check for urgent features and signs of occupational stress",
+  "text": "The list omits 'Diagnosis of long-term condition' (a SNOMED concept is available: 'Chronic disease') and 'Frequent lateness' (no concept found). The red-box urgent items are checked but not used in any diagnosis rule. They are consumed by the priority rule, so the constraints pass.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent priority",
+  "text": "The Urgent level is justified by 'Arrange urgent assessment'. The 'at work' context of intoxication and behaviour is dropped, which is acceptable.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent features and signs of occupational stress in the health worker",
+  "text": "Type and trigger are right and every red-box item is checked for, but two of the page's 'Identify occupational stress' signs are missing: 'Frequent lateness' (Poor attendance at work; no SNOMED concept found, so a documented gap) and 'Diagnosis of long-term condition' (Recent distressing event; could be approximated as (clinical_finding (snomed_concept \"Chronic disease\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))). The red box's 'at work' context is also dropped from the intoxication and behaviour items.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent features and signs of occupational stress in the health worker",
+  "text": "Task lists all 25 identification signs (including non-urgent mood/attendance/performance signs) alongside the red-box urgent items; the page splits these into an urgent box and an identification section, so urgent and non-urgent are mixed in one check_for.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible substance misuse in health worker with occupational stress",
+  "text": "Same 19-sign OR list used for all four diagnoses; page only has a single lumped sentence (\"any of the above may have...\"), with no per-diagnosis mapping, so rules cannot discriminate. Also Stress at work is an added AND gate not on page.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible depression in health worker with occupational stress",
+  "text": "Identical condition list to other diagnoses (includes alcohol smell, absenteeism etc.); stress gate not on page. Page supports possible only (may have), which is used correctly.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anxiety in health worker with occupational stress",
+  "text": "As depression rule: undifferentiated condition list and added stress gate. Page says \"depression/anxiety\" together.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible burnout in health worker with occupational stress",
+  "text": "As above; undifferentiated list and added stress gate.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent features and signs of occupational stress in the health worker",
+  "text": "check_for omits Diagnosis of long-term condition and Frequent lateness from the identify section; 'past year'/'past month' windows cannot be expressed in check_for (acceptable). Trigger 'Stress at work' is not a common symptom or warning sign, so the task may never fire unless something records it.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible substance misuse in health worker with occupational stress",
+  "text": "Requires Stress at work as an AND precondition, but the section is \"Identify occupational stress\": the listed signs are how stress is identified, so a health worker presenting with them but no recorded Stress at work never triggers the rule. Omits page signs \"Diagnosis of long-term condition\" (Recent distressing event), \"Frequent lateness\" (Poor attendance) and the \"Marked decline in work performance\" heading; \"any of the above\" also arguably includes the red-box features, which are not in the OR list. Possible (not probable) matches \"may have\"; the any-sign-to-all-four mapping is faithful to the page wording. Time windows (past year / past month) dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible depression in health worker with occupational stress",
+  "text": "Requires Stress at work as an AND precondition, but the section is \"Identify occupational stress\": the listed signs are how stress is identified, so a health worker presenting with them but no recorded Stress at work never triggers the rule. Omits page signs \"Diagnosis of long-term condition\" (Recent distressing event), \"Frequent lateness\" (Poor attendance) and the \"Marked decline in work performance\" heading; \"any of the above\" also arguably includes the red-box features, which are not in the OR list. Possible (not probable) matches \"may have\"; the any-sign-to-all-four mapping is faithful to the page wording. Time windows (past year / past month) dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anxiety in health worker with occupational stress",
+  "text": "Requires Stress at work as an AND precondition, but the section is \"Identify occupational stress\": the listed signs are how stress is identified, so a health worker presenting with them but no recorded Stress at work never triggers the rule. Omits page signs \"Diagnosis of long-term condition\" (Recent distressing event), \"Frequent lateness\" (Poor attendance) and the \"Marked decline in work performance\" heading; \"any of the above\" also arguably includes the red-box features, which are not in the OR list. Possible (not probable) matches \"may have\"; the any-sign-to-all-four mapping is faithful to the page wording. Time windows (past year / past month) dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible burnout in health worker with occupational stress",
+  "text": "Requires Stress at work as an AND precondition, but the section is \"Identify occupational stress\": the listed signs are how stress is identified, so a health worker presenting with them but no recorded Stress at work never triggers the rule. Omits page signs \"Diagnosis of long-term condition\" (Recent distressing event), \"Frequent lateness\" (Poor attendance) and the \"Marked decline in work performance\" heading; \"any of the above\" also arguably includes the red-box features, which are not in the OR list. Possible (not probable) matches \"may have\"; the any-sign-to-all-four mapping is faithful to the page wording. Time windows (past year / past month) dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: none  vs  B: (diagnosis (Stress at work) possible) as an extra trigger of a separate urgent task",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "The final build has no possible Stress-at-work diagnosis (see below), so this trigger could never fire. The red box's 'health worker with occupational stress' is the recorded Stress at work finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: one task (red box + Identify signs)  vs  B: two tasks, each triggered by (clinical_finding Stress at work)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Stress at work\" \"finding\"))",
+    "reason": "The page gives both lists for the same health worker with occupational stress, and the conditions are identical; one task is simpler.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Misuses drugs)  vs  B: (Misuse of medication)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Misuse of medication\" \"finding\"))",
+    "reason": "The page says 'misused prescription or over-the-counter medications'. Misuse of medication names exactly that; Misuses drugs is a broader sibling that also covers illicit drugs, which are already encoded separately.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: none  vs  B: (Heavy drinking session)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Heavy drinking session\" \"finding\"))",
+    "reason": "The page lists 'drunk ≥ 4 drinks/session' as a sign. Heavy drinking session is the closest concept; the count itself can't be expressed.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Loss of interest)  vs  B: Anhedonia only",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Loss of interest\" \"finding\"))",
+    "reason": "The page says 'little interest/pleasure'. Loss of interest covers the interest half and Anhedonia, kept in both builds, covers the pleasure half.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (Traumatic event \"event\")  vs  B: (Victim of psychological trauma)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Traumatic event\" \"event\"))",
+    "reason": "The page says 'Traumatic event', and that concept has exactly this name; the page does not say the trauma is psychological.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: every possible diagnosis is (and Stress at work (or signs…))  vs  B: (or signs…) with no gate",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (clinical_finding (snomed_concept \"Stress at work\" \"finding\")) (or …Identify-panel signs…))",
+    "reason": "The page limits 'any of the above' to 'the health worker' under 'Identify occupational stress', which the language can't express. Stress at work is the nearest stand-in; without it, Fatigue alone would suggest depression or burnout in any adult.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Evidence lists: A has Misuses drugs, Loss of interest, Traumatic event  vs  B has Heavy drinking session, Misuse of medication, Victim of psychological trauma",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "the final check_for sign list: Heavy drinking session, Illicit drug use, Misuse of medication, Smell of alcohol on breath, Indifference, Feeling tense, Feeling irritable, Feeling angry, Depressed mood, Feeling hopeless, Loss of interest, Anhedonia, Bereavement, Accidental needle stick injury, Traumatic event, Absenteeism at work, Excess sick leave, Poor concentration, Fatigue",
+    "reason": "The evidence is 'any of the above', so it mirrors the check_for decisions above.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: (Substance misuse behavior \"finding\")  vs  B: (Harmful pattern of substance use \"disorder\")",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Substance misuse behavior\" \"finding\") possible)",
+    "reason": "The page says 'substance misuse', and this concept's name matches it; the page doesn't say 'harmful pattern'.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 197,
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: none  vs  B: (diagnosis (Stress at work) possible) from any sign",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "With the rules gated on a recorded Stress at work, a rule suggesting stress would only re-derive its own gate. The page's 'stress' is the trigger itself.",
+    "unsettled": true
+   }
+  ]
+ }
+]

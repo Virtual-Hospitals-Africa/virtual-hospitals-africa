@@ -1,0 +1,508 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 93,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    87.5,
+    806.4,
+    109.0
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p93-rb1-e01",
+   "page": 93,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check if the patient needs urgent attention 82.",
+   "bbox": [
+    323.2,
+    92.7,
+    518.6,
+    103.8
+   ],
+   "key": "p93-d59266a1"
+  },
+  {
+   "id": "p93-out-e01",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "CRUSTS OR FLAKY SKIN",
+   "bbox": [
+    324.3,
+    48.7,
+    517.6,
+    71.0
+   ],
+   "key": "p93-9e3a65c4"
+  },
+  {
+   "id": "p93-out-e02",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Are there crusts or flaky skin?",
+   "bbox": [
+    368.0,
+    131.8,
+    473.8,
+    142.0
+   ],
+   "key": "p93-87c8f6bf"
+  },
+  {
+   "id": "p93-out-e03",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Blisters which dry to form yellow crusts often around mouth or nose. May complicate insect",
+   "bbox": [
+    47.5,
+    182.7,
+    218.3,
+    202.9
+   ],
+   "key": "p93-19439102"
+  },
+  {
+   "id": "p93-out-e04",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "bites, scabies or skin trauma",
+   "bbox": [
+    80.7,
+    202.7,
+    183.2,
+    212.9
+   ],
+   "key": "p93-3f769846"
+  },
+  {
+   "id": "p93-out-e05",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    157.3,
+    280.7,
+    222.1,
+    288.1
+   ],
+   "key": "p93-885f8e22"
+  },
+  {
+   "id": "p93-out-e06",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Crusts",
+   "bbox": [
+    120.7,
+    157.3,
+    143.2,
+    167.5
+   ],
+   "key": "p93-1871225d"
+  },
+  {
+   "id": "p93-out-e07",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Impetigo likely • Impetigo is contagious: - Advise to avoid close contact with others and",
+   "bbox": [
+    39.7,
+    303.2,
+    218.7,
+    334.2
+   ],
+   "key": "p93-1a0d9379"
+  },
+  {
+   "id": "p93-out-e08",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "sharing of towels, and to keep nails short. - Advise patient and household contacts to wash",
+   "bbox": [
+    45.4,
+    334.0,
+    226.2,
+    354.2
+   ],
+   "key": "p93-fac622fd"
+  },
+  {
+   "id": "p93-out-e09",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "with soap and water twice a day. • Apply povidone iodine 5% cream or povidone iodine 10% ointment to lesions 8 hourly. • If extensive, temperature ≥ 38°C, unwell or fatigue, give cefalexin 500mg 6 hourly or flucloxacillin 500mg 6 hourly for 5 days. If severe penicillin allergy1, give instead azithromycin 500mg daily for 3 days. • If not completely resolved, repeat antibiotic course. • If sores have been present for > 1 week, check urine dipstick. • Refer if: - No better after second course of antibiotics - ≥ 1+ blood on urine dipstick or little/no urine. - Swelling of face or limbs.",
+   "bbox": [
+    39.7,
+    354.0,
+    217.9,
+    524.2
+   ],
+   "key": "p93-f0f16b5b"
+  },
+  {
+   "id": "p93-out-e10",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Seborrhoeic dermatitis likely • If extensive, test for HIV 124. • If on scalp 95. • Advise patient to avoid scratching, keep nails short and to avoid scented soap. • Apply hydrocortisone 1% cream twice a day. Once improved, reduce to once or twice a week as needed. • If poor response or severe, apply instead betamethasone 0.1% ointment once a day for 7 days (avoid face, neck and flexures). • If no response within 3 months, refer.",
+   "bbox": [
+    252.6,
+    411.8,
+    454.3,
+    522.8
+   ],
+   "key": "p93-04273af0"
+  },
+  {
+   "id": "p93-out-e11",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Psoriasis likely • Refer/discuss all patients with specialist. • While awaiting appointment: - Test for HIV 124. - Apply liquor picis carbonis (LPC) BP",
+   "bbox": [
+    482.1,
+    357.5,
+    634.6,
+    408.5
+   ],
+   "key": "p93-b86b1dca"
+  },
+  {
+   "id": "p93-out-e12",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "5% ointment once a day or - Apply betamethasone 0.1%",
+   "bbox": [
+    487.7,
+    407.6,
+    604.7,
+    428.5
+   ],
+   "key": "p93-88336a17"
+  },
+  {
+   "id": "p93-out-e13",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ointment twice a day. Once improving, apply instead hydrocortisone 1% twice a day, then reduce to once a day. Stop as soon as better. • Encourage some sun exposure.",
+   "bbox": [
+    482.1,
+    428.3,
+    621.7,
+    488.5
+   ],
+   "key": "p93-f577aef0"
+  },
+  {
+   "id": "p93-out-e14",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Eczema likely Manage 84.",
+   "bbox": [
+    705.1,
+    316.2,
+    759.6,
+    337.2
+   ],
+   "key": "p93-446c9aa4"
+  },
+  {
+   "id": "p93-out-e15",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Red/pink scaly patches with fine, greasy scales. Usually on scalp, between eyebrows, in nose folds,",
+   "bbox": [
+    261.0,
+    182.7,
+    447.2,
+    202.9
+   ],
+   "key": "p93-74fa3ad8"
+  },
+  {
+   "id": "p93-out-e16",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "behind ears, in axillae, groin, under breasts",
+   "bbox": [
+    275.5,
+    202.7,
+    430.7,
+    212.9
+   ],
+   "key": "p93-1cb51110"
+  },
+  {
+   "id": "p93-out-e17",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    351.9,
+    389.4,
+    416.7,
+    396.7
+   ],
+   "key": "p93-a02ff69b"
+  },
+  {
+   "id": "p93-out-e18",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Well-defined, raised plaques",
+   "bbox": [
+    506.9,
+    182.7,
+    612.1,
+    192.9
+   ],
+   "key": "p93-0553e35b"
+  },
+  {
+   "id": "p93-out-e19",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "covered with silvery scale. Often on knees, elbows, lower back, scalp. May have pitted nails",
+   "bbox": [
+    497.9,
+    192.7,
+    619.1,
+    222.9
+   ],
+   "key": "p93-25c421b8"
+  },
+  {
+   "id": "p93-out-e20",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    554.9,
+    335.0,
+    619.6,
+    342.4
+   ],
+   "key": "p93-edadd0bb"
+  },
+  {
+   "id": "p93-out-e21",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patches of dry, scaly, itchy skin on",
+   "bbox": [
+    670.2,
+    182.7,
+    794.5,
+    192.9
+   ],
+   "key": "p93-af2c7bbf"
+  },
+  {
+   "id": "p93-out-e22",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "wrists, ankles, inside elbows or",
+   "bbox": [
+    675.7,
+    192.7,
+    788.9,
+    202.9
+   ],
+   "key": "p93-cbcabda8"
+  },
+  {
+   "id": "p93-out-e23",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "behind knees",
+   "bbox": [
+    706.5,
+    202.7,
+    756.2,
+    212.9
+   ],
+   "key": "p93-96096f09"
+  },
+  {
+   "id": "p93-out-e24",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    737.5,
+    293.8,
+    802.3,
+    301.2
+   ],
+   "key": "p93-1a4d11bb"
+  },
+  {
+   "id": "p93-out-e25",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Flaky skin",
+   "bbox": [
+    508.6,
+    157.3,
+    543.4,
+    167.5
+   ],
+   "key": "p93-565cf3e1"
+  },
+  {
+   "id": "p93-out-e26",
+   "page": 93,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1History of angioedema, anaphylaxis or urticaria.",
+   "bbox": [
+    34.0,
+    543.6,
+    181.0,
+    552.2
+   ],
+   "key": "p93-d1ee7afa"
+  }
+ ]
+}

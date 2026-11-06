@@ -1,0 +1,742 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 56,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    112.1,
+    806.4,
+    275.6
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p56-rb1-e01",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with abdominal pain and any of:",
+   "bbox": [
+    284.2,
+    117.1,
+    559.5,
+    128.2
+   ],
+   "key": "p56-319abd06"
+  },
+  {
+   "id": "p56-rb1-e02",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Chest pain 24",
+   "bbox": [
+    56.3,
+    127.9,
+    122.6,
+    138.7
+   ],
+   "key": "p56-74dce981"
+  },
+  {
+   "id": "p56-rb1-e03",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Pain in right lower abdomen with nausea/vomiting/fever: appendicitis likely",
+   "bbox": [
+    308.1,
+    127.5,
+    605.7,
+    138.5
+   ],
+   "key": "p56-c66839a9"
+  },
+  {
+   "id": "p56-rb1-e04",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Pregnant with vaginal bleeding 177",
+   "bbox": [
+    56.3,
+    137.9,
+    206.7,
+    148.7
+   ],
+   "key": "p56-0f337a11"
+  },
+  {
+   "id": "p56-rb1-e05",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Guarding or rigidity during peri-umbilical percussion: peritonitis likely",
+   "bbox": [
+    308.1,
+    137.5,
+    582.5,
+    148.5
+   ],
+   "key": "p56-45fd1111"
+  },
+  {
+   "id": "p56-rb1-e06",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Recent delivery/miscarriage/termination of pregnancy 182",
+   "bbox": [
+    56.3,
+    147.9,
+    294.7,
+    158.7
+   ],
+   "key": "p56-ccb3aaae"
+  },
+  {
+   "id": "p56-rb1-e07",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe pain in right upper abdomen with nausea/fever/loss of appetite: cholecystitis likely",
+   "bbox": [
+    308.1,
+    147.5,
+    659.9,
+    158.5
+   ],
+   "key": "p56-14e3e5ca"
+  },
+  {
+   "id": "p56-rb1-e08",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Glucose ≥ 11.1 19",
+   "bbox": [
+    56.3,
+    157.9,
+    138.0,
+    168.7
+   ],
+   "key": "p56-4db16c57"
+  },
+  {
+   "id": "p56-rb1-e09",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Sudden severe upper abdominal pain spreading to back with nausea/vomiting: pancreatitis likely",
+   "bbox": [
+    308.1,
+    157.5,
+    686.9,
+    168.5
+   ],
+   "key": "p56-e7b2ffe5"
+  },
+  {
+   "id": "p56-rb1-e10",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Unable to pass urine 69",
+   "bbox": [
+    56.3,
+    167.9,
+    160.4,
+    178.7
+   ],
+   "key": "p56-2e2c290f"
+  },
+  {
+   "id": "p56-rb1-e11",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "No stools or flatus/wind for past 24 hours",
+   "bbox": [
+    308.1,
+    167.7,
+    471.0,
+    178.5
+   ],
+   "key": "p56-37c268cf"
+  },
+  {
+   "id": "p56-rb1-e12",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Jaundice",
+   "bbox": [
+    56.3,
+    177.9,
+    95.9,
+    188.7
+   ],
+   "key": "p56-2667e16f"
+  },
+  {
+   "id": "p56-rb1-e13",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "If sudden abdominal pain and any of: generalised itch/rash, face/tongue swelling, difficulty breathing, BP < 90/60, dizziness/collapse or exposure to possible allergen1 check for anaphylaxis 28",
+   "bbox": [
+    308.1,
+    177.7,
+    749.2,
+    198.5
+   ],
+   "key": "p56-b44afad7"
+  },
+  {
+   "id": "p56-rb1-e14",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Abdominal/pelvic mass",
+   "bbox": [
+    56.3,
+    187.9,
+    151.6,
+    198.7
+   ],
+   "key": "p56-b649bc60"
+  },
+  {
+   "id": "p56-rb1-e15",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Pulsatile abdominal mass: abdominal aortic aneurysm likely",
+   "bbox": [
+    56.3,
+    197.7,
+    293.8,
+    208.7
+   ],
+   "key": "p56-13a4f904"
+  },
+  {
+   "id": "p56-rb1-e16",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with abdominal pain and any of:",
+   "section_y": 117.1,
+   "indent": 1,
+   "parent": null,
+   "text": "If guarding/rigidity during peri-umbilical percussion with temperature ≥ 38°C and abnormal vaginal discharge, infection likely",
+   "bbox": [
+    308.1,
+    197.5,
+    785.4,
+    208.5
+   ],
+   "key": "p56-2d78df7c"
+  },
+  {
+   "id": "p56-rb1-e17",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 209.4,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    209.4,
+    158.9,
+    220.4
+   ],
+   "key": "p56-8922b762"
+  },
+  {
+   "id": "p56-rb1-e18",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 209.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If abdominal aortic aneurysm likely: avoid giving IV fluids even if BP < 90/60 (raising blood pressure may worsen rupture).",
+   "bbox": [
+    51.2,
+    219.4,
+    522.8,
+    230.4
+   ],
+   "key": "p56-c2d2af63"
+  },
+  {
+   "id": "p56-rb1-e19",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 209.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If BP < 90/60 or pancreatitis likely, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    229.4,
+    696.7,
+    240.4
+   ],
+   "key": "p56-6d69d91b"
+  },
+  {
+   "id": "p56-rb1-e20",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 209.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If infection likely, give ceftriaxone2 1g IV and single dose metronidazole3 400mg orally.",
+   "bbox": [
+    51.2,
+    239.4,
+    401.9,
+    250.4
+   ],
+   "key": "p56-8dcb65f5"
+  },
+  {
+   "id": "p56-rb1-e21",
+   "page": 56,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 209.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If pain severe, give morphine 5-10mg IM, repeat 4-6 hourly until patient referred, or give diluted morphine4 3-10mg slow IV: start with 3mL IV over 3 minutes. If needed, give another 1mL/ minute until pain improved, up to 10mL. Stop if BP < 90/60.",
+   "bbox": [
+    51.2,
+    249.6,
+    778.5,
+    270.4
+   ],
+   "key": "p56-bfc8fdb2"
+  },
+  {
+   "id": "p56-out-e01",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ABDOMINAL PAIN",
+   "bbox": [
+    347.1,
+    48.7,
+    494.8,
+    71.0
+   ],
+   "key": "p56-943a9732"
+  },
+  {
+   "id": "p56-out-e02",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens: medication, food or insect bite/sting within past few hours. 2Do not mix Ringer's lactate and IV ceftriaxone. 3Advise no alcohol until 24 hours after last dose. 4Dilute 10mg morphine with 9mL sodium chloride 0.9%.",
+   "bbox": [
+    34.0,
+    543.3,
+    752.4,
+    551.8
+   ],
+   "key": "p56-7dca2c44"
+  },
+  {
+   "id": "p56-out-e03",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check for pregnancy in all women of child-bearing potential.",
+   "bbox": [
+    309.6,
+    89.6,
+    534.3,
+    99.8
+   ],
+   "key": "p56-1b6ed7e3"
+  },
+  {
+   "id": "p56-out-e04",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with abdominal pain not needing urgent attention",
+   "bbox": [
+    271.5,
+    287.7,
+    570.4,
+    298.9
+   ],
+   "key": "p56-eac1d0ce"
+  },
+  {
+   "id": "p56-out-e05",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If cramping abdominal pain with recent onset vomiting, diarrhoea, loss of appetite, body pain or fever, gastroenteritis likely 57.",
+   "bbox": [
+    63.7,
+    302.3,
+    375.0,
+    322.5
+   ],
+   "key": "p56-3f3957d0"
+  },
+  {
+   "id": "p56-out-e06",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If urinary symptoms (burning/frequency/urgency) or leucocytes/nitrites/blood on dipstick 69. • If on ART, check for urgent side effects 131. Is pain in the lower abdomen and is patient a woman?",
+   "bbox": [
+    321.4,
+    301.8,
+    763.2,
+    333.0
+   ],
+   "key": "p56-cbfc3b4d"
+  },
+  {
+   "id": "p56-out-e07",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes • If crampy lower abdominal pain only during periods, dysmenorrhoea likely 72. • Ask about abnormal vaginal discharge and do pelvic examination to check for pain on moving cervix:",
+   "bbox": [
+    51.0,
+    345.4,
+    308.2,
+    395.6
+   ],
+   "key": "p56-22900a38"
+  },
+  {
+   "id": "p56-out-e08",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No. Does patient have epigastric pain which is worse with eating, hunger or lying down/bending forward?",
+   "bbox": [
+    376.9,
+    345.4,
+    766.2,
+    355.6
+   ],
+   "key": "p56-49841368"
+  },
+  {
+   "id": "p56-out-e09",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No Yes",
+   "bbox": [
+    363.0,
+    368.0,
+    614.4,
+    378.2
+   ],
+   "key": "p56-089304d2"
+  },
+  {
+   "id": "p56-out-e10",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Abnormal vaginal",
+   "bbox": [
+    39.8,
+    408.0,
+    106.7,
+    418.2
+   ],
+   "key": "p56-eb7d0397"
+  },
+  {
+   "id": "p56-out-e11",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "discharge or pain",
+   "bbox": [
+    40.7,
+    418.0,
+    105.8,
+    428.2
+   ],
+   "key": "p56-aa323699"
+  },
+  {
+   "id": "p56-out-e12",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "on moving the",
+   "bbox": [
+    45.1,
+    428.0,
+    101.4,
+    438.2
+   ],
+   "key": "p56-d0d0b9d8"
+  },
+  {
+   "id": "p56-out-e13",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "cervix",
+   "bbox": [
+    61.5,
+    438.0,
+    85.0,
+    448.2
+   ],
+   "key": "p56-cf835ebf"
+  },
+  {
+   "id": "p56-out-e14",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Treat for lower abdominal pain",
+   "bbox": [
+    41.1,
+    459.9,
+    105.5,
+    480.9
+   ],
+   "key": "p56-ffe132bb"
+  },
+  {
+   "id": "p56-out-e15",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(LAP) syndrome",
+   "bbox": [
+    42.7,
+    479.9,
+    103.9,
+    490.9
+   ],
+   "key": "p56-c63d5e28"
+  },
+  {
+   "id": "p56-out-e16",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No abnormal discharge and no pain on moving cervix",
+   "bbox": [
+    124.1,
+    408.0,
+    323.6,
+    418.2
+   ],
+   "key": "p56-6ee1b5a8"
+  },
+  {
+   "id": "p56-out-e17",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If no better or diagnosis uncertain, discuss/refer.",
+   "bbox": [
+    329.0,
+    522.7,
+    512.9,
+    533.5
+   ],
+   "key": "p56-183e43fc"
+  },
+  {
+   "id": "p56-out-e18",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If weight loss 37. • If recurrent pain/discomfort and ≥ 2 of: pain relieved with passing stool, abdominal distension, change in stool frequency/appearance, mucous in stool, irritable bowel syndrome (IBS) likely. Doctor to confirm diagnosis and consider hyoscine butylbromide. Refer to dietician for dietary advice. • If constipated 60. If diarrhoea 58.",
+   "bbox": [
+    123.3,
+    430.2,
+    393.6,
+    501.1
+   ],
+   "key": "p56-07bd5aad"
+  },
+  {
+   "id": "p56-out-e19",
+   "page": 56,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Dyspepsia (heartburn) likely • Advise to stop NSAIDS (e.g. ibuprofen/aspirin). If smoking, encourage to stop 164. Avoid fizzy drinks, fatty/late night meals. • Limit alcohol/caffeine/spicy food. Eat small frequent meals. Sleep on left side with upper body elevated. • If BMI ≥ 25 and waist circumference ≥ 80cm (woman) or ≥ 94cm (man), gastro-oesophageal reflux disease likely. Assess and manage overweight/obesity 156. • Discuss/refer if any of: Hb < 12 (woman) or < 13 (man), blood in vomit or black, sticky, tar-like stool (melaena), difficulty or discomfort/pain with swallowing, persistent vomiting, unintentional weight loss, recurrent symptoms with: > 50 years, history of previous gastric surgery, family history of stomach/ oesophageal cancer. • Give omeprazole 20mg daily for 14 days. Avoid if on atazanavir/ritonavir. Discuss with specialist. • Advise to return if no better after 7 days. Refer.",
+   "bbox": [
+    414.3,
+    389.9,
+    803.3,
+    510.9
+   ],
+   "key": "p56-137d7b78"
+  }
+ ]
+}

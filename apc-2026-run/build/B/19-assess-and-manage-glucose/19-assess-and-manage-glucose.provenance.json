@@ -1,0 +1,809 @@
+{
+ "edition": "2026",
+ "page": 19,
+ "lisp_file": "19-assess-and-manage-glucose.lisp",
+ "conditions": [
+  {
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Known diabetes matters below 4 (hypoglycaemia threshold)."
+  },
+  {
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Known diabetes is asked on the ≥ 11.1 route (\"If known diabetes, give routine care\")."
+  },
+  {
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "\"Known diabetes\" as Diabetes mellitus with Known present qualifier (Will's known-chronic-condition form); needed for the < 4 threshold."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1 Check if patient needs urgent attention",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 band leads to red box 2; random fingerprick glucose is the routine vital Blood glucose status (mmol/L)."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-036f41a9"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "VHA vocabulary concept for decreased consciousness."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p19-26afd857"
+   ],
+   "quote": "Drowsiness",
+   "confidence": "high",
+   "note": "Drowsy (VHA vocabulary)."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-1c7e135f"
+   ],
+   "quote": "Confusion",
+   "confidence": "high",
+   "note": "\"Confusion\" is a SNOMED synonym of Clouded consciousness, which is also what the AVPU \"Confused\" option records; Acute confusion considered."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p19-d5f1d3b7"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Seizure (warning sign)."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p19-9f36bfaf"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain (warning sign)."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p19-bdbce5be"
+   ],
+   "quote": "Rapid deep breathing",
+   "confidence": "medium",
+   "note": "Kussmaul's respiration = rapid deep breathing; alternative Deep breathing lacks \"rapid\"."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "\"Nausea or vomiting\": nausea half."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "\"Nausea or vomiting\": vomiting half (common symptom form)."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p19-15c8589e"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p19-d56f473b"
+   ],
+   "quote": "Dehydration",
+   "confidence": "medium",
+   "note": "Dehydration (disorder); footnote 7 signs (thirst, dry mouth, poor turgor, BP<90/60, pulse≥100) define it but are not encoded as separate criteria; Signs of dehydration considered."
+  },
+  {
+   "rule": "Check urine for ketones when fingerprick glucose is 11.1 or more",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 route to \"check urine for ketones\"."
+  },
+  {
+   "rule": "Check urine for ketones when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p19-fcf9e32e"
+   ],
+   "quote": "check urine for ketones",
+   "confidence": "high",
+   "note": "Urine ketones recorded as the finding Ketonuria (no unit for urine dipstick in the language)."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 band; routine vital Blood glucose status in mmol/L."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "No ketones",
+   "confidence": "high",
+   "note": "\"No ketones\" branch as (no Ketonuria)."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "If not known diabetes",
+   "confidence": "high",
+   "note": "\"If not known diabetes\" as (no Diabetes mellitus, Known present)."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "Unexplained weight loss",
+   "confidence": "high",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Exact match."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "tiredness",
+   "confidence": "high",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Tiredness → Fatigue (common symptom; \"Tiredness\" finding does not exist)."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "thirst (especially at night)",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Excessive thirst; \"especially at night\" not expressible as a qualifier; \"Thirst\" finding does not exist."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Polyuria\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "passing excessive amounts of urine often",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Polyuria covers excessive amounts; frequency part (Finding of frequency of urination) not added separately."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "periodic changes in vision",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Visual disturbance (disorder, in VHA vocabulary); \"periodic\" not expressible."
+  },
+  {
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent infectious disease\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "frequent infections (e.g. urinary, skin)",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). General recurrent infection concept; descendants (e.g. recurrent UTI) match."
+  },
+  {
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "Glucose < 3",
+   "confidence": "high",
+   "note": "Any patient below 3 mmol/L."
+  },
+  {
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Below 4 mmol/L only with known diabetes (and-ed with the next condition)."
+  },
+  {
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "if diabetes",
+   "confidence": "high",
+   "note": "Known diabetes form (Diabetes mellitus, Known present), checked for in this file."
+  },
+  {
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hypoglycemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "Patient has hypoglycaemia",
+   "confidence": "medium",
+   "note": "\"Patient has hypoglycaemia\" encoded as probable (the page states it outright; probable lets the priority rule use active_condition)."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 band; routine vital Blood glucose status in mmol/L."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "No ketones",
+   "confidence": "high",
+   "note": "\"No ketones\" branch as (no Ketonuria)."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "If not known diabetes",
+   "confidence": "high",
+   "note": "\"If not known diabetes\" as (no Diabetes mellitus, Known present)."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "Unexplained weight loss",
+   "confidence": "high",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Exact match. Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "tiredness",
+   "confidence": "high",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Tiredness → Fatigue (common symptom; \"Tiredness\" finding does not exist). Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "thirst (especially at night)",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Excessive thirst; \"especially at night\" not expressible as a qualifier; \"Thirst\" finding does not exist. Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Polyuria\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "passing excessive amounts of urine often",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Polyuria covers excessive amounts; frequency part (Finding of frequency of urination) not added separately. Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "periodic changes in vision",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). Visual disturbance (disorder, in VHA vocabulary); \"periodic\" not expressible. Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent infectious disease\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "frequent infections (e.g. urinary, skin)",
+   "confidence": "medium",
+   "note": "Footnote 8 symptom of diabetes (node \"symptoms8 of diabetes?\"). General recurrent infection concept; descendants (e.g. recurrent UTI) match. Symptoms = Yes branch → Diagnose diabetes."
+  },
+  {
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") probable)",
+   "element_keys": [
+    "p19-560cbf1b"
+   ],
+   "quote": "Diagnose diabetes",
+   "confidence": "high",
+   "note": "\"Diagnose diabetes\" node → probable Diabetes mellitus (page says diagnose; probable is the strongest system level used for page logic)."
+  },
+  {
+   "rule": "Urgent: hypoglycaemia on fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Hypoglycemia\" \"disorder\"))",
+   "element_keys": [
+    "p19-77ae0499",
+    "p19-db588a57"
+   ],
+   "quote": "Patient has hypoglycaemia. Give urgent attention",
+   "confidence": "high",
+   "note": "Red box 1 header applies to every hypoglycaemic patient; Urgent (no escalation on the page)."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1 Check if patient needs urgent attention",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 band leads to red box 2; random fingerprick glucose is the routine vital Blood glucose status (mmol/L)."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-036f41a9"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "VHA vocabulary concept for decreased consciousness. Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p19-9f36bfaf"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain (warning sign). Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p19-d5f1d3b7"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Seizure (warning sign). Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p19-26afd857"
+   ],
+   "quote": "Drowsiness",
+   "confidence": "high",
+   "note": "Drowsy (VHA vocabulary). Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-1c7e135f"
+   ],
+   "quote": "Confusion",
+   "confidence": "high",
+   "note": "\"Confusion\" is a SNOMED synonym of Clouded consciousness, which is also what the AVPU \"Confused\" option records; Acute confusion considered. Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "\"Nausea or vomiting\": nausea half. Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "\"Nausea or vomiting\": vomiting half (common symptom form). Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p19-15c8589e"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact match. Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p19-bdbce5be"
+   ],
+   "quote": "Rapid deep breathing",
+   "confidence": "medium",
+   "note": "Kussmaul's respiration = rapid deep breathing; alternative Deep breathing lacks \"rapid\". Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p19-415aa503"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital, ≥ 38 °C exactly as page."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p19-d56f473b"
+   ],
+   "quote": "Dehydration",
+   "confidence": "medium",
+   "note": "Dehydration (disorder); footnote 7 signs (thirst, dry mouth, poor turgor, BP<90/60, pulse≥100) define it but are not encoded as separate criteria; Signs of dehydration considered. Red box 2 item; Yes → box 3 \"Refer urgently\" → Urgent."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with urine ketones",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Glucose ≥ 11.1 band; routine vital Blood glucose status in mmol/L."
+  },
+  {
+   "rule": "Urgent: glucose 11.1 or more with urine ketones",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p19-f6759649",
+    "p19-9618a9ba",
+    "p19-4fb1dafe"
+   ],
+   "quote": "Ketones present Refer urgently",
+   "confidence": "high",
+   "note": "\"Ketones present\" → red box 3 \"Refer urgently.\" → Urgent."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p19-bf0cf463",
+   "element_id": "p19-rb1-e02",
+   "text": "Is patient alert?",
+   "reason_category": "flowchart_routing",
+   "reason": "\"Is patient alert?\" only chooses oral vs IV glucose treatment; no rule consumes it (a check_for of alertness would be unused evidence)."
+  },
+  {
+   "element_key": "p19-bc699474",
+   "element_id": "p19-rb1-e03",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes branch of \"Is patient alert?\" (management routing)."
+  },
+  {
+   "element_key": "p19-cb2a1b68",
+   "element_id": "p19-rb1-e04",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "No branch of \"Is patient alert?\" (management routing)."
+  },
+  {
+   "element_key": "p19-f8f989c0",
+   "element_id": "p19-rb1-e05",
+   "text": "Give glucose1 5mL/kg orally.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-feca6386",
+   "element_id": "p19-rb1-e06",
+   "text": "If known alcohol user/ malnourished, give thiamine 200mg IM.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-63c07ebc",
+   "element_id": "p19-rb1-e07",
+   "text": "If unable to take orally, give instead glucose1 or dextrose 10%2 5mL/kg via nasogastric tube (NGT).",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-f684d436",
+   "element_id": "p19-rb1-e08",
+   "text": "Give dextrose 10%2 5mL/kg IV.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-731cdb53",
+   "element_id": "p19-rb1-e09",
+   "text": "If seizures 20.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to page 20 (seizures) for the not-alert hypoglycaemic patient; seizure management lives there."
+  },
+  {
+   "element_key": "p19-99e829da",
+   "element_id": "p19-rb1-e10",
+   "text": "Check glucose after 15 minutes:",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-0c9d331e",
+   "element_id": "p19-rb1-e11",
+   "text": "Check glucose after 15 minutes:",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-c82a9dd7",
+   "element_id": "p19-rb1-e12",
+   "text": "< 3 (< 4)",
+   "reason_category": "flowchart_routing",
+   "reason": "Recheck-after-15-minutes threshold; routes further treatment only. A repeat measurement after treatment is not distinguishable from the first in the language."
+  },
+  {
+   "element_key": "p19-4ed0caf5",
+   "element_id": "p19-rb1-e13",
+   "text": "Give dextrose 10%2 2mL/ kg IV.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-47854f60",
+   "element_id": "p19-rb1-e14",
+   "text": "< 3 (< 4)",
+   "reason_category": "flowchart_routing",
+   "reason": "Recheck-after-15-minutes threshold; routes further treatment only."
+  },
+  {
+   "element_key": "p19-f7445771",
+   "element_id": "p19-rb1-e15",
+   "text": "≥ 3 (≥ 4)",
+   "reason_category": "flowchart_routing",
+   "reason": "Recheck-after-15-minutes threshold; routes to look-for-cause/referral management."
+  },
+  {
+   "element_key": "p19-950586ae",
+   "element_id": "p19-rb1-e16",
+   "text": "Give further glucose1 or dextrose 10%2 2mL/ kg orally/ via NGT and discuss/ refer.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-a5174924",
+   "element_id": "p19-rb1-e17",
+   "text": "If on oral diabetic medication, refer same day.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-cf81c99c",
+   "element_id": "p19-rb1-e18",
+   "text": "Then give dextrose 5%3 or 10% 1L IV 6 hourly.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-ef869d8c",
+   "element_id": "p19-rb1-e19",
+   "text": "Look for cause:",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-8cf0f5d6",
+   "element_id": "p19-rb1-e20",
+   "text": "if not known diabetes, manage as on symptom pages.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-f9fc6f6a",
+   "element_id": "p19-rb1-e21",
+   "text": "Refer.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-7bfdaaba",
+   "element_id": "p19-rb1-e22",
+   "text": "if known diabetes, educate about meals and doses 146.",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-269b6d97",
+   "element_id": "p19-rb3-e01",
+   "text": "Give sodium chloride 0.9%9 15-20mL/kg IV over the first hour, then 10mL/kg/hour thereafter. If known kidney/heart disease, discuss fluid volume with doctor. Sto",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p19-9bcc6abd",
+   "element_id": "p19-rb3-e03",
+   "text": "If referral delay > 2 hours: discuss with referral centre before giving short-acting insulin 0.1units/kg IM10. Insulin may cause low potassium and heart dysrhyt",
+   "reason_category": "management_step",
+   "reason": "Treatment, recheck, referral or education step; no manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Hypoglycaemia certainty",
+   "decision": "\"Patient has hypoglycaemia\" encoded as a probable diagnosis",
+   "alternatives": "definite (the page states it outright); probable chosen so the Urgent rule can use active_condition per constraint 5 and to match other pages",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Diabetes diagnosis path",
+   "decision": "Only the random-glucose route (≥ 11.1, no ketones, not known diabetes, any footnote-8 symptom) is encoded; the urgent-sign \"No\" step before the ketone check is not required in the rule",
+   "alternatives": "add (no …) for every red-box-2 item; rejected because temperature cannot be negated as a finding and the urgent route is a management route, not evidence against diabetes. The rule can therefore fire in a patient who also has urgent signs (more often than the page path).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fasting glucose branches",
+   "decision": "Not encoded (fasting glucose, impaired fasting glucose, repeat FBG, risk-factor screen)",
+   "alternatives": "use Blood glucose status as a stand-in for fasting glucose: rejected as a proxy, since it would treat a random value as fasting",
+   "confidence": "high"
+  },
+  {
+   "topic": "Urine ketones",
+   "decision": "Recorded as the finding Ketonuria; ketones present + glucose ≥ 11.1 → Urgent (box 3 \"Refer urgently\")",
+   "alternatives": "Urine ketones not detected (finding) for the negative branch; (no Ketonuria) used instead",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Confusion concept",
+   "decision": "Clouded consciousness (SNOMED synonym \"Confusion\", AVPU \"Confused\")",
+   "alternatives": "Acute confusion",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Rapid deep breathing",
+   "decision": "Kussmaul's respiration",
+   "alternatives": "Deep breathing (lacks \"rapid\")",
+   "confidence": "medium"
+  }
+ ]
+}

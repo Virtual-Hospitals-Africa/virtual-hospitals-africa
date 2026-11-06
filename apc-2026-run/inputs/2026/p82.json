@@ -1,0 +1,760 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 82,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    87.3,
+    806.4,
+    324.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p82-rb1-e01",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with skin symptoms and any of:",
+   "bbox": [
+    285.6,
+    92.3,
+    556.2,
+    103.4
+   ],
+   "key": "p82-58219e12"
+  },
+  {
+   "id": "p82-rb1-e02",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 4,
+   "parent": null,
+   "text": "If sudden generalised itch/rash or face/tongue swelling and any of: wheeze, difficulty breathing, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28.",
+   "bbox": [
+    70.3,
+    102.6,
+    753.6,
+    123.4
+   ],
+   "key": "p82-559819da"
+  },
+  {
+   "id": "p82-rb1-e03",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 4,
+   "parent": null,
+   "text": "Purple/red rash with any of: neck stiffness, drowsy/confused, temperature ≥ 38°C, headache: meningococcal disease likely.",
+   "bbox": [
+    70.3,
+    122.4,
+    544.6,
+    133.4
+   ],
+   "key": "p82-e1ea9141"
+  },
+  {
+   "id": "p82-rb1-e04",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 4,
+   "parent": null,
+   "text": "Diffuse rash appearing within 3 months of starting a new medication and any of the following, serious drug reaction likely:",
+   "bbox": [
+    70.3,
+    132.4,
+    545.8,
+    143.4
+   ],
+   "key": "p82-721e927e"
+  },
+  {
+   "id": "p82-rb1-e05",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 5,
+   "parent": "p82-rb1-e04",
+   "text": "Shock2/SBP < 80",
+   "bbox": [
+    81.6,
+    143.4,
+    150.4,
+    154.2
+   ],
+   "key": "p82-467d5cd4"
+  },
+  {
+   "id": "p82-rb1-e06",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 1,
+   "parent": null,
+   "text": "Involves mouth, eyes or genitals",
+   "bbox": [
+    212.6,
+    143.4,
+    340.0,
+    154.2
+   ],
+   "key": "p82-5d164c9a"
+  },
+  {
+   "id": "p82-rb1-e07",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 5,
+   "parent": "p82-rb1-e04",
+   "text": "Temperature ≥ 38°C",
+   "bbox": [
+    81.6,
+    153.4,
+    164.2,
+    164.2
+   ],
+   "key": "p82-0e285a57"
+  },
+  {
+   "id": "p82-rb1-e08",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 1,
+   "parent": null,
+   "text": "Blisters, peeling or raw areas",
+   "bbox": [
+    212.6,
+    153.4,
+    325.6,
+    164.2
+   ],
+   "key": "p82-9392cef8"
+  },
+  {
+   "id": "p82-rb1-e09",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 5,
+   "parent": "p82-rb1-e04",
+   "text": "Abdominal pain",
+   "bbox": [
+    81.6,
+    163.4,
+    147.7,
+    174.2
+   ],
+   "key": "p82-56bf9a5c"
+  },
+  {
+   "id": "p82-rb1-e10",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 1,
+   "parent": null,
+   "text": "Jaundice",
+   "bbox": [
+    212.6,
+    163.4,
+    251.2,
+    174.2
+   ],
+   "key": "p82-fa78a408"
+  },
+  {
+   "id": "p82-rb1-e11",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 5,
+   "parent": "p82-rb1-e04",
+   "text": "Vomiting or diarrhoea",
+   "bbox": [
+    81.6,
+    173.4,
+    170.5,
+    184.2
+   ],
+   "key": "p82-360b4c8d"
+  },
+  {
+   "id": "p82-rb1-e12",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 1,
+   "parent": null,
+   "text": "Unwell, malaise, fatigue, body pain",
+   "bbox": [
+    212.6,
+    173.4,
+    350.2,
+    184.2
+   ],
+   "key": "p82-faa90baa"
+  },
+  {
+   "id": "p82-rb1-e13",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty breathing 23",
+   "bbox": [
+    212.6,
+    183.4,
+    313.0,
+    194.2
+   ],
+   "key": "p82-736469cb"
+  },
+  {
+   "id": "p82-rb1-e14",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    198.5,
+    159.3,
+    209.5
+   ],
+   "key": "p82-ea6ba022"
+  },
+  {
+   "id": "p82-rb1-e15",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    208.7,
+    533.6,
+    229.5
+   ],
+   "key": "p82-de931597"
+  },
+  {
+   "id": "p82-rb1-e16",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If meningococcal disease likely: give ceftriaxone3 2g IM. Avoid injecting > 1g IM at one injection site.",
+   "bbox": [
+    51.2,
+    228.5,
+    447.8,
+    239.5
+   ],
+   "key": "p82-05f5a05b"
+  },
+  {
+   "id": "p82-rb1-e17",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with skin symptoms and any of:",
+   "section_y": 92.3,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    672.7,
+    234.7,
+    737.4,
+    242.0
+   ],
+   "key": "p82-b7760b53"
+  },
+  {
+   "id": "p82-rb1-e18",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 2,
+   "parent": "p82-rb1-e16",
+   "text": "Notify4 as suspected meningococcal disease. If possible, isolate patient, and give surgical mask to prevent spread.",
+   "bbox": [
+    56.9,
+    238.7,
+    495.1,
+    249.5
+   ],
+   "key": "p82-762912ce"
+  },
+  {
+   "id": "p82-rb1-e19",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 2,
+   "parent": "p82-rb1-e16",
+   "text": "Prevent disease in close household contacts:",
+   "bbox": [
+    56.9,
+    248.7,
+    233.4,
+    259.5
+   ],
+   "key": "p82-d769c287"
+  },
+  {
+   "id": "p82-rb1-e20",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 3,
+   "parent": "p82-rb1-e19",
+   "text": "If contact < 6 years old, give ceftriaxone3 125mg IM as a single dose (dissolve ceftriaxone 250mg in 0.9mL lidocaine 1% without adrenaline (epinephrine); discard half the volume and inject the rest).",
+   "bbox": [
+    62.5,
+    258.7,
+    773.7,
+    279.5
+   ],
+   "key": "p82-ad060a66"
+  },
+  {
+   "id": "p82-rb1-e21",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 3,
+   "parent": "p82-rb1-e19",
+   "text": "If contact 6-12 years old, give ciprofloxacin 250mg as a single dose.",
+   "bbox": [
+    62.5,
+    278.7,
+    331.0,
+    289.5
+   ],
+   "key": "p82-6aaf9831"
+  },
+  {
+   "id": "p82-rb1-e22",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 3,
+   "parent": "p82-rb1-e19",
+   "text": "If contact ≥12 years, give ciprofloxacin 500mg as a single dose. If pregnant, give instead ceftriaxone3 250mg IM (dissolve ceftriaxone 250mg in 0.9mL lidocaine 1% without adrenaline (epinephrine)).",
+   "bbox": [
+    62.5,
+    288.7,
+    781.0,
+    309.5
+   ],
+   "key": "p82-7267e3d3"
+  },
+  {
+   "id": "p82-rb1-e23",
+   "page": 82,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 198.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If serious drug reaction likely: stop all medication. If peeling or raw skin, also manage as for burns before referral 31.",
+   "bbox": [
+    51.2,
+    308.5,
+    508.8,
+    319.5
+   ],
+   "key": "p82-16c837b5"
+  },
+  {
+   "id": "p82-out-e01",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "SKIN SYMPTOMS",
+   "bbox": [
+    351.4,
+    48.7,
+    490.5,
+    71.0
+   ],
+   "key": "p82-766ff29d"
+  },
+  {
+   "id": "p82-out-e02",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If rash is extensive, recurrent or difficult to treat, test for HIV 124.",
+   "bbox": [
+    291.9,
+    507.9,
+    550.0,
+    518.9
+   ],
+   "key": "p82-79c28aa1"
+  },
+  {
+   "id": "p82-out-e03",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with skin symptoms not needing urgent attention If unexplained rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes and ≥ 1 of: headache/backache/body pain, swollen lymph nodes, temperature > 38.5°C, fatigue, sore throat/nasal congestion/",
+   "bbox": [
+    55.6,
+    343.4,
+    786.3,
+    364.6
+   ],
+   "key": "p82-eba45078"
+  },
+  {
+   "id": "p82-out-e04",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "cough consider mpox 40. Manage according to skin symptom/s:",
+   "bbox": [
+    350.7,
+    363.6,
+    491.2,
+    384.6
+   ],
+   "key": "p82-cfa294a7"
+  },
+  {
+   "id": "p82-out-e05",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Pain",
+   "bbox": [
+    54.7,
+    399.8,
+    70.0,
+    410.0
+   ],
+   "key": "p82-46d89599"
+  },
+  {
+   "id": "p82-out-e06",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No rash",
+   "bbox": [
+    238.3,
+    425.3,
+    266.3,
+    435.5
+   ],
+   "key": "p82-45666d2a"
+  },
+  {
+   "id": "p82-out-e07",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "86 Localised Generalised",
+   "bbox": [
+    105.1,
+    450.3,
+    261.6,
+    461.1
+   ],
+   "key": "p82-7e53adac"
+  },
+  {
+   "id": "p82-out-e08",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Generalised, non-itchy rash",
+   "bbox": [
+    294.1,
+    399.8,
+    346.6,
+    420.0
+   ],
+   "key": "p82-512288b5"
+  },
+  {
+   "id": "p82-out-e09",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Lump/s Pimples/ blackheads",
+   "bbox": [
+    371.5,
+    399.8,
+    479.2,
+    420.0
+   ],
+   "key": "p82-b5742e50"
+  },
+  {
+   "id": "p82-out-e10",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Ulcer/s or non-healing",
+   "bbox": [
+    516.9,
+    399.8,
+    563.7,
+    420.0
+   ],
+   "key": "p82-ccb40bdc"
+  },
+  {
+   "id": "p82-out-e11",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "wound",
+   "bbox": [
+    526.3,
+    419.8,
+    552.3,
+    430.0
+   ],
+   "key": "p82-514f09ab"
+  },
+  {
+   "id": "p82-out-e12",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Changes in",
+   "bbox": [
+    701.9,
+    399.8,
+    744.9,
+    410.0
+   ],
+   "key": "p82-50d92a86"
+  },
+  {
+   "id": "p82-out-e13",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "skin colour",
+   "bbox": [
+    702.5,
+    409.8,
+    742.3,
+    420.0
+   ],
+   "key": "p82-f9b6c96d"
+  },
+  {
+   "id": "p82-out-e14",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Scalp symptoms Crusts",
+   "bbox": [
+    592.5,
+    399.8,
+    801.3,
+    420.0
+   ],
+   "key": "p82-9608442f"
+  },
+  {
+   "id": "p82-out-e15",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Flaky skin",
+   "bbox": [
+    644.5,
+    399.8,
+    679.3,
+    410.0
+   ],
+   "key": "p82-473730b1"
+  },
+  {
+   "id": "p82-out-e16",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Rash",
+   "bbox": [
+    149.4,
+    425.3,
+    166.6,
+    435.5
+   ],
+   "key": "p82-7c682bbb"
+  },
+  {
+   "id": "p82-out-e17",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Itch",
+   "bbox": [
+    181.5,
+    399.8,
+    195.5,
+    410.0
+   ],
+   "key": "p82-70adf261"
+  },
+  {
+   "id": "p82-out-e18",
+   "page": 82,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2If SBP < 80, pulse ≥ 100, respiratory rate > 30, decreased level of consciousness, weakness, shock likely. 3If severe penicillin allergy (previous angioedema, anaphylaxis or urticaria), discuss with doctor. 4 Notify within 24 hours via NMC App (download from NICD website/app store) or www.nicd.ac.za/nmc-overview/notification-process.",
+   "bbox": [
+    34.0,
+    535.3,
+    786.2,
+    551.8
+   ],
+   "key": "p82-caaf8566"
+  }
+ ]
+}

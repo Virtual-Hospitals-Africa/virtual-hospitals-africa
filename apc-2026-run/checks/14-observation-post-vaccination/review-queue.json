@@ -1,0 +1,2032 @@
+[
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p14-c9df300e",
+  "text": "Treat as anaphylaxis 28.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "a system_priority_evaluation for the red box (the file has none; the gold page carries 'Urgent: Anaphylaxis' on (active_condition Anaphylaxis))"
+    ],
+    "problem": "The probable Anaphylaxis diagnosis is encoded and its three routes (2+ systems, generalised urticaria, serious single-system signs) all lead to it, but nothing in this file escalates the patient. Coverage depends on the anaphylaxis page's own priority rule, which this checker cannot see.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "gate that symptoms did not improve quickly (minutes) before deciding to treat",
+     "no priority/evaluation output beyond the probable diagnosis (no rule saying 'treat as anaphylaxis' as a priority; cross-ref 28 is only implied by the diagnosis)"
+    ],
+    "problem": "Four decision branches (>=2 body systems; generalised urticaria; hypotension; respiratory distress; severe tongue/lip swelling) are encoded as one probable Anaphylaxis rule, which is right in structure. Weaknesses: the 'improve quickly? yes -> observe' branch is not represented, so transient faint symptoms plus one skin symptom satisfy any2; faint group counted as a body system though on the page only skin, respiratory and GI feed 'Decide when to treat' directly; 'significant' swelling of tongue/lips is encoded with Severe qualifier on both and the any2 skin group also fires on plain tongue/lip swelling; hypotension concept is 'Low blood pressure' (disorder) rather than the finding Hypotension.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "The 'Feeling faint/unwell' system should only count after the 'Do symptoms improve quickly (minutes)?' = No gate; the rule counts it unconditionally",
+     "'If in doubt, treat as anaphylaxis' (not representable)"
+    ],
+    "problem": "Encoded as a probable Anaphylaxis diagnosis (concept correct, rule type reasonable) whose three branches match the page; no priority rule in this file, but the gold page 20 'Urgent: Anaphylaxis' rule on (active_condition Anaphylaxis) is all_ages and will pick it up, so the red box gets priority indirectly. The main defect is that faint/unwell symptoms that resolve within minutes (vasovagal) plus e.g. nausea will yield probable anaphylaxis, which the page routes to 'Observe until symptoms resolve' instead.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-bed33a65",
+  "text": "OBSERVATION POST VACCINATION",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-68b379cb",
+  "text": "• Observe patient for at least 15 minutes after vaccination. If patient known with severe allergies: observe for 30 minutes. • Check for signs or symptoms that may indicate an adverse reaction:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The check_for task is triggered by (clinical_finding (snomed_concept \"Vaccination given\" \"situation\")), which exists and is the natural anchor. The observation durations ('at least 15 minutes', '30 minutes if known severe allergies') are management and out of scope by design; no attempt is made to record 'known severe allergies', which is acceptable since the page uses it only to set an observation time.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "not_representable: observation duration 15/30 minutes; severe allergies history could be a check but no duration in language",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Check task is triggered by Vaccination given and lists all four symptom boxes plus the single-system serious signs. Observation duration is management and rightly not encoded. Note 'Vaccination given' is not a common symptom/warning sign, so the task only fires if that situation is recorded somewhere.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p14-cb8e7b23",
+  "text": "Collapse 15.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'Collapse → 15' sends the collapsed patient to the collapse page; Collapse is a recorded warning sign handled there. Not encoded here, and the house standard does not require it.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Collapse"
+    ],
+    "problem": "'Collapse' is a presenting symptom box pointing to page 15; it is not in check_for, the anaphylaxis rule or the pseudoallergic exclusions. Cross-reference to 15 may legitimately be routing, hence borderline, but the finding itself is a trigger on page.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: Collapse -> page 15.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p14-291dfff8",
+  "text": "Feeling faint/unwell symptoms • Light-headedness or dizziness • Feeling warm or cold • Sweating • Palpitations • Visual 'blurring' (darkening or white-out of vision) • Reduced hearing ('whooshing' noise) • Pallor reported by onlookers",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All seven items are in check_for and in the first any2 group: light-headedness/dizziness (Dizziness + Lightheadedness), feeling warm or cold (Sensation of being warm / cold), Sweating, Palpitations, visual blurring (Blurring of visual image), reduced hearing (Decreased hearing; the 'whooshing noise' is not separately captured, which is reasonable since the page's headline symptom is reduced hearing), pallor (Pale complexion is the SNOMED name of the Pallor concept). Note the group counts towards any2 regardless of whether the symptoms improve quickly; see p14-85985016.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Collapse is a separate box (see p14-cb8e7b23) and not in check_for"
+    ],
+    "problem": "Light-headedness, dizziness, warm, cold, sweating, palpitations, blurring, reduced hearing, pallor all present. 'Pallor reported by onlookers' as 'Pale complexion' acceptable. Dizziness and lightheadedness split correctly. Warm/cold as two concepts ok.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Gate: these only feed the anaphylaxis decision if symptoms do NOT improve quickly (minutes); not encoded (could be approximated with (>= (onset …) (time_ago N minutes)))"
+    ],
+    "problem": "All seven items present with acceptable concepts (Lightheadedness, Dizziness, Sensation of being warm/cold, Sweating, Palpitations, Blurring of visual image, Decreased hearing, Pale complexion). 'Pallor reported by onlookers' -> Pale complexion is fine. Visual 'darkening/white-out' -> Blurring of visual image is the page's own word.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-e0ebf2fb",
+  "text": "Skin/mucosal symptoms",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the second (or …) group inside any2, so skin/mucosal findings count once as one system.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-0dd8ad75",
+  "text": "Respiratory symptoms",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the third (or …) group inside any2.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-b6577256",
+  "text": "• Wheeze or cough • Throat tightness • Stridor • Shortness of breath • Hoarseness • Oxygen sats < 92% • Trouble swallowing • Drooling",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All eight items encoded: wheeze (Wheezing), cough (Cough), throat tightness (Tightness in throat), stridor, shortness of breath (Dyspnea), hoarseness (Hoarse), oxygen sats < 92% (measurement < 92, routine vital so correctly absent from check_for), trouble swallowing (Difficulty swallowing), drooling (Dribbling from mouth, whose SNOMED synonym is Drooling). Direction and threshold of the SpO2 comparison match the page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Oxygen sats < 92% absent from check_for (present only in anaphylaxis any2 resp group)",
+     "Absent from the pseudoallergic exclusions too"
+    ],
+    "problem": "Resp symptoms are all encoded in check_for and rule. Oxygen saturation < 92% is a measurement, expressible in the language (the rule uses it), but it is not asked for in the task check_for, so the check list and the diagnostic rule disagree. Also not in pseudoallergic 'no' list. 'Wheeze or cough' split correctly. 'Shortness of breath' as Dyspnea fine.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Wheezing, Cough, Tightness in throat, Stridor, Dyspnea, Hoarse, Difficulty swallowing, Dribbling from mouth and SpO2 < 92 % all present. SpO2 is a routine vital so absence from check_for is acceptable.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-570613b9",
+  "text": "Gastrointestinal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the fourth (or …) group inside any2.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p14-85985016",
+  "text": "Do symptom/s improve quickly (minutes)?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "the condition that faint/unwell symptoms have NOT improved quickly before they count as a body system"
+    ],
+    "problem": "The faint/unwell group is counted in any2 unconditionally. A vasovagal patient with dizziness and nausea that settle within minutes meets any2 (two systems) and gets probable anaphylaxis, where the page would send them to 'observe until symptoms resolve'. Not fully representable, but the loss should be recorded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "improves quickly -> observe until resolved"
+    ],
+    "problem": "Branch lost; no rule models resolution within minutes, so transient faint symptoms are not distinguished.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "No time or persistence condition on the faint/unwell group"
+    ],
+    "problem": "The Yes branch (observe until resolved, i.e. vasovagal) is lost: faint/unwell symptoms count as a body system immediately.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p14-6f74d063",
+  "text": "No • If isolated rash (raised, red rash in patient who is otherwise well without other symptoms): - Monitor for other symptoms for at least 30 minutes to pick up any other symptoms:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "the at-least-30-minute monitoring window before the conclusion is reached; the language can approximate it with (>= (onset (clinical_finding (snomed_concept \"Urticaria\" \"disorder\"))) (time_ago 30 minutes)) since 'minutes' is a valid Duration unit"
+    ],
+    "problem": "Isolated rash is encoded as Urticaria, not generalised, with every other listed finding recorded absent and Generally unwell absent. Without the time window the probable diagnosis can fire the moment an isolated rash is recorded, before the page's monitoring period.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Monitor 30 minutes: duration not representable",
+     "'otherwise well' only via negation of listed symptoms"
+    ],
+    "problem": "Isolated rash in otherwise well patient is modelled by pseudoallergic rule: Urticaria and no listed symptoms. But exclusions omit Oxygen sat < 92 and Collapse, and 'Generally unwell' is added (not on the page as a symptom, though it matches 'otherwise well').",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "30-minute monitoring condition (representable as (>= (onset (clinical_finding Urticaria)) (time_ago 30 minutes)))"
+    ],
+    "problem": "Isolated rash = Urticaria with every other listed symptom negated and Generally unwell negated: captures 'otherwise well without other symptoms'. But the rule also negates Itching, which is part of the skin system and usually accompanies hives; an itchy isolated hive rash therefore gets neither pseudoallergic nor anaphylaxis (one system only).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p14-ca11a418",
+  "text": "• If no other associated symptoms and patient remains well, pseudoallergic self-limiting rash likely: reassure patient and advise to take oral antihistamines. • Advise to seek urgent health care if any of the following develop: swelling of face, lips or tongue, difficulty breathing, abdominal pain, ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'X likely' is encoded as a probable diagnosis, the right rule type. No 'pseudoallergic rash' concept exists; Non-allergic hypersensitivity reaction (disorder) is SNOMED's term for a pseudoallergic reaction and is the closest available. Two cautions: (1) the rule requires (no Itching), yet hives are itchy by nature and the page's 'without other symptoms' most naturally means other body systems, so an itchy isolated rash gets no diagnosis at all; (2) (no …) means recorded as absent, so all 36 absences must be recorded for the rule to fire, which the check_for task does prompt for. The return-advice list (swelling, difficulty breathing, abdominal pain, nausea, vomiting) and 'discuss with doctor' are management; 'if in doubt treat as anaphylaxis' is a note.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Advice to seek urgent care (management, out of scope)",
+     "'If other symptoms: discuss with doctor' is routing"
+    ],
+    "problem": "'Pseudoallergic self-limiting rash likely' encoded as probable 'Non-allergic hypersensitivity reaction'. Concept is a reasonable but generic parent; a pseudoallergic/urticaria-specific concept might fit better. Rule does not require the 30-minute monitoring.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'remains well' after 30 minutes (time condition)",
+     "'If other symptoms: discuss with doctor urgently' has no priority/possible rule (borderline management)"
+    ],
+    "problem": "Probable rule exists with concept Non-allergic hypersensitivity reaction (a reasonable match; no SNOMED 'pseudoallergic rash' concept found). Over-strict exclusion of Itching (see p14-6f74d063).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-6178c72d",
+  "text": "No. Are signs or symptoms serious or life-threatening, even if only single body system (hypotension,",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Hypotension is encoded as the recorded finding Low blood pressure (the SNOMED name of hypotension). The gold anaphylaxis page instead uses the routine BP measurement (< 90/60), which fires automatically from vitals; as written the nurse must record the finding. Concept and logic are right, so correct, with that note.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "hypotension concept precision"
+    ],
+    "problem": "Hypotension encoded as 'Low blood pressure' (disorder) - a disorder-hierarchy concept for an observed sign; Hypotension (finding) would be closer.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Hypotension -> Low blood pressure (disorder); fine. Judged together with p14-2211c9d1.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p14-2211c9d1",
+  "text": "respiratory distress, or significant swelling of the tongue or lips)?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Respiratory distress encoded exactly; 'significant swelling of the tongue or lips' as Swelling + Tongue/Lip structure + Severe qualifier, each alone satisfying the rule, matching the page's 'even if only single body system'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'significant' only approximated by Severe qualifier"
+    ],
+    "problem": "Respiratory distress and severe tongue/lip swelling encoded. 'Significant' mapped to 'Severe (severity modifier)'; acceptable but approximation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Significant' expressed with Severe qualifier on tongue and lip swelling; acceptable.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c008",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page means darkening or white-out of vision (presyncopal), with 'blurring' in quotes; 'Blurring of visual image' is narrower/different.",
+    "fix": "(snomed_concept \"Temporary visual disturbance\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c014",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Lip swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Tongue swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c016",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Facial swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c035",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'significant' swelling of tongue/lips; 'Severe' severity modifier is a close but not identical grade.",
+    "fix": "Acceptable if 'Severe' is the house mapping for 'significant'; otherwise drop the qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c036",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'significant' swelling of tongue/lips; 'Severe' severity modifier is a close but not identical grade.",
+    "fix": "Acceptable if 'Severe' is the house mapping for 'significant'; otherwise drop the qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c037",
+  "text": "Check for adverse reaction after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "unsupported",
+    "reason": "'Generally unwell' is not a symptom to check for; page only uses 'otherwise well' as a negative condition for the isolated rash.",
+    "fix": "Remove from check_for.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c039",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c040",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c041",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c042",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being cold\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c043",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c044",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c045",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c046",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c047",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "right finding, but on the page the feeling-faint/unwell group only reaches 'Decide when to treat for anaphylaxis' via the 'Do symptom/s improve quickly (minutes)? No' branch; the rule counts it as a body system unconditionally, so transient vasovagal symptoms plus one other-system symptom (e.g. light-headedness + nausea) give probable anaphylaxis.",
+    "fix": "gate the faint/unwell group on not improving quickly (if the language can express it), or at minimum document that the 'improves quickly' branch is not modelled",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Faint/unwell box is not one of the body systems feeding 'Are 2 or more body systems involved?'; its arrow goes to 'Do symptoms improve quickly?' (observe until resolve). Vasovagal symptoms plus itching would wrongly count as 2 systems.",
+    "fix": "Remove faint group from the any2, or gate it on symptoms not improving quickly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faint/unwell symptoms only reach the 'Decide when to treat for anaphylaxis' box when they do NOT improve quickly (minutes) after lying down/head between knees; the rule counts them as a body system unconditionally, so e.g. dizziness + nausea (common vasovagal) gives probable anaphylaxis.",
+    "fix": "Gate the faint/unwell group on non-resolution after positioning (or drop it from any2 and route persistent faint symptoms separately).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c051",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Lip swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c052",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Tongue swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c053",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Facial swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c073",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'significant' swelling of tongue/lips; 'Severe' severity modifier is a close but not identical grade.",
+    "fix": "Acceptable if 'Severe' is the house mapping for 'significant'; otherwise drop the qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c074",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'significant' swelling of tongue/lips; 'Severe' severity modifier is a close but not identical grade.",
+    "fix": "Acceptable if 'Severe' is the house mapping for 'significant'; otherwise drop the qualifier.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c075",
+  "text": "Diagnose probable anaphylaxis after vaccination :: (diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "the page says 'Treat as anaphylaxis' (red box, p14-c9df300e) rather than 'anaphylaxis likely'; a treatment directive is at least as strong as 'likely', and page 20 gold uses the same probable mapping. Better element: the red box.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Treat as anaphylaxis' (a treatment threshold, with 'If in doubt, treat as anaphylaxis'), never 'anaphylaxis likely'; probable is defensible as the decision outcome but not quoted as 'likely'.",
+    "fix": "Confirm house convention for 'Treat as X' boxes; quote the red box 'Treat as anaphylaxis'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c085",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page means darkening or white-out of vision (presyncopal), with 'blurring' in quotes; 'Blurring of visual image' is narrower/different.",
+    "fix": "(snomed_concept \"Temporary visual disturbance\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c088",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'without other symptoms' excludes itchiness on a literal reading, though an urticarial rash is nearly always itchy and itch is the same body system; clinically ambiguous, the literal reading is defensible.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Itching normally accompanies hives; page says 'isolated rash ... without other symptoms' and advises antihistamines, so excluding itch may block the pseudoallergic diagnosis in its typical presentation.",
+    "fix": "Consider not negating Itching.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c090",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Lip swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c091",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Tongue swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c092",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Right idea, but a precoordinated concept exists (confirmed by search).",
+    "fix": "(snomed_concept \"Facial swelling\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c112",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Patient remains well' / 'no other associated symptoms' are after monitoring for at least 30 minutes; the 30-minute observation window is dropped.",
+    "fix": "Add the >=30 minute observation condition if the grammar allows, or note it.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c113",
+  "text": "Diagnose probable pseudoallergic rash after vaccination :: (diagnosis (snomed_concept \"Non-allergic hypersensitivity reaction\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "the page's 'pseudoallergic self-limiting rash' has an exact precoordinated concept: (snomed_concept \"Acute urticaria due to pseudoallergy\" \"disorder\") (confirmed with exists; is_a Urticaria = YES). 'Non-allergic hypersensitivity reaction' is the broad parent process and drops the rash. 'likely' -> probable is correct.",
+    "fix": "(diagnosis (snomed_concept \"Acute urticaria due to pseudoallergy\" \"disorder\") probable)",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "No system_priority_evaluation. The red box 'Treat as anaphylaxis' is the page's escalation, and the house standard turns the red box into a priority rule (gold: 'Urgent: Anaphylaxis' on (active_condition Anaphylaxis)). This file diagnoses probable anaphylaxis but never raises priority; it relies on the anaphylaxis page's rule, which may or may not be present in this ruleset.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "The page reaches 'pseudoallergic self-limiting rash likely' only after monitoring for at least 30 minutes with no other symptoms. The rule has no time condition, so it fires as soon as an isolated rash and the absences are recorded. (>= (onset (clinical_finding (snomed_concept \"Urticaria\" \"disorder\"))) (time_ago 30 minutes)) would encode the window.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "(no Itching) excludes the common case of an itchy isolated urticarial rash. Such a patient fails this rule and, being single-system and not generalised or severe, also fails the anaphylaxis rule, so they end with no diagnosis. The page's 'without other symptoms' reads as other body systems; itch belongs to the same skin/mucosal group as the rash. Consider dropping the Itching and Nasal congestion exclusions, keeping the swelling ones (which the page names as return triggers).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "The 'Do symptom/s improve quickly (minutes)?' gate is lost: faint/unwell findings count as a body system in any2 even when they resolve in minutes, so dizziness + nausea from a vasovagal episode yields probable anaphylaxis. Not fully representable; at minimum the remaining-questions record should carry it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "Hypotension is encoded as the recorded finding (clinical_finding Low blood pressure) rather than the routine BP measurement. The gold anaphylaxis page uses (< (measurement Systolic blood pressure mmHg) 90) / (< diastolic 60), which fires from vitals without a separate recording. The page gives no numeric threshold, so the finding form is defensible, but the two pages will disagree on what counts as hypotension.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for adverse reaction after vaccination",
+  "text": "Swelling is encoded as Swelling + finding_site although SNOMED has precoordinated Lip swelling, Tongue swelling, Facial swelling, Swelling of hand and Swelling of eyelid (all finding). The finding_site form matches the gold anaphylaxis page, so this is consistent and should stay unless the whole ruleset changes; noted only so the choice is on record.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "Resp group includes SpO2<92 but check_for list lacks it; check list and rule disagree.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "Four groups in any2 include the faint group, and plain tongue/lip swelling (skin group) plus one other group triggers; 'improves quickly' gate absent so transient vasovagal symptoms plus a mild skin symptom yield probable anaphylaxis.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "Exclusion list omits SpO2<92 and Collapse; 30-minute monitoring not represented; 'Generally unwell' added without direct page text.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task Check for adverse reaction after vaccination",
+  "text": "No priority evaluation for the red box 'Treat as anaphylaxis' beyond the diagnosis; Collapse missing from check_for.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check list",
+  "text": "'Low blood pressure' disorder and 'Abdominal colic' are imprecise concepts for hypotension and cramps.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "Faint/unwell group enters the any2 count unconditionally; the page sends it to anaphylaxis assessment only when symptoms do not improve within minutes. Transient vasovagal symptoms + nausea (or sweating + itching) will produce probable anaphylaxis and, via page 20's priority rule, Urgent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "Negates Itching although itch belongs to the same (skin) system as the hives; isolated itchy urticaria falls through both rules with no diagnosis. Also lacks the 30-minute observation condition before 'likely'.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for adverse reaction after vaccination",
+  "text": "Anchored to (clinical_finding Vaccination given), which is not a common symptom or warning sign; the whole page only fires if that situation is recorded. 'Generally unwell' is checked for but only used as a negation in the pseudoallergic rule (allowed, but the page's 'feeling unwell' heading is not otherwise used).",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(file)",
+  "text": "No system_priority_evaluation in this file for the red box; relies on page 20's 'Urgent: Anaphylaxis' (active_condition) rule. Acceptable under the house pattern, but page-level priority depends on another file.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "Structure mostly follows the page: any2 of system groups OR generalised urticaria OR any single serious sign all lead to the red box 'Treat as anaphylaxis', and probable is justified by that directive. Two deviations: (1) the feeling-faint/unwell group is counted as a body system unconditionally, whereas on the page it only enters the anaphylaxis decision after 'Do symptom/s improve quickly? No'; so light-headedness/sweating that settles on lying down, plus one GI or skin symptom, fires probable anaphylaxis. (2) The page's red box 'Treat as anaphylaxis' has no system_priority_evaluation in this file; it relies on the anaphylaxis page's 'Urgent' evaluation on the active condition, which should be confirmed. Hypotension as a recorded disorder rather than a BP comparison will rarely match.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "'likely' -> probable is right and the 'isolated rash, not generalised, no other symptoms, remains well' structure is faithful. But (1) the diagnosis concept is the broad 'Non-allergic hypersensitivity reaction'; the exact (snomed_concept \"Acute urticaria due to pseudoallergy\" \"disorder\") exists and should be used; (2) the page only calls the rash pseudoallergic after monitoring for at least 30 minutes with no other symptoms, and the rule fires immediately on an isolated rash, dropping that window (e.g. (>= (onset (clinical_finding (snomed_concept \"Urticaria\" \"disorder\"))) (time_ago 30 minutes)) if minutes are supported). Redundant negations (severe tongue/lip swelling are already excluded by the unqualified tongue/lip swelling negations) are harmless.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for adverse reaction after vaccination",
+  "text": "Task is a reasonable fit for the observe/check-for box, but includes invented 'Generally unwell', omits Oxygen sats <92% that the page lists under respiratory symptoms, and drops the 15/30-minute observation timing (30 min if severe allergies) and the Collapse -> 15 branch.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "(1) The red box 'Treat as anaphylaxis -> 28' is encoded only as a probable diagnosis, with no priority/emergency evaluation. (2) The faint/unwell group is counted as a body system in any2, though the page routes it to 'improve quickly?' not to the 2-systems question. (3) 'If in doubt, treat as anaphylaxis' and the 'serious or life-threatening' catch-all are not encoded. Other branches (2+ systems, generalised urticaria, hypotension, respiratory distress, significant tongue/lip swelling) match the page.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "Structure matches the page (isolated rash, no other symptoms, not generalised, 'likely' -> probable). The 30-minute monitoring window is dropped, so a rash seen minutes after vaccination can be labelled pseudoallergic; the 'urgent care if swelling, breathing difficulty, abdominal pain, nausea' advice is not encoded.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for adverse reaction after vaccination",
+  "text": "check_for omits the SpO2 measurement (Oxygen sats < 92%) that the anaphylaxis rule uses; the 15/30-minute observation period is not represented. Otherwise the list matches the page's symptom boxes.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable anaphylaxis after vaccination",
+  "text": "The faint/unwell group is counted as one of the 2+ body systems without the page's gate that faint symptoms must fail to improve quickly after positioning; vasovagal dizziness/sweating + nausea will fire probable anaphylaxis. The single-system serious branch, generalised urticaria branch and any2 structure otherwise match the flowchart. Page wording is 'Treat as anaphylaxis', not 'likely'. 'If in doubt, treat as anaphylaxis' is not encoded (acceptable).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pseudoallergic rash after vaccination",
+  "text": "Matches the page's 'pseudoallergic self-limiting rash likely' with correct 'probable' and a faithful concept, but drops the 'monitor for at least 30 minutes' window and negates itching, which usually accompanies hives.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "\"Feeling faint/unwell symptoms\" is the heading of a list; the symptoms the page asks about are its bullets, so the heading is not encoded as a symptom of its own.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\"))",
+    "reason": "\"Feeling warm or cold\": Sensation of being warm is the closer wording and the sibling of the Sensation of being cold both builds use.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\"))",
+    "reason": "\"Reduced hearing\" matches Decreased hearing; Hearing difficulty is a narrower child and would miss a recorded Decreased hearing.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+    "reason": "\"Cramps\" sits under Gastrointestinal symptoms; Abdominal colic is_a Abdominal pain, while Stomach cramps sits only under Cramp (muscle) in SNOMED.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+    "reason": "Needed as the checked evidence for \"otherwise well\" / \"patient remains well\" in the pseudoallergic rash rule.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\")) in the faint/unwell any2 group and (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\") (snomed_concept \"No\" \"qualifier value\"))) in the pseudoallergic rule  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "Same as the check_for decision: the heading is not a symptom of its own; the group holds the page's bullets.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "reason": "\"Feeling warm\": closer wording, paired with Sensation of being cold.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "reason": "\"Reduced hearing\" = Decreased hearing; A's concept is narrower.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "reason": "GI \"Cramps\" = abdominal cramping pain; Abdominal colic is under Abdominal pain.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "reason": "The page requires the patient be \"otherwise well\" and \"remains well\"; A encodes that, B leaves it out.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "reason": "The page says \"isolated rash ... without other symptoms\" and lists Itchiness as a separate skin symptom, so the literal reading excludes itching; B left it out because hives itch, which is a clinical reading.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urticaria\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eye region structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hand structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "slug": "14-observation-post-vaccination",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "reason": "Faithful encoding of \"no other associated symptoms\": the positive form of this finding (with its finding_site/qualifier) IS in the check_for of \"Check for adverse reaction after vaccination\" in this file. The gate matches (no X) to X only for unqualified findings; for X with a finding_site or qualifier the inserted No value sits before the attribute and the match fails. Checker limitation, not a missing check_for."
+   }
+  ]
+ }
+]

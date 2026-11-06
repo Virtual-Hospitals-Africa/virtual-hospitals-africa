@@ -1,0 +1,534 @@
+{
+ "page": 130,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Dependent for walking' means needing help/assistance; page says unable to walk unaided. Redundant extra concept, broader meaning.",
+   "fix": "Drop it or keep only 'Unable to walk'",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Clouded consciousness' is not what the page says; page says drowsy/confused. Extra concept beyond the quote.",
+   "fix": "Remove, keep Drowsy and Acute confusion",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page requires coughing up >= 1 tablespoon of fresh blood; any hemoptysis fires the condition, quantity dropped.",
+   "fix": "Use a narrower concept or note the volume threshold",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Concept tagged 'disorder' where page describes a symptom (visual disturbance); semantic tag may not match SNOMED.",
+   "fix": "Verify tag with snomed exists; use finding concept",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Fever encoded as active_condition while the other symptoms are clinical_finding; inconsistent type for a symptom on the page.",
+   "fix": "Use clinical_finding for Fever",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "verdict": "imprecise",
+   "reason": "Page says 'Exclude TB' (a work-up instruction), not 'likely' or 'consider/suspect'; possible TB is a reasonable reading but is an inference.",
+   "fix": "Keep as possible; note inference",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "verdict": "imprecise",
+   "reason": "'Pulse, function' is the pulse function entity; a pulse rate observable would be closer to the page's 'Pulse rate'.",
+   "fix": "Check 'Pulse rate' observable entity",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Dependent for walking' means needing help/assistance; page says unable to walk unaided. Redundant extra concept, broader meaning.",
+   "fix": "Drop it or keep only 'Unable to walk'",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Clouded consciousness' is not what the page says; page says drowsy/confused. Extra concept beyond the quote.",
+   "fix": "Remove, keep Drowsy and Acute confusion",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page requires coughing up >= 1 tablespoon of fresh blood; any hemoptysis fires the condition, quantity dropped.",
+   "fix": "Use a narrower concept or note the volume threshold",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Concept tagged 'disorder' where page describes a symptom (visual disturbance); semantic tag may not match SNOMED.",
+   "fix": "Verify tag with snomed exists; use finding concept",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for HIV: danger signs before starting ART",
+   "verdict": "ok",
+   "problem": "Check list mirrors red box; includes extra Dependent for walking and Clouded consciousness.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "verdict": "problem",
+   "problem": "check_for omits Fever, which the page lists in the TB symptom question; severe headache (meningitis sign) is mixed into the TB check.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "verdict": "ok",
+   "problem": "Structure (HIV and not known TB and any symptom) matches the page; 'possible' is inferred from 'Exclude TB'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "verdict": "ok",
+   "problem": "Urgent justified by 'delay starting ART and refer same day'; hemoptysis volume threshold lost.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "verdict": "problem",
+   "problem": "Page puts this under the 'Yes' branch of a combined jaundice/meningitis/other illness question with 'refer urgently'; encoding is faithful but CrAg positive plus symptoms/pregnant refer urgently logic is not encoded.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most conditions are faithful to the red box. Main problems: hemoptysis drops the >=1 tablespoon threshold, extra unsupported synonyms (Clouded consciousness, Dependent for walking), and the TB symptom check_for omits Fever. SNOMED concepts were not re-verified in detail."
+}

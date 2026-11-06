@@ -1,0 +1,222 @@
+{
+ "page": 151,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p151-25600fc3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header trigger (adult heart failure) correctly used as task condition and as the AND precondition of the priority rule.",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (and (clinical_finding (snomed_concept \"Heart failure\" \"disorder\")) (or ...))",
+    "Check for urgent heart failure conditions :: (clinical_finding (snomed_concept \"Heart failure\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p151-b4ee2b85",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Cross-reference to p24 is out of the rules' remit.",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+    "Check task :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p151-72b50a2b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'worsening of symptoms' is encoded as worsening heart failure, not worsening symptoms"
+   ],
+   "problem": "Encoded as Heart failure with qualifier Worsening, and Rapid is nested as a qualifier INSIDE the Worsening qualifier rather than a sibling. Nesting is questionable grammar/meaning ('rapid' modifies the worsening). Also the clause duplicates the heart-failure precondition already in the AND. A closer concept would be a symptom-worsening/deterioration finding with a 'rapid' qualifier. Verify the nested qualifier is valid in language-schemas.",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\") (qualifier (snomed_concept \"Rapid\" \"qualifier value\"))))",
+    "Check task :: (clinical_finding (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\") (qualifier (snomed_concept \"Rapid\" \"qualifier value\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-1c16fce4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "respiratory rate >=30 absent from check_for list"
+   ],
+   "problem": "Priority rule has (>= Respiratory rate 30 bpm) OR Difficulty breathing: correct. The check task's check_for has only Difficulty breathing; respiratory rate has no check/measure so the clinician is never prompted to measure it.",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "Check task :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-e2e92bd8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "BP not in check_for / no measure task"
+   ],
+   "problem": "BP < 90/60 encoded as systolic < 90 OR diastolic < 60, a reasonable reading and correct units. But no check_for or measure task captures BP, so the criterion can never be prompted for.",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "Urgent: heart failure with urgent signs :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-b25fa159",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "Check task :: same"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p151-09309dd5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-29b1c987",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-72cb07e6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-38483590",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-134f63bb",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-676bd327",
+   "scope": "borderline",
+   "scope_reason": "'If fainting/blackouts, refer same day' is a triage criterion with a same-day referral priority; could be an Urgent/priority rule, or routing only.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No rule for fainting/blackouts in heart failure.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-7d5bc2bb",
+   "scope": "borderline",
+   "scope_reason": "'If new irregular pulse, refer same day' is triage logic; pulse irregular is expressible. 'If not known hypertension and BP >= 140/90' is a cross-reference.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No rule or check for new irregular pulse (same-day referral) and no BP/pulse measure task.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-fcd14b9a",
+   "scope": "borderline",
+   "scope_reason": "Weight every visit; comparison to least-symptomatic weight not expressible.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Measure weight task encoded in kg; comparison part not representable.",
+   "evidence": [
+    "Measure weight in heart failure routine care :: (measure (measurement (snomed_concept \"Body weight\" \"observable entity\") kg))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p151-497e7407",
+   "scope": "borderline",
+   "scope_reason": "Footnote 3 'If SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness, shock likely' is an 'X likely' conclusion (probable shock), but it is only used in carvedilol avoidance.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No probable-diagnosis rule for shock; low importance since page context is a management caveat.",
+   "evidence": [],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p151-bb157ad9",
+  "p151-cae4818a",
+  "p151-c30fa1c9",
+  "p151-120dd340",
+  "p151-eb6177d1",
+  "p151-34d89059",
+  "p151-ea6db19b",
+  "p151-ab3a47c8",
+  "p151-58897853",
+  "p151-28dcc512",
+  "p151-4faeb13f",
+  "p151-71463249",
+  "p151-a6e1f507",
+  "p151-eb3f4479",
+  "p151-9382e997",
+  "p151-b70d5dec",
+  "p151-b0d5c7ea",
+  "p151-1c636ecf",
+  "p151-c9f75c4c"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "problem": "check_for omits respiratory rate and BP although the priority rule uses them; check list and priority rule disagree.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: heart failure with urgent signs / Check for urgent heart failure conditions",
+   "problem": "Rapid worsening is encoded as nested qualifiers (Rapid inside Worsening) on a heart failure finding, which is redundant with the precondition and may not express 'worsening of symptoms'.",
+   "severity": "medium"
+  },
+  {
+   "rule": "(none)",
+   "problem": "No rules for same-day referral triggers (fainting/blackouts, new irregular pulse); probable shock footnote not encoded.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: heart failure with urgent signs",
+   "problem": "Priority level Urgent matches 'give urgent attention'; no problem found.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box urgent criteria are all present in the priority rule, but the check task omits respiratory rate and BP, and 'rapid worsening of symptoms' is encoded as worsening heart failure with a nested Rapid qualifier. Same-day-referral triggers (fainting, new irregular pulse) outside the box are not encoded."
+}

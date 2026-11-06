@@ -1,0 +1,1906 @@
+[
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p64-7559a267",
+  "text": "Recent delivery/TOP/miscarriage",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Three parts (recent delivery / recent TOP / recent miscarriage) all present in check_for and priority rule with the 'Recent' qualifier. Concept note: 'Delivery finding' is a hierarchy header (its children include 'Mother not delivered', 'Good neonatal condition at birth', 'Finding of speed of delivery'), so it is loose; 'Postpartum state' (finding) or 'Mother delivered' (finding) + Recent would be closer to 'recent delivery'. Not wrong, but imprecise.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All three parts encoded with Recent qualifier. 'Delivery finding' is a broad concept, a closer 'recent delivery' concept may exist.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "'Recent delivery' is encoded as 'Delivery finding' (118215003), which is a grouper, not 'delivered'. Its descendants include 'Mother not delivered', 'Delivery problem', 'Labor finding' and 'Finding of second stage of labor', so descendant matching makes the rule fire on non-delivery findings. 'Mother delivered' (finding) or 'Postpartum state' (finding) with Recent is closer. TOP ('Induced termination of pregnancy' disorder + Recent) and miscarriage ('Miscarriage' + Recent) are correct.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p64-ccb675a0",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2If severe penicillin allergy (history of angioedema, anaphylactic shock or bronchospasm), omit ceftriaxone and discuss with doctor. Do not mix Ringer's lactate and IV ceftriaxone. 3Advise no alcohol un",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No probable Shock rule. The priority rule consumes 'Shock' as a recorded disorder, so the nurse must judge shock unaided; a probable-Shock rule from the footnote criteria (all vitals are routine, confusion/restlessness/weakness are findings) would let the system derive it. Low impact because SBP < 80 and pulse > 100 already trigger Urgent on their own.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Shock rule: SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness"
+    ],
+    "problem": "'Shock' is used directly as a check_for item and Urgent criterion. No rule derives it from the footnote's criteria, so pulse >= 100, RR > 30, confusion/restlessness and weakness never feed it. The other footnotes are drug notes and out of scope.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-10ac0a15",
+  "text": "Continue bacterial vaginosis treatment: • Give metronidazole3 400mg 12 hourly for 7 days.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "With no CMT and no cervical signs, BV stands. The BV rule already fires on that branch.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-1504985b",
+  "text": "Approach to a patient with an abnormal vaginal discharge not needing urgent attention First assess and advise the patient with an abnormal vaginal discharge 62. Test for HIV 124. If HIV positive, give routine care 126. If negative, repeat in 6 weeks. Consider need for PrEP 119.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p64-e7d1bddd",
+  "text": "Has patient been sexually active in the last 3 months?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'in the last 3 months' window: the rules use bare 'Sexually active' with no time qualifier. The language cannot attach an onset to a state like this cleanly, so this is probably not representable; a 'Recent' qualifier would have been the nearest approximation, and the check_for wording could carry the window for the nurse."
+    ],
+    "problem": "Bare 'Sexually active' may match a patient who was sexually active years ago and is recorded as such.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "last 3 months window"
+    ],
+    "problem": "Page asks about sexual activity in the last 3 months; rules use bare 'Sexually active' with no time qualifier. Acceptable approximation but the 3-month window is lost.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'in the last 3 months' time window"
+    ],
+    "problem": "The split is encoded with a plain 'Sexually active' and no time window. A patient sexually active only years ago is routed down the 'Yes' branch, which leads to cervicitis or LAP treatment instead of BV or candidiasis. No 3-month concept exists ('Sexually active in last year' is the nearest), so this at least needs a recorded question.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p64-f089455c",
+  "text": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'discharge curd-like': not encoded anywhere. SNOMED has no curd-like/cheesy vaginal discharge concept, but 'White vaginal discharge' (finding) exists and would be the nearest usable proxy; alternatively 'Vaginal discharge' with a qualifier. Because this is the first-listed criterion, a patient with classic curdy discharge and no visible vulval change is routed to bacterial vaginosis by the rules instead of candidiasis."
+    ],
+    "problem": "The 'vulva red, scratched or inflamed' parts are correct: Erythema of vulva, Scratch marks @ Vulval structure, Inflammation of vulva. Both the positive (candidiasis) and negative (BV / LAP / cervicitis branch 2) uses omit curd-like discharge consistently.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "curd-like discharge"
+    ],
+    "problem": "'Curd-like discharge' is not encoded anywhere: no concept in check_for or any rule. Non-sexually-active patient with curd-like discharge but normal vulva is routed to BV (probable) instead of candidiasis.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "discharge curd-like"
+    ],
+    "problem": "Vulva red, scratched and inflamed are encoded as 'Erythema of vulva', 'Scratch marks' at 'Vulval structure' and 'Inflammation of vulva'. 'Discharge curd-like' is missing from the branch and from the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-c317c87c",
+  "text": "Assess for UTI",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Condition (sexually active, LAP, no cervical pain) matches the page's route.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "cross_reference_only",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Assess for UTI' is a cross-reference to p69, but it implies 'consider UTI'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p64-df255f4a",
+  "text": "Treat for vaginal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Conclusion: treat for vaginal candidiasis (not-sexually-active arm). Condition completeness judged under p64-f089455c.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "curd-like discharge"
+    ],
+    "problem": "Candidiasis encoded but see curd-like omission.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "curd-like discharge path to candidiasis"
+    ],
+    "problem": "A patient who is not sexually active and has curd-like discharge but a normal vulva gets probable BV, not candidiasis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-54627d3c",
+  "text": "candidiasis • Give single dose clotrimazole vaginal pessary 500mg inserted at night or clotrimazole vaginal cream, inserted with applicator, 12 hourly for 7 days. • If vulva inflamed or itchy, also give clotrimazole topical cream, apply 12 hourly for 7 days.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p64-5979723c",
+  "text": "Treat for bacterial vaginosis: • Give single dose metronidazole3 2g. • Advise to return if no better after 7 days. Perform vaginal and speculum examinations:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Probable BV fires as soon as the branch is reached, before the examination result, which is what the page does (BV is treated first, then examined for LAP/cervicitis in addition). Correct.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "no curd-like discharge",
+     "exclusion when cervical pain or cervical signs present"
+    ],
+    "problem": "BV rule omits 'no curd-like discharge'. Also the page treats BV initially and only moves on to LAP/cervicitis after speculum exam; BV also fires alongside LAP and cervicitis in non-SA patients, which the page does not (it switches to 'continue BV' only if cervix normal).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "(no curd-like discharge) exclusion"
+    ],
+    "problem": "The BV rule correctly takes the 'No' branch and fires before speculum findings, which is consistent with the page treating BV first. Because curd-like discharge is not excluded, it also fires on curd-like discharge.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-a443e992",
+  "text": "No to both No",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p64-bac7bfa8",
+  "text": "• Treat for cervicitis: • Give single dose ceftriaxone5 250mg IM6 and azithromycin 1g and metronidazole3 2g. • Give partner notification slip/s with code: VDS. • If discharge itchy, curd-like or vulva red, scratched or inflamed:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'curd-like' discharge in the candidiasis add-on condition (see p64-f089455c)."
+    ],
+    "problem": "Cervicitis conclusion is correct (probable Inflammation of cervix when sexually active, no LAP, no cervical pain). The add-on condition 'discharge itchy, curd-like or vulva red, scratched or inflamed' is encoded as pruritus of vagina | erythema of vulva | scratch marks @ vulva | inflammation of vulva, under the same branch guards, so candidiasis fires alongside cervicitis as the page intends. 'Itchy' -> 'Pruritus of vagina' (disorder) is acceptable ('Pruritus of vulva' also exists; either fits).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "curd-like discharge"
+    ],
+    "problem": "Cervicitis and add-on candidiasis encoded. Candidiasis SA branch uses Pruritus of vagina for 'discharge itchy' and omits curd-like discharge. Also candidiasis add-on is additive to cervicitis; both fire which matches the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'curd-like' discharge as a trigger for adding vaginal candidiasis"
+    ],
+    "problem": "Cervicitis is correct. Candidiasis in the sexually active, no-LAP/no-CMT branch uses itchy discharge ('Pruritus of vagina') or red, scratched or inflamed vulva, but curd-like discharge is not encoded. SNOMED has no curd-like concept ('Leukorrhea' and 'White vaginal discharge' are the nearest), so this should at least be recorded as a gap.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-3a7af9bc",
+  "text": "- Add treatment for vaginal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the second branch of the candidiasis rule; condition completeness is judged under p64-bac7bfa8.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p64-119ec544",
+  "text": "Abnormal vaginal discharges are itchy or different in colour, smell or quantity.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "restriction to abnormal discharge (itchy / changed colour, smell or quantity)"
+    ],
+    "problem": "Every rule anchors on 'Vaginal discharge' (271939006), whose descendants include 'Normal vaginal secretions' and 'Hydrorrhea gravidarum'. A pregnant patient with normal secretions would match the Urgent rule. 'Vaginal discharge problem' (finding) is closer to 'abnormal vaginal discharge'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c001",
+  "text": "Check for abnormal vaginal discharge findings :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page is about ABNORMAL vaginal discharge (itchy or changed colour/smell/quantity); 'Vaginal discharge' includes physiological discharge. Closer: (snomed_concept \"Vaginal discharge problem\" \"finding\") (synonym 'abnormal vaginal discharge'). Same applies to every rule's vaginal-discharge condition.",
+    "fix": "Consider (snomed_concept \"Vaginal discharge problem\" \"finding\") as trigger and evidence.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c002",
+  "text": "Check for abnormal vaginal discharge findings :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Delivery finding' is SNOMED's generic parent for any finding about a delivery, not the state of having recently delivered; 'Postpartum state' (finding) is the closer concept.",
+    "fix": "(clinical_finding (snomed_concept \"Postpartum state\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Recent delivery' encoded as the broad grouper 'Delivery finding' (includes labour/birth-outcome findings, 'Mother not delivered') plus Recent. Closer concepts exist: (snomed_concept \"Postpartum state\" \"finding\") or (snomed_concept \"Mother delivered\" \"finding\").",
+    "fix": "Use (snomed_concept \"Postpartum state\" \"finding\") (or \"Mother delivered\" + Recent).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c015",
+  "text": "Check for abnormal vaginal discharge findings :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped. No exact SNOMED concept (only 'Sexually active in last month' / 'last six months' exist), so the drop is defensible but should be recorded.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped, so remote sexual activity routes the patient down the STI branch.",
+    "fix": "Add an event_time_comparison (within 3 months) or a 'Recent' qualifier to Sexually active, consistently across all rules and the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Check for abnormal vaginal discharge findings :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"discharge itchy OR curd-like\"; vaginal pruritus covers itch only, and curd-like discharge is not encoded anywhere.",
+    "fix": "Add a curd-like discharge finding if a concept exists; otherwise document the gap.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "Page says 'discharge itchy'; Pruritus of vagina is a reasonable reading (page also mentions vulval itch). Acceptable.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c020",
+  "text": "Check for abnormal vaginal discharge findings :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Scratched' vulva encoded as Scratch marks + finding site; a precoordinated concept exists: (snomed_concept \"Scratch marks on vulva\" \"finding\") (confirmed with exists).",
+    "fix": "Use (snomed_concept \"Scratch marks on vulva\" \"finding\") everywhere.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c027",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped, so remote sexual activity routes the patient down the STI branch.",
+    "fix": "Add an event_time_comparison (within 3 months) or a 'Recent' qualifier to Sexually active, consistently across all rules and the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c028",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015); negation otherwise faithful to the 'No' branch.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of 'sexually active' without the 3-month window: a woman last active 6 months ago is treated as sexually active and never reaches the BV/candidiasis branch.",
+    "fix": "Encode 'not sexually active in last 3 months' with the time window.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c029",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c030",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note). Also: precoordinated 'Scratch marks on vulva' exists.",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c031",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c032",
+  "text": "Diagnose probable LAP syndrome (vaginal discharge) :: (diagnosis (snomed_concept \"Female pelvic inflammatory disease\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Treat for lower abdominal pain (LAP) syndrome', a syndromic label; SNOMED has no LAP-syndrome concept and PID is the standard presumed diagnosis behind it, so the substitution is reasonable but broader/different from the page's wording and should be recorded as a decision.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "Page says 'Treat for LAP syndrome' (syndromic PID management), not 'PID likely'. Female PID is the right concept; 'probable' is an interpretation of 'Treat for'.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c034",
+  "text": "Diagnose probable cervicitis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped, so remote sexual activity routes the patient down the STI branch.",
+    "fix": "Add an event_time_comparison (within 3 months) or a 'Recent' qualifier to Sexually active, consistently across all rules and the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c037",
+  "text": "Diagnose probable cervicitis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of 'sexually active' without the 3-month window: a woman last active 6 months ago is treated as sexually active and never reaches the BV/candidiasis branch.",
+    "fix": "Encode 'not sexually active in last 3 months' with the time window.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c038",
+  "text": "Diagnose probable cervicitis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c039",
+  "text": "Diagnose probable cervicitis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note). Also: precoordinated 'Scratch marks on vulva' exists.",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c040",
+  "text": "Diagnose probable cervicitis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c047",
+  "text": "Diagnose probable bacterial vaginosis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of 'sexually active' without the 3-month window: a woman last active 6 months ago is treated as sexually active and never reaches the BV/candidiasis branch.",
+    "fix": "Encode 'not sexually active in last 3 months' with the time window.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c048",
+  "text": "Diagnose probable bacterial vaginosis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c049",
+  "text": "Diagnose probable bacterial vaginosis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note). Also: precoordinated 'Scratch marks on vulva' exists.",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Diagnose probable bacterial vaginosis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Faithful as far as it goes, but the page's question is 'is discharge curd-like OR vulva red, scratched or inflamed?'; curd-like discharge is never encoded, so this group of negations is incomplete (see rule note).",
+    "fix": "Add (no <curd-like/white curdy vaginal discharge>) alongside the vulval negations.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c053",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of 'sexually active' without the 3-month window: a woman last active 6 months ago is treated as sexually active and never reaches the BV/candidiasis branch.",
+    "fix": "Encode 'not sexually active in last 3 months' with the time window.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c054",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Correct as one disjunct, but the page's first and primary disjunct, 'discharge curd-like', is missing from this or-group; a non-sexually-active woman with curd-like discharge and normal vulva gets BV instead of candidiasis.",
+    "fix": "Add a curd-like discharge concept (e.g. (snomed_concept \"White vaginal discharge\" \"finding\") is the nearest; no 'curd-like' concept found) to this or-group and to check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c055",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Precoordinated (snomed_concept \"Scratch marks on vulva\" \"finding\") exists; also curd-like disjunct missing from this or-group.",
+    "fix": "Use 'Scratch marks on vulva'.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c057",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped, so remote sexual activity routes the patient down the STI branch.",
+    "fix": "Add an event_time_comparison (within 3 months) or a 'Recent' qualifier to Sexually active, consistently across all rules and the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c060",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"discharge itchy OR curd-like\"; vaginal pruritus covers itch only, and curd-like discharge is not encoded anywhere.",
+    "fix": "Add a curd-like discharge finding if a concept exists; otherwise document the gap.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page: 'If discharge itchy, curd-like or vulva red, scratched or inflamed'; itch encoded as Pruritus of vagina (acceptable), but 'curd-like' is omitted from this or-group.",
+    "fix": "Add curd-like discharge disjunct.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c062",
+  "text": "Diagnose probable vaginal candidiasis (vaginal discharge) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Precoordinated (snomed_concept \"Scratch marks on vulva\" \"finding\") exists.",
+    "fix": "Use 'Scratch marks on vulva'.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c066",
+  "text": "Diagnose possible UTI (vaginal discharge, lower abdominal pain) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "3-month window dropped (see c015).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page asks \"sexually active in the last 3 months\"; the 3-month window is dropped.",
+    "fix": "No closer concept (\"Sexually active in last year\" is wider); keep, but note the window in the rule description or use a recency qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page asks 'sexually active in the last 3 months'; the 3-month window is dropped, so remote sexual activity routes the patient down the STI branch.",
+    "fix": "Add an event_time_comparison (within 3 months) or a 'Recent' qualifier to Sexually active, consistently across all rules and the check_for.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c071",
+  "text": "Urgent: vaginal discharge with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c002: 'Delivery finding' is a category heading, not 'recent delivery'; 'Postpartum state' (finding) is closer.",
+    "fix": "(clinical_finding (snomed_concept \"Postpartum state\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Recent delivery' encoded as the broad grouper 'Delivery finding' (includes labour/birth-outcome findings, 'Mother not delivered') plus Recent. Closer concepts exist: (snomed_concept \"Postpartum state\" \"finding\") or (snomed_concept \"Mother delivered\" \"finding\").",
+    "fix": "Use (snomed_concept \"Postpartum state\" \"finding\") (or \"Mother delivered\" + Recent).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable vaginal candidiasis (vaginal discharge) / Diagnose probable bacterial vaginosis (vaginal discharge)",
+  "text": "'Curd-like discharge' is the page's first-listed candidiasis criterion in the not-sexually-active arm and the second-listed in the cervicitis add-on, and it is absent from every rule. Its absence also leaks into the negations: BV, LAP branch 2 and cervicitis branch 2 all treat a curdy discharge without vulval signs as 'No' to the candidiasis question. Nearest SNOMED proxy: 'White vaginal discharge' (finding).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: vaginal discharge with danger signs",
+  "text": "'Delivery finding' + Recent stands in for 'recent delivery'. It is a hierarchy header whose children include 'Mother not delivered' and neonatal-condition findings, and descendants match automatically in due_to. 'Postpartum state' (finding) or 'Mother delivered' (finding) + Recent would be the precise concept.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none) footnote 1",
+  "text": "'Shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) has no probable rule, so 'Shock' in the priority rule is only ever nurse-recorded. Borderline scope; low impact because the vitals already trigger Urgent.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for abnormal vaginal discharge findings / all diagnosis rules",
+  "text": "'Sexually active in the last 3 months' is encoded as bare 'Sexually active'; the 3-month window is lost. Probably not representable in the language, but the check_for item carries no hint of the window for the nurse.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable LAP syndrome (vaginal discharge)",
+  "text": "'LAP syndrome' is mapped to 'Female pelvic inflammatory disease'. There is no syndromic LAP concept in SNOMED and PID is the usual correlate, but the mapping is a judgment call that should be confirmed by a clinician.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cervicitis (vaginal discharge) / Check for abnormal vaginal discharge findings",
+  "text": "Cervical redness and swelling use finding_site on 'Cervix uteri structure'. The grammar says finding_site findings must be declared in finding_site_findings; that declaration cannot be checked from the inputs here, so these could fail to resolve at load time even though the body structure exists in SNOMED.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "All diagnosis rules",
+  "text": "Curd-like discharge (the page's main discriminator for candidiasis in the non-sexually-active branch and an add-on trigger in the sexually active branch) is not encoded and not in check_for. A non-sexually-active patient with curd-like discharge and normal vulva gets BV probable instead of candidiasis.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable bacterial vaginosis",
+  "text": "Fires with cervical pain or cervical redness/swelling/discharge present in non-sexually-active patients, where the page moves on to LAP or cervicitis; BV and LAP/cervicitis become co-probable. Also lacks the curd-like exclusion.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cervicitis / candidiasis / BV / LAP",
+  "text": "'Sexually active in the last 3 months' encoded as bare 'Sexually active' with no time window.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable LAP syndrome",
+  "text": "Mapped to Female pelvic inflammatory disease; plausible but LAP is a syndrome. Non-SA branch lacks curd-like exclusion.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Task check_for",
+  "text": "Temperature, pulse and SBP are used by the priority rule but absent from check_for (probably by design as measurements). Vulva 'Scratch marks' uses generic concept plus finding_site where 'Scratch marks on vulva' exists. Pruritus of vagina is used for 'discharge itchy', which is a different thing (itchy discharge vs vaginal itch).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible UTI",
+  "text": "Page says 'Assess for UTI' (a cross-reference, not 'consider UTI'); a possible diagnosis is a reasonable but interpretive encoding.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable vaginal candidiasis / bacterial vaginosis / LAP syndrome / cervicitis (non-sexually-active branches)",
+  "text": "'Discharge curd-like' is missing from the whole file. On the 'not sexually active' branch, curd-like discharge with a normal vulva gives probable BV, and possibly cervicitis or LAP, instead of candidiasis. In the sexually active no-LAP/no-CMT branch, curd-like discharge does not add candidiasis. SNOMED has no exact concept, but the gap is neither encoded nor flagged in the rules.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: vaginal discharge with danger signs (and the check_for)",
+  "text": "'Delivery finding' is a grouper whose descendants include 'Mother not delivered', 'Delivery problem' and labor-stage findings. With descendant matching, findings that are not a recent delivery trigger Urgent. Use 'Mother delivered' or 'Postpartum state' with Recent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All rules (anchor)",
+  "text": "'Vaginal discharge' includes 'Normal vaginal secretions' and 'Hydrorrhea gravidarum' as descendants, but the page is about abnormal discharge. Combined with 'Pregnancy' in the Urgent list, normal pregnancy secretions would trigger Urgent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All diagnosis rules using 'Sexually active'",
+  "text": "The page's 'in the last 3 months' window is dropped. Remote sexual activity routes the patient to the STI branch.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: vaginal discharge with danger signs",
+  "text": "Footnote 1 ('shock likely' criteria) has no probable-Shock rule, so 'Shock' depends on direct entry.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for abnormal vaginal discharge findings",
+  "text": "The page's not-sexually-active decision node is 'is discharge curd-like OR are vulva red, scratched or inflamed?', and the sexually-active cervicitis box repeats 'If discharge itchy, curd-like or vulva red...'. Curd-like discharge is a discriminating finding used twice on the page and is absent from check_for and from every rule. No exact SNOMED concept exists; nearest findings are 'White vaginal discharge' or 'Creamy vaginal discharge' (finding), which should be added (and the gap recorded). Also c002: 'Delivery finding' should be 'Postpartum state' (finding).",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable LAP syndrome (vaginal discharge)",
+  "text": "Type (probable from 'Treat for ...') and branch 1 (sexually active + pain on moving the cervix) are faithful. Branch 2 (not sexually active -> BV path -> exam -> cervix pain) omits the page's 'discharge curd-like' gate: on the page a curd-like discharge goes to the candidiasis column and never reaches the speculum-exam questions. Diagnosis concept 'Female pelvic inflammatory disease' for 'LAP syndrome' is an acceptable substitute but should be noted.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cervicitis (vaginal discharge)",
+  "text": "Both branches match the page's flow (sexually active with neither pain; not sexually active, no vulval signs, no cervix pain, cervical redness/swelling/discharge). Branch 2 omits the 'discharge curd-like' gate as above.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+  "text": "Page: not sexually active AND No to 'is discharge curd-like or are vulva red, scratched or inflamed?' -> BV. The rule only negates the three vulval findings, so a patient with a curd-like discharge and a normal vulva gets probable BV instead of probable candidiasis. Needs (no <curd-like discharge finding>) added.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+  "text": "Branch structure follows the page (not sexually active + vulval signs; sexually active + no pains + itchy/vulval signs), but 'discharge curd-like' is missing from both branches' or-lists, so curd-like discharge alone (the classic candidiasis presentation the page names first) never fires the diagnosis.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for abnormal vaginal discharge findings",
+  "text": "Task check_for mixes urgent danger signs with branch questions but omits the red-box measurements (temperature, pulse, SBP); acceptable but incomplete. Type is plausible (page approach asks these questions).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+  "text": "Page's not-active branch requires 'discharge NOT curd-like and vulva not red/scratched/inflamed'. Curd-like is not encoded, so BV fires on curd-like discharge with a normal vulva where the page says candidiasis.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+  "text": "Not-active branch omits 'curd-like' discharge as a trigger, so candidiasis is missed when curd-like discharge is the only sign. Active branch omits 'curd-like' as well (only itch encoded).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for abnormal vaginal discharge findings",
+  "text": "Omits 'discharge curd-like', a discriminating finding the page uses at two branch points (non-sexually-active candidiasis vs BV; sexually-active add-on candidiasis). Sexually active lacks the 3-month window. 'Recent delivery' uses the broad 'Delivery finding' grouper.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable LAP syndrome (vaginal discharge)",
+  "text": "Logic matches both paths (sexually active + CMT; not active + no vulval signs + CMT on exam), but the not-active path lacks the 'not curd-like' exclusion and both paths lack the 3-month window. 'Treat for LAP syndrome' read as probable PID: defensible, not a literal 'likely'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cervicitis (vaginal discharge)",
+  "text": "Both paths correct in structure (active + no LAP + no CMT; not active + no vulval signs + no CMT + cervical redness/swelling/discharge); not-active path lacks the curd-like exclusion; 3-month window dropped.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+  "text": "Fires for any not-sexually-active woman with discharge and normal vulva, including curd-like discharge, which the page sends to candidiasis instead. Window dropped on sexual activity.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+  "text": "Curd-like discharge missing from both or-groups, so the page's commonest candidiasis trigger (curd-like discharge with normal vulva) never yields candidiasis. Otherwise structure is faithful (sexually-active add-on correctly requires no LAP and no CMT).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "reason": "Page says \"Recent delivery/TOP/miscarriage\"; A's delivery + Recent keeps the page's words and parallels TOP/miscarriage + Recent, and Delivery finding is already in VHA's vocabulary.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+    "reason": "Page says \"missed/overdue period\"; an exact concept exists for overdue (late), so it is encoded alongside Missed period instead of being folded into it.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+    "reason": "Page names \"Peritonitis\" with its signs in brackets; recording the disorder itself should also trigger urgency, so B's or of the disorder and the three signs is kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")) (and its (no …) forms)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\")) (and its (no …) forms)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\"))",
+    "reason": "Page asks \"pain on moving the cervix\"; A's concept name matches those words exactly (neither is an is-a of the other).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vaginal structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+    "reason": "Page says \"discharge itchy\"; a precoordinated vaginal-itch concept exists, and the briefing uses finding_site only when none does.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\")) required in all five diagnosis rules  vs  B: not required",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+    "reason": "The flowchart is the \"Approach to a patient with an abnormal vaginal discharge\"; without it B's BV rule would fire for any patient recorded as not sexually active with no vulval signs.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "slug": "64-abnormal-vaginal-discharge",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "reason": "Gate artefact: (no X) is matched by a regex (NO_RE in tools/gate.ts) that expects the No qualifier last, but for a finding with finding_site the canonical form puts the attribute after it. The positive form is in the check_for; the negation is the page's N1 = No branch."
+   }
+  ]
+ }
+]

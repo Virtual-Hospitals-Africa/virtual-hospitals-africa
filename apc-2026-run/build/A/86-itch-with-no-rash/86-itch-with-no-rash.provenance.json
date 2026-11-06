@@ -1,0 +1,424 @@
+{
+ "edition": "2026",
+ "page": 86,
+ "lisp_file": "86-itch-with-no-rash.lisp",
+ "conditions": [
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH",
+   "confidence": "high",
+   "note": "Presenting complaint from the page title (the red box is a pointer and has no header). Itching (finding) is the general concept, as in the gold standard."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash",
+   "confidence": "high",
+   "note": "'Confirm there is no rash': Eruption (morphologic abnormality) is the general rash concept used in the gold standard; descendants match."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies",
+   "confidence": "high",
+   "note": "Scabies has no 'Scabies' FSN; the infestation disorder is the exact concept."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Pediculus\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice",
+   "confidence": "high",
+   "note": "Lice = infestation caused by Pediculus (covers head/body/pubic lice as descendants)."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites",
+   "confidence": "high",
+   "note": "Vocabulary concept already used in VHA rules."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\"))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "skin very dry",
+   "confidence": "medium",
+   "note": "'Very dry' read as Severe dry skin (a child of Xeroderma). Alternative: Xeroderma with a Severe qualifier; the precoordinated concept is simpler."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "start any new medication",
+   "confidence": "medium",
+   "note": "'New medication commenced' (finding). 'In the weeks before the itch started' is a relative timing the language cannot express; not modelled."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin",
+   "confidence": "high",
+   "note": "'yellow skin' of 'yellow skin/eyes'."
+  },
+  {
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "'yellow ... eyes' = scleral icterus (FSN for yellow sclera; 'Yellow sclera' does not exist)."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH",
+   "confidence": "high",
+   "note": "Presenting complaint from the page title (the red box is a pointer and has no header). Itching (finding) is the general concept, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). 'Confirm there is no rash': Eruption (morphologic abnormality) is the general rash concept used in the gold standard; descendants match."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Scabies has no 'Scabies' FSN; the infestation disorder is the exact concept."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Pediculus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Lice = infestation caused by Pediculus (covers head/body/pubic lice as descendants)."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Vocabulary concept already used in VHA rules."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\"))",
+   "element_keys": [
+    "p86-408147fa",
+    "p86-d4e4cbf9"
+   ],
+   "quote": "Is the skin very dry? Yes",
+   "confidence": "medium",
+   "note": "Yes branch of 'Is the skin very dry?'."
+  },
+  {
+   "rule": "Diagnose probable dry skin causing itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Xeroderma\" \"disorder\") probable)",
+   "element_keys": [
+    "p86-76a3bfaa"
+   ],
+   "quote": "Dry skin (xeroderma/ichthyosis) likely",
+   "confidence": "medium",
+   "note": "Xeroderma (disorder) is the page's primary term and the parent of Severe dry skin; Ichthyosis (disorder) exists but is a distinct, mostly inherited, disorder, so it is not diagnosed separately."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH",
+   "confidence": "high",
+   "note": "Presenting complaint from the page title (the red box is a pointer and has no header). Itching (finding) is the general concept, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). 'Confirm there is no rash': Eruption (morphologic abnormality) is the general rash concept used in the gold standard; descendants match."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Scabies has no 'Scabies' FSN; the infestation disorder is the exact concept."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Pediculus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Lice = infestation caused by Pediculus (covers head/body/pubic lice as descendants)."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Vocabulary concept already used in VHA rules."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "skin very dry",
+   "confidence": "medium",
+   "note": "'Is the skin very dry?' = No branch leads here."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "start any new medication in the weeks before the itch started",
+   "confidence": "medium",
+   "note": "Yes branch; the 'weeks before the itch started' timing is not modelled (no onset-vs-onset comparison)."
+  },
+  {
+   "rule": "Diagnose probable medication side-effect causing itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Adverse reaction caused by drug\" \"disorder\") probable)",
+   "element_keys": [
+    "p86-705cb0c3"
+   ],
+   "quote": "Medication side-effect likely",
+   "confidence": "medium",
+   "note": "Literal 'medication side-effect'; already in VHA vocabulary. Alternative 'Pruritus caused by drug' (disorder) is more specific to itch."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH",
+   "confidence": "high",
+   "note": "Presenting complaint from the page title (the red box is a pointer and has no header). Itching (finding) is the general concept, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). 'Confirm there is no rash': Eruption (morphologic abnormality) is the general rash concept used in the gold standard; descendants match."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Scabies has no 'Scabies' FSN; the infestation disorder is the exact concept."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Pediculus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Lice = infestation caused by Pediculus (covers head/body/pubic lice as descendants)."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites",
+   "confidence": "high",
+   "note": "Page requires confirming there is no rash, scabies, lice or insect bites before the flowchart applies; encoded as (no …). Vocabulary concept already used in VHA rules."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "skin very dry",
+   "confidence": "medium",
+   "note": "'Is the skin very dry?' = No branch leads here."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "start any new medication",
+   "confidence": "medium",
+   "note": "'Did the patient start any new medication…?' = No branch leads to the jaundice box."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin",
+   "confidence": "high",
+   "note": "'yellow skin' of 'yellow skin/eyes'."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "'yellow ... eyes' = scleral icterus (FSN for yellow sclera; 'Yellow sclera' does not exist)."
+  },
+  {
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "jaundice likely",
+   "confidence": "high",
+   "note": "Jaundice (finding), the vocabulary concept used by VHA rules (19 uses)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p86-5bb4c721",
+   "element_id": "p86-rb1-e01",
+   "text": "Check if the patient needs urgent attention 82.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer-only red box to page 82; no priority evaluation on this page."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "No-rash exclusions",
+   "decision": "All three probable rules require (no rash), (no scabies), (no lice), (no insect bite), since the page says to confirm these before entering its flowchart.",
+   "alternatives": "Leave the exclusions only as check_for items and not in the rules; then a patient with a rash could get these diagnoses.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Jaundice branch position",
+   "decision": "Jaundice likely is reached only on the No/No branch (not very dry skin, no new medication), as drawn.",
+   "alternatives": "Diagnose jaundice from yellow skin/eyes regardless of branch.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Medication side-effect concept",
+   "decision": "Adverse reaction caused by drug (disorder).",
+   "alternatives": "Pruritus caused by drug (disorder).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "'Very dry' skin",
+   "decision": "Severe dry skin (disorder).",
+   "alternatives": "Xeroderma with Severe (severity modifier) qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Timing of new medication",
+   "decision": "'In the weeks before the itch started' not modelled; any recorded new medication counts, so the rule may fire more often than the page intends.",
+   "alternatives": "A time_ago comparison on the medication onset (e.g. within 6 weeks) would invent a number.",
+   "confidence": "medium"
+  }
+ ]
+}

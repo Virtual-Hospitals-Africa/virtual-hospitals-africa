@@ -1,0 +1,226 @@
+{
+  "page": 158,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p158-c478dbb7",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the trigger (mental illness) and the priority level (urgent) that the rule set must carry.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The priority rule is shaped as (and <mental disorder> (or <red-box items>)) at Urgent, which is what the house standard asks for and what 'Give urgent attention' justifies. 'Mental disorder' (74732009) exists and is the SNOMED synonym for 'mental illness'. The only reservation is anchoring: the check task's due_to is a bare clinical_finding of a disorder concept, which is neither a common symptom nor a warning sign, so the task fires only if someone records 'Mental disorder' as a finding rather than as an active condition (see rule_level_problems).",
+      "evidence": [
+        "Check for urgent risks in the mentally ill patient needing admission :: (clinical_finding (snomed_concept \"Mental disorder\" \"disorder\"))",
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (and (clinical_finding (snomed_concept \"Mental disorder\" \"disorder\")) (or ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-39cb50d9",
+      "scope": "borderline",
+      "scope_reason": "'Death' as a consequence of the mental illness is a red-box criterion, but SNOMED has no 'at risk of death' finding; it can only be expressed through proxies (risk of suicide, risk of self neglect).",
+      "verdict": "partial",
+      "parts_missing": [
+        "death by routes other than self-harm/suicide (e.g. self neglect, refusal of food/fluids, catatonia): 'At increased risk for self neglect' / 'High risk of self neglect' (finding) exist and are not used"
+      ],
+      "problem": "Death by suicide is covered by 'At increased risk for suicide', and death by self-injury by 'At increased risk of self-injurious behavior' (whose child 'At increased risk for deliberate self harm' also matches). Death from the illness itself through self neglect is not covered by any evidence item.",
+      "evidence": [
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"At increased risk for suicide\" \"finding\"))",
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p158-108e7146",
+      "scope": "borderline",
+      "scope_reason": "'Irreversible health problem/s' caused by the mental illness is a red-box criterion with no direct SNOMED finding; the nearest representable proxies are 'At increased risk for self neglect' / 'High risk of self neglect' (finding) or 'General health deterioration' (finding).",
+      "verdict": "missing",
+      "parts_missing": [
+        "irreversible health problem/s (no evidence item in the check_for or the priority rule approximates it)"
+      ],
+      "problem": "Not encoded at all. The rule description also drops it ('at risk of harm or property damage'), so one of the four red-box consequences has no path to Urgent. A patient whose psychosis is leading to dangerous self neglect, with no harm-to-others or suicide risk recorded, would not be prioritised.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p158-1c874001",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: serious harm to self, serious harm to others.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Part 'harm to self': 'At increased risk of self-injurious behavior' plus 'At increased risk for suicide' (the two are siblings under 'Finding of increased risk level', not parent/child, so listing both is needed and is done). Part 'harm to others': 'High risk of harm to others' matches the page's 'serious'; its sibling 'Moderate risk of harm to others' is rightly excluded. All four concepts verified to exist.",
+      "evidence": [
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))",
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"At increased risk for suicide\" \"finding\"))",
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"High risk of harm to others\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-af4925f8",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: serious damage to or loss of property.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'At increased risk for destructive behavior to property' (438552009) exists and is the closest concept; 'loss of property' has no separate concept and is reasonably folded in.",
+      "evidence": [
+        "Urgent: mentally ill patient at risk of harm or property damage if referral delayed :: (clinical_finding (snomed_concept \"At increased risk for destructive behavior to property\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-775ddb5a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header for the management list; 'with or without patient consent' is a legal instruction, not a criterion.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-43f3daa2",
+      "scope": "borderline",
+      "scope_reason": "Mostly management (restraints, MHCA 48) and a cross-reference to page 35, but the condition 'aggressive/disruptive' is a representable finding ('Aggressive behavior' is a house warning sign; 'Disruptive behavior' (finding) exists) and is itself a sign of the harm-to-others risk in the red box.",
+      "verdict": "missing",
+      "parts_missing": [
+        "aggressive/disruptive behaviour is not in the check_for and does not contribute to the Urgent evaluation"
+      ],
+      "problem": "Low consequence: page 35 is the aggressive/disruptive page and presumably carries its own rules, and the restraint/MHCA 48 instructions are management by design. But an aggressive mentally ill patient reaches Urgent here only if the clinician separately records 'High risk of harm to others'.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p158-211eeff1",
+      "scope": "borderline",
+      "scope_reason": "A conditional ('not alert, fully conscious or physically stable') that routes to page 36; the condition is representable (reduced consciousness is a routine vital/warning sign) but the action is a cross-reference, so cross_reference_only is a defensible reading.",
+      "verdict": "missing",
+      "parts_missing": [
+        "not alert / not fully conscious / not physically stable as a check or trigger"
+      ],
+      "problem": "Not encoded. Page 36 (confusion/delirium with underlying causes) should carry this logic, so the loss here is small, but nothing in this file points a mentally ill patient with altered consciousness anywhere.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p158-e14a442b",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Complete MHCA 01 and admit for 24-hour assessment: a manage task, excluded by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-487d2616",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Request police assistance / MHCA 22: management. ('Likely to abscond' would map to 'At increased risk of elopement from healthcare setting' (finding) if ever needed.)",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-4b61e168",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Patient able to give informed consent' is the first branch of the legal-status flowchart (voluntary/assisted/involuntary user). Its outcome is a legal category, not a diagnosis or priority, and SNOMED has no capacity-to-consent finding (searched 'capacity to consent', 'informed consent').",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-770540bb",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Patient incapable of giving informed consent' branch; same reasoning as the 'able' branch.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-9fa51509",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Patient does not refuse' (voluntary-user branch); legal routing.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-46ba7d1e",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Patient refuses treatment/admission' and 'does not refuse' (assisted-user branch); legal routing with no diagnostic content.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-8190a7bf",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "The involuntary-user question ('may result in patient seriously harming self/others or serious damage to his/her financial interests/reputation'). The harm part is the same criterion as the red box and is already encoded there; 'financial interests/reputation' has no SNOMED finding (searched 'financial'); the outcome is a legal category (involuntary user), not a priority or diagnosis.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p158-844d97f2",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "No / Yes outcomes of the involuntary-user question.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p158-19ce77a1",
+    "p158-f5e45a76",
+    "p158-7cd1917c",
+    "p158-dcfa873b",
+    "p158-067b6f93",
+    "p158-6609142f",
+    "p158-9358d139",
+    "p158-e81e7875",
+    "p158-4c45d4ab",
+    "p158-bd2c3e46",
+    "p158-c9b16e63",
+    "p158-b717d491",
+    "p158-3f30ede3",
+    "p158-95e4f9a7",
+    "p158-9e686eb6",
+    "p158-42f344c0",
+    "p158-d3a36dde",
+    "p158-d22b5c83",
+    "p158-01d751d8",
+    "p158-0654f547"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+      "problem": "The red box lists four consequences (death, irreversible health problem/s, serious harm to self/others, serious damage to/loss of property). The rule encodes harm and property fully, death only via suicide/self-injury, and 'irreversible health problem/s' not at all. The rule title itself omits the first two. Adding 'At increased risk for self neglect' (or 'High risk of self neglect') as a fifth 'or' item and check_for entry would cover the realistic route from mental illness to death or irreversible harm that is not self-harm.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent risks in the mentally ill patient needing admission",
+      "problem": "The task's due_to is (clinical_finding (snomed_concept \"Mental disorder\" \"disorder\")). 'Mental disorder' is not a common symptom or warning sign, and a mental illness is more likely to be recorded as a diagnosis/active condition than as a clinical finding, so the task may never fire for the patients the page is about. The house standard accepts a natural clinical_finding as a fallback trigger but expects the gap to be noted; an additional anchor (e.g. a possible diagnosis produced by the mental-health symptom pages, or a warning sign such as Aggressive behavior) would make it live.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent risks in the mentally ill patient needing admission",
+      "problem": "The red box's two conditional lines ('If aggressive/disruptive -> 35', 'If not alert, fully conscious or physically stable -> 36') name findings that are representable and that the page uses to route the patient, but neither appears in the check_for. The other pages presumably cover them, so this is a minor loss, but the check list is not the complete red-box list the briefing asks for.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The rules encode the red box as one check task and one Urgent priority evaluation with the right shape and verified SNOMED concepts, and the harm-to-self/others and property criteria are correct. The most consequential gap is that two of the four red-box consequences, death (beyond suicide/self-injury) and irreversible health problem/s, have no evidence item, although 'At increased risk for self neglect' would approximate both. Secondarily, the task is anchored only to a bare 'Mental disorder' clinical_finding, which is not a recorded symptom or warning sign, so the rules may not fire in practice; the consent/refusal flowchart is legal routing and correctly left unencoded."
+}

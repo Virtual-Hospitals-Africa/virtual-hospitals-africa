@@ -1,0 +1,360 @@
+{
+ "edition": "2026",
+ "page": 73,
+ "lisp_file": "73-abnormal-vaginal-bleeding.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p73-21042048"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "high",
+   "note": "Header complaint. 'Bleeding from vagina' is the parent of 'Abnormal vaginal bleeding', so descendants (abnormal, profuse, heavy) also match."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p73-16a7fd6c"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "'Pregnancy' (finding) is the exact-match concept for 'Pregnant'; 'Pregnant' itself does not exist."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "Recent delivery read as the postpartum state; alternative 'Delivery finding' + Recent qualifier."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "miscarriage",
+   "confidence": "medium",
+   "note": "Miscarriage with Recent qualifier, from 'Recent delivery/miscarriage/...'."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "termination of pregnancy",
+   "confidence": "medium",
+   "note": "Termination of pregnancy with Recent qualifier; 'induced' is SNOMED's term for TOP."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock finding, half of the page's 'Shock/SBP < 80' or (decision for all pages)."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "Pallor",
+   "confidence": "medium",
+   "note": "No plain 'Pallor' finding in SNOMED; 'Pallor of skin of face' is the form already used in VHA's vocabulary. Alternative 'Pale complexion'."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom; inside the pallor and-group."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "weakness",
+   "confidence": "medium",
+   "note": "'Weakness' does not exist; 'Asthenia' is the suggested exact-match concept for general weakness. Alternative 'Generalized muscle weakness'."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Chest pain warning sign concept; inside the pallor and-group."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "Sexual assault",
+   "confidence": "medium",
+   "note": "Parent of 'Victim of rape' and sexual-assault victim findings; event concepts ('Sexual assault' event) were not used because clinical_finding takes a finding."
+  },
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "rape",
+   "confidence": "high",
+   "note": "Explicit for 'and/or rape'; also a descendant of Victim of sexual aggression."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p73-21042048"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "high",
+   "note": "Header complaint. 'Bleeding from vagina' is the parent of 'Abnormal vaginal bleeding', so descendants (abnormal, profuse, heavy) also match."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p73-16a7fd6c"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "'Pregnancy' (finding) is the exact-match concept for 'Pregnant'; 'Pregnant' itself does not exist."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "Recent delivery read as the postpartum state; alternative 'Delivery finding' + Recent qualifier."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "miscarriage",
+   "confidence": "medium",
+   "note": "Miscarriage with Recent qualifier, from 'Recent delivery/miscarriage/...'."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "termination of pregnancy",
+   "confidence": "medium",
+   "note": "Termination of pregnancy with Recent qualifier; 'induced' is SNOMED's term for TOP."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock finding, half of the page's 'Shock/SBP < 80' or (decision for all pages)."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Systolic BP strictly < 80 mmHg, routine vital."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "Pallor",
+   "confidence": "medium",
+   "note": "No plain 'Pallor' finding in SNOMED; 'Pallor of skin of face' is the form already used in VHA's vocabulary. Alternative 'Pale complexion'. Pallor is ANDed with any of the following items as the page's 'with' reads."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "pulse ≥ 100",
+   "confidence": "high",
+   "note": "Pulse >= 100 bpm, inside the pallor and-group."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "RR >= 30 bpm (red box says >= 30; the footnote says > 30, box wins here)."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom; inside the pallor and-group."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "weakness",
+   "confidence": "medium",
+   "note": "'Weakness' does not exist; 'Asthenia' is the suggested exact-match concept for general weakness. Alternative 'Generalized muscle weakness'."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Chest pain warning sign concept; inside the pallor and-group."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "Sexual assault",
+   "confidence": "medium",
+   "note": "Parent of 'Victim of rape' and sexual-assault victim findings; event concepts ('Sexual assault' event) were not used because clinical_finding takes a finding."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "rape",
+   "confidence": "high",
+   "note": "Explicit for 'and/or rape'; also a descendant of Victim of sexual aggression."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p73-37cf32fe",
+   "element_id": "p73-rb1-e06",
+   "text": "Hb < 6",
+   "reason_category": "not_representable",
+   "reason": "Hb < 6: haemoglobin has no observable/unit in the language. Omitted; the priority rule fires less often than the page intends (Hb < 6 alone does not trigger Urgent)."
+  },
+  {
+   "element_key": "p73-2015f372",
+   "element_id": "p73-rb1-e08",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management part of the red box; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p73-72251281",
+   "element_id": "p73-rb1-e09",
+   "text": "If shock/systolic BP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV sodium chloride for shock/SBP < 80: management, not encoded."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Footnote 1 'shock likely'",
+   "decision": "Not encoded as a probable Shock diagnosis; the red box uses 'Shock/SBP < 80' as written (all-pages decision: no shared shock definition). Footnote accounted as outside/unused.",
+   "alternatives": "A probable Shock rule from SBP<80, pulse>=100, RR>30, confusion, weakness; the footnote does not say whether one or all are needed.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pallor grouping",
+   "decision": "Pallor AND (pulse>=100 or RR>=30 or dizziness or weakness or chest pain).",
+   "alternatives": "Each item as an independent urgent criterion.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Recent delivery",
+   "decision": "'Postpartum state' finding.",
+   "alternatives": "'Delivery finding' with Recent qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the box says; no escalation for pregnancy (page points to 177).",
+   "alternatives": "Very urgent for pregnancy with bleeding.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Non-urgent approach section",
+   "decision": "Not encoded: bleeding-type classification, Hb<12 'likely anaemia' (not representable), referrals and treatments are management/routing; no rule would consume bleeding-type findings.",
+   "alternatives": "Check-for items for bleeding types, which would be checked for but never used.",
+   "confidence": "medium"
+  }
+ ]
+}

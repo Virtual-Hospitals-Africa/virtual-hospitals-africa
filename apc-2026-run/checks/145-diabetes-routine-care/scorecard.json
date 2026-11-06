@@ -1,0 +1,974 @@
+{
+ "page": 145,
+ "slug": "145-diabetes-routine-care",
+ "validation_ok": true,
+ "builder_agreement": 0.917,
+ "elements": 44,
+ "elements_agreed": 35,
+ "claims": 55,
+ "claims_agreed": 35,
+ "queue": 65,
+ "queue_by_priority": {
+  "low": 22,
+  "medium": 39,
+  "high": 4
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p145-6e70ecd4",
+   "id": "p145-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-7132e5e1",
+   "id": "p145-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-adb2a697",
+   "id": "p145-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-52324c85",
+   "id": "p145-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-0608cd10",
+   "id": "p145-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-bf64ad64",
+   "id": "p145-rb1-e06",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p145-b057bf1b",
+   "id": "p145-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-9c62f7c4",
+   "id": "p145-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-4e094283",
+   "id": "p145-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-64addeac",
+   "id": "p145-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-b8c80000",
+   "id": "p145-rb1-e11",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p145-6fb0bf73",
+   "id": "p145-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-c97d0963",
+   "id": "p145-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-f9bc01c9",
+   "id": "p145-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-563b6113",
+   "id": "p145-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-8da6d34b",
+   "id": "p145-rb1-e16",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p145-9fd55114",
+   "id": "p145-rb1-e17",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-a4f7ec0f",
+   "id": "p145-rb1-e18",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p145-d94dcc12",
+   "id": "p145-rb1-e19",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p145-d9427373",
+   "id": "p145-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-3375b06b",
+   "id": "p145-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-9f13ca82",
+   "id": "p145-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-5099b69b",
+   "id": "p145-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-76558c40",
+   "id": "p145-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-08132150",
+   "id": "p145-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p145-9f8a6694",
+   "id": "p145-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-f133e4cb",
+   "id": "p145-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-20bd642d",
+   "id": "p145-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-119863da",
+   "id": "p145-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-015a8fdd",
+   "id": "p145-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p145-00d2a881",
+   "id": "p145-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-4c6adb65",
+   "id": "p145-out-e13",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "partial": 2
+   }
+  },
+  {
+   "key": "p145-c205dd95",
+   "id": "p145-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-57d30f0f",
+   "id": "p145-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-6d403d0e",
+   "id": "p145-out-e16",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-5d1fc8dc",
+   "id": "p145-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-27916db7",
+   "id": "p145-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-318b4584",
+   "id": "p145-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-ad1acddd",
+   "id": "p145-out-e20",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-a4479303",
+   "id": "p145-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-ea6db2cb",
+   "id": "p145-out-e22",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-6df89a82",
+   "id": "p145-out-e23",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p145-fd9cb31c",
+   "id": "p145-out-e24",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p145-e2b497d1",
+   "id": "p145-out-e25",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent diabetes conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Measure waist circumference in routine diabetes care",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Measure waist circumference in routine diabetes care",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: diabetes with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  }
+ ]
+}

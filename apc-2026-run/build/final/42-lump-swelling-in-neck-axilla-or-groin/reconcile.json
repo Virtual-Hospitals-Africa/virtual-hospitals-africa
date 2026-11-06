@@ -1,0 +1,95 @@
+{
+ "page": 42,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: separate tasks triggered by (Mass of neck) and (Mass of axilla)  vs  B: none (their checks sit in the main 'Mass of body region' task)",
+   "choice": "neither",
+   "final_expr": "",
+   "reason": "The page's approach box is one examination of 'neck, inguinal area, axillae and perineum'; B's single task checks the same findings from the 'Lump' complaint, so per-site tasks add no logic from the page.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (Cough impulse in inguinal canal)  vs  B: (Cough impulse of mass present) [main task and red-box task]",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+   "reason": "The page describes the lump itself ('lump in groin that gets bigger when ... coughing'), which B's concept names; A's concept is about the inguinal canal. Neither covers standing/passing stool.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (Obstipation)  vs  B: (Constipation) + (Unable to break wind)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Constipation\" \"finding\")); (clinical_finding (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "reason": "'No stools or flatus/wind' names two things, and B's two findings match 'stools' and 'flatus/wind'; Obstipation's SNOMED meaning (severe constipation vs absolute constipation) does not clearly say 'no flatus'. Neither concept says 'no stools' exactly.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (Recurrent abscess) with finding_site Axillary region / Inguinal region / Perineal structure  vs  B: (Recurrent abscess), (Abscess of axilla/groin/perineum), (Pain in axilla), (Inguinal pain), (Perineal pain)",
+   "choice": "B",
+   "final_expr": "B's seven findings",
+   "reason": "The page says 'recurrent, painful abscesses in axilla, groin or perineum'; B encodes 'painful' through site pain, which A drops (A's notes say its rule fires more often), and uses precoordinated site abscess concepts.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (Skin lesion, finding_site Anal structure) in the mpox check  vs  B: absent",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\") (finding_site (snomed_concept \"Anal structure\" \"body structure\")))",
+   "reason": "The page lists 'lesion/s of skin/genitals/anus/rectum/mouth/eyes'; B left anus out for lack of a precoordinated concept, while A's postcoordinated form resolves.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "Hernia rules: A: (Cough impulse in inguinal canal), (>= (onset Obstipation) 24 h)  vs  B: (Cough impulse of mass present), (and (>= (onset Constipation) 24 h) (>= (onset Unable to break wind) 24 h))",
+   "choice": "B",
+   "final_expr": "as B",
+   "reason": "Same reasons as the check_for decisions above: B's concepts name the lump's cough impulse and both 'stools' and 'flatus/wind'.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "Hidradenitis: A: (or Recurrent abscess at each of three sites)  vs  B: (and Recurrent abscess (or (and Abscess of site, Pain at site) x3))",
+   "choice": "B",
+   "final_expr": "as B",
+   "reason": "B carries the page's word 'painful'; A's rule omits it.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "Lymphadenopathy 'none of above': A: (no Cough impulse in inguinal canal), (no Recurrent abscess at each of three sites)  vs  B: (no Cough impulse of mass present), (no Recurrent abscess)",
+   "choice": "B",
+   "final_expr": "as B",
+   "reason": "Kept consistent with the concepts chosen for the hernia and hidradenitis rules, whose absence 'none of above' refers to; B's unsited (no Recurrent abscess) is slightly broader than 'not hidradenitis'.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "Mpox rule: A: includes (Skin lesion, finding_site Anal structure)  vs  B: absent",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\") (finding_site (snomed_concept \"Anal structure\" \"body structure\")))",
+   "reason": "The page lists 'anus' among the lesion sites.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: one rule (Irreducible inguinal hernia)  vs  B: also (Strangulated inguinal hernia) probable, same evidence",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Strangulated inguinal hernia\" \"disorder\") probable)",
+   "reason": "The page says 'incarcerated/strangulated inguinal hernia likely', and SNOMED's Strangulated inguinal hernia is not a descendant of Irreducible inguinal hernia, so only B represents both named diagnoses.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: absent  vs  B: (active_condition Strangulated inguinal hernia)",
+   "choice": "B",
+   "final_expr": "(active_condition (snomed_concept \"Strangulated inguinal hernia\" \"disorder\"))",
+   "reason": "Follows the diagnosis decision: the red box gives urgent attention to an incarcerated or strangulated hernia.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builders passed. Base is builder B; the only change is builder A's anal-lesion condition (Skin lesion with finding_site Anal structure) added to the mpox check task and the possible-mpox rule. Rule descriptions are B's. Remaining questions are B's plus A's still-open questions (cough impulse stand-in) and the two unsettled points. Builder A's three known_issues (no-form finding_site mismatches) do not arise in the final build. Neither build encodes bubo (no SNOMED disorder), the 21-day window or 'unexplained'."
+}

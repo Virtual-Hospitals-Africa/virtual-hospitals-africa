@@ -1,0 +1,169 @@
+{
+  "page": 33,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p33-ae45ef98",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the Urgent priority and the 'any of' structure anchored to the traumatised/abused presenting complaint.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as a single Urgent system_priority_evaluation shaped (and <presenting complaint> (or ...)), matching the house pattern. Presenting complaint is (or Victim of abuse / Victim of psychological trauma), which covers 'traumatised' as well as 'abused'. Urgent is the level the page's wording ('urgent attention') justifies.",
+      "evidence": [
+        "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk :: (system_priority_evaluation ... adult Urgent (and (or (clinical_finding (snomed_concept \"Victim of abuse\" \"finding\")) (clinical_finding (snomed_concept \"Victim of psychological trauma\" \"finding\"))) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p33-ad385df3",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with a time threshold that depends on sex; the language has onset/time_ago and Female/Male findings.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts, all present: (1) sexual assault/rape = Victim of forced sexual activity (exists; child of Victim of sexual abuse), (2) within last 5 days if woman = (and Female (<= (onset ...) (time_ago 5 days))), (3) within last 3 days if man = (and Male (<= (onset ...) (time_ago 3 days))). Direction follows the briefing convention ('<' time_ago N = within the last N). Two caveats, neither an error: a patient with no recorded sex gets no urgent flag for a recent assault (the page gives no default either); and a rape recorded as 'Victim of rape' (a child of Victim of sexual aggression, not of Victim of forced sexual activity) would not match, though the check_for asks the forced-sexual-activity form so the recorded form should match.",
+      "evidence": [
+        "Urgent: traumatised/abused patient ... :: (and (clinical_finding (snomed_concept \"Female\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 5 days)))",
+        "Urgent: traumatised/abused patient ... :: (and (clinical_finding (snomed_concept \"Male\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 3 days)))",
+        "Check for traumatised/abused patient urgent signs and abuse type :: (clinical_finding (snomed_concept \"Victim of forced sexual activity\" \"finding\")) / (clinical_finding (snomed_concept \"Female\" \"finding\")) / (clinical_finding (snomed_concept \"Male\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p33-48769124",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as Traumatic injury (disorder), checked for and used in the Urgent rule. The qualifier 'needing attention' is a clinical judgment the language cannot express; any recorded injury triggers Urgent, which is the safe reading.",
+      "evidence": [
+        "Urgent: traumatised/abused patient ... :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))",
+        "Check for traumatised/abused patient urgent signs and abuse type :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p33-0b08397b",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with four parts.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All four parts present as separate or-branches: suicidal thoughts = Suicidal thoughts (finding); plans = Planning suicide (finding); overdose = Overdose (disorder); self harm = Self-injurious behavior (finding, SNOMED synonym 'self-harm'). All checked for in the task.",
+      "evidence": [
+        "Urgent: traumatised/abused patient ... :: (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\")) / (clinical_finding (snomed_concept \"Planning suicide\" \"finding\")) / (clinical_finding (snomed_concept \"Overdose\" \"disorder\")) / (clinical_finding (snomed_concept \"Self-injurious behavior\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p33-af319d48",
+      "scope": "in_scope",
+      "scope_reason": "First bullet is a 'suspect abuse if ...' criterion list (a 'possible' rule under the house standard); second bullet is management and is ignored here.",
+      "verdict": "partial",
+      "parts_missing": [
+        "examination contradicts history (no SNOMED concept found; probably not_representable, but it is not noted or approximated)",
+        "abuse clear on examination (only reachable if the clinician records Victim of abuse directly; no finding-level evidence)"
+      ],
+      "problem": "The possible rule encodes only 'patient's behaviour seems strange' as Abnormal behavior (finding). 'Patient discloses' is reasonably treated as the clinician recording Victim of abuse itself (the task's trigger). The other two suspicion criteria are absent. Abnormal behavior is a broad concept (parent: Behavior finding) but acceptable for a possible rule whose purpose is to trigger the check_for task.",
+      "evidence": [
+        "Diagnose possible abuse (traumatised/abused patient page) :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible) adult (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")))",
+        "Check for traumatised/abused patient urgent signs and abuse type :: (or (clinical_finding (snomed_concept \"Victim of abuse\" \"finding\")) (clinical_finding (snomed_concept \"Victim of psychological trauma\" \"finding\")) (diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p33-79aa6d72",
+      "scope": "in_scope",
+      "scope_reason": "Three 'X likely' conclusions and one 'consider other types of abuse' conclusion with their criteria: the page's diagnostic core.",
+      "verdict": "error",
+      "parts_missing": [
+        "Physical abuse likely: 'unusual wounds' not encoded (Wound (disorder) exists)",
+        "Emotional/verbal/psychological abuse likely: 'harassment' not encoded (no general victim-of-harassment concept; Victim of bullying and Victim of sexual harassment are the nearest)",
+        "Emotional/verbal/psychological abuse likely: 'being ridiculed/controlled' not encoded",
+        "Emotional/verbal/psychological abuse likely: 'insulted' not encoded (Victim of verbal abuse (finding) exists and covers ridiculed/insulted)",
+        "Consider other types of abuse if 'any other unwelcomed behaviour, manipulation or violation': no possible rule or evidence for it (near-tautological with Victim of abuse, but not noted)"
+      ],
+      "problem": "Bullet 1 (sexual assault/rape likely): correct; probable Victim of sexual aggression from Victim of forced sexual activity. Note the diagnosis concept is a sibling of the evidence under Victim of sexual abuse, not its ancestor, and 'Victim of rape' (finding, child of Victim of sexual aggression) is the page's own word; acceptable. Bullet 2 (physical abuse likely): partial; history of physical assault = Victim of physical assault, old/new scars = Scar (disorder), bruises of different ages = Multiple bruising (finding, the closest available), unusual wounds missing. Bullet 3 (emotional/verbal/psychological abuse likely): ERROR. 'Intimidation' (finding) is a child of 'Aggressive behavior' (finding), i.e. it records the patient as the one intimidating others, not as a victim of intimidation; it is the wrong side of the relationship, and because Aggressive behavior is a warning sign and descendants match in due_to, recording it would also raise the aggressive-behaviour warning on an abuse victim. 'Victim of threats' is the correct victim-side form for 'threatened'; harassment, ridiculed/controlled and insulted are missing although Victim of verbal abuse exists. 'Excessively withdrawn/fearful/anxious' as Severe-qualified Withdrawn behavior / Fearful mood / Anxiety is a reasonable reading. The diagnosis is Victim of emotional abuse only; Victim of verbal abuse and Victim of psychological abuse both exist and the page names all three. Bullet 4 (consider other types of abuse): missing.",
+      "evidence": [
+        "Diagnose probable sexual assault/rape (traumatised/abused patient page) :: (diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") probable) adult (clinical_finding (snomed_concept \"Victim of forced sexual activity\" \"finding\"))",
+        "Diagnose probable physical abuse (traumatised/abused patient page) :: (and (or Victim of abuse / Victim of psychological trauma) (or (clinical_finding (snomed_concept \"Victim of physical assault\" \"finding\")) (clinical_finding (snomed_concept \"Scar\" \"disorder\")) (clinical_finding (snomed_concept \"Multiple bruising\" \"finding\"))))",
+        "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page) :: (diagnosis (snomed_concept \"Victim of emotional abuse\" \"finding\") probable) ... (or (clinical_finding (snomed_concept \"Intimidation\" \"finding\")) (clinical_finding (snomed_concept \"Victim of threats\" \"finding\")) (clinical_finding (snomed_concept \"Withdrawn behavior\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Fearful mood\" \"finding\") (qualifier ...Severe...)) (clinical_finding (snomed_concept \"Anxiety\" \"finding\") (qualifier ...Severe...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p33-fbbfe68c",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Symptoms row: 'ask about injuries (30), genital symptoms (62), if difficulty sleeping (99)' routes to other pages; no diagnosis or priority on this page. Injuries are already covered by the red box.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p33-fdf49565",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Mental health row: 'if stress, anxiety or low mood -> 98' is a pointer to the mental health page.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p33-2d774dd4",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Substance use screen (>= 4 drinks/session, illegal drugs, misused medication -> 165) is a routing question to the substance-use page with no diagnosis or priority on this page. A reviewer could argue it is borderline since it carries a numeric threshold.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p33-3f8d026d",
+    "p33-e38d14e3",
+    "p33-8c8235f3",
+    "p33-0a8c7096",
+    "p33-d8c4df5f",
+    "p33-d368ee91",
+    "p33-d596424b",
+    "p33-db900727",
+    "p33-3c6077d3",
+    "p33-4c9cd5eb",
+    "p33-551f2ad1"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+      "problem": "'Intimidation' (finding) is a direct child of 'Aggressive behavior' (finding): it describes the patient intimidating others, not being intimidated. Used as evidence it records the victim as an aggressor, and since Aggressive behavior is a warning sign and descendants match in due_to, recording it on an abuse victim would also fire the aggressive-behaviour warning. The same check_for item carries the error. No victim-of-intimidation concept exists; 'Victim of threats' (already present) or 'Victim of bullying' are the victim-side substitutes.",
+      "severity": "high"
+    },
+    {
+      "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+      "problem": "Four of the page's eight criteria are not encoded: harassment, ridiculed, controlled, insulted. 'Victim of verbal abuse' (finding) exists and would carry ridiculed/insulted; 'Victim of bullying' (finding) exists for harassment. The diagnosis is only 'Victim of emotional abuse' although 'Victim of verbal abuse' and 'Victim of psychological abuse' both exist and the page names all three.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+      "problem": "'Unusual wounds' is dropped ('Wound' (disorder) exists). Separately, a bare 'Scar' (disorder) is sufficient evidence for a probable physical-abuse diagnosis once Victim of abuse is recorded; the page's 'old/new scars' means scars of mixed age, so any single scar (surgical, old accident) will produce a probable physical abuse diagnosis. 'Multiple bruising' for 'bruises of different ages' is the closest concept but loses the 'different ages' discriminator; neither approximation is flagged.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+      "problem": "Only 'behaviour seems strange' (Abnormal behavior) is encoded from the page's four suspicion criteria; 'examination contradicts history' and 'abuse clear on examination' are absent, and the fourth bullet of the Abuse row ('consider other types of abuse' on unwelcomed behaviour, manipulation or violation) has no possible rule.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+      "problem": "Diagnosis concept 'Victim of sexual aggression' is a sibling of the evidence 'Victim of forced sexual activity' under 'Victim of sexual abuse', not its parent; 'Victim of rape' (finding) is the page's own term and sits under sexual aggression. Not wrong, but the diagnosis/evidence pair is not hierarchically consistent, and a clinician recording 'Victim of rape' directly matches neither this rule nor the Urgent rule's 5/3-day branch.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+      "problem": "The recent-sexual-assault branch requires Female or Male to be recorded; a patient with neither gets no urgent flag for a 2-day-old assault. The page gives no sex-neutral default, so this follows the page, but a fallback (e.g. within 3 days regardless of sex) would be safer.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is fully and correctly encoded as one Urgent rule (sex-dependent 5/3-day window on sexual assault, any injury, suicidal thoughts/plans/overdose/self-harm), and all check_for items are consumed. The serious defect is in the emotional/verbal/psychological abuse rule: 'Intimidation' is an aggressor-side concept under 'Aggressive behavior' (a warning sign), so it records the victim as the intimidator and would raise an aggression warning; the same rule also drops harassment, ridiculed/controlled and insulted although 'Victim of verbal abuse' exists. The physical abuse rule omits 'unusual wounds' and lets any single scar yield a probable physical-abuse diagnosis; the possible rule covers only one of the page's four suspicion criteria."
+}

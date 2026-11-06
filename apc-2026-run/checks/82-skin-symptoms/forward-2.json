@@ -1,0 +1,343 @@
+{
+ "page": 82,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p82-58219e12",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-559819da",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'within the past few hours' time limit on allergen exposure (footnote 1) not encoded",
+    "'common allergens' limited to drug/food/insect; acceptable",
+    "cross-reference to anaphylaxis page 28 not linked (cross-ref only)"
+   ],
+   "problem": "Core logic (sudden skin/swelling AND any of the listed symptoms or allergen exposure) is encoded as possible anaphylaxis plus an Urgent priority evaluation. Only the time window on exposure is lost. BP < 90/60 split into SBP<90 or DBP<60, which is a reasonable reading.",
+   "evidence": [
+    "Diagnose possible anaphylaxis from skin symptoms :: (and (or sudden-onset pruritus/rash/face swelling/tongue swelling) (or Wheezing, Difficulty breathing, SBP<90, DBP<60, Dizziness, Collapse, Abdominal pain, Finding of vomiting, exposure drug/food, insect bite, insect sting))",
+    "Urgent: skin symptoms with features of anaphylaxis :: same and/or structure"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-e1ea9141",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Purple/red -> Purpuric rash or Erythematous rash; neck stiffness, drowsy, confusion, temp>=38, headache each present as 'or'; probable; Urgent priority via active_condition. Minor: 'Acute confusion' narrower than 'confused'.",
+   "evidence": [
+    "Diagnose probable meningococcal disease from purple/red rash :: (and (or Purpuric rash, Erythematous rash) (or Stiff neck, Drowsy, Acute confusion, (>= Body temperature 38), Headache))",
+    "Urgent: skin symptoms with meningococcal disease likely :: (active_condition Meningococcal infectious disease)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-721e927e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Diffuse rash -> Generalized rash; within 3 months of new medication -> (<= (onset New medication commenced) (time_ago 3 months)); any-of list; probable; Urgent. 'Generalized rash' is a reasonable but not identical match for 'diffuse'; 'New medication commenced' and the onset direction should be confirmed against the grammar by a SNOMED/grammar reviewer.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (and (clinical_finding Generalized rash) (<= (onset (clinical_finding New medication commenced)) (time_ago 3 months)) (or ...))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p82-467d5cd4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Shock and SBP<80 both present.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (clinical_finding Shock)",
+    "Diagnose probable serious drug reaction with diffuse rash :: (< SBP 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-5d164c9a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Mouth/eyes/genitals as Eruption at site; 'involves' is loosely captured by Eruption, acceptable.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (clinical_finding Eruption (finding_site Oral cavity structure|Structure of eye proper|Genital structure))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-0e285a57",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (>= (measurement Body temperature \u00b0C) 38)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-9392cef8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Raw areas mapped to Denuded skin, reasonable.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: Blister of skin; Peeling of skin; Denuded skin"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-56bf9a5c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (clinical_finding Abdominal pain)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-fa78a408",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (clinical_finding Jaundice)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-360b4c8d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: Finding of vomiting; Diarrhea"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-faa90baa",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Body pain' as Generalized aches and pains; fine.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: Generally unwell; Malaise; Fatigue; Generalized aches and pains"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-736469cb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Cross-reference to page 23 not needed.",
+   "evidence": [
+    "Diagnose probable serious drug reaction with diffuse rash :: (clinical_finding Difficulty breathing)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p82-b7760b53",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-ea6ba022",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-de931597",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-05f5a05b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-762912ce",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-d769c287",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-ad060a66",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-6aaf9831",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-7267e3d3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-16c837b5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-eba45078",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Consider mpox' encoded as possible. 'Unexplained' not representable. Skin lesion site list: 'skin' is covered by Skin lesion; the cough tail is in element cfa294a7 and is encoded.",
+   "evidence": [
+    "Diagnose possible mpox from skin symptoms :: (and (or Eruption of skin, Skin lesion, Lesion at genital/anal/rectum/oral cavity/eye) (or Headache, Backache, Generalized aches and pains, Lymphadenopathy, (> Temp 38.5), Fatigue, Sore throat, Nasal congestion, Cough))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-cfa294a7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Continuation of mpox criteria and the page 40 link; encoded.",
+   "evidence": [
+    "Diagnose possible mpox from skin symptoms :: (clinical_finding Cough)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-79c28aa1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (HIV testing advice, cross reference to page 124)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p82-caaf8566",
+   "scope": "borderline",
+   "scope_reason": "Footnotes define shock and allergens",
+   "verdict": "partial",
+   "parts_missing": [
+    "footnote 2 definition of shock (pulse>=100, RR>30, decreased consciousness, weakness) not encoded; Shock is a bare finding",
+    "footnote 1 time window"
+   ],
+   "problem": "Footnote 2 is a criterion for 'shock'; rules rely on a bare Shock finding plus SBP<80, which loses nothing the language can't hold but the pulse/RR/consciousness definition is not available. Acceptable in practice.",
+   "evidence": [
+    "Shock finding only"
+   ],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p82-766ff29d",
+  "p82-46d89599",
+  "p82-70adf261",
+  "p82-512288b5",
+  "p82-b5742e50",
+  "p82-ccb40bdc",
+  "p82-9608442f",
+  "p82-473730b1",
+  "p82-50d92a86",
+  "p82-f9b6c96d",
+  "p82-514f09ab",
+  "p82-7c682bbb",
+  "p82-45666d2a",
+  "p82-7e53adac"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent skin symptom conditions",
+   "problem": "check_for omits measurements the diagnosis rules use (SBP<90, DBP<60, SBP<80, temp>=38) and the anaphylaxis, meningococcal and drug-reaction items are merged into a single task with no separation between the three boxes' triggers; also check_for includes 'Generalized rash' twice in different themes (harmless duplication).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "problem": "Relies on onset comparison (<= onset (time_ago 3 months)) and 'New medication commenced' as a finding; the briefing's convention ('<' means within) suggests '<' would be the canonical form, and 'Adverse reaction caused by drug' is a generic concept for what the page calls serious drug reaction (SJS/TEN/DRESS type). Verify in the VHA test and SNOMED.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "problem": "Duplicates the diagnosis criteria instead of using active_condition on Anaphylaxis like the other two priority rules; inconsistent but consistent with the gold file. The Urgent priority fires on a possible (not probable) anaphylaxis, which matches 'check for anaphylaxis'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "problem": "Page 'unexplained rash' and the HIV testing advice ('extensive, recurrent or difficult to treat') are not captured; both are not representable or management. No priority evaluation exists for non-urgent route, which is correct.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box's three diagnostic blocks (anaphylaxis possible, meningococcal probable, serious drug reaction probable) and the mpox consideration are all encoded with matching thresholds and logic, with Urgent priority rules; management items are out of scope by design. The most consequential uncertainty is the drug-reaction rule: the onset time comparison direction/operator and the generic 'Adverse reaction caused by drug' and 'Generalized rash' concepts for 'serious drug reaction' and 'diffuse rash'. Minor losses are the allergen exposure time window, shock footnote definition, and 'unexplained' qualifier."
+}

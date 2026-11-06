@@ -1,0 +1,249 @@
+{
+ "page": 17,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only \"no pulse\"; Cardiac arrest is a broader diagnosis not stated. Absent pulse alone is faithful.",
+   "fix": "Drop Cardiac arrest, keep Absent pulse",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says plain \"Thirst\"; concept implies water deprivation cause",
+   "fix": "(snomed_concept \"Thirst finding\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for reversible causes during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only \"no pulse\"; Cardiac arrest is a broader diagnosis not stated. Absent pulse alone is faithful.",
+   "fix": "Drop Cardiac arrest, keep Absent pulse",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only \"no pulse\"; Cardiac arrest is a broader diagnosis not stated. Absent pulse alone is faithful.",
+   "fix": "Drop Cardiac arrest, keep Absent pulse",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says plain \"Thirst\"; concept implies water deprivation cause",
+   "fix": "(snomed_concept \"Thirst finding\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "imprecise",
+   "reason": "\"BP < 90/60\" read as systolic<90 OR diastolic<60 split in two; page does not say which; likely meant both/either ambiguously",
+   "fix": "Consider systolic<90 only or confirm intended logic",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "imprecise",
+   "reason": "Same as systolic: \"BP < 90/60\" split into OR of components",
+   "fix": "Confirm intended logic",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable dehydration during CPR",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Emergency: no pulse, start CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only \"no pulse\"; Cardiac arrest is a broader diagnosis not stated. Absent pulse alone is faithful.",
+   "fix": "Drop Cardiac arrest, keep Absent pulse",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Emergency: no pulse, start CPR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for reversible causes during CPR",
+   "verdict": "problem",
+   "problem": "Page's 'Look for and manage possible cause' also lists trauma/diarrhoea/vomiting/dehydration, glucose <3 (<4 diabetes), temperature <=35C, overdose/poisoning; only tension pneumothorax and dehydration signs encoded. Also check_for items are sign lists, not the causes themselves. Cardiac arrest trigger not on page.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable dehydration during CPR",
+   "verdict": "problem",
+   "problem": "BP<90/60 split into systolic OR diastolic; footnote 2 defines dehydration signs, thirst concept narrowed to water deprivation. Cardiac arrest trigger unsupported.",
+   "severity": "low"
+  },
+  {
+   "rule": "Emergency: no pulse, start CPR",
+   "verdict": "ok",
+   "problem": "Header 'If patient has no pulse' supports Emergency; Cardiac arrest disjunct is extra but harmless.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Rule logic largely matches the page, but the 'Cardiac arrest' disjunct is not stated (page says only no pulse), thirst is narrowed to a water-deprivation concept, and BP<90/60 is split into an OR. The page's other reversible-cause branches (hypovolaemia from trauma/GI loss, hypoglycaemia, hypothermia, poisoning) are not encoded."
+}

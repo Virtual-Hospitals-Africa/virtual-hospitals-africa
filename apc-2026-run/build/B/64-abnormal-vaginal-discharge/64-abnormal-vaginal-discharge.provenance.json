@@ -1,0 +1,999 @@
+{
+ "edition": "2026",
+ "page": 64,
+ "lisp_file": "64-abnormal-vaginal-discharge.lisp",
+ "conditions": [
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p64-012bc672"
+   ],
+   "quote": "vaginal discharge",
+   "confidence": "high",
+   "note": "Trigger: presenting complaint from the box header."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "'Postpartum state' chosen for recent delivery; 'Delivery finding' + Recent was the alternative."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "TOP",
+   "confidence": "medium",
+   "note": "TOP = induced termination of pregnancy, with the 'Recent' qualifier for the page's 'Recent'."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "miscarriage",
+   "confidence": "medium",
+   "note": "With 'Recent' qualifier for the page's 'Recent'."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "'Pregnancy' (finding), the form VHA's rules already use."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "missed",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "overdue period",
+   "confidence": "medium",
+   "note": "No 'overdue period' concept; 'Menstrual period late' is the nearest exact concept."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p64-ac797145"
+   ],
+   "quote": "Abnormal vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p64-294e2920"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock (disorder) as one arm of the page's Shock/SBP < 80; footnote definition not imported (all-pages decision)."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "element_keys": [
+    "p64-f27f0a5a"
+   ],
+   "quote": "Abdominal mass",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "Peritonitis",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "guarding",
+   "confidence": "high",
+   "note": "Listed signs of peritonitis are encoded as alternatives alongside Peritonitis."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "rigidity",
+   "confidence": "high",
+   "note": "Listed sign of peritonitis."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "rebound tenderness",
+   "confidence": "high",
+   "note": "Listed sign of peritonitis."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+   "element_keys": [
+    "p64-e7d1bddd"
+   ],
+   "quote": "sexually active",
+   "confidence": "medium",
+   "note": "'in the last 3 months' window not representable (onset of 'Sexually active' is not the date of last activity)."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p64-8d9fbcbf"
+   ],
+   "quote": "lower abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\"))",
+   "element_keys": [
+    "p64-8d9fbcbf"
+   ],
+   "quote": "pain on moving the cervix",
+   "confidence": "high",
+   "note": "Pain on moving the cervix = cervical excitation tenderness; 'Cervical excitation present' (finding)."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+   "element_keys": [
+    "p64-bac7bfa8"
+   ],
+   "quote": "discharge itchy",
+   "confidence": "medium",
+   "note": "Itchy discharge encoded as 'Pruritus of vagina'; no itchy-discharge concept."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "vulva red",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "scratched",
+   "confidence": "medium",
+   "note": "No precoordinated 'scratched vulva'; Scratch marks with finding_site Vulval structure (verified). 'Abrasion of vulva' rejected as traumatic."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "inflamed",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cervix uteri structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness",
+   "confidence": "medium",
+   "note": "Erythema with finding_site Cervix uteri structure; no precoordinated concept."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cervix uteri structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness/swelling",
+   "confidence": "medium",
+   "note": "Swelling with finding_site Cervix uteri structure; quote spans 'cervical' for the site."
+  },
+  {
+   "rule": "Check for abnormal vaginal discharge danger signs and syndromic findings",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical discharge\" \"finding\"))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness/swelling/discharge",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-8d9fbcbf"
+   ],
+   "quote": "sexually active in the last 3 months? Yes",
+   "confidence": "medium",
+   "note": "Yes branch; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-8d9fbcbf",
+    "p64-a443e992"
+   ],
+   "quote": "lower abdominal pain or pain on moving the cervix? No to both",
+   "confidence": "high",
+   "note": "'No to both' encoded as explicit (no …) of each."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-8d9fbcbf",
+    "p64-a443e992"
+   ],
+   "quote": "lower abdominal pain or pain on moving the cervix? No to both",
+   "confidence": "high",
+   "note": "'No to both' encoded as explicit (no …) of each."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-f089455c"
+   ],
+   "quote": "sexually active in the last 3 months? No",
+   "confidence": "medium",
+   "note": "No branch as (no Sexually active): needs an explicit No; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-cd43913b",
+    "p64-6d6a3af5"
+   ],
+   "quote": "Is there pain on moving the cervix? No",
+   "confidence": "high",
+   "note": "BV path: explicit no to pain on moving the cervix."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cervix uteri structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness",
+   "confidence": "medium",
+   "note": "Erythema at cervix site."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cervix uteri structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness/swelling",
+   "confidence": "medium",
+   "note": "Swelling at cervix site."
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical discharge\" \"finding\"))",
+   "element_keys": [
+    "p64-6d6a3af5"
+   ],
+   "quote": "cervical redness/swelling/discharge",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable cervicitis (vaginal discharge approach)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of cervix\" \"disorder\") probable)",
+   "element_keys": [
+    "p64-bac7bfa8",
+    "p64-ee632b2a"
+   ],
+   "quote": "Treat for cervicitis",
+   "confidence": "medium",
+   "note": "'Treat for X' node encoded as probable X, as in the gold standard (Treat for anaphylaxis). 'Cervicitis' FSN is 'Inflammation of cervix'."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-8d9fbcbf"
+   ],
+   "quote": "sexually active in the last 3 months? Yes",
+   "confidence": "medium",
+   "note": "Yes branch; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-8d9fbcbf",
+    "p64-a443e992"
+   ],
+   "quote": "lower abdominal pain or pain on moving the cervix? No to both",
+   "confidence": "high",
+   "note": "'No to both' encoded as explicit (no …) of each."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-8d9fbcbf",
+    "p64-a443e992"
+   ],
+   "quote": "lower abdominal pain or pain on moving the cervix? No to both",
+   "confidence": "high",
+   "note": "'No to both' encoded as explicit (no …) of each."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+   "element_keys": [
+    "p64-bac7bfa8"
+   ],
+   "quote": "discharge itchy",
+   "confidence": "medium",
+   "note": "Itchy discharge as 'Pruritus of vagina'."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-bac7bfa8"
+   ],
+   "quote": "vulva red",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-bac7bfa8"
+   ],
+   "quote": "scratched",
+   "confidence": "medium",
+   "note": "Scratch marks at vulva."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-bac7bfa8"
+   ],
+   "quote": "inflamed",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-f089455c"
+   ],
+   "quote": "sexually active in the last 3 months? No",
+   "confidence": "medium",
+   "note": "No branch as (no Sexually active): needs an explicit No; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "vulva red",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "scratched",
+   "confidence": "medium",
+   "note": "Scratch marks at vulva."
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\"))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "inflamed",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable vaginal candidiasis (vaginal discharge approach)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Candidiasis of vagina\" \"disorder\") probable)",
+   "element_keys": [
+    "p64-df255f4a",
+    "p64-54627d3c"
+   ],
+   "quote": "Treat for vaginal candidiasis",
+   "confidence": "medium",
+   "note": "'Treat for' node as probable; also the 'Add treatment for vaginal candidiasis' node on the sexually-active branch."
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-f089455c"
+   ],
+   "quote": "sexually active in the last 3 months? No",
+   "confidence": "medium",
+   "note": "No branch as (no Sexually active): needs an explicit No; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis (vaginal discharge approach)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Bacterial vaginosis\" \"disorder\") probable)",
+   "element_keys": [
+    "p64-5979723c"
+   ],
+   "quote": "Treat for bacterial vaginosis",
+   "confidence": "medium",
+   "note": "'Treat for' node as probable. 'Continue bacterial vaginosis treatment' is the same diagnosis."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-8d9fbcbf"
+   ],
+   "quote": "sexually active in the last 3 months? Yes",
+   "confidence": "medium",
+   "note": "Yes branch; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\"))",
+   "element_keys": [
+    "p64-c434c1b6"
+   ],
+   "quote": "Is there pain on moving the cervix?",
+   "confidence": "high",
+   "note": "Yes to pain on moving the cervix (reached via 'Yes to either'); CMT alone implies 'yes to either'."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-f089455c"
+   ],
+   "quote": "sexually active in the last 3 months? No",
+   "confidence": "medium",
+   "note": "No branch as (no Sexually active): needs an explicit No; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-f089455c"
+   ],
+   "quote": "No: is discharge curd-like or are vulva red, scratched or inflamed?",
+   "confidence": "medium",
+   "note": "No branch: explicit (no …) of each vulval sign; 'curd-like' has no SNOMED concept so its absence is not required."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\"))",
+   "element_keys": [
+    "p64-cd43913b"
+   ],
+   "quote": "Is there pain on moving the cervix?",
+   "confidence": "high",
+   "note": "BV path, Yes branch."
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge approach)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Female pelvic inflammatory disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p64-d8342898"
+   ],
+   "quote": "Treat for lower abdominal pain (LAP) syndrome",
+   "confidence": "medium",
+   "note": "No LAP-syndrome concept; mapped to 'Female pelvic inflammatory disease' (LAP syndrome is the syndromic PID label)."
+  },
+  {
+   "rule": "Diagnose possible UTI (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\"))",
+   "element_keys": [
+    "p64-e7d1bddd",
+    "p64-8d9fbcbf"
+   ],
+   "quote": "sexually active in the last 3 months? Yes",
+   "confidence": "medium",
+   "note": "Yes branch; 3-month window not representable."
+  },
+  {
+   "rule": "Diagnose possible UTI (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p64-8d9fbcbf"
+   ],
+   "quote": "lower abdominal pain",
+   "confidence": "high",
+   "note": "'Yes to either' with no CMT implies lower abdominal pain."
+  },
+  {
+   "rule": "Diagnose possible UTI (vaginal discharge approach)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-c434c1b6"
+   ],
+   "quote": "Is there pain on moving the cervix?",
+   "confidence": "medium",
+   "note": "No branch → 'Assess for UTI'; explicit (no …)."
+  },
+  {
+   "rule": "Diagnose possible UTI (vaginal discharge approach)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Urinary tract infectious disease\" \"disorder\") possible)",
+   "element_keys": [
+    "p64-c317c87c"
+   ],
+   "quote": "Assess for UTI",
+   "confidence": "low",
+   "note": "'Assess for' read as 'consider' → possible. Could instead be a pure cross-reference to page 69."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p64-012bc672"
+   ],
+   "quote": "vaginal discharge",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; 'Vaginal discharge' (finding) also matches descendants such as 'Vaginal discharge problem'."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "'Postpartum state' chosen for recent delivery; 'Delivery finding' + Recent was the alternative."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "TOP",
+   "confidence": "medium",
+   "note": "TOP = induced termination of pregnancy, with the 'Recent' qualifier for the page's 'Recent'."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p64-7559a267"
+   ],
+   "quote": "miscarriage",
+   "confidence": "medium",
+   "note": "With 'Recent' qualifier for the page's 'Recent'."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "'Pregnancy' (finding), the form VHA's rules already use."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "missed",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "element_keys": [
+    "p64-acc65b7c"
+   ],
+   "quote": "overdue period",
+   "confidence": "medium",
+   "note": "No 'overdue period' concept; 'Menstrual period late' is the nearest exact concept."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p64-ac797145"
+   ],
+   "quote": "Abnormal vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p64-64f7d8bf"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital; >= 38 °C as written."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p64-240167df"
+   ],
+   "quote": "Pulse > 100",
+   "confidence": "high",
+   "note": "Routine vital; strictly > 100 bpm as written."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p64-294e2920"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock (disorder) as one arm of the page's Shock/SBP < 80; footnote definition not imported (all-pages decision)."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p64-294e2920"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Second arm of Shock/SBP < 80, strictly < 80 mmHg."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "element_keys": [
+    "p64-f27f0a5a"
+   ],
+   "quote": "Abdominal mass",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "Peritonitis",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "guarding",
+   "confidence": "high",
+   "note": "Listed signs of peritonitis are encoded as alternatives alongside Peritonitis."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "rigidity",
+   "confidence": "high",
+   "note": "Listed sign of peritonitis."
+  },
+  {
+   "rule": "Urgent: abnormal vaginal discharge with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p64-d1597672"
+   ],
+   "quote": "rebound tenderness",
+   "confidence": "high",
+   "note": "Listed sign of peritonitis."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p64-1eb7bdd2",
+   "element_id": "p64-rb1-e10",
+   "text": "Manage and refer urgently for gynaecological/surgical assessment:",
+   "reason_category": "management_step",
+   "reason": "Management header (manage and refer)."
+  },
+  {
+   "element_key": "p64-2b77395b",
+   "element_id": "p64-rb1-e11",
+   "text": "If BP < 90/60, give sodium chloride 0.9% 500mL IV rapidly, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "Fluid resuscitation instruction."
+  },
+  {
+   "element_key": "p64-1d4f83d0",
+   "element_id": "p64-rb1-e12",
+   "text": "Give ceftriaxone2 1g IV (avoid diluting with lidocaine 1%) and metronidazole3 400mg orally.",
+   "reason_category": "management_step",
+   "reason": "Antibiotic doses."
+  },
+  {
+   "element_key": "p64-6a96a2d2",
+   "element_id": "p64-rb1-e13",
+   "text": "For pain, give ibuprofen4 400mg 8 hourly with/after food.",
+   "reason_category": "management_step",
+   "reason": "Analgesia dose."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+   "reason": "The positive form (Scratch marks @ Vulval structure) is in the check_for. The gate's (no X) normaliser expects the No qualifier last and misses it when a finding_site attribute follows; the faithful encoding stays (page's explicit 'No' branch)."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "'Treat for X' nodes",
+   "decision": "Encoded as probable diagnoses (cervicitis, vaginal candidiasis, bacterial vaginosis, LAP syndrome), following the gold standard's 'Treat for anaphylaxis' → probable.",
+   "alternatives": "possible; or no diagnosis rules for treatment nodes",
+   "confidence": "medium"
+  },
+  {
+   "topic": "LAP syndrome concept",
+   "decision": "Female pelvic inflammatory disease (disorder)",
+   "alternatives": "Lower abdominal pain (finding) as the diagnosis; Acute pelvic inflammatory disease",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Assess for UTI",
+   "decision": "possible Urinary tract infectious disease",
+   "alternatives": "cross-reference only (page 69)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Sexually active in the last 3 months",
+   "decision": "'Sexually active' / (no 'Sexually active') without a time window",
+   "alternatives": "onset comparison (wrong semantics: onset is not last activity)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Curd-like discharge",
+   "decision": "Not encoded (no SNOMED concept); candidiasis rules use the vulval signs (and itch on the sexually-active branch); BV/no-candida paths do not require its absence",
+   "alternatives": "White vaginal discharge / Leukorrhea as proxy (rejected: not curd-like)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Recent delivery/TOP/miscarriage",
+   "decision": "Postpartum state; Induced termination of pregnancy + Recent; Miscarriage + Recent",
+   "alternatives": "Delivery finding + Recent",
+   "confidence": "medium"
+  }
+ ]
+}

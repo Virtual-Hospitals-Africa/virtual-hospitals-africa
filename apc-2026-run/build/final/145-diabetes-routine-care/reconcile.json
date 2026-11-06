@@ -1,0 +1,63 @@
+{
+ "page": 145,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "reason": "The page says only \"Thirst\"; neither sibling is a plain thirst finding, and Excessive thirst carries the synonym \"Thirsty\", the name closest to the page's word.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "reason": "The bullet names \"Dehydration\" itself before listing its signs, so a recorded dehydration finding is part of the page's criterion alongside the signs both builders encoded.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "reason": "The page says only \"Thirst\"; neither sibling is a plain thirst finding, and Excessive thirst carries the synonym \"Thirsty\", the name closest to the page's word.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "reason": "The bullet names \"Dehydration\" itself before listing its signs, so a recorded dehydration finding is part of the page's criterion alongside the signs both builders encoded.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: one priority rule with Diabetes mellitus once  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\")) again in a second rule (\"Urgent: diabetes with low or high fingerprick glucose\")",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "reason": "The red box has two headed parts (\"Give urgent attention ... any of\" and \"Check random fingerprick glucose\"), so B's second rule for the glucose bullets mirrors the page; the logic and priority (Urgent) are the same as A's single rule.",
+   "unsettled": false
+  },
+  {
+   "role": "measured",
+   "difference": "A: (measurement (snomed_concept \"Body weight\" \"observable entity\") kg)  vs  B: (none)",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "The table lists \"Weight: every visit\" and \"BMI ... at diagnosis, yearly\", but weight is an adult vital and BMI is computed from the height and weight vitals, so like BP and fingerprick glucose (which neither builder measured) they are already recorded; only waist circumference needs a measure task.",
+   "unsettled": false
+  },
+  {
+   "role": "measured",
+   "difference": "A: (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)  vs  B: (none)",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "The table lists \"Weight: every visit\" and \"BMI ... at diagnosis, yearly\", but weight is an adult vital and BMI is computed from the height and weight vitals, so like BP and fingerprick glucose (which neither builder measured) they are already recorded; only waist circumference needs a measure task.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed and agreed on 50 of 55 conditions, with identical trigger, ketone-check task and glucose branches. Final = B with Excessive thirst (A's concept) in place of Increased thirst. B's two priority rules kept (same logic as A's one). Remaining questions merged: A's questions on glucose escalation, Kussmaul's respiration and single dehydration signs were already in B's list and are folded into its wording; a thirst-concept question added. A's 'Could not model' items (timing, lab values, WHR, fasting vs postprandial glucose) are already in B's file."
+}

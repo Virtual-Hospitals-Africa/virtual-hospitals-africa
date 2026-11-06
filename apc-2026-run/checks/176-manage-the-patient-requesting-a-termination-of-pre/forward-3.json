@@ -1,0 +1,305 @@
+{
+ "page": 176,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p176-575802ba",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Hb < 6 (not_representable; correctly omitted)"
+   ],
+   "problem": "'Yes' branch = any of the eight review criteria within 14 days of TOP. Seven of eight are in the priority rule's or-list; Hb < 6 has no unit in the language. The adnexal-mass item is encoded as adnexal mass AND closed os AND small uterus, so an adnexal mass recorded without both the cervix and uterus findings does not trigger Urgent (see rule-level problems).",
+   "evidence": [
+    "Urgent: complications within 14 days of a termination of pregnancy :: (and (<= (onset (clinical_finding (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days)) (or (and Mass of uterine adnexa, Cervical os closed, Small uterus) Abdominal guarding, Rebound tenderness, Offensive vaginal discharge, temp >= 38 °C, SBP < 80 mmHg, Pulse, function >= 100 bpm, RR >= 30 bpm))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-878dbb2d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Manage urgently' encoded as Urgent priority, which the page supports. The cross-reference to p182 is not encodable and needs no encoding.",
+   "evidence": [
+    "Urgent: complications within 14 days of a termination of pregnancy :: system_priority_evaluation ... Urgent"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-956dd68e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Refer urgently' (management, out of scope)"
+   ],
+   "problem": "'If adnexal mass, ectopic pregnancy likely' is encoded as a probable Ectopic pregnancy rule. That rule requires Mass of uterine adnexa AND Cervical os closed AND Small uterus. The red box says only 'if adnexal mass'; the parenthetical '(closed cervix and small uterus)' in the review question can be read as context rather than mandatory co-criteria. The stricter AND form is defensible but may under-fire when the os or uterus finding is not recorded. The concept choices are correct (Ectopic pregnancy disorder, Mass of uterine adnexa). The priority rule inlines these criteria instead of referencing (active_condition Ectopic pregnancy), which departs from the house pattern but is functionally equivalent.",
+   "evidence": [
+    "Diagnose probable ectopic pregnancy after a termination of pregnancy :: (and (<= (onset (clinical_finding (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days)) (clinical_finding Mass of uterine adnexa) (clinical_finding Cervical os closed) (clinical_finding Small uterus)) -> (diagnosis Ectopic pregnancy probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p176-53fe09d9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Hb < 6 (not_representable)"
+   ],
+   "problem": "Review question: each part was judged separately. 'TOP within the past 14 days' is correct (<= onset time_ago 14 days, which is 'within' by the house convention). Adnexal mass (closed cervix and small uterus) is correct, as a 3-way AND. Guarding/rebound is correct (Abdominal guarding OR Rebound tenderness). Foul-smelling discharge is correct (Offensive vaginal discharge). Temperature >= 38°C, SBP < 80 mmHg and RR >= 30 are correct. Pulse >= 100 is correct in threshold and direction; it uses 'Pulse, function' (observable entity), which exists, but whether it matches the recorded pulse vital could not be verified ('Heart rate' also exists). Hb < 6 is not representable.",
+   "evidence": [
+    "Urgent: complications within 14 days of a termination of pregnancy :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "Urgent: complications within 14 days of a termination of pregnancy :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "Urgent: complications within 14 days of a termination of pregnancy :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "Urgent: complications within 14 days of a termination of pregnancy :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+   ],
+   "confidence": "high",
+   "parts": [
+    {
+     "part": "TOP within past 14 days",
+     "verdict": "correct"
+    },
+    {
+     "part": "adnexal mass (closed cervix and small uterus)",
+     "verdict": "correct"
+    },
+    {
+     "part": "guarding/rebound abdominal tenderness",
+     "verdict": "correct"
+    },
+    {
+     "part": "foul-smelling discharge",
+     "verdict": "correct"
+    },
+    {
+     "part": "temperature >= 38",
+     "verdict": "correct"
+    },
+    {
+     "part": "SBP < 80",
+     "verdict": "correct"
+    },
+    {
+     "part": "pulse >= 100",
+     "verdict": "correct",
+     "note": "concept 'Pulse, function' unverified against the vitals convention"
+    },
+    {
+     "part": "Hb < 6",
+     "scope": "out_of_scope",
+     "scope_reason": "not_representable"
+    },
+    {
+     "part": "RR >= 30",
+     "verdict": "correct"
+    }
+   ]
+  },
+  {
+   "element_key": "p176-d30fcc84",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Enlarged uterus or open cervical os with bleeding/products of conception visible' is encoded as Enlarged uterus OR (Cervical os open AND (Bleeding from vagina OR POC at os OR POC in vagina)). This matches the 'Yes to either' reading, with two items: the enlarged uterus, and the open os with bleeding/POC. An alternative reading attaches 'with bleeding/POC' to both items, but the encoding is the more natural parse. The rule does not require the 'No' answer to the urgent criteria, which is acceptable for a diagnosis rule.",
+   "evidence": [
+    "Diagnose probable incomplete termination of pregnancy :: (or (clinical_finding Enlarged uterus) (and (clinical_finding Cervical os open) (or Bleeding from vagina, Products of conception at uterine os cervix, Products of conception in vagina)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p176-e29f46d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Incomplete TOP likely' is encoded as a probable Incomplete induced termination of pregnancy (disorder) rule, anchored to TOP within 14 days. 'Refer to next level' is management.",
+   "evidence": [
+    "Diagnose probable incomplete termination of pregnancy :: (diagnosis (snomed_concept \"Incomplete induced termination of pregnancy\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-15825c2f",
+   "scope": "borderline",
+   "scope_reason": "Safety-net return criteria after TOP ('return immediately if heavy bleeding (2 pads in 2 h), fever, persistent/worsening abdominal pain or foul-smelling discharge. Refer'). These are referral criteria and could be read as triage logic for a post-TOP patient, or as advice only (management).",
+   "verdict": "partial",
+   "parts_missing": [
+    "heavy bleeding (2 pads soaked within 2 hours)",
+    "persistent/worsening abdominal pain"
+   ],
+   "problem": "Fever and foul-smelling discharge are covered indirectly through the review-box priority rule (temp >= 38, Offensive vaginal discharge). Heavy bleeding and persistent/worsening abdominal pain after TOP appear in no rule, so a post-TOP patient returning with heavy bleeding gets no priority from this page. Analgesia doses and follow-up advice are management.",
+   "evidence": [
+    "Urgent: complications within 14 days of a termination of pregnancy :: (Offensive vaginal discharge) (Body temperature >= 38)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p176-e2d4c06b",
+   "scope": "borderline",
+   "scope_reason": "Mostly management (reassure, contraception advice). The mental-health screen ('unable to stop worrying in the past 2 weeks, or felt stress/anxiety/low mood -> 98') is a criterion, but it routes to another page.",
+   "verdict": "missing",
+   "parts_missing": [
+    "mental-health screen criterion (worry/stress/anxiety/low mood -> p98)"
+   ],
+   "problem": "Not encoded. This is acceptable if it is treated as a cross_reference_only routing to p98.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p176-87d3cf55",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Comorbidity screen that decides whether TOP is done here or referred. It is TOP-eligibility routing, not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p176-34144e5c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Gestation <= 12w0d and facility-capability branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-9054b5ef",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Gestation >= 12w1d - 20 weeks branch; booking only.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-0f430963",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Investigations, ultrasound dating and the referral for ultrasound when dates and exam disagree. No diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-e86c2863",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medical TOP <= 9 weeks regimen.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-a2bd4b9b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medical TOP > 9 weeks; equipment-based referral.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-25b473f5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Second misoprostol dose if minimal bleeding.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-8a36facd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Refer for ultrasound if minimal bleeding after second dose. A possible incomplete or failed TOP is implied but not stated.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p176-a21116f2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Surgical TOP/MVA regimen.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p176-41155bc8",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Footnotes: the conscientious objection note, and the ibuprofen contraindications (prescribing, management).",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p176-5f3307f7",
+  "p176-1731c8d4",
+  "p176-4ced1945",
+  "p176-7f677285",
+  "p176-d04483bc",
+  "p176-547f20fd",
+  "p176-e86fc66f",
+  "p176-bfbac899",
+  "p176-3b5f051a",
+  "p176-85f5b4f9",
+  "p176-1e45b976",
+  "p176-ba1d726e",
+  "p176-6c37c147",
+  "p176-9f008439",
+  "p176-927c8198",
+  "p176-4737c1e3",
+  "p176-c0ea0427",
+  "p176-2a105d0d",
+  "p176-ea4a9e0a",
+  "p176-153e83ae",
+  "p176-e786c4ce"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy / Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "problem": "The red box's ectopic trigger is 'if adnexal mass', but both rules require adnexal mass AND closed os AND small uterus. An adnexal mass recorded without both companion findings gets neither the Urgent priority nor the ectopic diagnosis, which matters most for a time-critical diagnosis. Consider using adnexal mass alone in the priority or-list, or confirm the stricter parse.",
+   "severity": "medium"
+  },
+  {
+   "rule": "(none)",
+   "problem": "The post-TOP return criteria heavy bleeding (2 pads soaked within 2 hours) and persistent/worsening abdominal pain are not encoded anywhere. A patient returning after TOP with heavy bleeding is not prioritised by this page's rules.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "problem": "The priority rule inlines the ectopic criteria instead of referencing (active_condition Ectopic pregnancy) as the house pattern suggests. It is functionally equivalent today but will diverge if one copy is edited.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "problem": "Pulse is encoded with 'Pulse, function' (observable entity). 'Heart rate' also exists. Unverified whether the recorded pulse vital uses this concept; if not, the pulse >= 100 criterion never fires.",
+   "severity": "low"
+  },
+  {
+   "rule": "all three rules",
+   "problem": "Anchored on (onset (clinical_finding 'Induced termination of pregnancy' disorder)) within 14 days. A TOP recorded as the procedure concept, or not recorded as a finding, would leave all three rules inert. No pre-screen or check task captures 'had TOP in past 14 days'.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The post-TOP review box is encoded faithfully: the Urgent rule has seven of eight criteria (Hb < 6 is unrepresentable), and both 'likely' conclusions (ectopic, incomplete TOP) have probable rules with correct concepts and thresholds. The most consequential issue is that the red box's 'if adnexal mass, ectopic pregnancy likely' trigger is narrowed to adnexal mass + closed os + small uterus in both the ectopic and priority rules, so it may under-fire. Also, the heavy-bleeding and persistent-pain return criteria after TOP are not encoded."
+}

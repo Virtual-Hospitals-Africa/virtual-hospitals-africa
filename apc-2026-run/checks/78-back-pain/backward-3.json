@@ -1,0 +1,1347 @@
+{
+ "page": 78,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Bladder or bowel disturbance (retention or incontinence)'; only urinary retention is encoded, bowel (faecal) retention is dropped.",
+   "fix": "Add a faecal retention/constipation concept (e.g. Constipation) alongside Retention of urine.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary incontinence\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incontinence of feces\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of saddle area\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page item is 'Recent injury AND x-ray unavailable or abnormal'; encoding is any Traumatic injury with no recency and no x-ray condition, so every back-pain patient with any past injury becomes Urgent.",
+   "fix": "Add a Recent qualifier (or onset time_ago window) and an x-ray unavailable/abnormal condition, or document the simplification.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Radiating pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent back pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "verdict": "imprecise",
+   "reason": "'rash' encoded as a morphologic-abnormality concept (Eruption) inside clinical_finding; a finding/disorder concept fits better, and the page's 'unexplained' qualifier is dropped.",
+   "fix": "Use (snomed_concept \"Eruption of skin\" \"disorder\").",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'anus/rectum'; only rectum lesion encoded, anal lesions not covered.",
+   "fix": "Add an anal lesion concept (or a perianal/anorectal lesion concept) to the or.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'oral steroid use'; 'Use of steroids' drops the oral route (would include inhaled/topical).",
+   "fix": "Consider (snomed_concept \"Oral steroids last used\" \"finding\") or a Route qualifier.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sleep disturbed by pain'; 'Sleep pattern disturbance' is broader (any cause, e.g. insomnia from anxiety), so it would wrongly block mechanical back pain.",
+   "fix": "Add a due-to-pain qualifier or a closer concept (e.g. Wakes up during night with pain attribution).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minute duration is dropped, so brief morning stiffness counts.",
+   "fix": "Add a duration qualifier/measurement > 30 minutes or note it.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "expr": "(diagnosis (snomed_concept \"Acute pancreatitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "Page says 'complicated pyelonephritis likely'; encoded as plain Acute pyelonephritis, the same concept as the uncomplicated rule, so downstream logic cannot tell complicated (urgent, IV ceftriaxone) from uncomplicated (oral ciprofloxacin).",
+   "fix": "No 'complicated pyelonephritis' concept exists; add a qualifier (e.g. Complicated/Severe) or document the limitation.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Radiating pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "expr": "(diagnosis (snomed_concept \"Kidney stone\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "expr": "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "Page says 'uncomplicated pyelonephritis likely'; same concept as the complicated rule and the rule does not exclude complicating features, so complicated cases also fire this.",
+   "fix": "Add (no …) for the complicating features or a distinguishing qualifier.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "verdict": "imprecise",
+   "reason": "'rash' encoded as a morphologic-abnormality concept (Eruption) inside clinical_finding; a finding/disorder concept fits better, and the page's 'unexplained' qualifier is dropped.",
+   "fix": "Use (snomed_concept \"Eruption of skin\" \"disorder\").",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'anus/rectum'; only rectum lesion encoded, anal lesions not covered.",
+   "fix": "Add an anal lesion concept (or a perianal/anorectal lesion concept) to the or.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible mpox in back pain",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible TB in back pain",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Fever is tested as (no (clinical_finding Fever)) while the TB rule uses (active_condition Fever), the house's recorded form; the negation may not match how fever is recorded.",
+   "fix": "Keep the forms consistent with how fever is recorded (house standard: active_condition Fever).",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\"))))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))) (time_ago 6 weeks))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'oral steroid use'; 'Use of steroids' drops the oral route (would include inhaled/topical).",
+   "fix": "Consider (snomed_concept \"Oral steroids last used\" \"finding\") or a Route qualifier.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sleep disturbed by pain'; 'Sleep pattern disturbance' is broader (any cause, e.g. insomnia from anxiety), so it would wrongly block mechanical back pain.",
+   "fix": "Add a due-to-pain qualifier or a closer concept (e.g. Wakes up during night with pain attribution).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))",
+   "verdict": "imprecise",
+   "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minute duration is dropped, so brief morning stiffness counts.",
+   "fix": "Add a duration qualifier/measurement > 30 minutes or note it.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable mechanical back pain",
+   "expr": "(diagnosis (snomed_concept \"Mechanical low back pain\" \"finding\") probable)",
+   "verdict": "imprecise",
+   "reason": "Page says 'Mechanical back pain' (any level); 'Mechanical low back pain' is narrower (lumbar only). No exact concept exists.",
+   "fix": "Accept as nearest concept or use Mechanical pain with finding site back.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Bladder or bowel disturbance (retention or incontinence)'; only urinary retention is encoded, bowel (faecal) retention is dropped.",
+   "fix": "Add a faecal retention/constipation concept (e.g. Constipation) alongside Retention of urine.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary incontinence\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incontinence of feces\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of saddle area\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page item is 'Recent injury AND x-ray unavailable or abnormal'; encoding is any Traumatic injury with no recency and no x-ray condition, so every back-pain patient with any past injury becomes Urgent.",
+   "fix": "Add a Recent qualifier (or onset time_ago window) and an x-ray unavailable/abnormal condition, or document the simplification.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(active_condition (snomed_concept \"Acute pancreatitis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: back pain with red box features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent back pain conditions",
+   "verdict": "problem",
+   "problem": "Recent injury is encoded as any Traumatic injury, without recency or the x-ray unavailable/abnormal condition. Bowel retention is missing. Otherwise it covers the red box.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "verdict": "problem",
+   "problem": "The algorithm's discriminators 'pain better with exercise' and 'does not get better with rest' are never checked, and neither is age (> 50 / < 40). Sleep and morning-stiffness items lose their qualifiers ('by pain', '> 30 minutes'). 'Unexplained' is dropped from rash.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "verdict": "problem",
+   "problem": "Its logic is faithful (flank pain AND leucocytes/nitrites AND any of vomiting, the sepsis criteria from the footnote, diabetes, male, pregnant, post menopause). But the diagnosis concept is identical to the uncomplicated rule, so 'complicated' is lost and the priority rule has to inline the criteria instead of using active_condition.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable kidney stone in back pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "verdict": "problem",
+   "problem": "It doesn't exclude the complicating features, so it fires in complicated cases too. It uses the same concept as the complicated rule.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible mpox in back pain",
+   "verdict": "ok",
+   "problem": "The structure (any lesion AND >= 1 systemic feature) and 'consider' -> possible are faithful. Minor issues: Eruption concept, anus missing, 'unexplained' dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible TB in back pain",
+   "verdict": "ok",
+   "problem": "The page says 'Check for TB' -> possible is reasonable. The parallel 'Doctor to do back x-ray' path is not a diagnosis, so it is fine for it to be absent.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable mechanical back pain",
+   "verdict": "problem",
+   "problem": "Page: mechanical back pain is likely only when the answer is No to the second question AND No to the third. The rule omits the negation of '> 50 years' from the second question. From the third question it omits '< 40 years', 'pain better with exercise' and 'does not get better with rest'. So a 65-year-old, or a patient whose pain improves with exercise and not with rest (inflammatory features), is labelled mechanical. It also does not exclude red-box/urgent features. The sleep and stiffness negations are broader than the page.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: back pain with red box features",
+   "verdict": "problem",
+   "problem": "Urgent matches the red-box heading, and the and/or structure is right. But the 'Recent injury and x-ray unavailable or abnormal' item became any Traumatic injury, and bowel retention is missing. Complicated pyelonephritis is inlined rather than referenced as active_condition (acceptable given the shared concept).",
+   "severity": "medium"
+  },
+  {
+   "rule": "(missing) Inflammatory back pain likely",
+   "verdict": "problem",
+   "problem": "The page says 'Inflammatory back pain likely' (Yes to: < 40 years, sleep disturbed by pain, better with exercise, not better with rest, morning stiffness > 30 min). No probable diagnosis rule exists for it, against the house standard that every 'X likely' gets a probable rule.",
+   "severity": "high"
+  }
+ ],
+ "summary": "Most consequential: 'Inflammatory back pain likely' has no diagnosis rule. The mechanical back pain rule omits the > 50 years, < 40 years, 'better with exercise' and 'not better with rest' criteria, so older patients and patients with inflammatory features are labelled mechanical. The red-box 'Recent injury and x-ray unavailable or abnormal' item became any traumatic injury. Complicated and uncomplicated pyelonephritis share one concept, and several qualifiers are dropped (morning stiffness > 30 min, sleep disturbed by pain, oral steroids, anus)."
+}

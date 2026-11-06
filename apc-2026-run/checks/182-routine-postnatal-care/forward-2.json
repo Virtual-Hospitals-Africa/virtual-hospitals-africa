@@ -1,0 +1,328 @@
+{
+ "page": 182,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p182-2de4d887",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Header window 'within 6 weeks of delivery' is encoded as onset(Postpartum state) <= time_ago 6 weeks, which on its face means postpartum state began AT LEAST 6 weeks ago (the opposite of within 6 weeks), in both the priority rule and the PPH rule. If the language's time_ago/onset semantics are as they read, no patient within 6 weeks would match.",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: routine postnatal care with danger signs' :: (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks))",
+    "Diagnose probable postpartum haemorrhage ... :: (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-5c0aae53",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "soaks pad in < 5 minutes quantifier (only 'Heavy episode of vaginal bleeding')"
+   ],
+   "problem": "PPH likely rule exists and feeds Urgent via active_condition, but it inherits the 6-week direction problem; priority rule uses active_condition of a probable diagnosis. Heavy bleeding itself not an Urgent trigger directly, only through the diagnosis.",
+   "evidence": [
+    "Diagnose probable postpartum haemorrhage :: (and Postpartum state ... (clinical_finding \"Heavy episode of vaginal bleeding\"))",
+    "check_for :: (clinical_finding (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-33c2c260",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Third and fourth degree laceration are a reasonable mapping for tear to anus/rectum (fourth degree reaches rectal mucosa; third the anal sphincter). Minor: includes sphincter-only tears, slightly broader than text.",
+   "evidence": [
+    "(clinical_finding (snomed_concept \"Third degree perineal laceration\" \"disorder\")) / Fourth degree ... in priority or"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-919613b7",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Hb has no unit in the language; correctly not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-e5efd0e8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [
+    "eclampsia probable/possible diagnosis (borderline)"
+   ],
+   "problem": "'Up to 1 week postpartum' encoded as onset(Postpartum state) <= time_ago 1 weeks, i.e. postpartum began at least 1 week ago, wrong direction and it tests the postpartum onset rather than the seizure onset. Also no eclampsia diagnosis ('treat as eclampsia') rule.",
+   "evidence": [
+    "(and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (<= (onset (clinical_finding Postpartum state)) (time_ago 1 weeks)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-42a235ac",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "shock criteria footnote not captured as a 'shock likely' rule (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness)"
+   ],
+   "problem": "Shock finding and SBP < 80 both encoded as separate or-branches. Correct for the red box itself. But 'Shock' as a plain finding depends on someone recording shock.",
+   "evidence": [
+    "(clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-f7b92a8f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Pallor mapped to 'Pallor of skin of face', a narrower concept than generalised pallor; patients coded 'Pallor' would not match. RR >= 30, dizziness, faint, chest pain correct (RR >= 30 matches the box; footnote says > 30 for shock, not the same element).",
+   "evidence": [
+    "(and (clinical_finding \"Pallor of skin of face\") (or (>= RR 30) Dizziness Feeling faint Chest pain))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-8f6e592c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "(and (clinical_finding \"Generally unwell\") (>= Body temperature 38 \u00b0C))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-534de764",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Pulse >= 100 encoded with 'Pulse, function' observable entity; a pulse-rate concept (e.g. Pulse rate) would be the closer measurement. Threshold and direction correct.",
+   "evidence": [
+    "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p182-d1b77116",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-6ecfd766",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-9ba8a4da",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-067d2ae3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-4f614e19",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-843f6622",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-8a857146",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-40f09ecd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-a8c01fc4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-c9accffd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-8b76a20b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-d1604824",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-296b1e4f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "BMI measure task present at postnatal visit; the <18.5 nutritional support is management.",
+   "evidence": [
+    "Measure BMI at routine postnatal visit :: (measure (measurement (snomed_concept \"Body mass index\" ...) kg/m\u00b2))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-a8fbc6a3",
+   "scope": "borderline",
+   "scope_reason": "BP >= 140/90 recheck after 1 hour then same-day discussion is a triage threshold, arguably in scope; no BP check/measure task or rule.",
+   "verdict": "missing",
+   "parts_missing": [
+    "BP >= 140/90 (diastolic/systolic) rule and measure task"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-30d597ad",
+   "scope": "borderline",
+   "scope_reason": "Painful abdomen or foul-smelling discharge -> discuss/refer same day is a triage condition; also feeds the metronidazole step. Not encoded.",
+   "verdict": "missing",
+   "parts_missing": [
+    "painful abdomen",
+    "foul-smelling vaginal discharge"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p182-ba801413",
+   "scope": "borderline",
+   "scope_reason": "Footnote 1 defines 'shock likely' (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness), an 'X likely' that would be a probable Shock diagnosis rule; only SBP/pulse appear independently in the Urgent rule.",
+   "verdict": "partial",
+   "parts_missing": [
+    "probable shock diagnosis rule; confusion/restlessness; weakness; RR>30"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p182-568a682c",
+  "p182-d40d1699",
+  "p182-db5c7d88",
+  "p182-74ccad96",
+  "p182-cc99e5b5",
+  "p182-7e46488f",
+  "p182-b8140c36",
+  "p182-d8cbee9c",
+  "p182-7c78e24c",
+  "p182-97b003a3",
+  "p182-5a670463",
+  "p182-8b10b689",
+  "p182-592d38de"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "system_priority_evaluation Urgent; PPH probable rule",
+   "problem": "6-week and 1-week windows use (<= onset(Postpartum state) (time_ago N weeks)), which reads as postpartum started at least N weeks ago, opposite of 'within'. Seizure window also tests postpartum onset, not seizure onset.",
+   "severity": "high"
+  },
+  {
+   "rule": "task Check for urgent routine postnatal care conditions",
+   "problem": "check_for lacks measurement items used by the priority rule (SBP, pulse, RR, temperature); no measure tasks for them. Hb absent (not representable).",
+   "severity": "medium"
+  },
+  {
+   "rule": "system_priority_evaluation Urgent",
+   "problem": "Pallor concept is face-specific; Heavy bleeding reaches Urgent only via a probable PPH diagnosis, with no direct branch.",
+   "severity": "medium"
+  },
+  {
+   "rule": "whole page",
+   "problem": "No probable shock rule, no eclampsia rule, no BP >=140/90 or painful abdomen/foul discharge rules.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most consequential: the time-window expressions for within 6 weeks and up to 1 week postpartum appear to have the wrong direction, so the Urgent rule and PPH rule would not fire for patients inside the window. Secondary: face-only pallor concept, pulse concept choice, missing measure tasks, and no shock/eclampsia/BP/abdominal-pain rules."
+}

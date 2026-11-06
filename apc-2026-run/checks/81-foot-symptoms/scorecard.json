@@ -1,0 +1,956 @@
+{
+ "page": 81,
+ "slug": "81-foot-symptoms",
+ "validation_ok": true,
+ "builder_agreement": 0.564,
+ "elements": 26,
+ "elements_agreed": 12,
+ "claims": 76,
+ "claims_agreed": 57,
+ "queue": 73,
+ "queue_by_priority": {
+  "low": 37,
+  "high": 2,
+  "medium": 34
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p81-54f7e4fb",
+   "id": "p81-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-197f31de",
+   "id": "p81-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p81-a9d58d7b",
+   "id": "p81-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-74e46a6e",
+   "id": "p81-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-839a9f80",
+   "id": "p81-rb1-e05",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "correct": 1
+   }
+  },
+  {
+   "key": "p81-3c8072cf",
+   "id": "p81-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p81-a2a7035a",
+   "id": "p81-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p81-cf487151",
+   "id": "p81-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p81-f7533506",
+   "id": "p81-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p81-5085f794",
+   "id": "p81-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p81-7d5b6c24",
+   "id": "p81-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-ee9b224e",
+   "id": "p81-out-e07",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p81-b2c569e6",
+   "id": "p81-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p81-bce81f62",
+   "id": "p81-out-e09",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p81-4bc7de93",
+   "id": "p81-out-e10",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "correct": 1
+   }
+  },
+  {
+   "key": "p81-de21fb49",
+   "id": "p81-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p81-580e6118",
+   "id": "p81-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 1,
+    "borderline": 2
+   },
+   "verdicts": {
+    "missing": 1,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p81-d6576abd",
+   "id": "p81-out-e13",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p81-cf0b3d45",
+   "id": "p81-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-099c3ec5",
+   "id": "p81-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-b5da04b4",
+   "id": "p81-out-e16",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p81-8db686bc",
+   "id": "p81-out-e17",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p81-236d6d33",
+   "id": "p81-out-e18",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p81-fd91a5af",
+   "id": "p81-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p81-d6d41e43",
+   "id": "p81-out-e20",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p81-8299dae4",
+   "id": "p81-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent foot symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

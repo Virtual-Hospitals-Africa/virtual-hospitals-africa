@@ -1,0 +1,1374 @@
+{
+ "page": 69,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary symptoms\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oliguria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent urinary symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary symptoms\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dysuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glycosuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary catheter in situ\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+   "fix": "Narrow it, or accept as a deliberate broad reading.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+   "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urinary infection features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "\"Acute pyelonephritis\" does not carry \"complicated\"; the same concept is used for the uncomplicated rule.",
+   "fix": "Differentiate through the rule conditions, and make the uncomplicated rule exclude the complicating factors.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "Uncomplicated pyelonephritis is only the non-urgent case (flank pain + leuc/nit without the complicating features), but the rule has the same diagnosis and no exclusion.",
+   "fix": "Add (no ...) for vomiting, BP<90/60, pulse>=100, diabetes, male, pregnancy and postmenopausal.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oliguria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Kidney disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable kidney stone (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable kidney stone (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable kidney stone (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable kidney stone (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Kidney stone\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary catheter in situ\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+   "fix": "Narrow it, or accept as a deliberate broad reading.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Lower urinary tract infectious disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary catheter in situ\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+   "fix": "Narrow it, or accept as a deliberate broad reading.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+   "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Urinary tract infectious disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dysuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Quote is \"If no frequency/urgency\", but the condition is used as a positive entry criterion. The concept is right only through the parent branch \"Burning/frequency/urgency or leuc/nit\".",
+   "fix": "Cite the parent branch element.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Quote is \"If no frequency/urgency\", but the condition is used as a positive entry criterion. The concept is right only through the parent branch \"Burning/frequency/urgency or leuc/nit\".",
+   "fix": "Cite the parent branch element.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+   "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Urethritis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dysuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+   "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "expr": "(diagnosis (snomed_concept \"Acute prostatitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dysuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glycosuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+   "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "expr": "(diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)",
+   "verdict": "imprecise",
+   "reason": "The page says \"exclude diabetes\", which is a prompt to test, not \"consider/suspect\". The possible diagnosis is defensible but is a stretch.",
+   "fix": "Keep as possible, with the page wording noted.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "expr": "(diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible)",
+   "verdict": "imprecise",
+   "reason": "The page says \"exclude pregnancy\", not \"consider/suspect\". The possible diagnosis is defensible but is a stretch.",
+   "fix": "Keep as possible, with the page wording noted.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary symptoms\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c142",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(active_condition (snomed_concept \"Kidney disease\" \"disorder\"))",
+   "verdict": "wrong",
+   "reason": "Danger sign encoded as active_condition \"Kidney disease\", i.e. an already recorded condition. The page criterion is the probable-diagnosis picture (blood/protein in urine with new swelling, BP >=140/90 or oliguria). A probable diagnosis from another rule will not satisfy active_condition.",
+   "fix": "Inline the kidney disease criteria from the diagnosis rule inside the Urgent rule.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c143",
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "expr": "(active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+   "verdict": "wrong",
+   "reason": "Same problem: active_condition \"Kidney stone\" in place of blood in urine plus sudden severe unilateral flank/groin pain.",
+   "fix": "Inline the kidney stone criteria.",
+   "confidence": "medium"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent urinary symptom conditions",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Check for urinary infection features",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+   "verdict": "problem",
+   "problem": "Duplicates the Urgent branch; the diagnosis \"Acute pyelonephritis\" cannot be told apart from the uncomplicated rule.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+   "verdict": "problem",
+   "problem": "No exclusion of the complicating features, so it fires with every complicated case and gives the same diagnosis. The page offers it only in the non-urgent approach.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable kidney disease (urinary symptoms)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose probable kidney stone (urinary symptoms)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "verdict": "problem",
+   "problem": "Condition \"Burning/frequency/urgency or leuc/nit\" alternative is not encoded. The leuc/nit requirement matches the \"If leucocytes/nitrites\" bullet. Overlap with the complicated rule is avoided. Minor.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)",
+   "verdict": "problem",
+   "problem": "The male branch does not exclude urethral discharge, so it can fire together with male urethritis. The page checks for discharge first.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose probable acute prostatitis (urinary symptoms)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose possible diabetes (urinary symptoms with glycosuria)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Diagnose possible pregnancy (urinary frequency)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": ""
+  },
+  {
+   "rule": "Urgent: urinary symptoms with danger signs",
+   "verdict": "problem",
+   "problem": "Kidney disease and kidney stone branches use active_condition rather than the page criteria. Kidney disease and kidney stone urgency is likely never triggered by findings alone.",
+   "severity": "high"
+  }
+ ],
+ "summary": "Most consequential: the Urgent priority rule encodes kidney disease and kidney stone danger signs as active_condition, not the page criteria, so those two red-box bullets are effectively not triggered by findings. The uncomplicated pyelonephritis rule has no exclusion of the complicating features and the same diagnosis as the complicated one. Everything else traces to the page; remaining issues are loose concept matches (body pain, urinary tract problem) and 'exclude X' encoded as possible."
+}

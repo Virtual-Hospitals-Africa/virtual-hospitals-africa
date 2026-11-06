@@ -1,0 +1,236 @@
+{
+ "page": 49,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p49-b0fd6213",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header: gate is the face-symptom OR list, used as the trigger in the task and the priority rule.",
+   "evidence": [
+    "Check for urgent face symptom conditions :: (or (clinical_finding Swelling (finding_site Face structure)) (clinical_finding Pain in face) ... Swelling around eyes)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-10a79337",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'New' qualifier",
+    "'asymmetric' mapped only to Unilateral"
+   ],
+   "problem": "Parts: sudden unilateral face weakness with no upper-face involvement (encoded, via no Upper facial weakness); sudden unilateral face numbness (encoded); sudden unilateral arm/leg weakness and numbness (encoded); difficulty speaking (encoded); visual disturbance (encoded). Missing: 'New' not encoded; 'no/minimal forehead involvement' is not applied to numbness (correct per page wording is ambiguous); stroke and TIA are two identical rules, so stroke-vs-TIA is not differentiated (page says 'consider stroke or TIA', so acceptable). In the stroke/TIA rules the limb/speech/vision branch is gated by any face symptom including face pain or swelling, which is looser than the page's 'face symptoms and any of'. Actually that matches the page; low concern.",
+   "evidence": [
+    "Diagnose possible stroke from face symptoms :: (and (clinical_finding Weakness of face muscles (Sudden onset)(Unilateral)) (no (clinical_finding Upper facial weakness)))",
+    "Diagnose possible TIA from face symptoms :: same s-expression",
+    "Urgent priority :: (or (and Weakness ...) Numbness of face ... Difficulty talking ... Visual disturbance)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-96a95e1e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "time window for allergen exposure",
+    "latex/other allergens not needed"
+   ],
+   "problem": "Sudden face/tongue swelling plus any of the listed features is encoded in the possible-anaphylaxis rule and in the priority rule. Problems: (1) the 'within the past few hours' time bound on allergen exposure is not encoded; (2) 'Exposure to (contextual qualifier)' + Drug/Food as a generic finding is an unusual construction and 'Insect bite - wound' is a wound, not a sting event; (3) the priority rule gate requires face swelling/pain/weakness/numbness/lip/eye swelling, so sudden TONGUE swelling alone with difficulty breathing does not satisfy the gate; (4) BP < 90/60 encoded as SBP<90 OR DBP<60 which is a reasonable reading.",
+   "evidence": [
+    "Diagnose possible anaphylaxis from face swelling :: (and (or Swelling Face Sudden onset / Swelling Tongue Sudden onset) (or Difficulty breathing (< Systolic blood pressure mmHg 90) (< Diastolic 60) Dizziness Collapse Abdominal pain Finding of vomiting Exposure Drug Exposure Food Insect bite - wound Insect sting))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p49-b8f347fb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Painful red facial swelling and temp >= 38: all four parts encoded (swelling of face, pain in face, redness of skin of face, Body temperature >= 38 C), probable.",
+   "evidence": [
+    "Diagnose probable facial cellulitis :: (and Swelling Face Pain in face Redness of skin of face (>= Body temperature \u00b0C 38))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p49-5eec7b64",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "New face swelling and (blood OR protein in urine): encoded with New qualifier and an or over Blood in urine / Proteinuria.",
+   "evidence": [
+    "Diagnose probable kidney disease from facial swelling :: (and Swelling Face New (or Blood in urine Proteinuria))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p49-b5aed249",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-868b3618",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'whole' eyelid"
+   ],
+   "problem": "Orbital cellulitis likely if facial cellulitis plus whole eyelid swollen, red and painful: encoded as probable, but by repeating the facial cellulitis criteria instead of requiring the Cellulitis of face diagnosis; 'whole eyelid' not representable and eyelid pain uses the Eyelid structure site. The management ('discuss with doctor') is out of scope. The rule also fires for any eyelid findings, not only whole eyelid.",
+   "evidence": [
+    "Diagnose probable orbital cellulitis from facial cellulitis :: (and ... (clinical_finding Swelling of eyelid) (clinical_finding Erythema of skin of eyelid) (clinical_finding Pain (finding_site Eyelid structure)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-a407c0bf",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-4559fe88",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "same side as the shingles"
+   ],
+   "problem": "PHN likely: page criterion is previous shingles on the SAME side of face as pain. 'Same side' is not encoded; unilateral pain plus history of herpes zoster used.",
+   "evidence": [
+    "Diagnose probable post-herpetic neuralgia of face :: (and (Pain in face Unilateral) (History of herpes zoster))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-2ca26b2e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "superficial"
+   ],
+   "problem": "Trigeminal neuralgia likely: recurrent intense superficial stabbing pain, one side. Encoded: unilateral face pain AND recurrent severe stabbing face pain. 'Superficial' missing; 'intense' mapped to Severe.",
+   "evidence": [
+    "Diagnose probable trigeminal neuralgia :: (and (Pain in face Unilateral) (Stabbing pain Face Recurrent Severe))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-fd9260ad",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "worse on bending forward"
+   ],
+   "problem": "Sinusitis likely: all five features ANDed, which is acceptable, but 'headache worse on bending forward' is not encoded; 'pain when pushing on forehead/cheeks' as Tenderness of face; 'Posterior rhinorrhea' tagged disorder with 'Recent' qualifier on common cold is a loose mapping.",
+   "evidence": [
+    "Diagnose probable sinusitis from face pain :: (and Pain in face Tenderness of face Headache (or Nasal discharge Thick / Posterior rhinorrhea) (Common cold Recent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-df9917f7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Bell's palsy likely: sudden unilateral weakness and (unable to close eye or upper facial weakness). 'Progressive' and optional taste/dry eye not encoded (optional).",
+   "evidence": [
+    "Diagnose probable Bell's palsy :: (and (Weakness of face muscles Sudden onset Unilateral) (or Upper facial weakness Unable to close eyes))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-71f5dc31",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Angioedema likely: painless swelling of lips or eyes, encoded with Painless qualifier.",
+   "evidence": [
+    "Diagnose probable angioedema from face swelling :: (or (Lip swelling Painless) (Swelling around eyes Painless))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p49-453a35f7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Fever is not in the facial swelling check_for list"
+   ],
+   "problem": "Mumps likely: painful swelling of face with fever, headache and body pain: encoded as AND of five. Fever uses active_condition while other items are clinical_finding (inconsistent), and 'one/both sides' unrestrained (fine).",
+   "evidence": [
+    "Diagnose probable mumps from painful face swelling :: (and Swelling Face Pain in face (active_condition Fever) Headache Generalized aches and pains)"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p49-7599e91e",
+  "p49-a0f5739a",
+  "p49-5b53491f",
+  "p49-e2903deb",
+  "p49-4cf4283b",
+  "p49-b4e90989",
+  "p49-dcc883ff",
+  "p49-9b2a92df",
+  "p49-1d68615d",
+  "p49-22d5162f",
+  "p49-32d3b7f6",
+  "p49-3485bd66",
+  "p49-4e042bff",
+  "p49-8d87cfe1",
+  "p49-984b81fd",
+  "p49-b57473e2",
+  "p49-b5f403c9",
+  "p49-b94b1734",
+  "p49-d00d187f",
+  "p49-d78e845f",
+  "p49-d7cba3ba",
+  "p49-d9f9729e",
+  "p49-e3398f9f"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "problem": "Gate requires one of the face symptoms (including face swelling, not tongue swelling), so sudden tongue swelling with difficulty breathing but no face swelling does not trigger Urgent, though the page lists 'face/tongue swelling'. Also the Urgent rule relies on active_condition Cellulitis of face / Kidney disease rather than the findings, and the gate also admits plain face pain.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of facial swelling",
+   "problem": "check_for lacks Fever and temperature, yet the mumps and cellulitis rules use them; check lists and diagnosis rules disagree. The Urgent task check_for also omits temperature, BP and urine items used downstream (only Blood in urine and Proteinuria are present).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible stroke / TIA",
+   "problem": "Two identical rules, so stroke and TIA are indistinguishable; 'New' onset not encoded. Limb/speech/vision branch requires any face symptom, as the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "problem": "Duplicates cellulitis criteria rather than depending on the facial cellulitis diagnosis; 'whole eyelid' lost.",
+   "severity": "low"
+  }
+ ],
+ "summary": "All page diagnoses (stroke/TIA, anaphylaxis, facial cellulitis, kidney disease, orbital cellulitis, Bell's palsy, angioedema, mumps, sinusitis, trigeminal neuralgia, post-herpetic neuralgia) have rules and every SNOMED concept I tested exists. Most consequential: the Urgent priority gate misses sudden tongue-only swelling for anaphylaxis, and several qualifiers ('same side', 'superficial', 'worse on bending forward', allergen time window, 'new') are dropped, leaving many diagnosis rules partial."
+}

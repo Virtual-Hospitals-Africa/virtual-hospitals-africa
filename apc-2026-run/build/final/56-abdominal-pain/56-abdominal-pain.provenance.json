@@ -1,0 +1,1870 @@
+{
+ "edition": "2026",
+ "page": 56,
+ "lisp_file": "56-abdominal-pain.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p56-319abd06"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; a recorded warning sign."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p56-74dce981"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Recorded warning-sign concept."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p56-0f337a11"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "clinical_finding form used in check_for and priority so the evidence is checked for."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p56-0f337a11"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "high",
+   "note": "Any vaginal bleeding in pregnancy; not \"Abnormal vaginal bleeding\"."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "Postpartum state taken as \"recent delivery\"; alternative: Delivery finding + Recent qualifier."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery/miscarriage",
+   "confidence": "medium",
+   "note": "Recent qualifier carries \"recent\" from the shared adjective."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery/miscarriage/termination of pregnancy",
+   "confidence": "medium",
+   "note": "Recent qualifier carries \"recent\"; induced termination for \"termination of pregnancy\"."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p56-2e2c290f"
+   ],
+   "quote": "Unable to pass urine",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p56-2667e16f"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "element_keys": [
+    "p56-b649bc60"
+   ],
+   "quote": "Abdominal/pelvic mass",
+   "confidence": "high",
+   "note": "Split into abdominal and pelvic mass."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of pelvic structure\" \"finding\"))",
+   "element_keys": [
+    "p56-b649bc60"
+   ],
+   "quote": "Abdominal/pelvic mass",
+   "confidence": "high",
+   "note": "Split into abdominal and pelvic mass."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p56-13a4f904"
+   ],
+   "quote": "Pulsatile abdominal mass",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "Pain in right lower abdomen",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right upper quadrant pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "Severe pain in right upper abdomen",
+   "confidence": "high",
+   "note": "Severe qualifier for \"severe\"."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "Sudden severe upper abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset + Severe qualifiers."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "No \"Pain radiating to back\" concept; lumbar and left/right thoracic radiation concepts together cover \"back\" (reconciled: A's fuller set)."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region left side\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "See lumbar radiation note."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region right side\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "See lumbar radiation note."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "nausea/vomiting/fever",
+   "confidence": "high",
+   "note": "Common symptom; checked for because three red-box rules use it."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "nausea/vomiting/fever",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "loss of appetite",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "Guarding or rigidity during peri-umbilical percussion",
+   "confidence": "medium",
+   "note": "Elicitation manoeuvre (peri-umbilical percussion) not modelled; plain guarding/rigidity used."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "Guarding or rigidity during peri-umbilical percussion",
+   "confidence": "medium",
+   "note": "Elicitation manoeuvre (peri-umbilical percussion) not modelled; plain guarding/rigidity used."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "abnormal vaginal discharge",
+   "confidence": "medium",
+   "note": "\"Abnormal vaginal discharge\" does not exist; Vaginal discharge problem is the closest."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p56-37c268cf"
+   ],
+   "quote": "No stools or flatus/wind for past 24 hours",
+   "confidence": "medium",
+   "note": "Obstipation for \"no stools\"; duration applied in the priority rule."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "element_keys": [
+    "p56-37c268cf"
+   ],
+   "quote": "No stools or flatus/wind for past 24 hours",
+   "confidence": "medium",
+   "note": "\"flatus/wind\" absent; duration applied in the priority rule."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "sudden abdominal pain",
+   "confidence": "high",
+   "note": "Sudden-onset qualifier on the presenting complaint."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "medication",
+   "confidence": "high",
+   "note": "Footnote 1 defines possible allergen; exposure form as on the gold page."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1; generic Food substance rather than specific foods. \"within past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p56-eac1d0ce"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Presenting complaint; Abdominal pain is a recorded warning sign, so the task fires at triage."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "cramping abdominal pain",
+   "confidence": "high",
+   "note": "Abdominal colic = cramping abdominal pain."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "No \"Body pain\" concept."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")) (qualifier (snomed_concept \"During menstruation\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-22900a38"
+   ],
+   "quote": "crampy lower abdominal pain only during periods",
+   "confidence": "medium",
+   "note": "\"only\" not modelled; lower abdomen finding_site + During menstruation qualifier."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "Postprandial qualifier for \"worse with eating\"."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain for \"worse with hunger\"."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "low",
+   "note": "No specific concept; positional aggravation is the closest."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "recurrent pain/discomfort",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "recurrent pain/discomfort",
+   "confidence": "high",
+   "note": "Recurrent qualifier."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "abdominal distension",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal frequency of defecation\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "change in stool frequency/appearance",
+   "confidence": "medium",
+   "note": "Frequency half; grouped with appearance so the item counts once in any2."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal feces\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "change in stool frequency/appearance",
+   "confidence": "medium",
+   "note": "Appearance half; grouped in one or."
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "mucous in stool",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Indigestion\" \"finding\"))",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "Dyspepsia (heartburn) likely",
+   "confidence": "high",
+   "note": "Waist circumference is measured once dyspepsia is likely."
+  },
+  {
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "BMI ≥ 25",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "waist circumference ≥ 80cm (woman) or ≥ 94cm (man)",
+   "confidence": "low",
+   "note": "No sex predicate; the lower (woman) cut-off is used for all, so it fires more often for men with waist 80-93 cm."
+  },
+  {
+   "rule": "Diagnose probable abdominal aortic aneurysm from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p56-13a4f904"
+   ],
+   "quote": "Pulsatile abdominal mass",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable abdominal aortic aneurysm from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-13a4f904"
+   ],
+   "quote": "abdominal aortic aneurysm likely",
+   "confidence": "high",
+   "note": "\"X likely\" -> probable diagnosis, referenced from the priority rule."
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "Pain in right lower abdomen",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "Fever as (active_condition Fever), per Will's briefing."
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Appendicitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "appendicitis likely",
+   "confidence": "high",
+   "note": "Plain Appendicitis, as the page says (not Acute appendicitis)."
+  },
+  {
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "Guarding or rigidity during peri-umbilical percussion",
+   "confidence": "medium",
+   "note": "Elicitation manoeuvre (peri-umbilical percussion) not modelled; plain guarding/rigidity used."
+  },
+  {
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "Guarding or rigidity during peri-umbilical percussion",
+   "confidence": "medium",
+   "note": "Elicitation manoeuvre (peri-umbilical percussion) not modelled; plain guarding/rigidity used."
+  },
+  {
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Peritonitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "peritonitis likely",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right upper quadrant pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "Severe pain in right upper abdomen",
+   "confidence": "high",
+   "note": "RUQ pain with Severe qualifier."
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "Fever as (active_condition Fever), per Will's briefing."
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "loss of appetite",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cholecystitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "cholecystitis likely",
+   "confidence": "high",
+   "note": "Plain Cholecystitis, as the page says."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "Sudden severe upper abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset + Severe qualifiers on upper abdominal pain."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "No \"pain radiating to back\" concept; lumbar and left/right thoracic radiation concepts together cover \"back\"."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region left side\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "See lumbar radiation note."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region right side\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "See lumbar radiation note."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pancreatitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "pancreatitis likely",
+   "confidence": "high",
+   "note": "Plain Pancreatitis, as the page says."
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "guarding/rigidity",
+   "confidence": "medium",
+   "note": "\"during peri-umbilical percussion\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "guarding/rigidity",
+   "confidence": "medium",
+   "note": "\"during peri-umbilical percussion\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": ">= 38 °C as written."
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "abnormal vaginal discharge",
+   "confidence": "medium",
+   "note": "\"Abnormal vaginal discharge\" does not exist; Vaginal discharge problem is the closest."
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infectious disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "infection likely",
+   "confidence": "low",
+   "note": "The page says only \"infection\"; Infectious disease is the literal concept. A pelvic infection concept would be a clinical inference."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "sudden abdominal pain",
+   "confidence": "high",
+   "note": "Sudden-onset qualifier on the presenting complaint."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "medication",
+   "confidence": "high",
+   "note": "Footnote 1 defines possible allergen; exposure form as on the gold page."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1; generic Food substance rather than specific foods. \"within past few hours\" not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "medium",
+   "note": "\"check for anaphylaxis\" -> possible diagnosis, which triggers the anaphylaxis check task elsewhere."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "cramping abdominal pain",
+   "confidence": "high",
+   "note": "Abdominal colic = cramping abdominal pain."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "recent onset vomiting",
+   "confidence": "medium",
+   "note": "\"recent onset\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "loss of appetite",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "No \"Body pain\" concept."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "active_condition Fever per Will's briefing."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-3f3957d0"
+   ],
+   "quote": "gastroenteritis likely",
+   "confidence": "high",
+   "note": "FSN of gastroenteritis."
+  },
+  {
+   "rule": "Diagnose probable dysmenorrhoea from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")) (qualifier (snomed_concept \"During menstruation\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-22900a38"
+   ],
+   "quote": "crampy lower abdominal pain only during periods",
+   "confidence": "medium",
+   "note": "\"only\" not modelled; lower abdomen finding_site + During menstruation qualifier."
+  },
+  {
+   "rule": "Diagnose probable dysmenorrhoea from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dysmenorrhea\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-22900a38"
+   ],
+   "quote": "dysmenorrhoea likely",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "Postprandial qualifier for \"worse with eating\"."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain for \"worse with hunger\"."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "low",
+   "note": "No specific concept; positional aggravation is the closest."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Indigestion\" \"finding\") probable)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "Dyspepsia (heartburn) likely",
+   "confidence": "high",
+   "note": "Indigestion is the FSN for dyspepsia."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "Postprandial qualifier for \"worse with eating\"."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain for \"worse with hunger\"."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p56-49841368"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "low",
+   "note": "No specific concept; positional aggravation is the closest."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²) 25)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "BMI ≥ 25",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm) 80)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "waist circumference ≥ 80cm (woman) or ≥ 94cm (man)",
+   "confidence": "low",
+   "note": "No sex predicate; the lower (woman) cut-off is used for all, so it fires more often for men with waist 80-93 cm."
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Gastroesophageal reflux disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-137d7b78"
+   ],
+   "quote": "gastro-oesophageal reflux disease likely",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "recurrent pain/discomfort",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "recurrent pain/discomfort",
+   "confidence": "high",
+   "note": "Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "abdominal distension",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal frequency of defecation\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "change in stool frequency/appearance",
+   "confidence": "medium",
+   "note": "Frequency half; grouped with appearance so the item counts once in any2."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal feces\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "change in stool frequency/appearance",
+   "confidence": "medium",
+   "note": "Appearance half; grouped in one or."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "mucous in stool",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Irritable bowel syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p56-07bd5aad"
+   ],
+   "quote": "irritable bowel syndrome (IBS) likely",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p56-319abd06"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Red box: abdominal pain AND any of the listed items."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p56-74dce981"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Recorded warning-sign concept."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p56-0f337a11"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "clinical_finding form used in check_for and priority so the evidence is checked for."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p56-0f337a11"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "high",
+   "note": "Any vaginal bleeding in pregnancy; not \"Abnormal vaginal bleeding\"."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery",
+   "confidence": "medium",
+   "note": "Postpartum state taken as \"recent delivery\"; alternative: Delivery finding + Recent qualifier."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery/miscarriage",
+   "confidence": "medium",
+   "note": "Recent qualifier carries \"recent\" from the shared adjective."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-ccb3aaae"
+   ],
+   "quote": "Recent delivery/miscarriage/termination of pregnancy",
+   "confidence": "medium",
+   "note": "Recent qualifier carries \"recent\"; induced termination for \"termination of pregnancy\"."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p56-4db16c57"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Routine vital, mmol/L."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p56-2e2c290f"
+   ],
+   "quote": "Unable to pass urine",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p56-2667e16f"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "element_keys": [
+    "p56-b649bc60"
+   ],
+   "quote": "Abdominal/pelvic mass",
+   "confidence": "high",
+   "note": "Split into abdominal and pelvic mass."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of pelvic structure\" \"finding\"))",
+   "element_keys": [
+    "p56-b649bc60"
+   ],
+   "quote": "Abdominal/pelvic mass",
+   "confidence": "high",
+   "note": "Split into abdominal and pelvic mass."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))",
+   "element_keys": [
+    "p56-13a4f904"
+   ],
+   "quote": "abdominal aortic aneurysm likely",
+   "confidence": "high",
+   "note": "\"X likely\" -> probable diagnosis, referenced from the priority rule."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Appendicitis\" \"disorder\"))",
+   "element_keys": [
+    "p56-c66839a9"
+   ],
+   "quote": "appendicitis likely",
+   "confidence": "high",
+   "note": "Red-box \"likely\" item via the probable diagnosis in this file."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "element_keys": [
+    "p56-45fd1111"
+   ],
+   "quote": "peritonitis likely",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cholecystitis\" \"disorder\"))",
+   "element_keys": [
+    "p56-14e3e5ca"
+   ],
+   "quote": "cholecystitis likely",
+   "confidence": "high",
+   "note": "Red-box \"likely\" item via the probable diagnosis in this file."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Pancreatitis\" \"disorder\"))",
+   "element_keys": [
+    "p56-e7b2ffe5"
+   ],
+   "quote": "pancreatitis likely",
+   "confidence": "high",
+   "note": "Red-box \"likely\" item via the probable diagnosis in this file."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p56-37c268cf"
+   ],
+   "quote": "No stools or flatus/wind for past 24 hours",
+   "confidence": "medium",
+   "note": "Obstipation = no stools; onset >= 24 hours ago for \"for past 24 hours\"."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p56-37c268cf"
+   ],
+   "quote": "No stools or flatus/wind for past 24 hours",
+   "confidence": "medium",
+   "note": "\"No stools or flatus\" read as neither (and); onset >= 24 hours."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "sudden abdominal pain",
+   "confidence": "high",
+   "note": "Sudden-onset qualifier on the presenting complaint."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "As on the gold anaphylaxis page; no Sudden onset qualifier (sudden applies to the abdominal pain)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p56-b44afad7"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "medication",
+   "confidence": "high",
+   "note": "Footnote 1 defines possible allergen; exposure form as on the gold page."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1; generic Food substance rather than specific foods. \"within past few hours\" not modelled."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p56-7dca2c44"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 1."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "guarding/rigidity",
+   "confidence": "medium",
+   "note": "Infection branch inlined in the urgent rule (not active_condition Infectious disease, which other pages may diagnose)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "guarding/rigidity",
+   "confidence": "medium",
+   "note": "Infection branch inlined in the urgent rule (not active_condition Infectious disease, which other pages may diagnose)."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": ">= 38 °C as written."
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "element_keys": [
+    "p56-2d78df7c"
+   ],
+   "quote": "abnormal vaginal discharge",
+   "confidence": "medium",
+   "note": "\"abnormal vaginal discharge\": Vaginal discharge problem (narrower than Vaginal discharge, matches \"abnormal\"); reconciled from B."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p56-8922b762",
+   "element_id": "p56-rb1-e17",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management section. No manage tasks in this pass."
+  },
+  {
+   "element_key": "p56-c2d2af63",
+   "element_id": "p56-rb1-e18",
+   "text": "If abdominal aortic aneurysm likely: avoid giving IV fluids even if BP < 90/60 (raising blood pressure may worsen rupture).",
+   "reason_category": "management_step",
+   "reason": "IV fluid advice for AAA. No manage tasks in this pass."
+  },
+  {
+   "element_key": "p56-6d69d91b",
+   "element_id": "p56-rb1-e19",
+   "text": "If BP < 90/60 or pancreatitis likely, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing",
+   "reason_category": "management_step",
+   "reason": "IV fluids for BP < 90/60 or pancreatitis. No manage tasks in this pass."
+  },
+  {
+   "element_key": "p56-8dcb65f5",
+   "element_id": "p56-rb1-e20",
+   "text": "If infection likely, give ceftriaxone2 1g IV and single dose metronidazole3 400mg orally.",
+   "reason_category": "management_step",
+   "reason": "Antibiotics for infection. No manage tasks in this pass."
+  },
+  {
+   "element_key": "p56-bfc8fdb2",
+   "element_id": "p56-rb1-e21",
+   "text": "If pain severe, give morphine 5-10mg IM, repeat 4-6 hourly until patient referred, or give diluted morphine4 3-10mg slow IV: start with 3mL IV over 3 minutes. I",
+   "reason_category": "management_step",
+   "reason": "Morphine for severe pain. No manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Anaphylaxis item in red box",
+   "decision": "Encoded both as a possible Anaphylaxis diagnosis (to trigger the anaphylaxis check elsewhere) and as a branch of the Urgent priority, since it is listed under 'any of'.",
+   "alternatives": "Treat as cross_reference_only pointer to page 28.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "'Infection likely' concept",
+   "decision": "Infectious disease, as the page words it; its evidence is inlined in the Urgent rule instead of (active_condition Infectious disease), which any infection anywhere would satisfy.",
+   "alternatives": "Female pelvic inflammatory disease (builder B; narrower than the page's word).",
+   "confidence": "low"
+  },
+  {
+   "topic": "No stools or flatus for 24 hours",
+   "decision": "Obstipation AND Unable to break wind, each with onset >= 24 hours ago.",
+   "alternatives": "Obstipation alone; or of the two.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Diagnosis concepts",
+   "decision": "Appendicitis / Cholecystitis / Pancreatitis as worded on the page; the Urgent rule's active_condition also matches the Acute children diagnosed on other pages, since descendants match.",
+   "alternatives": "Acute appendicitis / Acute cholecystitis / Acute pancreatitis from the shared vocabulary (builder B).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Flowchart routing",
+   "decision": "Yes/No branches (lower abdomen and woman; epigastric question) not enforced; each likely rule fires on its own evidence.",
+   "alternatives": "None expressible (no sex predicate).",
+   "confidence": "medium"
+  }
+ ]
+}

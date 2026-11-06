@@ -1,0 +1,236 @@
+{
+ "edition": "2026",
+ "page": 151,
+ "lisp_file": "151-heart-failure-routine-care.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p151-25600fc3"
+   ],
+   "quote": "heart failure",
+   "confidence": "high",
+   "note": "Presenting condition named in the red box header; plain clinical_finding form used in trigger and priority rule as the brief directs (no probable heart failure rule on this page)."
+  },
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p151-b4ee2b85"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain finding (also a warning sign); the page pointer to p24 is a cross-reference."
+  },
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")) (qualifier (snomed_concept \"Rapid\" \"qualifier value\")))",
+   "element_keys": [
+    "p151-72b50a2b"
+   ],
+   "quote": "Rapid worsening of symptoms",
+   "confidence": "medium",
+   "note": "No SNOMED concept for worsening symptoms; encoded literally as heart failure qualified Worsening + Rapid. Alternative: Decompensated chronic heart failure (disorder), rejected as a clinical reinterpretation."
+  },
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p151-1c16fce4"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Difficulty breathing (finding), matching vocabulary use."
+  },
+  {
+   "rule": "Check for urgent heart failure conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p151-b25fa159"
+   ],
+   "quote": "New wheeze",
+   "confidence": "high",
+   "note": "Wheezing with New qualifier."
+  },
+  {
+   "rule": "Measure weight in heart failure routine care",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p151-fcd14b9a"
+   ],
+   "quote": "Weight Every visit",
+   "confidence": "high",
+   "note": "Weight assessed every visit in the heart failure assessment table; trigger is the heart failure diagnosis (not a recorded common symptom)."
+  },
+  {
+   "rule": "Measure weight in heart failure routine care",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body weight\" \"observable entity\") kg)",
+   "element_keys": [
+    "p151-fcd14b9a"
+   ],
+   "quote": "Weight Every visit",
+   "confidence": "high",
+   "note": "Weight is not a routine vital, so a measure task in kg; comparison with least-symptomatic weight cannot be expressed."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p151-25600fc3"
+   ],
+   "quote": "heart failure",
+   "confidence": "high",
+   "note": "Presenting condition named in the red box header; plain clinical_finding form used in trigger and priority rule as the brief directs (no probable heart failure rule on this page)."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p151-b4ee2b85"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain finding (also a warning sign); the page pointer to p24 is a cross-reference."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")) (qualifier (snomed_concept \"Rapid\" \"qualifier value\")))",
+   "element_keys": [
+    "p151-72b50a2b"
+   ],
+   "quote": "Rapid worsening of symptoms",
+   "confidence": "medium",
+   "note": "No SNOMED concept for worsening symptoms; encoded literally as heart failure qualified Worsening + Rapid. Alternative: Decompensated chronic heart failure (disorder), rejected as a clinical reinterpretation."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p151-1c16fce4"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital, >= 30 bpm as written."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p151-1c16fce4"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Difficulty breathing (finding), matching vocabulary use."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p151-e2e92bd8"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 split as systolic < 90 or diastolic < 60 per Will's convention."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p151-e2e92bd8"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 split as systolic < 90 or diastolic < 60 per Will's convention."
+  },
+  {
+   "rule": "Urgent: heart failure with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p151-b25fa159"
+   ],
+   "quote": "New wheeze",
+   "confidence": "high",
+   "note": "Wheezing with New qualifier."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p151-09309dd5",
+   "element_id": "p151-rb1-e07",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the urgent management list"
+  },
+  {
+   "element_key": "p151-29b1c987",
+   "element_id": "p151-rb1-e08",
+   "text": "Sit patient up and if oxygen saturation < 94%, give 40% face mask oxygen at 6-8L/min.",
+   "reason_category": "management_step",
+   "reason": "Positioning and oxygen therapy; no manage tasks in this pass"
+  },
+  {
+   "element_key": "p151-72cb07e6",
+   "element_id": "p151-rb1-e09",
+   "text": "If systolic BP > 90, give furosemide 40mg slow IV. If no response after 30 minutes, give another 80mg IV. If good response, give 40mg IV after 2-4 hours.",
+   "reason_category": "management_step",
+   "reason": "Furosemide dosing conditional on SBP > 90; medicines not encoded"
+  },
+  {
+   "element_key": "p151-38483590",
+   "element_id": "p151-rb1-e10",
+   "text": "If systolic BP > 90, give sublingual isosorbide dinitrate 5mg even if there is no chest pain. Repeat every 10 minutes if SBP remains >90.",
+   "reason_category": "management_step",
+   "reason": "Isosorbide dinitrate dosing conditional on SBP > 90; medicines not encoded"
+  },
+  {
+   "element_key": "p151-134f63bb",
+   "element_id": "p151-rb1-e11",
+   "text": "If BP ≥ 180/130, give single dose enalapril 10mg orally.",
+   "reason_category": "management_step",
+   "reason": "Enalapril dose if BP >= 180/130; medicines not encoded"
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Rapid worsening of symptoms",
+   "decision": "Heart failure (disorder) with qualifiers Worsening and Rapid",
+   "alternatives": "Decompensated chronic heart failure (disorder); Acute exacerbation of chronic heart failure synonym",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Footnote 3 'shock likely' (carvedilol contraindication)",
+   "decision": "Not encoded as a probable shock rule: it defines cardiogenic shock for a medicine contraindication (management), combining logic (any/all) is unstated, and the brief forbids building a shared shock definition",
+   "alternatives": "probable Cardiogenic shock rule with or/any2 of SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Weight every visit",
+   "decision": "measure task for Body weight in kg triggered by heart failure",
+   "alternatives": "omit (weight change vs baseline is not expressible)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Same-day referral items (fainting/blackouts, new irregular pulse)",
+   "decision": "Not encoded; they are referral steps, not urgent-attention criteria in the red box",
+   "alternatives": "add to priority evaluation",
+   "confidence": "medium"
+  }
+ ]
+}

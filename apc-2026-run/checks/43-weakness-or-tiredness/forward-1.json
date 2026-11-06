@@ -1,0 +1,272 @@
+{
+  "page": 43,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p43-78963a6b",
+      "scope": "in_scope",
+      "scope_reason": "Header fixes the presenting complaint (weakness or tiredness) and the 'any of' (or) structure of the red box.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: weakness or tiredness with red-box findings :: (and (or (clinical_finding (snomed_concept \"Fatigue\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\"))) (or ...))",
+        "Check for urgent weakness or tiredness conditions :: (or (clinical_finding (snomed_concept \"Fatigue\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-25ab7dfe",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with a 'consider stroke or TIA' conclusion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All parts present: sudden asymmetric weakness of face/arm/leg (three findings with Sudden onset + Asymmetry qualifiers), numbness of face/arm/leg (three findings, same qualifiers), difficulty speaking (Difficulty talking), visual disturbance (Visual disturbance, disorder; the only exact-name concept). Each of the eight is in the Urgent priority 'or' and in a possible Cerebrovascular accident rule and a possible Transient ischemic attack rule, which is the right rule type for 'consider'. Minor: the page's 'New' is folded into 'Sudden onset' rather than a separate 'New' qualifier; acceptable.",
+      "evidence": [
+        "Diagnose possible stroke (weakness or tiredness page) :: (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible) ... (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\")) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\")))",
+        "Diagnose possible TIA (weakness or tiredness page) :: (diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible) ... same eight-finding (or ...)",
+        "Urgent: weakness or tiredness with red-box findings :: (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\") ...)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-9c86c0f5",
+      "scope": "in_scope",
+      "scope_reason": "Three glucose thresholds, one conditional on known diabetes.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Glucose < 3; (glucose < 4 and known diabetes); glucose >= 11.1, all in mmol/L, all in the Urgent 'or'. Diabetes mellitus with 'Known present' is in the check_for and consumed by the priority rule. 'Blood glucose status' is the only glucose observable entity available.",
+      "evidence": [
+        "Urgent: weakness or tiredness with red-box findings :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+        "Urgent: weakness or tiredness with red-box findings :: (and (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4) (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+        "Urgent: weakness or tiredness with red-box findings :: (>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-63e6a88d",
+      "scope": "in_scope",
+      "scope_reason": "Single criterion (warning sign).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: weakness or tiredness with red-box findings :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-3a76b7c8",
+      "scope": "in_scope",
+      "scope_reason": "Two parts: difficulty breathing; respiratory rate >= 30.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: weakness or tiredness with red-box findings :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))",
+        "Urgent: weakness or tiredness with red-box findings :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-59e753c2",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Hb < 6 needs a haemoglobin unit (g/dL) that the language does not have; correctly left out of the rules.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-792c7975",
+      "scope": "in_scope",
+      "scope_reason": "Two criteria joined by 'and' with a 'heart failure likely' conclusion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Difficulty breathing worse on lying flat = Orthopnea; leg swelling = Leg swelling symptom; 'and' preserved; 'likely' encoded as probable Heart failure, and the priority rule references (active_condition Heart failure) as the briefing prescribes. Both findings are in the check_for.",
+      "evidence": [
+        "Diagnose probable heart failure (weakness or tiredness page) :: (and (or Fatigue Asthenia) (clinical_finding (snomed_concept \"Orthopnea\" \"finding\")) (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\")))",
+        "Urgent: weakness or tiredness with red-box findings :: (active_condition (snomed_concept \"Heart failure\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-3c8fd86b",
+      "scope": "in_scope",
+      "scope_reason": "Single criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent weakness or tiredness conditions :: (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+        "Urgent: weakness or tiredness with red-box findings :: (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-b3b1f30a",
+      "scope": "in_scope",
+      "scope_reason": "Four findings with a 'dehydration likely' conclusion.",
+      "verdict": "error",
+      "parts_missing": [],
+      "problem": "The four parts (thirst, dry mouth, poor skin turgor, BP < 90/60) are each encoded with a fitting concept, BP < 90/60 correctly as SBP < 90 or DBP < 60, and the conclusion is a probable Dehydration rule referenced by the priority rule. The logic is wrong: the rule uses 'or' across the four, so thirst alone (or dry mouth alone) in a tired patient yields a probable dehydration diagnosis and an Urgent priority. The page lists these as the cluster that together makes dehydration likely (it uses explicit 'or' elsewhere on the same line-set when it means any-of, e.g. 'Difficulty breathing or respiratory rate >= 30', and explicit 'and' in the heart-failure item). The honest reading is a conjunction or at least any2; 'or' over-triggers both the diagnosis and the Urgent level.",
+      "evidence": [
+        "Diagnose probable dehydration (weakness or tiredness page) :: (or (clinical_finding (snomed_concept \"Increased thirst\" \"finding\")) (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90) (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60))",
+        "Urgent: weakness or tiredness with red-box findings :: (active_condition (snomed_concept \"Dehydration\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-26006aa8",
+      "scope": "in_scope",
+      "scope_reason": "Measured temperature threshold plus a history-of-fever window.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'in past 3 days' time window on the reported fever"
+      ],
+      "problem": "Temperature >= 38 C is correct. 'Fever in past 3 days' is approximated by (active_condition Fever) with no time bound, although the language can express onset windows, e.g. (< (onset (active_condition Fever)) (time_ago 3 days)). A fever a month ago still triggers Urgent. Low clinical impact but the page's limit is representable and not encoded.",
+      "evidence": [
+        "Urgent: weakness or tiredness with red-box findings :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+        "Urgent: weakness or tiredness with red-box findings :: (active_condition (snomed_concept \"Fever\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-c05d04a2",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header of the management block; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-efbe813f",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "ORS / IV sodium chloride / referral for dehydration. Management; out of scope by design. Its trigger 'dehydration likely' is the probable Dehydration rule judged under p43-b3b1f30a.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-527a397b",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Refer urgently' is management. The finding it hangs on (worsening leg weakness) is already an Urgent criterion (p43-3c8fd86b).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-7ac76b8c",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'If cough, weight loss, night sweats or fever, check for TB' and the cancer-screening item route to other pages; 'check TSH' is a test order with no representable threshold or 'X likely'. No diagnosis is concluded on this page. Not encoded, and the house standard does not require it.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-a27f34b0",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Medication review routing to page 131 and 'discuss with doctor'; no diagnosis or priority. Not encoded.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-d9bf9d23",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Depression / substance-use screening questions that route to pages 159, 165 and 98; no diagnosis concluded here. Not encoded.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-9b35877c",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "The one 'X likely' on this element, 'Hb < 12 (woman) or < 13 (man), anaemia likely', needs a haemoglobin unit the language lacks, so it cannot be encoded; the remaining items (HIV test, pregnancy, diabetes, palliative care) are cross-references. Not encoded.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-fbdf4e0b",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Is there muscle weakness on examination?' is a flowchart decision whose Yes branch leads only to doctor confirmation, bloods and referral (management) and whose No branch leads to a duration question; neither branch reaches a diagnosis or priority. Not encoded.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p43-5c0a4937",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Yes / No labels of the muscle-weakness decision.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-c77efdca",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Ask about duration of tiredness' splits into < 1 month / >= 1 month management branches only.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p43-a7ee6187",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Duration branch labels; both branches are management (reassure, bloods, review, refer).",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p43-4edca382",
+    "p43-c48acc60",
+    "p43-1c67a33a",
+    "p43-218a7170",
+    "p43-2c8c54cd",
+    "p43-5d39e508"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+      "problem": "'or' across thirst / dry mouth / poor skin turgor / BP < 90/60 where the page lists them as a cluster. Any single soft sign (thirst) in a tired patient produces a probable Dehydration diagnosis, which the priority rule then promotes to Urgent via (active_condition Dehydration). The page does not justify Urgent for thirst alone. An 'and', or an any2 with BP as its own group, would match the page's intent.",
+      "severity": "high"
+    },
+    {
+      "rule": "Urgent: weakness or tiredness with red-box findings",
+      "problem": "(active_condition Fever) has no onset bound although the page limits it to the past 3 days and the language has onset / time_ago comparisons. Any historical fever record makes the patient Urgent.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable heart failure / probable dehydration (weakness or tiredness page)",
+      "problem": "Both probable rules use (clinical_finding Asthenia) as evidence. Fatigue is a common symptom, but Asthenia is not on the common-symptom list and appears in this file only inside the check task's (or ...) due_to, never as a check_for item. If the test's 'checked for in the same file' match is by exact s-expression of the leaf, this may be flagged. Cannot verify without the VHA test; noting only.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded almost completely and with the right concepts: stroke/TIA findings, glucose thresholds, chest pain, difficulty breathing / RR >= 30, heart failure (orthopnea and leg swelling, probable), worsening leg weakness and temperature >= 38 are all correct, and Hb < 6 is correctly left out as not representable. The one substantive error is the dehydration rule, which uses 'or' over thirst, dry mouth, poor skin turgor and BP < 90/60, so thirst alone yields a probable dehydration diagnosis and an Urgent priority the page does not justify. A minor gap: 'fever in the past 3 days' is encoded as an unbounded active Fever condition although the language can express the 3-day window."
+}

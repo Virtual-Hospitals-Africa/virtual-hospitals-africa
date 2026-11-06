@@ -1,0 +1,436 @@
+{
+ "page": 122,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p122-d3c61078",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Red-box header 'Give urgent attention ... either of' encoded as one Urgent priority rule over an (or ...) of the two bullets, with a check_for task triggered by body-fluid exposure or human bite. Level Urgent matches the page.",
+   "evidence": [
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: Urgent (or ...)",
+    "Check for HIV PEP: exposure to infectious fluid or human bite :: (or (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Body fluid\" \"substance\")) (clinical_finding (snomed_concept \"Human bite - wound\" \"disorder\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-ece680e3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "blood-stained fluid/tissue (no concept or rule for exposure to bloodstained fluid or tissue; e.g. 'Body substance' substance, or bloodstained-fluid findings, could have been used)"
+   ],
+   "problem": "Blood, pleural, pericardial, peritoneal, amniotic, synovial, CSF, vaginal secretion, semen (Seminal fluid) and breast milk are each encoded with the Exposure-to qualifier pattern, checked for, and in the Urgent (or ...). Only 'blood-stained fluid/tissue' is missing.",
+   "evidence": [
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+    "Check for HIV PEP: exposure to infectious fluid or human bite :: check_for (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\")) ... (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-f91d1f4a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Human bite severe enough to cause bleeding' encoded as (and Human bite - wound, Bleeding); both checked (bite as trigger, Bleeding in check_for). Bleeding is generic, not tied to the bite site, so a bleeding elsewhere plus a non-bleeding bite would also fire; minor.",
+   "evidence": [
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (and (clinical_finding (snomed_concept \"Human bite - wound\" \"disorder\")) (clinical_finding (snomed_concept \"Bleeding\" \"finding\")))",
+    "Check for HIV PEP: exposure to infectious fluid or human bite :: check_for (clinical_finding (snomed_concept \"Bleeding\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p122-f4e69d03",
+   "scope": "borderline",
+   "scope_reason": "Flowchart decision (route of exposure: sexual contact, sharps injury, splash to eye/open wound/mouth/nose) that decides PEP vs reassurance; arguably management routing, but it is a discriminating finding the house standard says the check_for should capture (Sharps injury disorder exists in SNOMED).",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No route-of-exposure findings (sexual contact, Sharps injury, splash to eye/mouth/nose/open wound) in check_for or any rule; the 'No' branch (reassure, no PEP) cannot be distinguished.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p122-a1c52d85",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-2c009c2b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-4f2c9b15",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-442d3cb9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-7adc89b5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-f2b3f849",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-6786a848",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-d87a3a75",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-50cf76d4",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-1552264b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-dcb6ef42",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-9d8e81dc",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-b30bfa32",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-44a15641",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-df97ddef",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-aee433ff",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-2159e4f1",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-4124454c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-e8dacaa9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-9de20e54",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-379f19bb",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-4e294967",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-6c867d6b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-5732d81b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-b1ddc7c9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-7b0245c2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-8c9424fe",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-71be4d95",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-e6f979b4",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "HBsAb titre >= 10 is a lab value with no unit in the language; the step is management anyway.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-4d182c9e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Hep B vaccine timing (7/14 days) and HBsAb < 10 are management criteria; titre not representable.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-cdff65fd",
+   "scope": "borderline",
+   "scope_reason": "'Signs of acute HIV infection (flu-like symptoms - fever, sore throat, headache)' reads like a 'consider acute HIV' criterion, but it governs whether to continue PEP (management) and refers to the exposed patient/source ambiguously.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No possible diagnosis of acute HIV infection from flu-like symptoms after exposure.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p122-d9586564",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p122-975cbcf7",
+   "scope": "borderline",
+   "scope_reason": "Intro text lists routes of exposure (sexual, sharps, splash, broken skin, shared needles, used condom); context for the red box route question.",
+   "verdict": "partial",
+   "parts_missing": [
+    "sexual exposure",
+    "sharps injury / shared needles",
+    "splash to eye/mouth/nose/broken skin",
+    "contact with used condom"
+   ],
+   "problem": "Exposure to blood is encoded; routes are not (same gap as p122-f4e69d03).",
+   "evidence": [
+    "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p122-f2abb36e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Non-infectious fluids (tears, non-bloodstained saliva, sweat, urine, stool) are correctly absent from the Urgent rule. Note the check_for trigger uses 'Body fluid', of which Tears, Saliva, Sweat and Urine are descendants, so exposure to them would raise the check task (harmless, no priority).",
+   "evidence": [
+    "Check for HIV PEP: exposure to infectious fluid or human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Body fluid\" \"substance\"))"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p122-dfd4f2b0",
+  "p122-b9cc6423"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "problem": "'Blood-stained fluid/tissue' exposure from the red box is not in the (or ...) or the check_for, so an exposure recorded as bloodstained fluid/tissue (not blood itself) gets no Urgent priority.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "problem": "Route of exposure (sexual contact, sharps injury, splash to eye/open wound/mouth/nose) is the page's next decision node and is not checked for or used anywhere; the flowchart's Yes/No branch is lost.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "problem": "Trigger anchors on (Exposure to + Body fluid) and Human bite - wound, neither of which is a common symptom or warning sign; the task fires only if one of these is recorded elsewhere. Trigger also covers non-infectious fluids (tears, saliva, urine, sweat are Body fluid descendants). The Exposure-to qualifier pattern is the house pattern; 'Exposure to blood and/or body fluid' (event) exists as an alternative.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "problem": "Bleeding in the bite conjunct is generic (not finding_site/linked to the bite), so any bleeding plus any human bite satisfies it; also Will's (and <presenting complaint> (or ...)) structure is not used, though the items themselves imply the complaint.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Both red-box criteria are encoded with valid SNOMED and the right Urgent level; all ten named fluids are present. The main miss is 'blood-stained fluid/tissue' exposure, and the route-of-exposure decision (sexual/sharps/splash) is not captured anywhere; everything else on the page is management and correctly left out."
+}

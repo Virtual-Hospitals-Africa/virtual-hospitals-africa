@@ -1,0 +1,1513 @@
+{
+ "page": 78,
+ "slug": "78-back-pain",
+ "validation_ok": true,
+ "builder_agreement": 0.73,
+ "elements": 32,
+ "elements_agreed": 22,
+ "claims": 140,
+ "claims_agreed": 117,
+ "queue": 84,
+ "queue_by_priority": {
+  "low": 22,
+  "medium": 50,
+  "high": 12
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p78-039cfbc5",
+   "id": "p78-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p78-40365d4f",
+   "id": "p78-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-ed0cd35e",
+   "id": "p78-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-caaea878",
+   "id": "p78-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-011e92d7",
+   "id": "p78-rb1-e05",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p78-5789dfd9",
+   "id": "p78-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-0cdbb4ab",
+   "id": "p78-rb1-e07",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p78-4312454b",
+   "id": "p78-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-c5b771e6",
+   "id": "p78-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-d8f3fd1b",
+   "id": "p78-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-0948ac9c",
+   "id": "p78-rb1-e11",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p78-4c1a2fe5",
+   "id": "p78-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-ad6cb2d1",
+   "id": "p78-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-80a99c9e",
+   "id": "p78-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-74de0069",
+   "id": "p78-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-f02d007a",
+   "id": "p78-rb1-e16",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-2f1fb8f0",
+   "id": "p78-rb1-e17",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-7ba5d5f4",
+   "id": "p78-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-66beb9a8",
+   "id": "p78-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p78-3be01c6f",
+   "id": "p78-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p78-6d6f7cfc",
+   "id": "p78-out-e04",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p78-d386b708",
+   "id": "p78-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-e0a40c28",
+   "id": "p78-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 2,
+    "missing": 1
+   }
+  },
+  {
+   "key": "p78-448dd5e7",
+   "id": "p78-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-1437f8a0",
+   "id": "p78-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-078a3526",
+   "id": "p78-out-e09",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p78-1830d022",
+   "id": "p78-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-6459c9f2",
+   "id": "p78-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-db095b14",
+   "id": "p78-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p78-bb74af1f",
+   "id": "p78-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-b23dc9b5",
+   "id": "p78-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p78-7ee13543",
+   "id": "p78-out-e15",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent back pain conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent back pain conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent back pain conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible mpox in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible TB in back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable mechanical back pain",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: back pain with red box features",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: back pain with red box features",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: back pain with red box features",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: back pain with red box features",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: back pain with red box features",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: back pain with red box features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

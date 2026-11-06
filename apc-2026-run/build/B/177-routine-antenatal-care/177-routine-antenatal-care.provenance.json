@@ -1,0 +1,1414 @@
+{
+ "edition": "2026",
+ "page": 177,
+ "lisp_file": "177-routine-antenatal-care.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p177-8573c81b"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-42fdc9da"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p177-73ff7288"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p177-f9cab683"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock as on this page: or of the Shock finding and SBP < 80 (decision for all pages)."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "persistent headache",
+   "confidence": "medium",
+   "note": "\"Persistent\" not modelled: no SNOMED qualifier for persistent; plain Headache fires more often."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "blurred vision",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "element_keys": [
+    "p177-3c0796e7"
+   ],
+   "quote": "≥ 1+ proteinuria",
+   "confidence": "medium",
+   "note": "Dipstick grade (≥ 1+) has no unit in the language; Proteinuria finding stands for ≥ 1+."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-25b0050e"
+   ],
+   "quote": "severe back",
+   "confidence": "high",
+   "note": "Severe qualifier for \"severe back pain\"."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-25b0050e"
+   ],
+   "quote": "severe back/abdominal pain",
+   "confidence": "high",
+   "note": "Severe qualifier applies to abdominal pain too."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p177-6062839d"
+   ],
+   "quote": "Swollen painful calf",
+   "confidence": "high",
+   "note": "Swollen and painful calf as two findings joined by and."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p177-6062839d"
+   ],
+   "quote": "Swollen painful calf",
+   "confidence": "high",
+   "note": "Swollen and painful calf as two findings joined by and."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painful uterine contractions\" \"finding\"))",
+   "element_keys": [
+    "p177-cf812d8f"
+   ],
+   "quote": "Painful contractions",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\"))",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "no contractions",
+   "confidence": "medium",
+   "note": "Used as (no ...) in the PROM rule; recorded No for contractions present."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery vaginal discharge\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "Sudden gush of clear/pale fluid from vagina",
+   "confidence": "medium",
+   "note": "Watery vaginal discharge + Sudden onset for a sudden gush of clear/pale fluid; alternative Amniotic fluid leaking (disorder) rejected as it presumes the diagnosis."
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced fetal movement\" \"finding\"))",
+   "element_keys": [
+    "p177-ca3855bb"
+   ],
+   "quote": "Decreased",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fetal movements absent\" \"situation\"))",
+   "element_keys": [
+    "p177-ca3855bb"
+   ],
+   "quote": "no fetal movements",
+   "confidence": "medium",
+   "note": "Only concept found is a situation; used with clinical_finding as Will does for situations."
+  },
+  {
+   "rule": "Check for miscarriage signs in pregnant patient with vaginal bleeding",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Check for miscarriage signs in pregnant patient with vaginal bleeding",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for miscarriage signs in pregnant patient with vaginal bleeding",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for miscarriage signs in pregnant patient with vaginal bleeding",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for miscarriage signs in pregnant patient with vaginal bleeding",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "BP ≥ 140/90",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold (Will convention for BP pairs)."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "BP ≥ 140/90",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold (Will convention for BP pairs)."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "persistent headache",
+   "confidence": "medium",
+   "note": "\"Persistent\" not modelled: no SNOMED qualifier for persistent; plain Headache fires more often."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "blurred vision",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p177-70ea6047"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160)",
+   "element_keys": [
+    "p177-98729344"
+   ],
+   "quote": "BP ≥ 160/110",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold; severe hypertension inlined (no SNOMED concept)."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p177-98729344"
+   ],
+   "quote": "BP ≥ 160/110",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold; severe hypertension inlined (no SNOMED concept)."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "element_keys": [
+    "p177-3c0796e7"
+   ],
+   "quote": "≥ 1+ proteinuria",
+   "confidence": "medium",
+   "note": "Dipstick grade (≥ 1+) has no unit in the language; Proteinuria finding stands for ≥ 1+."
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Severe pre-eclampsia\" \"disorder\") probable)",
+   "element_keys": [
+    "p177-70ea6047",
+    "p177-3c0796e7"
+   ],
+   "quote": "treat as severe pre-eclampsia",
+   "confidence": "high",
+   "note": "\"Treat as severe pre-eclampsia\" encoded as probable diagnosis, referenced from the priority rule."
+  },
+  {
+   "rule": "Diagnose probable preterm labour in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose probable preterm labour in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painful uterine contractions\" \"finding\"))",
+   "element_keys": [
+    "p177-cf812d8f"
+   ],
+   "quote": "Painful contractions",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable preterm labour in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Premature labor\" \"finding\") probable)",
+   "element_keys": [
+    "p177-cf812d8f"
+   ],
+   "quote": "preterm labour likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery vaginal discharge\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "Sudden gush of clear/pale fluid from vagina",
+   "confidence": "medium",
+   "note": "Watery vaginal discharge + Sudden onset for a sudden gush of clear/pale fluid; alternative Amniotic fluid leaking (disorder) rejected as it presumes the diagnosis."
+  },
+  {
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "no contractions",
+   "confidence": "medium",
+   "note": "Used as (no ...) in the PROM rule; recorded No for contractions present."
+  },
+  {
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Premature rupture of membranes\" \"disorder\") probable)",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "prelabour rupture of membranes (PROM) likely",
+   "confidence": "high",
+   "note": "SNOMED Premature rupture of membranes = rupture before onset of labour (prelabour)."
+  },
+  {
+   "rule": "Diagnose probable eclampsia in antenatal patient with seizures",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose probable eclampsia in antenatal patient with seizures",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p177-57e14ff4"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable eclampsia in antenatal patient with seizures",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eclampsia\" \"disorder\") probable)",
+   "element_keys": [
+    "p177-00b04dd3"
+   ],
+   "quote": "treat for eclampsia",
+   "confidence": "low",
+   "note": "\"Treat for eclampsia\" encoded as probable, like \"treat as severe pre-eclampsia\"; the 20 weeks to 1 week postpartum window is not representable."
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible threatened miscarriage in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Threatened abortion\" \"disorder\") possible)",
+   "element_keys": [
+    "p177-52cc90b5"
+   ],
+   "quote": "Threatened",
+   "confidence": "low",
+   "note": "\"Threatened or complete miscarriage likely\": one of two, so each encoded as possible rather than both probable."
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible complete miscarriage in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Complete miscarriage\" \"disorder\") possible)",
+   "element_keys": [
+    "p177-52cc90b5"
+   ],
+   "quote": "complete miscarriage",
+   "confidence": "low",
+   "note": "\"Threatened or complete miscarriage likely\": one of two, so each encoded as possible."
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-b1e18292"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "medium",
+   "note": "Flowchart No answer: all three os/POC findings recorded as No."
+  },
+  {
+   "rule": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") possible)",
+   "element_keys": [
+    "p177-d668c5c6",
+    "p177-2879fbb7"
+   ],
+   "quote": "Refer to exclude ectopic pregnancy",
+   "confidence": "medium",
+   "note": "\"Exclude X\" -> possible, per Will."
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible incomplete miscarriage in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Incomplete miscarriage\" \"disorder\") possible)",
+   "element_keys": [
+    "p177-70137a40"
+   ],
+   "quote": "Incomplete",
+   "confidence": "low",
+   "note": "\"Incomplete or inevitable miscarriage likely\": one of two, so each encoded as possible."
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-0f0a004d"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "Cervical os open/dilated",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "products of conception in cervical os",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-b4a254cf",
+    "p177-d079dd4c"
+   ],
+   "quote": "products of conception in cervical os/vagina",
+   "confidence": "high",
+   "note": "Flowchart Yes answer: any of the three."
+  },
+  {
+   "rule": "Diagnose possible inevitable miscarriage in antenatal patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inevitable abortion\" \"disorder\") possible)",
+   "element_keys": [
+    "p177-70137a40"
+   ],
+   "quote": "inevitable miscarriage",
+   "confidence": "low",
+   "note": "\"Incomplete or inevitable\": each possible. SNOMED name is Inevitable abortion."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p177-bfd8ee48"
+   ],
+   "quote": "pregnant patient",
+   "confidence": "high",
+   "note": "Page applies to the pregnant patient; Pregnancy finding is the trigger (clinical_finding form, as no rule diagnoses pregnancy at probable)."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p177-8573c81b"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p177-42fdc9da"
+   ],
+   "quote": "Vaginal bleeding",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Severe pre-eclampsia\" \"disorder\"))",
+   "element_keys": [
+    "p177-70ea6047",
+    "p177-3c0796e7"
+   ],
+   "quote": "treat as severe pre-eclampsia",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160)",
+   "element_keys": [
+    "p177-98729344"
+   ],
+   "quote": "BP ≥ 160/110",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold; severe hypertension inlined (no SNOMED concept)."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p177-98729344"
+   ],
+   "quote": "BP ≥ 160/110",
+   "confidence": "high",
+   "note": "Either systolic or diastolic at or above threshold; severe hypertension inlined (no SNOMED concept)."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-98729344"
+   ],
+   "quote": "without proteinuria",
+   "confidence": "medium",
+   "note": "Proteinuria recorded as No."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Premature labor\" \"finding\"))",
+   "element_keys": [
+    "p177-cf812d8f"
+   ],
+   "quote": "preterm labour likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Premature rupture of membranes\" \"disorder\"))",
+   "element_keys": [
+    "p177-a9b52d27"
+   ],
+   "quote": "prelabour rupture of membranes (PROM) likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p177-25b0050e"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-25b0050e"
+   ],
+   "quote": "severe back",
+   "confidence": "high",
+   "note": "Severe qualifier for \"severe back pain\"."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p177-25b0050e"
+   ],
+   "quote": "severe back/abdominal pain",
+   "confidence": "high",
+   "note": "Severe qualifier applies to abdominal pain too."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p177-73ff7288"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p177-6062839d"
+   ],
+   "quote": "Swollen painful calf",
+   "confidence": "high",
+   "note": "Swollen and painful calf as two findings joined by and."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p177-6062839d"
+   ],
+   "quote": "Swollen painful calf",
+   "confidence": "high",
+   "note": "Swollen and painful calf as two findings joined by and."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced fetal movement\" \"finding\"))",
+   "element_keys": [
+    "p177-ca3855bb"
+   ],
+   "quote": "Decreased",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fetal movements absent\" \"situation\"))",
+   "element_keys": [
+    "p177-ca3855bb"
+   ],
+   "quote": "no fetal movements",
+   "confidence": "medium",
+   "note": "Only concept found is a situation; used with clinical_finding as Will does for situations."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p177-f9cab683"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock as on this page: or of the Shock finding and SBP < 80 (decision for all pages)."
+  },
+  {
+   "rule": "Urgent: pregnant patient with antenatal danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p177-f9cab683"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": ""
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p177-f9bcdead",
+   "element_id": "p177-rb1-e14",
+   "text": "Manage below and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of management list; management/referral, out of scope."
+  },
+  {
+   "element_key": "p177-52e33f88",
+   "element_id": "p177-rb1-e15",
+   "text": "If difficulty breathing, give face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen: management."
+  },
+  {
+   "element_key": "p177-1e9cb727",
+   "element_id": "p177-rb1-e16",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluids: management."
+  },
+  {
+   "element_key": "p177-30e5cf96",
+   "element_id": "p177-rb1-e17",
+   "text": "If temperature ≥ 38°C and difficulty breathing/back pain/abdominal pain, give ceftriaxone 1g IV2/IM unless PROM (see below).",
+   "reason_category": "management_step",
+   "reason": "Ceftriaxone: management; its conditions only gate a medicine."
+  },
+  {
+   "element_key": "p177-d1ba5ef7",
+   "element_id": "p177-rb1-e19",
+   "text": "Severe pre- eclampsia",
+   "reason_category": "flowchart_routing",
+   "reason": "Column header; the criterion is encoded from the red-box line (Severe pre-eclampsia rule)."
+  },
+  {
+   "element_key": "p177-9e3b46c1",
+   "element_id": "p177-rb1-e20",
+   "text": "Severe",
+   "reason_category": "flowchart_routing",
+   "reason": "Column header fragment (\"Severe hypertension\"); encoded from the red-box line in the priority rule."
+  },
+  {
+   "element_key": "p177-1f5f47af",
+   "element_id": "p177-rb1-e22",
+   "text": "Preterm labour",
+   "reason_category": "flowchart_routing",
+   "reason": "Column header; encoded from the red-box line (preterm labour rule)."
+  },
+  {
+   "element_key": "p177-020eeb99",
+   "element_id": "p177-rb1-e23",
+   "text": "Prelabour rupture of membranes (PROM)",
+   "reason_category": "flowchart_routing",
+   "reason": "Column header; encoded from the red-box line (PROM rule)."
+  },
+  {
+   "element_key": "p177-7fff68b3",
+   "element_id": "p177-rb1-e24",
+   "text": "hypertension",
+   "reason_category": "flowchart_routing",
+   "reason": "Column header fragment (\"Severe hypertension\"); encoded from the red-box line in the priority rule."
+  },
+  {
+   "element_key": "p177-3f1f9ae7",
+   "element_id": "p177-rb1-e25",
+   "text": "Early pregnancy < 22 weeks3",
+   "reason_category": "not_representable",
+   "reason": "Gestational age < 22 weeks: no gestational-age measurement/unit (weeks) in the language. Miscarriage/ectopic rules omit it, so they also fire in late pregnancy bleeding (more often than intended)."
+  },
+  {
+   "element_key": "p177-61a64a2c",
+   "element_id": "p177-rb1-e26",
+   "text": "Late",
+   "reason_category": "not_representable",
+   "reason": "\"Late pregnancy >= 22 weeks\" branch: gestational age not representable; branch has management only."
+  },
+  {
+   "element_key": "p177-473743de",
+   "element_id": "p177-rb1-e27",
+   "text": "If < 26 weeks, refer to hospital.",
+   "reason_category": "management_step",
+   "reason": "Referral by gestation."
+  },
+  {
+   "element_key": "p177-e8d9cb73",
+   "element_id": "p177-rb1-e28",
+   "text": "If < 20 weeks 20.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to page 20 for seizures < 20 weeks; gestation not representable."
+  },
+  {
+   "element_key": "p177-53a07d48",
+   "element_id": "p177-rb1-e30",
+   "text": "pregnancy ≥ 22 weeks3",
+   "reason_category": "not_representable",
+   "reason": "\"Late pregnancy >= 22 weeks\" branch: gestational age not representable; branch has management only."
+  },
+  {
+   "element_key": "p177-a8a04032",
+   "element_id": "p177-rb1-e31",
+   "text": "Confirm amniotic fluid with sterile speculum: litmus turns/stays blue.",
+   "reason_category": "management_step",
+   "reason": "Confirmatory procedure (speculum/litmus) for PROM; management."
+  },
+  {
+   "element_key": "p177-b4a6f302",
+   "element_id": "p177-rb1-e33",
+   "text": "If 26-33+ weeks:",
+   "reason_category": "management_step",
+   "reason": "Gestation-dependent management (preterm labour)."
+  },
+  {
+   "element_key": "p177-23abd5b1",
+   "element_id": "p177-rb1-e34",
+   "text": "Give 2 doses of betamethasone 12mg IM 24 hours apart. Record time given in referral letter.",
+   "reason_category": "management_step",
+   "reason": "Betamethasone: management."
+  },
+  {
+   "element_key": "p177-96c781cd",
+   "element_id": "p177-rb1-e35",
+   "text": "Lie patient in left lateral position and avoid placing anything in mouth.",
+   "reason_category": "management_step",
+   "reason": "Positioning: management."
+  },
+  {
+   "element_key": "p177-c0bb9842",
+   "element_id": "p177-rb1-e36",
+   "text": "Avoid digital vaginal examination.",
+   "reason_category": "management_step",
+   "reason": "Avoid digital VE: management."
+  },
+  {
+   "element_key": "p177-12dd2eba",
+   "element_id": "p177-rb1-e39",
+   "text": "Avoid digital vaginal examina- tion.",
+   "reason_category": "management_step",
+   "reason": "Avoid digital VE: management."
+  },
+  {
+   "element_key": "p177-17aca511",
+   "element_id": "p177-rb1-e40",
+   "text": "If chorioamnionitis4, give ampicillin5 1g IV and metronidazole 400mg orally.",
+   "reason_category": "management_step",
+   "reason": "Antibiotics if chorioamnionitis; footnote 4 definition not encoded as a diagnosis (page gives no \"likely\"/\"consider\")."
+  },
+  {
+   "element_key": "p177-23f91824",
+   "element_id": "p177-rb1-e41",
+   "text": "Give 100% face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen: management."
+  },
+  {
+   "element_key": "p177-5639d9f2",
+   "element_id": "p177-rb1-e44",
+   "text": "Give sodium chloride 0.9% 200mL IV, then nifedipine 20mg orally. If still contractions after 30 minutes, give another 10mg. Then give 10mg 4 hourly until transf",
+   "reason_category": "management_step",
+   "reason": "Tocolysis: management."
+  },
+  {
+   "element_key": "p177-93d89fef",
+   "element_id": "p177-rb1-e45",
+   "text": "Give magnesium sulphate 4g in 200mL sodium chloride 0.9% IV over 20 minutes and 5g IM in each buttock. Repeat 5g IM 4 hourly in alternate buttocks.",
+   "reason_category": "management_step",
+   "reason": "Magnesium sulphate: management."
+  },
+  {
+   "element_key": "p177-17560643",
+   "element_id": "p177-rb1-e46",
+   "text": "If no chorioamnionitis4",
+   "reason_category": "management_step",
+   "reason": "Antibiotic branch: management."
+  },
+  {
+   "element_key": "p177-53eacb3e",
+   "element_id": "p177-rb1-e47",
+   "text": "Remove products of conception digitally if possible.",
+   "reason_category": "management_step",
+   "reason": "Remove POC: management."
+  },
+  {
+   "element_key": "p177-0f282d67",
+   "element_id": "p177-rb1-e48",
+   "text": "Give IV fluids as above.",
+   "reason_category": "management_step",
+   "reason": "IV fluids: management."
+  },
+  {
+   "element_key": "p177-85cd3884",
+   "element_id": "p177-rb1-e49",
+   "text": "If ≥ 37 weeks and not in active labour 12 hours after PROM, give ampicillin5 1g IV and metronidazole 400mg orally.",
+   "reason_category": "management_step",
+   "reason": "Antibiotics: management."
+  },
+  {
+   "element_key": "p177-dbf64f5b",
+   "element_id": "p177-rb1-e51",
+   "text": "If bleeding heavy (pad soaked in < 5 minutes):",
+   "reason_category": "management_step",
+   "reason": "Heavy bleeding gates oxytocin/fluids: management."
+  },
+  {
+   "element_key": "p177-9e9311cc",
+   "element_id": "p177-rb1-e52",
+   "text": "Insert urinary catheter and record urine output every hour.",
+   "reason_category": "management_step",
+   "reason": "Catheter: management."
+  },
+  {
+   "element_key": "p177-e2908d2c",
+   "element_id": "p177-rb1-e53",
+   "text": "Give IV fluids as above.",
+   "reason_category": "management_step",
+   "reason": "IV fluids: management."
+  },
+  {
+   "element_key": "p177-101df623",
+   "element_id": "p177-rb1-e55",
+   "text": "Give oxytocin 20units IV diluted in 1L sodium chloride 0.9% at 125mL/hour.",
+   "reason_category": "management_step",
+   "reason": "Oxytocin: management."
+  },
+  {
+   "element_key": "p177-b1127d4f",
+   "element_id": "p177-rb1-e56",
+   "text": "Stop magnesium if urine output < 100mL in 4 hours, respiratory rate < 16 or knee reflexes disappear. If respiratory rate < 16, give calcium gluconate 10% 10mL I",
+   "reason_category": "management_step",
+   "reason": "Magnesium monitoring: management."
+  },
+  {
+   "element_key": "p177-99e49da0",
+   "element_id": "p177-rb1-e57",
+   "text": "If < 37 weeks, give single dose azithromycin 1g and ampicillin5 1g IV 6 hourly for 48 hours then amoxicillin5 500mg 8 hourly for 5 days.",
+   "reason_category": "management_step",
+   "reason": "Antibiotics: management."
+  },
+  {
+   "element_key": "p177-11d3fe31",
+   "element_id": "p177-rb1-e58",
+   "text": "and confirm diagnosis.",
+   "reason_category": "management_step",
+   "reason": "Referral to confirm diagnosis (with \"Refer to exclude ectopic pregnancy\", which is encoded as possible ectopic)."
+  },
+  {
+   "element_key": "p177-fb4ee8a4",
+   "element_id": "p177-rb1-e59",
+   "text": "If pain, give paracetamol 500mg-1g 4-6 hourly (max 4g in 24 hours).",
+   "reason_category": "management_step",
+   "reason": "Paracetamol: management."
+  },
+  {
+   "element_key": "p177-8ec81dbe",
+   "element_id": "p177-rb1-e60",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral."
+  },
+  {
+   "element_key": "p177-84deb32d",
+   "element_id": "p177-rb1-e61",
+   "text": "If seizures persists or recurs, give further magnesium sulphate 2g IV over 10 minutes. If no response, discuss.",
+   "reason_category": "management_step",
+   "reason": "Repeat magnesium: management."
+  },
+  {
+   "element_key": "p177-14ff2096",
+   "element_id": "p177-rb1-e62",
+   "text": "If ≥ 34 weeks, allow labour to continue at MOU.",
+   "reason_category": "management_step",
+   "reason": "Labour at MOU: management."
+  },
+  {
+   "element_key": "p177-557fe2f0",
+   "element_id": "p177-rb1-e63",
+   "text": "If 26-33+ weeks, also give 2 doses betamethasone 12mg IM 24 hours apart. Record time given in referral letter.",
+   "reason_category": "management_step",
+   "reason": "Betamethasone: management."
+  },
+  {
+   "element_key": "p177-5287ee49",
+   "element_id": "p177-rb1-e64",
+   "text": "If temperature ≥ 38°C, pulse > 100, or foul-smelling products of conception, give ceftriaxone 1g",
+   "reason_category": "management_step",
+   "reason": "Antibiotics for infected miscarriage: management (criteria gate a medicine only)."
+  },
+  {
+   "element_key": "p177-d2a483a5",
+   "element_id": "p177-rb1-e65",
+   "text": "IV2 and metronidazole 400mg orally.",
+   "reason_category": "management_step",
+   "reason": "Antibiotics: management."
+  },
+  {
+   "element_key": "p177-7b16527b",
+   "element_id": "p177-rb1-e66",
+   "text": "If BP ≥ 160/110 and patient alert: give nifedipine 10mg to swallow, not chew. Repeat BP after 30 minutes: if still ≥ 160/110, give second dose of nifedipine 10m",
+   "reason_category": "management_step",
+   "reason": "Nifedipine: management."
+  },
+  {
+   "element_key": "p177-4442455c",
+   "element_id": "p177-rb1-e67",
+   "text": "If ≥ 13 weeks and rhesus negative, give anti-D immunoglobulin:",
+   "reason_category": "management_step",
+   "reason": "Anti-D: management."
+  },
+  {
+   "element_key": "p177-0b3e398a",
+   "element_id": "p177-rb1-e68",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral."
+  },
+  {
+   "element_key": "p177-7d60413a",
+   "element_id": "p177-rb1-e69",
+   "text": "If 13 - 22 weeks give 50mcg IM. If ≥ 22 weeks give 100mcg IM.",
+   "reason_category": "management_step",
+   "reason": "Anti-D dose: management."
+  },
+  {
+   "element_key": "p177-57c6f81c",
+   "element_id": "p177-rb1-e70",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral."
+  },
+  {
+   "element_key": "p177-e8ae98f4",
+   "element_id": "p177-rb1-e71",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Gestational age thresholds (< 37, < 22, 20 weeks)",
+   "decision": "Not representable (no weeks unit for a measurement); rules keep their other criteria and fire more often than the page intends.",
+   "alternatives": "Or-list of \"Gestation period, N weeks\" findings (rejected as an invented proxy the app does not record).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "\"X or Y miscarriage likely\"",
+   "decision": "Each of the two diagnoses as possible, not probable.",
+   "alternatives": "Both probable (would assert two exclusive diagnoses at once); parent Miscarriage (Threatened abortion is not under it).",
+   "confidence": "low"
+  },
+  {
+   "topic": "\"Treat as severe pre-eclampsia\" / \"treat for eclampsia\"",
+   "decision": "Encoded as probable diagnoses; eclampsia = pregnancy + seizure.",
+   "alternatives": "Inline criteria in priority only; skip eclampsia because the gestation window is not representable.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Severe hypertension",
+   "decision": "No SNOMED concept; criterion inlined in the priority rule.",
+   "alternatives": "Hypertension complicating pregnancy (not \"severe\").",
+   "confidence": "medium"
+  },
+  {
+   "topic": "BP pairs",
+   "decision": "BP >= 140/90 and >= 160/110 as systolic or diastolic at/above threshold.",
+   "alternatives": "and of both.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Sudden gush of clear/pale fluid",
+   "decision": "Watery vaginal discharge + Sudden onset.",
+   "alternatives": "Amniotic fluid leaking (disorder).",
+   "confidence": "medium"
+  }
+ ]
+}

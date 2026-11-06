@@ -1,0 +1,526 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 20,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    427.4
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p20-rb1-e01",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient who is unconscious and fitting:",
+   "bbox": [
+    287.1,
+    91.6,
+    554.8,
+    102.7
+   ],
+   "key": "p20-13a9b3cd"
+  },
+  {
+   "id": "p20-rb1-e02",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If current head injury 30.",
+   "bbox": [
+    207.8,
+    106.5,
+    317.3,
+    117.3
+   ],
+   "key": "p20-f48ead42"
+  },
+  {
+   "id": "p20-rb1-e03",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Place in recovery position1. Do not place anything in mouth.",
+   "bbox": [
+    207.8,
+    116.5,
+    444.2,
+    127.3
+   ],
+   "key": "p20-b9ed7f55"
+  },
+  {
+   "id": "p20-rb1-e04",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give oxygen via face mask or nasal cannula to maintain oxygen saturation ≥ 95%.",
+   "bbox": [
+    207.8,
+    126.5,
+    523.3,
+    137.3
+   ],
+   "key": "p20-301420ed"
+  },
+  {
+   "id": "p20-rb1-e05",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Establish IV access.",
+   "bbox": [
+    207.8,
+    136.5,
+    287.0,
+    147.3
+   ],
+   "key": "p20-e60ad24d"
+  },
+  {
+   "id": "p20-rb1-e06",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Check fingerprick glucose: if glucose < 3 (< 4 if diabetes) or unable to measure 19.",
+   "bbox": [
+    207.8,
+    146.5,
+    535.1,
+    157.3
+   ],
+   "key": "p20-7ccc0ac7"
+  },
+  {
+   "id": "p20-rb1-e07",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If ≥ 20 weeks pregnant up to 1 week postpartum 177.",
+   "bbox": [
+    207.8,
+    156.5,
+    426.0,
+    167.3
+   ],
+   "key": "p20-ffd7e709"
+  },
+  {
+   "id": "p20-rb1-e08",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If not pregnant or < 20 weeks pregnant, manage as below:",
+   "bbox": [
+    207.8,
+    166.5,
+    436.4,
+    177.3
+   ],
+   "key": "p20-b4d23e9a"
+  },
+  {
+   "id": "p20-rb1-e09",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "If fit has lasted ≥ 5 minutes, give medication to stop the fit and refer urgently:",
+   "bbox": [
+    272.6,
+    188.5,
+    569.4,
+    199.5
+   ],
+   "key": "p20-6872493a"
+  },
+  {
+   "id": "p20-rb1-e10",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 5,
+   "parent": null,
+   "text": "If IV access available: give midazolam2,3 10mg IV or diazepam2,3 10mg slow IV over 5 minutes.",
+   "bbox": [
+    85.9,
+    198.7,
+    456.6,
+    209.5
+   ],
+   "key": "p20-8a9145dd"
+  },
+  {
+   "id": "p20-rb1-e11",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 5,
+   "parent": null,
+   "text": "If IV access not available: give midazolam2,3 10mg IM/buccal4 or if midazolam not available, give a single dose of rectal diazepam2,3 0.2-0.5mg/kg (maximum 20mg/dose).",
+   "bbox": [
+    85.9,
+    208.7,
+    746.3,
+    219.5
+   ],
+   "key": "p20-772fd5be"
+  },
+  {
+   "id": "p20-rb1-e12",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 5,
+   "parent": null,
+   "text": "Monitor airway and breathing: if slow or shallow breathing, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds) 16 and refer urgently.",
+   "bbox": [
+    85.9,
+    218.7,
+    743.9,
+    229.5
+   ],
+   "key": "p20-2882d2e5"
+  },
+  {
+   "id": "p20-rb1-e13",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 5,
+   "parent": null,
+   "text": "Expect a response within 5 minutes:",
+   "bbox": [
+    85.9,
+    228.7,
+    230.7,
+    239.5
+   ],
+   "key": "p20-cac67785"
+  },
+  {
+   "id": "p20-rb1-e14",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "If still fitting after 5 minutes",
+   "bbox": [
+    327.2,
+    250.8,
+    436.6,
+    261.6
+   ],
+   "key": "p20-b0845901"
+  },
+  {
+   "id": "p20-rb1-e15",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 2,
+   "parent": null,
+   "text": "If IV access available: give midazolam2,3 10mg IV or diazepam2,3 10mg slow IV over 5 minutes.",
+   "bbox": [
+    71.7,
+    272.9,
+    442.4,
+    283.8
+   ],
+   "key": "p20-4c9558d1"
+  },
+  {
+   "id": "p20-rb1-e16",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 2,
+   "parent": null,
+   "text": "If IV access not available: give midazolam2,3 10mg IM/buccal4 or if not already given, single dose of rectal diazepam2,3 0.2-0.5mg/kg (maximum 20mg/dose)",
+   "bbox": [
+    71.7,
+    282.9,
+    676.5,
+    293.8
+   ],
+   "key": "p20-e815c9f9"
+  },
+  {
+   "id": "p20-rb1-e17",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 2,
+   "parent": null,
+   "text": "Continue to monitor airway and breathing: if slow or shallow breathing, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds) 16 and refer urgently. Assess need for intubation.",
+   "bbox": [
+    71.7,
+    292.9,
+    683.3,
+    313.8
+   ],
+   "key": "p20-3ea194d0"
+  },
+  {
+   "id": "p20-rb1-e18",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 2,
+   "parent": null,
+   "text": "Expect a response within 5 minutes:",
+   "bbox": [
+    71.7,
+    312.9,
+    214.6,
+    323.8
+   ],
+   "key": "p20-0a1b11bb"
+  },
+  {
+   "id": "p20-rb1-e19",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "If still fitting after 5 minutes",
+   "bbox": [
+    263.4,
+    335.1,
+    368.8,
+    345.9
+   ],
+   "key": "p20-948b83db"
+  },
+  {
+   "id": "p20-rb1-e20",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient stops fitting",
+   "bbox": [
+    655.7,
+    335.1,
+    730.5,
+    345.9
+   ],
+   "key": "p20-34f812ea"
+  },
+  {
+   "id": "p20-rb1-e21",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give a single dose crushed levetiracetam2 60mg/kg (maximum 4500mg) via nasogastric tube.",
+   "bbox": [
+    63.2,
+    357.2,
+    430.2,
+    368.0
+   ],
+   "key": "p20-48fc5f76"
+  },
+  {
+   "id": "p20-rb1-e22",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Keep patient in recovery position1.",
+   "bbox": [
+    607.4,
+    357.2,
+    744.5,
+    368.0
+   ],
+   "key": "p20-09155fda"
+  },
+  {
+   "id": "p20-rb1-e23",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Continue to monitor airway and breathing: if breathing stops or gasping, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds). Assess need for intubation 16.",
+   "bbox": [
+    63.2,
+    367.2,
+    569.4,
+    388.0
+   ],
+   "key": "p20-6ef3b4da"
+  },
+  {
+   "id": "p20-rb1-e24",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Continue oxygen to maintain sats ≥ 95%.",
+   "bbox": [
+    607.4,
+    367.2,
+    769.5,
+    378.0
+   ],
+   "key": "p20-1f048da7"
+  },
+  {
+   "id": "p20-rb1-e25",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If known with epilepsy and discontinued treatment, restart antiseizure medication or start new antiseizure medication if indicated.",
+   "bbox": [
+    607.4,
+    377.2,
+    771.4,
+    418.0
+   ],
+   "key": "p20-2da89c59"
+  },
+  {
+   "id": "p20-rb1-e26",
+   "page": 20,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient who is unconscious and fitting:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If fitting continues, discuss further management with referral hospital.",
+   "bbox": [
+    63.2,
+    387.2,
+    335.9,
+    398.0
+   ],
+   "key": "p20-b24a08f2"
+  },
+  {
+   "id": "p20-out-e01",
+   "page": 20,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "SEIZURES/FITS",
+   "bbox": [
+    361.0,
+    48.7,
+    480.9,
+    71.0
+   ],
+   "key": "p20-e266d91f"
+  },
+  {
+   "id": "p20-out-e02",
+   "page": 20,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Recovery position: turn onto left side, place left hand under cheek with neck slightly extended and bend the right leg to stabilise position. 2If no doctor available, nurse to get telephonic prescription. The doctor must provide a written, signed prescription within 72 hours of the telephonic prescription. 3Benzodiazepines can cause respiratory depression (slow, shallow breathing). 4Buccal: use 5mL syringe to draw up correct dose, remove needle and give midazolam between the cheek and gum.",
+   "bbox": [
+    34.0,
+    534.6,
+    802.1,
+    551.2
+   ],
+   "key": "p20-3d3c1c1a"
+  }
+ ]
+}

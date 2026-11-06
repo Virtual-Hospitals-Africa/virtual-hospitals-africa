@@ -1,0 +1,55 @@
+{
+ "page": 15,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (none extra)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "The page's complaint is 'COLLAPSE FOLLOWING VACCINATION'; Collapse is the recorded anchor, and requiring 'Vaccination given' in the trigger would never fire because nothing records it, so vaccination is asked instead (see check_for).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))  vs  B: (none)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "reason": "The title's 'VACCINATION' must be recorded for both column rules to use it; checking for it after a collapse is how it gets recorded.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)  vs  B: (none; red box as cross_reference_only)",
+   "choice": "A",
+   "final_expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+   "reason": "The delayed-collapse column is the page's own logic leading to 'Treat as anaphylaxis', and the pointer rule allows rules where the page has triage logic outside the pointer; 'Treat as' reads as probable rather than possible.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\")) (anaphylaxis rule)  vs  B: (no anaphylaxis rule)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "reason": "Part of the anaphylaxis rule kept above: the delayed column starts from 'Delayed collapse'.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\")) (anaphylaxis rule)  vs  B: (no anaphylaxis rule)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "reason": "Part of the anaphylaxis rule kept above: the delayed column starts from '5-10 minutes after vaccination'.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (or (< SBP 90) (< DBP 60) (> pulse 120) Wheezing Stridor Cough Swelling Eruption) \u2014 8 conditions in the anaphylaxis rule  vs  B: (no anaphylaxis rule)",
+   "choice": "A",
+   "final_expr": "(or (< (measurement Systolic blood pressure mmHg) 90) (< (measurement Diastolic blood pressure mmHg) 60) (> (measurement Pulse, function bpm) 120) Wheezing Stridor Cough Swelling Eruption)",
+   "reason": "Each is a delayed-column line ('BP < 90/60 and remains low', 'Pulse > 120', 'may have wheeze, stridor, cough', 'swelling or rash'); the page gives no count, so any one suffices, making the rule the exact complement of the fainting rule's 'No other signs or symptoms'.",
+   "unsettled": true
+  }
+ ],
+ "notes": "Both builds passed. They agree on the task's check_for signs and the whole fainting rule (Syncope probable). Base A; B's only extra (Vaccination given in the trigger) was dropped as an unrecordable anchor. A's anaphylaxis rule is kept but marked unsettled (whether to encode it on this page, probable vs possible, and the any-one-feature threshold); the 8 or-branches of its evidence are recorded as one decision. Remaining questions merged from both builders."
+}

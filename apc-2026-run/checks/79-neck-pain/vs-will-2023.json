@@ -1,0 +1,217 @@
+{
+ "page_2026": 79,
+ "page_2023": 64,
+ "will_file": "64-neck-pain-arm-hand.lisp",
+ "redbox_status_2023": [
+  "numbers, wording or position only"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Neck pain\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hand structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Upper limb structure\" \"body structure\")))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "check_for": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of upper limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of musculoskeletal system\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint stiffness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in left arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in right arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of upper extremity\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint catching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Locking of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in thumb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of shoulder region\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thumb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff limbs\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in thumb\" \"finding\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in left arm\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in right arm\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper arm\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "priority_condition": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Neck pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))"
+   ],
+   "only_2026": [
+    "(active_condition (snomed_concept \"Fracture of upper limb\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff limbs\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis_condition": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of upper limb\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+   ],
+   "only_2026": [
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of upper extremity\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint catching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Locking of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in thumb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of shoulder region\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thumb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by movement\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper arm\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper arm\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "diagnosis": {
+   "both": [],
+   "only_2023": [
+    "(diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)"
+   ],
+   "only_2026": [
+    "(diagnosis (snomed_concept \"Arthropathy\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Carpal tunnel syndrome\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Elbow tendinopathy\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Fracture of upper limb\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Referred pain\" \"finding\") probable)",
+    "(diagnosis (snomed_concept \"Tenosynovitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+     "build_2026": "(diagnosis (snomed_concept \"Fracture of upper limb\" \"disorder\") probable)",
+     "relation": "2026 narrower"
+    }
+   ]
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 42,
+  "build_2026": 86,
+  "exact": 20,
+  "related": 8
+ }
+}

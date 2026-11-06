@@ -1,0 +1,472 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 52,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    87.0,
+    806.4,
+    141.1
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p52-rb1-e01",
+   "page": 52,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with mouth symptoms and any of:",
+   "section_y": 92.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with mouth symptoms and any of:",
+   "bbox": [
+    281.3,
+    92.2,
+    562.5,
+    103.2
+   ],
+   "key": "p52-e5fb4ee4"
+  },
+  {
+   "id": "p52-rb1-e02",
+   "page": 52,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with mouth symptoms and any of:",
+   "section_y": 92.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Unable to open mouth",
+   "bbox": [
+    53.9,
+    102.4,
+    146.7,
+    113.2
+   ],
+   "key": "p52-605ecdfb"
+  },
+  {
+   "id": "p52-rb1-e03",
+   "page": 52,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with mouth symptoms and any of:",
+   "section_y": 92.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If sudden face/tongue swelling and any of: wheeze, difficulty breathing, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28.",
+   "bbox": [
+    53.9,
+    112.2,
+    788.0,
+    123.2
+   ],
+   "key": "p52-bc9c8706"
+  },
+  {
+   "id": "p52-rb1-e04",
+   "page": 52,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with mouth symptoms and any of:",
+   "section_y": 92.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer urgently.",
+   "bbox": [
+    51.2,
+    124.9,
+    108.3,
+    135.9
+   ],
+   "key": "p52-4efd11f8"
+  },
+  {
+   "id": "p52-out-e01",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MOUTH SYMPTOMS",
+   "bbox": [
+    339.3,
+    48.7,
+    502.6,
+    71.0
+   ],
+   "key": "p52-64ba92ad"
+  },
+  {
+   "id": "p52-out-e02",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2Add 2.5mL (½ teaspoon) of table salt to 200mL lukewarm water.",
+   "bbox": [
+    34.0,
+    543.3,
+    516.3,
+    551.8
+   ],
+   "key": "p52-8bb2e5b7"
+  },
+  {
+   "id": "p52-out-e03",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with mouth symptoms not needing urgent attention • If on abacavir, check for abacavir hypersensitivity reaction (AHR) 131. If swelling of lips 49. If gum or tooth problem 54. • Ask about dry mouth. Wear a mask while examining the mouth and check for redness, white patches, blisters, ulcers or cracks:",
+   "bbox": [
+    175.7,
+    156.3,
+    640.7,
+    187.5
+   ],
+   "key": "p52-90ebb0f9"
+  },
+  {
+   "id": "p52-out-e04",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "White patches on cheeks, gums, tongue, palate",
+   "bbox": [
+    53.8,
+    200.6,
+    226.8,
+    210.8
+   ],
+   "key": "p52-35ede4a5"
+  },
+  {
+   "id": "p52-out-e05",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© Ourania Nicolatou-Galitis et al (CC BY-SA 4.0). Oral thrush/candida likely • Give nystatin suspension 100 000IU/mL (1mL) 6 hourly after meal for 7 days. Keep inside mouth as long as possible. Continue for 2 days after white patches resolved. • If on inhaled corticosteroids, advise to rinse mouth with water after use. • Test for HIV 124 and diabetes 19. • If patient has a life-limiting illness, also give palliative care 191.",
+   "bbox": [
+    48.2,
+    330.5,
+    231.1,
+    440.9
+   ],
+   "key": "p52-95fff1ab"
+  },
+  {
+   "id": "p52-out-e06",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If difficulty or pain on swallowing,",
+   "bbox": [
+    78.7,
+    456.9,
+    203.9,
+    467.1
+   ],
+   "key": "p52-5df93871"
+  },
+  {
+   "id": "p52-out-e07",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "oesophageal candida likely: • Give fluconazole 200mg daily for 14 days. • Test for HIV 124. If HIV positive, start ART 126. • If no better, refer.",
+   "bbox": [
+    39.7,
+    466.1,
+    230.6,
+    507.1
+   ],
+   "key": "p52-0fc2af12"
+  },
+  {
+   "id": "p52-out-e08",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Red, cracked corners of mouth",
+   "bbox": [
+    560.5,
+    200.6,
+    672.6,
+    210.8
+   ],
+   "key": "p52-bbb94b7f"
+  },
+  {
+   "id": "p52-out-e09",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© Dr Richard Ashton: dermnetnz.org",
+   "bbox": [
+    589.5,
+    311.8,
+    678.8,
+    319.1
+   ],
+   "key": "p52-092fc8a0"
+  },
+  {
+   "id": "p52-out-e10",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Angular cheilitis/stomatitis likely • Apply zinc and castor oil ointment 8 hourly. • If patient also has oral candida, treat as in adjacent column and apply clotrimazole cream 12 hourly for 2 weeks. • If crusts and blisters around mouth, impetigo likely 93. • If very itchy, contact dermatitis likely. Identify and remove irritant. • If dentures, ensure good fit and advise to clean every night. • If on inhaled corticosteroids, advise to rinse mouth after use. • If no better or uncertain of cause: - Check Hb. If < 12g/dL (woman) or < 13g/dL",
+   "bbox": [
+    528.7,
+    324.0,
+    706.4,
+    475.0
+   ],
+   "key": "p52-f33bc9c8"
+  },
+  {
+   "id": "p52-out-e11",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(man), anaemia likely 44. - Test for HIV 124 and diabetes 19. - If still uncertain, refer.",
+   "bbox": [
+    534.3,
+    474.0,
+    680.8,
+    505.0
+   ],
+   "key": "p52-1eb60504"
+  },
+  {
+   "id": "p52-out-e12",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painful blisters on lips/mouth",
+   "bbox": [
+    272.4,
+    200.6,
+    379.6,
+    210.8
+   ],
+   "key": "p52-8ff03199"
+  },
+  {
+   "id": "p52-out-e13",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© Dr Mashihul Hossain",
+   "bbox": [
+    337.2,
+    329.2,
+    392.9,
+    336.6
+   ],
+   "key": "p52-c202b756"
+  },
+  {
+   "id": "p52-out-e14",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Herpes simplex likely • Test for HIV 124. • Advise to rinse mouth with salt water2 for one minute twice a day. • Apply petroleum jelly to blisters on lips. • For pain, give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • If extensive, apply tetracaine 0.5% gel to blisters 6 hourly. • If HIV, give aciclovir 400mg 8 hourly for 7 days. • If severe or no better after 1 week of treatment, refer.",
+   "bbox": [
+    259.4,
+    341.5,
+    390.3,
+    502.5
+   ],
+   "key": "p52-ae0edce1"
+  },
+  {
+   "id": "p52-out-e15",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painful ulcer/s with central white patch",
+   "bbox": [
+    426.5,
+    200.6,
+    499.0,
+    220.8
+   ],
+   "key": "p52-875ea910"
+  },
+  {
+   "id": "p52-out-e16",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© Florian Brandt",
+   "bbox": [
+    470.4,
+    368.4,
+    510.2,
+    375.8
+   ],
+   "key": "p52-48c6d251"
+  },
+  {
+   "id": "p52-out-e17",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Aphthous ulcer/s likely • Apply tetracaine 0.5% gel on ulcers 6 hourly. • Refer if: - Ulcer > 1cm - Not healed within",
+   "bbox": [
+    413.9,
+    380.6,
+    511.0,
+    441.6
+   ],
+   "key": "p52-9328b2ad"
+  },
+  {
+   "id": "p52-out-e18",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "10 days.",
+   "bbox": [
+    425.2,
+    441.4,
+    454.3,
+    451.6
+   ],
+   "key": "p52-61d7c67e"
+  },
+  {
+   "id": "p52-out-e19",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise to avoid spicy, hot, sticky, dry or acidic food and to eat soft, moist food. Keep mouth and teeth clean by brushing and rinsing regularly.",
+   "bbox": [
+    162.5,
+    520.2,
+    679.4,
+    530.4
+   ],
+   "key": "p52-3565c0c8"
+  },
+  {
+   "id": "p52-out-e20",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Dry mouth",
+   "bbox": [
+    742.5,
+    200.6,
+    782.5,
+    210.8
+   ],
+   "key": "p52-1f3181ba"
+  },
+  {
+   "id": "p52-out-e21",
+   "page": 52,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If thirst, urinary frequency, weight loss, check for diabetes 19. • If runny or blocked nose 51. • Look for and treat oral candida (see adjacent). • Review medication: furosemide, amitriptyline, chlorphenamine, antipsychotics and morphine can cause dry mouth. Discuss with doctor. • Advise to sip fluids frequently. Sucking on oranges, pineapple, lemon or passion fruit may help. • If patient has a life- limiting illness, also give palliative care 191.",
+   "bbox": [
+    722.8,
+    223.9,
+    802.6,
+    494.1
+   ],
+   "key": "p52-5b65a1c4"
+  }
+ ]
+}

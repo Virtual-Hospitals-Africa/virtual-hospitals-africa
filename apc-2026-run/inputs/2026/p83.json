@@ -1,0 +1,544 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 83,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.8,
+    806.4,
+    108.3
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p83-rb1-e01",
+   "page": 83,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check if the patient needs urgent attention 82.",
+   "bbox": [
+    323.1,
+    92.0,
+    518.8,
+    103.1
+   ],
+   "key": "p83-233eeda6"
+  },
+  {
+   "id": "p83-out-e01",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "PAINFUL SKIN",
+   "bbox": [
+    363.3,
+    48.7,
+    477.9,
+    71.0
+   ],
+   "key": "p83-8302e99f"
+  },
+  {
+   "id": "p83-out-e02",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1History of angioedema, anaphylaxis or urticaria. 2Avoid if on RR-TB treatment.",
+   "bbox": [
+    34.0,
+    543.5,
+    272.1,
+    552.0
+   ],
+   "key": "p83-ceea7728"
+  },
+  {
+   "id": "p83-out-e03",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painful blisters in a band along one side",
+   "bbox": [
+    596.3,
+    121.4,
+    741.5,
+    131.6
+   ],
+   "key": "p83-9061a0cc"
+  },
+  {
+   "id": "p83-out-e04",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    692.3,
+    237.1,
+    757.0,
+    244.4
+   ],
+   "key": "p83-b2f3b480"
+  },
+  {
+   "id": "p83-out-e05",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Poorly-defined borders",
+   "bbox": [
+    259.0,
+    156.8,
+    343.4,
+    167.0
+   ],
+   "key": "p83-7b4b80fa"
+  },
+  {
+   "id": "p83-out-e06",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    285.7,
+    305.4,
+    351.6,
+    312.9
+   ],
+   "key": "p83-cd20a621"
+  },
+  {
+   "id": "p83-out-e07",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Clearly-defined raised borders",
+   "bbox": [
+    395.0,
+    156.8,
+    504.9,
+    167.0
+   ],
+   "key": "p83-d5e8fb63"
+  },
+  {
+   "id": "p83-out-e08",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    423.7,
+    305.7,
+    489.7,
+    313.2
+   ],
+   "key": "p83-cd006dbc"
+  },
+  {
+   "id": "p83-out-e09",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Red, warm, painful lump which may be fluctuant in the centre. May discharge pus.",
+   "bbox": [
+    48.3,
+    121.4,
+    203.9,
+    141.6
+   ],
+   "key": "p83-9ab10688"
+  },
+  {
+   "id": "p83-out-e10",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    137.8,
+    218.6,
+    202.5,
+    225.9
+   ],
+   "key": "p83-671daada"
+  },
+  {
+   "id": "p83-out-e11",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Boil/abscess likely • If fluctuant, arrange incision and drainage. • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • If swollen tender lymph nodes, multiple lesions, lesion on face, extensive surrounding infection, temperature ≥ 38°C, HIV or diabetes, give antibiotic:",
+   "bbox": [
+    39.7,
+    241.5,
+    214.5,
+    322.5
+   ],
+   "key": "p83-d868ac51"
+  },
+  {
+   "id": "p83-out-e12",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Give cefalexin 500mg 6 hourly or",
+   "bbox": [
+    45.4,
+    321.7,
+    180.3,
+    332.5
+   ],
+   "key": "p83-552fbeac"
+  },
+  {
+   "id": "p83-out-e13",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "flucloxacillin 500mg 6 hourly for 5 days. - If severe penicillin allergy1, give instead",
+   "bbox": [
+    45.4,
+    331.7,
+    206.4,
+    352.5
+   ],
+   "key": "p83-9a63aa3e"
+  },
+  {
+   "id": "p83-out-e14",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "azithromycin 500mg daily for 3 days. • Advise to wash with soap and water, keep nails short and avoid sharing clothing or towels. • If recurrent boils or abscesses: - If painful abscesses in axilla, groin or",
+   "bbox": [
+    39.7,
+    351.7,
+    200.7,
+    412.5
+   ],
+   "key": "p83-dc3ff445"
+  },
+  {
+   "id": "p83-out-e15",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "perineum, hidradenitis suppurativa likely 42. - Test for HIV 124 and diabetes 19. - Wash once with chlorhexidine 0.05%",
+   "bbox": [
+    45.4,
+    411.5,
+    210.8,
+    452.5
+   ],
+   "key": "p83-61808112"
+  },
+  {
+   "id": "p83-out-e16",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "solution from neck down. • Refer same day if: - BP < 90/60 - Pulse > 100 - Deep abscess in difficult area to drain",
+   "bbox": [
+    39.7,
+    452.4,
+    188.7,
+    502.5
+   ],
+   "key": "p83-257ddc32"
+  },
+  {
+   "id": "p83-out-e17",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(hands, breast, perineum) - No response to treatment within 2 days.",
+   "bbox": [
+    45.4,
+    502.4,
+    196.4,
+    522.5
+   ],
+   "key": "p83-8ca2b995"
+  },
+  {
+   "id": "p83-out-e18",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Cellulitis likely Erysipelas likely",
+   "bbox": [
+    273.9,
+    328.0,
+    480.2,
+    339.2
+   ],
+   "key": "p83-54892a94"
+  },
+  {
+   "id": "p83-out-e19",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Herpes zoster (shingles) likely • Test for HIV 124. • Advise to keep lesions clean and dry, and to avoid skin contact with others until crusts have formed. • Give aciclovir 800mg 5 times a day (4 hourly missing the middle of the night dose) for days if:",
+   "bbox": [
+    535.7,
+    259.5,
+    794.8,
+    320.5
+   ],
+   "key": "p83-30d497d1"
+  },
+  {
+   "id": "p83-out-e20",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- ≤ 3 days since onset of rash or - At risk of severe infection (> 65 years, HIV, diabetes, severe heart/liver",
+   "bbox": [
+    541.3,
+    320.3,
+    799.4,
+    340.5
+   ],
+   "key": "p83-4075f728"
+  },
+  {
+   "id": "p83-out-e21",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "disease or alcohol abuse) and lesions not yet crusted. • For pain: - Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as",
+   "bbox": [
+    535.7,
+    340.3,
+    791.1,
+    370.5
+   ],
+   "key": "p83-3a478d27"
+  },
+  {
+   "id": "p83-out-e22",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "needed. - If needed, add tramadol 50mg 6 hourly. If poor response, doctor to",
+   "bbox": [
+    541.3,
+    370.3,
+    799.7,
+    390.5
+   ],
+   "key": "p83-14ab2299"
+  },
+  {
+   "id": "p83-out-e23",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "increase dose to tramadol 100mg 6 hourly. - If pain persists after rash has healed, also give amitriptyline2 25mg",
+   "bbox": [
+    541.3,
+    389.7,
+    797.0,
+    410.5
+   ],
+   "key": "p83-223038e8"
+  },
+  {
+   "id": "p83-out-e24",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "at night. If no response, increase by 25mg every 2 weeks, up to 75mg if needed. - If still poor response, refer. • If infected (skin red, warm, swollen): - Give cefalexin 500mg 6 hourly or flucloxacillin 500mg 6 hourly",
+   "bbox": [
+    535.7,
+    410.3,
+    801.9,
+    460.5
+   ],
+   "key": "p83-7c9fa187"
+  },
+  {
+   "id": "p83-out-e25",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "for 5 days. - If severe penicillin allergy1, give instead azithromycin 500mg daily",
+   "bbox": [
+    541.3,
+    460.3,
+    796.3,
+    480.5
+   ],
+   "key": "p83-864c3a88"
+  },
+  {
+   "id": "p83-out-e26",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "for 3 days. • Refer same day if: - Eye, ear or nose involvement - Suspected meningitis (headache, temperature ≥ 38°C, neck stiffness) - Rash involves more than one region of the body.",
+   "bbox": [
+    535.7,
+    480.3,
+    797.2,
+    530.5
+   ],
+   "key": "p83-b2182804"
+  },
+  {
+   "id": "p83-out-e27",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Give cefalexin 500mg 6 hourly or flucloxacillin 500mg 6 hourly for 5 days. If severe penicillin allergy1, give instead azithromycin 500mg daily for 3 days. • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • If limb affected, advise to keep elevated. • Refer same day if: - BP < 90/60 - Pulse > 100 - Confused - Hand, face or scalp involvement - Extensive infection - Blisters or grey/black skin - Poorly controlled diabetes - Recurrent infections with underlying problem (like lymphoedema) - No response to treatment within 2 days.",
+   "bbox": [
+    246.6,
+    353.9,
+    499.8,
+    514.7
+   ],
+   "key": "p83-eec6ae4d"
+  },
+  {
+   "id": "p83-out-e28",
+   "page": 83,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Red, warm, swollen skin Are borders poorly or clearly defined?",
+   "bbox": [
+    305.4,
+    121.4,
+    442.9,
+    141.6
+   ],
+   "key": "p83-5122e44b"
+  }
+ ]
+}

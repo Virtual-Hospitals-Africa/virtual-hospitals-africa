@@ -1,0 +1,46 @@
+{
+ "page": 20,
+ "lisp_file": "20-seizures-fits.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for unconsciousness in the fitting patient",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "fitting"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for unconsciousness in the fitting patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "unconscious"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Emergency: unconscious and fitting (seizures/fits)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "fitting"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Emergency: unconscious and fitting (seizures/fits)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "unconscious"
+  }
+ ]
+}

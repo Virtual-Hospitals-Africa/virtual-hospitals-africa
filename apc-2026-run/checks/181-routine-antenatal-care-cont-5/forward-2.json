@@ -1,0 +1,113 @@
+{
+ "page": 181,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p181-98299e7b",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Box header only.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-99b25601",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Lab-form coding note, no triage logic.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-d0bd3e92",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "ART continuation and viral load check are management; the 'on ART' condition only gates management.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-ee4e1064",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "NVP/TLD dosing is management.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-5caf5c23",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Timing of management.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-415cac55",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Start ART next day, supply: management.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-167efb2a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Infant prophylaxis by risk: management; risk decision is on p186.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p181-359c9917",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Abbreviation legend.",
+   "evidence": [
+    "rules file is empty (1 byte, no rules)"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p181-4ed07017",
+  "p181-67e6b020",
+  "p181-6aaee87d",
+  "p181-85b437b9",
+  "p181-0e330a50",
+  "p181-acd3ea62",
+  "p181-55e42a76"
+ ],
+ "rule_level_problems": [],
+ "summary": "The rules file is empty. The page has no triage or diagnostic logic: the red box and all outside blocks are management steps, advice, dosing, a review schedule and cross-references, which the house standard excludes (no manage tasks). An empty file is therefore consistent with the page, but if a rule set was expected, this should be confirmed as intentional. No misses or errors found."
+}

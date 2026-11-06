@@ -1,0 +1,111 @@
+{
+  "page": 43,
+  "base": "A",
+  "decisions": [
+    {
+      "role": "check_for",
+      "difference": "A: face/arm/leg weakness and numbness qualified Sudden onset + Asymmetry  vs  B: Sudden onset only (6 findings, in the check_for task)",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) and the other five weakness/numbness findings likewise",
+      "reason": "The page says \"sudden asymmetric weakness or numbness\"; dropping Asymmetry loses a word of the criterion.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Speech problem + Sudden onset)  vs  B: (Difficulty talking), in the check_for task",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\"))",
+      "reason": "\"Difficulty talking\" is the closest exact SNOMED match to \"difficulty speaking\"; \"New sudden\" grammatically governs only the clause before the semicolon, so no onset qualifier.",
+      "unsettled": true
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Visual disturbance + Sudden onset)  vs  B: (Visual disturbance), in the check_for task",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\"))",
+      "reason": "\"visual disturbance\" follows the semicolon, outside \"New sudden asymmetric …\"; the page does not clearly qualify it.",
+      "unsettled": true
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: face/arm/leg weakness and numbness qualified Sudden onset + Asymmetry  vs  B: Sudden onset only (6 findings, in the urgent rule)",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) and the other five weakness/numbness findings likewise",
+      "reason": "The page says \"sudden asymmetric weakness or numbness\"; dropping Asymmetry loses a word of the criterion.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Speech problem + Sudden onset)  vs  B: (Difficulty talking), in the urgent rule",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\"))",
+      "reason": "\"Difficulty talking\" is the closest exact SNOMED match to \"difficulty speaking\"; \"New sudden\" grammatically governs only the clause before the semicolon, so no onset qualifier.",
+      "unsettled": true
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Visual disturbance + Sudden onset)  vs  B: (Visual disturbance), in the urgent rule",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\"))",
+      "reason": "\"visual disturbance\" follows the semicolon, outside \"New sudden asymmetric …\"; the page does not clearly qualify it.",
+      "unsettled": true
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: face/arm/leg weakness and numbness qualified Sudden onset + Asymmetry  vs  B: Sudden onset only (6 findings, in the stroke and TIA rules)",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) and the other five weakness/numbness findings likewise",
+      "reason": "The page says \"sudden asymmetric weakness or numbness\"; dropping Asymmetry loses a word of the criterion.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Speech problem + Sudden onset)  vs  B: (Difficulty talking), in the stroke and TIA rules",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\"))",
+      "reason": "\"Difficulty talking\" is the closest exact SNOMED match to \"difficulty speaking\"; \"New sudden\" grammatically governs only the clause before the semicolon, so no onset qualifier.",
+      "unsettled": true
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Visual disturbance + Sudden onset)  vs  B: (Visual disturbance), in the stroke and TIA rules",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\"))",
+      "reason": "\"visual disturbance\" follows the semicolon, outside \"New sudden asymmetric …\"; the page does not clearly qualify it.",
+      "unsettled": true
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Increased thirst)  vs  B: (Thirst due to water deprivation)",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Increased thirst\" \"finding\"))",
+      "reason": "The page says only \"Thirst\"; \"due to water deprivation\" asserts a cause the page does not state, so the uncaused term is closer to the words.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Increased thirst)  vs  B: (Thirst due to water deprivation) in the dehydration rule",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Increased thirst\" \"finding\"))",
+      "reason": "The page says only \"Thirst\"; \"due to water deprivation\" asserts a cause the page does not state, so the uncaused term is closer to the words.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: diagnosis rules (stroke, TIA, heart failure, dehydration) without the complaint  vs  B: each rule also requires (or Fatigue Asthenia)",
+      "choice": "B",
+      "final_expr": "(and (or (clinical_finding (snomed_concept \"Fatigue\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\"))) <evidence>)",
+      "reason": "The red box header scopes every item to \"the patient with weakness or tiredness\", so the page's \"consider stroke or TIA\" / \"heart failure likely\" / \"dehydration likely\" are stated only for that patient.",
+      "unsettled": false
+    },
+    {
+      "role": "rule_descriptions",
+      "difference": "A: \"Diagnose possible stroke (weakness or tiredness page)\" … \"Urgent: weakness or tiredness with red-box findings\"  vs  B: \"Possible stroke in weakness or tiredness\" … \"Urgent: weakness or tiredness with danger signs\"",
+      "choice": "A",
+      "final_expr": "",
+      "reason": "Naming only; both are page-specific and unique, A's follow the gold standard's \"Diagnose …\" pattern.",
+      "unsettled": false
+    }
+  ],
+  "notes": "Both builds passed. Base A; B's choices taken for 'Difficulty talking' (unqualified), unqualified 'Visual disturbance', and the complaint conjunct in all four diagnosis rules. Code's diff counts (check_for -9/+9, priority -8/+8, diagnosis_condition -17/+25) are covered by the decisions above, which group identical differences repeated across rules; diagnosis_condition differences are the 6 Asymmetry findings and speech/visual in each of the stroke and TIA rules, thirst in the dehydration rule, and B's Fatigue/Asthenia conjunct in all four rules. Agreement on everything else (glucose, chest pain, breathing, HF orthopnea+leg swelling, dehydration any-of, worsening leg weakness, temperature/fever, Hb < 6 not representable, no lower-half rules). Remaining questions merged from both builds."
+}

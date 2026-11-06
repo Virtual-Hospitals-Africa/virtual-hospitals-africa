@@ -1,0 +1,666 @@
+{
+ "edition": "2026",
+ "page": 88,
+ "lisp_file": "88-drug-rash.lisp",
+ "conditions": [
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\"))",
+   "element_keys": [
+    "p88-334ac29c"
+   ],
+   "quote": "drug rash",
+   "confidence": "high",
+   "note": "Presenting complaint drug rash = Eruption caused by drug, either recorded directly or as the possible diagnosis from the 'suspect a drug rash' rule."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") possible)",
+   "element_keys": [
+    "p88-334ac29c"
+   ],
+   "quote": "drug rash",
+   "confidence": "medium",
+   "note": "Presenting complaint drug rash = Eruption caused by drug, either recorded directly or as the possible diagnosis from the 'suspect a drug rash' rule."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-40291ed0"
+   ],
+   "quote": "Face or tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site face, as on page 20."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-40291ed0"
+   ],
+   "quote": "Face or tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site tongue, as on page 20."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p88-0ca0ca79"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p88-bd495cd6"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock (disorder), the 'Shock' half of 'Shock/SBP < 80'; footnote 1 definition not encoded."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p88-0bca0bd7"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p88-3779cb99"
+   ],
+   "quote": "Vomiting",
+   "confidence": "high",
+   "note": "Finding of vomiting, the recorded common symptom."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p88-3779cb99"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Diarrhea, the recorded common symptom."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p88-89afec2a"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Mouth region structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "mouth",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Mouth region structure; no precoordinated concept for mucosal involvement."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eye region structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Eye region structure (broad; Conjunctival structure considered)."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Genital structure; Rash of genitalia considered but it is not a drug eruption."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "Blisters",
+   "confidence": "high",
+   "note": "Blister of skin (disorder)."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "peeling",
+   "confidence": "high",
+   "note": "Peeling of skin (finding)."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Denuded skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "raw areas",
+   "confidence": "medium",
+   "note": "'Raw areas' → Denuded skin (disorder); no 'raw skin' concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malaise\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "Unwell, malaise",
+   "confidence": "medium",
+   "note": "'Unwell' and 'malaise' both → Malaise; no 'feeling unwell' concept. Also covers red box 2 'Patient unwell'."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "fatigue",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "'Body pain' → Generalized aches and pains; no 'Body pain' concept."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "following ingestion of a medication",
+   "confidence": "medium",
+   "note": "Checked for so the fixed drug eruption rule (and the suspect rule) can use it."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "dark coloured",
+   "confidence": "low",
+   "note": "Checked for the fixed drug eruption rule."
+  },
+  {
+   "rule": "Check for drug rash markers of severity",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "round flat spots",
+   "confidence": "low",
+   "note": "Checked for the fixed drug eruption rule."
+  },
+  {
+   "rule": "Diagnose possible drug rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p88-42170e13"
+   ],
+   "quote": "generalised rash",
+   "confidence": "high",
+   "note": "Generalized rash (disorder)."
+  },
+  {
+   "rule": "Diagnose possible drug rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p88-42170e13"
+   ],
+   "quote": "starting a new medication",
+   "confidence": "medium",
+   "note": "Exposure to a drug or medicament; 'new' is carried by the onset comparison."
+  },
+  {
+   "rule": "Diagnose possible drug rash",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))) (time_ago 3 months))",
+   "element_keys": [
+    "p88-42170e13"
+   ],
+   "quote": "within 3 months of starting a new medication",
+   "confidence": "low",
+   "note": "Approximated as the onset of the drug exposure being within the last 3 months (<=); the interval between drug start and rash onset cannot be expressed."
+  },
+  {
+   "rule": "Diagnose possible drug rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") possible)",
+   "element_keys": [
+    "p88-42170e13"
+   ],
+   "quote": "Suspect a drug rash",
+   "confidence": "high",
+   "note": "'Suspect' → possible diagnosis of Eruption caused by drug."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "dark coloured",
+   "confidence": "low",
+   "note": "'Dark coloured' spots → Hyperpigmentation of skin; no concept for hyperpigmented macule, so colour and flatness are two findings joined with and."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "round flat spots",
+   "confidence": "low",
+   "note": "'Flat spots' → Macule of skin; 'round' shape not represented."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "following ingestion of a medication",
+   "confidence": "medium",
+   "note": "Exposure to a drug or medicament, as on page 20."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fixed drug eruption\" \"disorder\") probable)",
+   "element_keys": [
+    "p88-efd9acf6"
+   ],
+   "quote": "fixed drug eruption likely",
+   "confidence": "medium",
+   "note": "Page states 'fixed drug eruption likely'; probable diagnosis of Fixed drug eruption."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\"))",
+   "element_keys": [
+    "p88-334ac29c"
+   ],
+   "quote": "drug rash",
+   "confidence": "high",
+   "note": "Presenting complaint drug rash = Eruption caused by drug, either recorded directly or as the possible diagnosis from the 'suspect a drug rash' rule."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") possible)",
+   "element_keys": [
+    "p88-334ac29c"
+   ],
+   "quote": "drug rash",
+   "confidence": "medium",
+   "note": "Presenting complaint drug rash = Eruption caused by drug, either recorded directly or as the possible diagnosis from the 'suspect a drug rash' rule."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-40291ed0"
+   ],
+   "quote": "Face or tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site face, as on page 20."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-40291ed0"
+   ],
+   "quote": "Face or tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site tongue, as on page 20."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p88-0ca0ca79"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p88-bd495cd6"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock (disorder), the 'Shock' half of 'Shock/SBP < 80'; footnote 1 definition not encoded."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p88-bd495cd6"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "SBP < 80 exactly as written."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p88-1d382f6c"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "medium",
+   "note": "BP < 90/60 is a marker of severity in footnote 2; red box 2 sends 'markers of severity2' to urgent attention. Systolic < 90 or diastolic < 60, Will's convention."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p88-1d382f6c"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "medium",
+   "note": "Diastolic half of BP < 90/60 from footnote 2 (or with systolic < 90)."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p88-8929310a"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Body temperature >= 38 °C."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p88-0bca0bd7"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p88-3779cb99"
+   ],
+   "quote": "Vomiting",
+   "confidence": "high",
+   "note": "Finding of vomiting, the recorded common symptom."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p88-3779cb99"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Diarrhea, the recorded common symptom."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Mouth region structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "mouth",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Mouth region structure; no precoordinated concept for mucosal involvement."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eye region structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Eye region structure (broad; Conjunctival structure considered)."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption caused by drug\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p88-a9857857"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Drug eruption with finding site Genital structure; Rash of genitalia considered but it is not a drug eruption."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "Blisters",
+   "confidence": "high",
+   "note": "Blister of skin (disorder)."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "peeling",
+   "confidence": "high",
+   "note": "Peeling of skin (finding)."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Denuded skin\" \"disorder\"))",
+   "element_keys": [
+    "p88-1570c1bb"
+   ],
+   "quote": "raw areas",
+   "confidence": "medium",
+   "note": "'Raw areas' → Denuded skin (disorder); no 'raw skin' concept."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p88-89afec2a"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malaise\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "Unwell, malaise",
+   "confidence": "medium",
+   "note": "'Unwell' and 'malaise' both → Malaise; no 'feeling unwell' concept. Also covers red box 2 'Patient unwell'."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "fatigue",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: drug rash with markers of severity",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p88-a3d28c37"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "'Body pain' → Generalized aches and pains; no 'Body pain' concept."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p88-a88fa50e",
+   "element_id": "p88-rb1-e12",
+   "text": "© University of Cape Town",
+   "reason_category": "figure_or_note",
+   "reason": "Photo credit for the illustrative images."
+  },
+  {
+   "element_key": "p88-8d8d29eb",
+   "element_id": "p88-rb1-e13",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management instructions; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p88-5661a9fa",
+   "element_id": "p88-rb1-e14",
+   "text": "Stop all medication. If peeling or raw skin, also manage as for burns before referral 31.",
+   "reason_category": "management_step",
+   "reason": "Stop medication / manage as burns (cross-reference 31); management."
+  },
+  {
+   "element_key": "p88-28526348",
+   "element_id": "p88-rb1-e15",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "Sodium chloride fluid resuscitation; management."
+  },
+  {
+   "element_key": "p88-76bde8ba",
+   "element_id": "p88-rb2-e01",
+   "text": "Stop all medication. Give urgent attention as above.",
+   "reason_category": "flowchart_routing",
+   "reason": "Red box 2 routes 'unwell or markers of severity' back to the urgent box; encoded by the same Urgent rule (Malaise, BP < 90/60 added from footnote 2). Stop all medication is management."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "Drug rash = Eruption caused by drug (disorder), triggered either by a recorded drug eruption or by the possible diagnosis from 'suspect a drug rash'.",
+   "alternatives": "Generalized rash alone as trigger (too broad); Adverse reaction caused by drug.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "BP < 90/60 in urgent rule",
+   "decision": "Added systolic < 90 or diastolic < 60 to the urgent markers because footnote 2 lists it and red box 2 sends markers of severity to urgent attention.",
+   "alternatives": "Red box 1 list only (Shock/SBP < 80).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "Encoded as Shock (disorder) or SBP < 80 as written; footnote 1's shock-likely criteria not built as a shared definition.",
+   "alternatives": "Probable shock rule from footnote 1.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Mouth/eyes/genitals involvement",
+   "decision": "Eruption caused by drug with finding_site Mouth region / Eye region / Genital structure.",
+   "alternatives": "Conjunctival structure, Oral cavity structure, Rash of genitalia.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fixed drug eruption",
+   "decision": "Probable when hyperpigmentation of skin and macule of skin and drug exposure; the 'not on ART/TB/co-trimoxazole/TPT' branch is not encoded, so it can fire more often.",
+   "alternatives": "No rule (morphology not representable precisely).",
+   "confidence": "low"
+  },
+  {
+   "topic": "3 months",
+   "decision": "(<= (onset exposure-to-drug) (time_ago 3 months)) approximates 'rash appeared within 3 months of starting a new medication'.",
+   "alternatives": "Ignore timing.",
+   "confidence": "low"
+  }
+ ]
+}

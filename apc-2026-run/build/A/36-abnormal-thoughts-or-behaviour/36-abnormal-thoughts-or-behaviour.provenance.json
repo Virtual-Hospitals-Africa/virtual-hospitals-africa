@@ -1,0 +1,1642 @@
+{
+ "edition": "2026",
+ "page": 36,
+ "lisp_file": "36-abnormal-thoughts-or-behaviour.lisp",
+ "conditions": [
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-2765dde2"
+   ],
+   "quote": "Sudden onset of abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Complaint concept with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-2765dde2"
+   ],
+   "quote": "Sudden onset of abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Complaint concept with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-48cbdcc4"
+   ],
+   "quote": "Recent onset of abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint concept with 'Recent' qualifier; the page gives no time window for 'recent'."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-48cbdcc4"
+   ],
+   "quote": "Recent onset of abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint concept with 'Recent' qualifier; the page gives no time window for 'recent'."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Arm/leg weakness as Muscle weakness of limb. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Numbness with finding_site Limb structure for arm/leg. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "FSN 'Difficulty talking' (synonym difficulty speaking). 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuation of level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p36-72e8a36d"
+   ],
+   "quote": "Varying levels of consciousness over hours/days",
+   "confidence": "high",
+   "note": "Fluctuating consciousness; 'over hours/days' is implicit in fluctuation."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Elevated mood\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "Abnormally happy",
+   "confidence": "high",
+   "note": "Abnormally happy = elevated mood."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased energy\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "energetic",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pressure of speech\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "talkative",
+   "confidence": "medium",
+   "note": "No 'talkative' concept; Pressure of speech is the closest psychiatric finding (narrower)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disinhibited behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "reckless",
+   "confidence": "low",
+   "note": "No reckless-behaviour finding; Disinhibited behavior chosen as closest. Alternative: Impulsive character (a trait, not a state)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lack of insight\" \"finding\"))",
+   "element_keys": [
+    "p36-a8c75101"
+   ],
+   "quote": "Lack of insight",
+   "confidence": "high",
+   "note": "'and' with >=1 of the three features."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "element_keys": [
+    "p36-9e02913e"
+   ],
+   "quote": "Hallucinations",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delusion\" \"finding\"))",
+   "element_keys": [
+    "p36-a1da20c2"
+   ],
+   "quote": "Delusions",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorganized thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-f9d45a98"
+   ],
+   "quote": "Disorganised speech",
+   "confidence": "medium",
+   "note": "No 'disorganised speech' FSN; Disorganized thinking is the finding expressed by disorganised speech."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bizarre behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-f9d45a98"
+   ],
+   "quote": "behaviour",
+   "confidence": "low",
+   "note": "No 'disorganised behaviour' FSN; Bizarre behavior is the closest. Quote is the 'behaviour' in 'Disorganised speech or behaviour'."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "element_keys": [
+    "p36-419e9709"
+   ],
+   "quote": "Dilated pupils",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p36-419e9709"
+   ],
+   "quote": "restlessness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paranoid ideation\" \"finding\"))",
+   "element_keys": [
+    "p36-a6e87f30"
+   ],
+   "quote": "paranoia",
+   "confidence": "high",
+   "note": "Paranoia as Paranoid ideation."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p36-4dba80b5"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "high",
+   "note": "Smell of alcohol on breath."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slurred speech\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "slurred speech",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incoordination\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "incoordination",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unsteady when walking\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "unsteady gait",
+   "confidence": "high",
+   "note": "FSN 'Unsteady when walking' (synonym unsteady gait)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stopped drinking alcohol\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Stopped alcohol intake."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased alcohol consumption\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Reduced alcohol intake."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abstinent from drug misuse\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Stopped drug intake; no concept found for reduced drug intake (SNOMED gap)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tremor\" \"finding\"))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "tremor",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "severe restlessness",
+   "confidence": "high",
+   "note": "Severe qualifier from page."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-dc378146",
+    "p36-a5e3889c"
+   ],
+   "quote": "severe restlessness/ agitation",
+   "confidence": "medium",
+   "note": "'severe' read as applying to both restlessness and agitation."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p36-64320099"
+   ],
+   "quote": "medication",
+   "confidence": "high",
+   "note": "Exposure finding as on page 20; all routes (ingestion/inhalation/absorption) count, so route not modelled."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))",
+   "element_keys": [
+    "p36-64320099"
+   ],
+   "quote": "unknown substance",
+   "confidence": "medium",
+   "note": "Unknown substance as exposure to Substance (root); this matches any recorded substance exposure, which is broader than 'unknown'."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Memory impairment\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "memory problems",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorientated\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "disorientation",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Language difficulty\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "language difficulty",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Check for abnormal thoughts or behaviour features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty coping\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "less able to cope with daily activities and work/social function",
+   "confidence": "low",
+   "note": "Difficulty coping stands for the whole phrase. 'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Arm/leg weakness as Muscle weakness of limb. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Numbness with finding_site Limb structure for arm/leg. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "FSN 'Difficulty talking' (synonym difficulty speaking). 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "stroke",
+   "confidence": "high",
+   "note": "'consider stroke or TIA' -> possible."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "weakness or numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Arm/leg weakness as Muscle weakness of limb. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Numbness with finding_site Limb structure for arm/leg. 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "FSN 'Difficulty talking' (synonym difficulty speaking). 'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "'new sudden' expressed as Sudden onset qualifier; 'asymmetric' not modelled."
+  },
+  {
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p36-a1527c8a"
+   ],
+   "quote": "TIA",
+   "confidence": "high",
+   "note": "'consider stroke or TIA' -> possible."
+  },
+  {
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuation of level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p36-72e8a36d"
+   ],
+   "quote": "Varying levels of consciousness over hours/days",
+   "confidence": "high",
+   "note": "Fluctuating consciousness; 'over hours/days' is implicit in fluctuation."
+  },
+  {
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p36-72e8a36d"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Exact threshold and direction from page; 'and' with fluctuating consciousness."
+  },
+  {
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Delirium\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-bcaa3702"
+   ],
+   "quote": "Delirium likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Elevated mood\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "Abnormally happy",
+   "confidence": "high",
+   "note": "Abnormally happy = elevated mood."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased energy\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "energetic",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pressure of speech\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "talkative",
+   "confidence": "medium",
+   "note": "No 'talkative' concept; Pressure of speech is the closest psychiatric finding (narrower)."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disinhibited behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-e6ee5b80"
+   ],
+   "quote": "reckless",
+   "confidence": "low",
+   "note": "No reckless-behaviour finding; Disinhibited behavior chosen as closest. Alternative: Impulsive character (a trait, not a state)."
+  },
+  {
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Mania\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-cd4d5484"
+   ],
+   "quote": "Mania likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lack of insight\" \"finding\"))",
+   "element_keys": [
+    "p36-a8c75101"
+   ],
+   "quote": "Lack of insight",
+   "confidence": "high",
+   "note": "'and' with >=1 of the three features."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "element_keys": [
+    "p36-9e02913e"
+   ],
+   "quote": "Hallucinations",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delusion\" \"finding\"))",
+   "element_keys": [
+    "p36-a1da20c2"
+   ],
+   "quote": "Delusions",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorganized thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-f9d45a98"
+   ],
+   "quote": "Disorganised speech",
+   "confidence": "medium",
+   "note": "No 'disorganised speech' FSN; Disorganized thinking is the finding expressed by disorganised speech."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bizarre behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-f9d45a98"
+   ],
+   "quote": "behaviour",
+   "confidence": "low",
+   "note": "No 'disorganised behaviour' FSN; Bizarre behavior is the closest. Quote is the 'behaviour' in 'Disorganised speech or behaviour'."
+  },
+  {
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-1546eb2b"
+   ],
+   "quote": "Psychosis likely",
+   "confidence": "high",
+   "note": "'Psychosis' has no FSN of its own; Psychotic disorder is the concept for psychosis."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "element_keys": [
+    "p36-419e9709"
+   ],
+   "quote": "Dilated pupils",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p36-419e9709"
+   ],
+   "quote": "restlessness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paranoid ideation\" \"finding\"))",
+   "element_keys": [
+    "p36-a6e87f30"
+   ],
+   "quote": "paranoia",
+   "confidence": "high",
+   "note": "Paranoia as Paranoid ideation."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p36-a6e87f30"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom (recorded anchor)."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p36-4dba80b5"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p36-4dba80b5"
+   ],
+   "quote": "pulse ≥ 100",
+   "confidence": "high",
+   "note": "Exact threshold from page."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+   "element_keys": [
+    "p36-4dba80b5"
+   ],
+   "quote": "BP ≥ 140/90",
+   "confidence": "high",
+   "note": "BP ≥ 140/90 as systolic ≥ 140 OR diastolic ≥ 90 (Will's pair convention)."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p36-4dba80b5"
+   ],
+   "quote": "BP ≥ 140/90",
+   "confidence": "high",
+   "note": "BP ≥ 140/90 as systolic ≥ 140 OR diastolic ≥ 90 (Will's pair convention)."
+  },
+  {
+   "rule": "Diagnose probable stimulant intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-1b5f50a9",
+    "p36-4d48d28e"
+   ],
+   "quote": "Stimulant2 drug intoxication likely",
+   "confidence": "medium",
+   "note": "Page names stimulant drug intoxication (footnote 2 lists the stimulants); FSN 'Intoxication caused by stimulant'."
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "high",
+   "note": "Smell of alcohol on breath."
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slurred speech\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "slurred speech",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incoordination\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "incoordination",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unsteady when walking\" \"finding\"))",
+   "element_keys": [
+    "p36-02505318"
+   ],
+   "quote": "unsteady gait",
+   "confidence": "high",
+   "note": "FSN 'Unsteady when walking' (synonym unsteady gait)."
+  },
+  {
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Alcohol intoxication\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-970dd0ce",
+    "p36-c1656caf"
+   ],
+   "quote": "Alcohol intoxication likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stopped drinking alcohol\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Stopped alcohol intake."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased alcohol consumption\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Reduced alcohol intake."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abstinent from drug misuse\" \"finding\"))",
+   "element_keys": [
+    "p36-663005f3",
+    "p36-dc378146"
+   ],
+   "quote": "Known alcohol/drug user who has stopped/reduced intake",
+   "confidence": "medium",
+   "note": "Stopped drug intake; no concept found for reduced drug intake (SNOMED gap)."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tremor\" \"finding\"))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "tremor",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom (recorded anchor)."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-dc378146"
+   ],
+   "quote": "severe restlessness",
+   "confidence": "high",
+   "note": "Severe qualifier from page."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-dc378146",
+    "p36-a5e3889c"
+   ],
+   "quote": "severe restlessness/ agitation",
+   "confidence": "medium",
+   "note": "'severe' read as applying to both restlessness and agitation."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "element_keys": [
+    "p36-a5e3889c"
+   ],
+   "quote": "hallucinations",
+   "confidence": "high",
+   "note": "Withdrawal feature."
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-5fef3b21"
+   ],
+   "quote": "Alcohol/drug withdrawal likely",
+   "confidence": "medium",
+   "note": "Page combines alcohol and drug withdrawal; Substance withdrawal syndrome is the common parent (Alcohol withdrawal syndrome is a descendant)."
+  },
+  {
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p36-64320099"
+   ],
+   "quote": "medication",
+   "confidence": "high",
+   "note": "Exposure finding as on page 20; all routes (ingestion/inhalation/absorption) count, so route not modelled."
+  },
+  {
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))",
+   "element_keys": [
+    "p36-64320099"
+   ],
+   "quote": "unknown substance",
+   "confidence": "medium",
+   "note": "Unknown substance as exposure to Substance (root); this matches any recorded substance exposure, which is broader than 'unknown'."
+  },
+  {
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable)",
+   "element_keys": [
+    "p36-855ac708"
+   ],
+   "quote": "Poisoning likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Dementia approach applies to the same presenting complaint (not needing urgent attention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Dementia approach applies to the same presenting complaint (not needing urgent attention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Memory impairment\" \"finding\"))) (time_ago 6 months))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "memory problems",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorientated\" \"finding\"))) (time_ago 6 months))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "disorientation",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Language difficulty\" \"finding\"))) (time_ago 6 months))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "language difficulty",
+   "confidence": "high",
+   "note": "'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty coping\" \"finding\"))) (time_ago 6 months))",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "less able to cope with daily activities and work/social function",
+   "confidence": "low",
+   "note": "Difficulty coping stands for the whole phrase. 'for at least 6 months' as onset >= time_ago 6 months (Will's briefing convention)."
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dementia\" \"disorder\") possible)",
+   "element_keys": [
+    "p36-ee7af581"
+   ],
+   "quote": "consider dementia",
+   "confidence": "high",
+   "note": "'consider dementia' -> possible."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\"))",
+   "element_keys": [
+    "p36-cf86a3e4"
+   ],
+   "quote": "abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint written as Abnormal behavior OR Disturbance in thinking (no single SNOMED concept for 'abnormal thoughts or behaviour'). Not a recorded common symptom."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-2765dde2"
+   ],
+   "quote": "Sudden onset of abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Complaint concept with Sudden onset qualifier."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-2765dde2"
+   ],
+   "quote": "Sudden onset of abnormal thoughts or behaviour",
+   "confidence": "high",
+   "note": "Complaint concept with Sudden onset qualifier."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-48cbdcc4"
+   ],
+   "quote": "Recent onset of abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint concept with 'Recent' qualifier; the page gives no time window for 'recent'."
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p36-48cbdcc4"
+   ],
+   "quote": "Recent onset of abnormal thoughts or behaviour",
+   "confidence": "medium",
+   "note": "Complaint concept with 'Recent' qualifier; the page gives no time window for 'recent'."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p36-87ca516f",
+   "element_id": "p36-rb1-e04",
+   "text": "Manage urgently:",
+   "reason_category": "flowchart_routing",
+   "reason": "Section header for management steps; no criteria of its own."
+  },
+  {
+   "element_key": "p36-8371dba7",
+   "element_id": "p36-rb1-e05",
+   "text": "If patient just had a seizure 20.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routes a patient who just had a seizure to page 20; seizure is already a recorded warning sign handled there."
+  },
+  {
+   "element_key": "p36-7c6c7464",
+   "element_id": "p36-rb1-e06",
+   "text": "If aggressive/disruptive 35.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routes aggressive/disruptive patients to page 35; Aggressive behavior is a recorded warning sign handled there."
+  },
+  {
+   "element_key": "p36-c7a79db7",
+   "element_id": "p36-rb1-e08",
+   "text": "If recent head injury 30.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routes recent head injury to page 30."
+  },
+  {
+   "element_key": "p36-0753fb49",
+   "element_id": "p36-rb1-e09",
+   "text": "If suicidal thoughts or plans 34.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routes suicidal thoughts or plans to page 34."
+  },
+  {
+   "element_key": "p36-ef521aae",
+   "element_id": "p36-rb1-e10",
+   "text": "If difficulty breathing, respiratory rate > 30, oxygen saturation < 94% or oxygen saturation machine not available, give face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy criteria; management, no manage tasks in this pass."
+  },
+  {
+   "element_key": "p36-9371e240",
+   "element_id": "p36-rb1-e11",
+   "text": "Check glucose: if < 3 (or < 4 if diabetes) or ≥ 11.1 19.",
+   "reason_category": "management_step",
+   "reason": "Glucose is a routine vital; the thresholds route to page 19 for management."
+  },
+  {
+   "element_key": "p36-11306d7e",
+   "element_id": "p36-rb1-e12",
+   "text": "If thirst, dry mouth, poor skin turgor, sunken eyes, decreased urine, give oral rehydration solution. If unable to drink or BP < 90/60, give sodium chloride 0.9",
+   "reason_category": "management_step",
+   "reason": "Rehydration and IV fluid management."
+  },
+  {
+   "element_key": "p36-bbd51d26",
+   "element_id": "p36-rb1-e13",
+   "text": "Consider involuntary admission if signs of mental illness and refuses treatment/admission and a danger to self, others, own reputation or financial interest/pro",
+   "reason_category": "management_step",
+   "reason": "Involuntary admission decision (page 158); legal/management step."
+  },
+  {
+   "element_key": "p36-7dee22aa",
+   "element_id": "p36-rb1-e14",
+   "text": "If HIV positive with recent positive cryptococcal antigen test, refer for urgent lumbar puncture (LP).",
+   "reason_category": "management_step",
+   "reason": "Referral for lumbar puncture; a lab result (CrAg) the language cannot express."
+  },
+  {
+   "element_key": "p36-432f30bd",
+   "element_id": "p36-rb1-e15",
+   "text": "Look for delirium, mania, psychosis, intoxication, withdrawal or poisoning and manage before referral:",
+   "reason_category": "flowchart_routing",
+   "reason": "Introduces the seven 'look for' boxes, each encoded as its own diagnosis rule."
+  },
+  {
+   "element_key": "p36-af3a0016",
+   "element_id": "p36-rb1-e35",
+   "text": "If no other sedation given, give diazepam 10mg orally.",
+   "reason_category": "management_step",
+   "reason": "Diazepam dose for withdrawal."
+  },
+  {
+   "element_key": "p36-863ac997",
+   "element_id": "p36-rb1-e38",
+   "text": "Give thiamine 200mg IM.",
+   "reason_category": "management_step",
+   "reason": "Thiamine dose for alcohol intoxication."
+  },
+  {
+   "element_key": "p36-0391ed5c",
+   "element_id": "p36-rb1-e40",
+   "text": "If pulse irregular, chest pain or BP ≥ 140/90, do ECG and discuss with specialist or local poison helpline 200.",
+   "reason_category": "management_step",
+   "reason": "ECG and specialist discussion in stimulant intoxication."
+  },
+  {
+   "element_key": "p36-12f5ea48",
+   "element_id": "p36-rb1-e41",
+   "text": "If alcohol withdrawal, also give thiamine 200mg IM and oral rehydration solution.",
+   "reason_category": "management_step",
+   "reason": "Thiamine and ORS in alcohol withdrawal."
+  },
+  {
+   "element_key": "p36-1fa4180d",
+   "element_id": "p36-rb1-e43",
+   "text": "Give sodium chloride 0.9% 1L 6 hourly.",
+   "reason_category": "management_step",
+   "reason": "IV fluids in alcohol intoxication."
+  },
+  {
+   "element_key": "p36-5767195c",
+   "element_id": "p36-rb1-e44",
+   "text": "If ≥ 8 hours since last alcohol, refer for alcohol detoxification programme.",
+   "reason_category": "management_step",
+   "reason": "Referral for detoxification programme."
+  },
+  {
+   "element_key": "p36-286ca926",
+   "element_id": "p36-rb1-e45",
+   "text": "Check for head injury.",
+   "reason_category": "management_step",
+   "reason": "Instruction to check for head injury in alcohol intoxication (assessment handled on page 30)."
+  },
+  {
+   "element_key": "p36-5901c4c8",
+   "element_id": "p36-rb1-e46",
+   "text": "Refer urgently unless:",
+   "reason_category": "management_step",
+   "reason": "Referral section header."
+  },
+  {
+   "element_key": "p36-30912b6c",
+   "element_id": "p36-rb1-e47",
+   "text": "Patient with known schizophrenia who is otherwise well, give routine schizophrenia care 162.",
+   "reason_category": "management_step",
+   "reason": "Referral exception (routine schizophrenia care, page 162)."
+  },
+  {
+   "element_key": "p36-61e931a3",
+   "element_id": "p36-rb1-e48",
+   "text": "Patient with diabetes and low glucose on insulin. If abnormal thoughts/behaviour resolves with dextrose, no need to refer, give routine diabetes care 145.",
+   "reason_category": "management_step",
+   "reason": "Referral exception for hypoglycaemia resolving with dextrose (page 145)."
+  },
+  {
+   "element_key": "p36-83566ce2",
+   "element_id": "p36-rb1-e49",
+   "text": "Patient with known alcohol use who is otherwise well. If abnormal thoughts/behaviour resolves once sober, no need to refer 165.",
+   "reason_category": "management_step",
+   "reason": "Referral exception for known alcohol use resolving once sober (page 165)."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "Abnormal behavior (finding) OR Disturbance in thinking (finding)",
+   "alternatives": "Altered behavior; Mental state finding (too broad)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Comma-separated feature lists for stimulant and alcohol intoxication",
+   "decision": "Encoded as OR of the features (with the complaint), as the page gives no count",
+   "alternatives": "AND of all (too strict) or any2 (invented count)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Stroke/TIA in 'Manage urgently'",
+   "decision": "Encoded as two possible diagnosis rules (consider X -> possible), with Sudden onset qualifier on each feature",
+   "alternatives": "Treat as cross-reference to page 152 only",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority",
+   "decision": "Only sudden/recent onset make the patient Urgent, as in the red box header; the 'likely' diagnoses add no priority rule",
+   "alternatives": "Urgent priority for each probable diagnosis",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unknown substance exposure",
+   "decision": "Exposure to Substance (root) - broader than 'unknown'",
+   "alternatives": "Leave unknown substance unencoded",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Known alcohol/drug user who stopped/reduced intake",
+   "decision": "OR of Stopped drinking alcohol, Decreased alcohol consumption, Abstinent from drug misuse",
+   "alternatives": "Alcohol use disorder / Substance use disorder Known present AND a stop finding",
+   "confidence": "medium"
+  }
+ ]
+}

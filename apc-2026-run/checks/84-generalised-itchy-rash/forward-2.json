@@ -1,0 +1,280 @@
+{
+ "page": 84,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p84-79a55d69",
+   "scope": "borderline",
+   "scope_reason": "Red box is a cross-reference to the urgent-attention page 82; no criteria on this page. House standard would still expect the task trigger and, if page 82 content were available, priority evaluations; none present.",
+   "verdict": "partial",
+   "parts_missing": [
+    "urgent-attention priority evaluation (page 82 content, cross-reference only)"
+   ],
+   "problem": "Task exists with a Pruritic rash trigger and check_for list, but no priority evaluation or link to page 82.",
+   "evidence": [
+    "Check for causes of generalised itchy rash :: (task ... adult (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (check_for ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-80a8b92b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "blistered/healed with darkening (hyperpigmentation)",
+    "scratch marks",
+    "red colour"
+   ],
+   "problem": "Crops of bumps encoded only as grouped papule plus pruritic rash; 'Grouped' is a loose proxy for 'crops'. Rule will also fire alongside scabies/PPE whenever papules are grouped.",
+   "evidence": [
+    "Diagnose probable insect bites (generalised itchy rash) :: (and (clinical_finding Pruritic rash) (clinical_finding Papule of skin (qualifier Grouped)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-85358be3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "red colour of bumps (minor)",
+    "'patches' not applicable"
+   ],
+   "problem": "Papule sites and burrows encoded; 'bumps' and 'burrows' both required (burrows not site-linked, acceptable). Fingers webspaces mapped to interdigital web of hand, fine.",
+   "evidence": [
+    "Diagnose probable scabies (generalised itchy rash) :: (and Pruritic rash, Burrows in skin, (or Papule of skin at interdigital web / axillary region / waist region / genital structure))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-5c1e4bda",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable scabies (generalised itchy rash) :: or of papule at axilla, waist, genitals"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-39db2e16",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "itch worse at night"
+   ],
+   "problem": "Nocturnal itch is not encoded as a qualifier or criterion; only generic pruritic rash.",
+   "evidence": [
+    "Diagnose probable scabies (generalised itchy rash) :: (clinical_finding Pruritic rash) with no night qualifier"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-63977f2e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Hyperpigmentation and itch encoded. The diagnosis concept is the HIV-specific 'Papular pruritic eruption of skin due to HIV infection', whereas the page says PPE likely and separately advises an HIV test; the concept asserts HIV infection before it is tested. Hyperpigmentation is not site/papule-linked (separate conjuncts).",
+   "evidence": [
+    "Diagnose probable papular pruritic eruption :: (and Pruritic rash, Hyperpigmentation of skin, (or Papule of skin at Limb/Trunk/Face structure))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p84-99961fff",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Papule of skin at Limb structure / Trunk structure in or-group"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p84-9ecbeb70",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Papule of skin at Face structure in or-group"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p84-f9ab68e5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable eczema :: (and Pruritic rash, Xeroderma, (or Scaly skin at Wrist region ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-0db93026",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Scaly skin at Ankle / Antecubital / Popliteal region structure in or-group"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-c92b1237",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "red colour",
+    "raised (wheal implies)",
+    "disappear within 24 hours",
+    "'very' itchy"
+   ],
+   "problem": "Wheal with sudden onset encoded; resolution within 24 h not captured.",
+   "evidence": [
+    "Diagnose probable urticaria :: (and Pruritic rash, (Wheal (qualifier Sudden onset)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-946ad93f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Wheal (qualifier Sudden onset)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p84-14f14bc9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "usually disappear within 24 hours"
+   ],
+   "problem": "Duration of wheals not encoded; may be not representable with a finding duration.",
+   "evidence": [
+    "none"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p84-654807c2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "24 hours"
+   ],
+   "problem": "Same as preceding fragment.",
+   "evidence": [
+    "none"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p84-b2736e71",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "distribution mainly trunk, arms and legs"
+   ],
+   "problem": "Diffuse red rash encoded as Erythematous rash + Diffuse; distribution omitted (acceptable but not captured).",
+   "evidence": [
+    "Diagnose probable drug rash :: (clinical_finding Erythematous rash (qualifier Diffuse))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-5861a82b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "(<= (onset (clinical_finding New medication commenced)) (time_ago 3 months))  ; per briefing, <= with time_ago means within that period"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p84-82ef7e41",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Drug rash likely -> page 88; diagnosis itself is encoded via the criteria rule.",
+   "evidence": [
+    "Diagnose probable drug rash"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p84-a55b72cc",
+  "p84-1c09d11a",
+  "p84-ce0b66b4",
+  "p84-6d3022c5",
+  "p84-db3200fa",
+  "p84-7c43be29",
+  "p84-5041ed38",
+  "p84-c6824b07",
+  "p84-b43cc0b9",
+  "p84-03225de4",
+  "p84-f9f2a803",
+  "p84-fd05e4a5",
+  "p84-44c09406",
+  "p84-f4e5148f",
+  "p84-63674bd6",
+  "p84-4cd8cee2",
+  "p84-46fdfdad",
+  "p84-155a061d",
+  "p84-fa6f4dd1"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable papular pruritic eruption",
+   "problem": "Diagnosis concept is HIV-specific while the page only advises an HIV test; HIV is asserted as cause rather than suggested. Consider a non-HIV PPE concept.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of generalised itchy rash",
+   "problem": "No priority evaluation for the red box 'needs urgent attention (82)'; no link to page 82.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable insect bites",
+   "problem": "Trigger is just grouped papules plus pruritic rash, so it co-fires with scabies and PPE; hyperpigmentation/scratch marks/blistering from the page not used.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable scabies",
+   "problem": "Night-time itch not captured; wheal duration (<24 h) in urticaria not captured.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable drug rash",
+   "problem": "Distribution (trunk, arms, legs) dropped; check_for 'Erythematous rash Diffuse' retains it only generically.",
+   "severity": "low"
+  }
+ ],
+ "summary": "All five 'likely' diagnoses and the insect bite rule exist with sensible criteria and every check_for item is used. Most consequential: the PPE rule uses the HIV-specific concept though the page only advises an HIV test, and the red-box urgent-attention check (page 82) has no priority evaluation. Minor omissions: nocturnal itch (scabies), wheal resolution within 24h, and insect-bite features (hyperpigmentation, scratch marks)."
+}

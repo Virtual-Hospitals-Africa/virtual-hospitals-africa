@@ -1,0 +1,1248 @@
+{
+ "page": 30,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Contusion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent injured patient conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Limb ischemia is a reasonable reading of 'poor perfusion below injury/fracture'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cold extremity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Head structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of neck\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thoracic structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of abdomen\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Limb ischemia is a reasonable reading of 'poor perfusion below injury/fracture'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cold extremity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in limb\" \"finding\") (qualifier (snomed_concept \"Increasing\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page item is 'Increasing pain, muscle tightness, numbness in limb' (compartment-syndrome picture); 'muscle tightness' is not encoded anywhere and increasing pain alone is narrower than the cluster.",
+   "fix": "Add muscle tightness, or (snomed_concept \"Compartment syndrome\" \"disorder\") as an additional criterion.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of femur\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of pelvis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of vertebral column\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture, open\" \"morphologic abnormality\"))",
+   "verdict": "wrong",
+   "reason": "'Fracture, open' is a morphologic abnormality, not a clinical finding; recorded findings will be the disorder, so this will never match.",
+   "fix": "(clinical_finding (snomed_concept \"Open fracture\" \"disorder\"))",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of three ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of four ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of five ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of six ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of seven ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of eight OR more ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Amnesia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Vomiting ≥ 2 times'; the count is dropped, so a single vomit after head injury makes the patient Urgent.",
+   "fix": "Encode the count (e.g. a Recurrent/Repeated qualifier if one exists) or record the gap in remaining questions.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of skull\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ecchymosis of periorbital region\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ecchymosis of postauricular region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematotympanum\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from ear\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Clear fluid leaking from nose' after head injury means CSF rhinorrhoea; generic Nasal discharge + Clear is broader and is a common symptom.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ear discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Clear fluid leaking from ear' after head injury means CSF otorrhoea; a closer concept exists.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrospinal fluid otorrhea\" \"disorder\"))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anisocoria\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sluggish pupil movement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"No pupillary reaction to light\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple injuries\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol intoxication\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable shock in the injured patient",
+   "expr": "(diagnosis (snomed_concept \"Shock\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable concussion after head injury",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable concussion after head injury",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable concussion after head injury",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable concussion after head injury",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable concussion after head injury",
+   "expr": "(diagnosis (snomed_concept \"Concussion injury of brain\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: injured patient with bruising and blood in urine",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Contusion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: injured patient with bruising and blood in urine",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Limb ischemia is a reasonable reading of 'poor perfusion below injury/fracture'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cold extremity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Head structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of neck\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thoracic structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Urgent: injured patient with wound danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of abdomen\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Limb ischemia is a reasonable reading of 'poor perfusion below injury/fracture'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cold extremity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in limb\" \"finding\") (qualifier (snomed_concept \"Increasing\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page item is 'Increasing pain, muscle tightness, numbness in limb' (compartment-syndrome picture); 'muscle tightness' is not encoded anywhere and increasing pain alone is narrower than the cluster.",
+   "fix": "Add muscle tightness, or (snomed_concept \"Compartment syndrome\" \"disorder\") as an additional criterion.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of femur\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of pelvis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of vertebral column\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Suspected' dropped; acceptable since descendants/recorded suspicion map to the fracture concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture, open\" \"morphologic abnormality\"))",
+   "verdict": "wrong",
+   "reason": "'Fracture, open' is a morphologic abnormality, not a clinical finding; recorded findings will be the disorder, so this will never match.",
+   "fix": "(clinical_finding (snomed_concept \"Open fracture\" \"disorder\"))",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of three ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of four ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of five ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of six ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of seven ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of eight OR more ribs\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Amnesia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of skull\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ecchymosis of periorbital region\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ecchymosis of postauricular region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematotympanum\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from ear\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Clear fluid leaking from nose' after head injury means CSF rhinorrhoea; generic Nasal discharge + Clear is broader and is a common symptom.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ear discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Clear fluid leaking from ear' after head injury means CSF otorrhoea; a closer concept exists.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrospinal fluid otorrhea\" \"disorder\"))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anisocoria\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sluggish pupil movement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"No pupillary reaction to light\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Vomiting ≥ 2 times'; the count is dropped, so a single vomit after head injury makes the patient Urgent.",
+   "fix": "Encode the count (e.g. a Recurrent/Repeated qualifier if one exists) or record the gap in remaining questions.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple injuries\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol intoxication\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent injured patient conditions",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent wound conditions in the injured patient",
+   "verdict": "ok",
+   "problem": "'pale' from 'Poor perfusion (cold, pale, numb, no pulse)' not encoded; minor since Limb ischemia covers the idea.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent fracture conditions in the injured patient",
+   "verdict": "problem",
+   "problem": "Open fracture uses a morphologic-abnormality concept as a clinical_finding; 'muscle tightness' (compartment syndrome) is missing.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for urgent head injury conditions in the injured patient",
+   "verdict": "problem",
+   "problem": "Vomiting ≥ 2 times encoded without the count; clear fluid from nose/ear encoded as generic discharge rather than CSF leak.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable shock in the injured patient",
+   "verdict": "ok",
+   "problem": "Footnote 1 is attached to the wound box's 'If shock'; generalising to any injury and treating each sign as sufficient (or) is a literal reading of the footnote, but a single sign (e.g. pulse ≥ 100 alone) giving probable shock may be over-sensitive; worth a clinician question.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable concussion after head injury",
+   "verdict": "ok",
+   "problem": "Probable matches 'concussion likely'. The page places this in the not-needing-urgent-attention branch; the rule does not exclude red-box head-injury signs, which is acceptable since the Urgent rule fires separately.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: injured patient with bruising and blood in urine",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: injured patient with wound danger signs",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "verdict": "problem",
+   "problem": "Open fracture criterion uses 'Fracture, open' (morphologic abnormality) so it will not match a recorded open fracture; muscle tightness missing.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "verdict": "problem",
+   "problem": "Plain 'Finding of vomiting' (a common symptom) makes any vomiting after head injury Urgent; the page requires ≥ 2 episodes. CSF leak criteria are generic discharge concepts.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Most consequential: the open-fracture criterion uses the morphologic abnormality 'Fracture, open' as a clinical_finding, so the Urgent fracture rule will not fire on a recorded open fracture (use 'Open fracture' disorder). 'Vomiting ≥ 2 times' loses its count, over-triaging any single vomit after head injury, and 'muscle tightness' in the compartment-syndrome item is missing; clear nose/ear fluid would be closer as CSF rhinorrhea/otorrhea. No invented content found; all other conditions match the page."
+}

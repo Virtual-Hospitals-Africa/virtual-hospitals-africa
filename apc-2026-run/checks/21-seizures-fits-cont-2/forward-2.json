@@ -1,0 +1,403 @@
+{
+ "page": 21,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p21-aa908c15",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-f765a7a4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Minor: meningitis rule additionally requires Seizure (page context implies it); priority relies on active_condition Meningitis, which may not match a system 'probable' diagnosis; 'red' rash mapped only to purpuric rash.",
+   "evidence": [
+    "Diagnose probable meningitis after a seizure/fit :: (and Seizure (or (>= Body temperature \u00b0C 38) Headache Stiff neck Purpuric rash))",
+    "Urgent: same-day referral after a seizure/fit :: (active_condition (snomed_concept \"Meningitis\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-2c74f34e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-ba976456",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-8a284497",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (malaria test/area are inputs to treatment, not to referral; patient already referred)",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-ace014ff",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Different' headache not separately encoded; 'more frequent' mapped to 'Frequent headache' (state, not change). Minor.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (clinical_finding Headache (qualifier New))",
+    "Urgent: same-day referral after a seizure/fit :: Headache Worsening",
+    "Urgent: same-day referral after a seizure/fit :: Frequent headache"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-d67a8ac2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (and (clinical_finding HIV infection (qualifier Known present)) (no (clinical_finding Epilepsy (qualifier Known present))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-0f10f76b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Direction is right under the briefing convention (>= means at least that long ago). Consciousness onset itself not used; seizure onset used as proxy.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (and Decreased level of consciousness (>= (onset Seizure) (time_ago 1 hours)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-cc0f186b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "or unable to measure"
+   ],
+   "problem": "'Unable to measure' glucose branch is not encoded (may be not representable).",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (< (measurement Blood glucose status mmol/L) 3)",
+    "Urgent: same-day referral after a seizure/fit :: (and Diabetes Known present (< glucose 4))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-e535ebb9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (>= (measurement Blood glucose status mmol/L) 11.1)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p21-3e262e70",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Face/arm/leg site not specified; acceptable.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: weakness/numbness sudden+asymmetric, Difficulty talking, Visual disturbance"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-f7b593bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "time since fit STOPPED (uses seizure onset)"
+   ],
+   "problem": "Page 'BP >= 180/130' encoded as SBP>=180 OR DBP>=130; reasonable. Timing anchored to seizure onset rather than end of fit.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (and (or (>= SBP 180) (>= DBP 130)) (>= (onset Seizure) (time_ago 1 hours)))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p21-bc6e61be",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Concepts are generic (not alcohol/drug specific); 'Overdose' may include non-drug overdose.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: Overdose; Substance withdrawal syndrome"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p21-a4e97de2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: (clinical_finding Injury of head (qualifier Recent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-c3b012a2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "The >=20 weeks sub-branch is a cross-reference only.",
+   "evidence": [
+    "Urgent: same-day referral after a seizure/fit :: Pregnancy; (and Postpartum state (<= (onset Postpartum state) (time_ago 1 weeks)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-1fd67945",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Stroke/TIA rules do not require absence of seizure (the 'No' branch); both fire identically so no discrimination between stroke and TIA.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-3a9a3ee6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of the stroke/TIA criterion; encoded as in the red box.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-2a412755",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of the stroke/TIA criterion; encoded as in the red box.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-116550d6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of the stroke/TIA criterion; encoded as in the red box.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-aea60bd2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of the stroke/TIA criterion; encoded as in the red box.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-d6061831",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of the stroke/TIA criterion; encoded as in the red box.",
+   "evidence": [
+    "Diagnose probable stroke from focal signs (seizure/fit page) :: (or (clinical_finding Muscle weakness Sudden onset Asymmetry) (Numbness ...) (Difficulty talking) (Visual disturbance))",
+    "Diagnose probable TIA from focal signs (seizure/fit page) :: same or-list"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-9e10df90",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-b47bb643",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "lasting < 15 seconds",
+    "rapid recovery"
+   ],
+   "problem": "Duration and rapid-recovery conditions dropped; the page's 'and with' makes them required.",
+   "evidence": [
+    "Diagnose probable common faint (seizure/fit page) :: (and Collapse Muscle twitch (or Flushing Dizziness Nausea Sweating))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-bc92d996",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Collapse with twitching: encoded",
+   "evidence": [
+    "Diagnose probable common faint (seizure/fit page) :: (and Collapse Muscle twitch (or Flushing Dizziness Nausea Sweating))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-043b35ba",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "following flushing/dizziness/nausea/sweating: encoded as or",
+   "evidence": [
+    "Diagnose probable common faint (seizure/fit page) :: (and Collapse Muscle twitch (or Flushing Dizziness Nausea Sweating))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-b3497514",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "lasting < 15 seconds"
+   ],
+   "problem": "Duration criterion not encoded; not in the check_for list either.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-a9c832aa",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Dizziness, nausea, sweating encoded.",
+   "evidence": [
+    "Diagnose probable common faint (seizure/fit page) :: (and Collapse Muscle twitch (or Flushing Dizziness Nausea Sweating))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-d330b748",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "rapid recovery"
+   ],
+   "problem": "No rapid-recovery finding in the rule.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-92feac67",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p21-2a53d778",
+   "scope": "borderline",
+   "scope_reason": "Confirming a true seizure is the entry condition; encoded as the task trigger Seizure only (no tongue biting/incontinence).",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for same-day referral after a seizure/fit :: (clinical_finding Seizure)"
+   ],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p21-bd8e2722",
+  "p21-8d831cdb",
+  "p21-016f8bcd",
+  "p21-a2c80b4e",
+  "p21-d4fe13b2",
+  "p21-068217b5",
+  "p21-9e10df90"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "problem": "Omits the required 'lasting < 15 seconds' and 'rapid recovery'; fires on any collapse+twitch+symptom, over-triggering a benign diagnosis.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable stroke / TIA",
+   "problem": "Identical triggers; neither is gated on the page's 'No (not a seizure)' branch, so a seizure patient with transient focal signs gets both diagnoses.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "problem": "Whole rule gated on Seizure; glucose 'unable to measure' branch missing; meningitis arm depends on active_condition Meningitis rather than the raw criteria.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for same-day referral after a seizure/fit",
+   "problem": "check_for items Diastolic/Systolic BP, Blood glucose, Body temperature measurements are not listed though used by rules; Muscle twitch, Collapse etc. listed for faint (not referral). Check list and priority rule not fully aligned.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box referral criteria are largely well encoded in one Urgent priority rule. Most consequential: the common-faint rule drops 'lasting < 15 seconds' and 'rapid recovery', and the glucose 'unable to measure' branch is missing. Stroke and TIA rules are identical and ungated by the no-seizure branch."
+}

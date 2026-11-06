@@ -1,0 +1,721 @@
+{
+ "page": 87,
+ "slug": "87-generalised-non-itchy-rash",
+ "validation_ok": true,
+ "builder_agreement": 0.855,
+ "elements": 16,
+ "elements_agreed": 9,
+ "claims": 63,
+ "claims_agreed": 57,
+ "queue": 39,
+ "queue_by_priority": {
+  "low": 17,
+  "high": 1,
+  "medium": 21
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p87-8cdf7fc2",
+   "id": "p87-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "correct": 1
+   }
+  },
+  {
+   "key": "p87-7bd6d699",
+   "id": "p87-out-e01",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p87-25ba71c9",
+   "id": "p87-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p87-43087de7",
+   "id": "p87-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p87-bf84e8af",
+   "id": "p87-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p87-312ba94d",
+   "id": "p87-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p87-56468e2b",
+   "id": "p87-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p87-89554e4e",
+   "id": "p87-out-e07",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p87-fd394714",
+   "id": "p87-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 1,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "partial": 1,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p87-c9122f43",
+   "id": "p87-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p87-a7e06b39",
+   "id": "p87-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p87-e1419590",
+   "id": "p87-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p87-9c7e5806",
+   "id": "p87-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "correct": 1
+   }
+  },
+  {
+   "key": "p87-fb7dab3a",
+   "id": "p87-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p87-dfe1467f",
+   "id": "p87-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p87-18275fb8",
+   "id": "p87-out-e15",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "partial": 1
+   }
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of generalised non-itchy rash",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

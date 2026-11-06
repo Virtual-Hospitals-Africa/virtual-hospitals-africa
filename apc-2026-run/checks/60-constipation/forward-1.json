@@ -1,0 +1,164 @@
+{
+  "page": 60,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p60-3ea295c1",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: fixes the presenting complaint (constipation) and the priority level (urgent attention).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: constipation with no stools or flatus for 24 hours :: (system_priority_evaluation \"Urgent: constipation with no stools or flatus for 24 hours\" adult Urgent (and (clinical_finding (snomed_concept \"Constipation\" \"finding\")) ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p60-e3979f69",
+      "scope": "in_scope",
+      "scope_reason": "The single red-box criterion. Four parts: (1) no stools in the past 24 hours, (2) no flatus/wind in the past 24 hours, (3) abdominal pain, (4) abdominal distension; pain/distension is 'or'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "parts": [
+        {"part": "No stools in the past 24 hours", "verdict": "correct", "note": "Obstipation (disorder; child of Constipation) with onset >= 24 hours ago. 'Obstipation' is the SNOMED term for complete absence of stool; no closer finding exists (no 'absolute constipation' / 'no bowel movement' concept)."},
+        {"part": "No flatus/wind in the past 24 hours", "verdict": "correct", "note": "Unable to break wind (finding; child of Finding of flatus) with onset >= 24 hours ago. Closest available concept."},
+        {"part": "Abdominal pain", "verdict": "correct", "note": "Abdominal pain (finding), inside an 'or' with distension."},
+        {"part": "Abdominal distension", "verdict": "correct", "note": "Distension of abdomen (finding)."},
+        {"part": "Combination 'No stools or flatus'", "verdict": "correct", "note": "Encoded as AND (no stools AND no flatus). The literal reading of 'no stools or flatus' is 'neither' (absolute constipation), so AND is defensible; see rule_level_problems for the under-trigger risk."}
+      ],
+      "problem": "",
+      "evidence": [
+        "Urgent: constipation with no stools or flatus for 24 hours :: (>= (onset (clinical_finding (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+        "Urgent: constipation with no stools or flatus for 24 hours :: (>= (onset (clinical_finding (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+        "Urgent: constipation with no stools or flatus for 24 hours :: (or (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\")) (clinical_finding (snomed_concept \"Distension of abdomen\" \"finding\")))",
+        "Check for urgent constipation conditions :: (check_for (clinical_finding (snomed_concept \"Obstipation\" \"disorder\")) (clinical_finding (snomed_concept \"Unable to break wind\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\")) (clinical_finding (snomed_concept \"Distension of abdomen\" \"finding\")) ...)"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p60-4b9a5451",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Refer same day' is the action attached to the red box; the Urgent priority level is its encoding and is present. No manage tasks by design.",
+      "evidence": [
+        "Urgent: constipation with no stools or flatus for 24 hours :: Urgent"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p60-76bb003c",
+      "scope": "in_scope",
+      "scope_reason": "'Approach' block. Carries one 'X likely' (impaction likely) with its own trigger criteria and a check instruction; the other bullets are management, cross-references, or lab values the language cannot express.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "parts": [
+        {"part": "Review diet, fluid intake and medication (amitriptyline, schizophrenia treatment, codeine, morphine): discuss with doctor", "scope": "out_of_scope", "reason": "management_step"},
+        {"part": "Advise that regular enemas/laxatives can worsen constipation", "scope": "out_of_scope", "reason": "management_step"},
+        {"part": "If pregnant, give routine antenatal care (175)", "scope": "out_of_scope", "reason": "cross_reference_only"},
+        {"part": "Check Hb. If < 12 (woman) or < 13 (man), anaemia likely (44)", "scope": "out_of_scope", "reason": "not_representable (haemoglobin has no unit in the language, per brief)"},
+        {"part": "If weakness/tiredness, weight gain, low mood, dry skin or cold intolerance, check TSH; if abnormal refer", "scope": "out_of_scope", "reason": "not_representable: the consequence is a lab (TSH has no unit; no measure task possible) and no diagnosis is named, so a check_for of these features would have no consuming rule and would fail the house tests."},
+        {"part": "If bed-bound or life-limiting illness, also give palliative care (191)", "scope": "out_of_scope", "reason": "cross_reference_only / management_step"},
+        {"part": "Impaction trigger: > 65 years", "scope": "out_of_scope", "reason": "not_representable: the grammar has only age bands (adult / older child / younger child), no numeric age. Not encoded and not flagged anywhere in the file."},
+        {"part": "Impaction trigger: bed-bound", "verdict": "correct", "note": "Bed-ridden (finding)."},
+        {"part": "Impaction trigger: receiving palliative care", "verdict": "correct", "note": "Seen by palliative care service (finding); closest available."},
+        {"part": "Impaction trigger: overflow diarrhoea (prolonged constipation followed by watery stool)", "verdict": "correct", "note": "Chronic constipation with overflow (disorder) matches the page's parenthetical definition; 'Spurious diarrhea - overflow' (finding) is an equally close alternative."},
+        {"part": "Check for solid immobile bulk of stool in rectum", "verdict": "correct", "note": "Hard stool + finding_site Rectum structure, in a task triggered by the three representable criteria. 'Feces in rectum' (finding) exists as an alternative; neither is clearly closer."},
+        {"part": "If present, impaction likely", "verdict": "correct", "note": "probable Fecal impaction, evidence = constipation AND (bed-ridden OR palliative OR overflow) AND hard stool in rectum. Follows the page's logic."}
+      ],
+      "problem": "All representable parts of the impaction logic are encoded correctly. The '> 65 years' arm of the trigger cannot be expressed (age bands only) and is silently dropped: a patient over 65 who is not bed-bound/palliative/overflow will never be prompted to check the rectum. This should be recorded as a known gap rather than left implicit.",
+      "evidence": [
+        "Check for faecal impaction in constipation :: (and (clinical_finding (snomed_concept \"Constipation\" \"finding\")) (or (clinical_finding (snomed_concept \"Bed-ridden\" \"finding\")) (clinical_finding (snomed_concept \"Seen by palliative care service\" \"finding\")) (clinical_finding (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))))",
+        "Check for faecal impaction in constipation :: (check_for (clinical_finding (snomed_concept \"Hard stool\" \"finding\") (finding_site (snomed_concept \"Rectum structure\" \"body structure\"))))",
+        "Diagnose probable faecal impaction in constipation :: (system_diagnosis_rule \"Diagnose probable faecal impaction in constipation\" (diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable) adult (and (clinical_finding (snomed_concept \"Constipation\" \"finding\")) (or (clinical_finding (snomed_concept \"Bed-ridden\" \"finding\")) (clinical_finding (snomed_concept \"Seen by palliative care service\" \"finding\")) (clinical_finding (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))) (clinical_finding (snomed_concept \"Hard stool\" \"finding\") (finding_site (snomed_concept \"Rectum structure\" \"body structure\")))))",
+        "Check for urgent constipation conditions :: (check_for ... (clinical_finding (snomed_concept \"Bed-ridden\" \"finding\")) (clinical_finding (snomed_concept \"Seen by palliative care service\" \"finding\")) (clinical_finding (snomed_concept \"Chronic constipation with overflow\" \"disorder\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p60-cb8c75ea",
+      "scope": "in_scope",
+      "scope_reason": "'Assess for colorectal cancer' block: a risk-factor criterion (> 50 and any of a history list), a symptom list to ask about, and 'if any of above symptoms, discuss/refer'. Builders mapped it to a possible colorectal-cancer diagnosis, which is the right rule type for 'assess for X'.",
+      "verdict": "partial",
+      "parts_missing": [
+        "Increased-risk criterion, entire history list: previous history of colorectal cancer (SNOMED: History of malignant neoplasm of cecum and/or colon and/or rectum, situation), previous polyps (Polyp of colon, disorder / Known present), ulcerative colitis (Ulcerative colitis, disorder; History of ulcerative colitis, situation), Crohn's disease (Crohn's disease, disorder; History of Crohns disease, situation)",
+        "Increased-risk criterion, family history: colorectal cancer in a first-degree relative (Family history of colorectal cancer, situation), family history of multiple polyps, Lynch syndrome (Lynch syndrome, disorder; Family history of genetic mutation for Lynch syndrome, situation). None checked for, none used as evidence.",
+        "Change in bowel habits: only 'Diarrhea' is encoded. 'Altered bowel function' (finding) and 'Change in stool consistency' (finding) exist and cover the page's wording; 'change in stool consistency' is not encoded at all.",
+        "'Persistent' qualifier on abdominal discomfort dropped (page says persistent discomfort; the rule fires on any Abdominal discomfort / Abdominal colic / Abdominal pain)."
+      ],
+      "parts": [
+        {"part": "> 50 years old", "scope": "out_of_scope", "reason": "not_representable (age bands only)"},
+        {"part": "Previous history of colorectal cancer, polyps, ulcerative colitis, Crohn's disease", "verdict": "missing"},
+        {"part": "Family history of colorectal cancer in first-degree relative (esp. diagnosed < 60), multiple polyps, Lynch syndrome", "verdict": "missing", "note": "'diagnosed before age 60' and 'first-degree' are not representable, but 'Family history of colorectal cancer' (situation) is."},
+        {"part": "Change in bowel habits: constipation", "verdict": "correct", "note": "Constipation is the anchor of the possible rule."},
+        {"part": "Change in bowel habits: diarrhoea", "verdict": "correct", "note": "Diarrhea (finding)."},
+        {"part": "Change in bowel habits: change in stool consistency", "verdict": "missing", "note": "'Change in stool consistency' (finding) exists."},
+        {"part": "Rectal bleeding or visible blood in stool", "verdict": "correct", "note": "Rectal hemorrhage (disorder) + Hematochezia (finding)."},
+        {"part": "Persistent abdominal discomfort including cramps, gas or pain", "verdict": "partial", "note": "Abdominal discomfort, Abdominal colic, Flatulence symptom, Abdominal pain; 'persistent' not expressed."},
+        {"part": "Tenesmus", "verdict": "correct", "note": "Tenesmus of anus and/or rectum (finding)."},
+        {"part": "Unexplained weight loss / weakness / fatigue", "verdict": "correct", "note": "Unexplained weight loss, Asthenia, Fatigue."},
+        {"part": "If any of above symptoms, discuss/refer", "verdict": "correct", "note": "Encoded as the possible colorectal cancer diagnosis on any one symptom (or). Rule type and logic match 'assess for'."}
+      ],
+      "problem": "The risk-factor half of the block is absent: nothing in the file checks for or uses personal history of colorectal cancer/polyps/IBD or family history of colorectal cancer/Lynch syndrome, although SNOMED has direct concepts for all of them. A patient with constipation and a first-degree relative with colorectal cancer gets no prompt. The symptom half is well covered except 'change in stool consistency' and the 'persistent' qualifier.",
+      "evidence": [
+        "Check for colorectal cancer symptoms in constipation :: (check_for (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (clinical_finding (snomed_concept \"Rectal hemorrhage\" \"disorder\")) (clinical_finding (snomed_concept \"Hematochezia\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal discomfort\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal colic\" \"finding\")) (clinical_finding (snomed_concept \"Flatulence symptom\" \"finding\")) (clinical_finding (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\")) (clinical_finding (snomed_concept \"Unexplained weight loss\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) (clinical_finding (snomed_concept \"Fatigue\" \"finding\")))",
+        "Diagnose possible colorectal cancer in constipation :: (system_diagnosis_rule \"Diagnose possible colorectal cancer in constipation\" (diagnosis (snomed_concept \"Malignant neoplasm of cecum and/or colon and/or rectum\" \"disorder\") possible) adult (and (clinical_finding (snomed_concept \"Constipation\" \"finding\")) (or (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (clinical_finding (snomed_concept \"Rectal hemorrhage\" \"disorder\")) (clinical_finding (snomed_concept \"Hematochezia\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal discomfort\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal colic\" \"finding\")) (clinical_finding (snomed_concept \"Flatulence symptom\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\")) (clinical_finding (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\")) (clinical_finding (snomed_concept \"Unexplained weight loss\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) (clinical_finding (snomed_concept \"Fatigue\" \"finding\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p60-3ead8ac8",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Treatment block: laxative dosing, referral to rehabilitation services (> 65/frail, postpartum, spinal disease, cognitive impairment, prolapse), and referral if no response after 1 week / recent change in bowel habits / weight loss / blood in stool / occult blood positive / cause uncertain. These are management and referral decisions, not triage or diagnosis; no manage tasks by design. The second referral list overlaps the colorectal-cancer symptom list, which the possible rule already covers (except 'occult blood positive': 'Occult blood detected in feces' (finding) exists if a builder wants to add it to the possible rule's evidence).",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p60-57233c7b",
+    "p60-85e3c5b5",
+    "p60-63a37d3c",
+    "p60-3553d185",
+    "p60-1e89f954",
+    "p60-1432cd44",
+    "p60-97db84e3"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Check for colorectal cancer symptoms in constipation / Diagnose possible colorectal cancer in constipation",
+      "problem": "The page's 'increased risk of colorectal cancer' criterion (previous colorectal cancer, polyps, ulcerative colitis, Crohn's; family history of colorectal cancer, multiple polyps, Lynch syndrome) is not encoded anywhere, though every item has a SNOMED concept (History of malignant neoplasm of cecum and/or colon and/or rectum; Polyp of colon; Ulcerative colitis; Crohn's disease; Family history of colorectal cancer; Lynch syndrome; Family history of genetic mutation for Lynch syndrome). The house standard expects the check_for to include every discriminating finding the page uses and the possible rule to follow the page's logic. The '> 50 years' gate is not representable (age bands only) and should be documented.",
+      "severity": "high"
+    },
+    {
+      "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+      "problem": "'No stools or flatus/wind in the past 24 hours' is encoded as an AND of two separately recorded findings (Obstipation AND Unable to break wind), each with its own onset >= 24 hours. The literal reading supports AND, but in practice a health worker who records only 'no stools for 24 hours' plus abdominal pain will not trigger Urgent, and the house pattern for red boxes is '(and <complaint> (or ...items...))'. Reasonable to change to OR, or at minimum to record the choice as a decision for a clinician.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for colorectal cancer symptoms in constipation",
+      "problem": "'Change in bowel habits like constipation, diarrhoea, or change in stool consistency' is reduced to Diarrhea. 'Altered bowel function' (finding) and 'Change in stool consistency' (finding) exist; the latter is missing outright.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for faecal impaction in constipation / Diagnose probable faecal impaction in constipation",
+      "problem": "The '> 65 years' arm of the impaction trigger is dropped without a trace because the grammar has no numeric age. Not an encoding error, but a silent coverage gap that should be recorded as 'could not model'.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose possible colorectal cancer in constipation",
+      "problem": "'Persistent' is dropped from 'persistent abdominal discomfort'; the rule raises possible colorectal cancer on any abdominal discomfort/colic/pain with constipation. A 'Chronic persistent' qualifier value exists. Minor over-trigger; the rule is only 'possible'.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent constipation conditions",
+      "problem": "The red-box items and the impaction-trigger items (bed-ridden, palliative, overflow) share one check_for list. They are separated by a blank line and all are consumed, so the tests pass, but a reader of the task name 'Check for urgent constipation conditions' would not expect impaction triggers there. Cosmetic.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded fully and with sound concepts: Obstipation and Unable to break wind with onset >= 24 hours, abdominal pain or distension, Urgent. The biggest miss is the colorectal-cancer risk-factor criterion (personal history of colorectal cancer/polyps/IBD, family history of colorectal cancer/Lynch syndrome), which is absent although SNOMED covers every item; 'change in stool consistency' is also missing. The priority rule's AND between 'no stools' and 'no flatus' is a defensible literal reading but under-triggers relative to the house red-box pattern and should be a documented decision; the unrepresentable age thresholds (> 65 for impaction, > 50 for cancer risk) are dropped silently."
+}

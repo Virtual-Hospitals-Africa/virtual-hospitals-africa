@@ -1,0 +1,906 @@
+{
+ "page": 11,
+ "lisp_file": "11-initial-assessment-of-the-patient.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clinical finding\" \"finding\"))",
+   "element_keys": [
+    "p11-6372edd4"
+   ],
+   "quote": "the patient"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-30df61c4"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p11-9c073b1d"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "Aggressive"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "agitated"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to sit up\" \"finding\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "unable to sit up"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p11-1a862e29"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p11-1a862e29"
+   ],
+   "quote": "breathless while talking"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p11-9d06462d"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "coughing"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p11-f84608a2"
+   ],
+   "quote": "Headache"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p11-f84608a2"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "Recent sudden onset weakness"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p11-ba735821"
+   ],
+   "quote": "Bleeding"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p11-8ad6bc23"
+   ],
+   "quote": "Vomiting"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p11-8ad6bc23"
+   ],
+   "quote": "coughing blood"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))",
+   "element_keys": [
+    "p11-759d5186"
+   ],
+   "quote": "Burn"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of eye region\" \"disorder\"))",
+   "element_keys": [
+    "p11-f7ca00f5"
+   ],
+   "quote": "Eye injury"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "element_keys": [
+    "p11-c4169dca"
+   ],
+   "quote": "Suspected fracture"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dislocation of joint\" \"disorder\"))",
+   "element_keys": [
+    "p11-c4169dca"
+   ],
+   "quote": "joint dislocation"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p11-ebfb039a"
+   ],
+   "quote": "Overdose of drugs/medication"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-f2005c63"
+   ],
+   "quote": "Recent sexual assault"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3d502276"
+   ],
+   "quote": "Sudden facial swelling"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Non-blanching rash\" \"disorder\"))",
+   "element_keys": [
+    "p11-e919c2d4"
+   ],
+   "quote": "rash that does not disappear with gentle pressure"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p11-e919c2d4"
+   ],
+   "quote": "Purple/red rash"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p11-0fad892e"
+   ],
+   "quote": "Severe pain"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p11-eed81320"
+   ],
+   "quote": "Unable to pass urine"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "vaginal bleeding"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent signs at initial assessment of the patient",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "known diabetic"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "decreased consciousness"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "seizures"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to sit up\" \"finding\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "unable to sit up"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "known diabetic"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "known diabetic"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)",
+   "element_keys": [
+    "p11-bb99c108"
+   ],
+   "quote": "check glucose"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Initial assessment: measure respiratory rate and oxygen saturation if coughing or difficulty breathing",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "coughing"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Initial assessment: measure respiratory rate and oxygen saturation if coughing or difficulty breathing",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\"))",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Initial assessment: measure respiratory rate and oxygen saturation if coughing or difficulty breathing",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Initial assessment: measure respiratory rate and oxygen saturation if coughing or difficulty breathing",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm)",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "respiratory rate"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Initial assessment: measure respiratory rate and oxygen saturation if coughing or difficulty breathing",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %)",
+   "element_keys": [
+    "p11-a790b9a0"
+   ],
+   "quote": "oxygen saturation"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Initial assessment: measure MUAC and height in the pregnant patient",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p11-7e88cc6d"
+   ],
+   "quote": "Patient is pregnant"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Initial assessment: measure MUAC and height in the pregnant patient",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Mid upper arm circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-515cb243"
+   ],
+   "quote": "Mid Upper Arm Circumference (MUAC)"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Initial assessment: measure MUAC and height in the pregnant patient",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body height\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-515cb243"
+   ],
+   "quote": "Weight and height to calculate BMI"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Initial assessment: measure BMI inputs, waist circumference and glucose in the patient with hypertension",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\"))",
+   "element_keys": [
+    "p11-6ba8aa91"
+   ],
+   "quote": "Patient has hypertension"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Initial assessment: measure BMI inputs, waist circumference and glucose in the patient with hypertension",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body height\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-827c2beb"
+   ],
+   "quote": "BMI"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Initial assessment: measure BMI inputs, waist circumference and glucose in the patient with hypertension",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-827c2beb"
+   ],
+   "quote": "waist circumference"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Initial assessment: measure BMI inputs, waist circumference and glucose in the patient with hypertension",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)",
+   "element_keys": [
+    "p11-827c2beb"
+   ],
+   "quote": "Fingerprick glucose"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-d52a11f3"
+   ],
+   "quote": "Patient has diabetes"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p11-d52a11f3"
+   ],
+   "quote": "Patient has diabetes"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)",
+   "element_keys": [
+    "p11-b1cbcc67"
+   ],
+   "quote": "Fingerprick glucose"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body height\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-1ab08e88"
+   ],
+   "quote": "BMI"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-1ab08e88"
+   ],
+   "quote": "waist circumference"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Initial assessment: measure glucose, BMI inputs, waist and hip circumference in the patient with diabetes",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Hip circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p11-1ab08e88"
+   ],
+   "quote": "waist-hip ratio"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-30df61c4"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p11-9c073b1d"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p11-1a862e29"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p11-1a862e29"
+   ],
+   "quote": "breathless while talking"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p11-343638d3"
+   ],
+   "quote": "Respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p11-9d06462d"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p11-f84608a2"
+   ],
+   "quote": "Headache"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p11-f84608a2"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "Aggressive"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p11-12bc7018"
+   ],
+   "quote": "agitated"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p11-ebfb039a"
+   ],
+   "quote": "Overdose of drugs/medication"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-f2005c63"
+   ],
+   "quote": "Recent sexual assault"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p11-8ad6bc23"
+   ],
+   "quote": "Vomiting"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p11-8ad6bc23"
+   ],
+   "quote": "coughing blood"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p11-ba735821"
+   ],
+   "quote": "Bleeding"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))",
+   "element_keys": [
+    "p11-759d5186"
+   ],
+   "quote": "Burn"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of eye region\" \"disorder\"))",
+   "element_keys": [
+    "p11-f7ca00f5"
+   ],
+   "quote": "Eye injury"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p11-0fad892e"
+   ],
+   "quote": "Severe pain"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p11-eed81320"
+   ],
+   "quote": "Unable to pass urine"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3d502276"
+   ],
+   "quote": "Sudden facial swelling"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "element_keys": [
+    "p11-c4169dca"
+   ],
+   "quote": "Suspected fracture"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dislocation of joint\" \"disorder\"))",
+   "element_keys": [
+    "p11-c4169dca"
+   ],
+   "quote": "joint dislocation"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "Recent sudden onset weakness"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p11-3874098b"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p11-6ed55e86"
+   ],
+   "quote": "vaginal bleeding"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Non-blanching rash\" \"disorder\"))",
+   "element_keys": [
+    "p11-e919c2d4"
+   ],
+   "quote": "rash that does not disappear with gentle pressure"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: initial assessment danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p11-e919c2d4"
+   ],
+   "quote": "Purple/red rash"
+  }
+ ]
+}

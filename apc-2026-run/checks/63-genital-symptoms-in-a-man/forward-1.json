@@ -1,0 +1,333 @@
+{
+  "page": 63,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p63-0f15404d",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the presenting complaint (man with genital symptoms) and the 'any of' structure that becomes the Urgent priority evaluation.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The presenting complaint is encoded as (or Male genitalia finding, Urethral discharge). Urethral discharge is not a SNOMED descendant of Male genitalia finding (checked), so listing it separately is right. 'Any of' the three likely diagnoses is an (or ...) of active_condition torsion / paraphimosis / priapism. Minor: 'Male genitalia finding' is a very abstract concept that is unlikely to be recorded as such; it only works because descendants match in due_to.",
+      "evidence": [
+        "Check for urgent genital symptoms in a man :: (or (clinical_finding (snomed_concept \"Male genitalia finding\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")))",
+        "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism :: (and (or (clinical_finding (snomed_concept \"Male genitalia finding\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (or (active_condition (snomed_concept \"Torsion of testis\" \"disorder\")) (active_condition (snomed_concept \"Paraphimosis\" \"disorder\")) (active_condition (snomed_concept \"Priapism\" \"disorder\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-1849c7a7",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with an 'X likely' conclusion (torsion of testicle). Parts: (a) scrotal swelling/pain gate; (b) sudden severe pain; (c) affected testicle higher/rotated; (d) preceding trauma/strenuous activity; (e) torsion of testicle likely -> probable.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All five parts are present with the page's logic: (and (or swelling, pain) (or sudden-severe-pain, higher/rotated, trauma/strenuous)). Concept notes, none an error: 'Testicle out of place' (child of 'Finding of position of testicle') is the nearest available concept for 'testicle higher' (no 'high-riding testis' concept exists; searched); 'Testes - transverse lie' is a fair reading of 'rotated'; 'Injury of scrotum' and 'Injury of testis' are NOT descendants of 'Traumatic injury' (checked), so listing all three is correct, not redundant; 'Overexertion and strenuous movements' is an event-category concept wrapped in clinical_finding, which is unusual but the only match for 'strenuous activity'. 'Sudden severe pain' is encoded as Pain in scrotum + Sudden onset + Severe, which matches the page. The rule is 'probable' as the page's 'likely' requires.",
+      "evidence": [
+        "Diagnose probable torsion of testis (genital symptoms in a man) :: (and (or (clinical_finding (snomed_concept \"Swelling of scrotum\" \"finding\")) (clinical_finding (snomed_concept \"Pain in scrotum\" \"finding\"))) (or (clinical_finding (snomed_concept \"Pain in scrotum\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Testicle out of place\" \"finding\")) (clinical_finding (snomed_concept \"Testes - transverse lie\" \"finding\")) (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")) (clinical_finding (snomed_concept \"Injury of scrotum\" \"disorder\")) (clinical_finding (snomed_concept \"Injury of testis\" \"disorder\")) (clinical_finding (snomed_concept \"Overexertion and strenuous movements\" \"event\"))))",
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Swelling of scrotum\" \"finding\")) ... (clinical_finding (snomed_concept \"Overexertion and strenuous movements\" \"event\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-c655fef2",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with 'paraphimosis likely'. Parts: (a) foreskin retracted over glans and unable to be reduced; (b) swollen glans; (c) very painful glans; (d) paraphimosis likely -> probable.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All parts encoded and joined with 'and', which is what 'retracted ... with swollen and very painful glans' means. 'Fixed, retracted foreskin' (child of 'Finding of retraction of foreskin', sibling 'Tightly retracted foreskin') is the best match for 'retracted and unable to be pulled back'. Glans swelling and glans pain have no precoordinated concept (searched 'glans swelling', 'swelling of glans'); Swelling / Pain with finding_site 'Glans penis structure' follows the house pattern. 'Very painful' -> Severe qualifier is right.",
+      "evidence": [
+        "Diagnose probable paraphimosis (genital symptoms in a man) :: (and (clinical_finding (snomed_concept \"Fixed, retracted foreskin\" \"finding\")) (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain\" \"finding\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-bd0295fe",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with 'priapism likely'. Parts: (a) prolonged erection; (b) > 4 hours; (c) priapism likely -> probable.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Prolonged erection of penis' is the exact concept. Duration is encoded as (>= (onset ...) (time_ago 4 hours)), which per the house convention means 'onset at least 4 hours ago' -- the right direction. The page says '> 4 hours' and the rule uses '>=', a negligible boundary difference. Note the check_for holds the plain finding while the probable rule's evidence is the onset comparison wrapping it; whether the test's exact-string evidence check recognises the subject inside (onset ...) is not something I can verify from the inputs (see rule_level_problems).",
+      "evidence": [
+        "Diagnose probable priapism (genital symptoms in a man) :: (>= (onset (clinical_finding (snomed_concept \"Prolonged erection of penis\" \"finding\"))) (time_ago 4 hours))",
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Prolonged erection of penis\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-840aeb5c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header 'Manage and refer urgently:' introduces management lines; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-28eaec64",
+      "scope": "borderline",
+      "scope_reason": "'If likely torsion of testicle or priapism: refer urgently to surgical unit' is a management step, but it is also the page's justification for the Urgent level on those two diagnoses, so the priority evaluation is judged here.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Urgent priority fires on active_condition Torsion of testis or Priapism (both diagnosed probable in this file). Urgent, not Emergency / Very urgent, matches the page, which only says 'refer urgently'. The referral itself is out of scope.",
+      "evidence": [
+        "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism :: (or (active_condition (snomed_concept \"Torsion of testis\" \"disorder\")) (active_condition (snomed_concept \"Paraphimosis\" \"disorder\")) (active_condition (snomed_concept \"Priapism\" \"disorder\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-3841c7e5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'If paraphimosis likely:' is the header of a management sub-list. Paraphimosis is already Urgent via the priority rule.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-042fcaec",
+      "scope": "borderline",
+      "scope_reason": "'If glans blue/black: refer urgently' is a management line, but 'glans blue/black' is a discriminating finding the red box uses to choose between urgent referral and manual reduction, and the house standard says the check_for must include every red-box item.",
+      "verdict": "missing",
+      "parts_missing": ["glans blue/black (glans cyanosis / discolouration) is not in the check_for and no rule uses it"],
+      "problem": "No concept for glans discolouration appears anywhere in the file. SNOMED offers 'Cyanosis' (finding) or 'Discoloration of skin' (finding), which could carry finding_site 'Glans penis structure' in the house pattern. Practical impact is small because paraphimosis is already Urgent and there is no higher level the page justifies, but the red-box finding is uncaptured.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-02dea917",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'If not, doctor to attempt manual reduction or discuss with referral centre' is management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-a4da9639",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Approach box: cross-references to pages 62, 124, 126, 119 and 69, plus 'milk the urethra' (not representable). The only clinical content is 'check for urethral discharge', and Urethral discharge is the task's trigger and the urethritis rule's evidence. Urinary symptoms without discharge route to page 69 (cross-reference only).",
+      "evidence": [
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-df5a957d",
+      "scope": "borderline",
+      "scope_reason": "Flowchart column head 'Urethral discharge (with or without dysuria/burning urine)'. It leads directly to 'Treat for male urethritis syndrome (MUS)', which the builders read as 'MUS likely'; 'treat for X' is not literally 'X likely' but encoding it as probable is the natural reading of a syndromic branch.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Urethral discharge -> probable Urethritis. No SNOMED concept exists for 'male urethritis syndrome' (searched 'urethritis syndrome', 'male urethritis'); 'Urethritis' is the right substitute. Dysuria is 'with or without', so correctly not made a criterion.",
+      "evidence": [
+        "Diagnose probable male urethritis syndrome (genital symptoms in a man) :: (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-fa099623",
+      "scope": "borderline",
+      "scope_reason": "Flowchart column head 'Scrotal swelling or pain'. Its two findings are the gate for the red-box torsion rule and the entry to the SSW / painless-lump branches.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both findings are in the check_for and used as the torsion gate. The downstream branches are judged at p63-2a2312a8 (SSW) and p63-66d21626 (painless lump).",
+      "evidence": [
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Swelling of scrotum\" \"finding\")) (clinical_finding (snomed_concept \"Pain in scrotum\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-07e6e436",
+      "scope": "borderline",
+      "scope_reason": "Flowchart column head 'Painful, itchy or foul-smelling glans'. These are presenting findings that route to the balanitis branch; the page names no 'likely' diagnosis at this node.",
+      "verdict": "partial",
+      "parts_missing": ["itchy glans (SNOMED 'Pruritus of penis' exists)", "foul-smelling glans (no good SNOMED concept found)", "painful glans in the plain form (only the Severe-qualified form used by paraphimosis is checked)"],
+      "problem": "The column's findings are not in the check_for. They matter only as presenting complaints, which the broad 'Male genitalia finding' trigger covers by descendant matching, so the impact is low. Listed as partial because the house standard asks for the discriminating findings on the path to each 'likely' diagnosis, and this column is the path to BAL.",
+      "evidence": [
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Pain\" \"finding\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p63-f5eca202",
+      "scope": "borderline",
+      "scope_reason": "'difficulty retracting foreskin' is the finding that drives the first decision in the right-hand column ('If unable to retract foreskin, refer'). It leads to a referral, not a named diagnosis, so reasonable people could call it flowchart_routing.",
+      "verdict": "missing",
+      "parts_missing": ["difficulty / inability to retract foreskin"],
+      "problem": "SNOMED has the exact concept 'Foreskin does not retract' (finding, 249262009, sibling of 'Fixed, retracted foreskin'); it is not used anywhere in the file. Without it the 'unable to retract -> refer' branch is lost. Note that 'Fixed, retracted foreskin' (used for paraphimosis) means the opposite situation (foreskin stuck behind the glans), so it does not cover this.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-2a2312a8",
+      "scope": "borderline",
+      "scope_reason": "Merged text block with three distinct parts: (a) 'If unable to retract foreskin, refer' (flowchart decision); (b) 'Pain with/without swelling or discharge' (the decision node that leads to 'Treat for scrotal swelling (SSW)'); (c) the MUS treatment list (management_step).",
+      "verdict": "missing",
+      "parts_missing": ["(a) unable to retract foreskin -> refer: no 'Foreskin does not retract' finding", "(b) scrotal pain with/without swelling or discharge, not painless lump -> SSW: no diagnosis rule for the scrotal-swelling syndrome (epididymo-orchitis)"],
+      "problem": "Part (c) is management and out of scope. Parts (a) and (b) are flowchart decisions. The builders encoded the analogous 'Treat for MUS' and 'treat for BAL' nodes as probable diagnoses but not 'Treat for SSW', which is inconsistent. SNOMED has 'Infective epididymo-orchitis' and 'Epididymo-orchitis without abscess' (disorder) as candidates if the reconciler wants a probable SSW rule; the page's own logic would be (and (clinical_finding Pain in scrotum) (no painless mass)).",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-66d21626",
+      "scope": "in_scope",
+      "scope_reason": "'Painless lump' is the criterion that leads to 'Exclude testicular cancer'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as Mass of scrotum + Painless OR Mass of testicle + Painless. 'Mass of testicle' is not a descendant of 'Mass of scrotum' (checked), so listing both is right. Both qualified forms are in the check_for.",
+      "evidence": [
+        "Diagnose possible testicular cancer (painless scrotal lump) :: (or (clinical_finding (snomed_concept \"Mass of scrotum\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Mass of testicle\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-c6402a82",
+      "scope": "in_scope",
+      "scope_reason": "Fragment 'lump' of the same flowchart node as p63-66d21626.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Same evidence as p63-66d21626.",
+      "evidence": [
+        "Diagnose possible testicular cancer (painless scrotal lump) :: (or (clinical_finding (snomed_concept \"Mass of scrotum\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Mass of testicle\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-a8ccb577",
+      "scope": "in_scope",
+      "scope_reason": "'Exclude Testicular cancer' -> possible diagnosis per the house standard.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Malignant neoplasm of testis' at possible is right; the rule is correctly 'possible', not 'probable'.",
+      "evidence": [
+        "Diagnose possible testicular cancer (painless scrotal lump) :: (diagnosis (snomed_concept \"Malignant neoplasm of testis\" \"disorder\") possible)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-d464b95c",
+      "scope": "in_scope",
+      "scope_reason": "Fragment 'cancer' of the same node as p63-a8ccb577.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Same evidence as p63-a8ccb577.",
+      "evidence": [
+        "Diagnose possible testicular cancer (painless scrotal lump) :: (diagnosis (snomed_concept \"Malignant neoplasm of testis\" \"disorder\") possible)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-66b52db5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Refer.' under exclude testicular cancer.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-dd5c7454",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Treat for scrotal swelling (SSW)' treatment list. The decision that reaches it is judged at p63-2a2312a8.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p63-e71a108c",
+      "scope": "borderline",
+      "scope_reason": "Mixed block: 'retract, wash, examine' (management), 'If ulcer/s present -> 65' (cross-reference), 'If glans inflamed, treat for BAL' (diagnostic conclusion, encoded as probable), BAL treatment (management), 'Check urine dipstick for glucose. If glucose present, refer' (a measure plus a criterion).",
+      "verdict": "partial",
+      "parts_missing": ["urine dipstick glucose present -> refer (SNOMED 'Glycosuria' finding exists; no measure task or finding in the file)", "ulcer present -> page 65 (cross-reference; genital ulcer could be a check_for item that triggers the page-65 rules)"],
+      "problem": "The main conclusion is encoded correctly: glans inflamed -> probable Balanitis. 'Balanitis' covers 'balanitis/balanoposthitis' because Balanoposthitis is_a Balanitis (checked). 'Glans inflamed' has no precoordinated concept; 'Inflammatory morphology' with finding_site 'Glans penis structure' follows the gold standard's use of a morphologic abnormality as a clinical_finding root (Eruption). The glucose-dipstick criterion is the one substantive omission: it is a discriminating step the page uses (balanitis as a presentation of diabetes), and 'Glycosuria' exists. Low impact since the page only says 'refer'.",
+      "evidence": [
+        "Diagnose probable balanitis/balanoposthitis (genital symptoms in a man) :: (clinical_finding (snomed_concept \"Inflammatory morphology\" \"morphologic abnormality\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\")))",
+        "Check for urgent genital symptoms in a man :: (clinical_finding (snomed_concept \"Inflammatory morphology\" \"morphologic abnormality\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p63-122c04b7",
+      "scope": "borderline",
+      "scope_reason": "'Advise patient to return in 7 days if symptoms persist: ceftriaxone treatment failure likely' is an 'X likely' statement, but 'X' is treatment failure, which needs a record of prior treatment and its timing; the language has onset/time_ago on findings but nothing I can see for time since a treatment, so this is close to not_representable.",
+      "verdict": "missing",
+      "parts_missing": ["urethral discharge persisting 7 days after MUS treatment -> treatment failure likely"],
+      "problem": "Not encoded. The nearest approximation would be (and (active_condition Urethritis) (>= (onset Urethral discharge) (time_ago 7 days))), which conflates duration of symptoms with time since treatment; SNOMED has no 'treatment failure' finding (only 'Treatment failure risk education'). I would accept the reconciler recording this as not_representable.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p63-33cd38bc",
+      "scope": "borderline",
+      "scope_reason": "Fragment 'failure likely. Refer within 7 days.' of the same statement as p63-122c04b7.",
+      "verdict": "missing",
+      "parts_missing": ["same as p63-122c04b7"],
+      "problem": "Same as p63-122c04b7; 'Refer within 7 days' is management.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p63-9a25cddd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'If poor adherence, repeat treatment. If adherent and still no better, refer.' is management follow-up.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p63-fe65097e",
+    "p63-f5001bb9",
+    "p63-80deabc6",
+    "p63-8a41b145",
+    "p63-4600c32f"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Check for urgent genital symptoms in a man (check_for)",
+      "problem": "Red-box item 'glans blue/black' is absent from the check_for; the house standard says the check_for must include every red-box item. No rule would consume it unless a (possible or priority) rule is added, so adding it alone would break the 'checked for but never used' constraint; it needs a consumer, e.g. a second paraphimosis-with-ischaemia clause, or an explicit note that it is left out because paraphimosis is already Urgent.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Flowchart right-hand column (no rule)",
+      "problem": "'If unable to retract foreskin, refer' and the column head 'difficulty retracting foreskin' have no encoding although SNOMED has the exact finding 'Foreskin does not retract' (249262009). The branch is lost.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Flowchart middle column (no rule)",
+      "problem": "Inconsistent treatment of 'Treat for X' nodes: 'Treat for MUS' became probable Urethritis and 'treat for BAL' became probable Balanitis, but 'Treat for scrotal swelling (SSW)' (scrotal pain with/without swelling or discharge, not a painless lump, not torsion) has no diagnosis rule. Either all three syndromic nodes are 'X likely' or none are; candidates for SSW include 'Infective epididymo-orchitis' or 'Epididymo-orchitis without abscess'.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable priapism (genital symptoms in a man)",
+      "problem": "The rule's only evidence is (>= (onset (clinical_finding Prolonged erection of penis)) (time_ago 4 hours)) while the check_for holds the bare clinical_finding. The house test matches evidence by exact s-expression string; if it does not unwrap (onset ...) this probable rule fails the 'evidence must be checked for' constraint. Direction of the comparator is correct per the house convention. Cannot verify from the inputs; flag for the gate.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable torsion of testis (genital symptoms in a man)",
+      "problem": "The gate (or Pain in scrotum, Swelling of scrotum) uses the unqualified pain finding while the first discriminator is the same finding qualified Sudden onset + Severe. If matching is by exact string, a patient whose only recorded finding is the qualified form may not satisfy the gate; both forms are in the check_for so both will be asked, which mitigates it. Consider whether the qualified form should also appear in the gate's 'or'.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent genital symptoms in a man (due_to)",
+      "problem": "The trigger 'Male genitalia finding' is an ancestor of most of the check_for items (Swelling of scrotum, Pain in scrotum, Testicle out of place, Fixed, retracted foreskin, Prolonged erection of penis, Mass of scrotum all is_a it; checked). Recording any of them triggers a task that then asks for them again. Not caught by the exact-string self-reference test, but semantically circular; the briefing's 'most natural clinical_finding for the complaint' advice makes this acceptable if noted.",
+      "severity": "low"
+    },
+    {
+      "rule": "Balanitis branch (no measure task)",
+      "problem": "'Check urine dipstick for glucose. If glucose present, refer' is a measurement the page orders and a criterion that follows it; neither a measure task nor 'Glycosuria' appears. Blood glucose is a routine vital per the briefing, urine glucose is not.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded faithfully: all three 'likely' diagnoses (torsion, paraphimosis, priapism) are probable rules with the page's logic and existing, well-chosen SNOMED concepts, and the Urgent priority evaluation references them correctly; the one red-box item not captured is 'glans blue/black'. Below the red box the file is uneven: MUS and BAL became probable diagnoses and 'exclude testicular cancer' a possible one (all correct), but the SSW branch, the 'unable to retract foreskin -> refer' decision (SNOMED 'Foreskin does not retract' exists), the urine-glucose criterion and the 'treatment failure likely' statement are not encoded. Two low-severity test-shape risks: the priapism rule's only evidence is an onset comparison rather than the bare finding in the check_for, and the torsion gate uses the unqualified pain finding while the discriminator uses the qualified one."
+}

@@ -1,0 +1,393 @@
+{
+  "page": 44,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p44-d93d6fb0",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the trigger (pallor/anaemia) and the any-of structure of the Urgent priority rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Structure and level match the house pattern: (and <pallor or anaemia> (or ...)) at Urgent. Pallor is anchored on Pale complexion (SNOMED id 398979000, the FSN is Pallor), Pale conjunctiva and Pale discoloration of entire skin of body; anaemia on Anemia (disorder). The page's 'pale palms' has no SNOMED concept (searched 'pale palm', 'palmar pallor': none), so nothing closer was available.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (system_priority_evaluation \"Urgent: pallor/anaemia with danger signs\" adult Urgent (and (or (clinical_finding (snomed_concept \"Pale complexion\" \"finding\")) (clinical_finding (snomed_concept \"Pale conjunctiva\" \"finding\")) (clinical_finding (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\")) (clinical_finding (snomed_concept \"Anemia\" \"disorder\"))) (or ...)))",
+        "Check for urgent pallor/anaemia conditions :: (task \"Check for urgent pallor/anaemia conditions\" adult (or (clinical_finding (snomed_concept \"Pale complexion\" \"finding\")) ... (clinical_finding (snomed_concept \"Anemia\" \"disorder\"))) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-0d734d89",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Hb < 6 needs a g/dL measurement; the language's units are % bpm °C cm kg mmol/L mmHg mm. Not encoded, correctly so. (SNOMED does have 'Hemoglobin below reference range' (finding) 165397008, but it cannot carry the < 6 threshold.)",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-6d7615f6",
+      "scope": "in_scope",
+      "scope_reason": "Two criteria: shock, and SBP < 80.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present with the right direction and unit. Note that 'Shock' is encoded as a bare clinical_finding the nurse ticks; the page's footnote 1 defines when shock is 'likely' and the house pattern would be a probable Shock diagnosis rule referenced as (active_condition ...) from here. That gap is recorded against the footnote element p44-cc85f839.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: pallor/anaemia with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-7de4f779",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Leg swelling symptom (248480008) means swollen legs, but it is a child of 'Finding reported by subject or history provider' as well as of 'Swelling of lower limb' (finding). The page item is an examination sign; the parent 'Swelling of lower limb' (or 'Edema of lower extremity' 102572006) would match more recordings since descendants match in due_to. Minor.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p44-090ce294",
+      "scope": "in_scope",
+      "scope_reason": "Two parts: widespread bruising, easy bruising.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Easy bruising (424131007) and Multiple bruising (373600006) cover both parts; SNOMED has no 'widespread bruising' concept, so Multiple bruising is the closest.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Easy bruising\" \"finding\"))",
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Multiple bruising\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Easy bruising\" \"finding\")) (clinical_finding (snomed_concept \"Multiple bruising\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-6a59f54f",
+      "scope": "in_scope",
+      "scope_reason": "Vital-sign threshold.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Threshold (>= 100) and unit (bpm) are right. The observable chosen is 'Pulse, function' (8499008), a child of 'Cardiovascular function', i.e. the pulse as a physiological function, not a rate. The standard rate observable is 'Heart rate' (364075005, under 'Cardiovascular measure'). Whether this rule ever fires depends on which concept the system records the routine pulse vital under; I cannot see that, so this is flagged rather than marked an error.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+      ],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p44-e4c47dc8",
+      "scope": "in_scope",
+      "scope_reason": "Two parts: dizzy, faint.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Dizziness (a recorded common symptom) and Feeling faint (248223005). 'Faint' on the page may also mean an actual faint; 'Syncope' (finding, 271594007) is an alternative, but Feeling faint is a defensible reading.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Dizziness\" \"finding\"))",
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Feeling faint\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Feeling faint\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-46fa518e",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Jaundice\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Jaundice\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-68cf035b",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: a non-blanching purple/red rash.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'rash that does not disappear with pressure' = SNOMED 'Non-blanching rash' (disorder, 400991008), which is the exact concept for the page wording and is not encoded"
+      ],
+      "problem": "Encoded as Purpuric rash (284078000). SNOMED has the exact concept 'Non-blanching rash' (disorder), and the two are not in a subsumption relation (is_a check both ways: NO; Purpuric rash sits under Eruption of skin and Bleeding skin, Non-blanching rash under Eruption of skin and Finding of color of skin). A nurse who records 'Non-blanching rash' would not trigger this rule. Best fix: use Non-blanching rash, or list both.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Purpuric rash\" \"disorder\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Purpuric rash\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-3af4e6b8",
+      "scope": "in_scope",
+      "scope_reason": "Vital-sign threshold.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Respiratory rate >= 30 bpm matches the red box (the footnote's shock definition uses > 30; the red box is >= 30 and the rule follows the red box, which is right for this element).",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-535b6112",
+      "scope": "in_scope",
+      "scope_reason": "Two parts: chest pain, palpitations.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-0087408f",
+      "scope": "in_scope",
+      "scope_reason": "Two parts: black stools, bloody stools.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Melena (2901004) for black stools and Hematochezia (405729008, synonym 'blood in stool') for bloody stools. Footnote 2's qualifier (black stools count only if they started before iron treatment) is not encoded; see p44-cc85f839.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Melena\" \"disorder\"))",
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Melena\" \"disorder\")) (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-4067ef12",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header of the management list; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-12512a96",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Face mask oxygen: management, out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-e5fb2b62",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "IV sodium chloride: management, out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-6a455751",
+      "scope": "borderline",
+      "scope_reason": "Defines the presenting complaint (pallor = pale conjunctiva or palms) which the rules use as their trigger, and gives the 'anaemia likely' Hb thresholds, which are not representable.",
+      "verdict": "partial",
+      "parts_missing": [
+        "pale palms (no SNOMED concept found; closest available is the general 'Pale complexion', which is already used)",
+        "anaemia likely if Hb < 12 (non-pregnant woman) / < 11 (pregnant) / < 13 (man): not representable (no g/dL unit)"
+      ],
+      "problem": "The trigger captures pale conjunctiva and general pallor; 'pale palms' has no concept to use, so this is a SNOMED gap rather than a builder error. The Hb thresholds cannot be expressed. The rules anchor 'anaemia' on Anemia (disorder); SNOMED's 'Hemoglobin below reference range' (finding, 165397008) would be a reasonable extra trigger if the system records lab findings.",
+      "evidence": [
+        "Check for urgent pallor/anaemia conditions :: (or (clinical_finding (snomed_concept \"Pale complexion\" \"finding\")) (clinical_finding (snomed_concept \"Pale conjunctiva\" \"finding\")) (clinical_finding (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\")) (clinical_finding (snomed_concept \"Anemia\" \"disorder\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p44-72e4dbad",
+      "scope": "in_scope",
+      "scope_reason": "Contains 'malaria likely' with criteria (fever now or in past 3 days AND malaria area in past 3 months); the other bullets (HIV, TB, pregnancy, FBC) are management/cross-reference.",
+      "verdict": "partial",
+      "parts_missing": [
+        "fever 'now or in past 3 days': rule requires current (active_condition Fever) only; the recent-fever window is not expressed although onset comparisons exist in the language",
+        "malaria area 'in past 3 months': no time window on the exposure finding",
+        "applies to 'the patient not needing urgent attention': rule is not gated on the absence of red-box signs (minor, arguably acceptable)"
+      ],
+      "problem": "Malaria likely is correctly a probable diagnosis anchored on pallor/anaemia + Fever + 'Disease that is endemic in recent area visited' = Malaria, with a matching check_for task. The two time windows are dropped. HIV/TB/pregnancy testing and FBC are management steps (out of scope); MCV is not representable.",
+      "evidence": [
+        "Diagnose probable malaria in pallor/anaemia :: (system_diagnosis_rule \"Diagnose probable malaria in pallor/anaemia\" (diagnosis (snomed_concept \"Malaria\" \"disorder\") probable) adult (and (or ...pallor/anaemia...) (active_condition (snomed_concept \"Fever\" \"finding\")) (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))))",
+        "Check for malaria area exposure in pallor/anaemia with fever :: (task ... (and (or ...pallor/anaemia...) (active_condition (snomed_concept \"Fever\" \"finding\"))) (check_for (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p44-640f93fe",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "MCV low: lab value with no unit in the language. (SNOMED's 'Finding of mean cell volume' has only 'Normocytosis, red cells' as a child, so there is no low/high finding to substitute.)",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-2be650d0",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "MCV normal: lab value, not representable.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-03a0439c",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "MCV high: lab value, not representable.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-aab5aa6e",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Iron deficiency anaemia likely' is an X-likely conclusion (SNOMED 'Iron deficiency anemia' disorder 87522002 exists) but its only criterion is MCV low, which cannot be expressed; the man/no-periods question routes to management (hidden blood loss referral). Not encoded, and cannot be in the current language.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-d87b7f21",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Systemic disease or long-term condition likely' (text fragmented across p44-d87b7f21, p44-d79de733, p44-524eae7d) depends solely on MCV normal. Not encoded; not representable.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-df036884",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Macrocytic anaemia likely' (SNOMED 'Macrocytic anemia' disorder exists) depends solely on MCV high; the zidovudine/antiseizure instruction is management and the postpartum/alcohol question is flowchart routing. Not encoded; not representable.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-8697ea1e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Discuss/refer and palliative care referral: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-5ca77ad1",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Vaginal bleeding cross-reference and iron dosing: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-58591865",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Folate deficiency likely' requires MCV high AND (postpartum OR alcohol misuse). Postpartum state (finding) exists in SNOMED, but the MCV half cannot be expressed, so the rule cannot be written; the rest of the box is management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p44-477e6009",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Refer to investigate for vitamin B12 deficiency' (continues in p44-01c15ee8) is a referral, and the implied 'consider B12 deficiency' would need MCV high plus not-postpartum/not-alcohol. Not encoded; not representable.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p44-cc85f839",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 1 is diagnostic logic: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' Footnotes 2-4 are a referral qualifier, a lab note, and a definition.",
+      "verdict": "missing",
+      "parts_missing": [
+        "footnote 1: probable Shock diagnosis rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness (all expressible: Systolic blood pressure mmHg, pulse bpm, Respiratory rate bpm, 'Acute confusion'/'Confusional state', 'Restlessness', 'Weakness present'); the priority rule should then reference (active_condition Shock)",
+        "footnote 2: black stools only count if they started before iron treatment (not encoded; a qualifier on Melena, borderline-expressible)",
+        "footnote 4: alcohol misuse definition (> 14 drinks/week or >= 4/session): not representable, and only feeds the MCV-high branch anyway"
+      ],
+      "problem": "The red box says 'Shock¹' and footnote 1 is the page's definition of when shock is likely. Will's briefing: where the red box names a likely diagnosis for a subset of criteria, write a probable diagnosis rule and reference (active_condition X) from the priority rule. Instead, Shock is a bare clinical_finding the nurse must tick in the check_for. The footnote's conjunction/disjunction is ambiguous (it reads as a list of signs), so the builder would need to make and record a judgment call, but nothing was attempted. Footnote 3 (MCV) carries no new logic.",
+      "evidence": [
+        "Urgent: pallor/anaemia with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Check for urgent pallor/anaemia conditions :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p44-9c48863f",
+    "p44-d79de733",
+    "p44-524eae7d",
+    "p44-3ce825d3",
+    "p44-153e411b",
+    "p44-c657b721",
+    "p44-01c15ee8",
+    "p44-1ab4867c",
+    "p44-afcae097",
+    "p44-73644dac"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: pallor/anaemia with danger signs / Check for urgent pallor/anaemia conditions",
+      "problem": "No probable Shock diagnosis rule despite footnote 1 defining 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness). The priority rule and check_for use a bare (clinical_finding Shock) that the nurse must tick as if it were a sign, which is the pattern the briefing says to avoid when the page gives criteria for the likely diagnosis.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: pallor/anaemia with danger signs",
+      "problem": "Pulse >= 100 is measured against 'Pulse, function' (8499008, a cardiovascular-function observable), not a rate observable such as 'Heart rate' (364075005). If the routine pulse vital is recorded under a different concept this branch never fires. Needs confirming against the vitals the system records.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: pallor/anaemia with danger signs / Check for urgent pallor/anaemia conditions",
+      "problem": "'Purple/red rash that does not disappear with pressure' is encoded as 'Purpuric rash' although SNOMED has the exact 'Non-blanching rash' (disorder, 400991008); neither subsumes the other, so a recorded Non-blanching rash does not trigger Urgent.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable malaria in pallor/anaemia / Check for malaria area exposure in pallor/anaemia with fever",
+      "problem": "Both time windows dropped: fever 'now or in past 3 days' (only current Fever triggers; an onset comparison could approximate the window) and malaria area 'in past 3 months'. The rule also is not restricted to patients 'not needing urgent attention', though that is defensible.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: pallor/anaemia with danger signs",
+      "problem": "'Swollen legs' encoded as 'Leg swelling symptom', a subject-reported finding; the parent 'Swelling of lower limb' (finding) or 'Edema of lower extremity' would also match an examined sign and all descendants.",
+      "severity": "low"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "None of the page's four MCV-branch 'X likely' diagnoses (iron deficiency anaemia, systemic disease/long-term condition, macrocytic anaemia, folate deficiency) nor the implied B12 deficiency is encoded. This is expected: MCV has no unit and SNOMED has no MCV low/high finding, but it means the page's main diagnostic flowchart is absent and should be recorded as 'could not model'.",
+      "severity": "low"
+    },
+    {
+      "rule": "(trigger)",
+      "problem": "'Pale palms' from the page's pallor definition has no SNOMED concept and is not encoded; 'Pale complexion' (FSN Pallor) is the nearest general concept and is already used. Pale conjunctiva is not a descendant of Pale complexion, so listing it separately (as done) is necessary.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is well covered: 10 of 11 in-scope criteria are encoded with the right concept, threshold and direction in a correctly structured Urgent rule with a matching check_for, and every check_for item is consumed. The most consequential gaps are that footnote 1's 'shock likely' definition is not a probable Shock rule (Shock is a bare tick-box finding), that pulse is measured against 'Pulse, function' rather than a rate observable and may never match the recorded vital, and that the non-blanching rash is encoded as 'Purpuric rash' instead of SNOMED's exact 'Non-blanching rash'. The malaria rule drops both of the page's time windows; the MCV-driven diagnoses are absent but not representable."
+}

@@ -1,0 +1,766 @@
+{
+ "page": 43,
+ "lisp_file": "43-weakness-or-tiredness.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-9c86c0f5"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p43-63e6a88d"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p43-3a76b7c8"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "Difficulty breathing worse on lying flat"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "leg swelling"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-3c8fd86b"
+   ],
+   "quote": "Worsening weakness of leg/s"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "Thirst"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent weakness or tiredness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible stroke (weakness or tiredness page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "consider stroke"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible TIA (weakness or tiredness page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "TIA"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable heart failure (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable heart failure (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable heart failure (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "Difficulty breathing worse on lying flat"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable heart failure (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "leg swelling"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable heart failure (weakness or tiredness page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "heart failure likely"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "Thirst"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable dehydration (weakness or tiredness page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "dehydration likely"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p43-78963a6b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p43-25ab7dfe"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p43-9c86c0f5"
+   ],
+   "quote": "Glucose < 3"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p43-9c86c0f5"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-9c86c0f5"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p43-9c86c0f5"
+   ],
+   "quote": "≥ 11.1"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p43-63e6a88d"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p43-3a76b7c8"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p43-3a76b7c8"
+   ],
+   "quote": "respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p43-792c7975"
+   ],
+   "quote": "heart failure likely"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p43-3c8fd86b"
+   ],
+   "quote": "Worsening weakness of leg/s"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p43-b3b1f30a"
+   ],
+   "quote": "dehydration likely"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p43-26006aa8"
+   ],
+   "quote": "Temperature ≥ 38°C now"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: weakness or tiredness with red-box findings",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p43-26006aa8"
+   ],
+   "quote": "Temperature ≥ 38°C now or in past 3 days"
+  }
+ ]
+}

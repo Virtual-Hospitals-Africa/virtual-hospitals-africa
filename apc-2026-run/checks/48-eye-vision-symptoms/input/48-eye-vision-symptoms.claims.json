@@ -1,0 +1,1368 @@
+{
+ "page": 48,
+ "lisp_file": "48-eye-vision-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eye / vision finding\" \"finding\"))",
+   "element_keys": [
+    "p48-93b4be0c"
+   ],
+   "quote": "eye or vision symptoms"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "sudden redness"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "excessive eye discharge"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually transmitted infectious disease\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "recent STI symptoms"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "Whole eyelid swollen"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "red"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "painful"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "painful eye"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "redness"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "blurred vision"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sees haloes around lights\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "haloes around light"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fixed dilatation of pupil\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "dilated unreactive pupil"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful red/watery eye"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful red/watery eye"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sudden visual loss\" \"disorder\"))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision/movement of eye"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exophthalmos\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-8f11b2bc"
+   ],
+   "quote": "Sudden bulging of eye"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ptosis of eyelid\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-fb1e58cd"
+   ],
+   "quote": "Sudden drooping of eyelid"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of eye\" \"disorder\"))",
+   "element_keys": [
+    "p48-c3ff2afc"
+   ],
+   "quote": "Penetrating injury"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Laceration of eyelid\" \"disorder\"))",
+   "element_keys": [
+    "p48-4c8ff3ad"
+   ],
+   "quote": "Eyelid laceration"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of eyeball with foreign body\" \"disorder\"))",
+   "element_keys": [
+    "p48-857aaf03"
+   ],
+   "quote": "Penetrating or metallic foreign body"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Metal foreign body in eye region\" \"disorder\"))",
+   "element_keys": [
+    "p48-857aaf03"
+   ],
+   "quote": "metallic foreign body"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+   "element_keys": [
+    "p48-8c2d9685"
+   ],
+   "quote": "Chemical burn"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster ophthalmicus\" \"disorder\"))",
+   "element_keys": [
+    "p48-9fe98398"
+   ],
+   "quote": "Shingles involving eye"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-9fe98398"
+   ],
+   "quote": "Shingles involving eye or nose"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Corneal ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p48-03250185"
+   ],
+   "quote": "Corneal ulcer"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Corneal haze\" \"disorder\"))",
+   "element_keys": [
+    "p48-2ac78178"
+   ],
+   "quote": "Hazy cornea"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p48-098c3df8"
+   ],
+   "quote": "Yellow eyes"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for urgent eye/vision conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "up to 1 week post-partum"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eye / vision finding\" \"finding\"))",
+   "element_keys": [
+    "p48-5b92c4c6"
+   ],
+   "quote": "eye/vision symptoms"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "Eyes discharging"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "Eyes discharging or watery"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "prominent itch"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "both eyes involved"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "both eyes involved"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eczema\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "eczema"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Allergic rhinitis caused by pollen\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "hayfever"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthma\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "asthma"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Serous conjunctival discharge\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "Clear watery discharge"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))",
+   "element_keys": [
+    "p48-16ecc272",
+    "p48-d6d3696c"
+   ],
+   "quote": "enlarged lymph nodes"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purulent conjunctival discharge\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "Pus"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Check for causes of non-urgent eye/vision symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lump in eyelid\" \"finding\"))",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "painful lump on eyelid"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "stroke or TIA likely"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable gonococcal conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "sudden redness"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable gonococcal conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "excessive eye discharge"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable gonococcal conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually transmitted infectious disease\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "recent STI symptoms"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable gonococcal conjunctivitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Gonococcal conjunctivitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "gonococcal conjunctivitis likely"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable orbital cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "Whole eyelid swollen"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable orbital cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "red"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable orbital cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "painful"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable orbital cellulitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Orbital cellulitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "orbital cellulitis likely"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "painful eye"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "redness"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "blurred vision"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sees haloes around lights\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "haloes around light"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fixed dilatation of pupil\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "dilated unreactive pupil"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "headache/nausea/vomiting"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute angle closure\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "acute glaucoma likely"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable jaundice from yellow eyes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p48-098c3df8"
+   ],
+   "quote": "Yellow eyes"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable jaundice from yellow eyes",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)",
+   "element_keys": [
+    "p48-098c3df8"
+   ],
+   "quote": "jaundice likely"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "Eyes discharging"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "watery"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\"))",
+   "element_keys": [
+    "p48-9bd33347"
+   ],
+   "quote": "prominent itch"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "both eyes involved"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "both eyes involved"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eczema\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "eczema"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Allergic rhinitis caused by pollen\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "hayfever"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthma\" \"disorder\"))",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "asthma"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable allergic conjunctivitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Allergic conjunctivitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-f22cf852"
+   ],
+   "quote": "allergic conjunctivitis likely"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "No."
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Serous conjunctival discharge\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "Clear watery discharge"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))",
+   "element_keys": [
+    "p48-16ecc272",
+    "p48-d6d3696c"
+   ],
+   "quote": "enlarged lymph nodes"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable viral conjunctivitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Viral conjunctivitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-2fa0d385"
+   ],
+   "quote": "Viral conjunctivitis likely"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable bacterial conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "No."
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable bacterial conjunctivitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purulent conjunctival discharge\" \"finding\"))",
+   "element_keys": [
+    "p48-16ecc272"
+   ],
+   "quote": "Pus"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable bacterial conjunctivitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Bacterial conjunctivitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-3ea1d024"
+   ],
+   "quote": "Bacterial conjunctivitis likely"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable stye",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lump in eyelid\" \"finding\"))",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "painful lump on eyelid"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable stye",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "painful"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable stye",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hordeolum\" \"disorder\") probable)",
+   "element_keys": [
+    "p48-54242764"
+   ],
+   "quote": "stye likely"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eye / vision finding\" \"finding\"))",
+   "element_keys": [
+    "p48-93b4be0c"
+   ],
+   "quote": "eye or vision symptoms"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+   "element_keys": [
+    "p48-dd6dc05d"
+   ],
+   "quote": "stroke or TIA likely"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p48-0b115322"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p48-0b115322"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-0b115322"
+   ],
+   "quote": "not pregnant"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful red/watery eye"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-d72551b5"
+   ],
+   "quote": "One painful red/watery eye"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Gonococcal conjunctivitis\" \"disorder\"))",
+   "element_keys": [
+    "p48-af81bb60"
+   ],
+   "quote": "gonococcal conjunctivitis likely"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster ophthalmicus\" \"disorder\"))",
+   "element_keys": [
+    "p48-9fe98398"
+   ],
+   "quote": "Shingles involving eye"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p48-9fe98398"
+   ],
+   "quote": "Shingles involving eye or nose"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Orbital cellulitis\" \"disorder\"))",
+   "element_keys": [
+    "p48-e06d0b96"
+   ],
+   "quote": "orbital cellulitis likely"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exophthalmos\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-8f11b2bc"
+   ],
+   "quote": "Sudden bulging of eye"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sudden visual loss\" \"disorder\"))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-94c2910b"
+   ],
+   "quote": "Sudden loss or change in vision/movement of eye"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of eye\" \"disorder\"))",
+   "element_keys": [
+    "p48-c3ff2afc"
+   ],
+   "quote": "Penetrating injury"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "up to 1 week post-partum"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "BP ≥ 140/90"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p48-41c8d88b"
+   ],
+   "quote": "BP ≥ 140/90"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Laceration of eyelid\" \"disorder\"))",
+   "element_keys": [
+    "p48-4c8ff3ad"
+   ],
+   "quote": "Eyelid laceration"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of eyeball with foreign body\" \"disorder\"))",
+   "element_keys": [
+    "p48-857aaf03"
+   ],
+   "quote": "Penetrating or metallic foreign body"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Metal foreign body in eye region\" \"disorder\"))",
+   "element_keys": [
+    "p48-857aaf03"
+   ],
+   "quote": "metallic foreign body"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+   "element_keys": [
+    "p48-8c2d9685"
+   ],
+   "quote": "Chemical burn"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Corneal ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p48-03250185"
+   ],
+   "quote": "Corneal ulcer"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Corneal haze\" \"disorder\"))",
+   "element_keys": [
+    "p48-2ac78178"
+   ],
+   "quote": "Hazy cornea"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ptosis of eyelid\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p48-fb1e58cd"
+   ],
+   "quote": "Sudden drooping of eyelid"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p48-098c3df8"
+   ],
+   "quote": "jaundice likely"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: eye/vision symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute angle closure\" \"disorder\"))",
+   "element_keys": [
+    "p48-664dfa1e"
+   ],
+   "quote": "acute glaucoma likely"
+  }
+ ]
+}

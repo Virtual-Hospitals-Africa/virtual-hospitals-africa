@@ -1,0 +1,139 @@
+{
+ "page_2026": 51,
+ "page_2023": 34,
+ "will_file": "34-nose-symptoms.lisp",
+ "redbox_status_2023": [
+  "numbers, wording or position only"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nose finding\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))"
+   ],
+   "only_2026": [],
+   "is_a_related": []
+  },
+  "check_for": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\") (qualifier (snomed_concept \"Frequent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Repetitive rubbing of body parts\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over frontal sinus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over maxillary sinus\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "priority_condition": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\")))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(<= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 3 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))) (time_ago 3 days))",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\") (qualifier (snomed_concept \"Frequent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Repetitive rubbing of body parts\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over frontal sinus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over maxillary sinus\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Common cold\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Posterior rhinorrhea\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Sinusitis\" \"disorder\") probable)"
+   ],
+   "is_a_related": []
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 7,
+  "build_2026": 62,
+  "exact": 3,
+  "related": 2
+ }
+}

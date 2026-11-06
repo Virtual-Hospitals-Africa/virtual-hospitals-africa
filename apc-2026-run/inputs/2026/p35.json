@@ -1,0 +1,832 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 35,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.2,
+    86.8,
+    806.0,
+    526.8
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p35-rb1-e01",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "bbox": [
+    280.6,
+    91.8,
+    560.6,
+    102.9
+   ],
+   "key": "p35-80245a7f"
+  },
+  {
+   "id": "p35-rb1-e02",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Angry behaviour",
+   "bbox": [
+    102.6,
+    104.1,
+    172.5,
+    115.0
+   ],
+   "key": "p35-aa9b9dcf"
+  },
+  {
+   "id": "p35-rb1-e03",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 5,
+   "parent": null,
+   "text": "Challenging, insulting or provocative behaviour",
+   "bbox": [
+    247.0,
+    104.1,
+    434.7,
+    115.0
+   ],
+   "key": "p35-20e04b0d"
+  },
+  {
+   "id": "p35-rb1-e04",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Tense posturing like gripping arm rails tightly, clenching fists",
+   "bbox": [
+    472.5,
+    104.1,
+    709.9,
+    115.0
+   ],
+   "key": "p35-9173924e"
+  },
+  {
+   "id": "p35-rb1-e05",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Loud, aggressive speech",
+   "bbox": [
+    102.6,
+    114.0,
+    201.4,
+    124.9
+   ],
+   "key": "p35-61fd1d24"
+  },
+  {
+   "id": "p35-rb1-e06",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 5,
+   "parent": null,
+   "text": "Frequently changing body position, pacing",
+   "bbox": [
+    247.0,
+    114.0,
+    417.3,
+    124.9
+   ],
+   "key": "p35-d906a979"
+  },
+  {
+   "id": "p35-rb1-e07",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Aggressive acts like pounding walls, throwing objects, hitting",
+   "bbox": [
+    472.5,
+    114.0,
+    714.3,
+    124.9
+   ],
+   "key": "p35-6ff7fb2b"
+  },
+  {
+   "id": "p35-rb1-e08",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage urgently:",
+   "bbox": [
+    51.4,
+    124.6,
+    120.2,
+    135.6
+   ],
+   "key": "p35-355c22e9"
+  },
+  {
+   "id": "p35-rb1-e09",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Ensure the safety of yourself, the patient and those around you: ensure security personnel present, call police if needed. They should disarm patient if s/he has a weapon. Assess patient in a room with other staff and ensure exit is not blocked.",
+   "bbox": [
+    51.4,
+    134.7,
+    774.5,
+    155.4
+   ],
+   "key": "p35-07173df1"
+  },
+  {
+   "id": "p35-rb1-e10",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Try to verbally calm the patient:",
+   "bbox": [
+    51.4,
+    154.5,
+    179.7,
+    165.3
+   ],
+   "key": "p35-4a3f93e0"
+  },
+  {
+   "id": "p35-rb1-e11",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 2,
+   "parent": "p35-rb1-e10",
+   "text": "Avoid direct eye contact, sudden movements and approaching patient from behind. Stand at least two arm's lengths away.",
+   "bbox": [
+    57.0,
+    164.4,
+    532.1,
+    175.2
+   ],
+   "key": "p35-4a549765"
+  },
+  {
+   "id": "p35-rb1-e12",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 2,
+   "parent": "p35-rb1-e10",
+   "text": "Use an honest, non-threatening manner. Avoid talking down to the patient, arguing or commanding him/her to calm down. Use a friendly gesture like offering a drink or food.",
+   "bbox": [
+    57.0,
+    174.3,
+    700.1,
+    185.1
+   ],
+   "key": "p35-21c7415f"
+  },
+  {
+   "id": "p35-rb1-e13",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 2,
+   "parent": "p35-rb1-e10",
+   "text": "Listen to patient, identify his/her feelings and desires and offer choices. Take all threats seriously.",
+   "bbox": [
+    57.0,
+    184.2,
+    429.0,
+    195.0
+   ],
+   "key": "p35-0535168f"
+  },
+  {
+   "id": "p35-rb1-e14",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Consider involuntary admission if signs of mental illness and refuses treatment/admission and a danger to self, others, own reputation or financial interest/property 158.",
+   "bbox": [
+    51.4,
+    194.2,
+    707.9,
+    205.0
+   ],
+   "key": "p35-4d354f63"
+  },
+  {
+   "id": "p35-rb1-e15",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Restrain and/or sedate only if absolutely needed (imminent harm to self/others, disruption of important treatment, damage to environment, verbal attempts to calm patient failed).",
+   "bbox": [
+    51.4,
+    204.1,
+    742.6,
+    214.9
+   ],
+   "key": "p35-0f914f13"
+  },
+  {
+   "id": "p35-rb1-e16",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 2,
+   "parent": "p35-rb1-e15",
+   "text": "If possible, before sedation, assess and manage possible causes of abnormal thoughts or behaviour 36.",
+   "bbox": [
+    57.0,
+    214.1,
+    465.0,
+    224.9
+   ],
+   "key": "p35-9a4f50c0"
+  },
+  {
+   "id": "p35-rb1-e17",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 2,
+   "parent": "p35-rb1-e15",
+   "text": "If restraints used, document type, duration and site and check restraint sites every 15 minutes. Counsel the family regarding reasons for restraints.",
+   "bbox": [
+    57.0,
+    224.0,
+    618.3,
+    234.8
+   ],
+   "key": "p35-3f55a385"
+  },
+  {
+   "id": "p35-rb1-e18",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Try to avoid IM/IV medication to sedate the aggressive/disruptive patient, especially if > 65 years or substance user.",
+   "bbox": [
+    201.7,
+    238.4,
+    640.0,
+    249.3
+   ],
+   "key": "p35-b196688f"
+  },
+  {
+   "id": "p35-rb1-e19",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Ensure emergency trolley and resuscitation equipment available before giving sedation. Will patient accept oral medication?",
+   "bbox": [
+    183.5,
+    248.4,
+    658.1,
+    259.3
+   ],
+   "key": "p35-76a2025b"
+  },
+  {
+   "id": "p35-rb1-e20",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    356.2,
+    269.2,
+    368.6,
+    280.0
+   ],
+   "key": "p35-594cc78b"
+  },
+  {
+   "id": "p35-rb1-e21",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    725.3,
+    269.2,
+    736.3,
+    280.0
+   ],
+   "key": "p35-cc7f998c"
+  },
+  {
+   "id": "p35-rb1-e22",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Give diazepam 5mg orally or buccal1 midazolam 7.5-15mg.",
+   "bbox": [
+    221.4,
+    279.2,
+    462.4,
+    290.0
+   ],
+   "key": "p35-c4b9b4bd"
+  },
+  {
+   "id": "p35-rb1-e23",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Assess response after 30 minutes:",
+   "bbox": [
+    221.4,
+    289.2,
+    355.0,
+    300.0
+   ],
+   "key": "p35-7e086277"
+  },
+  {
+   "id": "p35-rb1-e24",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient calm",
+   "bbox": [
+    62.3,
+    309.9,
+    109.6,
+    320.7
+   ],
+   "key": "p35-d99bf28f"
+  },
+  {
+   "id": "p35-rb1-e25",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient still aggressive/disruptive after 30 minutes",
+   "bbox": [
+    307.3,
+    309.9,
+    498.3,
+    320.7
+   ],
+   "key": "p35-217a2373"
+  },
+  {
+   "id": "p35-rb1-e26",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Decide which medication to use according to likely cause",
+   "bbox": [
+    351.8,
+    330.6,
+    570.3,
+    341.4
+   ],
+   "key": "p35-1ec0e900"
+  },
+  {
+   "id": "p35-rb1-e27",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Stimulant2 withdrawal",
+   "bbox": [
+    135.5,
+    351.3,
+    217.0,
+    362.1
+   ],
+   "key": "p35-2ac9e20a"
+  },
+  {
+   "id": "p35-rb1-e28",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Alcohol withdrawal",
+   "bbox": [
+    232.0,
+    351.3,
+    302.9,
+    362.1
+   ],
+   "key": "p35-c67ce43c"
+  },
+  {
+   "id": "p35-rb1-e29",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Seizures",
+   "bbox": [
+    331.1,
+    351.3,
+    362.5,
+    362.1
+   ],
+   "key": "p35-1b58a965"
+  },
+  {
+   "id": "p35-rb1-e30",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Delirium",
+   "bbox": [
+    479.3,
+    351.3,
+    512.3,
+    362.1
+   ],
+   "key": "p35-285cf984"
+  },
+  {
+   "id": "p35-rb1-e31",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Psychosis",
+   "bbox": [
+    638.8,
+    351.3,
+    673.6,
+    362.1
+   ],
+   "key": "p35-fccbaa9a"
+  },
+  {
+   "id": "p35-rb1-e32",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Cause unknown",
+   "bbox": [
+    718.6,
+    351.3,
+    779.7,
+    362.1
+   ],
+   "key": "p35-1c7af79b"
+  },
+  {
+   "id": "p35-rb1-e33",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give midazolam 7.5-15mg IM or diazepam 10mg IV over 2 minutes.",
+   "bbox": [
+    149.1,
+    372.0,
+    359.1,
+    392.9
+   ],
+   "key": "p35-c00e937a"
+  },
+  {
+   "id": "p35-rb1-e34",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Give haloperidol 0.5-1mg IM. If haloperidol not available:",
+   "bbox": [
+    389.4,
+    372.1,
+    602.0,
+    382.9
+   ],
+   "key": "p35-06279d53"
+  },
+  {
+   "id": "p35-rb1-e35",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If alcohol withdrawal, also give thiamine 200mg IM.",
+   "bbox": [
+    149.1,
+    392.1,
+    357.6,
+    402.9
+   ],
+   "key": "p35-f8c73474"
+  },
+  {
+   "id": "p35-rb1-e36",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Give olanzapine 5-10mg orodispersible/IM. If > 65 years, give 2.5-5mg orodispersible/IM instead.",
+   "bbox": [
+    389.4,
+    392.8,
+    765.6,
+    403.6
+   ],
+   "key": "p35-552631c1"
+  },
+  {
+   "id": "p35-rb1-e37",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 1,
+   "parent": null,
+   "text": "If previous olanzapine intolerance (fever, sweating, muscle rigidity and changes in blood pressure) give midazolam 7.5-15mg IM.",
+   "bbox": [
+    389.4,
+    402.8,
+    786.0,
+    423.6
+   ],
+   "key": "p35-5644598e"
+  },
+  {
+   "id": "p35-rb1-e38",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess response after 30 minutes:",
+   "bbox": [
+    397.1,
+    432.8,
+    525.0,
+    443.6
+   ],
+   "key": "p35-3c82f64a"
+  },
+  {
+   "id": "p35-rb1-e39",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient calm",
+   "bbox": [
+    143.0,
+    453.5,
+    190.3,
+    464.3
+   ],
+   "key": "p35-68822531"
+  },
+  {
+   "id": "p35-rb1-e40",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the aggressive/disruptive patient with any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "If partial response or no response, repeat same dose of medication used above",
+   "bbox": [
+    350.0,
+    453.5,
+    650.1,
+    464.3
+   ],
+   "key": "p35-51b4c85a"
+  },
+  {
+   "id": "p35-rb1-e41",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 3,
+   "parent": "p35-rb1-e17",
+   "text": "Monitor and record temperature, BP, respiratory and pulse rate, level of consciousness every 15 minutes for first hour, then every 30 minutes until patient referred, or alert and walking.",
+   "bbox": [
+    65.8,
+    474.2,
+    768.5,
+    485.0
+   ],
+   "key": "p35-1c7da1a4"
+  },
+  {
+   "id": "p35-rb1-e42",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 3,
+   "parent": "p35-rb1-e17",
+   "text": "Once patient is calmer, reassess for underlying cause if not already done, and manage further 36.",
+   "bbox": [
+    65.8,
+    484.2,
+    449.4,
+    495.0
+   ],
+   "key": "p35-a7a0f05f"
+  },
+  {
+   "id": "p35-rb1-e43",
+   "page": 35,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 124.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Refer the mentally ill aggressive patient to hospital same day3: document history, and time and dose of medication given. If emergency admission needed without patient consent, fill in MHCA 01 form. If restraints used, complete MHCA 48 form.",
+   "bbox": [
+    51.4,
+    500.6,
+    776.3,
+    521.6
+   ],
+   "key": "p35-f2a43bbd"
+  },
+  {
+   "id": "p35-out-e01",
+   "page": 35,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "AGGRESSIVE/DISRUPTIVE BEHAVIOUR",
+   "bbox": [
+    263.9,
+    48.7,
+    576.7,
+    71.0
+   ],
+   "key": "p35-5e9dbeaa"
+  },
+  {
+   "id": "p35-out-e02",
+   "page": 35,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Buccal: use IV formulation of midazolam, use syringe to draw up correct dose, remove needle and give midazolam between the cheek and gum. 2Stimulants include: methamphetamines (tik), cocaine (crack), methaqualone (mandrax), cannabis. 3If delay in transport, try to move patient to most calm/quiet area and enlist help of a family member to monitor patient.",
+   "bbox": [
+    33.7,
+    535.2,
+    807.3,
+    551.7
+   ],
+   "key": "p35-356a0ede"
+  }
+ ]
+}

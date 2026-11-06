@@ -1,0 +1,824 @@
+{
+ "edition": "2026",
+ "page": 89,
+ "lisp_file": "89-skin-lump-s.lisp",
+ "conditions": [
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "element_keys": [
+    "p89-08f5bffe"
+   ],
+   "quote": "SKIN LUMP",
+   "confidence": "high",
+   "note": "Title complaint \"skin lump/s\"; Mass of skin (vocabulary term) is the general skin lump finding."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\"))",
+   "element_keys": [
+    "p89-23225713"
+   ],
+   "quote": "lump beneath skin",
+   "confidence": "medium",
+   "note": "Lumps beneath the skin (cyst/lipoma branch) are not descendants of Mass of skin in SNOMED, so the trigger also accepts Mass of subcutaneous tissue."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8bdefab1"
+   ],
+   "quote": "mole",
+   "confidence": "medium",
+   "note": "\"Mole\" encoded as Pigmented skin lesion (vocabulary term; parent of Melanocytic nevus and of the pigmented-lesion change concepts used below)."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "painful",
+   "confidence": "medium",
+   "note": "No \"painful lump\" concept; Pain of skin as a separate finding."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "firm",
+   "confidence": "medium",
+   "note": "Firm lump: Mass of skin with Firm qualifier."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "red",
+   "confidence": "high",
+   "note": "Red lump: Redness of skin over lesion."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "warm",
+   "confidence": "medium",
+   "note": "Warm lump: Warm skin (vocabulary term); no lesion-specific concept."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "softens in the centre",
+   "confidence": "medium",
+   "note": "Softening in the centre read as fluctuance."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "discharge pus",
+   "confidence": "medium",
+   "note": "No active finding concept for pus discharging from skin (Purulent discharge exists only as substance/morphology); Skin discharge used, so any discharge counts."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-46fd9cf2"
+   ],
+   "quote": "Round, raised papules",
+   "confidence": "medium",
+   "note": "Papule of skin with Round shape and Raised qualifiers."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+   "element_keys": [
+    "p89-2ce347b3"
+   ],
+   "quote": "rough surfaces",
+   "confidence": "medium",
+   "note": "Rough surface of the papules: Rough skin."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-2f698b4b",
+    "p89-6429b0b0"
+   ],
+   "quote": "Small, skin-coloured pearly bumps",
+   "confidence": "low",
+   "note": "Small papule; \"skin-coloured\" and \"pearly\" have no SNOMED concept (gaps)."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "element_keys": [
+    "p89-a707fdd9"
+   ],
+   "quote": "central dimples",
+   "confidence": "medium",
+   "note": "Central dimple (umbilication): Skin dimple; no \"umbilicated papule\" concept."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "Painless",
+   "confidence": "medium",
+   "note": "Painless lump: Mass of skin with Painless qualifier."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "purple",
+   "confidence": "medium",
+   "note": "Purple lump: Mass of skin with Purple color qualifier."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "brown",
+   "confidence": "medium",
+   "note": "Brown lump: Mass of skin with Brown color qualifier."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-23225713"
+   ],
+   "quote": "Smooth, well defined lump beneath skin",
+   "confidence": "high",
+   "note": "Shared parent node for epidermoid cyst and lipoma."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-e67ecd4d"
+   ],
+   "quote": "Round, firm lump",
+   "confidence": "medium",
+   "note": "\"May have central hole and discharge white substance\" is optional on the page, so not required."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-37e2716c",
+    "p89-c06b8b64"
+   ],
+   "quote": "Soft, doughy lump which is painless",
+   "confidence": "medium",
+   "note": "\"Doughy\" and \"moves easily\" have no SNOMED concept (gaps); Soft + Painless kept."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "Red papules",
+   "confidence": "medium",
+   "note": "Red papule: Papule of skin with Red color qualifier."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "pustules",
+   "confidence": "high",
+   "note": "Pustule."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "nodules",
+   "confidence": "high",
+   "note": "Skin nodule."
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+   "element_keys": [
+    "p89-6ae5ca79"
+   ],
+   "quote": "blackheads",
+   "confidence": "high",
+   "note": "Blackhead = Comedone (SNOMED synonym)."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8bdefab1"
+   ],
+   "quote": "mole",
+   "confidence": "medium",
+   "note": "\"Mole\" encoded as Pigmented skin lesion (vocabulary term; parent of Melanocytic nevus and of the pigmented-lesion change concepts used below)."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-84363ac6"
+   ],
+   "quote": "irregular in shape",
+   "confidence": "high",
+   "note": "Irregular shape of mole."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-84363ac6"
+   ],
+   "quote": "irregular in shape or colour",
+   "confidence": "medium",
+   "note": "Irregular colour read as mixed colour; no \"irregular colour\" concept."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size",
+   "confidence": "medium",
+   "note": "No concept for change in size of a pigmented lesion; general Change in skin lesion (vocabulary term) covers size change but also any other change, so it fires more often than \"size\"."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size, shape",
+   "confidence": "high",
+   "note": "Changed shape."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size, shape or colour",
+   "confidence": "high",
+   "note": "Changed colour."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding skin\" \"finding\"))",
+   "element_keys": [
+    "p89-2bb54cda"
+   ],
+   "quote": "Bleeds easily",
+   "confidence": "low",
+   "note": "No concept for a bleeding pigmented lesion; Bleeding skin used in the context of a mole (the priority rule ANDs it with the mole finding). \"Easily\" not expressible."
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-72e93bf3"
+   ],
+   "quote": "Itches",
+   "confidence": "high",
+   "note": "Itching of mole."
+  },
+  {
+   "rule": "Measure width of mole (skin lump/s)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8bdefab1"
+   ],
+   "quote": "mole",
+   "confidence": "medium",
+   "note": "\"Mole\" encoded as Pigmented skin lesion (vocabulary term; parent of Melanocytic nevus and of the pigmented-lesion change concepts used below)."
+  },
+  {
+   "rule": "Measure width of mole (skin lump/s)",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Diameter of lump\" \"observable entity\") mm)",
+   "element_keys": [
+    "p89-e69abb09"
+   ],
+   "quote": "Is > 6mm wide",
+   "confidence": "medium",
+   "note": "Width measured as Diameter of lump in mm (no mole-specific observable)."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "painful",
+   "confidence": "medium",
+   "note": "No \"painful lump\" concept; Pain of skin as a separate finding. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "firm",
+   "confidence": "medium",
+   "note": "Firm lump: Mass of skin with Firm qualifier. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "red",
+   "confidence": "high",
+   "note": "Red lump: Redness of skin over lesion. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "warm",
+   "confidence": "medium",
+   "note": "Warm lump: Warm skin (vocabulary term); no lesion-specific concept. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "softens in the centre",
+   "confidence": "medium",
+   "note": "Softening in the centre read as fluctuance. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "discharge pus",
+   "confidence": "medium",
+   "note": "No active finding concept for pus discharging from skin (Purulent discharge exists only as substance/morphology); Skin discharge used, so any discharge counts. All six features ANDed, as the page lists them."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-bee317dd"
+   ],
+   "quote": "boil/abscess likely",
+   "confidence": "medium",
+   "note": "\"Boil/abscess\" as one diagnosis: Abscess of skin and/or subcutaneous tissue. Furuncle (boil) is not a descendant of it in SNOMED; one rule chosen rather than two."
+  },
+  {
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-46fd9cf2"
+   ],
+   "quote": "Round, raised papules",
+   "confidence": "medium",
+   "note": "Papule of skin with Round shape and Raised qualifiers."
+  },
+  {
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+   "element_keys": [
+    "p89-2ce347b3"
+   ],
+   "quote": "rough surfaces",
+   "confidence": "medium",
+   "note": "Rough surface of the papules: Rough skin."
+  },
+  {
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Viral wart of skin and/or mucous membrane caused by human papillomavirus\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-0e1e754f"
+   ],
+   "quote": "Warts likely",
+   "confidence": "high",
+   "note": "General viral wart concept (no plain \"Wart\" disorder)."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-2f698b4b",
+    "p89-6429b0b0"
+   ],
+   "quote": "Small, skin-coloured pearly bumps",
+   "confidence": "low",
+   "note": "Small papule; \"skin-coloured\" and \"pearly\" have no SNOMED concept (gaps)."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "element_keys": [
+    "p89-a707fdd9"
+   ],
+   "quote": "central dimples",
+   "confidence": "medium",
+   "note": "Central dimple (umbilication): Skin dimple; no \"umbilicated papule\" concept."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infection of skin caused by Molluscum contagiosum\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-1c5d89bf"
+   ],
+   "quote": "Molluscum contagiosum likely",
+   "confidence": "high",
+   "note": "Skin molluscum infection."
+  },
+  {
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "Painless",
+   "confidence": "medium",
+   "note": "Painless lump: Mass of skin with Painless qualifier."
+  },
+  {
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "purple",
+   "confidence": "medium",
+   "note": "Purple lump: Mass of skin with Purple color qualifier."
+  },
+  {
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-b3c4f406"
+   ],
+   "quote": "brown",
+   "confidence": "medium",
+   "note": "Brown lump: Mass of skin with Brown color qualifier."
+  },
+  {
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Kaposi's sarcoma\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-dd95a789",
+    "p89-f0f70fcd"
+   ],
+   "quote": "Kaposi’s sarcoma likely",
+   "confidence": "high",
+   "note": "General Kaposi's sarcoma (page notes lesions also in mouth/genitals), not the skin-only concept."
+  },
+  {
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-23225713"
+   ],
+   "quote": "Smooth, well defined lump beneath skin",
+   "confidence": "high",
+   "note": "Shared parent node for epidermoid cyst and lipoma."
+  },
+  {
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-e67ecd4d"
+   ],
+   "quote": "Round, firm lump",
+   "confidence": "medium",
+   "note": "\"May have central hole and discharge white substance\" is optional on the page, so not required."
+  },
+  {
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Epidermoid cyst of skin\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-132e61fc"
+   ],
+   "quote": "Epidermoid cyst likely",
+   "confidence": "high",
+   "note": "Epidermoid cyst of skin."
+  },
+  {
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-23225713"
+   ],
+   "quote": "Smooth, well defined lump beneath skin",
+   "confidence": "high",
+   "note": "Shared parent node for epidermoid cyst and lipoma."
+  },
+  {
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-37e2716c",
+    "p89-c06b8b64"
+   ],
+   "quote": "Soft, doughy lump which is painless",
+   "confidence": "medium",
+   "note": "\"Doughy\" and \"moves easily\" have no SNOMED concept (gaps); Soft + Painless kept."
+  },
+  {
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Lipoma\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-05379956"
+   ],
+   "quote": "Lipoma likely",
+   "confidence": "high",
+   "note": "Lipoma."
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "Red papules",
+   "confidence": "medium",
+   "note": "Red papule: Papule of skin with Red color qualifier. Acne rule uses OR of the four lesion types: the page lists them with \"and\" but its own management has a \"blackheads only\" case, so any one suffices."
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "pustules",
+   "confidence": "high",
+   "note": "Pustule. Acne rule uses OR of the four lesion types: the page lists them with \"and\" but its own management has a \"blackheads only\" case, so any one suffices."
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))",
+   "element_keys": [
+    "p89-a8f999bb"
+   ],
+   "quote": "nodules",
+   "confidence": "high",
+   "note": "Skin nodule. Acne rule uses OR of the four lesion types: the page lists them with \"and\" but its own management has a \"blackheads only\" case, so any one suffices."
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+   "element_keys": [
+    "p89-6ae5ca79"
+   ],
+   "quote": "blackheads",
+   "confidence": "high",
+   "note": "Blackhead = Comedone (SNOMED synonym). Acne rule uses OR of the four lesion types: the page lists them with \"and\" but its own management has a \"blackheads only\" case, so any one suffices."
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acne\" \"disorder\") probable)",
+   "element_keys": [
+    "p89-e6077bcf"
+   ],
+   "quote": "Acne likely",
+   "confidence": "high",
+   "note": "Acne."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8bdefab1"
+   ],
+   "quote": "mole",
+   "confidence": "medium",
+   "note": "\"Mole\" encoded as Pigmented skin lesion (vocabulary term; parent of Melanocytic nevus and of the pigmented-lesion change concepts used below)."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-84363ac6"
+   ],
+   "quote": "irregular in shape",
+   "confidence": "high",
+   "note": "Irregular shape of mole."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-84363ac6"
+   ],
+   "quote": "irregular in shape or colour",
+   "confidence": "medium",
+   "note": "Irregular colour read as mixed colour; no \"irregular colour\" concept."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size",
+   "confidence": "medium",
+   "note": "No concept for change in size of a pigmented lesion; general Change in skin lesion (vocabulary term) covers size change but also any other change, so it fires more often than \"size\"."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size, shape",
+   "confidence": "high",
+   "note": "Changed shape."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-8b824d7b"
+   ],
+   "quote": "Changed in size, shape or colour",
+   "confidence": "high",
+   "note": "Changed colour."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Diameter of lump\" \"observable entity\") mm) 6)",
+   "element_keys": [
+    "p89-e69abb09"
+   ],
+   "quote": "> 6mm wide",
+   "confidence": "medium",
+   "note": "Strictly greater than 6 mm, as written; Diameter of lump is the closest observable for mole width."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding skin\" \"finding\"))",
+   "element_keys": [
+    "p89-2bb54cda"
+   ],
+   "quote": "Bleeds easily",
+   "confidence": "low",
+   "note": "No concept for a bleeding pigmented lesion; Bleeding skin used in the context of a mole (the priority rule ANDs it with the mole finding). \"Easily\" not expressible."
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p89-72e93bf3"
+   ],
+   "quote": "Itches",
+   "confidence": "high",
+   "note": "Itching of mole."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p89-8ff0a187",
+   "element_id": "p89-rb1-e04",
+   "text": "Differs from surrounding moles",
+   "reason_category": "no_snomed_concept",
+   "reason": "No SNOMED concept for a mole that differs from the patient's other moles (\"ugly duckling\" sign); searched nevus/pigmented lesion/atypical."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Priority level for 'Refer same week'",
+   "decision": "Red box encoded as system_priority_evaluation at Urgent, the lowest level the language has.",
+   "alternatives": "No priority rule (red-box findings then only recorded); a possible-melanoma diagnosis (not named on the page).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Acne evidence",
+   "decision": "OR of red papules, pustules, nodules, blackheads.",
+   "alternatives": "AND of all four as literally listed (would miss 'blackheads only' acne the page treats).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Mole trigger and lump triggers",
+   "decision": "Mole = Pigmented skin lesion; lump task triggered by Mass of skin or Mass of subcutaneous tissue; mole task triggered by Pigmented skin lesion, which the lump task checks for.",
+   "alternatives": "Melanocytic nevus of skin as the mole concept.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Boil/abscess concept",
+   "decision": "One rule diagnosing Abscess of skin and/or subcutaneous tissue.",
+   "alternatives": "Separate Furuncle rule with the same evidence.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Molluscum palms/soles exclusion",
+   "decision": "'Does not involve palms/soles' not encoded; rule fires more often than the page intends.",
+   "alternatives": "(no papule with palm/sole finding_site) - would need extra check_for items with body-site concepts.",
+   "confidence": "medium"
+  }
+ ]
+}

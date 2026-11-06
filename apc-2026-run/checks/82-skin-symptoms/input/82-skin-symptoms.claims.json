@@ -1,0 +1,1326 @@
+{
+ "page": 82,
+ "lisp_file": "82-skin-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin finding\" \"finding\"))",
+   "element_keys": [
+    "p82-58219e12"
+   ],
+   "quote": "skin symptoms"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p82-58219e12"
+   ],
+   "quote": "skin symptoms"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "sudden generalised itch"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "generalised itch/rash"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "wheeze"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "medication"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "food"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "Purple/red rash"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "Purple/red rash"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "drowsy/confused"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "drowsy/confused"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "Diffuse rash"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "within 3 months of starting a new medication"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p82-467d5cd4"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p82-360b4c8d"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "Involves mouth"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "eyes"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "genitals"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "Blisters"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "peeling"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Denuded skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "raw areas"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p82-fa78a408"
+   ],
+   "quote": "Jaundice"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "Unwell"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malaise\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "Unwell, malaise"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent skin symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin finding\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "skin symptoms"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p82-58219e12"
+   ],
+   "quote": "skin symptoms"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption of skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "rash or lesion/s of skin"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "rash or lesion/s of skin"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "genitals"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "mouth"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "eyes"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "backache"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "swollen lymph nodes"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "nasal congestion"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for mpox features with skin symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p82-cfa294a7"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "sudden generalised itch"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "generalised itch/rash"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "wheeze"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "medication"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "food"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible anaphylaxis from skin symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "check for anaphylaxis"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "Purple/red rash"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "Purple/red rash"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "drowsy/confused"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "drowsy/confused"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable meningococcal disease from purple/red rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningococcal infectious disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "meningococcal disease likely"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "Diffuse rash"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))) (time_ago 3 months))",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "within 3 months of starting a new medication"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p82-467d5cd4"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p82-467d5cd4"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p82-0e285a57"
+   ],
+   "quote": "Temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p82-56bf9a5c"
+   ],
+   "quote": "Abdominal pain"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p82-360b4c8d"
+   ],
+   "quote": "Vomiting"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p82-360b4c8d"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "Involves mouth"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "eyes"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-5d164c9a"
+   ],
+   "quote": "genitals"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "Blisters"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "peeling"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Denuded skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-9392cef8"
+   ],
+   "quote": "raw areas"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p82-fa78a408"
+   ],
+   "quote": "Jaundice"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "Unwell"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malaise\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "Unwell, malaise"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p82-faa90baa"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p82-736469cb"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable serious drug reaction with diffuse rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Adverse reaction caused by drug\" \"disorder\") probable)",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "serious drug reaction likely"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption of skin\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "rash or lesion/s of skin"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "rash or lesion/s of skin"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "backache"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "swollen lymph nodes"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "temperature > 38.5°C"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p82-eba45078"
+   ],
+   "quote": "nasal congestion"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p82-cfa294a7"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose possible mpox from skin symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p82-cfa294a7"
+   ],
+   "quote": "consider mpox"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "sudden generalised itch"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "generalised itch/rash"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "face/tongue swelling"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "wheeze"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p82-559819da"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "medication"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "food"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: skin symptoms with features of anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p82-caaf8566"
+   ],
+   "quote": "insect bite/sting"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: skin symptoms with meningococcal disease likely",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningococcal infectious disease\" \"disorder\"))",
+   "element_keys": [
+    "p82-e1ea9141"
+   ],
+   "quote": "meningococcal disease likely"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: skin symptoms with serious drug reaction likely",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Adverse reaction caused by drug\" \"disorder\"))",
+   "element_keys": [
+    "p82-721e927e"
+   ],
+   "quote": "serious drug reaction likely"
+  }
+ ]
+}

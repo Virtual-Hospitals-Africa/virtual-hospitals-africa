@@ -1,0 +1,1965 @@
+[
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p38-a439224b",
+  "text": "Shock1/systolic BP < 80",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts present with the right direction and unit. Note: footnote 1 defines when 'shock likely' (see p38-d50f2820); that definition is not encoded, so the Shock part only fires if the nurse records Shock directly.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "SBP < 80 and RR >= 30 not in check_for list of the task (only in priority rule)"
+    ],
+    "problem": "Shock is encoded, SBP<80 only in priority rule; footnote definition of shock (pulse>=100, RR>30, confusion, weakness) not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Shock and SBP < 80 mmHg both encoded as alternatives. Footnote 1 criteria for 'shock likely' are judged separately (p38-d50f2820).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p38-9f57068b",
+  "text": "Neck stiffness, drowsy/confused or purple/red rash, meningitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All four signs are encoded as an 'or' under a probable Meningitis rule and the priority rule references (active_condition Meningitis), which is the house pattern. 'Purple/red rash' as Purpuric rash and 'confused' as Acute confusion are reasonable choices (SNOMED has no plain 'Rash' or 'Confusion' finding). The page text could also be read as 'neck stiffness AND (drowsy/confused OR rash)', but the any-of reading matches APC style.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "red rash (page says purple/red rash; only Purpuric rash encoded)",
+     "Stiff neck/drowsy/confused/rash not directly in the urgent priority rule: depends on meningitis diagnosis being visible to active_condition"
+    ],
+    "problem": "Meningitis probable rule requires fever AND any one of the four findings: right logic. Red (non-purple) rash missing. Urgency reaches the priority rule only indirectly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'red rash': only Purpuric rash is encoded; a red (erythematous/non-purpuric) rash is not a criterion"
+    ],
+    "problem": "Neck stiffness, drowsy, confused and purple rash are encoded as an OR in a probable Meningitis rule, and the priority rule references active_condition Meningitis as the house standard says. The page's 'purple/red rash' is narrowed to Purpuric rash, so a red rash with fever does not make meningitis likely or trigger Urgent.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p38-7584a34b",
+  "text": "If fingerprick glucose < 3 (< 4 if diabetes) or ≥ 11.1 19.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "glucose < 3",
+     "glucose < 4 if diabetes",
+     "glucose >= 11.1"
+    ],
+    "problem": "No rule on this page mentions glucose. If page 19 owns these thresholds this is acceptable, but then the page-38 Urgent evaluation is incomplete for a febrile hypo-/hyperglycaemic patient.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step (glucose thresholds route to p19; no glucose-unit-free representation checked)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Glucose thresholds only route to page 19; they don't make a diagnosis or set a priority on this page. Fingerprick glucose is a routine vital that page 19 handles.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p38-d50f2820",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2If severe penicillin allergy (previous angioedema, anaphylaxis or urticaria), discuss with doctor. 3Doxycycline may interfere with oral contraceptive, advise to also use condoms. 4If also taking iron s",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Shock rule from SBP < 80, heart rate >= 100, respiratory rate > 30, confusion or restlessness, weakness (Asthenia)"
+    ],
+    "problem": "No probable Shock rule exists; Shock appears only as a directly recorded clinical_finding. Expressible: Heart rate (bpm), Respiratory rate (bpm), Systolic blood pressure (mmHg), Acute confusion, Restlessness and Asthenia all exist in SNOMED. Whether the footnote's list is all-of or any-of is ambiguous, which is why this is borderline rather than in_scope.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "pulse >= 100, RR > 30, confusion/restlessness, weakness as shock-likely definition"
+    ],
+    "problem": "Shock is only a raw finding; the footnote's defining criteria are not encoded (SBP and RR are separately in the urgent priority, partly covering it).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Shock rule from footnote 1 criteria (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness)"
+    ],
+    "problem": "The red box item 'Shock' only matches a recorded Shock disorder or SBP < 80. The footnote's definition of 'shock likely' (pulse, RR > 30, confusion/restlessness, weakness) is not encoded, so shock with SBP >= 80 recognised by the footnote criteria never produces Shock.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p38-2d9a1b25",
+  "text": "• A patient with a fever has a temperature ≥ 38°C now or in the past 3 days. • If patient has been in a malaria area in past 3 months, consider malaria. 39.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "temperature >= 38°C in the past 3 days (only a current measurement >= 38 or a recorded Fever is used; no time window)",
+     "consider malaria if in a malaria area in the past 3 months -> no possible Malaria rule and no check_for of a travel/exposure finding"
+    ],
+    "problem": "The malaria part is the first diagnostic instruction on the page and is not encoded at all. SNOMED has no 'malaria area' exposure concept; the closest is (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\") or (snomed_concept \"Travel abroad\" \"finding\"), which would support a possible (snomed_concept \"Malaria\" \"disorder\") rule even if imperfectly. The 'past 3 days' window is partially covered by (active_condition Fever) if the nurse records fever as a complaint.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "fever in past 3 days as time window",
+     "consider malaria possible diagnosis (travel to malaria area in 3 months)"
+    ],
+    "problem": "No malaria rule; past-3-days window not expressed beyond active Fever.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'consider malaria' if in a malaria area in the past 3 months: no possible Malaria rule and no exposure/travel finding checked for",
+     "'or in the past 3 days' part of the fever definition (only the current temperature or an active Fever condition is used)"
+    ],
+    "problem": "The fever definition (temperature >= 38 °C) is used as the trigger for every rule. The malaria 'consider' is a diagnostic statement and has no rule. SNOMED has no exact 'travel to malaria area' concept, but a possible Malaria rule could be anchored on Travel abroad or an exposure finding, or noted as not representable. The house standard requires a rule for 'consider X'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p38-2172e4f3",
+  "text": "Approach to the patient with a fever not needing urgent attention • If on abacavir, check for abacavir hypersensitivity reaction (AHR) 131. • If unexplained rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes and ≥ 1 of: headache/backache/body pain, swollen lymph nodes, temperature > 38.5°C, fa",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "If on abacavir, check for abacavir hypersensitivity reaction: no rule. (snomed_concept \"Hypersensitivity to abacavir\" \"finding\") exists; 'on abacavir' may not be expressible, so arguably cross_reference_only.",
+     "mpox: 'unexplained' qualifier on rash/lesions is dropped (probably not representable).",
+     "diphtheria: 'thick grey' and 'bleeds easily if touched' descriptors dropped; 'mild fever' treated as any fever (acceptable)."
+    ],
+    "problem": "Mpox: correctly structured as fever AND (rash or lesion of skin/genitals/anus/rectum/mouth/eyes) AND (>= 1 of headache/backache/body pain/lymphadenopathy/temp > 38.5/fatigue/sore throat/nasal congestion/cough); all nine optional findings and all six lesion sites are present, and temperature > 38.5 has the right comparator. Diphtheria: correctly sore throat AND fever AND pseudomembrane in nose or pharynx, at possible. The only real miss is the abacavir line; the 'none of the above / previous malaria tests negative' line is routing.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "abacavir hypersensitivity (abacavir use) not encoded",
+     "'unexplained' rash",
+     "pseudomembrane 'bleeds easily'",
+     "'none of above or malaria negative' gating"
+    ],
+    "problem": "Mpox and diphtheria possible rules present and logic matches (rash/lesion AND >=1 of list, temp>38.5 included). Abacavir AHR check absent.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Diphtheria: 'bleeds easily if touched' (the pseudomembrane property) not encoded",
+     "Mpox: 'unexplained' qualifier on the rash/lesion not encoded (low; arguably not representable)",
+     "Abacavir: 'if on abacavir, check for AHR' has no rule (borderline: cross-reference to p131, though Hypersensitivity to abacavir exists in SNOMED)"
+    ],
+    "problem": "Mpox: the logic is correct: (rash or lesion at any of the listed sites) AND (>= 1 of headache/backache/body pain, lymphadenopathy, temp > 38.5, fatigue, sore throat/nasal congestion/cough), as a possible rule. 'Eruption' is a morphologic abnormality used as a clinical_finding; it's redundant because Skin lesion (disorder) already subsumes Eruption of skin and Purpuric rash. Anal lesion and pseudomembrane use a morphology plus finding_site, which VHA's test does not validate for resolution. Diphtheria: sore throat + fever + pseudomembrane in nose or throat, as a possible rule. Correct apart from the bleeding-on-touch property.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p38-e536e654",
+  "text": "Does patient have a tick bite (small dark brown/black scab) or tick present?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "the eschar sign ('small dark brown/black scab') as an alternative way to record a tick bite; (snomed_concept \"Eschar\" \"morphologic abnormality\") and (snomed_concept \"Skin eschar\" \"disorder\") exist"
+    ],
+    "problem": "Tick bite is exact. 'Tick present' is encoded as Infestation caused by Ixodidae / Argasidae (hard and soft ticks), which is semantically the closest SNOMED has (no 'Tick infestation' concept) but is an unusual label for a nurse to record. The eschar is the sign the page tells the nurse to look for and is not checked for.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Tick bite/tick present encoded; 'small dark brown/black scab' (eschar) not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The tick-bite/tick-present decision is checked for and used as the Yes/No branch: positively in tick bite fever, negated in acute viral infection. The entry gate 'if none of the above, or previous malaria test/s negative' is not encoded (flowchart routing).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p38-0a04184f",
+  "text": "Tick bite fever likely • May also have headache, body pain, rash or localised lymphadenopathy. • If tick present, grip tick close to skin using forceps and remove. • Give doxycycline3,4 100mg 12 hourly with food for 7 days. • If pregnant, give doxycycline4,5 100mg 12 hourly with food for 2 days only",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Probable South African tick-bite fever from fever AND (tick bite or tick present) matches the flowchart. Concept choice is defensible: 'South African tick-bite fever' (child of Boutonneuse fever) is the SA term; 'African tick bite fever' (R. africae) also exists and either would do. The supporting findings (headache, body pain, rash, localised lymphadenopathy) are correctly not required. Refer/advise lines are management.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "only the 'likely' conclusion is in scope; the sign list (headache, body pain, rash, lymphadenopathy) is not used, which is acceptable"
+    ],
+    "problem": "Probable diagnosis rule fine. Tick bite fever (probable) not gated on 'none of the urgent/other considerations'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Tick bite fever likely' gives a probable South African tick-bite fever (child of Boutonneuse fever) from fever + (tick bite or tick infestation). Treatment, refer and advise lines are management steps; 'may also have headache...' is descriptive.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p38-7ffbcd92",
+  "text": "If none of above: • Check urine dipstick: if blood, leucocytes or nitrites 69. • Check for TB 102 and test for HIV 124. • Advise patient to return if other symptoms develop. • If fever recurs or persists for > 2 days and cause still uncertain, discuss/refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "urine dipstick check and its three findings (Blood in urine, Leukocytes in urine, Nitrite detected in urine all exist in SNOMED)"
+    ],
+    "problem": "Nothing on the page encodes the dipstick step or its findings. Because the result only routes to page 69 (urinary symptoms) and the language's measure task is for numeric measurements, leaving it out is defensible; a check_for of the three urine findings would be the closest encoding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only (urine dipstick p69, TB p102, HIV p124, discuss/refer)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Urine dipstick result routes to p69, and TB/HIV are cross-references; the rest is management or advice. No diagnosis is named on this page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for urgent fever conditions :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c010",
+  "text": "Check for urgent fever conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'purple/red rash' in the meningitis line means a non-blanching rash; 'Purpuric rash' is the intended clinical meaning.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says purple/red rash; Purpuric rash is narrower (purple only).",
+    "fix": "Consider adding a broader rash concept or keep, low risk.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'purple/red rash'; 'Purpuric rash' covers purple only and misses a red (petechial/non-blanching) rash.",
+    "fix": "Add (clinical_finding (snomed_concept \"Non-blanching rash\" \"disorder\")) alongside Purpuric rash in the check_for, meningitis rule and (via meningitis) priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c015",
+  "text": "Check for urgent fever conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Easy bleeding'; 'Finding of tendency to bleed' is the grouper. A direct child matches the page wording exactly.",
+    "fix": "(clinical_finding (snomed_concept \"Bleeds easily\" \"finding\"))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Easy bleeding'; 'Finding of tendency to bleed' is the parent grouper, and a closer child concept exists.",
+    "fix": "Use (snomed_concept \"Bleeds easily\" \"finding\").",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Check for causes of fever not needing urgent attention :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Check for causes of fever not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'tick present' (a tick attached to the skin); the rule encodes infestation by a specific tick family (Ixodidae/Argasidae). SNOMED has no 'tick attached/present' concept, so this is an acceptable approximation, but the family split is more specific than the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Check for causes of fever not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'tick present' (a tick attached to the skin); the rule encodes infestation by a specific tick family (Ixodidae/Argasidae). SNOMED has no 'tick attached/present' concept, so this is an acceptable approximation, but the family split is more specific than the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c038",
+  "text": "Check for causes of fever not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page specifies a thick grey pseudomembrane 'that bleeds easily if touched'; the bleeding-on-touch qualifier is dropped (concept and sites otherwise match).",
+    "fix": "Accept, or note the dropped qualifier in remaining questions; no SNOMED qualifier found for 'bleeds on contact'.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c039",
+  "text": "Check for causes of fever not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page specifies a thick grey pseudomembrane 'that bleeds easily if touched'; the bleeding-on-touch qualifier is dropped (concept and sites otherwise match).",
+    "fix": "Accept, or note the dropped qualifier in remaining questions; no SNOMED qualifier found for 'bleeds on contact'.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Diagnose probable meningitis from fever page :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c045",
+  "text": "Diagnose probable meningitis from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says purple/red rash; Purpuric rash is narrower (purple only).",
+    "fix": "Consider adding a broader rash concept or keep, low risk.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'purple/red rash'; 'Purpuric rash' covers purple only and misses a red (petechial/non-blanching) rash.",
+    "fix": "Add (clinical_finding (snomed_concept \"Non-blanching rash\" \"disorder\")) alongside Purpuric rash in the check_for, meningitis rule and (via meningitis) priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c048",
+  "text": "Diagnose probable appendicitis from fever page :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c052",
+  "text": "Diagnose possible mpox from fever page :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c053",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unexplained rash or lesion/s'; the 'unexplained' qualifier is dropped for the whole lesion group, so any explained rash (e.g. a known drug rash) plus fatigue triggers possible mpox.",
+    "fix": "Note in remaining questions; acceptable for a possible-level rule.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c054",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c055",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c056",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c057",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c058",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c059",
+  "text": "Diagnose possible mpox from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained\" rash or lesion; the unexplained qualifier is not encoded.",
+    "fix": "Accept as unencodable or flag in rule description.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c072",
+  "text": "Diagnose possible diphtheria from fever page :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c073",
+  "text": "Diagnose possible diphtheria from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires a thick grey pseudomembrane that bleeds easily if touched; the bleeding qualifier is dropped.",
+    "fix": "Note as accepted loss or add a bleeds-on-touch finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page specifies a thick grey pseudomembrane 'that bleeds easily if touched'; the bleeding-on-touch qualifier is dropped (concept and sites otherwise match).",
+    "fix": "Accept, or note the dropped qualifier in remaining questions; no SNOMED qualifier found for 'bleeds on contact'.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c074",
+  "text": "Diagnose possible diphtheria from fever page :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires a thick grey pseudomembrane that bleeds easily if touched; the bleeding qualifier is dropped.",
+    "fix": "Note as accepted loss or add a bleeds-on-touch finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page specifies a thick grey pseudomembrane 'that bleeds easily if touched'; the bleeding-on-touch qualifier is dropped (concept and sites otherwise match).",
+    "fix": "Accept, or note the dropped qualifier in remaining questions; no SNOMED qualifier found for 'bleeds on contact'.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c075",
+  "text": "Diagnose possible diphtheria from fever page :: (diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page describes pseudomembrane in nose/throat, i.e. respiratory diphtheria; the concept used is the whole-organism grouper including cutaneous and eye diphtheria.",
+    "fix": "Optionally use (snomed_concept \"Diphtheria of respiratory system\" \"disorder\"); the current concept is acceptable for a possible rule.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c077",
+  "text": "Diagnose probable tick bite fever :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c079",
+  "text": "Diagnose probable tick bite fever :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'tick present' (a tick attached to the skin); the rule encodes infestation by a specific tick family (Ixodidae/Argasidae). SNOMED has no 'tick attached/present' concept, so this is an acceptable approximation, but the family split is more specific than the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c080",
+  "text": "Diagnose probable tick bite fever :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'tick present' (a tick attached to the skin); the rule encodes infestation by a specific tick family (Ixodidae/Argasidae). SNOMED has no 'tick attached/present' concept, so this is an acceptable approximation, but the family split is more specific than the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c081",
+  "text": "Diagnose probable tick bite fever :: (diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Tick bite fever' in South Africa is rickettsial tick-bite fever; 'South African tick-bite fever' is the correct SNOMED concept.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says generic 'Tick bite fever'; 'South African tick-bite fever' sits under Boutonneuse fever (R. conorii) and excludes African tick bite fever (R. africae), which is also SA tick bite fever.",
+    "fix": "Use (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\"), parent of both Boutonneuse fever and African tick bite fever.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c083",
+  "text": "Diagnose probable acute viral infection from fever page :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c085",
+  "text": "Diagnose probable acute viral infection from fever page :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Negation of the family-specific tick infestation concept; same approximation as c020 (page says 'tick present').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c086",
+  "text": "Diagnose probable acute viral infection from fever page :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Negation of the family-specific tick infestation concept; same approximation as c021 (page says 'tick present').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Tick present\" is a sign on the patient; infestation disorder concepts are a loose fit, and Argasidae (soft ticks) is an extra guess alongside Ixodidae.",
+    "fix": "Keep Ixodidae; consider dropping Argasidae or using a tick-found finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c092",
+  "text": "Urgent: fever with red-box danger signs :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines fever as temperature >= 38°C 'now or in the past 3 days'; the measurement only sees a current reading, so the 3-day window is dropped (the Fever active_condition alternative partly covers it).",
+    "fix": "Accept as a language limit (onset/time_ago cannot wrap a measurement); note in remaining questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c104",
+  "text": "Urgent: fever with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Easy bleeding'; 'Finding of tendency to bleed' is the parent grouper, and a closer child concept exists.",
+    "fix": "Use (snomed_concept \"Bleeds easily\" \"finding\").",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) possible Malaria",
+  "text": "'If patient has been in a malaria area in past 3 months, consider malaria' is a 'consider X' instruction and has no rule and no checked-for exposure finding. SNOMED lacks a malaria-area concept, but (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\") or (snomed_concept \"Travel abroad\" \"finding\") would allow a possible (snomed_concept \"Malaria\" \"disorder\") rule, and the gap should at least be recorded.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) probable Shock; Urgent: fever with red-box danger signs",
+  "text": "Footnote 1 defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) and the red box cites it as 'Shock1'. No probable Shock rule exists, so the Urgent evaluation's Shock branch only fires when the nurse records (clinical_finding Shock) directly; of the footnote's components only SBP < 80 is independently in the priority rule.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Urgent evaluation for fingerprick glucose",
+  "text": "'If fingerprick glucose < 3 (< 4 if diabetes) or >= 11.1 -> 19' inside the red box is a numeric criterion on a routine vital, and none of the three thresholds appears anywhere in the file. Defensible only if page 19's rules are relied on.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute viral infection from fever page",
+  "text": "The page reaches this box only after 'If none of the above' (no urgent signs, no AHR, no mpox or diphtheria criteria) and after the tick-bite No branch. The rule excludes tick bite but not the urgent, mpox or diphtheria findings, so a febrile patient with neck stiffness and headache gets both probable Meningitis and probable Acute viral disease. Low because the probable Meningitis rule and Urgent evaluation still fire.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) possible Hypersensitivity to abacavir",
+  "text": "'If on abacavir, check for abacavir hypersensitivity reaction' has no rule. (snomed_concept \"Hypersensitivity to abacavir\" \"finding\") exists; whether 'on abacavir' is expressible is unclear, and the line routes to page 131, so this may be cross-reference only.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "all rules (fever trigger)",
+  "text": "The page's fever definition includes 'temperature >= 38°C ... in the past 3 days'; the trigger only uses a current measurement >= 38 or a recorded Fever complaint. The time window could be expressed with onset/time_ago but is not. Minor because (active_condition Fever) covers the common case.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of fever not needing urgent attention",
+  "text": "The tick-bite question tells the nurse to look for a 'small dark brown/black scab' (eschar). Eschar is not checked for, so a nurse who records the eschar rather than 'Tick bite' will not reach probable tick bite fever.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: fever with red-box danger signs",
+  "text": "Meningitis and appendicitis enter via active_condition of a system-diagnosed probable condition; stiff neck, drowsy, confusion, purpuric rash and RLQ tenderness are not in the priority rule directly. If system diagnoses do not feed active_condition, those red-box items never trigger Urgent.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable meningitis from fever page",
+  "text": "'Purple/red rash' only partly encoded: red non-purpuric rash missing; page also lists drowsy/confused as alternatives to neck stiffness, fine.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever / acute viral infection",
+  "text": "Page applies these only to patients not needing urgent attention and after mpox/diphtheria/malaria considerations; rules are not gated, so they fire alongside urgent signs.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Task: Check for urgent fever conditions",
+  "text": "check_for lacks SBP<80 and RR>=30 measurements used by the priority rule; no rule for malaria or abacavir AHR.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible diphtheria from fever page",
+  "text": "'Bleeds easily' feature not encoded and 'mild fever' ignored; low impact.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(page-level)",
+  "text": "No possible Malaria rule for 'If patient has been in a malaria area in past 3 months, consider malaria'. This is a 'consider X' statement that the house standard expects as a possible diagnosis, or at least a documented not-representable note.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable meningitis from fever page",
+  "text": "'purple/red rash' is narrowed to Purpuric rash, which drops the red rash. Because the Urgent rule reaches meningitis only through active_condition Meningitis, a febrile patient with a red rash isn't flagged Urgent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: fever with red-box danger signs",
+  "text": "Footnote 1's 'shock likely' criteria are not encoded: there is no probable Shock rule. Shock is detected only as a recorded disorder or SBP < 80.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible diphtheria from fever page",
+  "text": "The pseudomembrane property 'bleeds easily if touched' is omitted, which makes the rule broader than the page.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox from fever page / Check for causes of fever not needing urgent attention",
+  "text": "Morphologic-abnormality concepts are used as clinical_finding subjects: Eruption, Lesion@Anal structure and Pseudomembrane@Nasal/Pharyngeal structure. Eruption is redundant with Skin lesion. The finding_site forms rely on body-site resolution that VHA's test does not verify.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever / Diagnose probable acute viral infection",
+  "text": "The flowchart entry gate ('if none of the above, or previous malaria test/s negative') is not represented, so these probable rules can fire alongside possible mpox, diphtheria or malaria. This is acceptable as flowchart routing.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of fever not needing urgent attention",
+  "text": "Two page instructions in this section have no rule at all: 'If patient has been in a malaria area in past 3 months, consider malaria' (p38-2d9a1b25) should give a possible Malaria diagnosis with a travel/exposure check, and 'If on abacavir, check for abacavir hypersensitivity reaction' (p38-2172e4f3) is not checked for. Also, the page scopes this section to patients not needing urgent attention and (for the tick/viral branch) 'none of the above'; the task triggers on any fever, which is a tolerable simplification but should be recorded.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: fever with red-box danger signs",
+  "text": "Urgent is justified by 'Give urgent attention' and the (and fever (or ...)) structure, with meningitis/appendicitis via active_condition, follows the house standard. Gap: footnote 1 (p38-d50f2820) says 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' - an 'X likely' on the page with no probable Shock diagnosis rule; the priority rule only matches a recorded Shock finding or SBP < 80, so a febrile patient with pulse >= 100 + RR > 30 + confusion (no BP reading) is not escalated by this page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent fever conditions",
+  "text": "check_for omits respiratory rate >= 30 and systolic BP < 80, which are red-box items (they appear only in the priority rule).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox from fever page",
+  "text": "Page requires an UNEXPLAINED rash/lesion plus at least one symptom; unexplained is dropped. Also this non-urgent branch is not gated by absence of red-box signs.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible diphtheria from fever page",
+  "text": "Pseudomembrane must bleed easily if touched (dropped); also fever is mild on the page while the rule accepts any fever.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) malaria possible diagnosis",
+  "text": "Page says if in a malaria area in past 3 months, consider malaria (p39); no possible-malaria rule exists. Travel history may be unencodable. Also not encoded: glucose < 3 (< 4 diabetes) or >= 11.1 refer step, abacavir hypersensitivity check.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of fever not needing urgent attention",
+  "text": "Nothing invented, but the page's 'malaria area in past 3 months, consider malaria' and 'If on abacavir, check for AHR' have no checked finding and no rule; the diphtheria pseudomembrane drops 'bleeds easily if touched'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever",
+  "text": "'Likely' maps to probable and the evidence is right, but the diagnosis concept is too narrow: South African tick-bite fever (Boutonneuse/R. conorii) excludes African tick bite fever. Use Spotted fever group rickettsial disease. The page's gate ('if none of the above, or previous malaria test/s negative') is not encoded.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: (active_condition Fever) only, plus a separate probable-Fever rule from temperature ≥ 38  vs  B: (or (active_condition Fever) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)) in every trigger and fever term",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or (active_condition (snomed_concept \"Fever\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))",
+    "reason": "The page defines fever directly as 'a temperature ≥ 38°C now or in the past 3 days'; B uses that definition as the fever condition, without diagnosing a finding (Fever) as a probable diagnosis.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: (diagnosis Fever probable) from temperature ≥ 38  vs  B: no such rule",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "Not needed once the page's temperature definition is part of each fever condition; the page names no 'fever likely' diagnosis.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition / diagnosis_condition",
+  "text": "A: fever term (active_condition Fever)  vs  B: fever term also accepts (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "reason": "Same reason as the trigger: 'temperature ≥ 38°C' is the page's definition of the fever in 'patient with a fever and any of'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for / priority_condition",
+  "text": "A: Seizure or Post-ictal state  vs  B: Seizure only",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+    "reason": "The page says 'Having/just had a seizure'; a recorded Seizure covers both, and 'post-ictal' is not the page's word, so the narrower addition was not made.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Eruption of skin (disorder)  vs  B: Eruption (morphologic abnormality) for 'rash'",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "reason": "Both mean 'rash'; Eruption is the form VHA's vocabulary already uses (3 rules), so the same idea is written the same way.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Skin lesion (disorder)  vs  B: Lesion + finding_site Skin structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\"))",
+    "reason": "'lesion/s of skin' has an exact precoordinated concept; prefer it to a postcoordinated morphology.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Lesion of genitalia  vs  B: Lesion + finding_site Genital structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+    "reason": "'lesion/s of ... genitals' has an exact precoordinated concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Lesion of rectum  vs  B: Lesion + finding_site Rectum structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+    "reason": "'lesion/s of ... rectum' has an exact precoordinated concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Oral lesion  vs  B: Lesion + finding_site Oral cavity structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Oral lesion\" \"disorder\"))",
+    "reason": "'lesion/s of ... mouth' has an exact precoordinated concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Lesion of eye  vs  B: Lesion + finding_site Structure of eye proper",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Lesion of eye\" \"disorder\"))",
+    "reason": "'lesion/s of ... eyes' has an exact precoordinated concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Pseudomembrane + finding_site Nasal cavity structure  vs  B: Pseudomembrane + finding_site Nasal structure",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (finding_site (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "reason": "The page says 'in nose/throat'; Nasal structure (the nose) is the page's word, not only the cavity.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Common cold  vs  B: Common cold + qualifier Recent",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "reason": "The page says 'recent common cold'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: tick present = Infestation caused by Ixodidae  vs  B: Ixodidae or Argasidae (also in the viral rule's 'no' list)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+    "reason": "The page says 'tick present' without restricting to hard ticks; both tick families are ticks.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: no check_for of Headache, Backache, Fatigue, Sore throat, Cough  vs  B: checks for them",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "Headache, Backache, Fatigue, Sore throat, Cough (clinical_finding)",
+    "reason": "These are the page's mpox, diphtheria and acute-viral-infection criteria ('headache/backache/body pain', 'fatigue, sore throat/nasal congestion/cough', 'sore throat'), so they belong in the approach task's check_for.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: Spotted fever group rickettsial disease  vs  B: South African tick-bite fever",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)",
+    "reason": "The page says 'Tick bite fever'; 'South African tick-bite fever' is the SNOMED name closest to those words, but the page does not say which rickettsia (African tick bite fever is the other child of A's parent concept).",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "slug": "38-fever",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "rule descriptions",
+  "text": "A: '… in fever' / 'Urgent: fever with danger signs'  vs  B: '… from fever page' / 'Urgent: fever with red-box danger signs'",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "B's names are more specific to this page, which reduces the chance of colliding with another page's description.",
+    "unsettled": false
+   }
+  ]
+ }
+]

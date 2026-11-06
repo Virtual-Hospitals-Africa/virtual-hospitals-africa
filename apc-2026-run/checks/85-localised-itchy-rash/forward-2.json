@@ -1,0 +1,316 @@
+{
+ "page": 85,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p85-596e9255",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "problem": "Red box is only 'Check if the patient needs urgent attention 82': a cross-reference to the urgent-attention page, with no criteria of its own. No priority evaluation exists in the file and none is justified.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p85-31ec2960",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Four bullets. (1) Scabies: very itchy + small red bumps + burrows at webspaces of fingers/axillae/waist/genitals: encoded correctly (Severe itching, red papule, or over 4 burrow sites); 'small' not captured, minor. (2) Eczema: encoded as Pruritic rash AND dry scaly skin at wrist/ankle/antecubital/popliteal; correct, with the 'patches' wording unrepresented. (3) Fixed drug eruption: dark round macule AND exposure to drug; the 'after ingestion' timing and itchy red-edged start are not captured; acceptable. (4) 'If rash on scalp 95' is a routing cross-reference with no rule or check (flowchart_routing, acceptable). Scabies rule also lacks the Pruritic rash anchor the others have, harmless since Severe itching is stronger.",
+   "evidence": [
+    "Diagnose probable scabies (localised itchy rash) :: (and (clinical_finding Itching Severe) (clinical_finding Papule of skin Red color) (or Burrows in skin at interdigital web of hand / Axillary region / waist region / Genital structure))",
+    "Diagnose probable eczema (localised itchy rash) :: (and (clinical_finding Pruritic rash) (or (clinical_finding Scaly skin (qualifier Dry) (finding_site Wrist region structure)) ... Ankle ... Antecubital ... Popliteal fossa))",
+    "Diagnose probable fixed drug eruption (localised itchy rash) :: (and (clinical_finding Macule of skin (qualifier Dark color) (qualifier Round shape)) (finding (snomed_concept Exposure to (contextual qualifier)) (snomed_concept Drug or medicament)))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "scalp rash routing to page 95 (cross-reference only)",
+    "'after ingestion' timing of drug exposure"
+   ]
+  },
+  {
+   "element_key": "p85-b830f8f1",
+   "scope": "borderline",
+   "scope_reason": "Flowchart decision with partial encoding possible",
+   "problem": "Decision node 'red itchy bumps that may have blistered or healed with darkening'. The Yes branch (insect bites / papular urticaria / impetigo) is encoded via Pruritic rash + Red papule, with Blister and Post-inflammatory hyperpigmentation discriminating papular urticaria. The No branch (check site) has no explicit encoding; it is only implicit. Because the insect-bite rule has no exclusion of the No branch, flowchart gating is lost.",
+   "evidence": [
+    "Diagnose probable insect bites (localised itchy rash) :: (and (clinical_finding Pruritic rash) (clinical_finding Papule of skin (qualifier Red color)))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-a0845543",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Photo-annotation text 'Christmas tree pattern on back' is a descriptive note; no matching concept encoded, acceptable.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p85-fdc2add4",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "problem": "'Usually occurs in crops' is a descriptive note; not representable as a criterion.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p85-f7df4bb9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Insect bites likely: encoded as probable 'Insect bite - wound' with Pruritic rash + red papule. Papular urticaria likely if blisters/healed with darkened skin: encoded as probable 'Prurigo simplex' (SNOMED synonym match for papular urticaria; acceptable). Impetigo if yellow crusts: encoded. Problems: papular urticaria and impetigo are refinements ('if blisters ... instead of insect bite'), but the insect bite rule still fires alongside them with no exclusion, so all three can co-occur; the page is hierarchical. Insect bite rule is also the unconditional base for any itchy red papule, broader than the page's decision node. Impetigo 'Crust on skin' + 'Yellow color' is reasonable. HIV test and treatment are management (out).",
+   "evidence": [
+    "Diagnose probable papular urticaria (localised itchy rash) :: (and Pruritic rash, Papule of skin Red, (or Blister of skin, Post-inflammatory hyperpigmentation))",
+    "Diagnose probable impetigo (localised itchy rash) :: (and Pruritic rash, Papule Red, Crust on skin Yellow color)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "exclusion of insect bites when papular urticaria or impetigo applies"
+   ]
+  },
+  {
+   "element_key": "p85-e0f6cd59",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Psoriasis likely: encoded as well-defined raised skin plaque AND silver scaly skin. Correct as far as page's key criteria. Not encoded: predilection sites (knees, elbows, lower back, scalp) and pitted nails (page says 'may have', optional), and 'covered with' implies scale ON the plaque, not enforced. Management items out of scope.",
+   "evidence": [
+    "Diagnose probable psoriasis (localised itchy rash) :: (and (clinical_finding Skin plaque (qualifier Well defined) (qualifier Raised)) (clinical_finding Scaly skin (qualifier Silver color)))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "pitted nails (optional 'may have')"
+   ]
+  },
+  {
+   "element_key": "p85-98a3006c",
+   "scope": "borderline",
+   "scope_reason": "Optional supporting feature",
+   "problem": "'May have pitted nails' is an optional supporting feature of psoriasis; page also says 'check nails'. Not encoded anywhere. Low importance since optional.",
+   "evidence": [],
+   "confidence": "low",
+   "verdict": "missing",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-112e4ac8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Pityriasis rosea likely: encoded as (large annular lesion on chest or back) AND (multiple small oval lesion). Missing: scale (fine scale in centre; smaller oval SCALY patches) and the ordering (herald patch first, followed within 2 weeks), and Christmas tree pattern. 'Oval shaped lesion' is not a scaly concept, so a non-scaly oval lesion qualifies. Herald patch rule overlaps heavily with the tinea corporis rule since both accept an annular lesion.",
+   "evidence": [
+    "Diagnose probable pityriasis rosea (localised itchy rash) :: (and (or (clinical_finding Skin lesion (qualifier Large) (qualifier Annular shape) (finding_site Skin structure of chest)) ... of back) (clinical_finding Oval shaped lesion (qualifier Multiple) (qualifier Small)))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "scale on herald patch and on oval patches",
+    "onset sequence (within 2 weeks)"
+   ]
+  },
+  {
+   "element_key": "p85-e3104345",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "problem": "'Yes / No: Check site of rash' is flowchart routing.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p85-6cfd3324",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Tinea pedis likely and tinea corporis likely are both encoded as probable. Tinea corporis: page describes slow-growing lesions with raised edges / ring of scale and clear centre; encoded as (annular raised skin lesion) OR (annular scaly skin). The OR is permissive: a pityriasis rosea herald patch (annular, scaly) also triggers tinea corporis. 'Clear in centre' and 'slow-growing' not encoded. Tinea corporis is in the head/face/trunk/limbs branch, but no site restriction exists (not representable cleanly). Tinea pedis: cracks OR peeling OR scale between toes OR thickened scale on soles/heels/borders: matches page with correct OR logic.",
+   "evidence": [
+    "Diagnose probable tinea corporis (localised itchy rash) :: (or (clinical_finding Skin lesion (qualifier Annular shape) (qualifier Raised)) (clinical_finding Scaly skin (qualifier Annular shape)))",
+    "Diagnose probable tinea pedis (localised itchy rash) :: (or (clinical_finding Fissure in skin (finding_site Structure of interdigital web of foot)) ... Thickened Scaly skin on sole / heel / border of foot)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "clear centre",
+    "slow-growing"
+   ]
+  },
+  {
+   "element_key": "p85-2d82d9b0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Cracks (fissure), peeling or scaly between toes: each encoded with interdigital web of foot site.",
+   "evidence": [
+    "Diagnose probable tinea pedis :: (clinical_finding Fissure in skin (finding_site Structure of interdigital web of foot)) | Peeling of skin | Scaly skin"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-1a81dc87",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Thickened scaly skin on soles, heels, sides of feet: three rules with Thickened qualifier and sole/heel/border of foot sites.",
+   "evidence": [
+    "Diagnose probable tinea pedis :: (clinical_finding Scaly skin (qualifier Thickened) (finding_site Skin structure of sole of foot)) | heel | border of foot"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-ee8e6312",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Well-defined, raised plaques: encoded as Skin plaque with Well defined and Raised qualifiers.",
+   "evidence": [
+    "Diagnose probable psoriasis :: (clinical_finding Skin plaque (qualifier Well defined) (qualifier Raised))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-c40ba95b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'with silvery scale. Often on knees, elbows, lower back, scalp. May have pitted nails': silvery scale encoded; sites and pitted nails not encoded (optional).",
+   "evidence": [
+    "Diagnose probable psoriasis :: (clinical_finding Scaly skin (qualifier Silver color))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "typical sites",
+    "pitted nails"
+   ]
+  },
+  {
+   "element_key": "p85-b4fda3c2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Slow-growing lesion with raised edges/ring of scale, clear in centre: raised annular lesion or annular scale encoded; slow growth and clear centre missing.",
+   "evidence": [
+    "Diagnose probable tinea corporis :: (or Skin lesion Annular Raised | Scaly skin Annular)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "clear centre",
+    "slow-growing"
+   ]
+  },
+  {
+   "element_key": "p85-4e338c24",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Starts as one large ring: large annular lesion on chest/back encoded (with the herald-patch location on chest/back).",
+   "evidence": [
+    "Diagnose probable pityriasis rosea :: (clinical_finding Skin lesion (qualifier Large) (qualifier Annular shape) (finding_site Skin structure of chest|back))"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-0908ec8e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Chest/back herald patch location: encoded with chest and back sites.",
+   "evidence": [
+    "Diagnose probable pityriasis rosea :: ... (finding_site Skin structure of chest) / (Skin structure of back)"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p85-5642f4ff",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'with fine scale in centre' not encoded for the herald patch (Scaly skin absent from the herald patch criterion).",
+   "evidence": [
+    "Diagnose probable pityriasis rosea :: (clinical_finding Skin lesion (qualifier Large) (qualifier Annular shape) ...)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "fine scale in centre"
+   ]
+  },
+  {
+   "element_key": "p85-91fe3d10",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Within 2 weeks followed by smaller oval scaly patches: encoded as multiple small oval lesions; scaly and timing not encoded.",
+   "evidence": [
+    "Diagnose probable pityriasis rosea :: (clinical_finding Oval shaped lesion (qualifier Multiple) (qualifier Small))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "scaly",
+    "within 2 weeks of herald patch"
+   ]
+  },
+  {
+   "element_key": "p85-a6686283",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "'on back' belongs to the Christmas tree pattern note; descriptive only.",
+   "evidence": [],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p85-74f00f0f",
+  "p85-4dff8a25",
+  "p85-df9c6601",
+  "p85-c2cf49c3",
+  "p85-47683fec",
+  "p85-68e4e36a",
+  "p85-5451a9d5",
+  "p85-f617fdcd",
+  "p85-a72f8408",
+  "p85-90d0a38a",
+  "p85-0242c879",
+  "p85-6b1f242a",
+  "p85-5b539f20",
+  "p85-aef512b3",
+  "p85-8bff0b9b",
+  "p85-1d72fd69",
+  "p85-4339c744"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable insect bites / papular urticaria / impetigo",
+   "problem": "Page is hierarchical (insect bites by default; papular urticaria if blisters/darkening; impetigo if yellow crusts), but all three rules share the same base and fire together with no exclusion; insect bites cannot be told from the other two.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable tinea corporis",
+   "problem": "Permissive OR on annular raised lesion or annular scaly skin; also fires on a pityriasis rosea herald patch and any annular lesion. No clear-centre or slow-growth criterion and no site restriction.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable pityriasis rosea",
+   "problem": "Omits scale on both herald patch and oval patches; 'Oval shaped lesion' is non-scaly, so the key discriminator versus other oval lesions is lost.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable scabies",
+   "problem": "Does not include Pruritic rash anchor as the other itch rules do; harmless given Severe itching. Also 'small' red bumps unrepresented.",
+   "severity": "low"
+  },
+  {
+   "rule": "task check_for list",
+   "problem": "Task trigger is 'Pruritic rash' disorder; the page title is 'localised itchy rash' with no localisation concept, so scalp routing (95) and flowchart No branch are not represented. Pruritic rash is not in the common-symptom list, so the task may not fire in practice.",
+   "severity": "low"
+  },
+  {
+   "rule": "(no priority evaluation)",
+   "problem": "Red box only cross-references page 82; absence of a priority rule is appropriate.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page has one red-box element, a cross-reference to page 82, so no priority logic is expected and none exists. The diagnostic rules cover scabies, eczema, fixed drug eruption, insect bites, papular urticaria, impetigo, psoriasis, pityriasis rosea and tinea corporis/pedis with correct SNOMED concepts, but the hierarchical insect bite/papular urticaria/impetigo logic is flattened, pityriasis rosea omits scale, and tinea corporis is overly permissive and overlaps pityriasis rosea."
+}

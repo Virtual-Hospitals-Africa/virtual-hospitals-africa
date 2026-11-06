@@ -1,0 +1,201 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/58-diarrhoea",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/58-diarrhoea",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible giardiasis in chronic diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable cholera in diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable dehydration in diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable dysentery in diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable faecal impaction in diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable gastroenteritis in diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable overflow diarrhoea"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: diarrhoea with shock or cholera"
+  },
+  {
+   "atom": "task",
+   "description": "Check for diarrhoea urgent signs and causes"
+  },
+  {
+   "atom": "task",
+   "description": "Check rectum for faecal impaction in diarrhoea"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable cholera (diarrhoea page)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable dehydration from diarrhoea"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable dysentery"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable faecal impaction (diarrhoea page)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable gastroenteritis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable overflow diarrhoea"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: diarrhoea with shock or cholera"
+  },
+  {
+   "atom": "task",
+   "description": "Check for diarrhoea danger signs and causes"
+  }
+ ],
+ "conditions_A": 48,
+ "conditions_B": 40,
+ "conditions_in_both": 35,
+ "agreement": 0.795,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "only_B": [
+    "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+    "(>= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))"
+   ],
+   "both": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+     "B": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+     "B": "(>= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Giardiasis\" \"disorder\") possible)"
+   ],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Cholera\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Chronic constipation with overflow\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Dysenteric diarrhea\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

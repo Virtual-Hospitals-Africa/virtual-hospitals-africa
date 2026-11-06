@@ -1,0 +1,1298 @@
+[
+ {
+  "page": 11,
+  "title": "INITIAL ASSESSMENT OF THE PATIENT",
+  "slug": "11-initial-assessment-of-the-patient",
+  "page_2023": 9,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 24,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 14
+ },
+ {
+  "page": 14,
+  "title": "OBSERVATION POST VACCINATION",
+  "slug": "14-observation-post-vaccination",
+  "page_2023": 12,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 29
+ },
+ {
+  "page": 15,
+  "title": "COLLAPSE FOLLOWING VACCINATION",
+  "slug": "15-collapse-following-vaccination",
+  "page_2023": 13,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 14
+ },
+ {
+  "page": 16,
+  "title": "THE EMERGENCY PATIENT",
+  "slug": "16-the-emergency-patient",
+  "page_2023": 14,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 45,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 17,
+  "title": "CARDIOPULMONARY RESUSCITATION (CPR)",
+  "slug": "17-cardiopulmonary-resuscitation-cpr",
+  "page_2023": 15,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 44,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 18,
+  "title": "DECREASED CONSCIOUSNESS",
+  "slug": "18-decreased-consciousness",
+  "page_2023": 16,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "16-decreased-consciousness.lisp",
+  "finding_site_file_2023": null,
+  "elements": 48,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 19,
+  "title": "ASSESS AND MANAGE GLUCOSE",
+  "slug": "19-assess-and-manage-glucose",
+  "page_2023": 17,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "17-assess-and-manage-glucose.lisp",
+  "finding_site_file_2023": null,
+  "elements": 36,
+  "boxes": 3,
+  "flowchart": true,
+  "elements_outside": 30
+ },
+ {
+  "page": 20,
+  "title": "SEIZURES/FITS",
+  "slug": "20-seizures-fits",
+  "page_2023": 19,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "19-seizures.lisp",
+  "finding_site_file_2023": null,
+  "elements": 26,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 21,
+  "title": "SEIZURES/FITS (cont. 2)",
+  "slug": "21-seizures-fits-cont-2",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 15,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 21
+ },
+ {
+  "page": 22,
+  "title": "WHEEZE/TIGHT CHEST",
+  "slug": "22-wheeze-tight-chest",
+  "page_2023": 39,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "39-wheeze-or-tight-chest.lisp",
+  "finding_site_file_2023": null,
+  "elements": 41,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 3
+ },
+ {
+  "page": 23,
+  "title": "COUGH OR DIFFICULTY BREATHING",
+  "slug": "23-cough-or-difficulty-breathing",
+  "page_2023": 38,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "38-cough-or-difficulty-breathing.lisp",
+  "finding_site_file_2023": null,
+  "elements": 18,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 30
+ },
+ {
+  "page": 24,
+  "title": "CHEST PAIN",
+  "slug": "24-chest-pain",
+  "page_2023": 37,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "37-chest-pain.lisp",
+  "finding_site_file_2023": "37.lisp",
+  "elements": 54,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 2
+ },
+ {
+  "page": 26,
+  "title": "PALPITATIONS",
+  "slug": "26-palpitations",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 17,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 34
+ },
+ {
+  "page": 27,
+  "title": "POISONING/OVERDOSE",
+  "slug": "27-poisoning-overdose",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 26,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 8
+ },
+ {
+  "page": 28,
+  "title": "ANAPHYLAXIS",
+  "slug": "28-anaphylaxis",
+  "page_2023": 20,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "20-anaphylaxis.lisp",
+  "finding_site_file_2023": null,
+  "elements": 24,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 8
+ },
+ {
+  "page": 29,
+  "title": "BITES AND STINGS",
+  "slug": "29-bites-and-stings",
+  "page_2023": 22,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "22-bites-and-stings.lisp",
+  "finding_site_file_2023": null,
+  "elements": 22,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 20
+ },
+ {
+  "page": 30,
+  "title": "THE INJURED PATIENT",
+  "slug": "30-the-injured-patient",
+  "page_2023": 18,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 46,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 9
+ },
+ {
+  "page": 31,
+  "title": "BURNS",
+  "slug": "31-burns",
+  "page_2023": 21,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "21-burns.lisp",
+  "finding_site_file_2023": null,
+  "elements": 48,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 4
+ },
+ {
+  "page": 32,
+  "title": "SEXUAL ASSAULT AND/OR RAPE",
+  "slug": "32-sexual-assault-and-or-rape",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 13,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 17
+ },
+ {
+  "page": 33,
+  "title": "TRAUMATISED/ABUSED PATIENT",
+  "slug": "33-traumatised-abused-patient",
+  "page_2023": 88,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 4,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 16
+ },
+ {
+  "page": 34,
+  "title": "SELF-HARM OR SUICIDE",
+  "slug": "34-self-harm-or-suicide",
+  "page_2023": 83,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "83-self-harm-or-suicide.lisp",
+  "finding_site_file_2023": null,
+  "elements": 23,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 11
+ },
+ {
+  "page": 35,
+  "title": "AGGRESSIVE/DISRUPTIVE BEHAVIOUR",
+  "slug": "35-aggressive-disruptive-behaviour",
+  "page_2023": 84,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 43,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 36,
+  "title": "ABNORMAL THOUGHTS OR BEHAVIOUR",
+  "slug": "36-abnormal-thoughts-or-behaviour",
+  "page_2023": 85,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 49,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 3
+ },
+ {
+  "page": 38,
+  "title": "FEVER",
+  "slug": "38-fever",
+  "page_2023": 24,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "24-fever.lisp",
+  "finding_site_file_2023": null,
+  "elements": 15,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 9
+ },
+ {
+  "page": 39,
+  "title": "MALARIA",
+  "slug": "39-malaria",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 17,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 18
+ },
+ {
+  "page": 40,
+  "title": "MPOX: DIAGNOSIS AND MANAGEMENT",
+  "slug": "40-mpox-diagnosis-and-management",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 22,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 14
+ },
+ {
+  "page": 42,
+  "title": "LUMP/SWELLING IN NECK, AXILLA OR GROIN",
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "page_2023": 25,
+  "index_status": "changed",
+  "redbox_status": [
+   "unchanged"
+  ],
+  "will_2023_file": "25-lump-swelling-in-neck-axilla-or-groin.lisp",
+  "finding_site_file_2023": null,
+  "elements": 4,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 24
+ },
+ {
+  "page": 43,
+  "title": "WEAKNESS OR TIREDNESS",
+  "slug": "43-weakness-or-tiredness",
+  "page_2023": 26,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "26-weakness-or-tiredness.lisp",
+  "finding_site_file_2023": null,
+  "elements": 13,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 14
+ },
+ {
+  "page": 44,
+  "title": "PALLOR AND ANAEMIA",
+  "slug": "44-pallor-and-anaemia",
+  "page_2023": 27,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "27-pallor-and-anaemia.lisp",
+  "finding_site_file_2023": null,
+  "elements": 15,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 23
+ },
+ {
+  "page": 45,
+  "title": "COLLAPSE/FALLS",
+  "slug": "45-collapse-falls",
+  "page_2023": 28,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "28-collapse-falls.lisp",
+  "finding_site_file_2023": null,
+  "elements": 20,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 14
+ },
+ {
+  "page": 46,
+  "title": "DIZZINESS",
+  "slug": "46-dizziness",
+  "page_2023": 29,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "29-dizziness.lisp",
+  "finding_site_file_2023": null,
+  "elements": 12,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 18
+ },
+ {
+  "page": 47,
+  "title": "HEADACHE",
+  "slug": "47-headache",
+  "page_2023": 30,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "30-headache.lisp",
+  "finding_site_file_2023": "30.lisp",
+  "elements": 18,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 33
+ },
+ {
+  "page": 48,
+  "title": "EYE/VISION SYMPTOMS",
+  "slug": "48-eye-vision-symptoms",
+  "page_2023": 31,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "31-eye-vision-symptoms.lisp",
+  "finding_site_file_2023": "31.lisp",
+  "elements": 25,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 26
+ },
+ {
+  "page": 49,
+  "title": "FACE SYMPTOMS",
+  "slug": "49-face-symptoms",
+  "page_2023": 32,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "32-face-symptoms.lisp",
+  "finding_site_file_2023": "32.lisp",
+  "elements": 8,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 29
+ },
+ {
+  "page": 51,
+  "title": "NOSE SYMPTOMS",
+  "slug": "51-nose-symptoms",
+  "page_2023": 34,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "34-nose-symptoms.lisp",
+  "finding_site_file_2023": "34.lisp",
+  "elements": 2,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 31
+ },
+ {
+  "page": 52,
+  "title": "MOUTH SYMPTOMS",
+  "slug": "52-mouth-symptoms",
+  "page_2023": 35,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "35-mouth-or-throat-symptoms.lisp",
+  "finding_site_file_2023": "35.lisp",
+  "elements": 4,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 53,
+  "title": "THROAT SYMPTOMS",
+  "slug": "53-throat-symptoms",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 6,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 22
+ },
+ {
+  "page": 54,
+  "title": "GUM/TEETH SYMPTOMS",
+  "slug": "54-gum-teeth-symptoms",
+  "page_2023": 36,
+  "index_status": "changed",
+  "redbox_status": [
+   "unchanged"
+  ],
+  "will_2023_file": "36-gum-teeth-symptoms.lisp",
+  "finding_site_file_2023": "36.lisp",
+  "elements": 6,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 16
+ },
+ {
+  "page": 55,
+  "title": "BREAST SYMPTOMS",
+  "slug": "55-breast-symptoms",
+  "page_2023": 43,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": "43.lisp",
+  "elements": 2,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 29
+ },
+ {
+  "page": 56,
+  "title": "ABDOMINAL PAIN",
+  "slug": "56-abdominal-pain",
+  "page_2023": 44,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "44-abdominal-pain.lisp",
+  "finding_site_file_2023": "44.lisp",
+  "elements": 21,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 19
+ },
+ {
+  "page": 57,
+  "title": "NAUSEA/VOMITING",
+  "slug": "57-nausea-vomiting",
+  "page_2023": 45,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "45-nausea-or-vomiting.lisp",
+  "finding_site_file_2023": null,
+  "elements": 19,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 9
+ },
+ {
+  "page": 58,
+  "title": "DIARRHOEA",
+  "slug": "58-diarrhoea",
+  "page_2023": 46,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "46-diarrhoea.lisp",
+  "finding_site_file_2023": null,
+  "elements": 5,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 27
+ },
+ {
+  "page": 59,
+  "title": "CHOLERA",
+  "slug": "59-cholera",
+  "page_2023": 47,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 16,
+  "boxes": 4,
+  "flowchart": true,
+  "elements_outside": 17
+ },
+ {
+  "page": 60,
+  "title": "CONSTIPATION",
+  "slug": "60-constipation",
+  "page_2023": 48,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only",
+   "unchanged"
+  ],
+  "will_2023_file": "48-constipation-and-anal-symptoms.lisp",
+  "finding_site_file_2023": "48.lisp",
+  "elements": 3,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 10
+ },
+ {
+  "page": 61,
+  "title": "ANAL SYMPTOMS",
+  "slug": "61-anal-symptoms",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 6,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 63,
+  "title": "GENITAL SYMPTOMS IN A MAN",
+  "slug": "63-genital-symptoms-in-a-man",
+  "page_2023": 50,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "50-genital-symptoms-man.lisp",
+  "finding_site_file_2023": null,
+  "elements": 9,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 64,
+  "title": "ABNORMAL VAGINAL DISCHARGE",
+  "slug": "64-abnormal-vaginal-discharge",
+  "page_2023": 51,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "51-abnormal-vaginal-discharge.lisp",
+  "finding_site_file_2023": null,
+  "elements": 13,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 31
+ },
+ {
+  "page": 69,
+  "title": "URINARY SYMPTOMS",
+  "slug": "69-urinary-symptoms",
+  "page_2023": 59,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "59-urinary-symptoms.lisp",
+  "finding_site_file_2023": "59.lisp",
+  "elements": 10,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 33
+ },
+ {
+  "page": 73,
+  "title": "ABNORMAL VAGINAL BLEEDING",
+  "slug": "73-abnormal-vaginal-bleeding",
+  "page_2023": 57,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "57-abnormal-vaginal-bleeding.lisp",
+  "finding_site_file_2023": null,
+  "elements": 9,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 25
+ },
+ {
+  "page": 77,
+  "title": "JOINT SYMPTOMS",
+  "slug": "77-joint-symptoms",
+  "page_2023": 62,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "62-joint-symptoms.lisp",
+  "finding_site_file_2023": "62.lisp",
+  "elements": 8,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 18
+ },
+ {
+  "page": 78,
+  "title": "BACK PAIN",
+  "slug": "78-back-pain",
+  "page_2023": 63,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "63-back-pain.lisp",
+  "finding_site_file_2023": "63.lisp",
+  "elements": 17,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 15
+ },
+ {
+  "page": 79,
+  "title": "NECK PAIN",
+  "slug": "79-neck-pain",
+  "page_2023": 64,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "64-neck-pain-arm-hand.lisp",
+  "finding_site_file_2023": "64b-arm.lisp",
+  "elements": 9,
+  "boxes": 2,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 80,
+  "title": "LEG SYMPTOMS",
+  "slug": "80-leg-symptoms",
+  "page_2023": 65,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "65-leg-symptoms.lisp",
+  "finding_site_file_2023": "65.lisp",
+  "elements": 6,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 28
+ },
+ {
+  "page": 81,
+  "title": "FOOT SYMPTOMS",
+  "slug": "81-foot-symptoms",
+  "page_2023": 66,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "66-foot-symptoms.lisp",
+  "finding_site_file_2023": "66.lisp",
+  "elements": 5,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 82,
+  "title": "SKIN SYMPTOMS",
+  "slug": "82-skin-symptoms",
+  "page_2023": 67,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "67-skin-symptoms.lisp",
+  "finding_site_file_2023": "67.lisp",
+  "elements": 23,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 18
+ },
+ {
+  "page": 83,
+  "title": "PAINFUL SKIN",
+  "slug": "83-painful-skin",
+  "page_2023": 68,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed",
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 28
+ },
+ {
+  "page": 84,
+  "title": "GENERALISED ITCHY RASH",
+  "slug": "84-generalised-itchy-rash",
+  "page_2023": 69,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 35
+ },
+ {
+  "page": 85,
+  "title": "LOCALISED ITCHY RASH",
+  "slug": "85-localised-itchy-rash",
+  "page_2023": 70,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 37
+ },
+ {
+  "page": 86,
+  "title": "ITCH WITH NO RASH",
+  "slug": "86-itch-with-no-rash",
+  "page_2023": 71,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 15
+ },
+ {
+  "page": 87,
+  "title": "GENERALISED NON-ITCHY RASH",
+  "slug": "87-generalised-non-itchy-rash",
+  "page_2023": 72,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 15
+ },
+ {
+  "page": 88,
+  "title": "DRUG RASH",
+  "slug": "88-drug-rash",
+  "page_2023": 73,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "73-drug-rash.lisp",
+  "finding_site_file_2023": null,
+  "elements": 16,
+  "boxes": 2,
+  "flowchart": false,
+  "elements_outside": 18
+ },
+ {
+  "page": 89,
+  "title": "SKIN LUMP/S",
+  "slug": "89-skin-lump-s",
+  "page_2023": 74,
+  "index_status": "changed",
+  "redbox_status": [
+   "unchanged"
+  ],
+  "will_2023_file": "74-skin-lumps.lisp",
+  "finding_site_file_2023": null,
+  "elements": 7,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 51
+ },
+ {
+  "page": 90,
+  "title": "SKIN ULCER OR NON-HEALING WOUND: DIAGNOSIS",
+  "slug": "90-skin-ulcer-or-non-healing-wound-diagnosis",
+  "page_2023": 75,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "75-skin-ulcer-or-non-healing-wound.lisp",
+  "finding_site_file_2023": null,
+  "elements": 5,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 20
+ },
+ {
+  "page": 93,
+  "title": "CRUSTS OR FLAKY SKIN",
+  "slug": "93-crusts-or-flaky-skin",
+  "page_2023": 78,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": "78-crusts-or-flaky-skin.lisp",
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 26
+ },
+ {
+  "page": 94,
+  "title": "CHANGES IN SKIN COLOUR",
+  "slug": "94-changes-in-skin-colour",
+  "page_2023": 79,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "79-changes-in-skin-colour.lisp",
+  "finding_site_file_2023": null,
+  "elements": 10,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 53
+ },
+ {
+  "page": 98,
+  "title": "LOW MOOD, STRESS OR ANXIETY",
+  "slug": "98-low-mood-stress-or-anxiety",
+  "page_2023": 86,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "86-low-mood-stress-and-anxiety.lisp",
+  "finding_site_file_2023": null,
+  "elements": 1,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 25
+ },
+ {
+  "page": 102,
+  "title": "TUBERCULOSIS (TB): DIAGNOSIS",
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "page_2023": 92,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 15,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 34
+ },
+ {
+  "page": 111,
+  "title": "RIFAMPICIN-RESISTANT TB (RR-TB): ROUTINE CARE",
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "page_2023": 99,
+  "index_status": "changed",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 10,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 17
+ },
+ {
+  "page": 122,
+  "title": "HIV: POST-EXPOSURE PROPHYLAXIS (PEP)",
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "page_2023": 108,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 36,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 4
+ },
+ {
+  "page": 130,
+  "title": "HIV: ROUTINE CARE (cont. 5)",
+  "slug": "130-hiv-routine-care-cont-5",
+  "page_2023": 115,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 11,
+  "boxes": 1,
+  "flowchart": true,
+  "elements_outside": 32
+ },
+ {
+  "page": 145,
+  "title": "DIABETES: ROUTINE CARE",
+  "slug": "145-diabetes-routine-care",
+  "page_2023": 130,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 19,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 25
+ },
+ {
+  "page": 148,
+  "title": "HYPERTENSION: DIAGNOSIS",
+  "slug": "148-hypertension-diagnosis",
+  "page_2023": 132,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "132-hypertension.lisp",
+  "finding_site_file_2023": null,
+  "elements": 17,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 19
+ },
+ {
+  "page": 151,
+  "title": "HEART FAILURE: ROUTINE CARE",
+  "slug": "151-heart-failure-routine-care",
+  "page_2023": 135,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 11,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 23
+ },
+ {
+  "page": 152,
+  "title": "STROKE: ROUTINE CARE",
+  "slug": "152-stroke-routine-care",
+  "page_2023": 136,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 8,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 15
+ },
+ {
+  "page": 154,
+  "title": "PERIPHERAL VASCULAR DISEASE (PVD)",
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "page_2023": 139,
+  "index_status": "changed",
+  "redbox_status": [
+   "numbers, wording or position only"
+  ],
+  "will_2023_file": "139-peripheral-vascular-disease.lisp",
+  "finding_site_file_2023": null,
+  "elements": 8,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 14
+ },
+ {
+  "page": 158,
+  "title": "THE MENTALLY ILL PATIENT NEEDING TREATMENT OR ADMISSION",
+  "slug": "158-the-mentally-ill-patient-needing-treatment-or-admi",
+  "page_2023": 140,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 10,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 26
+ },
+ {
+  "page": 170,
+  "title": "CONTRACEPTION",
+  "slug": "170-contraception",
+  "page_2023": 154,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 7,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 21
+ },
+ {
+  "page": 176,
+  "title": "MANAGE THE PATIENT REQUESTING A TERMINATION OF PREGNANCY (TOP)",
+  "slug": "176-manage-the-patient-requesting-a-termination-of-pre",
+  "page_2023": null,
+  "index_status": "new",
+  "redbox_status": [],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 3,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 36
+ },
+ {
+  "page": 177,
+  "title": "ROUTINE ANTENATAL CARE",
+  "slug": "177-routine-antenatal-care",
+  "page_2023": 159,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "159-antenatal-care.lisp",
+  "finding_site_file_2023": null,
+  "elements": 71,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 2
+ },
+ {
+  "page": 181,
+  "title": "ROUTINE ANTENATAL CARE (cont. 5)",
+  "slug": "181-routine-antenatal-care-cont-5",
+  "page_2023": 163,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 8,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 7
+ },
+ {
+  "page": 182,
+  "title": "ROUTINE POSTNATAL CARE",
+  "slug": "182-routine-postnatal-care",
+  "page_2023": 164,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": "164-postnatal-care.lisp",
+  "finding_site_file_2023": null,
+  "elements": 21,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 17
+ },
+ {
+  "page": 196,
+  "title": "PROTECT YOURSELF FROM OCCUPATIONAL INFECTION",
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "page_2023": 174,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 12,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 8
+ },
+ {
+  "page": 197,
+  "title": "PROTECT YOURSELF FROM OCCUPATIONAL STRESS",
+  "slug": "197-protect-yourself-from-occupational-stress",
+  "page_2023": 175,
+  "index_status": "changed",
+  "redbox_status": [
+   "changed"
+  ],
+  "will_2023_file": null,
+  "finding_site_file_2023": null,
+  "elements": 5,
+  "boxes": 1,
+  "flowchart": false,
+  "elements_outside": 20
+ }
+]

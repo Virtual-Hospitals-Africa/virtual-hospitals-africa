@@ -1,0 +1,371 @@
+{
+ "page": 34,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p34-49e51b48",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Urgent priority triggered by attempt, self-harm act, thoughts of self-harm (Suicidal thoughts and Planning suicide are descendants of Thoughts of self harm, so \"considered\" is covered) or High suicide risk. Minor: a past-year act recorded only as History of attempted suicide / History of deliberate self harm does not trigger it.",
+   "evidence": [
+    "Urgent: attempted/considered self-harm or suicide :: Urgent (or (clinical_finding (snomed_concept \"Suicide attempt\" \"event\")) (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\")) (clinical_finding (snomed_concept \"Thoughts of self harm\" \"finding\")) (active_condition (snomed_concept \"High suicide risk\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-c8892e2e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "the question is never asked: \"Suicide attempt\"/\"Intentionally harming self\" are only in the task due_to, not in any check_for, so their absence is never recorded"
+   ],
+   "problem": "The attempt is used as the task trigger and priority trigger, and its recorded absence is required by the low-risk rule, but when the task is triggered by thoughts nothing asks whether the patient attempted.",
+   "evidence": [
+    "Check for self-harm or suicide risk :: due_to (or (clinical_finding (snomed_concept \"Suicide attempt\" \"event\")) (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\")) ...)",
+    "Urgent: attempted/considered self-harm or suicide :: (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))",
+    "Diagnose probable low risk of self-harm or suicide :: (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-d8a125bd",
+   "scope": "in_scope",
+   "scope_reason": "Yes branch of \"attempted?\" leads to ABC and the urgent management box",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Attempt goes to Urgent via the priority rule; the page does not label this branch \"High risk\", so no diagnosis is needed.",
+   "evidence": [
+    "Urgent: attempted/considered self-harm or suicide :: (clinical_finding (snomed_concept \"Suicide attempt\" \"event\")) / (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-00d4183c",
+   "scope": "in_scope",
+   "scope_reason": "No branch of \"attempted?\"",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Low-risk rule requires no attempt; high-risk rule does not depend on it (fine).",
+   "evidence": [
+    "Diagnose probable low risk of self-harm or suicide :: (and (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))) (no (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))) (no (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))) (no (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\"))) (no (clinical_finding (snomed_concept \"Distress\" \"finding\"))) (no (clinical_finding (snomed_concept \"Does not communicate\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a9ec5ec6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-a1c34aac",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "Diagnose probable high risk of self-harm or suicide :: (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "Check for self-harm or suicide risk :: check_for both qualified forms"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-567118dc",
+   "scope": "in_scope",
+   "scope_reason": "Yes to current thoughts/plans -> High risk",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (or (clinical_finding ... \"Suicidal thoughts\" ... \"Current\") (clinical_finding ... \"Planning suicide\" ... \"Current\") ...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-873e5e67",
+   "scope": "in_scope",
+   "scope_reason": "No to current thoughts -> past-month/past-year question",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (and (or (<= (onset ...) (time_ago 1 months)) ...) (or agitation...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a4579f5f",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-686b6ad1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "act of self-harm/suicide in past year is encoded via onset of \"History of attempted suicide\"/\"History of deliberate self harm\" situations, whose onset is when the history was recorded, not when the act happened; a \"Suicide attempt\"/\"Intentionally harming self\" event with onset in the past year is not used",
+    "thoughts in the past month are encoded as onset within 1 month, which misses thoughts that began earlier and were still present during the past month"
+   ],
+   "problem": "Past-month thoughts/plans and past-year acts are all present with the right windows (<= onset time_ago = within), but the past-year-act half uses history situations whose onset does not date the act.",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (<= (onset (clinical_finding (snomed_concept \"Thoughts of self harm\" \"finding\"))) (time_ago 1 months))",
+    "Diagnose probable high risk of self-harm or suicide :: (<= (onset (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))",
+    "Diagnose probable high risk of self-harm or suicide :: (<= (onset (clinical_finding (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))",
+    "Diagnose probable high risk of self-harm or suicide :: (<= (onset (clinical_finding (snomed_concept \"History of attempted suicide\" \"situation\"))) (time_ago 1 years))",
+    "Diagnose probable high risk of self-harm or suicide :: (<= (onset (clinical_finding (snomed_concept \"History of deliberate self harm\" \"situation\"))) (time_ago 1 years))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-31eae5b8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-378ad823",
+   "scope": "in_scope",
+   "scope_reason": "Yes to past-month/year history -> agitation question",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (and (or <history within window>) (or <agitation findings>))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-e36c7926",
+   "scope": "in_scope",
+   "scope_reason": "No to past-month/year history -> Low risk",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "This branch is lost: the low-risk rule does not use absence of recent history and instead requires recorded absence of agitation/aggression/distress/non-communication, so a patient with no recent history who is agitated is not classed low risk as the page says.",
+   "evidence": [
+    "Diagnose probable low risk of self-harm or suicide :: (and (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))) (no (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))) (no (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))) (no (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\"))) (no (clinical_finding (snomed_concept \"Distress\" \"finding\"))) (no (clinical_finding (snomed_concept \"Does not communicate\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-f10a0406",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Violent -> Aggressive behavior (Physical aggression is a descendant); uncommunicative -> Does not communicate.",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (or (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\")) (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\")) (clinical_finding (snomed_concept \"Distress\" \"finding\")) (clinical_finding (snomed_concept \"Does not communicate\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-5ba364c6",
+   "scope": "in_scope",
+   "scope_reason": "Yes to agitation -> High risk",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (and (or <history>) (or <agitation>))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-410d5ec8",
+   "scope": "in_scope",
+   "scope_reason": "No to agitation -> Low risk",
+   "verdict": "partial",
+   "parts_missing": [
+    "low risk only fires if (no) is recorded for \"Suicide attempt\" and \"Intentionally harming self\", which no check_for asks"
+   ],
+   "problem": "Branch is encoded via the (no agitation) conjuncts, but reachability depends on negatives never collected.",
+   "evidence": [
+    "Diagnose probable low risk of self-harm or suicide :: (and (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))) (no (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))) (no (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))) (no (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\"))) (no (clinical_finding (snomed_concept \"Distress\" \"finding\"))) (no (clinical_finding (snomed_concept \"Does not communicate\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-23f4567b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "probable High suicide risk with the two page routes; feeds the Urgent priority via active_condition.",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (diagnosis (snomed_concept \"High suicide risk\" \"finding\") probable)",
+    "Urgent: attempted/considered self-harm or suicide :: (active_condition (snomed_concept \"High suicide risk\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-c4512abb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Page: low risk = not attempted AND no current thoughts/plans AND (no thoughts/plans in past month and no act in past year  OR  history present but not agitated/violent/distressed/uncommunicative). Rule always requires recorded absence of all four agitation findings and never uses absence of the past-month/past-year history, so a patient with no recent history who is agitated or distressed (page: low risk via the past-history \"No\" branch) is not diagnosed low risk. It also requires a recorded (no) for \"Suicide attempt\" and \"Intentionally harming self\", which are only the task trigger and are in no check_for, so when the task is triggered by thoughts those negatives are never asked and the rule cannot fire.",
+   "evidence": [
+    "Diagnose probable low risk of self-harm or suicide :: (and (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))) (no (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))) (no (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))) (no (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\"))) (no (clinical_finding (snomed_concept \"Distress\" \"finding\"))) (no (clinical_finding (snomed_concept \"Does not communicate\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-cc8909ef",
+   "scope": "in_scope",
+   "scope_reason": "continuation of \"Low risk of self-harm\" (p34-c4512abb)",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Same as p34-c4512abb.",
+   "evidence": [
+    "Diagnose probable low risk of self-harm or suicide :: (and (no (clinical_finding (snomed_concept \"Suicide attempt\" \"event\"))) (no (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))) (no (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))) (no (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\"))) (no (clinical_finding (snomed_concept \"Distress\" \"finding\"))) (no (clinical_finding (snomed_concept \"Does not communicate\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-6e0338da",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-a50d9d59",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-cdf216aa",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-e795e94f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-0bd18a87",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Depression screen questions route to p159/160; no conclusion on this page.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-2d411090",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Substance-use screen routes to p165.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-e7727f33",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Psychotic features -> discuss with specialist same day; memory problem -> p166. No \"likely/consider\" diagnosis stated.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-966513e1",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-c605690b",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p34-6ea82761",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "\"If thoughts or attempts recur, reassess suicide risk above\" is follow-up routing back into the red box.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p34-298091df",
+  "p34-41e85c33",
+  "p34-255673ec",
+  "p34-6631e727",
+  "p34-64bde5fe"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "problem": "Logic does not match the flowchart: page reaches low risk by EITHER no past-month/past-year history OR history without agitation; rule ignores history and always requires no agitation/aggression/distress/non-communication, losing the 'no history' route (agitated patient with no recent history).",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide / Check for self-harm or suicide risk",
+   "problem": "Low-risk rule requires recorded (no) for \"Suicide attempt\" and \"Intentionally harming self\", but these are only the task due_to and appear in no check_for; when the task fires on thoughts, the first flowchart question (attempted?) is never asked, so the low-risk diagnosis is effectively unreachable.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "problem": "Past-year act uses onset of 'History of attempted suicide' / 'History of deliberate self harm' situations; onset of a history-of situation is the recording time, not the act date, so 'act in past year' is not really tested; recent 'Suicide attempt'/'Intentionally harming self' events are not used in this branch.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "problem": "'Thoughts in past month' encoded as onset within 1 month; thoughts that began more than a month ago and persisted into the past month (but are not tagged Current) are missed.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "problem": "check_for lists 'Planning suicide' both with Current qualifier and unqualified, and does not ask about the attempt itself or 'Thoughts of self harm' within the past month as a distinct item; the check list does not mirror the flowchart's first question.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "problem": "Urgent trigger includes unqualified 'Thoughts of self harm' (and via descendants any suicidal thought/plan ever recorded), so every patient the page classes low risk is also Urgent; consistent with the box header 'attempted/considered' but means the low/high split does not affect priority. Past-year acts recorded only as history situations do not trigger Urgent.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The low-risk rule is the main defect: it drops the 'no recent history' route to low risk (always requiring no agitation) and depends on recorded absence of attempt events that no check_for asks, so it will rarely or never fire. High-risk logic and the Urgent priority match the flowchart well; the past-year-act criterion is weakened by using onset of history-of situations."
+}

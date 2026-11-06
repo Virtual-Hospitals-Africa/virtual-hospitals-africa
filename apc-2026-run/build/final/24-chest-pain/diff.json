@@ -1,0 +1,307 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/24-chest-pain",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/24-chest-pain",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute coronary syndrome from chest pain"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pneumonia from pleuritic chest pain"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tension pneumothorax from chest pain"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: chest pain with danger signs or heart attack risk"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: probable acute coronary syndrome from chest pain"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: probable pneumonia from pleuritic chest pain"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: probable tension pneumothorax from chest pain"
+  },
+  {
+   "atom": "task",
+   "description": "Check for tension pneumothorax and pneumonia in chest pain worse on palpation or breathing"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent chest pain conditions"
+  },
+  {
+   "atom": "task",
+   "description": "Record known cardiovascular risk in chest pain"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute coronary syndrome in chest pain"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pneumonia in chest pain"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable stable angina in chest pain"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tension pneumothorax in chest pain"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: chest pain with danger signs"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: chest pain worse on lying down, palpation or breathing deeply"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: probable acute coronary syndrome in chest pain"
+  },
+  {
+   "atom": "task",
+   "description": "Check chest pain character for acute coronary syndrome"
+  },
+  {
+   "atom": "task",
+   "description": "Check for tension pneumothorax or pneumonia in chest pain"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent chest pain signs"
+  },
+  {
+   "atom": "task",
+   "description": "Do an ECG for chest pain (doctor to review)"
+  },
+  {
+   "atom": "task",
+   "description": "Record known cardiovascular disease risk for chest pain"
+  }
+ ],
+ "conditions_A": 102,
+ "conditions_B": 121,
+ "conditions_in_both": 92,
+ "agreement": 0.825,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    }
+   ]
+  },
+  "priority_condition": {
+   "only_A": [
+    "(active_condition (snomed_concept \"Pneumonia\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "(> (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %) 20)",
+    "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+    "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+    "(active_condition (snomed_concept \"Acute coronary syndrome\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))"
+   ],
+   "only_B": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "both": [
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [
+    "(diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Acute coronary syndrome\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Pneumonia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

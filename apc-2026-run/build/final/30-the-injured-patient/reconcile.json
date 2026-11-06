@@ -1,0 +1,79 @@
+{
+  "page": 30,
+  "base": "A",
+  "decisions": [
+    {
+      "role": "check_for",
+      "difference": "A: (Limb ischemia) for poor perfusion in wound and fracture groups  vs  B: (Cold extremity), and (Numbness of limbs) in the wound group",
+      "choice": "both",
+      "final_expr": "(or Limb ischemia, Cold extremity, Numbness of limbs [wound; fracture already has it via 'Weak/numb'], Peripheral pulse absent)",
+      "reason": "The page names 'Poor perfusion' and lists its parts '(cold, pale, numb, no pulse)'; A encodes the named sign and B the listed parts, and both are the page's words.",
+      "unsettled": true
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Nasal discharge + Clear), (Ear discharge + Clear)  vs  B: (Cerebrospinal fluid rhinorrhea), (Cerebrospinal fluid otorrhea)",
+      "choice": "A",
+      "final_expr": "(Nasal discharge (qualifier Clear)), (Ear discharge (qualifier Clear))",
+      "reason": "The page says 'clear fluid leaking from nose/ear' and never says CSF; B's concepts are an interpretation and narrower.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Sluggish pupil movement), (No pupillary reaction to light)  vs  B: (Abnormal pupil reaction)",
+      "choice": "A",
+      "final_expr": "(Sluggish pupil movement), (No pupillary reaction to light)",
+      "reason": "'Respond poorly to light' is a light-response finding; B's concept's only SNOMED child is poor dilation to mydriatic drops, so A matches the page's words better.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Alcohol intoxication) in addition to (Intoxication)  vs  B: (Intoxication) only",
+      "choice": "A",
+      "final_expr": "(Intoxication), (Alcohol intoxication)",
+      "reason": "The page says 'Drug/alcohol intoxication'; Alcohol intoxication is a descendant of Intoxication, so listing it explicitly names the page's word without changing the logic.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Limb ischemia) for poor perfusion in wound and fracture groups  vs  B: (Cold extremity), and (Numbness of limbs) in the wound group",
+      "choice": "both",
+      "final_expr": "(or Limb ischemia, Cold extremity, Numbness of limbs [wound; fracture already has it via 'Weak/numb'], Peripheral pulse absent)",
+      "reason": "The page names 'Poor perfusion' and lists its parts '(cold, pale, numb, no pulse)'; A encodes the named sign and B the listed parts, and both are the page's words.",
+      "unsettled": true
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Nasal discharge + Clear), (Ear discharge + Clear)  vs  B: (Cerebrospinal fluid rhinorrhea), (Cerebrospinal fluid otorrhea)",
+      "choice": "A",
+      "final_expr": "(Nasal discharge (qualifier Clear)), (Ear discharge (qualifier Clear))",
+      "reason": "The page says 'clear fluid leaking from nose/ear' and never says CSF; B's concepts are an interpretation and narrower.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Sluggish pupil movement), (No pupillary reaction to light)  vs  B: (Abnormal pupil reaction)",
+      "choice": "A",
+      "final_expr": "(Sluggish pupil movement), (No pupillary reaction to light)",
+      "reason": "'Respond poorly to light' is a light-response finding; B's concept's only SNOMED child is poor dilation to mydriatic drops, so A matches the page's words better.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Alcohol intoxication) in addition to (Intoxication)  vs  B: (Intoxication) only",
+      "choice": "A",
+      "final_expr": "(Intoxication), (Alcohol intoxication)",
+      "reason": "The page says 'Drug/alcohol intoxication'; Alcohol intoxication is a descendant of Intoxication, so listing it explicitly names the page's word without changing the logic.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Finding of vomiting) in the head injury check_for  vs  B: only in the priority rule",
+      "choice": "A",
+      "final_expr": "(Finding of vomiting)",
+      "reason": "'Vomiting ≥ 2 times' is in the red box's head-injury list, so it is something to check for; both builds already use it in the priority rule.",
+      "unsettled": false
+    }
+  ],
+  "notes": "Both builds passed. Base A (more literal on clear fluid and pupil response). Only check_for and priority_condition differed; triggers, diagnoses and their conditions were identical. Poor perfusion merges both builds' concepts; pallor of a limb has no SNOMED concept. Vomiting >= 2 times stays as any vomiting (both builds agree; count not expressible). Rule descriptions are A's."
+}

@@ -1,0 +1,985 @@
+{
+ "edition": "2026",
+ "page": 85,
+ "lisp_file": "85-localised-itchy-rash.lisp",
+ "conditions": [
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "element_keys": [
+    "p85-74f00f0f"
+   ],
+   "quote": "ITCHY RASH",
+   "confidence": "medium",
+   "note": "Presenting complaint (page title; the red box is a pointer only). 'Pruritic rash' (disorder); 'localised' has no separate concept, so a generalised itchy rash would also trigger."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "very itchy",
+   "confidence": "medium",
+   "note": "'Very itchy' as Itching with the Severe qualifier."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "small red bumps",
+   "confidence": "medium",
+   "note": "Bumps = skin papules; 'red' and 'small' not encoded (no qualifier added), so the same papule finding serves the insect-bite question."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of hand\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "webspaces of fingers",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'webspaces of fingers'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "axillae",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'axillae'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of waist region of trunk\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "waist",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'waist'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'genitals'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "Dry skin = Xeroderma (disorder; 'Dry skin' is its synonym)."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "wrists",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'wrists'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "ankles",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'ankles'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Antecubital region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "inside elbows",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'inside elbows'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "behind knees",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'behind knees'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "round macules",
+   "confidence": "medium",
+   "note": "Round macules = Macule of skin with Round shape qualifier."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "dark coloured",
+   "confidence": "medium",
+   "note": "'Dark coloured' macules as skin hyperpigmentation; separate finding, not tied to the macule."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "after ingestion of a medication",
+   "confidence": "medium",
+   "note": "Exposure to a drug (gold-standard exposure form); 'ingestion' and timing not expressible."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "If blisters",
+   "confidence": "high",
+   "note": "Blisters as Blister of skin."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-inflammatory hyperpigmentation\" \"disorder\"))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "heals with darkened skin",
+   "confidence": "medium",
+   "note": "Healed with darkened skin = Post-inflammatory hyperpigmentation."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\") (qualifier (snomed_concept \"Yellow color\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "yellow crusts",
+   "confidence": "high",
+   "note": "Crust on skin with Yellow color qualifier."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin plaque\" \"disorder\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-ee8e6312"
+   ],
+   "quote": "Well-defined, raised plaques",
+   "confidence": "medium",
+   "note": "Skin plaque with Well defined and Raised qualifiers."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Silver color\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-ee8e6312",
+    "p85-c40ba95b"
+   ],
+   "quote": "covered with silvery scale",
+   "confidence": "medium",
+   "note": "Silvery scale = Scaly skin with Silver color qualifier."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of chest\" \"body structure\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-4e338c24",
+    "p85-0908ec8e"
+   ],
+   "quote": "one large ring on chest/back (herald patch)",
+   "confidence": "medium",
+   "note": "Herald patch: annular skin lesion on chest skin (chest or back are alternatives). 'Large' and 'fine scale in centre' not encoded."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of back\" \"body structure\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-4e338c24",
+    "p85-0908ec8e"
+   ],
+   "quote": "one large ring on chest/back (herald patch)",
+   "confidence": "medium",
+   "note": "Herald patch: annular skin lesion on back skin."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oval shaped lesion\" \"finding\") (qualifier (snomed_concept \"Multiple\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-91fe3d10"
+   ],
+   "quote": "smaller, oval, scaly patches",
+   "confidence": "low",
+   "note": "Multiple oval shaped lesions; 'smaller', 'scaly' and 'within 2 weeks' of the herald patch not encoded."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-b4fda3c2"
+   ],
+   "quote": "lesion/s with raised edges",
+   "confidence": "low",
+   "note": "Raised edges approximated as an annular raised skin lesion; no concept for 'raised edge' or 'clear in centre'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-b4fda3c2"
+   ],
+   "quote": "ring of scale",
+   "confidence": "medium",
+   "note": "Ring of scale = Scaly skin with Annular shape qualifier."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "Cracks",
+   "confidence": "medium",
+   "note": "Cracks between toes = Fissure in skin at interdigital web of foot."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "peeling",
+   "confidence": "high",
+   "note": "Peeling of skin at interdigital web of foot."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "scaly lesions between toes",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'scaly lesions between toes'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "thickened scaly skin on soles",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "soles",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'soles'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "heels",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "heels",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'heels'."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lateral border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "sides of feet",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Check for localised itchy rash conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lateral border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "sides of feet",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'sides of feet'."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "very itchy",
+   "confidence": "medium",
+   "note": "'Very itchy' as Itching with the Severe qualifier."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "small red bumps",
+   "confidence": "medium",
+   "note": "Bumps = skin papules; 'red' and 'small' not encoded (no qualifier added), so the same papule finding serves the insect-bite question."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of hand\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "webspaces of fingers",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'webspaces of fingers'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "axillae",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'axillae'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of waist region of trunk\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "waist",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'waist'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Burrows in skin with finding site for 'genitals'. The site list is read as applying to the burrows (and bumps); site attached to burrows only."
+  },
+  {
+   "rule": "Diagnose probable scabies (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "scabies likely",
+   "confidence": "medium",
+   "note": "No 'Scabies' disorder FSN; the human scabies infestation concept is used."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "dry, scaly, itchy skin",
+   "confidence": "medium",
+   "note": "The 'itchy' part of the eczema description, as the presenting complaint finding."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "Dry skin = Xeroderma (disorder; 'Dry skin' is its synonym)."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "wrists",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'wrists'."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "ankles",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'ankles'."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Antecubital region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "inside elbows",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'inside elbows'."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "behind knees",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'behind knees'."
+  },
+  {
+   "rule": "Diagnose probable eczema (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "eczema likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "round macules",
+   "confidence": "medium",
+   "note": "Round macules = Macule of skin with Round shape qualifier."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "dark coloured",
+   "confidence": "medium",
+   "note": "'Dark coloured' macules as skin hyperpigmentation; separate finding, not tied to the macule."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "after ingestion of a medication",
+   "confidence": "medium",
+   "note": "Exposure to a drug (gold-standard exposure form); 'ingestion' and timing not expressible."
+  },
+  {
+   "rule": "Diagnose probable fixed drug eruption (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fixed drug eruption\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-31ec2960"
+   ],
+   "quote": "fixed drug eruption likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable insect bites (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "The 'itchy' part of 'red itchy bumps', expressed by the presenting complaint finding."
+  },
+  {
+   "rule": "Diagnose probable insect bites (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "Bumps = skin papules; 'red' not encoded as a qualifier."
+  },
+  {
+   "rule": "Diagnose probable insect bites (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Insect bite - wound\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "Insect bites likely",
+   "confidence": "medium",
+   "note": "Insect bite - wound (the recorded common symptom) used as the diagnosis."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "The 'itchy' part of 'red itchy bumps', expressed by the presenting complaint finding."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "Bumps = skin papules; 'red' not encoded as a qualifier."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "If blisters",
+   "confidence": "high",
+   "note": "Blisters as Blister of skin."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-inflammatory hyperpigmentation\" \"disorder\"))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "heals with darkened skin",
+   "confidence": "medium",
+   "note": "Healed with darkened skin = Post-inflammatory hyperpigmentation."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Prurigo simplex\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "papular urticaria likely",
+   "confidence": "medium",
+   "note": "'Papular urticaria' is a synonym of Prurigo simplex."
+  },
+  {
+   "rule": "Diagnose probable impetigo (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "The 'itchy' part of 'red itchy bumps', expressed by the presenting complaint finding."
+  },
+  {
+   "rule": "Diagnose probable impetigo (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p85-b830f8f1"
+   ],
+   "quote": "red itchy bumps",
+   "confidence": "medium",
+   "note": "Bumps = skin papules; 'red' not encoded as a qualifier."
+  },
+  {
+   "rule": "Diagnose probable impetigo (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\") (qualifier (snomed_concept \"Yellow color\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "yellow crusts",
+   "confidence": "high",
+   "note": "Crust on skin with Yellow color qualifier."
+  },
+  {
+   "rule": "Diagnose probable impetigo (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Impetigo\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-f7df4bb9"
+   ],
+   "quote": "impetigo likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin plaque\" \"disorder\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-ee8e6312"
+   ],
+   "quote": "Well-defined, raised plaques",
+   "confidence": "medium",
+   "note": "Skin plaque with Well defined and Raised qualifiers."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Silver color\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-ee8e6312",
+    "p85-c40ba95b"
+   ],
+   "quote": "covered with silvery scale",
+   "confidence": "medium",
+   "note": "Silvery scale = Scaly skin with Silver color qualifier."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Psoriasis\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-e0f6cd59"
+   ],
+   "quote": "Psoriasis likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable pityriasis rosea (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of chest\" \"body structure\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-4e338c24",
+    "p85-0908ec8e"
+   ],
+   "quote": "one large ring on chest/back (herald patch)",
+   "confidence": "medium",
+   "note": "Herald patch: annular skin lesion on chest skin (chest or back are alternatives). 'Large' and 'fine scale in centre' not encoded."
+  },
+  {
+   "rule": "Diagnose probable pityriasis rosea (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of back\" \"body structure\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-4e338c24",
+    "p85-0908ec8e"
+   ],
+   "quote": "one large ring on chest/back (herald patch)",
+   "confidence": "medium",
+   "note": "Herald patch: annular skin lesion on back skin."
+  },
+  {
+   "rule": "Diagnose probable pityriasis rosea (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oval shaped lesion\" \"finding\") (qualifier (snomed_concept \"Multiple\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-91fe3d10"
+   ],
+   "quote": "smaller, oval, scaly patches",
+   "confidence": "low",
+   "note": "Multiple oval shaped lesions; 'smaller', 'scaly' and 'within 2 weeks' of the herald patch not encoded."
+  },
+  {
+   "rule": "Diagnose probable pityriasis rosea (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pityriasis rosea\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-112e4ac8"
+   ],
+   "quote": "Pityriasis rosea likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable tinea corporis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-b4fda3c2"
+   ],
+   "quote": "lesion/s with raised edges",
+   "confidence": "low",
+   "note": "Raised edges approximated as an annular raised skin lesion; no concept for 'raised edge' or 'clear in centre'."
+  },
+  {
+   "rule": "Diagnose probable tinea corporis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p85-b4fda3c2"
+   ],
+   "quote": "ring of scale",
+   "confidence": "medium",
+   "note": "Ring of scale = Scaly skin with Annular shape qualifier."
+  },
+  {
+   "rule": "Diagnose probable tinea corporis (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tinea corporis\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-6cfd3324"
+   ],
+   "quote": "Tinea corporis (ringworm) likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "Cracks",
+   "confidence": "medium",
+   "note": "Cracks between toes = Fissure in skin at interdigital web of foot."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "peeling",
+   "confidence": "high",
+   "note": "Peeling of skin at interdigital web of foot."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-2d82d9b0"
+   ],
+   "quote": "scaly lesions between toes",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'scaly lesions between toes'."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "thickened scaly skin on soles",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "soles",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'soles'."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "heels",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "heels",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'heels'."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thickening of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lateral border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "sides of feet",
+   "confidence": "medium",
+   "note": "Thickened (and scaly) skin at this site: Thickening of skin + Scaly skin at the same finding site, paired with and."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lateral border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p85-1a81dc87"
+   ],
+   "quote": "sides of feet",
+   "confidence": "medium",
+   "note": "Scaly skin with finding site for 'sides of feet'."
+  },
+  {
+   "rule": "Diagnose probable tinea pedis (localised itchy rash)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tinea pedis\" \"disorder\") probable)",
+   "element_keys": [
+    "p85-6cfd3324"
+   ],
+   "quote": "Tinea pedis (athlete's foot) likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p85-596e9255",
+   "element_id": "p85-rb1-e01",
+   "text": "Check if the patient needs urgent attention 82.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer-only red box to page 82 (urgent attention); the urgent criteria live on page 82."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "Trigger is (clinical_finding Pruritic rash); 'localised' not expressed.",
+   "alternatives": "Localized eruption of skin (loses 'itchy'); an or of both (would fire for non-itchy localised rashes).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Q1 = No branch",
+   "decision": "No-branch diagnoses (psoriasis, pityriasis rosea, tinea corporis/pedis) do not require an explicit (no Papule of skin); site of rash (head/face/trunk/limbs vs feet) carried by the findings' own sites.",
+   "alternatives": "Add (no Papule of skin) to each No-branch rule; that would stop them firing unless the health worker marks 'No'.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Insect bites",
+   "decision": "Insect bites likely = itchy rash + skin papules; blistering/darkening optional ('may have'); 'usually occurs in crops' not encoded.",
+   "alternatives": "Require blister or darkening as well (narrower than the page's question).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Scabies vs insect bites overlap",
+   "decision": "Both use the same Papule of skin finding, as the page uses 'red bumps' in both; scabies additionally needs severe itching and burrows at a listed site.",
+   "alternatives": "Separate qualified papule findings (no SNOMED basis for 'small').",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pityriasis rosea timing",
+   "decision": "'Typically followed within 2 weeks' not encoded: the language cannot compare the onsets of two findings.",
+   "alternatives": "An onset bound on the oval lesions relative to now (not what the page says).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Tinea corporis",
+   "decision": "Annular raised skin lesion OR annular scaly skin; 'slow-growing' and 'clear in centre' not encoded.",
+   "alternatives": "Slow qualifier (meaning unclear for growth).",
+   "confidence": "low"
+  }
+ ]
+}

@@ -1,0 +1,772 @@
+{
+ "page": 81,
+ "lisp_file": "81-foot-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "element_keys": [
+    "p81-54f7e4fb"
+   ],
+   "quote": "foot symptoms"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "Unable to bear weight"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "following injury"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "Sudden severe foot pain at rest"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "pallor"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "no pulse"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "Muscle pain in legs or buttocks on exercise"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "foot pain at rest"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of foot\" \"disorder\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "ulcer"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent foot symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrene of foot\" \"disorder\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "gangrene on foot"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "foot symptoms"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "cracks"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "peeling"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "scaly lesions between toes"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles/heels"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles/heels"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "sides of feet"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "sides of feet"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-ee9b224e"
+   ],
+   "quote": "Generalised foot pain"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "burning pain"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "pins/needles"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "numbness of feet"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-d6576abd",
+    "p81-cf0b3d45"
+   ],
+   "quote": "Foot pain with muscle pain in legs"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-d6576abd",
+    "p81-cf0b3d45"
+   ],
+   "quote": "muscle pain in legs or buttocks"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heel pain\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Heel pain"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "worse on starting walking"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Foot deformity"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bony swelling of toe joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Bony lump at base of big toe"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "element_keys": [
+    "p81-54f7e4fb"
+   ],
+   "quote": "foot symptoms"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "Unable to bear weight"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "following injury"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "fracture likely"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "Sudden severe foot pain at rest"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "pallor"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "no pulse"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute lower limb ischemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "acute limb ischaemia likely"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "Muscle pain in legs or buttocks on exercise"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "foot pain at rest"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of foot\" \"disorder\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "ulcer"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrene of foot\" \"disorder\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "gangrene on foot"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Critical lower limb ischemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "critical limb ischaemia likely"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "cracks"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "peeling"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "scaly lesions between toes"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles/heels"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "thickened scaly skin on soles/heels"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "sides of feet"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "sides of feet"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tinea pedis\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-7d5b6c24"
+   ],
+   "quote": "tinea pedis"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-ee9b224e"
+   ],
+   "quote": "Generalised foot pain"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "burning pain"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "pins/needles"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-b2c569e6"
+   ],
+   "quote": "numbness of feet"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Peripheral nerve disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-bce81f62"
+   ],
+   "quote": "Peripheral neuropathy likely"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "element_keys": [
+    "p81-ee9b224e"
+   ],
+   "quote": "Generalised foot pain"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-d6576abd",
+    "p81-cf0b3d45"
+   ],
+   "quote": "muscle pain in legs"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-cf0b3d45"
+   ],
+   "quote": "buttocks"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Peripheral vascular disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-099c3ec5",
+    "p81-b5da04b4",
+    "p81-8db686bc",
+    "p81-236d6d33"
+   ],
+   "quote": "Peripheral vascular disease likely"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heel pain\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Heel pain"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "worse on starting walking"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Plantar fasciitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-d6d41e43"
+   ],
+   "quote": "Plantar fasciitis likely"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of foot\" \"finding\"))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Foot deformity"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bony swelling of toe joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p81-de21fb49"
+   ],
+   "quote": "Bony lump at base of big toe"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") probable)",
+   "element_keys": [
+    "p81-fd91a5af"
+   ],
+   "quote": "Bunion likely"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "element_keys": [
+    "p81-54f7e4fb"
+   ],
+   "quote": "foot symptoms"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "element_keys": [
+    "p81-197f31de"
+   ],
+   "quote": "fracture likely"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\"))",
+   "element_keys": [
+    "p81-a9d58d7b"
+   ],
+   "quote": "acute limb ischaemia likely"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))",
+   "element_keys": [
+    "p81-74e46a6e"
+   ],
+   "quote": "critical limb ischaemia likely"
+  }
+ ]
+}

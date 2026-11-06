@@ -1,0 +1,396 @@
+{
+  "page": 148,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p148-ce322ade",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the trigger (SBP >= 180 and/or DBP >= 110) plus 'and symptoms' is the priority evaluation's structure.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both thresholds and the and/or are encoded as (or (>= SBP 180) (>= DBP 110)); the priority rule is (and <BP> (or ...all red-box items...)) exactly as the house standard asks. The check_for task is triggered by the same BP condition. Level is Urgent; see rule-level note on the page's 'refer urgently' vs 'refer same day' distinction.",
+      "evidence": [
+        "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis) :: (system_priority_evaluation ... adult Urgent (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (or ...)))",
+        "Check for urgent symptoms with BP ≥ 180/110 :: (task ... adult (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-d9dbc9ba",
+      "scope": "in_scope",
+      "scope_reason": "Seven sudden-onset criteria and an 'X likely' conclusion (stroke).",
+      "verdict": "partial",
+      "parts_missing": [
+        "'weakness on 1 or both sides': encoded as generic Muscle weakness; the side/limb aspect is dropped. (snomed_concept \"Muscle weakness of limb\" \"finding\") exists and is a descendant of Muscle weakness; (snomed_concept \"Hemiparesis\" \"disorder\") exists but is NOT a descendant of Muscle weakness, so a recorded hemiparesis would not fire the rule."
+      ],
+      "problem": "Parts judged: (1) sudden severe headache = Headache + Severe + Sudden onset, correct; (2) weakness on 1 or both sides = Muscle weakness + Sudden onset, acceptable but loses laterality and misses Hemiparesis; (3) seizure/s = Seizure + Sudden onset, correct (qualifier semantically redundant); (4) visual disturbances = Visual disturbance (disorder) + Sudden onset, correct; (5) dizziness = Dizziness + Sudden onset, correct; (6) difficulty speaking = Difficulty talking + Sudden onset, correct (synonym match confirmed); (7) difficulty swallowing = Difficulty swallowing + Sudden onset, correct; (8) 'stroke likely' = probable Cerebrovascular accident conditioned on BP >= 180/110 and any one of the seven, correct and faithful to the box header. Cross-reference to 152 is a cross-reference only. All eight items also appear in the check_for and the priority rule.",
+      "evidence": [
+        "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis) :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable) adult (and (or (>= SBP 180) (>= DBP 110)) (or (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty swallowing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-6241788d",
+      "scope": "in_scope",
+      "scope_reason": "'Hypertensive emergency likely' with its own BP threshold (SBP >= 180 and/or DBP >= 130) and 'any of' list.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable Hypertensive emergency rule with (or (>= SBP 180) (>= DBP 130)) and an or-list of the four emergency items. Concept (snomed_concept \"Hypertensive emergency\" \"disorder\") exists. Threshold 130 (not 110) correctly carried.",
+      "evidence": [
+        "Diagnose probable hypertensive emergency :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Hypertensive emergency\" \"disorder\") probable) adult (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 130)) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-120c8298",
+      "scope": "in_scope",
+      "scope_reason": "'Hypertensive urgency likely' with threshold SBP >= 180 and/or DBP >= 110 and 'any of' list.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable Hypertensive urgency rule with (or (>= SBP 180) (>= DBP 110)) and an or-list of the three urgency items (heart-failure item split into its two findings). Concept exists. Note the page itself lets emergency and urgency both be 'likely' for SBP >= 180 plus severe headache; the rules reproduce that overlap rather than resolve it (see rule-level note).",
+      "evidence": [
+        "Diagnose probable hypertensive urgency :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Hypertensive urgency\" \"disorder\") probable) adult (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-43160d1f",
+      "scope": "in_scope",
+      "scope_reason": "Emergency criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Headache + Severe qualifier, in check_for, emergency rule and priority rule.",
+      "evidence": [
+        "Diagnose probable hypertensive emergency :: (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-1380671b",
+      "scope": "in_scope",
+      "scope_reason": "Urgency criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Same qualified Headache finding reused in the urgency rule; checked for once, consumed by both rules.",
+      "evidence": [
+        "Diagnose probable hypertensive urgency :: (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-60d92e41",
+      "scope": "in_scope",
+      "scope_reason": "Emergency criterion 'Known kidney failure (eGFR < 15)'. The eGFR number itself has no unit in the language (units are %, bpm, °C, cm, kg, mmol/L, mmHg, mm), so only the 'known kidney failure' part is representable.",
+      "verdict": "partial",
+      "parts_missing": [
+        "eGFR < 15 as a measurement: not representable (no unit), expected.",
+        "Acute kidney failure: the chosen concept (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") is a sound proxy for eGFR < 15 that is chronic, but it is NOT a descendant of (snomed_concept \"Renal failure syndrome\" \"disorder\") and that concept (which covers Acute kidney injury) is not used, so a patient with known acute kidney failure does not satisfy the emergency rule. The page says 'kidney failure', not 'chronic kidney disease'."
+      ],
+      "problem": "Suggest checking for and using both (clinical_finding (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") (qualifier Known present)) and (clinical_finding (snomed_concept \"Renal failure syndrome\" \"disorder\") (qualifier Known present)), or a single broader kidney-failure concept. Hierarchy checked with the snomed tool: CKD stage 5 is_a Renal failure syndrome = NO; Acute kidney injury is_a Renal failure syndrome = YES.",
+      "evidence": [
+        "Diagnose probable hypertensive emergency :: (clinical_finding (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-d9f89b72",
+      "scope": "in_scope",
+      "scope_reason": "Urgency criterion 'Known kidney impairment (eGFR < 60)'; the eGFR number is not representable, the known condition is.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "(snomed_concept \"Renal impairment\" \"disorder\") with Known present is the right concept (synonym 'impaired renal function'). Chronic kidney disease, CKD stage 5, Renal failure syndrome and Acute kidney injury are all descendants, so the emergency-level kidney patient also satisfies urgency, which matches the page. eGFR < 60 threshold is not representable (no unit) and is correctly left as the concept alone.",
+      "evidence": [
+        "Diagnose probable hypertensive urgency :: (clinical_finding (snomed_concept \"Renal impairment\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-67f6b099",
+      "scope": "in_scope",
+      "scope_reason": "Two urgency criteria plus an 'X likely' (heart failure).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Parts: (1) difficulty breathing worse on lying flat = Orthopnea, correct and precise; (2) leg swelling = Leg swelling symptom, correct; (3) 'heart failure likely' = probable Heart failure rule, conditioned on the box's BP >= 180/110 and either finding, correct. Both findings are also in the urgency rule as an or, so the urgency rule does not depend on the heart-failure diagnosis firing first.",
+      "evidence": [
+        "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis) :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable) adult (and (or (>= SBP 180) (>= DBP 110)) (or (clinical_finding (snomed_concept \"Orthopnea\" \"finding\")) (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\")))))",
+        "Diagnose probable hypertensive urgency :: (clinical_finding (snomed_concept \"Orthopnea\" \"finding\")) (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-0fb3f9e8",
+      "scope": "in_scope",
+      "scope_reason": "Emergency criterion; the '24' is a cross-reference only.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Chest pain (warning sign) and Preinfarction syndrome (SNOMED synonym 'unstable angina', confirmed by search) both present in check_for, emergency rule and priority rule.",
+      "evidence": [
+        "Diagnose probable hypertensive emergency :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (clinical_finding (snomed_concept \"Preinfarction syndrome\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-2a9b788b",
+      "scope": "in_scope",
+      "scope_reason": "Emergency criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Shortness of breath = Dyspnea (synonym confirmed; also a common symptom); severe heart failure = Heart failure + Severe qualifier. Orthopnea is a descendant of Dyspnea, so an orthopnoeic patient with SBP >= 180 also meets the emergency rule; that mirrors the page, where 'shortness of breath' at SBP >= 180 is an emergency criterion.",
+      "evidence": [
+        "Diagnose probable hypertensive emergency :: (clinical_finding (snomed_concept \"Dyspnea\" \"finding\")) (clinical_finding (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-d70de91e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Header for the same-day management block; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-b65e46de",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Header for the urgent management block; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-82b83731",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Drug choice for same-day referral (amlodipine/enalapril then HCTZ).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-4e17b747",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Give amlodipine 10mg.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-4d1a2f2c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Furosemide IV and oxygen for severe heart failure.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-db03536d",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Alternative drug regimen when eGFR < 60 or heart failure likely.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-d1ae7742",
+      "scope": "borderline",
+      "scope_reason": "Flowchart heading plus a classification rule ('use the higher reading to classify'). The classification feeds 'Diagnose mild/moderate/severe hypertension', which are diagnostic conclusions, but the flowchart requires confirmation on repeat visits that the language cannot express (measurements have no history).",
+      "verdict": "missing",
+      "parts_missing": ["Nothing about hypertension classification is encoded."],
+      "problem": "The 'higher reading wins' rule would be an (or (>= SBP x) (>= DBP y)) per band; nothing in the file encodes any band below 180/110. See rule-level problem 1.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-815550ab",
+      "scope": "borderline",
+      "scope_reason": "Two flowchart decision nodes (BP < 140/90; BP >= 180/110) for the non-urgent patient.",
+      "verdict": "missing",
+      "parts_missing": ["BP < 140/90 branch (normal, go to CVD-risk follow-up)", "BP >= 180/110 non-symptomatic branch (confirm, then severe hypertension)"],
+      "problem": "The >= 180/110 threshold exists in the file only as the trigger of the urgent-symptoms task and rules; the asymptomatic >= 180/110 patient produces no diagnosis or classification. The < 140/90 branch leads only to follow-up scheduling (management).",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-f8d286bc",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "'Repeat BP on 2 further occasions at least 2 days apart' and 'avoid diagnosing on one reading alone' need measurement history; the grammar's measurement node has history: false and no time-series comparison. This is the reason the flowchart's diagnoses cannot be encoded at probable level.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-3f289d7a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Cuff size check, rest for 1 hour, take 3 readings: measurement procedure for the >= 180/110 branch.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-c75760eb",
+      "scope": "borderline",
+      "scope_reason": "Flowchart decision nodes after repeat readings (BP < 140/90; BP 160/100 - 179/109).",
+      "verdict": "missing",
+      "parts_missing": ["BP 160/100 - 179/109 band (moderate hypertension)", "BP < 140/90 on repeat (not hypertensive)"],
+      "problem": "No band thresholds below 180/110 are encoded anywhere in the file.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-159b3cb4",
+      "scope": "borderline",
+      "scope_reason": "Flowchart node 'BP confirmed >= 180/110'; the 'confirmed' part needs repeat readings (not representable) but the threshold is.",
+      "verdict": "missing",
+      "parts_missing": ["Asymptomatic BP >= 180/110 leading to severe hypertension"],
+      "problem": "Not encoded; see rule-level problem 1.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-99f1bdc6",
+      "scope": "borderline",
+      "scope_reason": "'Diagnose mild hypertension' is a diagnostic conclusion (BP 140/90 - 159/99 on repeat). SNOMED has no 'Mild hypertension' concept; (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") and (snomed_concept \"Blood pressure above reference range\" \"finding\") exist. Repeat-reading requirement is not representable, so at most a possible-level rule from a single reading is defensible.",
+      "verdict": "missing",
+      "parts_missing": ["Any hypertension diagnosis rule"],
+      "problem": "Nothing encoded. The page's own warning ('avoid diagnosing hypertension on one reading alone') argues for a `possible` Hypertensive disorder, systemic arterial when a single reading is >= 140/90, not a `probable` one; the file has neither.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-1a771248",
+      "scope": "borderline",
+      "scope_reason": "'Diagnose moderate hypertension' (BP 160/100 - 179/109 on repeat). No SNOMED 'Moderate hypertension' disorder (only 'Moderate hypertension control' finding, which means something else).",
+      "verdict": "missing",
+      "parts_missing": ["Any hypertension diagnosis rule"],
+      "problem": "Nothing encoded; same reasoning as mild hypertension.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-10d853cb",
+      "scope": "borderline",
+      "scope_reason": "'Diagnose severe hypertension' after confirmed >= 180/110, plus a routing instruction back to the red box. No SNOMED 'Severe hypertension' disorder.",
+      "verdict": "missing",
+      "parts_missing": ["Any hypertension diagnosis for the asymptomatic >= 180/110 patient"],
+      "problem": "Nothing encoded. 'Check to see if patient needs urgent attention above' is already covered by the red-box task being triggered by BP >= 180/110, so only the diagnosis is missing.",
+      "evidence": [
+        "Check for urgent symptoms with BP ≥ 180/110 :: (task ... (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) ...)"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-43904538",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Assess CVD risk (page 142) and decide follow-up frequency: cross-reference plus management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-7b040699",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Criteria (BP < 120/80 and CVD risk < 10% and no risk factors) decide a follow-up interval (check BP after 5 years), not a diagnosis or priority. CVD risk % would also depend on page 142's score, which is not a finding here.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-647c21de",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Criteria for the 1-year follow-up interval; management only.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-25988647",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Routine care (page 149), referral under 30 to exclude secondary cause, treatment threshold over 65. The '< 30 years, exclude secondary cause' line could be read as 'consider Secondary hypertension' (concept exists), but the grammar has no numeric age (only adult / older child / younger child), so it is not representable in any case.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p148-86008c28",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Check BP after 5 years.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p148-fe7da3c5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Check BP after 1 year.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p148-87102fc6",
+    "p148-a9717d5d",
+    "p148-553d87e1",
+    "p148-68dc880e"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "(whole file)",
+      "problem": "The page is titled 'Hypertension: diagnosis' and its lower two-thirds is the hypertension classification flowchart (mild 140/90-159/99, moderate 160/100-179/109, severe confirmed >= 180/110), yet the file contains no diagnosis of hypertension at any certainty. The repeat-reading confirmation is not representable (measurements have no history) and SNOMED has no mild/moderate/severe hypertension concepts, which is a fair reason not to write `probable` rules, but a `possible` (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") on a single reading >= 140/90 (or a (snomed_concept \"Blood pressure above reference range\" \"finding\")) is expressible and matches the page's 'avoid diagnosing on one reading alone' at the possible level. Whether this belongs in the file is a judgment call; it should at least be recorded as a deliberate omission.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable hypertensive emergency",
+      "problem": "'Known kidney failure (eGFR < 15)' is encoded only as Chronic kidney disease stage 5, which in this SNOMED release is not a descendant of Renal failure syndrome; known acute kidney failure does not satisfy the rule. Add (snomed_concept \"Renal failure syndrome\" \"disorder\") with Known present (checked for and used) alongside CKD stage 5, or use a broader kidney-failure concept.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+      "problem": "The page separates 'Manage and refer urgently' (hypertensive emergency, DBP >= 130 or SBP >= 180 with chest pain / severe heart failure / kidney failure) from 'Manage and refer same day' (urgency). Both collapse to a single Urgent level. The briefing reserves Very urgent for explicit escalation; 'Hypertensive emergency ... refer urgently' is arguably that. Consider a Very urgent evaluation on (active_condition Hypertensive emergency) or on the emergency rule's evidence, leaving Urgent for the rest.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable hypertensive urgency / Diagnose probable hypertensive emergency",
+      "problem": "A patient with SBP >= 180 and severe headache gets both probable Hypertensive emergency and probable Hypertensive urgency. The page's own thresholds overlap the same way (SBP >= 180 appears in both), so this is faithful, but the two diagnoses are mutually exclusive clinically (urgency is defined by the absence of end-organ damage). No exclusion is modelled; worth a remaining-questions note.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+      "problem": "Seizure (a warning sign) and Dizziness (a common symptom) are recorded by the system in plain form, but the rule only accepts the Sudden onset-qualified form; since evidence matching is by exact s-expression, a plain recorded Seizure or Dizziness does not contribute until the check_for task re-asks the qualified question. Sudden onset is redundant on Seizure. Low impact because the task fires on the same BP trigger.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+      "problem": "'Weakness on 1 or both sides' is encoded as generic Muscle weakness; Hemiparesis (disorder) is not a descendant of Muscle weakness in this release, so a recorded hemiparesis would not fire the rule. Muscle weakness of limb (finding) is a descendant and closer to the page's wording.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded well: all four 'likely' conclusions (stroke, hypertensive emergency, hypertensive urgency, heart failure) are probable rules with the right BP thresholds and or-lists, every concept resolves, and the Urgent evaluation follows the house pattern; the only red-box defects are that 'known kidney failure' is narrowed to chronic kidney disease stage 5 (acute kidney failure not covered) and that side-specific weakness loses Hemiparesis. The larger question is the lower two-thirds of the page: the hypertension classification flowchart (mild / moderate / severe hypertension) is not encoded at any certainty, which is defensible because repeat-reading confirmation and the mild/moderate/severe concepts are not representable, but a possible-level hypertensive disorder on a single reading >= 140/90 is expressible and the omission should be deliberate and recorded. The page's distinction between 'refer urgently' and 'refer same day' is flattened to one Urgent level."
+}

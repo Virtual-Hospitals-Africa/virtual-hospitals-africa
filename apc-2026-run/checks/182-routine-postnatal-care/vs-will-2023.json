@@ -1,0 +1,109 @@
+{
+ "page_2026": 182,
+ "page_2023": 164,
+ "will_file": "164-postnatal-care.lisp",
+ "redbox_status_2023": [
+  "changed"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postnatal care status\" \"finding\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "check_for": {
+   "both": [],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fourth degree perineal laceration\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Third degree perineal laceration\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))",
+     "relation": "2026 narrower"
+    }
+   ]
+  },
+  "priority_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks))",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(active_condition (snomed_concept \"Postpartum hemorrhage\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fourth degree perineal laceration\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Third degree perineal laceration\" \"disorder\"))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis_condition": {
+   "both": [],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))"
+   ],
+   "only_2026": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))",
+     "relation": "2026 narrower"
+    }
+   ]
+  },
+  "diagnosis": {
+   "both": [
+    "(diagnosis (snomed_concept \"Postpartum hemorrhage\" \"disorder\") probable)"
+   ],
+   "only_2023": [],
+   "only_2026": [],
+   "is_a_related": []
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)"
+   ],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 4,
+  "build_2026": 33,
+  "exact": 1,
+  "related": 2
+ }
+}

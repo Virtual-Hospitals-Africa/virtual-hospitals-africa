@@ -1,0 +1,594 @@
+{
+ "edition": "2026",
+ "page": 17,
+ "lisp_file": "17-cardiopulmonary-resuscitation-cpr.lisp",
+ "conditions": [
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "patient has no pulse",
+   "confidence": "high",
+   "note": "Cardiac arrest warning sign (Emergency) is the recorded form of a pulseless patient; paired with Absent pulse."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "no pulse",
+   "confidence": "high",
+   "note": "Direct encoding of 'no pulse'."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "'More resonant ... on 1 side' read as unilateral hyperresonance; 'Unilateral' qualifier expresses '1 side' (no sideless precoordinated concept)."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "decreased breath sounds on 1 side",
+   "confidence": "medium",
+   "note": "'Unilateral' qualifier expresses 'on 1 side'."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "SNOMED 'Trachea displaced' (disorder) is the deviated-trachea concept; also in vocabulary."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "No active 'Thirst' finding; 'Increased thirst' chosen over the grouper 'Thirst finding' (which includes normal/reduced thirst)."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "'Dry mouth' is not an FSN; Xerostomia is the form used by the Dry mouth warning sign."
+  },
+  {
+   "rule": "Check for reversible causes during CPR",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Unqualified, matches any severity."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "patient has no pulse",
+   "confidence": "high",
+   "note": "Cardiac arrest warning sign (Emergency) is the recorded form of a pulseless patient; paired with Absent pulse. Context: the cause search is done 'while giving continuous CPR'."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "no pulse",
+   "confidence": "high",
+   "note": "Direct encoding of 'no pulse'. Context: the cause search is done 'while giving continuous CPR'."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "'More resonant ... on 1 side' read as unilateral hyperresonance; 'Unilateral' qualifier expresses '1 side' (no sideless precoordinated concept)."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "decreased breath sounds on 1 side",
+   "confidence": "medium",
+   "note": "'Unilateral' qualifier expresses 'on 1 side'."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "SNOMED 'Trachea displaced' (disorder) is the deviated-trachea concept; also in vocabulary."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax during CPR",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "element_keys": [
+    "p17-4ff37dc2"
+   ],
+   "quote": "tension pneumothorax likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "patient has no pulse",
+   "confidence": "high",
+   "note": "Cardiac arrest warning sign (Emergency) is the recorded form of a pulseless patient; paired with Absent pulse. Used as context: footnote 2 is attached to 'dehydration' in the CPR cause search, so the rule is scoped to the arrest patient rather than firing page-independently."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "no pulse",
+   "confidence": "high",
+   "note": "Direct encoding of 'no pulse'. Used as context: footnote 2 is attached to 'dehydration' in the CPR cause search, so the rule is scoped to the arrest patient rather than firing page-independently."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "No active 'Thirst' finding; 'Increased thirst' chosen over the grouper 'Thirst finding' (which includes normal/reduced thirst)."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "'Dry mouth' is not an FSN; Xerostomia is the form used by the Dry mouth warning sign."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Unqualified, matches any severity."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose probable dehydration as a cause of cardiac arrest",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p17-548401ca"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "medium",
+   "note": "Footnote 'dehydration likely' -> probable. Footnote list read as any one sign (or); it does not say how many are needed."
+  },
+  {
+   "rule": "Emergency: no pulse, start CPR",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "patient has no pulse",
+   "confidence": "high",
+   "note": "Cardiac arrest warning sign (Emergency) is the recorded form of a pulseless patient; paired with Absent pulse."
+  },
+  {
+   "rule": "Emergency: no pulse, start CPR",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p17-4dcb9379"
+   ],
+   "quote": "no pulse",
+   "confidence": "high",
+   "note": "Direct encoding of 'no pulse'."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p17-15d7f8c1",
+   "element_id": "p17-rb1-e02",
+   "text": "Give continuous cycles of 30 chest compressions and 2 breaths with bag-valve-mask attached to 100% oxygen at 10-15L/min.",
+   "reason_category": "management_step",
+   "reason": "CPR technique, ventilation and oxygen."
+  },
+  {
+   "element_key": "p17-19d4581f",
+   "element_id": "p17-rb1-e03",
+   "text": "Attach monitor/defibrillator and pause compressions to check initial heart rhythm:",
+   "reason_category": "management_step",
+   "reason": "Monitor/defibrillator rhythm check; rhythm only routes management."
+  },
+  {
+   "element_key": "p17-53f31922",
+   "element_id": "p17-rb1-e04",
+   "text": "Ventricular fibrillation (VF)",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-8e7af24b",
+   "element_id": "p17-rb1-e05",
+   "text": "Pulseless ventricular tachycardia (pVT)",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-e86cfe0c",
+   "element_id": "p17-rb1-e06",
+   "text": "Asystole",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-ddfd1e55",
+   "element_id": "p17-rb1-e07",
+   "text": "Any other rhythm:",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-9b3baabe",
+   "element_id": "p17-rb1-e08",
+   "text": "Pulseless electrical activity (PEA)",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-37a13056",
+   "element_id": "p17-rb1-e09",
+   "text": "Give shock of 120-150J.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-74ec1131",
+   "element_id": "p17-rb1-e10",
+   "text": "If monophasic defibrillator, give instead shock of 360J.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-bbc9dda4",
+   "element_id": "p17-rb1-e11",
+   "text": "Immediately restart CPR, starting with chest compressions.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-b0554c29",
+   "element_id": "p17-rb1-e12",
+   "text": "After 2 minutes of CPR, pause compressions and recheck heart rhythm",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-f3165061",
+   "element_id": "p17-rb1-e13",
+   "text": "VF",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-df9a37a6",
+   "element_id": "p17-rb1-e14",
+   "text": "pVT",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-fe294141",
+   "element_id": "p17-rb1-e15",
+   "text": "Asystole",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-9b189024",
+   "element_id": "p17-rb1-e16",
+   "text": "Other rhythm",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-d4cfe82f",
+   "element_id": "p17-rb1-e17",
+   "text": "Give shock of 120-150J (increase joules with each shock given). If monophasic defibrillator, give instead shock of 360J.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-0a6c0a1c",
+   "element_id": "p17-rb1-e18",
+   "text": "Feel for carotid pulse for up to 10 seconds.",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-1e19da66",
+   "element_id": "p17-rb1-e19",
+   "text": "No pulse felt",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-62f787e6",
+   "element_id": "p17-rb1-e20",
+   "text": "Unsure",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-5f95ac4f",
+   "element_id": "p17-rb1-e21",
+   "text": "Pulse felt",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-dd662121",
+   "element_id": "p17-rb1-e22",
+   "text": "PEA",
+   "reason_category": "flowchart_routing",
+   "reason": "Monitor rhythm / pulse-recheck branch inside CPR; it only selects shock vs no shock vs stop CPR (management), no triage or diagnosis on this page."
+  },
+  {
+   "element_key": "p17-59eba97e",
+   "element_id": "p17-rb1-e23",
+   "text": "Stop CPR",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-3976ccd4",
+   "element_id": "p17-rb1-e24",
+   "text": "and check breathing 16.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to page 16 after return of pulse."
+  },
+  {
+   "element_key": "p17-856517c1",
+   "element_id": "p17-rb1-e25",
+   "text": "Immediately restart CPR, starting with chest compressions.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-d3d1d501",
+   "element_id": "p17-rb1-e26",
+   "text": "Give adrenaline1 1mL (1:1000 solution) IV, followed by 5mL sterile water or sodium chloride 0.9%. Repeat adrenaline every 2 cycles (every 3-5 minutes).",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-5d8711c5",
+   "element_id": "p17-rb1-e27",
+   "text": "After every 2 minutes of CPR, pause compressions, recheck heart rhythm and manage as above.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-04208e07",
+   "element_id": "p17-rb1-e28",
+   "text": "While giving continuous CPR",
+   "reason_category": "flowchart_routing",
+   "reason": "Section header for management content."
+  },
+  {
+   "element_key": "p17-a9d132cd",
+   "element_id": "p17-rb1-e29",
+   "text": "Doctor to consider intubation. If intubated, give 1 breath every 6 seconds and continuous chest compressions.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-673e16f9",
+   "element_id": "p17-rb1-e30",
+   "text": "Look for and manage possible cause:",
+   "reason_category": "flowchart_routing",
+   "reason": "Section header for management content."
+  },
+  {
+   "element_key": "p17-f6e804ae",
+   "element_id": "p17-rb1-e31",
+   "text": "If trauma, diarrhoea/vomiting or dehydration2, give sodium chloride 0.9% 1L IV rapidly. Repeat if needed. If unsure, discuss with doctor.",
+   "reason_category": "management_step",
+   "reason": "Saline for trauma/diarrhoea/vomiting/dehydration is management; the dehydration footnote it points to is encoded as a probable rule."
+  },
+  {
+   "element_key": "p17-cd9acb7c",
+   "element_id": "p17-rb1-e32",
+   "text": "If glucose < 3 (< 4 if diabetes) or unable to measure 19. If temperature ≤ 35°C 18. If overdose/poisoning, discuss with specialist or poison helpline 200.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointers to pages 19 (glucose), 18 (temperature), 200 (poisoning); glucose and temperature are routine vitals, no diagnosis named here."
+  },
+  {
+   "element_key": "p17-c722e4cf",
+   "element_id": "p17-rb1-e34",
+   "text": "Decide when to stop CPR",
+   "reason_category": "flowchart_routing",
+   "reason": "Section header for management content."
+  },
+  {
+   "element_key": "p17-426c53ca",
+   "element_id": "p17-rb1-e35",
+   "text": "How to give chest compressions",
+   "reason_category": "flowchart_routing",
+   "reason": "Section header for management content."
+  },
+  {
+   "element_key": "p17-79aa55c6",
+   "element_id": "p17-rb1-e36",
+   "text": "If ongoing VF/pVT, temperature ≤ 35°C, snake bite or overdose/poisoning, continue CPR and discuss/transfer urgently.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-668834bf",
+   "element_id": "p17-rb1-e37",
+   "text": "Ensure patient is lying on firm surface. If on bed, use backboard or move patient onto floor.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-b184c953",
+   "element_id": "p17-rb1-e38",
+   "text": "Place heel of one hand over lower half of sternum. Place heel of second hand on top of first hand.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-b4c73754",
+   "element_id": "p17-rb1-e39",
+   "text": "If none of above or asystole after 20 minutes of continuous CPR or incurable underlying disease, consider stopping CPR in consultation with doctor.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-28aca3a5",
+   "element_id": "p17-rb1-e40",
+   "text": "Push down quickly, hard (depth of 5-6cm) and fast (100-120 per minute).",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-55d5bc3f",
+   "element_id": "p17-rb1-e41",
+   "text": "Allow chest to return to normal shape between compressions.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-31747a83",
+   "element_id": "p17-rb1-e42",
+   "text": "If CPR stopped, pronounce dead and arrange bereavement counselling for family.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-2c45f8e0",
+   "element_id": "p17-rb1-e43",
+   "text": "Do not interrupt compressions unless giving ventilations or checking heart rhythm.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  },
+  {
+   "element_key": "p17-c3fb1162",
+   "element_id": "p17-rb1-e44",
+   "text": "Swop with colleague every 2 minutes to avoid fatigue.",
+   "reason_category": "management_step",
+   "reason": "CPR/defibrillation/drug/stop-CPR management, outside this pass's scope."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Trigger",
+   "decision": "Cardiac arrest warning sign or Absent pulse triggers the check and an Emergency priority",
+   "alternatives": "Cardiac arrest only",
+   "confidence": "high"
+  },
+  {
+   "topic": "Dehydration footnote",
+   "decision": "Probable dehydration from any one of thirst, dry mouth, poor turgor, BP<90/60, scoped to the arrest patient",
+   "alternatives": "Unscoped rule (fires for any patient with BP<90/60 or thirst); require all/two signs; leave unencoded as a footnote",
+   "confidence": "low"
+  },
+  {
+   "topic": "Rhythms",
+   "decision": "VF/pVT/asystole/PEA not encoded; they route only to management",
+   "alternatives": "check_for the rhythm disorders (would be unused evidence)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unilateral signs",
+   "decision": "'on 1 side' as Unilateral qualifier on hyperresonance and decreased breath sounds",
+   "alternatives": "sideless concept; left/right pairs",
+   "confidence": "medium"
+  }
+ ]
+}

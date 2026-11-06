@@ -1,0 +1,507 @@
+{
+ "page": 31,
+ "checker": "forward-1",
+ "elements": [
+  {
+   "element_key": "p31-53beb9c2",
+   "scope": "in_scope",
+   "scope_reason": "Header: the trigger (burn) and the 'any of' structure of the red box.",
+   "verdict": "correct",
+   "problem": "Structure matches the house pattern (and <burn> (or ...)). Priority level is Urgent as the page says; see rule-level note on VHA warning-sign levels.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (system_priority_evaluation \"Urgent: burns with urgent features\" adult Urgent (and (clinical_finding (snomed_concept \"Burn\" \"disorder\")) (or ...)))",
+    "Check for urgent burn features :: (task \"Check for urgent burn features\" adult (clinical_finding (snomed_concept \"Burn\" \"disorder\")) (check_for ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-06449a03",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Both parts present: Drowsy; confused = Clouded consciousness (the concept VHA's own vitals use for 'Confused').",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-a0dec696",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Chest and limbs (upper and lower) each carry the Circumferential qualifier. Note VHA's 'Burn Circumferential' warning sign records the general form (Burn + Circumferential); the site-specific forms here will not match that record (see rule-level).",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of chest wall\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of upper limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of lower limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-dd5d2121",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Header of the %TBSA figure.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-e71bca1c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Both parts present; both concepts verified and are children of Burn.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Electrical burn\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Chemical burn\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-e79d0353",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Face, hand, foot, genitalia precoordinated; joint via finding_site on Burn (SNOMED has no plain 'burn of joint', only 'Deep full thickness burn involving joint'), which is the briefing's prescribed pattern.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of face\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of hand\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of foot\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn of genitalia\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Burn\" \"disorder\") (finding_site (snomed_concept \"Joint structure\" \"body structure\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-786be6de",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "The descriptors in brackets are how to recognise it, not separate criteria.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Full thickness burn\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-8ff8bf8f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Routine vital, right concept, unit and direction.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-3ed861b0",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Figure label.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-157e0add",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Figure label.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-a7ac1df2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Partial thickness burn AND a TBSA band of 10% or more. Two small imprecisions: the '10-19 percent' band includes exactly 10% where the page says > 10% (unavoidable with SNOMED bands; no %TBSA observable entity exists to use a measurement), and 'Over 70 percent body burnt' duplicates the 70-79/80-89/90+ bands (harmless).",
+   "evidence": [
+    "Urgent: burns with urgent features :: (and (clinical_finding (snomed_concept \"Partial thickness burn\" \"disorder\")) (or (clinical_finding (snomed_concept \"Burn any degree involving 10-19 percent of body surface\" \"disorder\")) ... (clinical_finding (snomed_concept \"Burn any degree involving 90 percent OR more of body surface\" \"disorder\")) (clinical_finding (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p31-3ac79df9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "",
+   "evidence": [
+    "Urgent: burns with urgent features :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-6919538e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "'Inhalation injury likely' is a probable diagnosis rule with exactly the page's five triggers (face/neck burn, difficulty breathing, hoarse voice, stridor, black sputum), gated on a burn, and the priority rule consumes it as active_condition. Black sputum is 'Finding of color of sputum' + 'Black color' qualifier, the only representable form. Concept is the parent of VHA's warning-sign concept 'Inhalation burn due to hot gas', so descendants match.",
+   "evidence": [
+    "Diagnose probable inhalation injury in patient with burns :: (diagnosis (snomed_concept \"Injury to respiratory system due to inhaled substance\" \"disorder\") probable)",
+    "Diagnose probable inhalation injury in patient with burns :: (and (clinical_finding (snomed_concept \"Burn\" \"disorder\")) (or (clinical_finding (snomed_concept \"Burn of face\" \"disorder\")) (clinical_finding (snomed_concept \"Burn of neck\" \"disorder\")) (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\")) (clinical_finding (snomed_concept \"Hoarse\" \"finding\")) (clinical_finding (snomed_concept \"Stridor\" \"finding\")) (clinical_finding (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))))",
+    "Urgent: burns with urgent features :: (active_condition (snomed_concept \"Injury to respiratory system due to inhaled substance\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-13d72fb4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "Both parts present: Shock as a finding, SBP < 80 as a measurement. The footnote that defines shock ('shock likely' if SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) is not encoded as a probable rule; judged under p31-b44f674a.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+    "Urgent: burns with urgent features :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-27ea661c",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (head 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-dd46ed06",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (head 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-da9f4da0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "problem": "'Other injury' = any traumatic injury that is not a burn. Burn is a descendant of Traumatic injury, so the excluding clause is needed and present.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\") (excluding (clinical_finding (snomed_concept \"Burn\" \"disorder\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-a165e21f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Header of the management list.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-1a77f82e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Airway/oxygen management; its conditions (> 10% TBSA, inhalation injury, sat < 94%, drowsy/confused) are oxygen-giving criteria, not triage, and manage tasks are out of scope by design.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-f625632e",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-6e387358",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-c82dfa7b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-4e067d7d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-ddf6c629",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "IV-line rule (> 40% TBSA or transport > 45 min): management threshold, not triage.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-15b51267",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (arm 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-800f4bfd",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (arm 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-3d7c0be4",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (arm 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-bc9a74b1",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (arm 4.5%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-798dad6b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Fluid-resuscitation gate (> 10% TBSA).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-00270aee",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Fluid bolus for shock/SBP < 80; the shock criterion itself is encoded in the priority rule (see p31-13d72fb4).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-743363fd",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (perineum 1%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-72e8d62e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Parkland-style fluid formula.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-4a1707af",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (leg 9%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-db0b6d06",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (leg 9%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-7d382df2",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (leg 9%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-79746519",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "%TBSA figure value (leg 9%).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-4b439d55",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-9e591667",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Analgesia.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-f8ec9f63",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Cross-reference to page 30 for other injuries; the 'other injury' criterion itself is encoded (p31-da9f4da0).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-fcd562e6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-fe043c49",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-e1ece3e5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Dressing choice by depth/extent.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-f0b31314",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-e098770c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-2633a01f",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Palm = 1% TBSA note.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-733939d4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Tetanus toxoid.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-d815c7e4",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "problem": "Exclude simple redness from the TBSA calculation.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-fb4a6e65",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "Monitoring while awaiting transport.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-c4a41afb",
+   "scope": "in_scope",
+   "scope_reason": "The non-urgent block is mostly management, but 'consider abuse and self-harm' is a 'consider X' conclusion with four triggers and so belongs in possible diagnosis rules. The 'signs of infection' / 'severe infection ... refer' bullets are dressing and referral steps (management) and are not judged.",
+   "verdict": "partial",
+   "parts_missing": [
+    "burn with specific shape (iron, grid, knife/fork, car cigarette lighter, light bulb)",
+    "repeated/unexplained burns",
+    "other unexplained injuries"
+   ],
+   "problem": "Two possible rules exist (Victim of abuse; Self-injurious behavior) but they fire only on 'Cigarette burn'. The page lists four triggers: cigarette burns; burn with a specific shape (iron, grid, knife/fork, car cigarette lighter, light bulb); repeated or unexplained burns; other unexplained injuries. Three of the four are missing. 'Burn with specific shape' has no clean SNOMED concept, but 'repeated/unexplained burns' and 'other unexplained injuries' could at least be approximated (e.g. 'Non-accidental injury' / 'Non-accidental injury to adult' (disorder) exist and would be a natural trigger for abuse), and nothing on the page is cited for them.",
+   "evidence": [
+    "Consider abuse in patient with cigarette burns :: (system_diagnosis_rule \"Consider abuse in patient with cigarette burns\" (diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible) adult (clinical_finding (snomed_concept \"Cigarette burn\" \"disorder\")))",
+    "Consider self-harm in patient with cigarette burns :: (system_diagnosis_rule \"Consider self-harm in patient with cigarette burns\" (diagnosis (snomed_concept \"Self-injurious behavior\" \"finding\") possible) adult (clinical_finding (snomed_concept \"Cigarette burn\" \"disorder\")))",
+    "Check for urgent burn features :: (clinical_finding (snomed_concept \"Cigarette burn\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p31-b44f674a",
+   "scope": "borderline",
+   "scope_reason": "Footnote 1 is an 'X likely' (shock likely if SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) that the red box's 'Shock' criterion depends on, so by the briefing it should be a probable diagnosis rule; it is borderline because it is a footnote and because the page does not say whether the five signs are 'any of' or 'all of'. Footnote 2 (morphine dilution) is management.",
+   "verdict": "missing",
+   "parts_missing": [
+    "probable Shock rule from the footnote's signs (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness)"
+   ],
+   "problem": "No probable Shock rule exists. The priority rule accepts a nurse-recorded (clinical_finding Shock) and SBP < 80, but the footnote's other signs (pulse >= 100, RR > 30, confusion/restlessness, weakness) are not used anywhere to derive shock. Heart rate and Respiratory rate are routine vitals, Clouded consciousness is already in the file, Restlessness and Weakness present are findings, so the rule is representable. The rule's description also refers to 'Shock1' without resolving the footnote.",
+   "evidence": [
+    "Urgent: burns with urgent features :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p31-04a07887",
+  "p31-0dfc3aef"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: burns with urgent features",
+   "problem": "Every red-box item is at Urgent, but VHA's warning_signs already carry higher levels for several of them: 'Burn of face' and inhalation burn are Emergency, 'Chemical burn', circumferential burn and 'Burn Over 20%' are Very urgent. The briefing says to use the level the corresponding warning sign already carries. The page's own wording ('urgent attention') justifies Urgent, so this is a house-standard mismatch rather than a page error, but the rule will under-prioritise relative to the warning-signs page.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "problem": "The footnote defining shock ('shock likely' if SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) is not encoded as a probable Shock rule; the priority rule only fires on shock if the nurse records 'Shock' directly or SBP < 80. Pulse >= 100, RR > 30, restlessness and weakness never contribute.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Consider abuse / Consider self-harm",
+   "problem": "Both possible rules fire on 'Cigarette burn' only; the page's other three triggers (burn with a specific shape, repeated/unexplained burns, other unexplained injuries) are dropped without any approximation such as 'Non-accidental injury' (disorder), which exists in SNOMED.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "problem": "Circumferential burn is encoded as three site-specific forms (chest wall / upper limb / lower limb + Circumferential). VHA's 'Burn Circumferential' warning sign records the general form (Burn + Circumferential), which is not a descendant of any of the three, so a burn recorded through the warning-signs page will not satisfy this rule. Using (Burn + Circumferential) would match both the general record and the site-specific ones.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "problem": "Inhalation injury is only accepted as (active_condition ...). VHA's 'Burn Inhalation' warning sign records (clinical_finding 'Inhalation burn due to hot gas'), which this rule ignores; adding that clinical_finding (or the parent) to the or-list would close the gap. Low because the warning sign already carries Emergency on its own.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "problem": "'Cigarette burn' sits in the 'Check for urgent burn features' task although it is a non-urgent-pathway finding; cosmetic, but the task description misleads. 'Over 70 percent body burnt' in the TBSA list is redundant with the 70-79/80-89/90+ bands, and the 10-19 band admits exactly 10% where the page says > 10%.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box is encoded faithfully: all twelve criteria, including the inhalation-injury 'likely' as a probable rule consumed by the priority rule and 'other injury' as Traumatic injury excluding Burn, check out concept by concept. The main gaps are outside the box: the footnote that defines shock ('shock likely' from SBP, pulse, RR, confusion, weakness) has no probable rule, and the abuse/self-harm 'consider' rules fire on cigarette burns only, dropping the page's other three triggers. The whole rule sits at Urgent although VHA's warning signs already carry Emergency/Very urgent for facial, inhalation, chemical, circumferential and >20% burns."
+}

@@ -1,0 +1,481 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/89-skin-lump-s",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/89-skin-lump-s",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable Kaposi's sarcoma (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acne (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable boil/abscess (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable epidermoid cyst (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable lipoma (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable molluscum contagiosum (skin lump/s)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable warts (skin lump/s)"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: mole needing same-week referral (skin lump/s)"
+  },
+  {
+   "atom": "task",
+   "description": "Check for mole features needing same-week referral (skin lump/s)"
+  },
+  {
+   "atom": "task",
+   "description": "Check for skin lump/s features"
+  },
+  {
+   "atom": "task",
+   "description": "Measure width of mole (skin lump/s)"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable Kaposi's sarcoma from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acne from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable boil from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable epidermoid cyst from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable lipoma from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable molluscum contagiosum from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable skin abscess from a skin lump"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable warts from a skin lump"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: mole needing referral this week"
+  },
+  {
+   "atom": "task",
+   "description": "Check for concerning features of a mole"
+  },
+  {
+   "atom": "task",
+   "description": "Check for features of a skin lump"
+  },
+  {
+   "atom": "task",
+   "description": "Measure the width of a mole"
+  }
+ ],
+ "conditions_A": 70,
+ "conditions_B": 80,
+ "conditions_in_both": 42,
+ "agreement": 0.56,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+     "relation": "B_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\")))"
+    }
+   ]
+  },
+  "priority_condition": {
+   "only_A": [
+    "(> (measurement (snomed_concept \"Diameter of lump\" \"observable entity\") mm) 6)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))"
+   ],
+   "only_B": [
+    "(> (measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm) 6)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+     "relation": "B_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+     "B": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Acne\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Kaposi's sarcoma\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Lipoma\" \"disorder\") probable)"
+   ],
+   "only_B": [
+    "(diagnosis (snomed_concept \"Acne vulgaris\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Furuncle\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Kaposi's sarcoma of skin\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Subcutaneous lipoma\" \"disorder\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Epidermoid cyst of skin\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Infection of skin caused by Molluscum contagiosum\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Viral wart of skin and/or mucous membrane caused by human papillomavirus\" \"disorder\") probable)"
+   ],
+   "is_a_related": [
+    {
+     "A": "(diagnosis (snomed_concept \"Acne\" \"disorder\") probable)",
+     "B": "(diagnosis (snomed_concept \"Acne vulgaris\" \"disorder\") probable)",
+     "relation": "B_narrower"
+    },
+    {
+     "A": "(diagnosis (snomed_concept \"Lipoma\" \"disorder\") probable)",
+     "B": "(diagnosis (snomed_concept \"Subcutaneous lipoma\" \"disorder\") probable)",
+     "relation": "B_narrower"
+    },
+    {
+     "A": "(diagnosis (snomed_concept \"Kaposi's sarcoma\" \"disorder\") probable)",
+     "B": "(diagnosis (snomed_concept \"Kaposi's sarcoma of skin\" \"disorder\") probable)",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [
+    "(measurement (snomed_concept \"Diameter of lump\" \"observable entity\") mm)"
+   ],
+   "only_B": [
+    "(measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm)"
+   ],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

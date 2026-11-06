@@ -1,0 +1,482 @@
+{
+  "page": 40,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p40-51543767",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the trigger ('suspected mpox') and the 'any of' structure of the Urgent priority rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (or ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-5f281b1c",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "partial",
+      "parts_missing": [
+        "Footnote 1 defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness); no probable Shock diagnosis rule exists, so 'Shock' only fires if a nurse records the finding directly."
+      ],
+      "problem": "Part 'Shock': encoded as a bare clinical_finding, consistent with the warning-sign pattern, but the page's own definition of shock (footnote) is not encoded as a rule. Part 'systolic BP < 80': correct.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: suspected mpox with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+        "Check for urgent mpox danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-61ecf908",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All five parts present (thirst, dry mouth, poor skin turgor, SBP < 90, DBP < 60) in a probable Dehydration rule referenced by the priority rule as active_condition. The comma list is read as 'or', so thirst alone yields probable dehydration and Urgent; the page is ambiguous and this is the more sensitive reading, but note it. 'Thirst due to water deprivation' is an odd pick for plain 'Thirst'; 'Increased thirst' / 'Excessive thirst' (finding) exist and are nearer the nurse's observation, though the chosen one is semantically defensible in a dehydration rule.",
+      "evidence": [
+        "Diagnose probable dehydration in suspected mpox :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (or (clinical_finding (snomed_concept \"Thirst due to water deprivation\" \"finding\")) (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90) (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)))",
+        "Urgent: suspected mpox with danger signs :: (active_condition (snomed_concept \"Dehydration\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-fac62287",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present. 'Obstipation' (disorder) is an acceptable stand-in for 'unable to pass stool'; 'Does not defecate' (finding) exists and is closer to the page's wording.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Unable to void urine\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Obstipation\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-acea2d7b",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "RR >= 30 (correct comparator and unit), SpO2 < 90% correct, 'difficulty breathing at rest' as Dyspnea at rest, 'while talking' as Unable to complete a sentence in one breath. All or'd as the page does.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 90)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-44e9d79d",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Severe bleeding / severe pain / severe discharge from anus, each with the Severe qualifier, or'd into a probable Proctitis rule and listed directly in the priority rule. The priority rule deliberately does not use active_condition Proctitis, so the non-urgent proctitis path (anal sex + symptoms, below the box) does not escalate; that matches the page.",
+      "evidence": [
+        "Diagnose probable proctitis in suspected mpox :: (clinical_finding (snomed_concept \"Bleeding from anus\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+        "Diagnose probable proctitis in suspected mpox :: (clinical_finding (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+        "Diagnose probable proctitis in suspected mpox :: (clinical_finding (snomed_concept \"Discharge from anus\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Bleeding from anus\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-e21887e9",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Foreskin retracted and unable to reduce' as Tightly retracted foreskin, plus swelling and pain sited at glans penis, and'd. Probable Paraphimosis referenced from the priority rule as active_condition.",
+      "evidence": [
+        "Diagnose probable paraphimosis in suspected mpox :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (clinical_finding (snomed_concept \"Tightly retracted foreskin\" \"finding\")) (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain\" \"finding\") (finding_site (snomed_concept \"Glans penis structure\" \"body structure\"))))",
+        "Urgent: suspected mpox with danger signs :: (active_condition (snomed_concept \"Paraphimosis\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-bf069dbc",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Unable to swallow\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-a8a39df6",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "partial",
+      "parts_missing": [
+        "'Persistent' is attached only to vomiting; nausea is unqualified."
+      ],
+      "problem": "Encoded as (and Nausea Persistent vomiting). The box says 'Persistent nausea and vomiting' but the matching management line says 'If persistent nausea or vomiting', so persistent vomiting alone should arguably qualify; requiring both nausea and persistent vomiting is stricter than the page. Low impact.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (and (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Persistent vomiting\" \"disorder\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-8fae9080",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Chest pain, irregular pulse, swollen legs all present in a probable Myocarditis rule, referenced as active_condition in the priority rule. The three are or'd, so chest pain alone gives 'probable myocarditis'; the page's comma list is ambiguous and this reading over-labels, though the Urgent outcome is right either way.",
+      "evidence": [
+        "Diagnose probable myocarditis in suspected mpox :: (or (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (clinical_finding (snomed_concept \"Pulse irregular\" \"finding\")) (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\")))",
+        "Urgent: suspected mpox with danger signs :: (active_condition (snomed_concept \"Myocarditis\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-9088ea83",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Eye lesion AND vision changes (page uses 'and'), probable Corneal infection, referenced from the priority rule.",
+      "evidence": [
+        "Diagnose probable corneal infection in suspected mpox :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (clinical_finding (snomed_concept \"Lesion of eye\" \"disorder\")) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\")))",
+        "Urgent: suspected mpox with danger signs :: (active_condition (snomed_concept \"Corneal infection\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-9af3dbe5",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "partial",
+      "parts_missing": [
+        "'HIV not on ART': no finding for 'not on ART' is encoded; HIV is only escalated when viral load is above reference range.",
+        "'age > 65': not encoded (the language has no numeric age comparison, only adult/child bands, so this part is not_representable)."
+      ],
+      "problem": "Immunocompromised, cancer, organ transplant, pregnant, diabetes, hypertension, chronic lung disease, chronic skin disease and obesity are all present with Known present qualifiers. The HIV clause is encoded as (and HIV-known-present VL-above-range), which drops the 'not on ART' arm of the page's 'HIV not on ART / virologically unsuppressed'. SNOMED offers 'Noncompliance with antiretroviral medication regimen' (finding) as a partial proxy; a 'not on ART' approximation would be better than silently narrowing the criterion.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Patient immunocompromised\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (and (clinical_finding (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Copies of human immunodeficiency virus ribonucleic acid above reference range\" \"finding\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Transplant present\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Chronic lung disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Chronic disease of skin\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Obesity\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-8a7c2bb2",
+      "scope": "in_scope",
+      "scope_reason": "Cross-reference to page 18 is routing; the criterion itself is in scope.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-714a2a87",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-8be4b898",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Severe pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-24c69ba2",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-4782aeab",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Its trigger (SpO2 < 90%) is already a priority criterion.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-b9e72a6a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Its triggers (dehydration likely, shock/SBP < 80) are already priority criteria.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-0071f4fd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-da4c655b",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Note its trigger reads 'persistent nausea OR vomiting', which bears on how p40-a8a39df6 was encoded.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-20e81e09",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-d39a7a2f",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-aaab759e",
+      "scope": "in_scope",
+      "scope_reason": "The 'suspect mpox if ...' criteria are the page's possible-diagnosis logic; the PPE/isolation sentence is a management step and is not judged.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'temperature > 38.5°C in the last 2 days': the 2-day window is not encoded (onset applies only to findings, not measurements; likely not_representable).",
+        "'unexplained' lesions: not encoded (not_representable)."
+      ],
+      "problem": "Structure correct: contact within 21 days OR (new lesion at any listed site AND any listed symptom). All eight lesion sites are present with the New qualifier (face, palms, soles, genitals, anus, rectum, mouth, eyes). All symptoms present: headache, temperature > 38.5, sore throat, nasal congestion, cough, lymphadenopathy, body pain, muscle pain, backache, severe fatigue/asthenia. The 21-day contact window uses (<= (onset exposure) (time_ago 21 days)), which per the house briefing means 'within the last 21 days'. One caution: the onset-wrapped exposure finding is the only use of the check_for's exposure item, so the test's exact-string usage check may not credit it.",
+      "evidence": [
+        "Diagnose possible mpox (contact or new lesions with systemic symptoms) :: (<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))) (time_ago 21 days))",
+        "Diagnose possible mpox (contact or new lesions with systemic symptoms) :: (and (or (clinical_finding (snomed_concept \"Lesion of face\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Lesion of eye\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))) (or (clinical_finding (snomed_concept \"Headache\" \"finding\")) (> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5) ... (clinical_finding (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))))",
+        "Check for mpox exposure, lesion sites and associated symptoms :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-efe1f2c7",
+      "scope": "in_scope",
+      "scope_reason": "HIV/syphilis testing and the page-61/62 references are management and routing; the 'proctitis likely' criterion, the 'mpox more likely' criterion and the distribution/itchiness split are diagnostic logic.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'If rash or lesions all look similar and change or progress at a similar pace, mpox is more likely': not encoded. No SNOMED concept for a monomorphic/synchronous eruption was found, so this is probably not_representable, but it is the page's one positive discriminator for mpox and should be recorded as a gap."
+      ],
+      "problem": "'Anal sex AND anal bleeding/pain/discharge, proctitis likely' is correctly encoded as a second arm of the probable Proctitis rule. The generalised/localised and itchy/non-itchy split is implemented via Generalized rash, Localized skin lesion and Itching.",
+      "evidence": [
+        "Diagnose probable proctitis in suspected mpox :: (and (clinical_finding (snomed_concept \"Anal penetration\" \"finding\")) (or (clinical_finding (snomed_concept \"Bleeding from anus\" \"disorder\")) (clinical_finding (snomed_concept \"Anal pain\" \"finding\")) (clinical_finding (snomed_concept \"Discharge from anus\" \"finding\"))))",
+        "Check for proctitis and other causes of rash/lesions in suspected mpox :: (clinical_finding (snomed_concept \"Generalized rash\" \"disorder\")) (clinical_finding (snomed_concept \"Localized skin lesion\" \"disorder\")) (clinical_finding (snomed_concept \"Itching\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-c8e17661",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: generalised branch.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Every generalised-branch rule requires Generalized rash.",
+      "evidence": [
+        "Diagnose probable chickenpox in suspected mpox :: (clinical_finding (snomed_concept \"Generalized rash\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-4d506fb9",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: localised branch.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Every localised-branch rule requires Localized skin lesion.",
+      "evidence": [
+        "Diagnose probable molluscum contagiosum in suspected mpox :: (clinical_finding (snomed_concept \"Localized skin lesion\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-04cecb06",
+      "scope": "in_scope",
+      "scope_reason": "Four 'X likely' conclusions on the generalised-itchy branch.",
+      "verdict": "partial",
+      "parts_missing": [
+        "Chickenpox: 'crops of vesicles at different stages of healing' reduced to Vesicular eruption; the 'different stages' discriminator is lost (probably not_representable).",
+        "Scabies: 'in web spaces or skin folds' site not encoded (minor)."
+      ],
+      "problem": "Chickenpox: Generalized rash + Itching + Vesicular eruption + no Lymphadenopathy, probable Varicella: logic correct. Papular pruritic eruption: AIDS as 'advanced HIV disease' plus Papule of skin plus Hyperpigmentation, probable PPE: acceptable. Scabies: Burrows in skin AND Itching at night time, probable scabies: correct. Drug-induced rash: new medication within 3 months via onset/time_ago, probable Eruption caused by drug: correct.",
+      "evidence": [
+        "Diagnose probable chickenpox in suspected mpox :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (clinical_finding (snomed_concept \"Generalized rash\" \"disorder\")) (clinical_finding (snomed_concept \"Itching\" \"finding\")) (clinical_finding (snomed_concept \"Vesicular eruption\" \"disorder\")) (no (clinical_finding (snomed_concept \"Lymphadenopathy\" \"disorder\"))))",
+        "Diagnose probable papular pruritic eruption in suspected mpox :: (clinical_finding (snomed_concept \"Acquired immune deficiency syndrome\" \"disorder\")) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\")) (clinical_finding (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+        "Diagnose probable scabies in suspected mpox :: (clinical_finding (snomed_concept \"Burrows in skin\" \"disorder\")) (clinical_finding (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+        "Diagnose probable drug-induced rash in suspected mpox :: (<= (onset (clinical_finding (snomed_concept \"New medication commenced\" \"finding\"))) (time_ago 3 months))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-d043ca69",
+      "scope": "in_scope",
+      "scope_reason": "Two 'X likely' conclusions on the generalised-non-itchy branch; 'Notify' is a management step.",
+      "verdict": "partial",
+      "parts_missing": [
+        "Tick bite fever: 'rash spreading from extremities to body' is represented only by the branch's Generalized rash; the spread pattern is lost (not_representable).",
+        "Measles: 'spreading from face to body' likewise lost (not_representable)."
+      ],
+      "problem": "Measles: conjunctivitis AND cough AND runny nose (Nasal discharge) AND flat red rash (Macular eruption), with no Itching: logic correct. Tick bite fever: tick bite OR eschar, no Itching, generalised: correct; diagnosis concept 'Spotted fever group rickettsial disease' is a defensible parent, though 'African tick bite fever' (disorder) exists and is the specific South African entity.",
+      "evidence": [
+        "Diagnose probable measles in suspected mpox :: (and ... (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))) (clinical_finding (snomed_concept \"Conjunctivitis\" \"disorder\")) (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Nasal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Macular eruption\" \"disorder\")))",
+        "Diagnose probable tick bite fever in suspected mpox :: (or (clinical_finding (snomed_concept \"Tick bite\" \"disorder\")) (clinical_finding (snomed_concept \"Skin eschar\" \"disorder\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-221ce47b",
+      "scope": "in_scope",
+      "scope_reason": "Four 'X likely' conclusions on the localised-non-itchy branch.",
+      "verdict": "partial",
+      "parts_missing": [
+        "Molluscum: 'central dimple' approximated by 'Skin dimple' (finding), which in SNOMED denotes skin dimpling rather than an umbilicated papule; no umbilication concept exists, so this is the nearest available.",
+        "Shingles: 'in a band' (dermatomal) not encoded; only Unilateral is."
+      ],
+      "problem": "Molluscum: firm, dome-shaped papule + skin dimple, localised, non-itchy: logic correct. Herpes simplex: Pain of skin + grouped vesicles + Erythema; the 'especially around mouth or genitals' sites are non-mandatory and reasonably omitted. Hand-foot-and-mouth: painful vesicles at mouth AND palms AND soles, all three required as the page's 'and' says: correct. Shingles: painful unilateral blisters: correct bar the band.",
+      "evidence": [
+        "Diagnose probable molluscum contagiosum in suspected mpox :: (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")) (qualifier (snomed_concept \"Dome shape\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Skin dimple\" \"finding\"))",
+        "Diagnose probable herpes simplex in suspected mpox :: (clinical_finding (snomed_concept \"Pain of skin\" \"finding\")) (clinical_finding (snomed_concept \"Vesicle of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\"))",
+        "Diagnose probable hand-foot and mouth disease in suspected mpox :: (clinical_finding (snomed_concept \"Vesicle of skin\" \"disorder\") (finding_site (snomed_concept \"Mouth region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Vesicle of skin\" \"disorder\") (finding_site (snomed_concept \"Entire skin of palmar area of hand\" \"body structure\"))) (clinical_finding (snomed_concept \"Vesicle of skin\" \"disorder\") (finding_site (snomed_concept \"Entire skin of sole of foot\" \"body structure\")))",
+        "Diagnose probable shingles in suspected mpox :: (clinical_finding (snomed_concept \"Pain of skin\" \"finding\")) (clinical_finding (snomed_concept \"Blister of skin\" \"disorder\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-764be1cb",
+      "scope": "in_scope",
+      "scope_reason": "Localised-itchy branch criterion (fragment 1 of 3 of the impetigo rule).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Localised + Itching + Crust on skin. 'Honey-coloured' has no SNOMED expression and is not representable.",
+      "evidence": [
+        "Diagnose probable impetigo in suspected mpox :: (and (diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible) (clinical_finding (snomed_concept \"Localized skin lesion\" \"disorder\")) (clinical_finding (snomed_concept \"Itching\" \"finding\")) (clinical_finding (snomed_concept \"Crust on skin\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-ff4a7ec4",
+      "scope": "in_scope",
+      "scope_reason": "Fragment 2 of 3 of the impetigo rule ('especially around mouth').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Especially' marks a non-mandatory site; omitting it is consistent with how the herpes simplex sites were handled.",
+      "evidence": [
+        "Diagnose probable impetigo in suspected mpox :: (clinical_finding (snomed_concept \"Crust on skin\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p40-4928d2ff",
+      "scope": "in_scope",
+      "scope_reason": "Fragment 3 of 3: 'and nose, impetigo likely'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable Impetigo rule exists.",
+      "evidence": [
+        "Diagnose probable impetigo in suspected mpox :: (diagnosis (snomed_concept \"Impetigo\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p40-9fd9eff6",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 1 ('... shock likely') is an 'X likely' conclusion the red box relies on; footnote 2 (morphine dilution) is a management step and is not judged.",
+      "verdict": "missing",
+      "parts_missing": [
+        "Probable Shock rule from SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness."
+      ],
+      "problem": "No system_diagnosis_rule for Shock exists. The red box's first criterion is 'Shock', and the house standard asks for every 'X likely' to be a probable rule referenced as active_condition from the priority rule. As built, only a directly recorded 'Shock' finding or SBP < 80 triggers; a patient with pulse >= 100, RR > 30 and confusion but SBP 85 is caught by other criteria (RR >= 30, Acute confusion) only by coincidence. The footnote's list is ambiguous (all vs any), which should be noted, but the rule should exist.",
+      "evidence": [
+        "Urgent: suspected mpox with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p40-baa6dea3",
+    "p40-716b4cbc",
+    "p40-7a81f646"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: suspected mpox with danger signs / (missing) Diagnose probable shock",
+      "problem": "The red box's 'Shock' criterion has no probable rule behind it although footnote 1 defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness). Priority rule leans on a bare 'Shock' finding being recorded.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: suspected mpox with danger signs",
+      "problem": "HIV clause narrowed: page says 'HIV not on ART / virologically unsuppressed'; rule requires HIV AND viral load above reference range, so an HIV-positive patient not on ART with no viral load result is not escalated. 'Age > 65' is absent and is not representable (the language has no numeric age), which should be recorded as a known gap.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable dehydration in suspected mpox; Diagnose probable myocarditis in suspected mpox",
+      "problem": "Comma-separated clusters ('Thirst, dry mouth, poor skin turgor, BP < 90/60' and 'Chest pain, irregular pulse, swollen legs') are read as 'or', so a single finding such as thirst or chest pain yields a probable diagnosis of dehydration or myocarditis and an Urgent priority. The page is ambiguous; the Urgent outcome is defensible since the items sit in the red box, but the diagnosis labels overreach. Recommend a clinician decision (and/any2).",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+      "problem": "'Temperature > 38.5°C in the last 2 days' loses the 2-day window (onset cannot wrap a measurement). The 'rash all look similar and progress at a similar pace, mpox more likely' criterion from the approach section is not encoded anywhere; no SNOMED concept found, so likely not_representable, but it is the page's only positive mpox discriminator and should be in the remaining-questions record.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+      "problem": "The exposure check_for item is consumed only inside (onset ...) in the possible-mpox rule. If the test's usage check matches exact due_to strings, this item may be reported as checked-for-but-unused.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: suspected mpox with danger signs",
+      "problem": "'Persistent nausea and vomiting' encoded as (and Nausea Persistent vomiting); the management line on the same page says 'persistent nausea or vomiting', so persistent vomiting alone should probably escalate, and 'persistent' is not applied to nausea.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The page's red box is well covered: every criterion has an encoded counterpart, the four 'X likely' sub-diagnoses (dehydration, proctitis, paraphimosis, myocarditis, corneal infection) are probable rules referenced from the Urgent evaluation, and all 13 differential 'X likely' conclusions below the box are probable rules on the correct generalised/localised and itchy/non-itchy branches. The most consequential gaps are the absence of a probable Shock rule for footnote 1, the HIV criterion being narrowed to 'HIV with high viral load' (dropping 'not on ART'), and 'age > 65' being silently omitted. Lesser issues: comma-list clusters read as 'or' for dehydration and myocarditis, the 2-day fever window and the 'lesions all similar, mpox more likely' discriminator not encoded, and 'persistent nausea and vomiting' requiring both findings."
+}

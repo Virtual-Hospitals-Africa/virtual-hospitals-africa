@@ -1,0 +1,821 @@
+finding,category,pages,page_list,uses,roles,rule_sites,status,regions,via,on_triage_lists
+Abdominal colic,finding,4,14 56 57 60,11,"check_for, diagnosis_condition",Lower abdomen structure,rule site,Abdomen,Lower abdomen structure,False
+Abdominal discomfort,finding,3,56 60 69,6,"check_for, diagnosis_condition, priority_condition",Lower abdomen structure,listed,"Abdomen, Urinary",,False
+Abdominal guarding,finding,4,56 57 64 176,10,"check_for, diagnosis_condition, priority_condition",,listed,Abdomen,,False
+Abdominal mass,finding,2,56 64,4,"check_for, priority_condition",,listed,"Abdomen, Back, Chest, Genital",,False
+Abdominal pain,finding,20,11 18 19 22 28 29 38 45 49 52 53 56 57 60 82 88 94 145 154 177,56,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Anal & rectal, Back, Face, Mouth or throat, Skin",,True
+Abdominal rigidity,finding,3,56 57 64,8,"check_for, diagnosis_condition, priority_condition",,listed,Abdomen,,False
+Abnormal behavior,finding,3,33 36 145,19,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Abnormal feces,finding,1,56,2,"check_for, diagnosis_condition",,general,,,False
+Abnormal frequency of defecation,finding,1,56,2,"check_for, diagnosis_condition",,snomed,Abdomen,Intestinal structure,False
+Abnormal gait,finding,2,46 79,5,"check_for, priority_condition",,listed,Neck,,False
+Abnormal vaginal bleeding,finding,2,45 64,4,"check_for, priority_condition",,related,Genital,Bleeding from vagina (finding),False
+Abnormal vision,finding,1,47,2,"check_for, priority_condition",,listed,Eye,,False
+Abscess of axilla,disorder,1,42,2,"check_for, diagnosis_condition",,related,Breast,Mass of axilla (finding),False
+Abscess of groin,disorder,1,42,2,"check_for, diagnosis_condition",,related,Leg,Groin mass (finding),False
+Abscess of perineum,disorder,1,42,2,"check_for, diagnosis_condition",,spans,,Perineal structure,False
+Absent pulse,finding,3,16 17 80,8,"check_for, diagnosis_condition, priority_condition, trigger",Lower limb structure,listed,"Foot, Leg",,False
+Absenteeism at work,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Abstinent from drug misuse,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Accessory respiratory muscles used,finding,2,102 111,4,"check_for, priority_condition",,spans,,Lower respiratory tract structure,False
+Accidental needle stick injury,disorder,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Aching pain,finding,1,47,2,"check_for, diagnosis_condition",,general,,,False
+Achromia of skin,disorder,1,94,4,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Acquired immune deficiency syndrome,disorder,1,40,2,"check_for, diagnosis_condition",,spans,,Structure of immune system,False
+Acute confusion,finding,19,16 22 27 30 38 39 40 47 57 59 78 79 82 90 94 102 111 130 145,43,"check_for, diagnosis_condition, priority_condition",,related,"Head, Neck, Skin",Clouded consciousness (finding),True
+Acute heart failure,disorder,1,16,2,"check_for, priority_condition",,snomed,Chest,Heart structure,False
+Aggressive behavior,finding,5,11 34 35 130 197,11,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,True
+Agonal respiration,finding,1,16,2,"check_for, priority_condition",,spans,,Structure of respiratory system,False
+Alcohol dependence,disorder,1,94,2,"check_for, priority_condition",,general,,,False
+Alcohol intoxication,disorder,1,30,2,"check_for, priority_condition",,general,,,False
+Allergic rhinitis caused by pollen,disorder,1,48,2,"check_for, diagnosis_condition",,snomed,Nose,Structure of mucous membrane of nose,False
+Amnesia,finding,1,30,2,"check_for, priority_condition",,general,,,False
+Amniotic fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Anal finding,finding,1,61,3,"diagnosis_condition, priority_condition, trigger",,snomed,Anal & rectal,Anal structure,False
+Anal pain,finding,2,40 61,7,"check_for, diagnosis_condition, priority_condition",,listed,Anal & rectal,,False
+Anal penetration,finding,1,40,2,"check_for, diagnosis_condition",,general,,,False
+Anemia,disorder,1,44,4,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Anger reaction,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Anhedonia,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Anisocoria,disorder,2,30 47,4,"check_for, priority_condition",,listed,Head,,False
+Anuria,finding,1,39,3,"check_for, diagnosis_condition, priority_condition",,snomed,Urinary,Urinary system structure,False
+Anxiety,finding,2,33 98,6,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Apnea,finding,1,16,2,"check_for, priority_condition",,spans,,Structure of respiratory system,True
+Asthenia,finding,10,16 18 30 39 40 43 45 60 73 145,25,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Asthma,disorder,1,48,2,"check_for, diagnosis_condition",,spans,,Airway structure,False
+At increased risk for destructive behavior to property,finding,1,158,2,"check_for, priority_condition",,general,,,False
+At increased risk for suicide,finding,1,158,2,"check_for, priority_condition",,general,,,False
+At increased risk of self-injurious behavior,finding,1,158,2,"check_for, priority_condition",,general,,,False
+Avoidance behavior,finding,1,98,3,"check_for, diagnosis_condition",,general,,,False
+Backache,finding,9,38 40 42 45 78 82 87 154 177,30,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Back,,True
+Bed-ridden,finding,3,58 60 90,11,"check_for, diagnosis_condition, trigger",,general,,,False
+Bereavement,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Bite - wound,disorder,1,29,6,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Black urine,finding,1,39,3,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Bleeding,finding,5,11 16 29 30 122,12,"check_for, priority_condition",,general,,,True
+Bleeding from anus,disorder,1,40,5,"check_for, diagnosis_condition, priority_condition",,snomed,Anal & rectal,Anal structure,False
+Bleeding from ear,disorder,1,30,2,"check_for, priority_condition",,snomed,Ear,Ear structure,False
+Bleeding from nose,finding,2,30 51,4,"check_for, diagnosis_condition, priority_condition",,listed,Nose,,False
+Bleeding from vagina,finding,5,11 56 73 176 177,16,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Genital,,False
+Bleeding gums,finding,1,54,2,"check_for, diagnosis_condition",,listed,Teeth & gums,,False
+Bleeds easily,finding,3,39 89 94,7,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Blister,morphologic abnormality,1,52,6,"check_for, diagnosis_condition",Lip structure; Oral cavity structure; Skin structure of perioral region of face,rule site,Mouth or throat,Lip structure,False
+Blister of skin,disorder,7,40 82 83 85 88 90 93,14,"check_for, diagnosis_condition, priority_condition",,listed,Skin,,False
+Blood,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Blood in urine,finding,4,30 49 69 78,9,"check_for, diagnosis_condition, priority_condition",,listed,"Back, Face, Leg, Urinary",,False
+Bloodstained sputum,finding,1,130,2,"check_for, diagnosis_condition",,general,,,False
+Blue lips,finding,1,16,2,"check_for, priority_condition",,snomed,Mouth or throat,Lip structure,False
+Blue tongue,finding,1,16,2,"check_for, priority_condition",,snomed,Mouth or throat,Tongue structure,False
+Blurring of visual image,finding,4,14 48 152 177,11,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Eye,,False
+Body fluid,substance,1,122,1,trigger,,general,,,False
+Bony swelling of toe joint,finding,1,81,2,"check_for, diagnosis_condition",First metatarsophalangeal joint structure,related,"Arm, Hand, Joint",Joint swelling (finding),False
+Breast finding,finding,1,55,1,trigger,,snomed,Breast,Breast structure,False
+Breast lump,finding,1,55,2,"check_for, diagnosis_condition",,listed,Breast,,False
+Breast milk,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Breast normal,finding,1,55,2,"check_for, diagnosis_condition",,snomed,Breast,Breast structure,False
+Bronchial breathing,finding,1,23,4,"check_for, diagnosis_condition",,snomed,Chest,Thoracic structure; Tracheobronchial structure,False
+Burn,disorder,2,11 31,7,"check_for, diagnosis_condition, priority_condition, trigger",Joint structure,rule site,Joint,Joint structure,True
+Burn any degree involving 10-19 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 20-29 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 30-39 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 40-49 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 50-59 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 60-69 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 70-79 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 80-89 percent of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn any degree involving 90 percent OR more of body surface,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Burn of chest wall,disorder,1,31,2,"check_for, priority_condition",,snomed,Chest,Chest wall structure,False
+Burn of face,disorder,1,31,3,"check_for, diagnosis_condition, priority_condition",,related,"Head, Nose",Injury of head (disorder),True
+Burn of foot,disorder,1,31,2,"check_for, priority_condition",,related,"Foot, Leg",Injury of lower limb (disorder),False
+Burn of genitalia,disorder,1,31,2,"check_for, priority_condition",,snomed,Genital,External genitalia structure,False
+Burn of hand,disorder,1,31,2,"check_for, priority_condition",,snomed,Hand,Hand structure,False
+Burn of lower limb,disorder,1,31,2,"check_for, priority_condition",,related,"Foot, Leg",Injury of lower limb (disorder),False
+Burn of neck,disorder,1,31,2,"check_for, diagnosis_condition",,related,Neck,Injury of neck (disorder),False
+Burn of upper limb,disorder,1,31,2,"check_for, priority_condition",,snomed,Arm,Upper limb structure,False
+Burning feet,finding,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Burrows in skin,disorder,3,40 84 85,12,"check_for, diagnosis_condition",Axillary region structure; Genital structure; Structure of interdigital web of hand; Structure of waist region of trunk,rule site,"Arm, Genital, Hand",Axillary region structure; Genital structure; Structure of interdigital web of hand,False
+Cardiac arrest,disorder,2,16 17,6,"diagnosis_condition, priority_condition, trigger",,snomed,Chest,Cardiac conducting system structure,True
+Cavity,morphologic abnormality,1,54,2,"check_for, diagnosis_condition",Tooth structure,rule site,Teeth & gums,Tooth structure,False
+Central chest pain,finding,1,24,2,"check_for, priority_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Cerebrospinal fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Cerebrovascular accident,disorder,1,152,2,"priority_condition, trigger",,related,"Head, Nose",Injury of head (disorder),True
+Cervical discharge,finding,1,64,2,"check_for, diagnosis_condition",,snomed,Genital,Cervix uteri structure,False
+Cervical os closed,finding,1,176,3,"check_for, diagnosis_condition, priority_condition",,snomed,Genital,Cervix uteri structure,False
+Cervical os open,finding,2,176 177,8,"check_for, diagnosis_condition",,snomed,Genital,Cervix uteri structure,False
+Cervix dilated,finding,1,177,6,"check_for, diagnosis_condition",,snomed,Genital,Cervix uteri structure,False
+Challenging behavior,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Change in skin lesion,finding,1,89,2,"check_for, priority_condition",,snomed,Skin,Skin structure,False
+Changing color of pigmented skin lesion,disorder,1,89,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Changing shape of pigmented skin lesion,disorder,1,89,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Chemical burn,disorder,2,31 48,4,"check_for, priority_condition",,general,,,True
+Chest discomfort,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Chest pain,finding,21,11 16 19 23 24 26 29 40 43 44 45 46 56 57 73 79 130 145 148 151 182,63,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Arm, Chest, Genital, Hand",,True
+Chest pain at rest,finding,1,24,3,"check_for, diagnosis_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Chest pain on breathing,finding,1,24,7,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Chest,,False
+Chill,finding,1,51,3,"check_for, diagnosis_condition",,general,,,False
+Chronic constipation,disorder,1,58,2,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal",Constipation (finding),False
+Chronic constipation with overflow,disorder,1,60,3,"check_for, diagnosis_condition, trigger",,related,"Abdomen, Anal & rectal, Skin",Constipation (finding); Diarrhea (finding),False
+Chronic disease of skin,disorder,1,40,2,"check_for, priority_condition",,snomed,Skin,Skin structure,False
+Chronic kidney disease stage 5,disorder,1,148,3,"check_for, diagnosis_condition, priority_condition",,snomed,Urinary,Kidney structure,False
+Chronic lung disease,disorder,1,40,2,"check_for, priority_condition",,snomed,Chest,Lung structure,False
+Cigarette burn,disorder,1,31,3,"check_for, diagnosis_condition",,general,,,False
+Clearing throat - hawking,finding,2,23 51,4,"check_for, diagnosis_condition",,listed,Nose,,False
+Clinical finding,finding,1,11,1,trigger,,general,,,False
+Clouded consciousness,finding,13,11 16 19 23 26 27 30 31 39 47 59 94 130,27,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Head, Neck, Skin",,False
+Clumsiness,finding,1,79,3,"check_for, priority_condition",,listed,Neck,,False
+Cold extremity,finding,1,30,4,"check_for, priority_condition",,spans,,Limb structure,False
+Collapse,finding,13,15 21 22 28 29 45 46 49 52 53 56 57 82,49,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Face, Mouth or throat, Skin",,False
+Comedone,disorder,1,89,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Acne (disorder); Skin lesion (disorder),False
+Common cold,disorder,5,23 38 47 49 51,13,"check_for, diagnosis_condition",,listed,"Face, Head, Nose",,False
+Conjunctivitis,disorder,1,40,2,"check_for, diagnosis_condition",,snomed,Eye,Conjunctival structure,False
+Constipation,finding,3,42 57 60,11,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Anal & rectal",,True
+Contusion,disorder,1,30,2,"check_for, priority_condition",,general,,,False
+Copies of human immunodeficiency virus ribonucleic acid above reference range,finding,1,40,2,"check_for, priority_condition",,general,,,False
+Corneal haze,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Corneal ulcer,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Cough,finding,17,11 14 15 23 28 29 38 39 40 42 53 78 82 87 102 130 196,60,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Back, Chest, Mouth or throat, Nose",,True
+Cough impulse of mass present,finding,1,42,6,"check_for, diagnosis_condition",,general,,,False
+Cramp,finding,1,29,2,"check_for, priority_condition",,listed,Leg,,False
+Crust,morphologic abnormality,1,52,2,"check_for, diagnosis_condition",Skin structure of perioral region of face,general,,,False
+Crust on skin,finding,3,40 85 93,7,"check_for, diagnosis_condition, trigger",,listed,Skin,,False
+Cyanosis,finding,1,23,2,"check_for, priority_condition",,spans,,Structure of skin and/or mucous membrane,False
+Decreased alcohol consumption,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Decreased breath sounds,finding,4,16 17 23 24,8,"check_for, diagnosis_condition",,listed,Chest,,False
+Decreased coordination,finding,2,79 152,7,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Neck,,False
+Decreased hearing,finding,1,14,3,"check_for, diagnosis_condition",,spans,,Structure of auditory system,False
+Decreased level of consciousness,finding,14,11 16 18 19 21 23 27 38 39 40 45 47 59 145,37,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Head,,True
+Decreased skin turgor,finding,8,17 26 40 43 57 58 59 145,19,"check_for, diagnosis_condition, priority_condition",,snomed,Skin,Skin structure,True
+Decreased urine output,finding,1,26,4,"check_for, diagnosis_condition",,related,Urinary,Oliguria (finding),True
+Deep bite wound,morphologic abnormality,1,29,2,"check_for, priority_condition",,general,,,False
+Deficiency of macronutrients,disorder,1,102,2,"check_for, priority_condition",,general,,,False
+Deformity,finding,2,30 77,4,"check_for, diagnosis_condition, priority_condition",,listed,"Back, Joint",,False
+Deformity of foot,finding,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Deformity of spine,finding,1,78,2,"check_for, diagnosis_condition",,related,"Back, Joint",Deformity (finding),False
+Deformity of upper limb,finding,1,79,2,"check_for, diagnosis_condition",,listed,"Arm, Hand",,False
+Dehydration,disorder,2,19 145,4,"check_for, priority_condition",,general,,,False
+Delivery finding,finding,1,64,2,"check_for, priority_condition",,general,,,False
+Delusion,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Denuded skin,disorder,2,82 88,4,"check_for, diagnosis_condition, priority_condition",,snomed,Skin,Skin structure,False
+Dependence on wheelchair,finding,1,90,5,"check_for, diagnosis_condition",,general,,,False
+Dependent for walking,finding,1,130,2,"check_for, priority_condition",,general,,,False
+Depressed mood,finding,2,98 197,8,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Derealization,finding,1,98,3,"check_for, diagnosis_condition",,general,,,False
+Destructive behavior,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Diabetes mellitus,disorder,14,11 19 21 24 26 39 40 43 45 46 69 78 90 145,39,"check_for, diagnosis_condition, priority_condition, trigger",,spans,,Structure of endocrine system,True
+Diarrhea,finding,11,14 27 29 39 56 57 58 59 60 82 88,34,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Skin",,True
+Difficulty breathing,finding,25,11 16 18 23 24 26 27 28 29 31 38 39 43 45 46 49 52 53 56 57 59 82 88 151 177,81,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Chest, Face, Mouth or throat, Skin",,False
+Difficulty coping,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Difficulty drinking,finding,1,59,3,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Difficulty sitting down,finding,1,80,2,"check_for, diagnosis_condition",,general,,,False
+Difficulty sleeping,finding,1,98,5,"check_for, diagnosis_condition",,general,,,False
+Difficulty standing up,finding,1,80,2,"check_for, diagnosis_condition",,general,,,False
+Difficulty swallowing,finding,5,14 29 52 53 148,15,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Chest, Mouth or throat",,False
+Difficulty talking,finding,12,21 26 29 36 43 45 46 47 48 49 148 152,42,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Arm, Eye, Face",,False
+Difficulty understanding verbal language,finding,1,152,4,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Difficulty walking,finding,4,78 80 111 152,10,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Back, Leg",,False
+Dilated pupil,finding,3,18 27 36,7,"check_for, diagnosis_condition, priority_condition",Structure of pupil of both eyes,listed,Eye,,False
+Diplopia,disorder,2,29 152,6,"check_for, diagnosis_condition, priority_condition, trigger",,related,"Arm, Eye, Face, Head",Visual disturbance (disorder),False
+Discharge from anus,finding,1,40,5,"check_for, diagnosis_condition, priority_condition",,snomed,Anal & rectal,Anal structure,False
+Discharge from eye,finding,1,48,6,"check_for, diagnosis_condition",,listed,Eye,,False
+Discoloration of skin,finding,1,94,1,trigger,,listed,Skin,,False
+Dislocation of joint,disorder,1,11,2,"check_for, priority_condition",,snomed,Joint,Joint structure,False
+Disorder of eye movements,disorder,2,46 48,4,"check_for, priority_condition",,spans,,Structure of visual system,False
+Disorder of urinary system,disorder,1,69,3,"check_for, diagnosis_condition",,snomed,Urinary,Urinary system structure,False
+Disorientated,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Disruptive behavior,finding,1,35,2,"priority_condition, trigger",,general,,,False
+Distension of abdomen,finding,4,56 57 60 69,8,"check_for, diagnosis_condition, priority_condition",Lower abdomen structure,listed,"Abdomen, Anal & rectal, Urinary",,False
+Distress,finding,2,34 98,5,"check_for, diagnosis_condition",,general,,,False
+Disturbance in thinking,finding,1,36,16,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Dizziness,finding,22,14 21 22 26 28 29 30 44 45 46 47 49 52 53 56 57 73 82 145 148 152 182,66,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Face, Genital, Head, Mouth or throat, Skin",,True
+Does not communicate,finding,1,34,3,"check_for, diagnosis_condition",,general,,,False
+Does not defecate,finding,1,61,2,"check_for, priority_condition",,listed,Anal & rectal,,False
+Dribbling from mouth,finding,3,14 27 29,8,"check_for, diagnosis_condition, priority_condition",,spans,"Head, Mouth or throat",Lip structure; Salivary structure,False
+Drinking binge,finding,1,94,2,"check_for, priority_condition",,general,,,False
+Drowsy,finding,15,19 22 31 38 39 47 57 59 79 82 94 102 111 130 145,34,"check_for, diagnosis_condition, priority_condition",,listed,"Head, Neck, Skin",,False
+Drug or medicament,substance,14,18 22 28 36 45 49 52 53 56 57 82 85 87 94,36,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Dry cough,finding,2,23 39,4,"check_for, diagnosis_condition",,related,"Back, Chest, Mouth or throat, Nose",Cough (finding),False
+Dyspnea,finding,6,11 14 16 23 24 148,14,"check_for, diagnosis_condition, priority_condition, trigger",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),True
+Dyspnea at rest,finding,5,23 40 102 111 130,10,"check_for, priority_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),False
+Dyspnea on exertion,finding,1,16,2,"check_for, priority_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),False
+Dysuria,finding,1,69,4,"check_for, diagnosis_condition",,listed,"Genital, Urinary",,False
+Ear discharge,finding,1,30,2,"check_for, priority_condition",,listed,Ear,,False
+Easy bruising,finding,4,38 39 44 94,9,"check_for, diagnosis_condition, priority_condition",,snomed,Skin,Skin structure,False
+Ecchymosis of periorbital region,disorder,1,30,2,"check_for, priority_condition",,snomed,Face,Periorbital region structure,False
+Ecchymosis of postauricular region,finding,1,30,2,"check_for, priority_condition",,snomed,Head,Postauricular region structure,False
+Eczema,disorder,1,48,2,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Eggs (edible),substance,1,28,3,"check_for, diagnosis_condition",,general,,,False
+Electrical burn,disorder,1,31,2,"check_for, priority_condition",,general,,,False
+Electrocardiogram abnormal,finding,1,45,2,"check_for, priority_condition",,general,,,False
+Electrocardiographic left bundle branch block,finding,1,24,3,"check_for, diagnosis_condition",,snomed,Chest,Left bundle branch structure,False
+Elevated mood,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Emotionally detached,finding,1,98,3,"check_for, diagnosis_condition",,general,,,False
+Enlarged uterus,finding,1,176,2,"check_for, diagnosis_condition",,snomed,Genital,Uterine structure,False
+Epigastric pain,finding,2,56 57,9,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Mouth or throat, Skin",Abdominal pain (finding),False
+Epilepsy,disorder,1,21,2,"check_for, priority_condition",,related,Head,Seizure (finding),False
+Eruption,morphologic abnormality,9,15 28 38 40 42 77 78 82 86,28,"check_for, diagnosis_condition, trigger",Genital structure; Oral cavity structure; Structure of eye proper,rule site,"Eye, Genital, Mouth or throat",Structure of eye proper; Genital structure; Oral cavity structure,False
+Eruption caused by drug,disorder,1,88,9,"check_for, diagnosis_condition, priority_condition, trigger",Eye region structure; Genital structure; Mouth region structure,listed,Skin,,False
+Eruption of skin,disorder,1,82,2,"check_for, diagnosis_condition",,listed,"Joint, Skin",,False
+Erythema,finding,7,29 40 48 64 77 83 93,18,"check_for, diagnosis_condition",Cervix uteri structure; Eyelid structure; Joint structure,listed,Joint,,False
+Erythema of skin of eyelid,disorder,1,49,2,"check_for, diagnosis_condition",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Skin lesion (disorder),False
+Erythema of vulva,disorder,1,64,6,"check_for, diagnosis_condition",,snomed,Genital,Structure of skin and/or mucosa of vulva,False
+Erythematous rash,disorder,3,79 82 84,6,"check_for, diagnosis_condition",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Skin lesion (disorder),False
+Ex-smoker,finding,1,23,3,"check_for, diagnosis_condition",,general,,,False
+Excess sick leave,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Excessive bronchial secretion,finding,1,18,2,"check_for, diagnosis_condition",,snomed,Chest,Bronchial structure,False
+Excessive salivation,disorder,1,18,2,"check_for, diagnosis_condition",,snomed,Head,Salivary gland structure,False
+Excessive sweating,finding,1,27,3,"check_for, diagnosis_condition, priority_condition",,listed,Chest,,False
+Excessive thirst,finding,2,19 145,4,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Excessively deep breathing,finding,2,45 46,7,"check_for, diagnosis_condition",,spans,,Structure of respiratory system,False
+Exophthalmos,disorder,1,48,2,"check_for, priority_condition",,snomed,Head,Structure of orbit proper,False
+Exposure to blood and/or body fluid,event,1,196,2,"priority_condition, trigger",,general,,,False
+Exudate,substance,1,196,2,"check_for, priority_condition",,general,,,False
+Exudate on tonsils,finding,1,53,3,"check_for, diagnosis_condition",,listed,Mouth or throat,,False
+Eye / vision finding,finding,1,48,3,"priority_condition, trigger",,spans,,Structure of visual system,False
+Facial swelling,finding,1,54,2,"check_for, priority_condition",,snomed,Face,Face structure,False
+Falls,finding,1,45,9,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Family history of ischemic heart disease,situation,1,24,2,"check_for, priority_condition",,general,,,False
+Family history of sudden death,situation,1,45,2,"check_for, priority_condition",,general,,,False
+Family history of syncope,situation,1,45,2,"check_for, priority_condition",,general,,,False
+Fatigue,finding,13,19 38 39 40 42 43 60 78 82 87 88 98 197,36,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,True
+Fearful mood,finding,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Feeling agitated,finding,7,11 22 23 27 34 36 130,15,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Feeling angry,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Feeling faint,finding,2,44 182,4,"check_for, priority_condition",,general,,,False
+Feeling hopeless,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Feeling irritable,finding,3,36 98 197,11,"check_for, diagnosis_condition",,general,,,False
+Feeling physically tense,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Feeling tense,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Female,finding,3,32 33 69,9,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Fetal movements absent,situation,1,177,2,"check_for, priority_condition",,general,,,False
+Fever,finding,3,51 77 78,6,"check_for, diagnosis_condition, priority_condition",,listed,"Abdomen, Back, Breast, Chest, Ear, Face, Genital, Head, Joint, Neck, Nose, Skin, Teeth & gums, Urinary",,True
+Finding of color of sputum,finding,1,31,2,"check_for, diagnosis_condition",,general,,,False
+Finding of foot region,finding,1,81,4,"diagnosis_condition, priority_condition, trigger",,snomed,Foot,Foot structure,False
+Finding of lower limb,finding,1,80,3,"priority_condition, trigger",,snomed,Leg,Lower limb structure,False
+Finding of tendency to bleed,finding,2,38 94,4,"check_for, priority_condition",,general,,,False
+Finding of upper limb,finding,1,79,4,"diagnosis_condition, priority_condition, trigger",,snomed,Arm,Upper limb structure,False
+Finding of vomiting,finding,26,11 14 18 19 22 24 27 28 29 30 39 42 45 46 48 49 52 53 56 57 69 78 82 88 130 145,79,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Back, Chest, Face, Mouth or throat, Skin, Urinary",,True
+Fish,substance,1,28,3,"check_for, diagnosis_condition",,general,,,False
+Fissure,morphologic abnormality,1,52,4,"check_for, diagnosis_condition",Structure of angle of mouth,rule site,Mouth or throat,Structure of angle of mouth,False
+Fissure in skin,disorder,2,81 85,4,"check_for, diagnosis_condition",Structure of interdigital space of foot; Structure of interdigital web of foot,rule site,Foot,Structure of interdigital space of foot,False
+Fixed dilatation of pupil,finding,1,48,2,"check_for, diagnosis_condition",,related,Eye,Dilated pupil (finding),False
+"Fixed, retracted foreskin",finding,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Structure of prepuce of penis,False
+Flank pain,finding,2,69 78,13,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Back, Urinary",,False
+Flashback due to and following trauma,finding,1,98,2,"check_for, diagnosis_condition",,general,,,False
+Flatulence symptom,finding,1,60,2,"check_for, diagnosis_condition",,spans,,Structure of digestive system,False
+Fluctuant,finding,1,89,3,"check_for, diagnosis_condition",,general,,,False
+Fluctuation of level of consciousness,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Flushing,disorder,1,21,2,"check_for, diagnosis_condition",,snomed,Skin,Blood vessel structure of skin,False
+Food,substance,9,18 22 45 49 52 53 56 57 82,25,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Foot pain,finding,1,81,7,"check_for, diagnosis_condition",,listed,Foot,,False
+Foot pulse absent,finding,1,90,4,"check_for, diagnosis_condition",,related,"Foot, Leg",Absent pulse (finding); Peripheral pulse absent (finding),False
+Fourth degree perineal laceration,disorder,1,182,2,"check_for, priority_condition",,spans,,Female perineal structure,False
+Fracture of bone,disorder,2,11 30,6,"check_for, diagnosis_condition, priority_condition, trigger",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of eight OR more ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of femur,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Foot, Hand, Joint, Leg",Injury of lower limb (disorder); Injury of musculoskeletal system (disorder),False
+Fracture of five ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of four ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of pelvis,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of seven ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of six ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of skull,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Head, Joint, Nose",Injury of head (disorder); Injury of musculoskeletal system (disorder),False
+Fracture of three ribs,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+Fracture of vertebral column,disorder,1,30,2,"check_for, priority_condition",,related,"Arm, Back, Hand, Joint",Injury of musculoskeletal system (disorder),False
+"Fracture, open",morphologic abnormality,1,30,2,"check_for, priority_condition",,general,,,True
+Frequent headache,finding,2,21 47,4,"check_for, priority_condition",,listed,Head,,False
+Full thickness burn,disorder,1,31,2,"check_for, priority_condition",,spans,,Skin and/or subcutaneous tissue structure,False
+Fullness of rectum due to feces,finding,1,58,2,"check_for, diagnosis_condition",,snomed,Anal & rectal,Rectum structure,False
+Gangrene of foot,disorder,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Gangrenous disorder,disorder,3,80 90 154,6,"check_for, diagnosis_condition",Lower limb structure,rule site,Leg,Lower limb structure,False
+Gasping for breath,finding,1,16,2,"check_for, priority_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),False
+Generalized aches and pains,finding,13,38 40 42 47 49 55 56 57 69 78 82 87 88,35,"check_for, diagnosis_condition, priority_condition",,listed,"Breast, Face, Head, Nose, Urinary",,False
+Generalized headache,finding,1,47,2,"check_for, diagnosis_condition",,related,"Eye, Face, Head, Neck, Nose, Skin",Headache (finding),False
+Generalized pruritus,finding,8,18 22 29 45 53 56 57 82,21,"check_for, diagnosis_condition, priority_condition",,listed,"Abdomen, Skin",,False
+Generalized rash,disorder,11,18 22 29 40 45 53 56 57 82 87 88,38,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Skin",,False
+Generally unwell,finding,4,14 82 88 182,8,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Gingivae finding,finding,1,54,2,"priority_condition, trigger",,snomed,Teeth & gums,Gingival structure,False
+Gingival enlargement,disorder,1,54,2,"check_for, diagnosis_condition",,snomed,Teeth & gums,Gingival structure,False
+Gingival erythema,disorder,1,54,2,"check_for, diagnosis_condition",,snomed,Teeth & gums,Gingival structure,False
+"Glasgow coma scale, 3",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+"Glasgow coma scale, 4",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+"Glasgow coma scale, 5",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+"Glasgow coma scale, 6",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+"Glasgow coma scale, 7",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+"Glasgow coma scale, 8",finding,1,16,2,"check_for, priority_condition",,snomed,Head,Structure of cerebrum,False
+Glycosuria,finding,1,69,2,"check_for, diagnosis_condition",,general,,,False
+Gout,disorder,1,77,3,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Greasy skin,finding,1,93,2,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Groin mass,finding,1,42,12,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Leg,,False
+Gurgling,finding,1,16,2,"check_for, priority_condition",,snomed,Mouth or throat,Pharyngeal structure,False
+Habitual snoring,finding,1,23,2,"check_for, diagnosis_condition",,spans,,Respiratory tract structure,False
+Hallucinations,finding,2,27 36,5,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Hand pain,finding,1,79,2,"check_for, diagnosis_condition",,listed,Hand,,False
+Hard stool,finding,1,60,2,"check_for, diagnosis_condition",Rectum structure,rule site,Anal & rectal,Rectum structure,False
+Has drooping eyelids,finding,1,29,2,"check_for, priority_condition",,snomed,Face,Eyelid structure,False
+Headache,finding,20,11 21 30 38 39 40 42 47 48 49 51 57 78 79 82 87 111 130 148 177,71,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Eye, Face, Head, Neck, Nose, Skin",,True
+Hearing loss,disorder,1,46,3,"check_for, diagnosis_condition",,spans,,Structure of auditory system,False
+Heart disease,disorder,1,45,2,"check_for, priority_condition",,snomed,Chest,Heart structure,False
+Heart failure,disorder,2,148 151,8,"check_for, diagnosis_condition, priority_condition, trigger",,snomed,Chest,Heart structure,False
+Heavy drinking session,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Heavy episode of vaginal bleeding,finding,1,182,2,"check_for, diagnosis_condition",,related,Genital,Bleeding from vagina (finding),False
+Heel pain,finding,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Hematemesis,disorder,3,11 45 57,6,"check_for, priority_condition",,related,"Abdomen, Back, Chest, Face, Mouth or throat, Skin, Urinary",Finding of vomiting (finding),False
+Hematochezia,finding,4,44 45 58 60,10,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Hematotympanum,disorder,1,30,2,"check_for, priority_condition",,snomed,Ear,Tympanic cavity structure,False
+Hemoptysis,finding,5,11 23 102 111 130,10,"check_for, priority_condition",,related,"Back, Chest, Mouth or throat, Nose",Cough (finding),True
+Herpes zoster,disorder,1,48,2,"check_for, priority_condition",Nasal structure,listed,Face,,False
+Herpes zoster ophthalmicus,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+High risk of harm to others,finding,1,158,2,"check_for, priority_condition",,general,,,False
+Highly active antiretroviral therapy,procedure,1,47,2,"check_for, priority_condition",,listed,Head,,False
+History of anaphylaxis,situation,1,28,6,"diagnosis_condition, trigger",,general,,,False
+History of attempted suicide,situation,1,34,2,"check_for, diagnosis_condition",,general,,,False
+History of deliberate self harm,situation,1,34,2,"check_for, diagnosis_condition",,general,,,False
+History of herpes zoster,situation,1,49,2,"check_for, diagnosis_condition",,general,,,False
+History of malignant neoplasm,situation,1,78,2,"check_for, diagnosis_condition",,general,,,False
+History of spinal surgery,situation,1,78,2,"check_for, diagnosis_condition",,general,,,False
+History of travel with high risk of exposure to communicable disease,situation,1,39,2,"check_for, diagnosis_condition",,general,,,False
+Hoarse,finding,3,14 29 31,7,"check_for, diagnosis_condition",,general,,,False
+Human bite - wound,disorder,1,122,2,"priority_condition, trigger",,general,,,False
+Human immunodeficiency virus,organism,1,87,4,"check_for, diagnosis_condition",,general,,,False
+Human immunodeficiency virus infection,disorder,5,21 23 40 78 130,13,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Human immunodeficiency virus not detected,finding,1,87,3,"check_for, diagnosis_condition",,general,,,False
+Hunger pain,finding,2,56 57,6,"check_for, diagnosis_condition",,related,"Abdomen, Urinary",Abdominal discomfort (finding),False
+Hungry,finding,1,145,2,"check_for, priority_condition",,general,,,False
+Hypercholesterolemia,disorder,1,24,2,"check_for, priority_condition",,general,,,False
+Hyperpigmentation of skin,disorder,5,40 84 88 90 94,15,"check_for, diagnosis_condition",Face structure; Structure of lower limb from knee to ankle; Trunk structure,rule site,"Face, Leg",Face structure; Structure of lower limb from knee to ankle,False
+Hyperresonance,finding,4,16 17 23 24,8,"check_for, diagnosis_condition",,snomed,Chest,Structure of lung field,False
+"Hypertensive disorder, systemic arterial",disorder,2,24 40,4,"check_for, priority_condition",,spans,,Systemic circulatory system structure,False
+Hypervigilant behavior,finding,1,98,3,"check_for, diagnosis_condition",,general,,,False
+Hypopigmentation of skin,disorder,1,94,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Illicit drug use,finding,3,18 94 197,9,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Impairment of balance,finding,1,152,4,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Impairment of mental alertness,finding,1,18,6,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Inappropriate behavior,finding,1,197,2,"check_for, priority_condition",,general,,,False
+Incoherent speech,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Incontinence of feces,finding,1,78,2,"check_for, priority_condition",,listed,"Back, Leg",,False
+Incoordination,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Increased energy,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Increased frequency of urination,finding,2,52 69,9,"check_for, diagnosis_condition",,listed,Urinary,,False
+Increased thirst,finding,4,43 52 58 59,8,"check_for, diagnosis_condition",,general,,,False
+Indifference,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Induced termination of pregnancy,disorder,4,56 64 73 176,10,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Infected ulcer of skin,disorder,1,90,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder); Skin ulcer (disorder),False
+Infestation caused by Argasidae,disorder,2,38 87,5,"check_for, diagnosis_condition",,general,,,False
+Infestation caused by Ixodidae,disorder,2,38 87,5,"check_for, diagnosis_condition",,general,,,False
+Infestation caused by Sarcoptes scabiei var hominis,disorder,1,86,4,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Inflammation of vulva,disorder,1,64,6,"check_for, diagnosis_condition",,listed,Genital,,False
+Inflammatory morphology,morphologic abnormality,1,63,2,"check_for, diagnosis_condition",Glans penis structure,rule site,Genital,Glans penis structure,False
+Influenza-like illness,finding,1,39,2,"check_for, diagnosis_condition",,general,,,False
+Inguinal pain,finding,2,42 69,4,"check_for, diagnosis_condition",,related,Genital,Pain in pelvis (finding),False
+Injury of eye region,disorder,1,11,2,"check_for, priority_condition",,related,"Head, Nose",Injury of head (disorder),False
+Injury of head,disorder,5,21 30 46 47 51,13,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Head, Nose",,False
+Injury of lower limb,disorder,1,80,4,"check_for, diagnosis_condition",,listed,"Foot, Leg",,False
+Injury of neck,disorder,1,79,2,"check_for, priority_condition",,listed,Neck,,False
+Injury of scrotum,disorder,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Scrotal structure,False
+Injury of testis,disorder,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Testis structure,False
+Injury of upper extremity,disorder,1,79,2,"check_for, diagnosis_condition",,snomed,Arm,Upper limb structure,False
+Insect bite - wound,disorder,11,18 22 28 45 49 52 53 56 57 82 86,33,"check_for, diagnosis_condition, priority_condition",,general,,,True
+Insect bite reaction,disorder,1,29,2,"check_for, diagnosis_condition",,general,,,False
+Insect sting,disorder,10,18 22 28 45 49 52 53 56 57 82,29,"check_for, diagnosis_condition, priority_condition",,spans,,Structure of skin and/or mucous membrane,False
+Intentionally harming self,event,3,27 32 34,7,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Intermittent claudication,finding,3,80 81 90,10,"check_for, diagnosis_condition",,listed,"Foot, Leg",,False
+Intimidation,finding,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Intoxication,disorder,1,30,2,"check_for, priority_condition",,general,,,False
+Intoxication caused by psychoactive substance,disorder,1,197,2,"check_for, priority_condition",,general,,,False
+Intravenous drug user,finding,1,78,2,"check_for, diagnosis_condition",,general,,,False
+Iris hypopigmentation,finding,1,94,2,"check_for, diagnosis_condition",,snomed,Eye,Iris structure,False
+Irregular outline of pigmented skin lesion,disorder,1,89,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Ischemic heart disease,disorder,1,24,2,"check_for, priority_condition",,snomed,Chest,Heart structure,False
+Itching,finding,11,14 23 28 29 40 51 52 77 82 85 86,46,"check_for, diagnosis_condition, trigger",Face structure; Nasal structure; Tongue structure,listed,Nose,,False
+Itching of bilateral eyes,finding,1,28,2,"check_for, diagnosis_condition",,related,"Eye, Nose",Itching of eye (finding),False
+Itching of eye,finding,1,48,4,"check_for, diagnosis_condition",,listed,"Eye, Nose",,False
+Itching of pigmented skin lesion,disorder,1,89,2,"check_for, priority_condition",,related,"Leg, Skin",Itching of skin (finding); Skin lesion (disorder),False
+Itching of skin,finding,2,28 93,5,"check_for, diagnosis_condition",,listed,Skin,,False
+Jaundice,finding,8,38 39 44 56 57 82 88 94,17,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Skin",,False
+Joint catching,finding,1,79,2,"check_for, diagnosis_condition",Finger structure,rule site,Hand,Finger structure,False
+Joint swelling,finding,3,77 79 80,14,"check_for, diagnosis_condition",,listed,"Arm, Hand, Joint",,False
+Joint warm,finding,3,77 79 80,10,"check_for, diagnosis_condition",,listed,"Arm, Hand, Joint",,False
+Ketonuria,finding,2,19 145,6,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Kussmaul's respiration,finding,3,19 57 145,6,"check_for, priority_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),False
+Laceration of eyelid,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Lack of insight,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Language difficulty,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Left sided chest pain,finding,1,24,4,"check_for, diagnosis_condition, priority_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Leg swelling symptom,finding,6,22 26 40 43 44 148,14,"check_for, diagnosis_condition, priority_condition",,snomed,Leg,Lower limb structure,False
+Lesion,morphologic abnormality,3,38 82 87,14,"check_for, diagnosis_condition",Anal structure; Genital structure; Oral cavity structure; Rectum structure; Structure of eye proper,rule site,"Anal & rectal, Eye, Genital, Mouth or throat",Anal structure; Structure of eye proper; Genital structure; Oral cavity structure,False
+Lesion of eye,disorder,5,38 40 42 78 87,13,"check_for, diagnosis_condition, trigger",,snomed,Eye,Structure of eye proper,False
+Lesion of face,disorder,1,40,3,"check_for, diagnosis_condition, trigger",,snomed,Face,Face structure,False
+Lesion of genitalia,disorder,5,38 40 42 78 87,11,"check_for, diagnosis_condition, trigger",,snomed,Genital,Genital structure,False
+Lesion of rectum,disorder,5,38 40 42 78 87,11,"check_for, diagnosis_condition, trigger",,snomed,Anal & rectal,Rectum structure,False
+Leukocytes in urine,finding,2,69 78,16,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Lightheadedness,finding,3,14 26 45,7,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Limb ischemia,disorder,1,30,4,"check_for, priority_condition",,spans,,Structure of artery of limb,True
+Limitation of joint movement,finding,2,77 79,7,"check_for, diagnosis_condition",,listed,Joint,,False
+Lip swelling,finding,1,49,7,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Face,,False
+Local infection of wound,disorder,1,90,2,"check_for, priority_condition",,general,,,False
+Localized enlarged lymph nodes,disorder,1,48,2,"check_for, diagnosis_condition",,spans,,Regional lymph node structure,False
+Localized skin lesion,disorder,1,40,6,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Locking of joint,finding,1,79,2,"check_for, diagnosis_condition",Finger structure,rule site,Hand,Finger structure,False
+Loss of appetite,finding,2,56 57,5,"check_for, diagnosis_condition",,listed,Abdomen,,False
+Loss of consciousness,finding,2,26 30,4,"check_for, priority_condition",,related,Head,Decreased level of consciousness (finding),False
+Loss of interest,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Louse infestation,disorder,1,86,4,"check_for, diagnosis_condition",,general,,,False
+Low blood pressure,disorder,1,14,3,"check_for, diagnosis_condition",,spans,,Structure of cardiovascular system,False
+Lower abdominal pain,finding,1,64,4,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Mouth or throat, Skin",Abdominal pain (finding),False
+Lump in eyelid,finding,1,48,2,"check_for, diagnosis_condition",,snomed,Face,Eyelid structure,False
+Lymphadenopathy,disorder,5,38 40 78 82 87,10,"check_for, diagnosis_condition",,spans,,Structure of lymphatic system,False
+Macular eruption,disorder,1,40,2,"check_for, diagnosis_condition",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Skin lesion (disorder),False
+Macule of skin,disorder,2,85 88,4,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Malaise,finding,2,82 88,4,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Malaria,disorder,1,44,2,"check_for, diagnosis_condition",,general,,,False
+Male,finding,4,32 33 69 78,15,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Male genitalia finding,finding,1,63,2,"priority_condition, trigger",,snomed,Genital,Male genital structure,False
+Malignant neoplastic disease,disorder,2,40 78,4,"check_for, priority_condition",,general,,,False
+Mass of axilla,finding,1,42,2,"check_for, diagnosis_condition",,listed,Breast,,False
+Mass of body region,finding,1,42,1,trigger,,spans,,Body region structure,True
+Mass of neck,finding,1,42,3,"check_for, diagnosis_condition",,listed,Neck,,False
+Mass of pelvic structure,finding,1,56,2,"check_for, priority_condition",,spans,,Structure of pelvis,False
+Mass of scrotum,finding,1,63,2,"check_for, diagnosis_condition",,listed,Genital,,False
+Mass of skin,finding,3,42 83 89,14,"check_for, diagnosis_condition, trigger",,snomed,Skin,Skin structure,False
+Mass of subcutaneous tissue,finding,1,89,8,"check_for, diagnosis_condition, trigger",,spans,,Subcutaneous tissue structure,False
+Mass of testicle,finding,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Testis structure,False
+Mass of uterine adnexa,finding,1,176,3,"check_for, diagnosis_condition, priority_condition",,related,"Abdomen, Back, Chest, Genital",Abdominal mass (finding),False
+Maternal breastfeeding,finding,1,55,5,"check_for, diagnosis_condition",,listed,Breast,,False
+Melanocytic nevus,disorder,1,89,4,"check_for, priority_condition, trigger",,general,,,False
+Melena,disorder,2,44 45,4,"check_for, priority_condition",,listed,"Abdomen, Anal & rectal, Chest",,False
+Memory impairment,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Menstrual period late,finding,2,45 64,4,"check_for, priority_condition",,snomed,Genital,Female genital tract structure,False
+Mental disorder,disorder,1,158,2,"priority_condition, trigger",,general,,,False
+Metal foreign body in eye region,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Milk,substance,1,28,3,"check_for, diagnosis_condition",,general,,,False
+Miscarriage,disorder,3,56 64 73,6,"check_for, priority_condition",,general,,,False
+Missed period,finding,3,45 64 170,6,"check_for, diagnosis_condition, priority_condition",,snomed,Genital,Female genital tract structure,False
+Misuse of medication,finding,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Mixed color of pigmented skin lesion,disorder,1,89,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Monkeypox virus,organism,2,40 42,4,"check_for, diagnosis_condition",,general,,,False
+Morning headache,finding,1,47,2,"check_for, priority_condition",,listed,Head,,False
+Mouth symptoms,finding,1,52,4,"diagnosis_condition, priority_condition, trigger",,snomed,Mouth or throat,Structure of region of internal part of mouth,False
+Mucus in stool,finding,2,56 61,4,"check_for, diagnosis_condition",,general,,,False
+Multiple bruising,finding,2,33 44,4,"check_for, diagnosis_condition, priority_condition",,snomed,Skin,Skin structure,False
+Multiple injuries,disorder,1,30,2,"check_for, priority_condition",,general,,,False
+Muscle pain,finding,5,39 40 51 80 81,14,"check_for, diagnosis_condition, priority_condition, trigger",Buttock structure; Lower limb structure,rule site,Leg,Buttock structure,True
+Muscle tension,finding,1,98,2,"check_for, diagnosis_condition",,spans,,Skeletal muscle structure,False
+Muscle twitch,finding,3,18 21 27,6,"check_for, diagnosis_condition, priority_condition",,spans,,Skeletal and/or smooth muscle structure,False
+Muscle weakness,finding,7,11 21 26 27 29 130 148,19,"check_for, diagnosis_condition, priority_condition",,spans,,Skeletal muscle structure,False
+Muscle weakness of limb,finding,5,30 49 79 102 111,15,"check_for, diagnosis_condition, priority_condition",,listed,Leg,,False
+Muscle weakness of upper limb,finding,8,36 43 45 46 47 48 79 152,29,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Arm, Eye, Face, Head, Neck",,False
+Mycobacterium tuberculosis complex,organism,1,102,1,diagnosis_condition,,general,,,False
+Nasal congestion,finding,10,14 23 28 38 40 42 51 78 82 87,24,"check_for, diagnosis_condition",,listed,Nose,,False
+Nasal discharge,finding,7,28 30 40 47 49 51 53,22,"check_for, diagnosis_condition, priority_condition",,listed,"Face, Head, Mouth or throat, Nose",,True
+Nausea,finding,18,14 19 21 24 29 36 39 40 45 46 47 48 51 56 57 78 145 170,55,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Back, Chest, Head",,True
+Neck pain,finding,1,79,2,"priority_condition, trigger",,listed,Neck,,False
+New medication commenced,finding,5,40 82 84 86 88,11,"check_for, diagnosis_condition",,general,,,False
+Night sweats,finding,4,78 102 130 196,7,"check_for, diagnosis_condition",,listed,Back,,False
+Nightmares,finding,1,98,2,"check_for, diagnosis_condition",,general,,,False
+Nitrite detected in urine,finding,2,69 78,16,"check_for, diagnosis_condition, priority_condition",,general,,,False
+No pupillary reaction to light,finding,1,30,2,"check_for, priority_condition",,snomed,Eye,Pupil structure,False
+Noisy respiration,finding,1,16,2,"check_for, priority_condition",,spans,,Structure of respiratory system,False
+Non-blanching rash,disorder,1,11,2,"check_for, priority_condition",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Skin lesion (disorder),False
+Noncompliance with treatment,finding,1,111,2,"check_for, priority_condition",,general,,,False
+Nose finding,finding,1,51,2,trigger,,snomed,Nose,Nasal structure,False
+Numbness,finding,4,11 21 26 130,12,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Numbness of face,finding,8,36 43 45 46 47 48 49 152,33,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Eye, Face, Head",,False
+Numbness of foot,finding,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Numbness of limbs,finding,3,30 49 79,13,"check_for, diagnosis_condition, priority_condition",,listed,"Back, Eye, Face, Head, Leg, Neck",,False
+Numbness of lower limb,finding,11,36 43 45 46 47 48 78 80 81 152 154,33,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Foot,,False
+Numbness of saddle area,finding,1,78,2,"check_for, priority_condition",,general,,,False
+Numbness of upper limb,finding,7,36 43 45 46 47 48 152,25,"check_for, diagnosis_condition, priority_condition, trigger",,related,"Back, Eye, Face, Head, Leg, Neck",Numbness of limbs (finding),False
+Nutritional wasting,disorder,1,102,2,"check_for, priority_condition",,general,,,True
+Obesity,disorder,1,40,2,"check_for, priority_condition",,general,,,False
+Obstipation,disorder,4,40 56 57 60,8,"check_for, priority_condition",,related,"Abdomen, Anal & rectal",Constipation (finding),False
+Offensive vaginal discharge,finding,1,176,2,"check_for, priority_condition",,related,"Abdomen, Genital",Vaginal discharge (finding),False
+Oliguria,finding,1,69,2,"check_for, diagnosis_condition",,listed,Urinary,,False
+Oral lesion,disorder,5,38 40 42 78 87,11,"check_for, diagnosis_condition, trigger",,snomed,Mouth or throat,Mouth region structure,False
+Orthopnea,finding,7,16 22 23 26 43 80 148,16,"check_for, diagnosis_condition, priority_condition",,listed,Leg,,False
+Osteoporosis,disorder,1,78,2,"check_for, diagnosis_condition",,spans,,Bone structure,False
+Oval shaped lesion,finding,1,85,2,"check_for, diagnosis_condition",,general,,,False
+Over 70 percent body burnt,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Overdose,disorder,4,11 21 32 33,8,"check_for, priority_condition",,general,,,False
+Overexertion and strenuous movements,event,1,63,2,"check_for, diagnosis_condition",,general,,,False
+Pacing up and down,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Pain,finding,4,40 48 49 63,9,"check_for, diagnosis_condition",Eyelid structure; Glans penis structure,rule site,"Face, Genital",Eyelid structure; Glans penis structure,False
+Pain aggravated by position,finding,3,24 56 57,12,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Pain aggravated by walking,finding,1,81,2,"check_for, diagnosis_condition",,general,,,False
+Pain in axilla,finding,1,42,2,"check_for, diagnosis_condition",,related,Arm,Pain in upper limb (finding),False
+Pain in buttock,finding,1,80,2,"check_for, diagnosis_condition",,related,"Genital, Leg",Pain in lower limb (finding); Pain in pelvis (finding),False
+Pain in calf,finding,4,23 26 80 177,8,"check_for, diagnosis_condition, priority_condition",,listed,Leg,,False
+Pain in eye,finding,2,47 48,6,"check_for, diagnosis_condition, priority_condition",,listed,"Eye, Head",,False
+Pain in face,finding,1,49,13,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Face,,False
+Pain in limb,finding,1,30,2,"check_for, priority_condition",,spans,,Limb structure,False
+Pain in lower limb,finding,2,80 154,8,"check_for, diagnosis_condition",,listed,Leg,,False
+Pain in scrotum,finding,1,63,4,"check_for, diagnosis_condition",,listed,Genital,,False
+Pain in thumb,finding,1,79,2,"check_for, diagnosis_condition",,listed,Hand,,False
+Pain in upper limb,finding,1,79,4,"check_for, diagnosis_condition, priority_condition",,listed,Arm,,False
+Pain of breast,finding,1,55,6,"check_for, diagnosis_condition",,listed,Breast,,False
+Pain of joint,finding,2,39 77,21,"check_for, diagnosis_condition, priority_condition, trigger",Ankle joint structure; Structure of joint of hallux; Structure of midfoot region of foot,listed,Joint,,True
+Pain of shoulder region,finding,1,79,2,"check_for, diagnosis_condition",,related,Arm,Pain in upper limb (finding),False
+Pain of skin,finding,4,29 40 83 89,15,"check_for, diagnosis_condition, trigger",,listed,Skin,,False
+Pain of wrist region,finding,1,79,2,"check_for, diagnosis_condition",,related,Arm,Pain in upper limb (finding),False
+Pain on movement of cervix,finding,1,64,6,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Genital, Mouth or throat, Skin",Abdominal pain (finding); Pain in pelvis (finding),False
+Pain provoked by eating,finding,1,57,3,"check_for, diagnosis_condition",,general,,,False
+Pain provoked by movement,finding,1,79,6,"check_for, diagnosis_condition",Elbow region structure; Thumb structure; Wrist region structure,rule site,"Arm, Hand",Elbow region structure; Thumb structure,False
+Pain provoked by rest,finding,1,90,2,"check_for, diagnosis_condition",,general,,,False
+Pain radiating to jaw,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to left arm,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to left leg,finding,1,80,2,"check_for, diagnosis_condition",,general,,,False
+Pain radiating to left shoulder,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to lumbar region of back,finding,2,56 57,4,"check_for, diagnosis_condition",,general,,,False
+Pain radiating to neck,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to right arm,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to right leg,finding,1,80,2,"check_for, diagnosis_condition",,general,,,False
+Pain radiating to right shoulder,finding,1,24,2,"check_for, priority_condition",,listed,Chest,,False
+Pain radiating to thoracic region left side,finding,1,56,2,"check_for, diagnosis_condition",,general,,,False
+Pain radiating to thoracic region right side,finding,1,56,2,"check_for, diagnosis_condition",,general,,,False
+Painful uterine contractions,finding,1,177,2,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Genital, Mouth or throat, Skin",Abdominal pain (finding); Pain in pelvis (finding),False
+Painless rectal bleeding,finding,1,61,2,"check_for, diagnosis_condition",,listed,Anal & rectal,,False
+Pale complexion,finding,2,14 44,7,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Chest, Foot, Genital, Leg",,False
+Pale conjunctiva,finding,1,44,4,"diagnosis_condition, priority_condition, trigger",,snomed,Eye,Conjunctival structure,False
+Pale discoloration of entire skin of body,finding,1,44,4,"diagnosis_condition, priority_condition, trigger",,related,Skin,Discoloration of skin (finding),False
+Pallor of skin of face,finding,3,24 73 182,6,"check_for, priority_condition",,related,Skin,Discoloration of skin (finding),False
+Palpitations,finding,5,14 26 44 45 145,18,"check_for, diagnosis_condition, priority_condition, trigger",,snomed,Chest,Heart structure,False
+Papule of skin,disorder,4,40 84 85 89,35,"check_for, diagnosis_condition",Axillary region structure; Face structure; Genital structure; Limb structure; Palm (region) structure; Structure of interdigital web of hand; Structure of sole of foot; Structure of waist region of trunk; Trunk structure,rule site,"Arm, Face, Foot, Genital, Hand",Axillary region structure; Face structure; Structure of sole of foot; Genital structure; Palm (region) structure,False
+Paranoid ideation,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Paresthesia of foot,finding,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Partial thickness burn,disorder,1,31,2,"check_for, priority_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Passing flatus,finding,1,57,2,"check_for, priority_condition",,spans,,Gastrointestinal tract structure,False
+Patient immunocompromised,finding,1,40,2,"check_for, priority_condition",,general,,,False
+Patient requests a hospital referral,situation,1,111,2,"check_for, priority_condition",,general,,,False
+Peanut,substance,1,28,3,"check_for, diagnosis_condition",,general,,,False
+Peeling of skin,finding,4,81 82 85 88,8,"check_for, diagnosis_condition, priority_condition",Structure of interdigital space of foot; Structure of interdigital web of foot,listed,"Foot, Skin",,False
+Penetrating wound,disorder,1,30,4,"check_for, priority_condition",Head structure; Thoracic structure,rule site,"Chest, Head",Thoracic structure; Head structure,False
+Penetrating wound of abdomen,disorder,1,30,2,"check_for, priority_condition",,snomed,Abdomen,Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall,False
+Penetrating wound of eye,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Penetrating wound of eyeball with foreign body,disorder,1,48,2,"check_for, priority_condition",,related,"Eye, Head, Nose",Injury of head (disorder); Penetrating wound of eye (disorder),False
+Penetrating wound of neck,disorder,1,30,2,"check_for, priority_condition",,related,Neck,Injury of neck (disorder),False
+Perianal lump,finding,1,61,2,"check_for, priority_condition",,listed,Anal & rectal,,False
+Pericardial fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Perineal pain,finding,2,42 69,7,"check_for, diagnosis_condition",,related,Genital,Pain in pelvis (finding),False
+Peripheral pulse absent,finding,3,30 81 154,8,"check_for, diagnosis_condition, priority_condition",Lower limb structure,listed,"Foot, Leg",,False
+Peripheral vascular disease,disorder,1,154,6,"diagnosis_condition, priority_condition, trigger",,spans,,Peripheral blood vessel structure,False
+Peritoneal fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Peritonitis,disorder,1,64,2,"check_for, priority_condition",,snomed,Abdomen,Structure of serous membrane of peritoneum,False
+Persistent cough,finding,1,51,2,"check_for, diagnosis_condition",,related,"Back, Chest, Mouth or throat, Nose",Cough (finding),False
+Persistent vomiting,disorder,6,27 39 40 47 102 111,14,"check_for, diagnosis_condition, priority_condition",,listed,"Abdomen, Chest, Head",,True
+Pharyngeal swelling,finding,1,53,2,"check_for, priority_condition",,listed,Mouth or throat,,False
+Phonophobia,finding,1,47,2,"check_for, diagnosis_condition",,related,Ear,Pain of ear (finding),False
+Photophobia,finding,1,47,2,"check_for, diagnosis_condition",,related,"Eye, Head",Pain in eye (finding),False
+Physical aggression,finding,2,35 197,4,"check_for, priority_condition",,general,,,False
+Pin point pupils,finding,2,18 27,5,"check_for, diagnosis_condition, priority_condition",,snomed,Eye,Pupil structure,False
+Plain X-ray of cervical spine abnormal,finding,1,79,2,"check_for, priority_condition",,snomed,Neck,Structure of cervical vertebral column region,False
+Plain X-ray of chest for tuberculosis screening abnormal,finding,1,102,1,diagnosis_condition,,snomed,Chest,Thoracic structure,False
+Planning suicide,finding,4,32 33 34 197,11,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Pleural fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Poisoning,disorder,1,27,3,"diagnosis_condition, priority_condition, trigger",,general,,,True
+Poisoning due to bite of Scorpiones,disorder,1,29,2,"check_for, priority_condition",,general,,,False
+Polyuria,finding,1,19,2,"check_for, diagnosis_condition",,general,,,False
+Poor concentration,finding,2,98 197,10,"check_for, diagnosis_condition",,general,,,False
+Poor sleep pattern,finding,1,23,2,"check_for, diagnosis_condition",,general,,,False
+Positional vertigo,finding,1,46,2,"check_for, diagnosis_condition",,related,"Abdomen, Ear, Face, Genital, Head, Mouth or throat, Skin",Dizziness (finding); Vertigo (finding),False
+Post-ictal state,finding,2,27 39,5,"check_for, diagnosis_condition, priority_condition",,spans,,Structure of nervous system,True
+Post-inflammatory hyperpigmentation,disorder,1,85,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Posterior rhinorrhea,disorder,2,47 49,5,"check_for, diagnosis_condition",,listed,"Face, Head, Nose",,False
+Postmenopausal state,finding,2,69 78,6,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Postpartum state,finding,6,21 47 48 56 73 182,18,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Predisposed to startle,finding,1,98,3,"check_for, diagnosis_condition",,general,,,False
+Pregnancy,finding,14,11 21 32 40 45 47 48 56 64 69 73 78 94 177,43,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,True
+Preinfarction syndrome,disorder,1,148,3,"check_for, diagnosis_condition, priority_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Pressure of speech,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Productive cough,finding,2,23 24,4,"check_for, diagnosis_condition",,related,"Back, Chest, Mouth or throat, Nose",Cough (finding),False
+Products of conception at uterine os cervix,finding,2,176 177,8,"check_for, diagnosis_condition",,snomed,Genital,Cervix uteri structure,False
+Products of conception in vagina,finding,2,176 177,8,"check_for, diagnosis_condition",,snomed,Genital,Structure of vaginal canal,False
+Prolonged erection of penis,finding,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Erectile structure of penis,False
+Proteinuria,finding,3,49 69 177,7,"check_for, diagnosis_condition, priority_condition",,listed,"Face, Leg, Urinary",,False
+Provocative behavior,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Pruritic rash,disorder,2,84 85,12,"diagnosis_condition, trigger",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Itching of skin (finding); Skin lesion (disorder),False
+Pruritus ani,disorder,1,61,2,"check_for, diagnosis_condition",,listed,Anal & rectal,,False
+Pruritus of vagina,disorder,1,64,2,"check_for, diagnosis_condition",,snomed,Genital,Vaginal mucous membrane structure,False
+Pseudomembrane,morphologic abnormality,3,38 51 53,16,"check_for, diagnosis_condition",Nasal structure; Pharyngeal structure,rule site,"Mouth or throat, Nose",Pharyngeal structure; Nasal structure,False
+Ptosis of eyelid,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Pulsatile mass of abdomen,finding,3,56 78 154,7,"check_for, diagnosis_condition",,related,"Abdomen, Back, Chest, Genital",Abdominal mass (finding),False
+Pulse irregular,finding,5,24 26 40 45 46,10,"check_for, diagnosis_condition, priority_condition",,spans,,Structure of cardiovascular system,False
+Purpuric rash,disorder,8,11 21 38 44 47 57 79 82,16,"check_for, diagnosis_condition, priority_condition",,listed,"Head, Neck, Skin",,True
+Purulent conjunctival discharge,finding,1,48,2,"check_for, diagnosis_condition",,related,Eye,Discharge from eye (finding),False
+Pus,morphologic abnormality,1,54,2,"check_for, diagnosis_condition",Oral cavity structure,rule site,Mouth or throat,Oral cavity structure,False
+Pustule,disorder,1,89,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Radiating pain,finding,1,78,2,"check_for, diagnosis_condition",Inguinal region structure,general,,,False
+Rape,event,1,32,4,"priority_condition, trigger",,general,,,False
+Rebound tenderness,finding,2,64 176,4,"check_for, priority_condition",,listed,Abdomen,,False
+Rectal hemorrhage,disorder,1,60,2,"check_for, diagnosis_condition",,snomed,Anal & rectal,Rectum structure,False
+Recurrent abdominal pain,finding,1,56,2,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Mouth or throat, Skin",Abdominal pain (finding),False
+Recurrent abscess,disorder,1,42,3,"check_for, diagnosis_condition",,general,,,False
+Recurrent abscess of skin,disorder,1,83,6,"check_for, diagnosis_condition",Axillary region structure; Inguinal region structure; Perineal structure,rule site,Arm,Axillary region structure,False
+Recurrent infectious disease,disorder,1,19,2,"check_for, diagnosis_condition",,general,,,False
+Red eye,finding,1,48,6,"check_for, diagnosis_condition, priority_condition",,listed,Eye,,False
+Redness of skin of face,finding,1,49,3,"check_for, diagnosis_condition",,spans,"Face, Skin",Skin structure of face,False
+Redness of skin over lesion,finding,1,89,3,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Redness of throat,finding,1,53,2,"check_for, diagnosis_condition",,snomed,Mouth or throat,Oropharyngeal structure,False
+Reduced fetal movement,finding,1,177,2,"check_for, priority_condition",,general,,,False
+Reduced visual acuity,finding,1,152,4,"check_for, diagnosis_condition, priority_condition, trigger",,spans,,Structure of visual system,False
+Renal impairment,disorder,1,148,3,"check_for, diagnosis_condition, priority_condition",,snomed,Urinary,Kidney structure,False
+Repetitive rubbing of body parts,finding,1,51,2,"check_for, diagnosis_condition",Nasal structure,rule site,Nose,Nasal structure,False
+Respiratory crackles,finding,1,23,4,"check_for, diagnosis_condition",,snomed,Chest,Lower respiratory tract structure; Structure of respiratory system; Thoracic structure,False
+Respiratory distress,finding,1,14,3,"check_for, diagnosis_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),True
+Respiratory obstruction,disorder,1,16,2,"priority_condition, trigger",,spans,,Respiratory tract structure,True
+Responds to pain,finding,1,18,6,"diagnosis_condition, priority_condition, trigger",,general,,,True
+Restlessness,finding,7,16 29 30 35 36 59 98,17,"check_for, diagnosis_condition, priority_condition",,general,,,True
+Retention of urine,disorder,1,78,2,"check_for, priority_condition",,listed,"Abdomen, Back, Leg, Urinary",,False
+Rifampicin resistant tuberculosis,disorder,1,111,4,"priority_condition, trigger",,general,,,False
+Right lower quadrant pain,finding,2,56 57,4,"check_for, diagnosis_condition",,listed,Abdomen,,False
+Right sided chest pain,finding,1,24,2,"check_for, diagnosis_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Right upper quadrant pain,finding,1,56,2,"check_for, diagnosis_condition",,listed,Abdomen,,False
+Rough skin,finding,1,89,2,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+ST segment depression,finding,1,24,3,"check_for, diagnosis_condition",,general,,,False
+ST segment elevation,finding,1,24,3,"check_for, diagnosis_condition",,general,,,False
+Scaly skin,finding,6,28 81 84 85 93 94,58,"check_for, diagnosis_condition, trigger",Ankle region structure; Antecubital region structure; Popliteal fossa structure; Popliteal region structure; Skin structure of ankle; Skin structure of antecubital fossa; Skin structure of border of foot; Skin structure of heel; Skin structure of popliteal fossa; Skin structure of sole of foot; Skin structure of wrist region; Structure of cubital fossa; Structure of interdigital space of foot; Structure of interdigital web of foot; Wrist region structure,listed,"Foot, Skin",,False
+Scar,disorder,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Scleral icterus,finding,2,48 86,4,"check_for, diagnosis_condition",,listed,Eye,,False
+Scratch marks,finding,1,64,6,"check_for, diagnosis_condition",Vulval structure,rule site,Genital,Vulval structure,False
+Seen by palliative care service,finding,2,58 60,6,"check_for, diagnosis_condition, trigger",,general,,,False
+Sees haloes around lights,finding,1,48,2,"check_for, diagnosis_condition",,listed,Eye,,False
+Seizure,finding,15,11 19 20 21 27 30 38 39 45 47 130 145 148 177 182,36,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Head,,True
+Self-injurious behavior,finding,1,33,2,"check_for, priority_condition",,general,,,False
+Seminal fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Sensation of being cold,finding,1,14,3,"check_for, diagnosis_condition",,general,,,False
+Sensation of being warm,finding,1,14,3,"check_for, diagnosis_condition",,general,,,False
+Serosanguinous fluid,substance,1,196,2,"check_for, priority_condition",,general,,,False
+Serous conjunctival discharge,finding,1,48,2,"check_for, diagnosis_condition",,related,Eye,Discharge from eye (finding),False
+Severe dry skin,disorder,1,86,4,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Severe pain,finding,4,11 40 42 90,9,"check_for, diagnosis_condition, priority_condition",,listed,"Arm, Genital, Hand",,False
+Sexual assault,event,1,32,4,"priority_condition, trigger",,general,,,False
+Sexually active,finding,1,64,9,"check_for, diagnosis_condition",,general,,,False
+Sexually transmitted infectious disease,disorder,1,48,2,"check_for, diagnosis_condition",,general,,,False
+Shallow breathing,finding,1,27,2,"check_for, priority_condition",,spans,,Structure of respiratory system,False
+Sharps injury,disorder,1,196,2,"priority_condition, trigger",,general,,,False
+Shivering or rigors,finding,1,39,2,"check_for, diagnosis_condition",,general,,,False
+Shock,disorder,19,23 27 29 31 38 39 40 44 45 46 57 58 64 73 82 88 94 177 182,39,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Skin dimple,finding,2,40 89,4,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Skin discharge,finding,1,89,3,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Skin eschar,disorder,1,40,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Crust on skin (finding); Skin lesion (disorder),False
+Skin finding,finding,1,82,2,trigger,,snomed,Skin,Skin structure,False
+Skin lesion,disorder,7,38 40 42 78 82 85 87,26,"check_for, diagnosis_condition, priority_condition, trigger",Anal structure; Entire skin of palmar area of hand; Entire skin of sole of foot; Skin structure of back; Skin structure of chest,listed,"Leg, Skin",,False
+Skin nodule,disorder,1,89,2,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Skin plaque,disorder,2,85 93,4,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Skin ulcer,disorder,1,90,53,"check_for, diagnosis_condition, priority_condition, trigger",Ankle region structure; Elbow region structure; Foot structure; Heel structure; Hip region structure; Occipital region structure; Sacral region back structure; Structure of lower limb from knee to ankle; Structure of scapular region of back; Structure of vertebral column,listed,"Leg, Skin",,False
+Sleep pattern disturbance,finding,1,78,2,"check_for, diagnosis_condition",,general,,,False
+Slow respiration,finding,1,27,2,"check_for, priority_condition",,spans,,Structure of respiratory system,False
+Sluggish pupil movement,finding,1,30,2,"check_for, priority_condition",,snomed,Eye,Pupil structure,False
+Slurred speech,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Small uterus,finding,1,176,3,"check_for, diagnosis_condition, priority_condition",,snomed,Genital,Uterine structure,False
+Smell of alcohol on breath,finding,2,36 197,7,"check_for, diagnosis_condition",,related,Teeth & gums,Breath smells unpleasant (finding),False
+Smoker,finding,2,23 24,5,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Snake bite - wound,disorder,1,29,2,"check_for, priority_condition",,general,,,False
+Sneezing,finding,2,28 51,4,"check_for, diagnosis_condition",,listed,Nose,,False
+Snoring,finding,1,16,2,"check_for, priority_condition",,spans,,Respiratory tract structure,False
+Sore throat,finding,9,38 40 42 48 51 53 78 82 87,25,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Mouth or throat, Nose",,True
+Spider bite wound,disorder,1,29,2,"check_for, priority_condition",,general,,,False
+Stabbing pain,finding,1,49,2,"check_for, diagnosis_condition",Face structure,rule site,Face,Face structure,False
+Stable angina,disorder,1,24,3,"check_for, diagnosis_condition",,related,"Abdomen, Arm, Chest, Genital, Hand",Chest pain (finding),False
+Staining of tooth,disorder,1,54,2,"check_for, diagnosis_condition",,snomed,Teeth & gums,Tooth structure,False
+Stiff back,finding,1,78,2,"check_for, diagnosis_condition",,spans,,Structure of posterior region of trunk and/or neck,False
+Stiff limbs,finding,1,79,3,"check_for, priority_condition",,spans,,Limb structure,False
+Stiff neck,finding,9,21 38 47 57 79 82 102 111 130,20,"check_for, diagnosis_condition, priority_condition",,listed,"Ear, Head, Neck, Nose, Skin",,False
+Stopped drinking alcohol,finding,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Stress,finding,1,98,3,"priority_condition, trigger",,general,,,False
+Stress at work,finding,1,197,6,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Stridor,finding,3,14 15 31,8,"check_for, diagnosis_condition",,spans,,Upper respiratory tract structure,False
+Subcutaneous crepitus,finding,1,90,2,"check_for, priority_condition",,spans,,Structure of integumentary system; Structure of skin and/or mucous membrane,False
+Substance,substance,1,36,2,"check_for, diagnosis_condition",,general,,,False
+Substance withdrawal syndrome,disorder,1,21,2,"check_for, priority_condition",,general,,,False
+Sudden visual loss,disorder,1,48,2,"check_for, priority_condition",,listed,Eye,,False
+Suicidal behavior,finding,1,98,2,"check_for, priority_condition",,general,,,False
+Suicidal thoughts,finding,5,32 33 34 98 197,13,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Suicide attempt,event,2,27 34,5,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Sunken eyes,finding,1,59,3,"check_for, diagnosis_condition, priority_condition",,snomed,Eye,Structure of eye proper,True
+Swallowing painful,finding,2,52 53,7,"check_for, diagnosis_condition, priority_condition, trigger",,spans,,Upper digestive tract structure,False
+Sweating,finding,6,14 21 24 36 45 145,14,"check_for, diagnosis_condition, priority_condition",,snomed,Skin,Skin structure,False
+Swelling,finding,21,11 14 15 18 22 26 28 29 40 45 49 52 53 54 56 57 63 64 69 82 88,124,"check_for, diagnosis_condition, priority_condition, trigger","Cervix uteri structure; Eye region structure; Face structure; Foot structure; Glans penis structure; Hand structure; Jaw region structure; Lip structure; Thigh structure; Tongue structure; Tooth, gum, and/or supporting structure",listed,"Abdomen, Face, Genital, Leg, Mouth or throat, Skin, Teeth & gums, Urinary",,False
+Swelling around eyes,finding,1,49,7,"check_for, diagnosis_condition, priority_condition, trigger",,snomed,Face,External structure of eye region,False
+Swelling of bilateral lower limbs,finding,1,80,2,"check_for, diagnosis_condition",,snomed,Leg,Structure of left lower limb; Structure of right lower limb,False
+Swelling of eyelid,finding,2,48 49,4,"check_for, diagnosis_condition",,listed,"Eye, Face",,False
+Swelling of lower limb,finding,4,16 23 80 90,10,"check_for, diagnosis_condition, priority_condition",,snomed,Leg,Lower limb structure,False
+Swelling of scrotum,finding,1,63,2,"check_for, diagnosis_condition",,listed,Genital,,False
+Swelling of skin,finding,1,83,3,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Swelling of tonsil,finding,1,53,4,"check_for, diagnosis_condition",,related,Mouth or throat,Pharyngeal swelling (finding),False
+Swelling of upper limb,finding,1,79,2,"check_for, diagnosis_condition",,snomed,Arm,Upper limb structure,False
+Swollen calf,finding,4,23 26 80 177,8,"check_for, diagnosis_condition, priority_condition",,listed,Leg,,False
+Syncope,finding,1,26,2,"check_for, priority_condition",,related,Head,Decreased level of consciousness (finding),False
+Synovial fluid,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Syphilis titer detected,finding,1,87,2,"check_for, diagnosis_condition",,general,,,False
+Syphilis titer not detected,finding,1,87,3,"check_for, diagnosis_condition",,general,,,False
+Tachypnea,finding,2,45 46,7,"check_for, diagnosis_condition",,spans,,Structure of respiratory system,False
+Temperature of skin over lesion warm,finding,1,89,3,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Temporal headache,finding,1,47,2,"check_for, diagnosis_condition",,related,"Eye, Face, Head, Neck, Nose, Skin",Headache (finding),False
+Tenderness,finding,1,47,8,"check_for, diagnosis_condition",Cheek structure; Forehead structure; Skeletal muscle structure of neck,rule site,"Face, Neck",Cheek structure; Skeletal muscle structure of neck,False
+Tenderness of breast,finding,1,170,2,"check_for, diagnosis_condition",,snomed,Breast,Breast structure,False
+Tenderness of chest wall,finding,1,24,6,"check_for, diagnosis_condition, priority_condition, trigger",,listed,Chest,,False
+Tenderness of face,finding,1,49,2,"check_for, diagnosis_condition",,snomed,Face,Face structure,False
+Tenderness of joint,finding,3,77 79 80,8,"check_for, diagnosis_condition",,listed,"Arm, Hand, Joint",,False
+Tenderness of prostate,finding,1,69,5,"check_for, diagnosis_condition",,listed,Urinary,,False
+Tenderness of right lower quadrant of abdomen,finding,1,38,2,"check_for, diagnosis_condition",,snomed,Abdomen,Structure of right lower quadrant of abdomen,False
+Tenderness over frontal sinus,finding,1,51,2,"check_for, diagnosis_condition",,snomed,Head,Frontal sinus structure,False
+Tenderness over maxillary sinus,finding,1,51,2,"check_for, diagnosis_condition",,snomed,Head,Maxillary sinus structure,False
+Tenesmus of anus and/or rectum,finding,2,60 61,4,"check_for, diagnosis_condition",,listed,Anal & rectal,,False
+Testes - transverse lie,finding,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Testis structure,False
+Testicle out of place,finding,1,63,2,"check_for, diagnosis_condition",,snomed,Genital,Testis structure,False
+Thick skin,finding,1,81,6,"check_for, diagnosis_condition",Skin structure of border of foot; Skin structure of heel; Skin structure of sole of foot,snomed,Skin,Skin structure,False
+Thigh pain,finding,1,26,2,"check_for, priority_condition",,related,Leg,Pain in lower limb (finding),False
+Third degree perineal laceration,disorder,1,182,2,"check_for, priority_condition",,snomed,Anal & rectal,Female perineal structure; Structure of anal sphincter muscle,False
+Thirst due to water deprivation,finding,4,17 26 40 57,10,"check_for, diagnosis_condition",,general,,,False
+Thoughts of self harm,finding,1,34,3,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Throbbing headache,finding,1,47,2,"check_for, diagnosis_condition",,related,"Eye, Face, Head, Neck, Nose, Skin",Headache (finding),False
+Thyroid gland moves with swallowing,finding,1,42,3,"check_for, diagnosis_condition",,snomed,Neck,Thyroid structure,False
+Tick bite,disorder,4,38 40 47 87,10,"check_for, diagnosis_condition",,related,"Leg, Skin",Skin lesion (disorder),False
+Tight chest,finding,4,22 23 27 28,17,"check_for, diagnosis_condition, priority_condition, trigger",,snomed,Chest,Thoracic structure,False
+Tightly retracted foreskin,finding,1,40,2,"check_for, diagnosis_condition",,listed,Genital,,False
+Tightness in throat,finding,2,14 29,5,"check_for, diagnosis_condition",,snomed,Mouth or throat,Pharyngeal structure,False
+Tightness sensation,finding,1,47,2,"check_for, diagnosis_condition",Head structure,rule site,Head,Head structure,False
+Tinnitus,finding,1,46,3,"check_for, diagnosis_condition",,listed,Ear,,False
+Tooth absent,finding,1,54,2,"check_for, diagnosis_condition",,listed,Teeth & gums,,False
+Tooth finding,finding,1,54,2,"priority_condition, trigger",,snomed,Teeth & gums,Tooth structure,False
+Toothache,finding,1,54,6,"check_for, diagnosis_condition, priority_condition",,listed,Teeth & gums,,False
+Toxic effect of venom,disorder,1,29,2,"check_for, priority_condition",Structure of eye proper,rule site,Eye,Structure of eye proper,False
+Trachea displaced,disorder,4,16 17 23 24,8,"check_for, diagnosis_condition",,listed,Chest,,False
+Transient ischemic attack,disorder,1,152,2,"check_for, priority_condition",,spans,,Blood vessel structure,False
+Transplant present,finding,1,40,2,"check_for, priority_condition",,spans,,Structure of transplant,False
+Traumatic event,event,1,197,5,"check_for, diagnosis_condition",,general,,,False
+Traumatic injury,disorder,9,30 31 32 33 45 63 77 78 81,22,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,True
+Tree nut,substance,1,28,3,"check_for, diagnosis_condition",,general,,,False
+Tremor,finding,2,36 145,4,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Tuberculosis,disorder,1,130,2,"check_for, diagnosis_condition",,general,,,False
+Ulcer of foot,disorder,1,81,2,"check_for, diagnosis_condition",,listed,Foot,,False
+Ulcer of lower extremity,disorder,2,80 154,4,"check_for, diagnosis_condition",,snomed,Leg,Lower limb structure,False
+Ulcer of mouth,disorder,1,52,2,"check_for, diagnosis_condition",,listed,Mouth or throat,,False
+Unable to break wind,finding,3,42 56 60,7,"check_for, diagnosis_condition, priority_condition",,spans,,Gastrointestinal tract structure,False
+Unable to close eyes,finding,1,49,2,"check_for, diagnosis_condition",,listed,Face,,False
+Unable to complete a sentence in one breath,finding,7,11 22 23 40 102 111 130,14,"check_for, priority_condition",,related,"Abdomen, Chest, Face, Mouth or throat, Skin",Difficulty breathing (finding),False
+Unable to drink,finding,2,54 59,5,"check_for, diagnosis_condition, priority_condition",,listed,Teeth & gums,,True
+Unable to eat,finding,1,54,2,"check_for, priority_condition",,listed,Teeth & gums,,False
+Unable to open mouth,finding,2,52 53,4,"check_for, priority_condition",,listed,Mouth or throat,,False
+Unable to sit up,finding,1,11,2,"check_for, trigger",,general,,,False
+Unable to speak,finding,1,22,2,"check_for, priority_condition",,general,,,False
+Unable to stand alone,finding,1,46,2,"check_for, priority_condition",,general,,,False
+Unable to swallow,finding,2,40 53,4,"check_for, priority_condition",,listed,Mouth or throat,,False
+Unable to void urine,finding,4,11 40 56 69,8,"check_for, priority_condition",,general,,,False
+Unable to walk,finding,3,102 111 130,6,"check_for, priority_condition",,general,,,False
+Unable to weight-bear,finding,3,77 80 81,6,"check_for, diagnosis_condition, priority_condition",,listed,"Foot, Joint, Leg",,False
+Unconscious,finding,1,20,2,"check_for, priority_condition",,general,,,False
+Unexplained weight loss,finding,3,19 60 196,5,"check_for, diagnosis_condition",,general,,,False
+Unresponsive,finding,2,16 18,8,"diagnosis_condition, priority_condition, trigger",,general,,,True
+Unsteady when walking,finding,1,36,2,"check_for, diagnosis_condition",,related,Neck,Abnormal gait (finding),False
+Upper abdominal pain,finding,3,56 57 78,6,"check_for, diagnosis_condition",,related,"Abdomen, Anal & rectal, Back, Face, Mouth or throat, Skin",Abdominal pain (finding),False
+Upper facial weakness,finding,1,49,6,"check_for, diagnosis_condition, priority_condition",,related,"Eye, Face, Head",Weakness of face muscles (finding),False
+Upper respiratory infection,disorder,1,23,2,"check_for, diagnosis_condition",,spans,,Upper respiratory tract structure,False
+Upper respiratory tract obstruction,disorder,1,53,2,"check_for, priority_condition",,listed,Mouth or throat,,False
+Urethral discharge,finding,3,63 69 77,8,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Genital, Urinary",,False
+Urgent desire to urinate,finding,1,69,6,"check_for, diagnosis_condition",,listed,Urinary,,False
+Urinary catheter in situ,finding,1,69,3,"check_for, diagnosis_condition",,snomed,Urinary,Structure of urinary bladder and outflow,False
+Urinary incontinence,finding,1,78,2,"check_for, priority_condition",,listed,"Back, Leg, Urinary",,False
+Urinary symptoms,finding,1,69,3,"priority_condition, trigger",,snomed,Urinary,Urinary system structure,False
+Urticaria,disorder,1,14,6,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Use of steroids,finding,1,78,2,"check_for, diagnosis_condition",,general,,,False
+Uses combined oral contraception,finding,1,170,2,"diagnosis_condition, trigger",,general,,,False
+Uterine contractions present,finding,1,177,2,"check_for, diagnosis_condition",,snomed,Genital,Uterine structure,False
+Vaccination given,situation,3,14 15 45,8,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Vaginal discharge,finding,2,64 77,10,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Abdomen, Genital",,False
+Vaginal discharge problem,finding,1,56,3,"check_for, diagnosis_condition, priority_condition",,related,"Abdomen, Genital",Vaginal discharge (finding),False
+Vaginal secretion,substance,2,122 196,4,"check_for, priority_condition",,general,,,False
+Varicose veins of lower extremity,disorder,1,90,3,"check_for, diagnosis_condition",,snomed,Leg,Structure of vein of lower limb,False
+Venomous sting,disorder,1,29,4,"diagnosis_condition, priority_condition, trigger",,spans,,Structure of skin and/or mucous membrane,False
+Verbal aggression,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Verbally abusive behavior,finding,1,35,2,"check_for, priority_condition",,general,,,False
+Vesicle of skin,disorder,1,40,8,"check_for, diagnosis_condition",Entire skin of palmar area of hand; Entire skin of sole of foot; Mouth region structure,rule site,Mouth or throat,Mouth region structure,False
+Vesicular eruption,disorder,1,40,2,"check_for, diagnosis_condition",,related,"Joint, Leg, Skin",Eruption of skin (disorder); Skin lesion (disorder),False
+Vibrio cholerae,organism,3,57 58 59,8,"check_for, diagnosis_condition",,general,,,False
+Victim of abuse,finding,1,33,4,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Victim of forced sexual activity,finding,1,33,4,"check_for, diagnosis_condition, priority_condition",,general,,,False
+Victim of physical assault,finding,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Victim of psychological trauma,finding,2,33 98,6,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+Victim of rape,finding,1,73,2,"check_for, priority_condition",,general,,,False
+Victim of sexual aggression,finding,2,11 73,4,"check_for, priority_condition",,general,,,False
+Victim of threats,finding,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Visual disturbance,disorder,13,11 19 21 26 36 40 43 45 46 48 49 130 148,44,"check_for, diagnosis_condition, priority_condition",,listed,"Arm, Eye, Face, Head",,False
+Wakes up during night,finding,1,47,2,"check_for, priority_condition",,general,,,False
+Warm skin,finding,2,29 83,6,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Watery eye,finding,2,28 48,8,"check_for, diagnosis_condition, priority_condition",,snomed,Head,Structure of lacrimal apparatus,False
+Watery vaginal discharge,finding,1,177,2,"check_for, diagnosis_condition",,related,"Abdomen, Genital",Vaginal discharge (finding),False
+Weak arterial pulse,finding,2,59 90,7,"check_for, diagnosis_condition, priority_condition",Foot structure,rule site,Foot,Foot structure,False
+Weakness of face muscles,finding,8,36 43 45 46 47 48 49 152,35,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Eye, Face, Head",,False
+Weakness of muscle of lower limb,finding,11,36 43 45 46 47 48 78 80 81 152 154,35,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Back, Eye, Face, Foot, Head, Neck",,False
+Weight decreased,finding,5,23 52 78 102 130,10,"check_for, diagnosis_condition",,general,,,False
+Wheal,finding,2,28 84,4,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Wheezing,finding,13,14 15 18 22 23 28 29 45 52 53 57 82 151,41,"check_for, diagnosis_condition, priority_condition, trigger",,listed,"Mouth or throat, Skin",,False
+White discoloration of skin,finding,3,80 81 154,6,"check_for, diagnosis_condition",Lower limb structure; Skin structure of lower limb,rule site,Leg,Lower limb structure,False
+White hair,finding,1,94,2,"check_for, diagnosis_condition",,snomed,Skin,Structure of hair of skin region,False
+White patches on oral mucosa,finding,2,52 53,5,"check_for, diagnosis_condition",,listed,Mouth or throat,,False
+Withdrawn behavior,finding,1,33,2,"check_for, diagnosis_condition",,general,,,False
+Worms in stool,finding,1,61,2,"check_for, diagnosis_condition",,general,,,False
+Worried,finding,1,98,2,"check_for, diagnosis_condition",,general,,,False
+Wound,disorder,2,30 77,7,"check_for, diagnosis_condition, priority_condition, trigger",,general,,,False
+"Wound, non-healed",morphologic abnormality,1,90,5,"diagnosis_condition, priority_condition, trigger",,general,,,False
+Xeroderma,disorder,3,28 84 93,6,"check_for, diagnosis_condition",,snomed,Skin,Skin structure,False
+Xerostomia,finding,9,17 26 40 43 52 57 58 59 145,20,"check_for, diagnosis_condition, priority_condition",,listed,Mouth or throat,,True
+Yellow skin,finding,2,86 94,4,"check_for, diagnosis_condition",,related,Skin,Discoloration of skin (finding),False

@@ -1,0 +1,369 @@
+{
+  "page": 182,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p182-2de4d887",
+      "scope": "in_scope",
+      "scope_reason": "The red-box header fixes the trigger population: postnatal patient within 6 weeks of delivery, any of the listed items.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: routine postnatal care with danger signs :: (and (clinical_finding (snomed_concept \"Postpartum state\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks)) (or ...))",
+        "Check for urgent routine postnatal care conditions :: (task ... adult (clinical_finding (snomed_concept \"Postpartum state\" \"finding\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-5c0aae53",
+      "scope": "in_scope",
+      "scope_reason": "Criterion (heavy bleeding) plus an 'X likely' conclusion (postpartum haemorrhage).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts: heavy bleeding -> checked for and used as evidence; 'postpartum haemorrhage likely' -> probable diagnosis rule gated on postpartum state within 6 weeks; the priority rule consumes it as (active_condition Postpartum hemorrhage), as the house standard asks. The 'soaks pad in < 5 minutes' definition of heavy is a qualifier the language cannot carry and is acceptably folded into the concept 'Heavy episode of vaginal bleeding'.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\"))",
+        "Diagnose probable postpartum haemorrhage at routine postnatal care :: (and (clinical_finding (snomed_concept \"Postpartum state\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks)) (clinical_finding (snomed_concept \"Heavy episode of vaginal bleeding\" \"finding\")))",
+        "Urgent: routine postnatal care with danger signs :: (active_condition (snomed_concept \"Postpartum hemorrhage\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-33c2c260",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Two parts (extending to anus; extending to rectum) map to third-degree (anal sphincter) and fourth-degree (rectal mucosa) perineal laceration; both concepts exist and are children of 'Perineal laceration during delivery'. Both are checked for and both appear in the priority rule.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Third degree perineal laceration\" \"disorder\")) (clinical_finding (snomed_concept \"Fourth degree perineal laceration\" \"disorder\"))",
+        "Urgent: routine postnatal care with danger signs :: (clinical_finding (snomed_concept \"Third degree perineal laceration\" \"disorder\")) (clinical_finding (snomed_concept \"Fourth degree perineal laceration\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-919613b7",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Hb < 6 needs a haemoglobin unit (g/dL) that the language does not have; the brief marks such criteria not_representable. Not encoded, which is the expected outcome. (A unit-free near-substitute exists, (snomed_concept \"Hemoglobin below reference range\" \"finding\"), but it does not carry the threshold of 6, so leaving it out is defensible.)",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-e5efd0e8",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion (recent seizure, up to 1 week postpartum) with a diagnostic conclusion ('treat as eclampsia') and a cross-reference to page 177.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'treat as eclampsia': no diagnosis rule for eclampsia (e.g. (snomed_concept \"Eclampsia in puerperium\" \"disorder\") or (snomed_concept \"Eclampsia\" \"disorder\"), both exist) is produced from seizure + postpartum state within 1 week; the conclusion the page draws is lost, only the Urgent priority survives"
+      ],
+      "problem": "Seizure is checked for and the priority branch correctly requires postpartum onset within 1 week (the (<= (onset ...) (time_ago 1 weeks)) form means 'within the last week'). The page's conclusion 'treat as eclampsia' is a named diagnosis the house standard would normally encode (the red box names a diagnosis for a subset of criteria -> probable rule referenced by the priority rule). Whether 'treat as X' is strictly 'X likely' is arguable, hence partial rather than missing. The arrow to 177 is cross-reference only.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+        "Urgent: routine postnatal care with danger signs :: (and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks)))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-42a235ac",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: shock (defined in footnote 1) or systolic BP < 80.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts are present with the right direction and unit. 'Shock' is checked for as a recorded finding and SBP < 80 mmHg is a vital comparison. The footnote's definition of shock is judged separately under p182-ba801413.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: routine postnatal care with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-f7b92a8f",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: pallor together with any of RR >= 30, dizzy, faint, chest pain.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Logic matches the page: pallor AND (RR >= 30 OR dizziness OR feeling faint OR chest pain). Five parts, all present, RR direction and unit right. Concept note: SNOMED has no plain 'Pallor' finding; the builders chose 'Pallor of skin of face', which is narrower than the page's 'Pallor' (clinically assessed at conjunctiva/palms too). 'Pale complexion' (finding) and 'Pale conjunctiva' (finding) exist as alternatives; none is clearly better, so this is noted, not counted as an error.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\")) (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Feeling faint\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+        "Urgent: routine postnatal care with danger signs :: (and (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\")) (or (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Feeling faint\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-8f6e592c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: unwell AND temperature >= 38°C.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present, 'and' as on the page, threshold, direction and unit right.",
+      "evidence": [
+        "Check for urgent routine postnatal care conditions :: (clinical_finding (snomed_concept \"Generally unwell\" \"finding\"))",
+        "Urgent: routine postnatal care with danger signs :: (and (clinical_finding (snomed_concept \"Generally unwell\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-534de764",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: pulse >= 100.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Pulse, function' is the concept the vitals anchor uses for heart rate; threshold, direction and unit right.",
+      "evidence": [
+        "Urgent: routine postnatal care with danger signs :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-d1b77116",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header of the management list; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-6ecfd766",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "IV fluid management for shock/SBP < 80; the triggering criterion is already judged at p182-42a235ac.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-9ba8a4da",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Call for help / refer for postpartum haemorrhage; the diagnosis itself is encoded (see p182-5c0aae53).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-067d2ae3",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-4f614e19",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-843f6622",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-8a857146",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-40f09ecd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Drug choice and its contraindications (eclampsia, pre-eclampsia, hypertension, heart disease) are treatment-selection conditions, not triage or diagnostic logic.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-a8c01fc4",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-c9accffd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-8b76a20b",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-d1604824",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Antibiotic selection. The 'painful abdomen or foul-smelling vaginal discharge' condition only selects metronidazole; the page does not name a diagnosis (puerperal sepsis) here, so nothing diagnostic is lost.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p182-ba801413",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 1 is an 'X likely' statement with criteria: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' Footnotes 2-6 are management notes or definitions and are not judged.",
+      "verdict": "missing",
+      "parts_missing": [
+        "probable diagnosis rule for Shock from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness",
+        "check_for items for confusion/restlessness and weakness (the only parts of the definition not already covered by vitals)"
+      ],
+      "problem": "The priority rule consumes (clinical_finding (snomed_concept \"Shock\" \"disorder\")) as a recorded finding, but nothing on the page's own definition produces it. The house standard turns 'X likely' into a probable rule referenced by the priority rule via active_condition. Practical loss is limited because SBP < 80 and pulse >= 100 are separately urgent, but RR > 30 with confusion/restlessness or weakness is not captured anywhere. The footnote is ambiguous about whether the signs are conjunctive or any-of, which is a question for a clinician.",
+      "evidence": [
+        "Urgent: routine postnatal care with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-5a670463",
+      "scope": "borderline",
+      "scope_reason": "'Patient at risk of mental health problem if any of: ...' is a criteria list with a conclusion and a referral, outside the red box. It is screening logic rather than a diagnosis, and no exact SNOMED concept for 'at risk of mental health problem' was found, so reasonable people could leave it out.",
+      "verdict": "missing",
+      "parts_missing": [
+        "the eleven risk factors and the 'at risk' conclusion"
+      ],
+      "problem": "Not encoded. If the team wants routine-visit screening logic, this row is the most rule-shaped item in the table (explicit 'if any of' list). Low consequence for triage.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-30d597ad",
+      "scope": "borderline",
+      "scope_reason": "Two same-day/discuss-refer criteria (painful abdomen or foul-smelling vaginal discharge; wound red/warm/painful/swollen/foul-smelling/oozing pus) outside the red box. They carry an urgency, but the house standard encodes the red box as the Urgent evaluation and does not define a 'same day' level.",
+      "verdict": "missing",
+      "parts_missing": [
+        "painful abdomen or foul-smelling vaginal discharge -> discuss/refer same day",
+        "perineal/abdominal wound with signs of infection -> discuss/refer"
+      ],
+      "problem": "Not encoded. The red box's own management line also keys on 'painful abdomen or foul-smelling vaginal discharge', so the finding is used twice on the page yet never checked for.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-a8fbc6a3",
+      "scope": "borderline",
+      "scope_reason": "BP >= 140/90 with rest-and-recheck, 'discuss same day' if <= 1 week postpartum, page 148 if > 1 week. A threshold criterion with time logic the language can express, but it sits outside the red box and its consequence is a same-day discussion or a cross-reference.",
+      "verdict": "missing",
+      "parts_missing": [
+        "BP >= 140/90 persisting after 1 hour rest, <= 1 week postpartum -> discuss same day",
+        "BP >= 140/90, > 1 week postpartum -> page 148 (cross-reference)"
+      ],
+      "problem": "Not encoded. The 'still >= 140/90 after rest' repeat-measurement logic is not representable, but the plain threshold with the 1-week window is.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-296b1e4f",
+      "scope": "borderline",
+      "scope_reason": "BMI is a computed routine vital (height and weight are routine), so the house standard would not need a measure task; the '< 18.5' threshold leads only to a management step (nutritional support).",
+      "verdict": "partial",
+      "parts_missing": [
+        "BMI < 18.5 threshold is not used by any rule"
+      ],
+      "problem": "A measure task for BMI exists (grammatical: kg/m² is a listed unit and 'Body mass index' is a valid observable entity) but the threshold the page states is not encoded anywhere. Since the consequence is management only, the omission is low-consequence; the measure task itself is redundant for a computed vital but harmless.",
+      "evidence": [
+        "Measure BMI at routine postnatal visit :: (measure (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-7e46488f",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Mental-health row routes to pages 159 and 98, whose own rules carry the logic; nothing is concluded on this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p182-b8140c36",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Substance-use screening question routes to page 165.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p182-568a682c",
+    "p182-d40d1699",
+    "p182-db5c7d88",
+    "p182-74ccad96",
+    "p182-cc99e5b5",
+    "p182-d8cbee9c",
+    "p182-7c78e24c",
+    "p182-97b003a3",
+    "p182-8b10b689",
+    "p182-592d38de"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: routine postnatal care with danger signs",
+      "problem": "The Shock branch depends on a recorded (clinical_finding \"Shock\") that no rule on this page produces; footnote 1's 'shock likely' definition (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) should be a probable Shock diagnosis rule referenced via active_condition, as the house standard does for a diagnosis named for a subset of criteria. Confusion/restlessness and weakness are not checked for at all.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: routine postnatal care with danger signs (seizure branch)",
+      "problem": "'Treat as eclampsia' is the page's conclusion for seizure within 1 week postpartum, but no diagnosis rule for Eclampsia / Eclampsia in puerperium exists, so the system only raises Urgent and never names the condition the page tells the worker to treat.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Measure BMI at routine postnatal visit",
+      "problem": "BMI is a computed vital from routine height and weight, so a measure task is redundant under the house standard; and the page's BMI < 18.5 threshold is not consumed by any rule. Harmless, but either drop the task or add the threshold it exists to serve.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent routine postnatal care conditions",
+      "problem": "The check_for task triggers on any Postpartum state without the 6-week window the red box states, while both downstream rules apply the window. Mild over-triggering, not a correctness error.",
+      "severity": "low"
+    },
+    {
+      "rule": "(page-level)",
+      "problem": "None of the table's same-day criteria (painful abdomen or foul-smelling discharge; infected wound; BP >= 140/90 within 1 week postpartum) or the psychosocial 'at risk if any of' list is encoded. Defensible under a red-box-only reading of the house standard, but the page repeats 'painful abdomen or foul-smelling vaginal discharge' inside the red box as well and it is checked for nowhere.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded cleanly: all seven judged criteria are present with the right concepts, thresholds, directions, units and and/or structure, the 6-week and 1-week windows are correct, and 'postpartum haemorrhage likely' is a proper probable rule consumed by the Urgent evaluation. The gaps are two conclusions the page draws that the rules do not: footnote 1's 'shock likely' definition (no probable Shock rule, so the Shock branch waits on a finding nothing produces, and confusion/restlessness and weakness are never checked for) and 'treat as eclampsia' for seizure within 1 week postpartum (no eclampsia diagnosis). Everything outside the red box with triage flavour (same-day BP and abdominal/discharge criteria, psychosocial risk list, BMI < 18.5) is unencoded, which is defensible but worth a deliberate decision."
+}

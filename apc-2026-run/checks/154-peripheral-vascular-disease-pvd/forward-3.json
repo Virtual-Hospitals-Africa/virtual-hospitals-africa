@@ -1,0 +1,163 @@
+{
+ "page": 154,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p154-519fa751",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header trigger 'patient with peripheral vascular disease and any of' encoded as PVD anchor + Urgent priority over the three likely diagnoses. Note PVD is not a common symptom/warning sign, so the rules only fire when PVD is recorded as a finding.",
+   "evidence": [
+    "Check for urgent peripheral vascular disease conditions :: due_to (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+    "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA :: (and (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\")) (or (active_condition Acute lower limb ischemia) (active_condition Critical lower limb ischemia) (active_condition Ruptured abdominal aortic aneurysm))) -> Urgent"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-66451b0e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All parts present: sudden+severe+at-rest leg pain AND any of numbness/weakness/pallor/no pulse in the leg -> probable Acute lower limb ischemia. Pallor via White discoloration of skin + leg skin site is acceptable (no precoordinated leg pallor concept found).",
+   "evidence": [
+    "Diagnose probable acute limb ischaemia in peripheral vascular disease :: (and (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\")) (clinical_finding (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier \"Sudden onset\") (qualifier \"Severe (severity modifier)\") (qualifier \"At rest\")) (or (clinical_finding \"Numbness of lower limb\") (clinical_finding \"Weakness of muscle of lower limb\") (clinical_finding \"White discoloration of skin\" finding_site \"Skin structure of lower limb\") (clinical_finding \"Peripheral pulse absent\" finding_site \"Lower limb structure\")))",
+    "probable (snomed_concept \"Acute lower limb ischemia\" \"disorder\")"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-84084111",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Three parts (rest pain, leg ulcer, leg gangrene) with OR logic -> probable Critical lower limb ischemia. Minor: SNOMED has 'Pain at rest due to peripheral vascular disease' (disorder) which is closer, but the qualified form is defensible.",
+   "evidence": [
+    "Diagnose probable critical limb ischaemia in peripheral vascular disease :: (and (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\")) (or (clinical_finding \"Pain in lower limb\" (qualifier \"At rest\")) (clinical_finding \"Ulcer of lower extremity\" \"disorder\") (clinical_finding \"Gangrenous disorder\" finding_site \"Lower limb structure\")))",
+    "probable (snomed_concept \"Critical lower limb ischemia\" \"disorder\")"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-280198a5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Pulsatile mass AND (abdominal pain OR back pain OR BP<90/60) -> probable rAAA. BP<90/60 split as SBP<90 OR DBP<60, matching the gold standard's convention.",
+   "evidence": [
+    "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease :: (and (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\")) (clinical_finding \"Pulsatile mass of abdomen\") (or (clinical_finding \"Abdominal pain\") (clinical_finding \"Backache\") (< (measurement \"Systolic blood pressure\" mmHg) 90) (< (measurement \"Diastolic blood pressure\" mmHg) 60)))",
+    "probable (snomed_concept \"Ruptured abdominal aortic aneurysm\" \"disorder\")"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-17a52d0a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-96828fed",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-5f001255",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-0cc913eb",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "'Avoid IV fluids even if BP<90/60' is management; no rule needed.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p154-a24fed8b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'If pulsatile mass felt, refer for assessment for possible AAA' encoded as a possible AAA rule; the refer step is management and correctly omitted.",
+   "evidence": [
+    "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease :: (and (clinical_finding (snomed_concept \"Peripheral vascular disease\" \"disorder\")) (clinical_finding (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))) -> possible (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\")"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p154-aa7f7f88",
+   "scope": "borderline",
+   "scope_reason": "'PVD is characterised by claudication ... leg pulses reduced, skin cool, shiny, hairless' is descriptive, not phrased as 'consider/suspect PVD'; the referral bullet is management.",
+   "verdict": "missing",
+   "parts_missing": [
+    "possible PVD from claudication (muscle pain in legs/buttocks on exercise relieved by rest) with reduced leg pulses / cool shiny hairless skin"
+   ],
+   "problem": "No rule recognises PVD from its characteristic features; every rule on the page depends on PVD already being recorded. House standard would not strictly require it since the page does not say 'consider PVD'.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p154-cca8b0b8",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "BP >= 140/90 without known hypertension routes to p148; that page owns the logic.",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p154-9d3713ec",
+  "p154-aea5d3a7",
+  "p154-8333c80a",
+  "p154-ec34d511",
+  "p154-4888a5c6",
+  "p154-1269c9ca",
+  "p154-2d15b5b1",
+  "p154-4f456cf0",
+  "p154-4055df33",
+  "p154-20f78af9",
+  "p154-8142dc1a"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "all rules",
+   "problem": "Every rule (check task, three probable rules, possible AAA, priority) is anchored on (clinical_finding Peripheral vascular disease). PVD is not a common symptom or warning sign, so a patient presenting with sudden painful pale leg or pulsatile abdominal mass with back pain but no previously recorded PVD will not trigger any of this logic. This follows the page wording ('patient with PVD and any of') but limits reach, especially for ALI and rAAA which are emergencies.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "problem": "Rest pain is encoded as (Pain in lower limb + At rest qualifier) while ALI uses (Pain in lower limb + Sudden onset + Severe + At rest). Evidence matching is by exact s-expression; unless qualifier subsumption is applied, a patient recorded with the ALI pain form would not also satisfy the CLI rest-pain criterion. Harmless clinically (ALI is also Urgent) but worth noting.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "problem": "'BP < 90/60' encoded as SBP<90 OR DBP<60, so a DBP of 58 with SBP 120 plus pulsatile mass yields probable rupture. Consistent with the gold standard convention; flagged only for awareness.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box is fully and correctly encoded: three probable diagnosis rules (acute lower limb ischaemia, critical lower limb ischaemia, ruptured AAA) with the page's AND/OR logic and valid SNOMED concepts, an Urgent priority rule over all three, and a check_for list whose every item is consumed. The most consequential issue is reach: all logic requires PVD already recorded as a finding, and nothing on the page derives PVD from its described features (claudication, reduced pulses), which is borderline per the house standard. The outside 'pulsatile mass -> possible AAA' line is also encoded."
+}

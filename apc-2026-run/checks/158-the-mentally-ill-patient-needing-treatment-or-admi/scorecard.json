@@ -1,0 +1,492 @@
+{
+ "page": 158,
+ "slug": "158-the-mentally-ill-patient-needing-treatment-or-admi",
+ "validation_ok": true,
+ "builder_agreement": 0.889,
+ "elements": 36,
+ "elements_agreed": 29,
+ "claims": 10,
+ "claims_agreed": 2,
+ "queue": 32,
+ "queue_by_priority": {
+  "low": 6,
+  "high": 10,
+  "medium": 16
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p158-c478dbb7",
+   "id": "p158-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p158-39cb50d9",
+   "id": "p158-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "partial": 1,
+    "missing": 2
+   }
+  },
+  {
+   "key": "p158-108e7146",
+   "id": "p158-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p158-1c874001",
+   "id": "p158-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p158-af4925f8",
+   "id": "p158-rb1-e05",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p158-775ddb5a",
+   "id": "p158-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-43f3daa2",
+   "id": "p158-rb1-e07",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p158-211eeff1",
+   "id": "p158-rb1-e08",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p158-e14a442b",
+   "id": "p158-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-487d2616",
+   "id": "p158-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-19ce77a1",
+   "id": "p158-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-d3a36dde",
+   "id": "p158-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-d22b5c83",
+   "id": "p158-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p158-0654f547",
+   "id": "p158-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-f5e45a76",
+   "id": "p158-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-4b61e168",
+   "id": "p158-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-9fa51509",
+   "id": "p158-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-7cd1917c",
+   "id": "p158-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-46ba7d1e",
+   "id": "p158-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-dcfa873b",
+   "id": "p158-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-8190a7bf",
+   "id": "p158-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-067b6f93",
+   "id": "p158-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-844d97f2",
+   "id": "p158-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-9358d139",
+   "id": "p158-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-e81e7875",
+   "id": "p158-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-4c45d4ab",
+   "id": "p158-out-e16",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-c9b16e63",
+   "id": "p158-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-3f30ede3",
+   "id": "p158-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-bd2c3e46",
+   "id": "p158-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-b717d491",
+   "id": "p158-out-e20",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-95e4f9a7",
+   "id": "p158-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-9e686eb6",
+   "id": "p158-out-e22",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-42f344c0",
+   "id": "p158-out-e23",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-6609142f",
+   "id": "p158-out-e24",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-770540bb",
+   "id": "p158-out-e25",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p158-01d751d8",
+   "id": "p158-out-e26",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  }
+ ]
+}

@@ -1,0 +1,1030 @@
+{
+ "page": 77,
+ "slug": "77-joint-symptoms",
+ "validation_ok": true,
+ "builder_agreement": 0.849,
+ "elements": 26,
+ "elements_agreed": 11,
+ "claims": 83,
+ "claims_agreed": 54,
+ "queue": 93,
+ "queue_by_priority": {
+  "low": 38,
+  "medium": 52,
+  "high": 3
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p77-7c96c325",
+   "id": "p77-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p77-3f5aea10",
+   "id": "p77-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p77-66f4b3f4",
+   "id": "p77-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p77-e6b01040",
+   "id": "p77-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p77-2e000362",
+   "id": "p77-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p77-78aa9e3f",
+   "id": "p77-rb1-e06",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p77-2e9cf914",
+   "id": "p77-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-2da3a654",
+   "id": "p77-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-d48e8928",
+   "id": "p77-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-40f0dbf3",
+   "id": "p77-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-cc21b4c3",
+   "id": "p77-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-6b2baac4",
+   "id": "p77-out-e04",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-ec2a3f92",
+   "id": "p77-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-3af38041",
+   "id": "p77-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-c8b4b951",
+   "id": "p77-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-a9357b1e",
+   "id": "p77-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "(no verdict)": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p77-ba5e31c6",
+   "id": "p77-out-e09",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "partial": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-c2128b83",
+   "id": "p77-out-e10",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "partial": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-6acc2f93",
+   "id": "p77-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p77-5b811e71",
+   "id": "p77-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-4a0d4b8e",
+   "id": "p77-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p77-037cf54b",
+   "id": "p77-out-e14",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "(no verdict)": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p77-695fa732",
+   "id": "p77-out-e15",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p77-5f68c027",
+   "id": "p77-out-e16",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "(no verdict)": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p77-fe22e78f",
+   "id": "p77-out-e17",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p77-0fe11088",
+   "id": "p77-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent joint symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  }
+ ]
+}

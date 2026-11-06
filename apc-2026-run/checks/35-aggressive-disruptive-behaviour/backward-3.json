@@ -1,0 +1,237 @@
+{
+ "page": 35,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disruptive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Challenging behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Label matches the page, but in this SNOMED release 'Provocative behavior' sits under 'Emotional bullying', which is narrower and more specific than the page's 'provocative behaviour' in a clinic setting.",
+   "fix": "Keep it, or use (snomed_concept \"Hostile behavior\" \"finding\") if VHA reads the bullying parent literally.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Feeling physically tense' is something the patient reports feeling. The page describes tense posturing that the clinician observes (gripping arm rails, clenching fists). SNOMED has no concept for tense posture.",
+   "fix": "Use (snomed_concept \"Muscle tension\" \"finding\"), or keep it and say in the display text that it means observed posturing such as gripping rails or clenched fists.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbal aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pacing up and down\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disruptive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Challenging behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Label matches the page, but in this SNOMED release 'Provocative behavior' sits under 'Emotional bullying', which is narrower and more specific than the page's 'provocative behaviour' in a clinic setting.",
+   "fix": "Keep it, or use (snomed_concept \"Hostile behavior\" \"finding\") if VHA reads the bullying parent literally.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Feeling physically tense' is something the patient reports feeling. The page describes tense posturing that the clinician observes (gripping arm rails, clenching fists). SNOMED has no concept for tense posture.",
+   "fix": "Use (snomed_concept \"Muscle tension\" \"finding\"), or keep it and say in the display text that it means observed posturing such as gripping rails or clenched fists.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbal aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pacing up and down\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "verdict": "ok",
+   "problem": "The trigger (aggressive or disruptive) and all six red-box bullets are covered. 'Pacing up and down' is a SNOMED child of 'Restlessness', and the aggression items are children of the trigger 'Aggressive behavior'. Both overlaps are harmless. The tense-posturing concept is the only imprecise one.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "verdict": "ok",
+   "problem": "Urgent is justified by 'Give urgent attention\u2026'. The structure (and <presenting complaint> (or <red-box items>)) follows the house standard, and it uses the same ten findings as the check task. No diagnosis rules: the page has no 'X likely' or 'consider X'. The causes in the flowchart (stimulant or alcohol withdrawal, seizures, delirium, psychosis) only choose the medication, which is management and out of scope.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Nothing invented or misplaced: every condition traces to the red-box header or to one of its six bullets, and the Urgent priority with its and/or structure is faithful. The most consequential problem is that 'Feeling physically tense' encodes a feeling the patient reports, where the page means posturing the clinician observes (gripping rails, clenched fists). A minor one is that 'Provocative behavior' sits under 'Emotional bullying' in SNOMED. The page's medication-by-likely-cause flowchart is management and correctly left unencoded."
+}

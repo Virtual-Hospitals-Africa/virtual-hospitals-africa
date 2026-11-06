@@ -1,0 +1,814 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 22,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    122.0,
+    806.4,
+    534.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p22-rb1-e01",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with wheeze/tight chest:",
+   "bbox": [
+    299.6,
+    127.0,
+    542.2,
+    138.2
+   ],
+   "key": "p22-0687a589"
+  },
+  {
+   "id": "p22-rb1-e02",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess severity of episode:",
+   "bbox": [
+    371.2,
+    144.8,
+    471.9,
+    155.6
+   ],
+   "key": "p22-26faadae"
+  },
+  {
+   "id": "p22-rb1-e03",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Any of: pulse < 50, unable to talk, silent chest (tight chest but no wheeze), PEFR2 <33% of predicted, drowsy or confused?",
+   "bbox": [
+    191.2,
+    154.8,
+    651.9,
+    165.6
+   ],
+   "key": "p22-645fa848"
+  },
+  {
+   "id": "p22-rb1-e04",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    316.9,
+    174.8,
+    327.8,
+    185.7
+   ],
+   "key": "p22-b24de267"
+  },
+  {
+   "id": "p22-rb1-e05",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes: Life threatening",
+   "bbox": [
+    655.0,
+    174.7,
+    735.2,
+    185.7
+   ],
+   "key": "p22-7d943aa7"
+  },
+  {
+   "id": "p22-rb1-e06",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Any of: oxygen saturation < 90%, respiratory rate > 30, pulse > 120, unable to talk in full sentences, PEFR2 <60% of predicted, agitated?",
+   "bbox": [
+    66.4,
+    184.8,
+    578.4,
+    195.7
+   ],
+   "key": "p22-29306d7e"
+  },
+  {
+   "id": "p22-rb1-e07",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Give 40% face mask oxygen (if known COPD, give 24-28% face mask oxygen), keep saturation 93-95% while preparing nebuliser and between nebulisations.",
+   "bbox": [
+    606.6,
+    194.1,
+    784.2,
+    235.0
+   ],
+   "key": "p22-d91f8ab4"
+  },
+  {
+   "id": "p22-rb1-e08",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "No: Mild or moderate",
+   "bbox": [
+    234.6,
+    204.2,
+    318.0,
+    215.2
+   ],
+   "key": "p22-eb56bb93"
+  },
+  {
+   "id": "p22-rb1-e09",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes: Severe",
+   "bbox": [
+    527.6,
+    204.2,
+    570.7,
+    215.2
+   ],
+   "key": "p22-9f9768ec"
+  },
+  {
+   "id": "p22-rb1-e10",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 5,
+   "parent": null,
+   "text": "Give inhaled salbutamol via spacer 400-1000mcg if required, or nebulise 1mL salbutamol 0.5% solution in 3mL sodium chloride 0.9%, with oxygen at flow rate of 8L/minute.",
+   "bbox": [
+    82.2,
+    224.4,
+    463.0,
+    245.2
+   ],
+   "key": "p22-32e56020"
+  },
+  {
+   "id": "p22-rb1-e11",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Refer urgently. While awaiting transport:",
+   "bbox": [
+    606.6,
+    234.1,
+    762.6,
+    245.0
+   ],
+   "key": "p22-fb94d2ad"
+  },
+  {
+   "id": "p22-rb1-e12",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 5,
+   "parent": null,
+   "text": "If known asthma or COPD, give prednisone 40mg orally.",
+   "bbox": [
+    82.2,
+    244.4,
+    308.9,
+    255.2
+   ],
+   "key": "p22-d6b0431d"
+  },
+  {
+   "id": "p22-rb1-e13",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 2,
+   "parent": "p22-rb1-e11",
+   "text": "Nebulise 2mL (10mg) salbutamol 0.5% solution and 2mL (0.5mg) ipratropium bromide solution with oxygen at flow rate of 8L/minute.",
+   "bbox": [
+    612.2,
+    244.1,
+    778.7,
+    285.0
+   ],
+   "key": "p22-1a1067fa"
+  },
+  {
+   "id": "p22-rb1-e14",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 5,
+   "parent": null,
+   "text": "Monitor response regularly. If no better, repeat salbutamol every 20 minutes during first hour.",
+   "bbox": [
+    82.2,
+    254.4,
+    444.3,
+    265.2
+   ],
+   "key": "p22-8bf6058f"
+  },
+  {
+   "id": "p22-rb1-e15",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess after 1 hour of treatment:",
+   "bbox": [
+    214.5,
+    274.4,
+    338.1,
+    285.3
+   ],
+   "key": "p22-c298c653"
+  },
+  {
+   "id": "p22-rb1-e16",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Check respiratory rate and PEFR2. Can patient talk normally?",
+   "bbox": [
+    162.2,
+    284.4,
+    390.4,
+    295.3
+   ],
+   "key": "p22-a33ef092"
+  },
+  {
+   "id": "p22-rb1-e17",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 2,
+   "parent": "p22-rb1-e11",
+   "text": "Give single dose hydrocortisone 100mg IM/slow IV.",
+   "bbox": [
+    612.2,
+    284.1,
+    777.3,
+    305.0
+   ],
+   "key": "p22-eba53ac1"
+  },
+  {
+   "id": "p22-rb1-e18",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Improving or no change:",
+   "bbox": [
+    129.9,
+    304.5,
+    224.3,
+    315.3
+   ],
+   "key": "p22-1d0b286a"
+  },
+  {
+   "id": "p22-rb1-e19",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Worsening despite treatment: Unable to talk normally or",
+   "bbox": [
+    346.9,
+    304.5,
+    462.7,
+    325.3
+   ],
+   "key": "p22-fce9d6ca"
+  },
+  {
+   "id": "p22-rb1-e20",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 2,
+   "parent": "p22-rb1-e11",
+   "text": "If no better, repeat nebulisations every 20 minutes as needed for up to 4 doses in 2 hours. If no longer life threatening, manage as severe:",
+   "bbox": [
+    612.2,
+    304.1,
+    766.1,
+    345.0
+   ],
+   "key": "p22-e00428a9"
+  },
+  {
+   "id": "p22-rb1-e21",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Able to talk normally and respiratory rate < 20 or",
+   "bbox": [
+    84.3,
+    314.4,
+    273.9,
+    325.3
+   ],
+   "key": "p22-695e29a3"
+  },
+  {
+   "id": "p22-rb1-e22",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "PEFR2 improved by > 20%",
+   "bbox": [
+    128.1,
+    324.5,
+    226.1,
+    335.3
+   ],
+   "key": "p22-b5b6b0d1"
+  },
+  {
+   "id": "p22-rb1-e23",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "respiratory rate ≥ 20 or PEFR2 not improved",
+   "bbox": [
+    324.0,
+    324.5,
+    485.6,
+    335.3
+   ],
+   "key": "p22-b1cc0ebe"
+  },
+  {
+   "id": "p22-rb1-e24",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Wheeze/tight chest resolved",
+   "bbox": [
+    69.6,
+    344.5,
+    123.5,
+    365.3
+   ],
+   "key": "p22-0ed232a2"
+  },
+  {
+   "id": "p22-rb1-e25",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Wheeze/tight chest still present",
+   "bbox": [
+    162.6,
+    344.5,
+    283.6,
+    355.3
+   ],
+   "key": "p22-2cdd340a"
+  },
+  {
+   "id": "p22-rb1-e26",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 2,
+   "parent": null,
+   "text": "Give 40% face mask oxygen (if known COPD, give 24-28% face mask oxygen), keep saturation 93-95% while preparing nebuliser and between nebulisations.",
+   "bbox": [
+    328.8,
+    354.3,
+    745.1,
+    375.2
+   ],
+   "key": "p22-c46cc749"
+  },
+  {
+   "id": "p22-rb1-e27",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Repeat salbutamol every 2-4 hours as needed.",
+   "bbox": [
+    160.1,
+    364.5,
+    265.3,
+    385.3
+   ],
+   "key": "p22-e93a86b7"
+  },
+  {
+   "id": "p22-rb1-e28",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 2,
+   "parent": null,
+   "text": "Refer urgently. While awaiting transport:",
+   "bbox": [
+    328.8,
+    374.3,
+    488.4,
+    385.2
+   ],
+   "key": "p22-64f6bc39"
+  },
+  {
+   "id": "p22-rb1-e29",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Is wheeze/tight chest still present after 3 hours of treatment?",
+   "bbox": [
+    160.1,
+    384.5,
+    264.5,
+    415.3
+   ],
+   "key": "p22-638a993f"
+  },
+  {
+   "id": "p22-rb1-e30",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 3,
+   "parent": "p22-rb1-e28",
+   "text": "Nebulise 1mL salbutamol 0.5% solution in 3mL sodium chloride 0.9% with oxygen at flow rate of 8L/minute, every 20 minutes or give instead inhaled salbutamol via spacer 400-1000mcg (4-10 puffs), every 20 minutes. If using spacer, deliver 1 puff at a time, allow patient to take 6 breaths through the spacer before next puff.",
+   "bbox": [
+    334.4,
+    384.3,
+    767.4,
+    415.2
+   ],
+   "key": "p22-b6f496ea"
+  },
+  {
+   "id": "p22-rb1-e31",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 3,
+   "parent": "p22-rb1-e28",
+   "text": "If not already given, give single dose prednisone 40mg orally. If unable to take oral medication, give single dose hydrocortisone 100mg IM/slow IV.",
+   "bbox": [
+    334.4,
+    414.3,
+    752.7,
+    435.2
+   ],
+   "key": "p22-9400580c"
+  },
+  {
+   "id": "p22-rb1-e32",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    171.9,
+    424.5,
+    182.8,
+    435.3
+   ],
+   "key": "p22-c38af526"
+  },
+  {
+   "id": "p22-rb1-e33",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    255.6,
+    424.5,
+    268.0,
+    435.3
+   ],
+   "key": "p22-dc2e280a"
+  },
+  {
+   "id": "p22-rb1-e34",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess response",
+   "bbox": [
+    518.4,
+    444.3,
+    579.9,
+    455.2
+   ],
+   "key": "p22-a89bec76"
+  },
+  {
+   "id": "p22-rb1-e35",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Discuss before discharge if any of: presents late afternoon, previous severe attacks, recent night time/ worsening of symptoms.",
+   "bbox": [
+    56.0,
+    444.5,
+    192.8,
+    485.3
+   ],
+   "key": "p22-3ff200b9"
+  },
+  {
+   "id": "p22-rb1-e36",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Continue",
+   "bbox": [
+    244.2,
+    444.5,
+    281.3,
+    455.3
+   ],
+   "key": "p22-7fb7f6a8"
+  },
+  {
+   "id": "p22-rb1-e37",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If poor response, add 2mL (0.5mg) ipratropium bromide solution to 1mL salbutamol 0.5% solution and 1mL sodium chloride 0.9%, and nebulise every 20 minutes up to 3 doses only. If nebuliser unavailable, continue salbutamol 400-1000mcg (4-10 puffs) via spacer and add inhaled ipratropium bromide via spacer 80-160 mcg (2-4 puffs), every 20 minutes as needed for up to 3 hours.",
+   "bbox": [
+    323.1,
+    454.3,
+    761.4,
+    495.2
+   ],
+   "key": "p22-1d0c5c84"
+  },
+  {
+   "id": "p22-rb1-e38",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 0,
+   "parent": null,
+   "text": "salbutamol every 2-4 hours as needed and refer.",
+   "bbox": [
+    228.9,
+    454.5,
+    296.7,
+    485.3
+   ],
+   "key": "p22-b98242b1"
+  },
+  {
+   "id": "p22-rb1-e39",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If first episode of wheeze/tight chest, assess for asthma and COPD 138.",
+   "bbox": [
+    56.0,
+    484.5,
+    204.9,
+    505.3
+   ],
+   "key": "p22-f4d2f322"
+  },
+  {
+   "id": "p22-rb1-e40",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If still no better, repeat salbutamol nebulisations every 20 minutes until PEFR2 > 60% of predicted. Once PEFR2 > 60% of predicted, repeat every 2–4 hours as needed until referal.",
+   "bbox": [
+    323.1,
+    494.3,
+    774.5,
+    515.2
+   ],
+   "key": "p22-76643222"
+  },
+  {
+   "id": "p22-rb1-e41",
+   "page": 22,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with wheeze/tight chest:",
+   "section_y": 127.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If known asthma/COPD, give routine care: if asthma 140, if COPD 141.",
+   "bbox": [
+    56.0,
+    504.5,
+    202.4,
+    525.3
+   ],
+   "key": "p22-ecb2e6f6"
+  },
+  {
+   "id": "p22-out-e01",
+   "page": 22,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If sudden wheeze/tight chest and any of: generalised itch/rash, face/tongue swelling, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28. • If difficulty breathing worse on lying flat and leg swelling or patient ≥ 50 years with first episode of wheeze/tight chest, heart failure likely 151.",
+   "bbox": [
+    51.0,
+    89.1,
+    790.9,
+    109.9
+   ],
+   "key": "p22-6530e896"
+  },
+  {
+   "id": "p22-out-e02",
+   "page": 22,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "WHEEZE/TIGHT CHEST",
+   "bbox": [
+    328.9,
+    48.5,
+    513.1,
+    70.8
+   ],
+   "key": "p22-7fa4d6a7"
+  },
+  {
+   "id": "p22-out-e03",
+   "page": 22,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2Peak expiratory flow rate: PEFR is expressed as a percentage of the predicted normal value for the patients age and height 139.",
+   "bbox": [
+    34.0,
+    541.5,
+    720.0,
+    552.3
+   ],
+   "key": "p22-096a62b5"
+  }
+ ]
+}

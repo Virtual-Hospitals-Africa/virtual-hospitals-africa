@@ -1,0 +1,5 @@
+{
+ "check": "SYSTEM_DIAGNOSIS_RULES_LISP :: has valid snomed concepts",
+ "count": 0,
+ "values": []
+}

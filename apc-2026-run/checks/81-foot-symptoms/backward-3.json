@@ -1,0 +1,759 @@
+{
+ "page": 81,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says no pulse 'in the leg'; 'Peripheral pulse absent' has no site and would also match an absent arm pulse.",
+   "fix": "(clinical_finding (snomed_concept \"Peripheral pulse absent\" \"finding\") (finding_site (snomed_concept \"Lower limb structure\" \"body structure\"))) or (snomed_concept \"Foot pulse absent\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of foot\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent foot symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrene of foot\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heel pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says pain worse on STARTING walking (first-step pain, typical of plantar fasciitis); 'Pain aggravated by walking' is broader (pain throughout walking, as in claudication). No closer SNOMED concept found.",
+   "fix": "accept; note in the review",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of foot\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bony swelling of toe joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "expr": "(diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says no pulse 'in the leg'; 'Peripheral pulse absent' has no site and would also match an absent arm pulse.",
+   "fix": "add (finding_site (snomed_concept \"Lower limb structure\" \"body structure\")) or use (snomed_concept \"Foot pulse absent\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "expr": "(diagnosis (snomed_concept \"Acute lower limb ischemia\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of foot\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrene of foot\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "expr": "(diagnosis (snomed_concept \"Critical lower limb ischemia\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure in skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital space of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of sole of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thick skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of border of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "expr": "(diagnosis (snomed_concept \"Tinea pedis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+   "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "expr": "(diagnosis (snomed_concept \"Peripheral nerve disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "expr": "(diagnosis (snomed_concept \"Peripheral vascular disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heel pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says pain worse on STARTING walking (first-step pain); 'Pain aggravated by walking' is broader and overlaps with claudication-type pain. No closer SNOMED concept found.",
+   "fix": "accept; note in the review",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "expr": "(diagnosis (snomed_concept \"Plantar fasciitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of foot\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bony swelling of toe joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable bunion from foot deformity",
+   "expr": "(diagnosis (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of foot region\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "expr": "(active_condition (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "expr": "(active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "expr": "(active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent foot symptom conditions",
+   "verdict": "ok",
+   "problem": "Covers all three red-box bullets; trigger 'Finding of foot region' fits 'foot symptoms'. Absent pulse lacks a leg site (see c008).",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "verdict": "ok",
+   "problem": "Covers tinea, generalised (neuropathy, PVD) and localised (heel, bunion) branches. 'Constant ... worse at night' timing for neuropathy is not asked about.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable fracture with foot symptoms",
+   "verdict": "ok",
+   "problem": "Page: 'Unable to bear weight following injury, fracture likely' -> and(foot finding, unable to weight-bear, injury) is faithful. 'Fracture of bone' is broad, but the page does not restrict the site to the foot (ankle fractures present the same way); 'Fracture of foot' exists if a narrower diagnosis is wanted.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "verdict": "ok",
+   "problem": "Structure and(sudden severe foot pain at rest, or(numbness, weakness, pallor, no pulse)) matches 'with any of the following in the leg'. Pulse lacks a leg finding site.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable critical lower limb ischaemia with foot symptoms",
+   "verdict": "ok",
+   "problem": "and(claudication, or(rest pain, foot ulcer, foot gangrene)) matches the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable tinea pedis from foot skin changes",
+   "verdict": "ok",
+   "problem": "Interdigital cracks/peeling/scaling as alternatives, and thickened AND scaly skin per site (sole/heel/side) matches the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "verdict": "problem",
+   "problem": "Drops 'constant' and 'worse at night' from the page's symptom description, so the probable diagnosis is broader than the page; otherwise and(generalised foot pain, or(burning, pins/needles, numbness)) is faithful.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable peripheral vascular disease from foot symptoms",
+   "verdict": "ok",
+   "problem": "and(generalised foot pain, or(muscle pain legs, muscle pain buttocks)) matches the 'Foot pain with muscle pain in legs or buttocks' branch under Generalised foot pain.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "verdict": "problem",
+   "problem": "'Worse on starting walking' (start-up pain) encoded as generic 'Pain aggravated by walking', which is broader; no closer SNOMED concept exists.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable bunion from foot deformity",
+   "verdict": "ok",
+   "problem": "and(foot deformity, bony swelling at 1st MTP joint) matches 'Foot deformity: bony lump at base of big toe'; 'Hallux valgus AND bunion' is the right concept ('Bunion' alone is not an FSN).",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: foot symptoms with fracture or limb ischaemia",
+   "verdict": "ok",
+   "problem": "Urgent is justified by 'Give urgent attention ... Refer urgently'; or over the three red-box probable diagnoses follows the house pattern.",
+   "severity": "low"
+  }
+ ],
+ "summary": "No invented or wrong content: all 76 conditions trace to the page and every concept resolves. The main imprecision is that the peripheral neuropathy rule drops the page's 'constant ... worse at night' timing, so it fires more broadly. Also, 'no pulse in the leg' is encoded as a site-less 'Peripheral pulse absent', and 'worse on starting walking' as the broader 'Pain aggravated by walking'."
+}

@@ -1,0 +1,125 @@
+{
+ "page_2026": 18,
+ "page_2023": 16,
+ "will_file": "16-decreased-consciousness.lisp",
+ "redbox_status_2023": [
+  "changed"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "check_for": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of pupil of both eyes\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive bronchial secretion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive salivation\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))"
+   ],
+   "is_a_related": []
+  },
+  "priority_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 12)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of pupil of both eyes\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive bronchial secretion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive salivation\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Overdose\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Shock\" \"disorder\") probable)"
+   ],
+   "is_a_related": []
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [
+    "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)"
+   ],
+   "only_2026": [],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 4,
+  "build_2026": 63,
+  "exact": 2,
+  "related": 0
+ }
+}

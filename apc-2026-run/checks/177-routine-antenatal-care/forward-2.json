@@ -1,0 +1,815 @@
+{
+ "page": 177,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p177-8573c81b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+    "Check task :: same in check_for"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-bfd8ee48",
+   "scope": "in_scope",
+   "scope_reason": "header: the Urgent priority trigger",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and Pregnancy (or ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-42fdc9da",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-70ea6047",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [
+    "'persistent' (duration) not representable"
+   ],
+   "problem": "Minor: 'persistent' dropped; BP 140 OR 90 and headache/blurred vision/abdominal pain correctly OR-ed. Abdominal pain concept is generic.",
+   "evidence": [
+    "Diagnose probable severe pre-eclampsia :: (and (or (>= SBP 140) (>= DBP 90)) (or Headache Blurring of visual image Abdominal pain))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-25b0050e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (>= Body temperature \u00b0C 38) (or Backache+Severe Abdominal pain+Severe))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-3c0796e7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'>= 1+' grade of proteinuria (dipstick grade) not expressed; generic Proteinuria used"
+   ],
+   "problem": "Threshold 1+ not captured; arguably unavoidable.",
+   "evidence": [
+    "Diagnose probable severe pre-eclampsia :: (and (or (>= SBP 160) (>= DBP 110)) (clinical_finding Proteinuria))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-73ff7288",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-98729344",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'severe hypertension' diagnosis (probable) rule"
+   ],
+   "problem": "BP >= 160/110 without proteinuria is encoded only as an Urgent trigger; there is no 'treat as severe hypertension' diagnosis rule, though the page names the diagnosis (and Severe hypertension is a flowchart branch).",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (or (>= SBP 160) (>= DBP 110)) (no (clinical_finding Proteinuria)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-6062839d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Single 'swollen painful calf' split into two findings ANDed; acceptable.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (Swollen calf) (Pain in calf))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-cf812d8f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'< 37 weeks' gestational-age condition"
+   ],
+   "problem": "Preterm labour probable rule fires on pregnancy + painful contractions at any gestation; the < 37 weeks limit is lost (gestation not representable, but at minimum nothing in the rule notes it). Over-triggers at term.",
+   "evidence": [
+    "Diagnose probable preterm labour :: (and Pregnancy (Painful uterine contractions))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-ca3855bb",
+   "scope": "in_scope",
+   "scope_reason": "cross reference 179 is out; the criterion is in",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: Reduced fetal movement / Fetal movements absent"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-a9b52d27",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'clear/pale' fluid colour"
+   ],
+   "problem": "Sudden-onset watery discharge with no contractions is encoded; fluid colour dropped (minor). 'Uterine contractions present' negation is reasonable.",
+   "evidence": [
+    "Diagnose probable PROM :: (and Pregnancy (Watery vaginal discharge + Sudden onset) (no Uterine contractions present))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-f9cab683",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding Shock) ; (< SBP 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-9e3b46c1",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: fragment of 'Severe hypertension' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7fff68b3",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: fragment of 'Severe hypertension' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0f0a004d",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'Vaginal bleeding' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-1f5f47af",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'Preterm labour' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-473743de",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: refer if < 26 weeks",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-3f1f9ae7",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable: gestational age < 22 weeks branch",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-61a64a2c",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable: gestational age >= 22 weeks branch",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-53a07d48",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable: gestational age >= 22 weeks branch",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b4a6f302",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: gestation 26-33+ weeks branch (not_representable)",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b4a254cf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for miscarriage signs :: (check_for Cervical os open, Cervix dilated, Products of conception at uterine os cervix, ... in vagina)",
+    "miscarriage rules :: (or/no of the same four findings)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-23abd5b1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: betamethasone",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-5639d9f2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: tocolysis",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-53eacb3e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: remove products of conception",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0f282d67",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: IV fluids",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-dbf64f5b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: heavy bleeding branch",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e2908d2c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: IV fluids",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-101df623",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: oxytocin",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-fb4ee8a4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: paracetamol",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-8ec81dbe",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: refer",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-14ff2096",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: MOU labour",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-5287ee49",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotics conditional on temp/pulse",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d2a483a5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotics",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-4442455c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: anti-D",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7d60413a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: anti-D dose",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e8ae98f4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: refer",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-12dd2eba",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: avoid digital exam",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b1e18292",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes/No answer to cervical os question",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d079dd4c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes/No answer to cervical os question",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-52cc90b5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Page says threatened or complete miscarriage is 'likely' => probable diagnosis. Rules encode both as 'possible', not 'probable'. Also an extra ectopic pregnancy possible rule fires from the same branch with identical conditions.",
+   "evidence": [
+    "Diagnose possible threatened miscarriage :: (diagnosis Threatened abortion possible) ; Diagnose possible complete miscarriage :: (diagnosis Complete miscarriage possible), both (and Pregnancy Bleeding from vagina (no os open)(no Cervix dilated)(no POC...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-70137a40",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "'Incomplete or inevitable miscarriage likely' encoded as 'possible' rather than 'probable'. Conditions (bleeding + any of four cervical/POC findings) are right.",
+   "evidence": [
+    "Diagnose possible incomplete miscarriage / inevitable miscarriage :: (diagnosis ... possible) (and Pregnancy Bleeding (or Cervical os open Cervix dilated POC at os POC in vagina))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d668c5c6",
+   "scope": "borderline",
+   "scope_reason": "'Refer to exclude ectopic' is management, but a 'consider ectopic' possible diagnosis is defensible",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Possible ectopic rule has the same conditions as threatened/complete miscarriage; low confidence about intent.",
+   "evidence": [
+    "Diagnose possible ectopic pregnancy :: (diagnosis Ectopic pregnancy possible)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p177-2879fbb7",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: fragment 'pregnancy' of ectopic box text",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-11d3fe31",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: fragment 'and confirm diagnosis'",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-f9bcdead",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: header: management",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-52e33f88",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: oxygen",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-1e9cb727",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: fluids for shock",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-30e5cf96",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: ceftriaxone",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e8d9cb73",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: eclampsia < 20 weeks cross ref",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-00b04dd3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: eclampsia treatment",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-96c781cd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: positioning",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-23f91824",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: oxygen",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-93d89fef",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: magnesium",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-9e9311cc",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: catheter",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b1127d4f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: stop magnesium",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-84deb32d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: magnesium repeat",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7b16527b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: nifedipine",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-57c6f81c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: refer",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-57e14ff4",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'Seizures' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d1ba5ef7",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'Severe pre-eclampsia' branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-020eeb99",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: PROM branch heading",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-a8a04032",
+   "scope": "borderline",
+   "scope_reason": "Litmus test is a confirmatory finding but a finding concept for it is dubious",
+   "verdict": "missing",
+   "parts_missing": [
+    "litmus turns/stays blue amniotic fluid confirmation"
+   ],
+   "problem": "Confirmatory test for PROM not captured; could be a check_for item. Low-value.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p177-c0bb9842",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: avoid digital exam",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-17aca511",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotics for chorioamnionitis",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-17560643",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'no chorioamnionitis' branch",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-85cd3884",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotics",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-99e49da0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotics",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-557fe2f0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: betamethasone",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0b3e398a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: refer",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-30ee0b8f",
+   "scope": "borderline",
+   "scope_reason": "Outside element, carries diagnostic logic (footnotes)",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Shock likely' criteria: pulse >= 100, RR > 30, confusion/restlessness, weakness (only SBP < 80 and generic Shock finding used); no probable Shock diagnosis rule",
+    "Chorioamnionitis definition (temp >= 38, painful abdomen, foul-smelling amniotic fluid) not encoded"
+   ],
+   "problem": "Footnote 1 says shock is likely if SBP<80 plus others; rules only treat Shock as a finding/check item. Footnotes 2, 3, 5 are management/gestation notes.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding Shock) (< SBP 80)"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p177-8cd61b9a"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose possible/probable miscarriage rules",
+   "problem": "Page's 'likely' branches (threatened or complete; incomplete or inevitable) are encoded as possible not probable. Threatened, complete and ectopic rules have identical conditions, so all three always fire together.",
+   "severity": "high"
+  },
+  {
+   "rule": "All miscarriage and bleeding rules",
+   "problem": "Page limits the cervical os branch to early pregnancy < 22 weeks; rules apply at any gestation (gestation not representable), so late-pregnancy bleeding is also labelled as miscarriage types.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable preterm labour",
+   "problem": "< 37 weeks condition lost; any pregnant patient with painful contractions (including term) gets preterm labour probable, and then the Urgent priority via active_condition.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent priority",
+   "problem": "No severe hypertension or shock diagnosis rules exist although page names them; severe hypertension handled only inside priority rule. Premature labor and PROM are triggered via active_condition (depends on diagnosis rules).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for urgent routine antenatal care conditions",
+   "problem": "check_for lists Proteinuria, Headache etc. but no Body temperature / BP / pulse items; and 'Uterine contractions present' with 'Painful uterine contractions' both listed. Mostly harmless.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent priority",
+   "problem": "Bleeding from vagina alone makes Urgent, which matches the page; Pregnancy gating is correct. No priority levels beyond Urgent justified.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Core urgent triggers and pre-eclampsia/PROM criteria are well encoded, but the 'X likely' miscarriage branches are rated only 'possible' and fire together with ectopic using identical conditions. Gestational-age limits (preterm < 37 weeks, early pregnancy < 22 weeks) are lost, causing over-triggering; severe hypertension and shock diagnoses are not produced."
+}

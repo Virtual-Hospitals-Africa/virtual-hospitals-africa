@@ -1,0 +1,1098 @@
+{
+ "page": 197,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Alcohol or drug intoxication at work'; the workplace context is dropped. Concept is otherwise right (Alcohol intoxication is a descendant) though its children also include opioid/nicotine poisonings.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Inappropriate behaviour at work'; the workplace context is dropped and no SNOMED concept carries it. Concept itself is right.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Aggressive or violent behaviour at work'; the workplace context is dropped. Concept itself is right (and is a VHA warning sign).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Right concept for 'violent behaviour' (SNOMED synonym), but 'at work' is dropped; also a child of Aggressive behavior, so it is redundant in the due_to (descendants match) and only adds a separate ask in check_for.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+   "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past year' window is implicit in a currently recorded finding.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'Smells of alcohol'; breath is the usual meaning of the sign.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym apathy; matches 'Indifferent'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'little ... pleasure in doing things' is anhedonia.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "The only site-independent needle-stick concept; 'accidental' is extra but implied by the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic event\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "Right concept; note its category is 'event', which the grammar allows inside clinical_finding, and no closer 'finding' concept exists (Victim of psychological trauma is narrower).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Frequent' qualifier dropped but absenteeism already denotes a pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+   "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past year' window is implicit in a currently recorded finding.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'Smells of alcohol'; breath is the usual meaning of the sign.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym apathy; matches 'Indifferent'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'little ... pleasure in doing things' is anhedonia.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "The only site-independent needle-stick concept; 'accidental' is extra but implied by the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic event\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "Right concept; note its category is 'event', which the grammar allows inside clinical_finding, and no closer 'finding' concept exists (Victim of psychological trauma is narrower).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Frequent' qualifier dropped but absenteeism already denotes a pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "expr": "(diagnosis (snomed_concept \"Substance misuse behavior\" \"finding\") possible)",
+   "verdict": "faithful",
+   "reason": "Page: 'may have substance misuse'; possible is right.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+   "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past year' window is implicit in a currently recorded finding.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'Smells of alcohol'; breath is the usual meaning of the sign.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym apathy; matches 'Indifferent'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'little ... pleasure in doing things' is anhedonia.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "The only site-independent needle-stick concept; 'accidental' is extra but implied by the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic event\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "Right concept; note its category is 'event', which the grammar allows inside clinical_finding, and no closer 'finding' concept exists (Victim of psychological trauma is narrower).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Frequent' qualifier dropped but absenteeism already denotes a pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "expr": "(diagnosis (snomed_concept \"Depressive disorder\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "Page: 'may have ... depression'; possible is right.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+   "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past year' window is implicit in a currently recorded finding.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'Smells of alcohol'; breath is the usual meaning of the sign.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym apathy; matches 'Indifferent'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'little ... pleasure in doing things' is anhedonia.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "The only site-independent needle-stick concept; 'accidental' is extra but implied by the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic event\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "Right concept; note its category is 'event', which the grammar allows inside clinical_finding, and no closer 'finding' concept exists (Victim of psychological trauma is narrower).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Frequent' qualifier dropped but absenteeism already denotes a pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "expr": "(diagnosis (snomed_concept \"Anxiety disorder\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "Page: 'may have ... depression/anxiety'; possible is right.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page sets a threshold ('drunk >= 4 drinks/session' in the past year); the concept carries no number and no window. No SNOMED concept encodes >= 4 drinks; (snomed_concept \"Drinking binge\" \"finding\") exists and is the conventional term for >= 4-5 drinks per occasion but is no more precise.",
+   "fix": "Keep the concept; record the >= 4 drinks/session threshold in the task description or a remaining-questions note so the ask matches the page.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past year' window is implicit in a currently recorded finding.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Covers both prescription and over-the-counter medication as the page lists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'Smells of alcohol'; breath is the usual meaning of the sign.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym apathy; matches 'Indifferent'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'In the past month' window is implicit in a currently recorded finding; cannot be expressed in check_for.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of interest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'little ... pleasure in doing things' is anhedonia.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "The only site-independent needle-stick concept; 'accidental' is extra but implied by the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic event\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "Right concept; note its category is 'event', which the grammar allows inside clinical_finding, and no closer 'finding' concept exists (Victim of psychological trauma is narrower).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Frequent' qualifier dropped but absenteeism already denotes a pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "expr": "(diagnosis (snomed_concept \"Physical AND emotional exhaustion state\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "SNOMED synonym burnout; possible is right. Note it is a child of Anxiety disorder.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Alcohol or drug intoxication at work'; the workplace context is dropped. Concept is otherwise right (Alcohol intoxication is a descendant) though its children also include opioid/nicotine poisonings.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Inappropriate behaviour at work'; the workplace context is dropped and no SNOMED concept carries it. Concept itself is right.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Aggressive or violent behaviour at work'; the workplace context is dropped. Concept itself is right (and is a VHA warning sign).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Right concept for 'violent behaviour' (SNOMED synonym), but 'at work' is dropped; also a child of Aggressive behavior, so it is redundant in the due_to (descendants match) and only adds a separate ask in check_for.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent features and signs of occupational stress in the health worker",
+   "verdict": "problem",
+   "problem": "Type and trigger are right and every red-box item is checked for, but two of the page's 'Identify occupational stress' signs are missing: 'Frequent lateness' (Poor attendance at work; no SNOMED concept found, so a documented gap) and 'Diagnosis of long-term condition' (Recent distressing event; could be approximated as (clinical_finding (snomed_concept \"Chronic disease\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))). The red box's 'at work' context is also dropped from the intoxication and behaviour items.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible substance misuse in health worker with occupational stress",
+   "verdict": "ok",
+   "problem": "Faithful to the page's blanket sentence ('any of the above may have substance misuse, stress, depression/anxiety or burnout'), so possible is right and the OR over all signs is literally supported. Note that the page's column heading 'Possible alcohol or drug problem' is a closer anchor for this arm; firing possible substance misuse on Fatigue alone is page-literal but clinically loose. The AND with Stress at work is a scoping conjunct not on the page but needed to keep common symptoms like Fatigue from firing it for every patient.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible depression in health worker with occupational stress",
+   "verdict": "ok",
+   "problem": "possible is right; structure matches 'any of the above may have ... depression'. Same scoping note on the Stress at work conjunct.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible anxiety in health worker with occupational stress",
+   "verdict": "ok",
+   "problem": "possible is right; structure matches 'any of the above may have ... depression/anxiety'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible burnout in health worker with occupational stress",
+   "verdict": "ok",
+   "problem": "possible is right; burnout maps to its SNOMED synonym. The page also lists 'stress' as a may-have outcome, which no rule produces; defensible because the trigger is already Stress at work.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts",
+   "verdict": "ok",
+   "problem": "Urgent is justified by 'Arrange urgent assessment'; (and stress (or ...)) mirrors 'with occupational stress and any of'. All four red-box items present. Only the 'at work' context of three items is lost (no SNOMED carrier).",
+   "severity": "low"
+  }
+ ],
+ "summary": "No invented content: every condition traces to the page in the right rule and role, and the Urgent priority and four possible diagnoses follow the page's wording. The main gap is omission: the check task and diagnosis ORs leave out two page signs, 'Frequent lateness' and 'Diagnosis of long-term condition'. Secondary: the red box's 'at work' context is dropped from intoxication, inappropriate and aggressive/violent behaviour, and the '>= 4 drinks/session' threshold is not carried by Heavy drinking session."
+}

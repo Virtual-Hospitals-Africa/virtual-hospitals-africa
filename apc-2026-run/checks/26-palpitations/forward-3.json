@@ -1,0 +1,523 @@
+{
+ "page": 26,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p26-aa2dfef1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: Urgent (and (clinical_finding (snomed_concept \"Palpitations\" \"finding\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-496756d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Syncope\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Loss of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-e82c9125",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "BP '<90/60' split into systolic<90 OR diastolic<60 (and >=180/110 into systolic>=180 OR diastolic>=110). The OR reading is the usual convention for the high threshold; for the low threshold, diastolic<60 alone with normal systolic will make more patients urgent than a combined reading. A defensible choice, but it is a judgment call.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+    "Urgent: palpitations with danger signs :: (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+    "Urgent: palpitations with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "Urgent: palpitations with danger signs :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-4629973a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Thigh swelling uses Swelling + finding_site Thigh structure (no precoordinated concept found); acceptable per house standard.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Pain in calf\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Thigh pain\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Swollen calf\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Thigh structure\" \"body structure\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-bc26b5e3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "Urgent: palpitations with danger signs :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-a12d9250",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Difficulty breathing worse on lying flat' encoded as Orthopnea; 'leg swelling' as Leg swelling symptom (a symptom concept, so a clinician-observed oedema sign such as swelling of lower limb would not match). The probable HF rule is referenced from the priority rule via active_condition.",
+   "evidence": [
+    "Diagnose probable heart failure from palpitations :: (and (clinical_finding (snomed_concept \"Palpitations\" \"finding\")) (clinical_finding (snomed_concept \"Orthopnea\" \"finding\")) (clinical_finding (snomed_concept \"Leg swelling symptom\" \"finding\")))",
+    "Urgent: palpitations with danger signs :: (active_condition (snomed_concept \"Heart failure\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-c7834187",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Dizziness\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Lightheadedness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-a6e92e5c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Rate uses 'Pulse, function' observable; 'Heart rate' observable entity also exists. Accept if 'Pulse, function' is the house vital concept.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Pulse irregular\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 150)",
+    "Urgent: palpitations with danger signs :: (< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-850303bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Confusion encoded as 'Clouded consciousness' (finding). 'Confusional state' (disorder) exists and is the closer match to the page's 'Confusion'. A clinician who records Confusional state would not trigger this criterion.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-c2e787d2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+    "Urgent: palpitations with danger signs :: (and (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-547ade55",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Hb has no unit in the language; correctly absent.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2f958f66",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'New' is not expressed separately; Sudden onset covers it. Visual disturbance lacks the Asymmetry qualifier, which is right because the page's 'asymmetric' applies only to weakness/numbness.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Numbness\" \"finding\") (qualifier ... \"Sudden onset\") (qualifier ... \"Asymmetry\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "Diagnose possible stroke from palpitations :: possible Cerebrovascular accident (or ...same four...)",
+    "Diagnose possible TIA from palpitations :: possible Transient ischemic attack (or ...same four...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-1746eb86",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-b57cf078",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-885c8b9f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2771df4c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2cdfc9ef",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Restates red-box criteria as triggers for specialist discussion; no new logic.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-6438e9f2",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Known heart disease, history of fainting or family history of sudden death lead to a cardiology appointment. That is a referral route, not a diagnosis or priority.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-5ec1a727",
+   "scope": "borderline",
+   "scope_reason": "AF is identified from the ECG (irregular rate, absent p-waves). ECG interpretation is arguably not representable, but irregular rate is a recorded finding (Pulse irregular), so a 'possible Atrial fibrillation' rule could be written.",
+   "verdict": "missing",
+   "parts_missing": [
+    "possible Atrial fibrillation (disorder) rule"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-0c31a454",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-76d455e3",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "ECG interpretation branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-e172c137",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "ECG interpretation branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-970e558c",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "ECG interpretation branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-fa0da578",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "pallor",
+    "pregnancy",
+    "QT-prolonging medication"
+   ],
+   "problem": "Header for the cause check. Only dehydration signs are in the 'Check for causes' check_for. Pallor (the anaemia trigger) and pregnancy are not checked; fever relies on routine temperature.",
+   "evidence": [
+    "Check for causes of palpitations :: (check_for Thirst due to water deprivation, Xerostomia, Decreased skin turgor, Decreased urine output)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-ae623d86",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Temperature >=38: assess and manage fever (p38). There is no 'likely' claim. The temperature value is used only as the <38 exclusion in the thyroid and electrolyte rules.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-0b237fcc",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-9170d8df",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-b5b50c22",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-12820836",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "thirst as the general concept (Thirst finding)"
+   ],
+   "problem": "'thirst' encoded as 'Thirst due to water deprivation', a narrow cause-specific child of 'Thirst finding'. A recorded generic thirst (Thirst finding) would not match, because only descendants match. 'Thirst finding' is the closer concept. Dry mouth (Xerostomia), poor skin turgor (Decreased skin turgor) and decreased urine output are fine.",
+   "evidence": [
+    "Diagnose probable dehydration from palpitations :: (or (clinical_finding (snomed_concept \"Thirst due to water deprivation\" \"finding\")) (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\")) (clinical_finding (snomed_concept \"Decreased urine output\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-07537519",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'dehydration likely' is a probable rule with OR logic, which matches the page.",
+   "evidence": [
+    "Diagnose probable dehydration from palpitations :: (diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-56387c6b",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-a65157ba",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-554b2c81",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Anaemia likely needs Hb <12/<13 by sex; Hb has no unit. Pallor could still be checked as the trigger, but no SNOMED 'Pallor' finding was found under that name.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-eebf59df",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-4ce98263",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Pregnancy test, then p175 if pregnant.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-8d335f29",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-627627d9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-b734420c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "exclusion of pregnancy",
+    "exclusion of anaemia (not representable)",
+    "exclusion of QT-prolonging medication",
+    "restriction to the non-urgent path"
+   ],
+   "problem": "'If none of the above, consider thyroid or electrolyte abnormalities' is encoded as possible rules gated by temp<38 and the absence of each dehydration sign. 'None of the above' also covers anaemia, pregnancy and QT medication, which are not excluded, and the rules are not limited to the non-urgent ECG branches (sinus tachycardia, sinus rhythm, PVCs, ECG unavailable). They also need all four dehydration signs explicitly recorded as absent, plus a measured temperature, before they fire.",
+   "evidence": [
+    "Diagnose possible thyroid disorder from palpitations :: (and Palpitations (< Body temperature 38) (no Thirst due to water deprivation) (no Xerostomia) (no Decreased skin turgor) (no Decreased urine output))",
+    "Diagnose possible electrolyte imbalance from palpitations :: same evidence"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-1840727f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-c15da811",
+   "scope": "borderline",
+   "scope_reason": "Stimulant triggers lead to advice (management). 'Palpitations may be related to anxiety: decide this only once all other causes are excluded' is close to a 'consider anxiety' (possible) statement, gated on exclusion.",
+   "verdict": "missing",
+   "parts_missing": [
+    "possible Anxiety rule (diagnosis of exclusion)"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p26-bf4aaad8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p26-69890eed",
+  "p26-3c301571",
+  "p26-5b3a3cd9",
+  "p26-b91151ab",
+  "p26-9498010c",
+  "p26-2495ecd2",
+  "p26-a461875d",
+  "p26-4d998ebd",
+  "p26-5a3d597d",
+  "p26-86554096"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose possible thyroid disorder / electrolyte imbalance from palpitations",
+   "problem": "'None of the above' is only partly modelled: fever and dehydration are excluded, but pregnancy and QT medication are not, and urgent red-box patients are not excluded either. Every (no …) must be explicitly recorded, so in practice the rule rarely fires, and when it fires it can do so for urgent patients.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of palpitations / Diagnose probable dehydration",
+   "problem": "'Thirst due to water deprivation' is a narrow child concept; a generic 'Thirst finding' would not satisfy the probable rule or the (no …) exclusions.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "problem": "Confusion is mapped to 'Clouded consciousness' rather than the closer 'Confusional state' (disorder), so a recorded confusional state would not trigger urgent priority.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "problem": "'<90/60' is split into independent systolic<90 OR diastolic<60, so an isolated diastolic <60 makes the patient urgent. Defensible, but worth a clinician decision.",
+   "severity": "low"
+  },
+  {
+   "rule": "(none)",
+   "problem": "The AF branch (irregular rate) and anxiety as a diagnosis of exclusion are not encoded; both are arguable possible-diagnosis rules.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box is fully and faithfully encoded: every criterion is in the Urgent rule and the check list, heart failure is a probable rule linked by active_condition, stroke/TIA are possible rules, and Hb<8 is correctly omitted. The weaker points are outside the box: the thyroid/electrolyte 'none of the above' rules only exclude fever and dehydration, the dehydration rule uses a narrow thirst concept, and Confusion maps to Clouded consciousness rather than Confusional state."
+}

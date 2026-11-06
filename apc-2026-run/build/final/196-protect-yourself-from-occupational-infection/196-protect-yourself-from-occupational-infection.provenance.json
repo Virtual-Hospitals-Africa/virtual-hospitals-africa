@@ -1,0 +1,433 @@
+{
+ "edition": "2026",
+ "page": 196,
+ "lisp_file": "196-protect-yourself-from-occupational-infection.lisp",
+ "conditions": [
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury",
+   "confidence": "high",
+   "note": "Exact disorder concept; descendants (e.g. Accidental needle stick injury) match."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "splash to eye/mouth/nose/broken skin",
+   "confidence": "low",
+   "note": "SNOMED has no splash / mucous-membrane or non-intact-skin exposure concept; the broader event 'Exposure to blood and/or body fluid' stands in, so the trigger also fires on other exposure routes. Alternative was leaving splash unencoded."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood",
+   "confidence": "high",
+   "note": "Exposure-to + substance pair, as on page 20. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions",
+   "confidence": "high",
+   "note": "Exact substance concept. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid",
+   "confidence": "low",
+   "note": "No 'blood-stained fluid' substance; Serosanguinous fluid (blood-stained serous fluid) is the closest (from builder B). 'Bloody discharge' considered. The '/tissue' part has no substance concept."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen",
+   "confidence": "high",
+   "note": "SNOMED has no 'Semen' substance; 'Seminal fluid' is the semen substance (parent Male genital fluid). Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions",
+   "confidence": "medium",
+   "note": "No wound-specific secretion substance in SNOMED; 'Exudate' (child of Body fluid) is broader than wound secretions. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk",
+   "confidence": "high",
+   "note": "Exact substance concept. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "pericardial",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "peritoneal",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "amniotic",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "synovial",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "cerebrospinal fluid",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Red-box item, checked for so the urgent rule can fire."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury",
+   "confidence": "high",
+   "note": "Exact disorder concept; descendants (e.g. Accidental needle stick injury) match."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "splash to eye/mouth/nose/broken skin",
+   "confidence": "low",
+   "note": "SNOMED has no splash / mucous-membrane or non-intact-skin exposure concept; the broader event 'Exposure to blood and/or body fluid' stands in, so the trigger also fires on other exposure routes. Alternative was leaving splash unencoded."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood",
+   "confidence": "high",
+   "note": "Exposure-to + substance pair, as on page 20. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions",
+   "confidence": "high",
+   "note": "Exact substance concept. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid",
+   "confidence": "low",
+   "note": "No 'blood-stained fluid' substance; Serosanguinous fluid (blood-stained serous fluid) is the closest (from builder B). 'Bloody discharge' considered. The '/tissue' part has no substance concept."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen",
+   "confidence": "high",
+   "note": "SNOMED has no 'Semen' substance; 'Seminal fluid' is the semen substance (parent Male genital fluid). Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions",
+   "confidence": "medium",
+   "note": "No wound-specific secretion substance in SNOMED; 'Exudate' (child of Body fluid) is broader than wound secretions. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk",
+   "confidence": "high",
+   "note": "Exact substance concept. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "pericardial",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "peritoneal",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "amniotic",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "synovial",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "cerebrospinal fluid",
+   "confidence": "high",
+   "note": "One concept per fluid in the slash list. Item of 'any of' list; or-ed in the priority rule."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "cough",
+   "confidence": "medium",
+   "note": "Footnote list read as four items separated by commas; '≥ 2 weeks' attached to fever only. Alternative: duration applies to cough too."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "fever ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "(>= (onset Fever) (time_ago 2 weeks)) = fever began at least 2 weeks ago; >= as the page says and as the database requires."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "unexplained weight loss",
+   "confidence": "high",
+   "note": "Exact finding."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "drenching night sweats",
+   "confidence": "medium",
+   "note": "No 'drenching' qualifier found; plain Night sweats is broader (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p196-35974afd"
+   ],
+   "quote": "Identify patients with possible TB promptly: • The patient has TB symptoms1",
+   "confidence": "medium",
+   "note": "'possible TB' wording -> possible diagnosis; evidence is the footnote's TB symptoms."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p196-791eb0f4",
+   "element_id": "p196-rb1-e09",
+   "text": "Management:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list; no triage logic."
+  },
+  {
+   "element_key": "p196-c2cd1ae2",
+   "element_id": "p196-rb1-e10",
+   "text": "If broken skin, clean area immediately with soap and water.",
+   "reason_category": "management_step",
+   "reason": "First aid step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p196-c507dd87",
+   "element_id": "p196-rb1-e11",
+   "text": "If splash to eye/mouth/nose: immediately rinse mouth/nose with water or irrigate eye thoroughly with sodium chloride 0.9% or sterile water.",
+   "reason_category": "management_step",
+   "reason": "First aid / irrigation step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p196-6fe88738",
+   "element_id": "p196-rb1-e12",
+   "text": "Assess need for HIV and hepatitis B post-exposure prophylaxis 135.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to PEP page 135; management."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Splash to eye/mouth/nose/broken skin",
+   "decision": "Encoded as clinical_finding 'Exposure to blood and/or body fluid' (event), or-ed with Sharps injury in trigger and priority rule (builder A; reconciler kept it).",
+   "alternatives": "Sharps injury only (builder B; misses every splash exposure, fires less often)",
+   "confidence": "low"
+  },
+  {
+   "topic": "'Health worker' restriction",
+   "decision": "Not encoded; the language has no occupation criterion, so the rules apply to any adult with the exposure findings",
+   "alternatives": "None in the language",
+   "confidence": "high"
+  },
+  {
+   "topic": "Substitute substances",
+   "decision": "Wound secretions -> Exudate; Blood-stained fluid -> Serosanguinous fluid; Semen -> Seminal fluid. '/tissue' not encoded.",
+   "alternatives": "Leave as SNOMED gaps (fires less often)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Possible TB rule",
+   "decision": "'Identify patients with possible TB promptly: The patient has TB symptoms1' encoded as a possible Tuberculosis rule from footnote 1, with '>= 2 weeks' applied to fever only (builder B).",
+   "alternatives": "Leave TB to the TB pages (builder A); apply '>= 2 weeks' to cough too",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, from 'Give urgent attention'",
+   "alternatives": "none",
+   "confidence": "high"
+  }
+ ]
+}

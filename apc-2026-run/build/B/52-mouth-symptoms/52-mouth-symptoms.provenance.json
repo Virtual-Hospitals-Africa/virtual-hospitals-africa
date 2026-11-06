@@ -1,0 +1,891 @@
+{
+ "edition": "2026",
+ "page": 52,
+ "lisp_file": "52-mouth-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mouth symptoms\" \"finding\"))",
+   "element_keys": [
+    "p52-e5fb4ee4"
+   ],
+   "quote": "mouth symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; Mouth symptoms (finding) is not a recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to open mouth\" \"finding\"))",
+   "element_keys": [
+    "p52-605ecdfb"
+   ],
+   "quote": "Unable to open mouth",
+   "confidence": "high",
+   "note": "Exact SNOMED finding."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site face and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site tongue and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Wheezing (finding)."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Dizziness half of dizziness/collapse."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Collapse half of dizziness/collapse."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Recorded vomiting concept."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "medication",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: medication. Exposure form as on page 20; \"within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: food (general Food substance; descendants match). Time window not modelled."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect bite. Time window not modelled."
+  },
+  {
+   "rule": "Check for urgent mouth symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect sting. Time window not modelled."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mouth symptoms\" \"finding\"))",
+   "element_keys": [
+    "p52-e5fb4ee4"
+   ],
+   "quote": "mouth symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; Mouth symptoms (finding) is not a recorded common symptom."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+   "element_keys": [
+    "p52-35ede4a5"
+   ],
+   "quote": "White patches on cheeks, gums, tongue, palate",
+   "confidence": "high",
+   "note": "Cheeks, gums, tongue and palate are all oral mucosa; one precoordinated finding."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p52-5df93871"
+   ],
+   "quote": "difficulty",
+   "confidence": "high",
+   "note": "\"difficulty ... on swallowing\"."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swallowing painful\" \"finding\"))",
+   "element_keys": [
+    "p52-5df93871"
+   ],
+   "quote": "pain on swallowing",
+   "confidence": "high",
+   "note": "Odynophagia concept."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+   "element_keys": [
+    "p52-8ff03199"
+   ],
+   "quote": "blisters on lips",
+   "confidence": "medium",
+   "note": "Blister at lip; \"painful\" not expressible as a qualifier (no Painful qualifier concept)."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p52-8ff03199"
+   ],
+   "quote": "blisters on lips/mouth",
+   "confidence": "medium",
+   "note": "Blister in oral cavity (\"mouth\"); \"painful\" not modelled."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of mouth\" \"disorder\"))",
+   "element_keys": [
+    "p52-875ea910"
+   ],
+   "quote": "Painful ulcer/s",
+   "confidence": "medium",
+   "note": "Ulcer of mouth; \"painful\" and \"with central white patch\" not expressible, so rule fires on any mouth ulcer."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+   "element_keys": [
+    "p52-bbb94b7f"
+   ],
+   "quote": "Red, cracked corners of mouth",
+   "confidence": "medium",
+   "note": "Fissure at angle of mouth; \"red\" not modelled."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "crusts",
+   "confidence": "medium",
+   "note": "Crust on perioral skin (\"around mouth\")."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "blisters around mouth",
+   "confidence": "medium",
+   "note": "Blister on perioral skin (\"around mouth\")."
+  },
+  {
+   "rule": "Check for causes of mouth symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "very itchy",
+   "confidence": "medium",
+   "note": "Itching at angle of mouth with Severe qualifier for \"very\"."
+  },
+  {
+   "rule": "Diagnose probable oral candidiasis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+   "element_keys": [
+    "p52-35ede4a5"
+   ],
+   "quote": "White patches on cheeks, gums, tongue, palate",
+   "confidence": "high",
+   "note": "Cheeks, gums, tongue and palate are all oral mucosa; one precoordinated finding."
+  },
+  {
+   "rule": "Diagnose probable oral candidiasis (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Candidiasis of mouth\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-95fff1ab"
+   ],
+   "quote": "Oral thrush/candida likely",
+   "confidence": "high",
+   "note": "Oral thrush = Candidiasis of mouth."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+   "element_keys": [
+    "p52-35ede4a5"
+   ],
+   "quote": "White patches on cheeks, gums, tongue, palate",
+   "confidence": "high",
+   "note": "Cheeks, gums, tongue and palate are all oral mucosa; one precoordinated finding."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p52-5df93871"
+   ],
+   "quote": "difficulty",
+   "confidence": "high",
+   "note": "\"difficulty ... on swallowing\"."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swallowing painful\" \"finding\"))",
+   "element_keys": [
+    "p52-5df93871"
+   ],
+   "quote": "pain on swallowing",
+   "confidence": "high",
+   "note": "Odynophagia concept."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Candidiasis of esophagus\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-5df93871",
+    "p52-0fc2af12"
+   ],
+   "quote": "oesophageal candida likely",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")))",
+   "element_keys": [
+    "p52-8ff03199"
+   ],
+   "quote": "blisters on lips",
+   "confidence": "medium",
+   "note": "Blister at lip; \"painful\" not expressible as a qualifier (no Painful qualifier concept)."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p52-8ff03199"
+   ],
+   "quote": "blisters on lips/mouth",
+   "confidence": "medium",
+   "note": "Blister in oral cavity (\"mouth\"); \"painful\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Herpes simplex\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-ae0edce1"
+   ],
+   "quote": "Herpes simplex likely",
+   "confidence": "high",
+   "note": "Page names herpes simplex without site; general concept used."
+  },
+  {
+   "rule": "Diagnose probable aphthous ulcer (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of mouth\" \"disorder\"))",
+   "element_keys": [
+    "p52-875ea910"
+   ],
+   "quote": "Painful ulcer/s",
+   "confidence": "medium",
+   "note": "Ulcer of mouth; \"painful\" and \"with central white patch\" not expressible, so rule fires on any mouth ulcer."
+  },
+  {
+   "rule": "Diagnose probable aphthous ulcer (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Aphthous ulcer of mouth\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-9328b2ad"
+   ],
+   "quote": "Aphthous ulcer/s likely",
+   "confidence": "high",
+   "note": "Aphthous ulcer of mouth."
+  },
+  {
+   "rule": "Diagnose probable angular cheilitis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+   "element_keys": [
+    "p52-bbb94b7f"
+   ],
+   "quote": "Red, cracked corners of mouth",
+   "confidence": "medium",
+   "note": "Fissure at angle of mouth; \"red\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable angular cheilitis (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Angular cheilitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "Angular cheilitis/stomatitis likely",
+   "confidence": "high",
+   "note": "Angular cheilitis (stomatitis synonym)."
+  },
+  {
+   "rule": "Diagnose probable impetigo (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+   "element_keys": [
+    "p52-bbb94b7f"
+   ],
+   "quote": "Red, cracked corners of mouth",
+   "confidence": "medium",
+   "note": "Column context: impetigo bullet sits under the red, cracked corners column, so that finding is required too."
+  },
+  {
+   "rule": "Diagnose probable impetigo (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "crusts",
+   "confidence": "medium",
+   "note": "Crust on perioral skin (\"around mouth\")."
+  },
+  {
+   "rule": "Diagnose probable impetigo (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of perioral region of face\" \"body structure\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "blisters around mouth",
+   "confidence": "medium",
+   "note": "Blister on perioral skin (\"around mouth\")."
+  },
+  {
+   "rule": "Diagnose probable impetigo (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Impetigo\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "impetigo likely",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Diagnose probable contact dermatitis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fissure\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")))",
+   "element_keys": [
+    "p52-bbb94b7f"
+   ],
+   "quote": "Red, cracked corners of mouth",
+   "confidence": "medium",
+   "note": "Column context: contact dermatitis bullet sits under the red, cracked corners column."
+  },
+  {
+   "rule": "Diagnose probable contact dermatitis (mouth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "very itchy",
+   "confidence": "medium",
+   "note": "Itching at angle of mouth with Severe qualifier for \"very\"."
+  },
+  {
+   "rule": "Diagnose probable contact dermatitis (mouth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Contact dermatitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p52-f33bc9c8"
+   ],
+   "quote": "contact dermatitis likely",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mouth symptoms\" \"finding\"))",
+   "element_keys": [
+    "p52-e5fb4ee4"
+   ],
+   "quote": "mouth symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; Mouth symptoms (finding) is not a recorded common symptom."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site face and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site tongue and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Wheezing (finding)."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Dizziness half of dizziness/collapse."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Collapse half of dizziness/collapse."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Recorded vomiting concept."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "medication",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: medication. Exposure form as on page 20; \"within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: food (general Food substance; descendants match). Time window not modelled."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect bite. Time window not modelled."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect sting. Time window not modelled."
+  },
+  {
+   "rule": "Mouth symptoms: possible anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "medium",
+   "note": "\"Check for anaphylaxis\" read as a possible diagnosis so the anaphylaxis page task fires."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mouth symptoms\" \"finding\"))",
+   "element_keys": [
+    "p52-e5fb4ee4"
+   ],
+   "quote": "mouth symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; Mouth symptoms (finding) is not a recorded common symptom."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to open mouth\" \"finding\"))",
+   "element_keys": [
+    "p52-605ecdfb"
+   ],
+   "quote": "Unable to open mouth",
+   "confidence": "high",
+   "note": "Exact SNOMED finding."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site face and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding site tongue and Sudden onset qualifier, as on page 20 gold."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Wheezing (finding)."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Dizziness half of dizziness/collapse."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Collapse half of dizziness/collapse."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p52-bc9c8706"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Recorded vomiting concept."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "medication",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: medication. Exposure form as on page 20; \"within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: food (general Food substance; descendants match). Time window not modelled."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect bite. Time window not modelled."
+  },
+  {
+   "rule": "Urgent: mouth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p52-8bb2e5b7"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 allergen: insect sting. Time window not modelled."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p52-4efd11f8",
+   "element_id": "p52-rb1-e04",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral action; Urgent priority encodes the triage."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Swelling bullet of red box",
+   "decision": "Encoded both as part of the Urgent priority (it sits in the urgent box) and as a possible anaphylaxis diagnosis (its action is 'check for anaphylaxis').",
+   "alternatives": "Pointer-only (cross_reference_only) with no rule; or Urgent only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Aphthous ulcer evidence",
+   "decision": "Any Ulcer of mouth -> probable aphthous ulcer; 'painful' and 'central white patch' cannot be expressed.",
+   "alternatives": "Ulcer AND white patches (would collide with oral thrush); possible rather than probable.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Impetigo / contact dermatitis context",
+   "decision": "Required the red, cracked corners finding alongside the bullet's own finding, because the bullets sit in that column.",
+   "alternatives": "Bullet finding alone.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Allergen exposure",
+   "decision": "Footnote 1 allergens as exposure to Drug or medicament, exposure to Food, insect bite, insect sting.",
+   "alternatives": "Specific foods as on page 20.",
+   "confidence": "medium"
+  }
+ ]
+}

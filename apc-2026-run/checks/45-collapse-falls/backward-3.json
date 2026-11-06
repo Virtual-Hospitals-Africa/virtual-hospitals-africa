@@ -1,0 +1,1626 @@
+{
+ "page": 45,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts. 'Insect bite - wound' is a wound concept, not allergen exposure.",
+   "fix": "Add a recency qualifier; consider an insect-bite exposure concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of syncope\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "'Family history of syncope' is narrower than 'family history of collapse' though clinically close; no closer concept found.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of sudden death\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiogram abnormal\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"During exercise\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Right idea; a closer pre-coordinated concept exists.",
+   "fix": "(snomed_concept \"Effort syncope\" \"finding\")",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Collapse following vaccination'; 'Vaccination given' alone has no temporal link to the collapse and no recency, so any past vaccination record triggers Urgent.",
+   "fix": "Add (qualifier (snomed_concept \"Recent\" \"qualifier value\")) or a following-immunization concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for urgent collapse/falls conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about breathing very quickly/deeply 'immediately before or during the collapse'; Tachypnea/Excessively deep breathing as current findings drop that timing.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about breathing very quickly/deeply 'immediately before or during the collapse'; Tachypnea/Excessively deep breathing as current findings drop that timing.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Check for causes of collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(measurement (snomed_concept \"Lying systolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "imprecise",
+   "reason": "Measurements match the page but the timing (after lying 5 minutes, after standing 3 minutes) is dropped.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(measurement (snomed_concept \"Lying diastolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "imprecise",
+   "reason": "Measurements match the page but the timing (after lying 5 minutes, after standing 3 minutes) is dropped.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(measurement (snomed_concept \"Standing systolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "imprecise",
+   "reason": "Measurements match the page but the timing (after lying 5 minutes, after standing 3 minutes) is dropped.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(measurement (snomed_concept \"Standing diastolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "imprecise",
+   "reason": "Measurements match the page but the timing (after lying 5 minutes, after standing 3 minutes) is dropped.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "expr": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)",
+   "verdict": "imprecise",
+   "reason": "Page asks about systolic drop ≥20 or diastolic drop ≥10; only systolic reduction is measured, diastolic reduction is not (lying/standing diastolic are captured but not compared). Lying 5 min / standing 3 min timing not encoded.",
+   "fix": "Add diastolic reduction measurement or derived comparison",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts. 'Insect bite - wound' is a wound concept, not allergen exposure.",
+   "fix": "Add a recency qualifier; consider an insect-bite exposure concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "expr": "(>= (measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg) 20)",
+   "verdict": "wrong",
+   "reason": "Page's Yes branch is 'systolic BP drop by ≥ 20 OR diastolic BP drop by ≥ 10'; rule encodes only the systolic arm, so an isolated diastolic drop ≥10 is missed.",
+   "fix": "(or (>= systolic-reduction 20) (>= diastolic-reduction 10)); no diastolic-reduction observable found, so encode via lying/standing diastolic or flag for review",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "expr": "(diagnosis (snomed_concept \"Orthostatic hypotension\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(< (measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg) 20)",
+   "verdict": "wrong",
+   "reason": "The 'No' branch requires systolic drop < 20 AND diastolic drop < 10; encoding only systolic < 20 sends patients with diastolic drop ≥ 10 (orthostatic hypotension on the page) down the hyperventilation/faint branch.",
+   "fix": "Add the diastolic-drop < 10 condition",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about breathing very quickly/deeply 'immediately before or during the collapse'; Tachypnea/Excessively deep breathing as current findings drop that timing.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about breathing very quickly/deeply 'immediately before or during the collapse'; Tachypnea/Excessively deep breathing as current findings drop that timing.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "expr": "(diagnosis (snomed_concept \"Hyperventilation\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(< (measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg) 20)",
+   "verdict": "wrong",
+   "reason": "The 'No' branch requires systolic drop < 20 AND diastolic drop < 10; encoding only systolic < 20 sends patients with diastolic drop ≥ 10 (orthostatic hypotension on the page) down the hyperventilation/faint branch.",
+   "fix": "Add the diastolic-drop < 10 condition",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "expr": "(diagnosis (snomed_concept \"Vasovagal syncope\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'new sudden asymmetric' weakness/numbness; the asymmetry (one-sided) qualifier is dropped, so bilateral/generalised weakness would match.",
+   "fix": "Add (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")) or use (snomed_concept \"Hemiparesis\" \"disorder\") for weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Inside the anaphylaxis sub-clause (sudden collapse AND …) but cited to the standalone 'Difficulty breathing 23' element; should cite p45-1b2591c4. Meaning is otherwise fine.",
+   "fix": "Cite p45-1b2591c4",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c142",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Inside the anaphylaxis sub-clause but cited to the pregnancy element (p45-831c4f89); support is 'abdominal pain' in p45-1b2591c4.",
+   "fix": "Cite p45-1b2591c4",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c143",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c144",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c145",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c146",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts. 'Insect bite - wound' is a wound concept, not allergen exposure.",
+   "fix": "Add a recency qualifier; consider an insect-bite exposure concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c147",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits exposure to medication/food/insect bite-sting 'within the past few hours'; the timing window is dropped, so any exposure counts.",
+   "fix": "Add a recent/within-hours qualifier (e.g. (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c148",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c149",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c150",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c151",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of syncope\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "'Family history of syncope' is narrower than 'family history of collapse' though clinically close; no closer concept found.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c152",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of sudden death\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c153",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiogram abnormal\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c154",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c155",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c156",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"During exercise\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Right idea; a closer pre-coordinated concept exists.",
+   "fix": "(snomed_concept \"Effort syncope\" \"finding\")",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c157",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c158",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Collapse following vaccination'; 'Vaccination given' alone has no temporal link to the collapse and no recency, so any past vaccination record triggers Urgent.",
+   "fix": "Add (qualifier (snomed_concept \"Recent\" \"qualifier value\")) or a following-immunization concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c159",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c160",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c161",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c162",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c163",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c164",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c165",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c166",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "verdict": "imprecise",
+   "reason": "'Blood glucose status' is a status observable; a closer measurement concept exists for a numeric glucose value.",
+   "fix": "(snomed_concept \"Blood glucose concentration\" \"observable entity\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c167",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c168",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "verdict": "imprecise",
+   "reason": "'Blood glucose status' is a status observable; a closer measurement concept exists for a numeric glucose value.",
+   "fix": "(snomed_concept \"Blood glucose concentration\" \"observable entity\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c169",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c170",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c171",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c172",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c173",
+   "rule": "Urgent: collapse/falls with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "verdict": "problem",
+   "problem": "Asks about red-box findings but never asks for the measurements the Urgent rule needs (SBP, pulse rate, glucose); asymmetry and allergen-timing qualifiers dropped. 'Diabetes known' listed alone is fine as an input.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of collapse/falls",
+   "verdict": "ok",
+   "problem": "Covers the breathing and prodrome questions; 'immediately before/during collapse' timing not captured.",
+   "severity": "low"
+  },
+  {
+   "rule": "Measure lying and standing blood pressure after collapse/falls",
+   "verdict": "problem",
+   "problem": "Measures only systolic reduction; diastolic drop ≥10 arm cannot be evaluated. Lying/standing durations dropped.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose possible stroke after collapse/falls",
+   "verdict": "problem",
+   "problem": "'Consider stroke' → possible is correct; asymmetric qualifier dropped so any sudden weakness/numbness qualifies.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible TIA after collapse/falls",
+   "verdict": "problem",
+   "problem": "Same as stroke rule: possible is correct, asymmetry dropped.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis after sudden collapse",
+   "verdict": "problem",
+   "problem": "'Check for anaphylaxis' → possible is reasonable and structure (sudden collapse AND any of) is faithful; allergen exposure lacks the 'past few hours' window.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "verdict": "problem",
+   "problem": "'Orthostatic hypotension likely' → probable is right, but the criterion omits 'or diastolic BP drop by ≥ 10'.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "verdict": "problem",
+   "problem": "Flowchart order is right (No to BP drop, Yes to fast/deep breathing), but the 'No' gate is systolic-only, so diastolic-drop orthostatic patients can be labelled hyperventilation.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "verdict": "problem",
+   "problem": "Branch logic faithful (no BP drop, no hyperventilation, prodrome yes) and 'Vasovagal syncope' fits 'common faint'; inherits the systolic-only gate defect.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "verdict": "problem",
+   "problem": "Type, priority (Urgent from 'Give urgent attention') and and/or structure are faithful, including nested anaphylaxis, glucose/diabetes and pregnancy clauses. Problems: asymmetry dropped (over-triggers on any sudden weakness), vaccination not tied to the collapse or recency, allergen timing dropped. Applying the red box to 'Falls' as well as collapse goes beyond the box header ('patient who has collapsed'), a minor stretch.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Most consequential: the orthostatic test encodes only 'systolic drop ≥ 20' and drops 'or diastolic drop ≥ 10', so the orthostatic hypotension rule misses diastolic-only cases and the hyperventilation/common-faint rules wrongly fire for them. The red-box stroke/TIA criteria lose 'asymmetric' and the allergen/vaccination criteria lose their timing, which broadens Urgent triage. Rules also omit page content such as 'anaemia likely' (Hb < 12/13) and same-day referral for abnormal ECG; glucose should use 'Blood glucose concentration'."
+}

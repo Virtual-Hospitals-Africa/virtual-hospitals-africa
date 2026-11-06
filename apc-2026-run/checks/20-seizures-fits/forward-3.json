@@ -1,0 +1,291 @@
+{
+ "page": 20,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p20-13a9b3cd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Trigger (Seizure + Unconscious) and check_for are right. Level is Emergency although the header says 'urgent attention'; defensible because an unconscious, fitting patient is an airway emergency and the page escalates to urgent referral/ventilation, but it is not the house default (Urgent) and should be noted for review.",
+   "evidence": [
+    "Check for unconsciousness in the fitting patient :: (task adult (clinical_finding Seizure) (check_for (clinical_finding Unconscious)))",
+    "Emergency: unconscious and fitting (seizures/fits) :: (system_priority_evaluation adult Emergency (and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (clinical_finding (snomed_concept \"Unconscious\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p20-f48ead42",
+   "scope": "borderline",
+   "scope_reason": "Routing to p30 (head injury); house standard says the check_for must list every red-box item, so 'current head injury' arguably belongs in check_for even though the action is a cross-reference.",
+   "verdict": "missing",
+   "parts_missing": [
+    "check_for current head injury (e.g. Moderate/Major head injury disorder with Current qualifier)"
+   ],
+   "problem": "No head-injury finding is checked; the p30 route can never be triggered from this page.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p20-b9ed7f55",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-301420ed",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-e60ad24d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-7ccc0ac7",
+   "scope": "borderline",
+   "scope_reason": "Glucose is a routine vital (no measure task needed) and 'glucose < 3 mmol/L (< 4 if diabetes) or unable to measure' is a representable criterion that routes to p19; it could be encoded as a possible hypoglycaemia diagnosis or a check_for 'Known diabetes'.",
+   "verdict": "missing",
+   "parts_missing": [
+    "glucose < 3 mmol/L criterion",
+    "glucose < 4 mmol/L if diabetes",
+    "Diabetes mellitus (Known present) as discriminating finding",
+    "unable to measure glucose branch (not representable)"
+   ],
+   "problem": "Hypoglycaemia as a cause of the fit is not encoded at all; no rule uses glucose.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p20-ffd7e709",
+   "scope": "borderline",
+   "scope_reason": "Routes to p177 (eclampsia); pregnancy \u2265 20 weeks / \u2264 1 week postpartum is a discriminating finding for eclampsia, which could be a 'possible' Eclampsia rule or at least a check_for item.",
+   "verdict": "missing",
+   "parts_missing": [
+    "pregnancy \u2265 20 weeks gestation",
+    "postpartum up to 1 week (Postpartum state)"
+   ],
+   "problem": "No pregnancy/postpartum finding is checked; the eclampsia branch is lost.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p20-b4d23e9a",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-6872493a",
+   "scope": "borderline",
+   "scope_reason": "'Fit has lasted \u2265 5 minutes ... refer urgently' is a time criterion the language can express ((>= (onset (clinical_finding Seizure)) (time_ago 5 minutes))) and is the operational definition of status epilepticus; the rest of the element is medication.",
+   "verdict": "missing",
+   "parts_missing": [
+    "seizure duration \u2265 5 minutes criterion",
+    "possible/probable Status epilepticus diagnosis",
+    "urgent referral escalation tied to that criterion"
+   ],
+   "problem": "The one triage discriminator in the algorithm (fit \u2265 5 min) is not encoded; the Emergency rule fires on any unconscious fitting patient regardless of duration, so it neither distinguishes status epilepticus nor carries the 'refer urgently' trigger.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p20-8a9145dd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-772fd5be",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-2882d2e5",
+   "scope": "borderline",
+   "scope_reason": "'Slow or shallow breathing' \u2192 ventilate and refer urgently is an escalation criterion (respiratory depression, benzodiazepine side effect, footnote 3) that could be a check_for item / priority trigger; mostly a monitoring/management step.",
+   "verdict": "missing",
+   "parts_missing": [
+    "slow or shallow breathing (Bradypnea / Shallow breathing) as check item or escalation"
+   ],
+   "problem": "Not encoded; low impact since the Emergency rule already fires.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p20-cac67785",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-b0845901",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": null,
+   "evidence": "Seizure duration after treatment (\u2265 10 min total) is a routing node in the treatment algorithm.",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-4c9558d1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-e815c9f9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-3ea194d0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-0a1b11bb",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-948b83db",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-34f812ea",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-48fc5f76",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-09155fda",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-6ef3b4da",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-1f048da7",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p20-2da89c59",
+   "scope": "borderline",
+   "scope_reason": "Mostly management, but 'known with epilepsy and discontinued treatment' is a history finding (Epilepsy Known present; non-adherence to antiseizure medication) the page uses to choose an action; could be a check_for item.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Epilepsy (Known present)",
+    "discontinued antiseizure medication"
+   ],
+   "problem": "Not checked; low impact for triage.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p20-b24a08f2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p20-e266d91f",
+  "p20-3d3c1c1a"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Emergency: unconscious and fitting (seizures/fits)",
+   "problem": "Priority is Emergency while the red-box header says 'urgent attention'. House standard maps red box \u2192 Urgent unless the page explicitly escalates; airway compromise/unconsciousness arguably justifies it, but this should be confirmed against the Seizure warning-sign level in shared/warning_signs.ts.",
+   "severity": "medium"
+  },
+  {
+   "rule": "(whole file)",
+   "problem": "The file encodes only the box header. The red box's discriminating findings (current head injury, glucose < 3/< 4 mmol/L with diabetes, pregnancy \u2265 20 weeks/postpartum \u2264 1 week, fit \u2265 5 minutes) are absent from check_for and from every rule, so the routes to p19, p30 and p177 and the status-epilepticus threshold are all lost.",
+   "severity": "high"
+  },
+  {
+   "rule": "Check for unconsciousness in the fitting patient",
+   "problem": "check_for contains only 'Unconscious'; the house standard requires every red-box item in the check list. No status epilepticus / eclampsia / hypoglycaemia 'possible' rules exist even though the page's routing implies them.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "The two rules correctly capture the box trigger (seizure + unconscious) but nothing else: the fit \u2265 5 minutes threshold (status epilepticus, expressible with time_ago minutes) and the routing discriminators (current head injury \u2192 p30, glucose < 3 / < 4 mmol/L in diabetes \u2192 p19, pregnancy \u2265 20 weeks or \u2264 1 week postpartum \u2192 p177) are missing from check_for and all rules. The Emergency level is defensible but exceeds the header's 'urgent attention' and should be confirmed."
+}

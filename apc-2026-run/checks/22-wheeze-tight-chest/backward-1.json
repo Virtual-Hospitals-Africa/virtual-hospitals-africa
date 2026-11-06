@@ -1,0 +1,678 @@
+{
+ "page": 22,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to speak\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Unable to speak' carries the synonym 'unable to talk'; confirmed with search.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says only 'confused'; 'Acute confusion' is the apt finding in an acute severity assessment (the alternatives are 'Confusional state' disorder and 'Clouded consciousness').",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Feeling agitated' is the only plain 'agitated' finding concept; acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'generalised itch/rash': 'Generalized rash' is a fair reading; the gold uses 'Eruption' (morphologic abnormality), either is acceptable.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for wheeze in tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for wheeze in tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "expr": "(measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %)",
+   "verdict": "faithful",
+   "reason": "Footnote 2 and the red box's repeated PEFR thresholds support a measure task; concept is the recorded/predicted ratio in %, exactly the page's unit.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Condition (wheeze present) is the page context for the orthopnea+leg swelling branch, so it is right; but the cited quote 'first episode of wheeze/tight chest' belongs to the other branch, which the rule does not encode (see rules).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Same as c029.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "BP < 90/60 split into systolic < 90 or diastolic < 60, the gold page 20 pattern.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "As c040.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "verdict": "faithful",
+   "reason": "'Pulse, function' is the house vital anchor (anchors/vitals.ts heart_rate).",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to speak\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Encodes the page's own gloss 'silent chest (tight chest but no wheeze)'. Clinically silent chest is absent breath sounds; (snomed_concept \"Absent breath sounds\" \"finding\") exists and could be added as an or-alternative, but the page's definition is followed.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Grammar's (no ...) matches a recorded 'No wheezing' finding, not a missing record, so this only fires when wheeze is checked and absent; the 'Check for wheeze in tight chest' task makes that happen.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %) 33)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 90)",
+   "verdict": "faithful",
+   "reason": "'Hemoglobin saturation with oxygen' is the house vital anchor for SpO2.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(< (measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: severe wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "The red-box heading covers every wheeze/tight chest patient, so a base Urgent for the complaint is justified.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: wheeze/tight chest",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "As c068.",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "verdict": "problem",
+   "severity": "low",
+   "problem": "Type, trigger and check list are right (every red-box non-vital item, the anaphylaxis list and the heart-failure discriminators are present and all are consumed). Missing: a first-episode form of the complaint, e.g. (clinical_finding (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\"))) and the same for Tight chest, which the page's second heart-failure route ('patient >= 50 years with first episode of wheeze/tight chest') and the 'If first episode ... assess for asthma and COPD' step both need. Exposure timing ('within the past few hours') is dropped, as on the gold page."
+  },
+  {
+   "rule": "Check for wheeze in tight chest",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": ""
+  },
+  {
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": ""
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "verdict": "problem",
+   "severity": "high",
+   "problem": "The page gives two routes to 'heart failure likely': (difficulty breathing worse on lying flat AND leg swelling) OR (patient >= 50 years with first episode of wheeze/tight chest). The rule encodes only the first; the second is silently dropped, so an older patient with a first episode and no orthopnea/oedema never gets the probable diagnosis. The grammar has no patient-age comparison (only age groups), so the branch cannot be encoded exactly; it should at least be recorded as 'could not model', and an approximation considered (a probable or possible branch on the First-episode-qualified complaint, with the age left to the clinician). 'probable' for 'likely' and the and-structure of the first branch are right."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": "Page says 'check for anaphylaxis', so 'possible' is the right certainty; structure (sudden onset AND any of ...) matches 'If sudden wheeze/tight chest and any of'. Only the footnote's 'within the past few hours' on the exposures is dropped."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": "'Yes: Life threatening' justifies Emergency; all six criteria and the thresholds (<50, <33%) match the page. Silent chest follows the page's own gloss 'tight chest but no wheeze' via a recorded negative; (snomed_concept \"Absent breath sounds\" \"finding\") exists if an auscultation alternative is wanted."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "verdict": "problem",
+   "severity": "low",
+   "problem": "All six criteria and thresholds match 'Yes: Severe'. But the level is Urgent, identical to the base 'Urgent: wheeze/tight chest' rule, so this rule never changes the outcome. Either it is intentionally documentary, or the page's 'Refer urgently' for severe was meant to escalate above the mild/moderate case (which the page treats and reassesses for 3 hours before referring); the briefing reserves 'Very urgent' for explicit escalation, so this is a judgement call to record, not a defect."
+  },
+  {
+   "rule": "Urgent: wheeze/tight chest",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": "The red-box heading 'Give urgent attention to the patient with wheeze/tight chest' applies to the whole complaint, so Urgent on the bare complaint is justified."
+  }
+ ],
+ "summary": "The heart-failure rule drops the page's second route to 'heart failure likely' (patient >= 50 years with a first episode of wheeze/tight chest); the grammar cannot compare age, but the omission is silent and the first-episode form of the complaint is not even checked for. Everything else traces to the page: all 69 claims are supported, the only imprecision being the footnote's 'within the past few hours' window on the allergen exposures, dropped as on the gold page. Minor: the Urgent 'severe' rule duplicates the base Urgent rule's level, and 'assess for asthma and COPD' after a first episode is not encoded as a possible diagnosis."
+}

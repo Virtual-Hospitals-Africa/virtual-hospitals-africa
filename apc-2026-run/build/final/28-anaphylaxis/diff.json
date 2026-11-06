@@ -1,0 +1,253 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/28-anaphylaxis",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/28-anaphylaxis",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible asthma in previous anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable allergic conjunctivitis in previous anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable allergic rhinitis in previous anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable eczema in previous anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable urticaria in previous anaphylaxis"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: anaphylaxis"
+  },
+  {
+   "atom": "task",
+   "description": "Assess the patient with previous anaphylaxis for other allergy"
+  },
+  {
+   "atom": "task",
+   "description": "Check for anaphylaxis"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible anaphylaxis"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable anaphylaxis"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: Anaphylaxis"
+  },
+  {
+   "atom": "task",
+   "description": "Check for Anaphylaxis"
+  }
+ ],
+ "conditions_A": 132,
+ "conditions_B": 86,
+ "conditions_in_both": 86,
+ "agreement": 0.789,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+    "(allergy (snomed_concept \"Fish\" \"substance\"))",
+    "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+    "(allergy (snomed_concept \"Milk\" \"substance\"))",
+    "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+    "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))) (time_ago 4 weeks))",
+    "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))) (time_ago 4 weeks))",
+    "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))) (time_ago 4 weeks))",
+    "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+    "(allergy (snomed_concept \"Fish\" \"substance\"))",
+    "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+    "(allergy (snomed_concept \"Milk\" \"substance\"))",
+    "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+    "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Allergic conjunctivitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Asthma\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Urticaria\" \"disorder\") probable)"
+   ],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

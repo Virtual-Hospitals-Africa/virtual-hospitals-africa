@@ -1,0 +1,472 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 197,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.6,
+    120.0,
+    806.4,
+    162.8
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p197-rb1-e01",
+   "page": 197,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "section_y": 125.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "bbox": [
+    250.7,
+    125.0,
+    593.0,
+    136.2
+   ],
+   "key": "p197-067dc3f3"
+  },
+  {
+   "id": "p197-rb1-e02",
+   "page": 197,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Alcohol or drug intoxication at work",
+   "bbox": [
+    192.6,
+    136.8,
+    335.8,
+    147.6
+   ],
+   "key": "p197-97d04034"
+  },
+  {
+   "id": "p197-rb1-e03",
+   "page": 197,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Inappropriate behaviour at work",
+   "bbox": [
+    435.1,
+    136.8,
+    564.9,
+    147.6
+   ],
+   "key": "p197-ff846223"
+  },
+  {
+   "id": "p197-rb1-e04",
+   "page": 197,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Aggressive or violent behaviour at work",
+   "bbox": [
+    192.6,
+    146.8,
+    349.9,
+    157.6
+   ],
+   "key": "p197-73b8d4ed"
+  },
+  {
+   "id": "p197-rb1-e05",
+   "page": 197,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Arrange urgent assessment for the health worker with occupational stress and any of:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Suicidal thoughts or plans",
+   "bbox": [
+    435.1,
+    146.8,
+    540.4,
+    157.6
+   ],
+   "key": "p197-2faddd5a"
+  },
+  {
+   "id": "p197-out-e01",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Experiencing pressure and demands at work is normal. However if these demands exceed knowledge and skills and challenge your ability to cope, occupational stress can occur.",
+   "bbox": [
+    51.1,
+    89.4,
+    698.8,
+    99.6
+   ],
+   "key": "p197-f1ce2932"
+  },
+  {
+   "id": "p197-out-e02",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Adopt measures to reduce your risk of occupational stress",
+   "bbox": [
+    305.8,
+    183.0,
+    536.1,
+    194.1
+   ],
+   "key": "p197-b31123e5"
+  },
+  {
+   "id": "p197-out-e03",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Protect yourself",
+   "bbox": [
+    204.8,
+    194.3,
+    268.5,
+    205.5
+   ],
+   "key": "p197-befaacef"
+  },
+  {
+   "id": "p197-out-e04",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Look after your health: • Get enough sleep. • Exercise, eat sensibly, minimise alcohol and avoid smoking. • Address your general health and get screened for long-term conditions.",
+   "bbox": [
+    204.8,
+    210.3,
+    473.1,
+    251.1
+   ],
+   "key": "p197-ebedff5a"
+  },
+  {
+   "id": "p197-out-e05",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Look after your long-term health condition if you have one: • Adhere to your treatment and your appointments. • Avoid diagnosing and treating yourself. • If you can, confide in a trusted colleague/manager.",
+   "bbox": [
+    204.8,
+    256.0,
+    430.8,
+    296.8
+   ],
+   "key": "p197-872f330f"
+  },
+  {
+   "id": "p197-out-e06",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage stress: • Delegate tasks as appropriate and develop coping strategies. • Talk to someone (friend, psychologist, mentor), or access helpline 200. • Take time to do a relaxing breathing exercise each day. • Find a fun or creative activity to do. • Spend time with supportive family or friends.",
+   "bbox": [
+    204.8,
+    301.7,
+    477.1,
+    362.5
+   ],
+   "key": "p197-22b5497a"
+  },
+  {
+   "id": "p197-out-e07",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Have healthy work habits: • Manage your time sensibly and take scheduled breaks. • Remind yourself of your purpose as a clinician. • Be sure you are clear about your role and responsibilities.",
+   "bbox": [
+    204.8,
+    367.3,
+    418.4,
+    408.1
+   ],
+   "key": "p197-6094e74b"
+  },
+  {
+   "id": "p197-out-e08",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Protect your team",
+   "bbox": [
+    487.6,
+    194.3,
+    559.3,
+    205.5
+   ],
+   "key": "p197-6303412b"
+  },
+  {
+   "id": "p197-out-e09",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Decide on an approved way of behaving at work: • Communicate effectively with your patients and colleagues 198. • Treat colleagues and patients with respect. • Support each other. Consider setting up a staff support group. • Instead of complaining, rather focus on finding solutions to problems.",
+   "bbox": [
+    487.6,
+    210.3,
+    748.9,
+    261.1
+   ],
+   "key": "p197-f37cfb3b"
+  },
+  {
+   "id": "p197-out-e10",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Cope with stressful events: • Develop or access policies/procedures to deal with complaints, harassment/ bullying, accidents/mistakes, violence or death of patient or staff member.",
+   "bbox": [
+    487.6,
+    266.0,
+    772.5,
+    296.8
+   ],
+   "key": "p197-e34acb88"
+  },
+  {
+   "id": "p197-out-e11",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Look at how to make the job less stressful: • Examine the team’s workload to see if it can be better streamlined. • Identify what needs to be changed to make the job easier and frustrations fewer: equipment, drug supply, training, space, décor in work environment • Discuss each team member’s role. • Support each other to develop skills to better perform your role.",
+   "bbox": [
+    487.6,
+    301.7,
+    791.2,
+    362.5
+   ],
+   "key": "p197-e5a0c5a1"
+  },
+  {
+   "id": "p197-out-e12",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Celebrate: • Acknowledge the achievements of individuals and the team. • Organise or participate in staff social events.",
+   "bbox": [
+    487.6,
+    367.3,
+    715.5,
+    398.1
+   ],
+   "key": "p197-01c0546f"
+  },
+  {
+   "id": "p197-out-e13",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "The health worker with any of the above may have substance misuse, stress, depression/anxiety or burnout and would benefit from referral for assessment and follow-up.",
+   "bbox": [
+    105.2,
+    514.7,
+    736.6,
+    525.5
+   ],
+   "key": "p197-d2f8e7be"
+  },
+  {
+   "id": "p197-out-e14",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Identify occupational stress in yourself and your colleagues Possible alcohol or drug problem • In the past year, have you/colleague: drunk ≥ 4 drinks1/ session, used illegal drugs or misused prescription or over- the-counter medications? • Smells of alcohol",
+   "bbox": [
+    51.0,
+    430.5,
+    539.1,
+    492.0
+   ],
+   "key": "p197-39e778a5"
+  },
+  {
+   "id": "p197-out-e15",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Change in mood • Indifferent, tense, irritable or angry • In the past month, have you/colleague: felt down/depressed/hopeless or little interest/pleasure in doing things?",
+   "bbox": [
+    280.6,
+    441.0,
+    434.3,
+    492.0
+   ],
+   "key": "p197-3b001bd0"
+  },
+  {
+   "id": "p197-out-e16",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Recent distressing event • Diagnosis of long-term condition • Bereavement • Needlestick injury • Traumatic event",
+   "bbox": [
+    456.4,
+    441.0,
+    583.7,
+    492.0
+   ],
+   "key": "p197-72a4dffb"
+  },
+  {
+   "id": "p197-out-e17",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Poor attendance at work • Frequent absenteeism • Frequent lateness • Often takes sick leave",
+   "bbox": [
+    586.8,
+    441.0,
+    681.8,
+    482.0
+   ],
+   "key": "p197-83fbfff8"
+  },
+  {
+   "id": "p197-out-e18",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Marked decline in work performance • Reduced concentration • Fatigue",
+   "bbox": [
+    703.0,
+    441.0,
+    774.7,
+    492.0
+   ],
+   "key": "p197-e33a1617"
+  },
+  {
+   "id": "p197-out-e19",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer.",
+   "bbox": [
+    34.0,
+    543.4,
+    315.0,
+    551.9
+   ],
+   "key": "p197-67bc543f"
+  },
+  {
+   "id": "p197-out-e20",
+   "page": 197,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "PROTECT YOURSELF FROM OCCUPATIONAL STRESS",
+   "bbox": [
+    212.2,
+    48.6,
+    629.7,
+    70.9
+   ],
+   "key": "p197-9bb1ec99"
+  }
+ ]
+}

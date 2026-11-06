@@ -1,0 +1,670 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 158,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    174.2
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p158-rb1-e01",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "bbox": [
+    231.2,
+    91.6,
+    615.2,
+    102.7
+   ],
+   "key": "p158-c478dbb7"
+  },
+  {
+   "id": "p158-rb1-e02",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "section_y": 91.6,
+   "indent": 2,
+   "parent": null,
+   "text": "Death",
+   "bbox": [
+    56.9,
+    102.2,
+    85.7,
+    113.0
+   ],
+   "key": "p158-39cb50d9"
+  },
+  {
+   "id": "p158-rb1-e03",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Irreversible health problem/s",
+   "bbox": [
+    159.4,
+    102.2,
+    277.8,
+    113.0
+   ],
+   "key": "p158-108e7146"
+  },
+  {
+   "id": "p158-rb1-e04",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Patient inflicting serious harm to self/others",
+   "bbox": [
+    339.4,
+    102.2,
+    512.3,
+    113.0
+   ],
+   "key": "p158-1c874001"
+  },
+  {
+   "id": "p158-rb1-e05",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention if a delay in referral may lead to the patient’s mental illness causing any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Patient causing serious damage to or loss of property",
+   "bbox": [
+    579.4,
+    102.2,
+    790.3,
+    113.0
+   ],
+   "key": "p158-af4925f8"
+  },
+  {
+   "id": "p158-rb1-e06",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently with or without patient consent:",
+   "section_y": 117.9,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently with or without patient consent:",
+   "bbox": [
+    51.2,
+    117.9,
+    288.3,
+    129.0
+   ],
+   "key": "p158-775ddb5a"
+  },
+  {
+   "id": "p158-rb1-e07",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently with or without patient consent:",
+   "section_y": 117.9,
+   "indent": 1,
+   "parent": null,
+   "text": "If aggressive/disruptive 35. If restraints used, document type, duration and site. Check restraint sites every 15 minutes. Counsel the family regarding reasons for restraints. Complete MHCA 48 form.",
+   "bbox": [
+    51.2,
+    128.0,
+    777.6,
+    139.0
+   ],
+   "key": "p158-43f3daa2"
+  },
+  {
+   "id": "p158-rb1-e08",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently with or without patient consent:",
+   "section_y": 117.9,
+   "indent": 1,
+   "parent": null,
+   "text": "If patient is not alert, fully conscious or physically stable, check for underlying causes 36.",
+   "bbox": [
+    51.2,
+    138.2,
+    402.8,
+    149.0
+   ],
+   "key": "p158-211eeff1"
+  },
+  {
+   "id": "p158-rb1-e09",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently with or without patient consent:",
+   "section_y": 117.9,
+   "indent": 1,
+   "parent": null,
+   "text": "Complete MHCA 01 form (Emergency care, treatment and rehabilitation or admission without consent) to admit for 24 hour assessment.",
+   "bbox": [
+    51.2,
+    148.0,
+    586.7,
+    159.0
+   ],
+   "key": "p158-e14a442b"
+  },
+  {
+   "id": "p158-rb1-e10",
+   "page": 158,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently with or without patient consent:",
+   "section_y": 117.9,
+   "indent": 1,
+   "parent": null,
+   "text": "If too dangerous for transfer in a staffed vehicle or likely to abscond, request police assistance. Police officer to complete MHCA 22 form.",
+   "bbox": [
+    51.2,
+    158.0,
+    574.8,
+    169.0
+   ],
+   "key": "p158-487d2616"
+  },
+  {
+   "id": "p158-out-e01",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "THE MENTALLY ILL PATIENT NEEDING TREATMENT OR ADMISSION",
+   "bbox": [
+    152.1,
+    48.7,
+    689.8,
+    71.0
+   ],
+   "key": "p158-19ce77a1"
+  },
+  {
+   "id": "p158-out-e02",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "The patient may present to primary care with authorisation/order by a Court or Mental Health Review Board to receive mental health care, treatment and rehabilitation on an outpatient basis.",
+   "bbox": [
+    63.1,
+    472.5,
+    780.8,
+    483.5
+   ],
+   "key": "p158-d3a36dde"
+  },
+  {
+   "id": "p158-out-e03",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review patient and provide prescribed health intervention, regardless of patient consent. Record clearly in patient file. Report to Mental Health Review Board as requested.",
+   "bbox": [
+    108.5,
+    483.3,
+    733.4,
+    493.5
+   ],
+   "key": "p158-d22b5c83"
+  },
+  {
+   "id": "p158-out-e04",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Informed consent means patient understands s/he is ill, accepts that s/he needs treatment and can communicate his/her choice to receive treatment. 2If patient < 18 years, escort must be a parent/guardian. If patient ≥ 18 years, escort can be spouse/ next of kin/partner/associate. 3Can be any health care provider but needs to have observed patient’s behaviour and must not be one of the mental health care practitioners who complete either of the MHCA 05 forms. 4Mental Health Care Practitioner.",
+   "bbox": [
+    34.0,
+    534.3,
+    799.7,
+    550.8
+   ],
+   "key": "p158-0654f547"
+  },
+  {
+   "id": "p158-out-e05",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the mentally ill patient in need of hospital admission/treatment not needing emergency referral",
+   "bbox": [
+    204.3,
+    182.9,
+    637.6,
+    194.1
+   ],
+   "key": "p158-f5e45a76"
+  },
+  {
+   "id": "p158-out-e06",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient able to give informed consent1",
+   "bbox": [
+    145.6,
+    207.1,
+    286.3,
+    217.4
+   ],
+   "key": "p158-4b61e168"
+  },
+  {
+   "id": "p158-out-e07",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient does not refuse",
+   "bbox": [
+    42.6,
+    230.5,
+    123.9,
+    240.7
+   ],
+   "key": "p158-9fa51509"
+  },
+  {
+   "id": "p158-out-e08",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "treatment/admission",
+   "bbox": [
+    43.9,
+    240.5,
+    121.0,
+    250.7
+   ],
+   "key": "p158-7cd1917c"
+  },
+  {
+   "id": "p158-out-e09",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient refuses treatment/admission Patient does not refuse treatment/admission",
+   "bbox": [
+    310.8,
+    230.5,
+    794.0,
+    240.7
+   ],
+   "key": "p158-46ba7d1e"
+  },
+  {
+   "id": "p158-out-e10",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Admit or treat as an Assisted user under the",
+   "bbox": [
+    632.2,
+    253.1,
+    798.6,
+    264.1
+   ],
+   "key": "p158-dcfa873b"
+  },
+  {
+   "id": "p158-out-e11",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mental Health Care Act (MHCA) Does patient require treatment/admission for a mental illness that may result in: • Patient seriously harming self/others or • Serious damage to his/her financial interests/reputation? Admit or treat as",
+   "bbox": [
+    52.0,
+    253.6,
+    772.0,
+    283.8
+   ],
+   "key": "p158-8190a7bf"
+  },
+  {
+   "id": "p158-out-e12",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Voluntary user",
+   "bbox": [
+    53.4,
+    273.1,
+    111.5,
+    284.1
+   ],
+   "key": "p158-067b6f93"
+  },
+  {
+   "id": "p158-out-e13",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No Yes. Admit or treat as an Involuntary user under the Mental Health Care Act (MHCA)",
+   "bbox": [
+    169.3,
+    296.4,
+    571.2,
+    307.4
+   ],
+   "key": "p158-844d97f2"
+  },
+  {
+   "id": "p158-out-e14",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Escort2 must complete MHCA 04 form. If escort unavailable/unwilling/incapable, then a health care provider3 can complete this form. • MHCP4 to assess patient and complete one MHCA 05 form. Doctor to separately assess patient and complete a second MHCA 05 form. - If MHCP4/doctor not available, record clearly in patient notes/referral letter. Refer with MHCA 04 form, to nearest staffed facility.",
+   "bbox": [
+    255.1,
+    319.7,
+    754.5,
+    350.7
+   ],
+   "key": "p158-9358d139"
+  },
+  {
+   "id": "p158-out-e15",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage as outpatient.",
+   "bbox": [
+    154.3,
+    320.5,
+    196.3,
+    340.7
+   ],
+   "key": "p158-e81e7875"
+  },
+  {
+   "id": "p158-out-e16",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "The two MHCA 05 forms agree to treat/admit patient under the",
+   "bbox": [
+    228.0,
+    363.1,
+    348.0,
+    384.1
+   ],
+   "key": "p158-4c45d4ab"
+  },
+  {
+   "id": "p158-out-e17",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mental Health Care Act",
+   "bbox": [
+    244.7,
+    383.9,
+    329.3,
+    394.1
+   ],
+   "key": "p158-c9b16e63"
+  },
+  {
+   "id": "p158-out-e18",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Head of Health Establishment (HHE) to complete MHCA 07 form. • If admission (72 hour assessment) needed, send all forms with patient. • If too dangerous for transfer in a staffed vehicle or likely to abscond, request police assistance. Police officer to complete MHCA 22 form. If restraints used, also complete MHCA 48 form. • If outpatient treatment, send all forms to Mental Health Review Board.",
+   "bbox": [
+    235.3,
+    409.7,
+    644.1,
+    460.7
+   ],
+   "key": "p158-3f30ede3"
+  },
+  {
+   "id": "p158-out-e19",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "The two MHCA 05 forms do not agree. A third MHCP4 must complete a third MHCA 05 form independently",
+   "bbox": [
+    390.1,
+    363.1,
+    780.7,
+    374.1
+   ],
+   "key": "p158-bd2c3e46"
+  },
+  {
+   "id": "p158-out-e20",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Third MHCA 05 form agrees to treat/admit patient under MHCA Third MHCA 05 form does not agree to treat/ admit patient as Assisted/",
+   "bbox": [
+    405.9,
+    385.7,
+    795.9,
+    416.7
+   ],
+   "key": "p158-b717d491"
+  },
+  {
+   "id": "p158-out-e21",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Involuntary user under",
+   "bbox": [
+    706.9,
+    416.5,
+    792.2,
+    426.7
+   ],
+   "key": "p158-95e4f9a7"
+  },
+  {
+   "id": "p158-out-e22",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MHCA",
+   "bbox": [
+    736.9,
+    426.5,
+    760.3,
+    436.7
+   ],
+   "key": "p158-9e686eb6"
+  },
+  {
+   "id": "p158-out-e23",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage as an outpatient.",
+   "bbox": [
+    702.0,
+    449.8,
+    795.2,
+    460.0
+   ],
+   "key": "p158-42f344c0"
+  },
+  {
+   "id": "p158-out-e24",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Record clearly in patient notes and referral letter. • If needing admission, escort2 or staff member must accompany patient to hospital.",
+   "bbox": [
+    39.7,
+    297.2,
+    125.5,
+    377.4
+   ],
+   "key": "p158-6609142f"
+  },
+  {
+   "id": "p158-out-e25",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient incapable of giving informed consent1",
+   "bbox": [
+    522.4,
+    207.1,
+    690.5,
+    217.4
+   ],
+   "key": "p158-770540bb"
+  },
+  {
+   "id": "p158-out-e26",
+   "page": 158,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MHCA 01 - Report to MHRB on provision of care, treatment and rehabilitation without consent or emergency admission. MHCA 04 - Application to the HHE for assisted or involuntary care, treatment and rehabilitation. MHCA 05 - Report on examination and findings by MHCP following an application for assisted or involuntary care treatment and rehabilitation. MHCA 07 - Notice by HHE on decision whether to provide assisted or involuntary inpatient care, treatment and rehabilitation services. MHCA 22 - Handing over custody by the South African Police Services of a person suspected of being mentally ill and likely to inflict serious harm. MHCA 48 - Mechanical restraint and seclusion register.",
+   "bbox": [
+    37.8,
+    502.9,
+    793.1,
+    528.1
+   ],
+   "key": "p158-01d751d8"
+  }
+ ]
+}

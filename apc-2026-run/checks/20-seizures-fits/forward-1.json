@@ -1,0 +1,314 @@
+{
+  "page": 20,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p20-13a9b3cd",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the presenting complaint (fitting) plus the red-box condition (unconscious). This is the page's one triage criterion and the house standard turns it into the priority evaluation.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Logic (and Seizure Unconscious) and concepts are right (\"Seizure\" finding 91175000 is the warning-sign concept; \"Unconscious\" finding 418107008 is the plain concept). The priority LEVEL is questionable: the page says \"Give urgent attention\" and \"refer urgently\", which the house standard maps to Urgent; Emergency is reserved for explicit escalation (CPR, airway, BP < 90/60 with altered consciousness) or a warning sign that already carries that level. Unconscious + fitting with bag-valve-mask ventilation on the page is a defensible Emergency, but the page text does not say it. Recorded as a rule-level problem rather than an element error.",
+      "evidence": [
+        "Emergency: unconscious and fitting (seizures/fits) :: (system_priority_evaluation \"Emergency: unconscious and fitting (seizures/fits)\" adult Emergency (and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (clinical_finding (snomed_concept \"Unconscious\" \"finding\"))))",
+        "Check for unconsciousness in the fitting patient :: (task \"Check for unconsciousness in the fitting patient\" adult (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (check_for (clinical_finding (snomed_concept \"Unconscious\" \"finding\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-f48ead42",
+      "scope": "borderline",
+      "scope_reason": "\"If current head injury -> 30\" is a cross-reference that routes the patient to the head-injury page, so it could be cross_reference_only. But it is also a red-box criterion, and the house standard says the check_for list must include every item in the red box; \"Injury of head\" (disorder) with a \"Current\" qualifier is expressible and could be consumed by the priority rule or by page 30.",
+      "verdict": "missing",
+      "parts_missing": ["current head injury (as a check_for item / evidence)"],
+      "problem": "Not checked for and not used by any rule. Page 30 presumably carries the head-injury logic, so the clinical loss is small; the omission mainly matters because the red-box check list is incomplete.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-b9ed7f55",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Recovery position / nothing in mouth: management, no manage tasks in this pass.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-301420ed",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Oxygen to maintain saturation >= 95% is a treatment target, not a triage threshold.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-e60ad24d",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Establish IV access: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-7ccc0ac7",
+      "scope": "in_scope",
+      "scope_reason": "A red-box threshold on a routine vital: glucose < 3 (< 4 if diabetic) in a fitting patient means hypoglycaemia and routes to page 19. Glucose is a routine vital with mmol/L available, \"Diabetes mellitus\" (disorder) exists for the Known-present qualifier, and \"Hypoglycemia\" (disorder) exists for a possible diagnosis. Only the \"unable to measure\" arm is not representable.",
+      "verdict": "missing",
+      "parts_missing": [
+        "glucose < 3 mmol/L (missing)",
+        "glucose < 4 mmol/L if known diabetic (missing)",
+        "unable to measure glucose (not_representable)"
+      ],
+      "problem": "No glucose comparison, no diabetes check and no possible-hypoglycaemia rule anywhere in the file. The house pattern would be a `possible` Hypoglycemia rule with evidence (and Seizure (or (< glucose 3) (and (active_condition Diabetes mellitus) (< glucose 4)))). A reviewer could argue this belongs only on page 19 (cross-reference), hence medium confidence on scope; the diabetic-adjusted threshold is nonetheless stated in this red box.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-ffd7e709",
+      "scope": "borderline",
+      "scope_reason": "\">= 20 weeks pregnant up to 1 week postpartum -> 177\" is a criterion (fitting in late pregnancy or early puerperium = eclampsia until proven otherwise) that routes to the eclampsia page. The 20-week gestation threshold is not representable (no weeks unit for \"Gestational age\"), but pregnancy itself (\"Pregnancy\" finding), \"Postpartum state\" finding with (< (onset ...) (time_ago 1 weeks)) and a possible \"Eclamptic seizure\" finding are all expressible.",
+      "verdict": "missing",
+      "parts_missing": [
+        ">= 20 weeks pregnant (threshold not_representable; pregnancy as a finding is representable)",
+        "up to 1 week postpartum (representable via onset of Postpartum state)",
+        "fitting + pregnancy/postpartum -> eclampsia (possible diagnosis / check_for) missing"
+      ],
+      "problem": "Pregnancy and postpartum status are neither checked for nor used. A fitting pregnant woman gets no eclampsia flag from this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-b4d23e9a",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Complement of the previous line; routes into the management algorithm below.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-6872493a",
+      "scope": "in_scope",
+      "scope_reason": "\"If fit has lasted >= 5 minutes ... refer urgently\" is the page's one explicit time threshold and its explicit referral trigger (status epilepticus). The house standard's time-based criteria express it as (>= (onset (clinical_finding (snomed_concept \"Seizure\" \"finding\"))) (time_ago 5 minutes)); \"Status epilepticus\" (finding) exists for a probable/possible diagnosis.",
+      "verdict": "missing",
+      "parts_missing": [
+        "seizure duration >= 5 minutes",
+        "refer urgently (priority consequence of the >= 5 minute fit)"
+      ],
+      "problem": "Nothing in the file mentions duration or status epilepticus. The rules give the same output for a 30-second fit and a 20-minute one; the page's escalation point is lost. The onset form is an approximation (\"onset at least 5 minutes ago\" rather than \"still fitting after 5 minutes\") but it is the standard pattern for this language.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-8a9145dd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Midazolam / diazepam IV dosing: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-772fd5be",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Midazolam IM/buccal or rectal diazepam dosing: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-2882d2e5",
+      "scope": "borderline",
+      "scope_reason": "Mostly a management step (ventilate with bag-valve mask), but it carries an observation criterion with a triage consequence: \"if slow or shallow breathing ... -> 16 and refer urgently\". \"Slow shallow breathing\" (finding) exists in SNOMED and could be a check_for item feeding the priority rule.",
+      "verdict": "missing",
+      "parts_missing": ["slow or shallow breathing (respiratory depression after benzodiazepine) as a checked-for finding"],
+      "problem": "Not checked for or used. Low weight: the patient is already at the top priority under the existing rule, so the practical effect is only that the finding is never prompted for.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p20-cac67785",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "\"Expect a response within 5 minutes\" is a monitoring instruction leading into the next flowchart node.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-b0845901",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "\"If still fitting after 5 minutes\" (second dose node). The only consequence is further medication, which is management; the referral trigger is already at the first 5-minute node (p20-6872493a).",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-4c9558d1",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Second-dose IV midazolam / diazepam: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-e815c9f9",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Second-dose IM/buccal midazolam or rectal diazepam: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-3ea194d0",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Repeat of the airway/breathing monitoring and ventilation step plus \"assess need for intubation\"; the slow/shallow-breathing criterion is judged once at p20-2882d2e5.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-0a1b11bb",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Monitoring instruction.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-948b83db",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "\"If still fitting after 5 minutes\" (third node, leads to levetiracetam). Management escalation only.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-34f812ea",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "\"Patient stops fitting\" branch label leading to post-ictal management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-48fc5f76",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Levetiracetam via nasogastric tube: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-09155fda",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Keep in recovery position: management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-6ef3b4da",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Ventilate if breathing stops or gasping; assess intubation. Resuscitation step, routes to page 16.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-1f048da7",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Continue oxygen to sats >= 95%: treatment target.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p20-2da89c59",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "\"If known with epilepsy and discontinued treatment, restart / start antiseizure medication\" is a medication decision; the page makes no \"epilepsy likely\" statement, so there is no diagnosis rule to expect. The known-epilepsy / stopped-treatment history is a plausible check_for item but nothing in scope would consume it.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p20-b24a08f2",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Discuss further management with referral hospital.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": ["p20-e266d91f", "p20-3d3c1c1a"],
+  "rule_level_problems": [
+    {
+      "rule": "(whole file)",
+      "problem": "The page's one explicit time threshold, \"If fit has lasted >= 5 minutes ... refer urgently\", is not encoded. No onset/time_ago comparison and no Status epilepticus diagnosis exist, so seizure duration never changes the output. This is the page's main escalation point.",
+      "severity": "high"
+    },
+    {
+      "rule": "Emergency: unconscious and fitting (seizures/fits)",
+      "problem": "Priority level Emergency is not justified by the page text. The red box says \"Give urgent attention\" and the algorithm says \"refer urgently\", which the house standard maps to Urgent (the gold standard's anaphylaxis red box is Urgent). Emergency is reserved for explicit escalation such as CPR or airway, or a warning sign that already carries that level; unconscious + fitting with ventilation on the page makes Emergency defensible, but it should be stated as a decision, and if the Seizure warning sign already carries a level this rule should agree with it.",
+      "severity": "medium"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "Red-box glucose threshold not encoded: glucose < 3 mmol/L (< 4 if diabetic) in a fitting patient -> hypoglycaemia (page 19). Glucose is a routine vital with mmol/L available and \"Hypoglycemia\" (disorder) and \"Diabetes mellitus\" (disorder) exist, so a possible-Hypoglycemia rule was expressible; only \"unable to measure\" is not.",
+      "severity": "medium"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "Red-box pregnancy criterion not encoded: fitting at >= 20 weeks pregnant or up to 1 week postpartum -> eclampsia (page 177). The 20-week threshold is not representable, but pregnancy / postpartum state as findings and \"Eclamptic seizure\" (finding) are, so a possible rule or at least check_for items were expected.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for unconsciousness in the fitting patient",
+      "problem": "The check_for list has a single item. The house standard says the list must include every item in the red box; current head injury, pregnancy/postpartum status, diabetes (for the 4 mmol/L threshold) and slow/shallow breathing are all red-box items that are expressible and absent. The one item present (Unconscious) is correctly consumed by the priority rule, and the task's due_to (Seizure) is the warning-sign concept, so the task itself is well-formed.",
+      "severity": "low"
+    },
+    {
+      "rule": "Emergency: unconscious and fitting (seizures/fits)",
+      "problem": "The rule requires both Seizure and Unconscious, which matches the header wording, but it means a patient recorded only as fitting (the Seizure warning sign) gets no priority from this page until the check_for has been answered. Acceptable if the Seizure warning sign already carries its own priority; flagged so a reviewer can confirm.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The file encodes only the red-box header (unconscious + fitting -> priority) and misses every criterion inside the box: the >= 5 minute fit / refer-urgently threshold (the page's main escalation point, expressible with onset/time_ago), the glucose < 3 (< 4 if diabetic) hypoglycaemia threshold, and the >= 20 weeks pregnant / <= 1 week postpartum eclampsia routing. The one priority rule is logically correct but its Emergency level is not stated by the page, which says \"urgent attention\" and \"refer urgently\" and would map to Urgent under the house standard. The page has no \"X likely\" statements, so the absence of diagnosis rules is not itself a defect; the rest of the page is drug and airway management and is out of scope by design."
+}

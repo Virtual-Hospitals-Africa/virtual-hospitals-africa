@@ -1,0 +1,314 @@
+{
+ "edition": "2026",
+ "page": 61,
+ "lisp_file": "61-anal-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-6afff593"
+   ],
+   "quote": "anal symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint; 'Anal finding' is the general SNOMED finding for anal symptoms. Not a recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "lump on anus",
+   "confidence": "high",
+   "note": "Perianal lump (already in VHA vocabulary) for 'lump on anus'."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "Extremely painful",
+   "confidence": "medium",
+   "note": "'Extremely painful' expressed as Anal pain with Severe qualifier; the language cannot tie the pain to the lump, so it is and-ed with Perianal lump in the priority rule."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+   "element_keys": [
+    "p61-19415dc4"
+   ],
+   "quote": "Unable to pass stool",
+   "confidence": "medium",
+   "note": "'Does not defecate' sits under 'Finding related to ability to defecate'; 'because of anal symptoms' is expressed only by the and with the anal-symptom trigger. Obstipation (disorder) considered and rejected (it is a constipation concept)."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "painless bleeding",
+   "confidence": "high",
+   "note": "Exact SNOMED match for painless (rectal) bleeding."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "passing mucus",
+   "confidence": "high",
+   "note": "Passing mucus per rectum."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "unable to pass stools despite feeling the need to (tenesmus)",
+   "confidence": "high",
+   "note": "The page defines tenesmus; SNOMED 'Tenesmus of anus and/or rectum'."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-cc98a7aa"
+   ],
+   "quote": "Suspected worms",
+   "confidence": "medium",
+   "note": "Suspected worms seen; 'Worms in stool' is the closest SNOMED finding. The worm's appearance (thin and white vs flat with segments) is not representable."
+  },
+  {
+   "rule": "Check for urgent anal symptoms and their causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "anal itch worse at night",
+   "confidence": "medium",
+   "note": "Pruritus ani with qualifier Night time; 'worse at night' approximated as occurring at night."
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "anal symptoms",
+   "confidence": "high",
+   "note": "Proctitis paragraph is the approach for patients with anal symptoms; Anal finding is the presenting complaint (descendants such as Anal pain, Pruritus ani match)."
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "painless bleeding",
+   "confidence": "high",
+   "note": "Exact SNOMED match for painless (rectal) bleeding."
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "passing mucus",
+   "confidence": "high",
+   "note": "Passing mucus per rectum."
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "unable to pass stools despite feeling the need to (tenesmus)",
+   "confidence": "high",
+   "note": "The page defines tenesmus; SNOMED 'Tenesmus of anus and/or rectum'."
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis (anal symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infective proctitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p61-0da38d79"
+   ],
+   "quote": "treat for sexually transmitted proctitis",
+   "confidence": "medium",
+   "note": "No SNOMED concept for sexually transmitted proctitis; Infective proctitis is the closest parent. 'Treat for X' encoded as probable, as the gold page does for 'Treat for anaphylaxis'."
+  },
+  {
+   "rule": "Diagnose probable pinworm (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))",
+   "element_keys": [
+    "p61-cc98a7aa"
+   ],
+   "quote": "Suspected worms",
+   "confidence": "medium",
+   "note": "Suspected worms seen; 'Worms in stool' is the closest SNOMED finding. The worm's appearance (thin and white vs flat with segments) is not representable."
+  },
+  {
+   "rule": "Diagnose probable pinworm (anal symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "anal itch worse at night",
+   "confidence": "medium",
+   "note": "Pruritus ani with qualifier Night time; 'worse at night' approximated as occurring at night."
+  },
+  {
+   "rule": "Diagnose probable pinworm (anal symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Enterobiasis\" \"disorder\") probable)",
+   "element_keys": [
+    "p61-e1b77ac5"
+   ],
+   "quote": "pinworm likely",
+   "confidence": "high",
+   "note": "Pinworm likely -> probable Enterobiasis."
+  },
+  {
+   "rule": "Urgent: anal symptoms with very painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+   "element_keys": [
+    "p61-6afff593"
+   ],
+   "quote": "anal symptoms",
+   "confidence": "high",
+   "note": "Presenting complaint; 'Anal finding' is the general SNOMED finding for anal symptoms. Not a recorded common symptom."
+  },
+  {
+   "rule": "Urgent: anal symptoms with very painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "lump on anus",
+   "confidence": "high",
+   "note": "Perianal lump (already in VHA vocabulary) for 'lump on anus'."
+  },
+  {
+   "rule": "Urgent: anal symptoms with very painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p61-91253d54"
+   ],
+   "quote": "Extremely painful",
+   "confidence": "medium",
+   "note": "'Extremely painful' expressed as Anal pain with Severe qualifier; the language cannot tie the pain to the lump, so it is and-ed with Perianal lump in the priority rule."
+  },
+  {
+   "rule": "Urgent: anal symptoms with very painful lump or unable to pass stool",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+   "element_keys": [
+    "p61-19415dc4"
+   ],
+   "quote": "Unable to pass stool",
+   "confidence": "medium",
+   "note": "'Does not defecate' sits under 'Finding related to ability to defecate'; 'because of anal symptoms' is expressed only by the and with the anal-symptom trigger. Obstipation (disorder) considered and rejected (it is a constipation concept)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p61-9de73694",
+   "element_id": "p61-rb1-e04",
+   "text": "Manage pain and refer same day:",
+   "reason_category": "management_step",
+   "reason": "Pain management and same-day referral; no manage tasks or medicines in this pass."
+  },
+  {
+   "element_key": "p61-84668eed",
+   "element_id": "p61-rb1-e05",
+   "text": "Give paracetamol 1g 6 hourly.",
+   "reason_category": "management_step",
+   "reason": "Pain management and same-day referral; no manage tasks or medicines in this pass."
+  },
+  {
+   "element_key": "p61-379d759e",
+   "element_id": "p61-rb1-e06",
+   "text": "If pain severe, give morphine 5-10mg IM, repeat 4-6 hourly until patient referred, or give diluted morphine1 3-10mg slow IV: start with 3mL IV over 3 minutes. I",
+   "reason_category": "management_step",
+   "reason": "Pain management and same-day referral; no manage tasks or medicines in this pass."
+  },
+  {
+   "element_key": "p61-f783de97",
+   "element_id": "p61-out-e11",
+   "text": "Tapeworm likely",
+   "reason_category": "no_snomed_concept",
+   "reason": "Discriminator (worm flat and white with worm segments, blunt ended) has no SNOMED finding; Worms in stool alone would over-fire."
+  },
+  {
+   "element_key": "p61-eb431519",
+   "element_id": "p61-out-e14",
+   "text": "Check Hb. If Hb < 12 (woman) or < 13 (man), anaemia likely 44.",
+   "reason_category": "not_representable",
+   "reason": "Hb has no unit or observable in the language; the rest of the element is management (treat household, hygiene advice)."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Extremely painful lump on anus",
+   "decision": "(and Perianal lump, Anal pain + Severe qualifier) in the priority rule",
+   "alternatives": "Perianal lump with Severe qualifier (would mean a severe lump, not severe pain); Thrombosed hemorrhoids (a diagnosis the page does not name)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unable to pass stool",
+   "decision": "Does not defecate (finding)",
+   "alternatives": "Obstipation (disorder, a constipation concept); Tenesmus (used for the proctitis branch, which the page distinguishes)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Sexually transmitted proctitis",
+   "decision": "probable Infective proctitis from anal finding and any of painless bleeding, mucus, tenesmus; not gated on anal sex",
+   "alternatives": "Gate on Anal penetration (finding) because the preceding sentence starts 'If patient has anal sex'; use possible instead of probable",
+   "confidence": "low"
+  },
+  {
+   "topic": "Tapeworm likely",
+   "decision": "Not encoded: no SNOMED finding for a flat, white, segmented worm; encoding from 'Worms in stool' alone would fire for every worm",
+   "alternatives": "probable Cestode infection from Worms in stool (fires far more often than the page intends)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pinworm likely",
+   "decision": "Worms in stool and Pruritus ani qualified Night time; worm shape (thin and white) dropped",
+   "alternatives": "Symptom occurs at night as a separate finding (not tied to the itch)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaemia likely (Hb < 12 woman / < 13 man)",
+   "decision": "Not encoded: Hb has no unit or observable in the language",
+   "alternatives": "none",
+   "confidence": "high"
+  }
+ ]
+}

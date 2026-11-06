@@ -1,0 +1,465 @@
+{
+ "page": 44,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+   "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+   "fix": "Add finding_site palm structure if the grammar allows",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Shock as defined by footnote 1.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Leg swelling symptom' is the patient-reported child concept; page 'Swollen legs' is an observable sign.",
+   "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Melena assumes GI bleeding; page footnote 2 says black stools may be due to iron tablets and count only if they started before iron treatment, a qualifier the rule drops.",
+   "fix": "Keep Melena (or \"Dark stools\" finding) but exclude/qualify black stools that began after starting iron, or note the qualifier for the health worker",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page wording is 'purple/red rash that does not disappear with pressure' (non-blanching); a closer concept exists.",
+   "fix": "(snomed_concept \"Non-blanching rash\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor. Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+   "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign. Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+   "fix": "Add finding_site palm structure if the grammar allows",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'fever now or in past 3 days'; active_condition Fever captures only current fever and drops the 3-day window.",
+   "fix": "Use (or (active_condition Fever) (< (onset (clinical_finding Fever)) (time_ago 3 days))) in the diagnosis rule",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "expr": "(finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page requires being in a malaria area 'in past 3 months'; the 3-month window is dropped.",
+   "fix": "Add a 3-month time qualifier if the grammar allows, else flag",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+   "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+   "fix": "Add finding_site palm structure if the grammar allows",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'fever now or in past 3 days'; active_condition Fever captures only current fever and drops the 3-day window.",
+   "fix": "Use (or (active_condition Fever) (< (onset (clinical_finding Fever)) (time_ago 3 days))) in the diagnosis rule",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page requires being in a malaria area 'in past 3 months'; the 3-month window is dropped.",
+   "fix": "Add a 3-month time qualifier if the grammar allows, else flag",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "expr": "(diagnosis (snomed_concept \"Malaria\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+   "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+   "fix": "Add finding_site palm structure if the grammar allows",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Shock as defined by footnote 1.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Leg swelling symptom' is the patient-reported child concept; page 'Swollen legs' is an observable sign.",
+   "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Melena assumes GI bleeding; page footnote 2 says black stools may be due to iron tablets and count only if they started before iron treatment, a qualifier the rule drops.",
+   "fix": "Keep Melena (or \"Dark stools\" finding) but exclude/qualify black stools that began after starting iron, or note the qualifier for the health worker",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page wording is 'purple/red rash that does not disappear with pressure' (non-blanching); a closer concept exists.",
+   "fix": "(snomed_concept \"Non-blanching rash\" \"disorder\")",
+   "confidence": "medium"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "verdict": "problem",
+   "severity": "high",
+   "problem": "Red-box item 'Hb < 6' is absent (no measure task or check item for Hb); the task also omits the page's discriminating inputs for its 'likely' diagnoses (Hb thresholds by sex/pregnancy, pregnancy status, MCV low/normal/high, postpartum, alcohol misuse, zidovudine/antiseizure use, periods). Trigger 'Pale complexion' is not the page's palm/conjunctiva test."
+  },
+  {
+   "rule": "Check for malaria area exposure in pallor/anaemia with fever",
+   "verdict": "problem",
+   "severity": "low",
+   "problem": "Type and trigger fine, but trigger uses current fever only (page: now or past 3 days), so patients with fever in the past 3 days are never asked about malaria-area exposure; claims cite the red-box header rather than the non-urgent approach block."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "verdict": "problem",
+   "severity": "medium",
+   "problem": "'malaria likely' correctly probable with an and-structure, but both timing windows (fever in past 3 days, malaria area in past 3 months) are dropped: misses recent-but-resolved fever and over-fires on remote travel."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "verdict": "problem",
+   "severity": "high",
+   "problem": "Urgent level and (and complaint (or ...)) structure match the red box, but 'Hb < 6' is missing from the or-list, so a pallid patient with Hb < 6 and otherwise stable vitals is not flagged Urgent. (Grammar units lack g/dL, which may explain it; it must be flagged, not silently dropped.) Black-stool iron qualifier also lost."
+  }
+ ],
+ "summary": "The urgent priority rule omits the red-box criterion 'Hb < 6', so severe anaemia alone is not flagged Urgent. Every other 'likely' diagnosis on the page is unencoded: anaemia by Hb threshold, iron deficiency, systemic disease/long-term condition, macrocytic anaemia and folate deficiency. Only malaria is encoded, and it drops the 'past 3 days' fever and 'past 3 months' exposure windows. Smaller SNOMED issues: Pale complexion vs palm pallor, Purpuric rash vs Non-blanching rash, Leg swelling symptom vs Swelling of lower limb, and Melena without the iron-tablet qualifier."
+}

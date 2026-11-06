@@ -1,0 +1,162 @@
+{
+ "page": 86,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p86-5bb4c721",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: pointer to urgent-attention page 82; no criteria on this page",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-408147fa",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable dry skin :: (clinical_finding (snomed_concept \"Severe dry skin\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-76a3bfaa",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "ichthyosis alternative not encoded"
+   ],
+   "problem": "Only Xeroderma encoded; page says xeroderma/ichthyosis. Acceptable but ichthyosis omitted.",
+   "evidence": [
+    "Diagnose probable dry skin in itch with no rash :: (diagnosis (snomed_concept \"Xeroderma\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-49892321",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable medication side-effect :: (clinical_finding (snomed_concept \"New medication commenced\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-705cb0c3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable medication side-effect :: (diagnosis (snomed_concept \"Adverse reaction caused by drug\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-6ad84bcb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable jaundice :: (or Yellow skin / Scleral icterus)",
+    "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-2d4712df",
+   "scope": "borderline",
+   "scope_reason": "Confirm-no-rash criteria are encoded as negations; routing to 84/85/61 is flowchart_routing",
+   "verdict": "partial",
+   "parts_missing": [
+    "generalised vs localised itchy rash routing",
+    "anal-only itch routing"
+   ],
+   "problem": "Negations of rash/scabies/lice/bites are in all rules; routing branches are not representable, acceptable. Note 'no rash' encoded by Eruption, which may be broad.",
+   "evidence": [
+    "(no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-ceb136ec",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: tests and referral; duration >2 weeks follows",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-c9e2aa15",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-71db33f1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-8ffb34c9",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes label",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p86-d4e4cbf9",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes label",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p86-1207152b",
+  "p86-da488c4e",
+  "p86-1890d4c2",
+  "p86-7d315bca"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "check task",
+   "problem": "The check_for list includes Eruption, scabies, lice, bites; the check task has no priority evaluations, appropriate since the red box only points to page 82.",
+   "severity": "low"
+  },
+  {
+   "rule": "medication side-effect / jaundice",
+   "problem": "Priority chain (dry skin > medication > jaundice) encoded via exclusion; page jaundice branch follows only No-medication, matches. But medication rule is gated on absence of severe dry skin, which page does too. No defect, but all three rules exclude Eruption/scabies/lice/bite as hard negations, so a missing answer may block diagnoses.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable dry skin",
+   "problem": "Ichthyosis not encoded; 'Severe dry skin' is used as the finding for 'very dry'; verify concept resolves.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The three probable diagnoses (dry skin, medication side-effect, jaundice) follow the flowchart order and are broadly correct. Minor gaps: ichthyosis not encoded, and routing/management out of scope. No high-severity problems found."
+}

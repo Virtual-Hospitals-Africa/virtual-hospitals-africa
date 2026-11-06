@@ -1,0 +1,2832 @@
+[0m[32mTask[0m [0m[36mtest[0m ./scripts/test/test.sh "--ignore=test/web"
+[0m[33mDANGER: TLS certificate validation is disabled for all hostnames[0m
+[0m[32mCheck[0m events/test.ts
+[0m[32mCheck[0m test/backend/dashboard/widgets.test.ts
+[0m[32mCheck[0m test/backend/generate_cases.test.ts
+[0m[32mCheck[0m test/backend/recommended_doses_parser.test.ts
+[0m[32mCheck[0m test/backend/recommended_doses_schema.test.ts
+[0m[32mCheck[0m test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts
+[0m[32mCheck[0m test/dashboard/widgets/country/notifiable_conditions_trends.test.ts
+[0m[32mCheck[0m test/db/helpers.test.ts
+[0m[32mCheck[0m test/db/import_medications.test.ts
+[0m[32mCheck[0m test/db/migrate.test.ts
+[0m[32mCheck[0m test/events/processor.test.ts
+[0m[32mCheck[0m test/external-clients/google-maps.test.ts
+[0m[32mCheck[0m test/external-clients/web-push-config.test.ts
+[0m[32mCheck[0m test/islands/WarningSigns/follow_ups.test.ts
+[0m[32mCheck[0m test/islands/WarningSigns/form_values.test.ts
+[0m[32mCheck[0m test/islands/WarningSigns/shared.test.ts
+[0m[32mCheck[0m test/islands/symptoms/NationalIdInputCheckbox.test.tsx
+[0m[32mCheck[0m test/islands/symptoms/input.test.tsx
+[0m[32mCheck[0m test/main.test.ts
+[0m[32mCheck[0m test/models/additional_tasks.test.ts
+[0m[32mCheck[0m test/models/addresses.test.ts
+[0m[32mCheck[0m test/models/appointments.test.ts
+[0m[32mCheck[0m test/models/dashboard_metrics.test.ts
+[0m[32mCheck[0m test/models/drugs.test.ts
+[0m[32mCheck[0m test/models/due_to.test.ts
+[0m[32mCheck[0m test/models/employees.test.ts
+[0m[32mCheck[0m test/models/employees_presence.test.ts
+[0m[32mCheck[0m test/models/examinations.test.ts
+[0m[32mCheck[0m test/models/family.test.ts
+[0m[32mCheck[0m test/models/family_history.test.ts
+[0m[32mCheck[0m test/models/health_worker_web_push_subscriptions.test.ts
+[0m[32mCheck[0m test/models/health_workers.test.ts
+[0m[32mCheck[0m test/models/icd10.test.ts
+[0m[32mCheck[0m test/models/inventory.test.ts
+[0m[32mCheck[0m test/models/notifications.test.ts
+[0m[32mCheck[0m test/models/patient_allergies.test.ts
+[0m[32mCheck[0m test/models/patient_encounters.test.ts
+[0m[32mCheck[0m test/models/patient_findings.test.ts
+[0m[32mCheck[0m test/models/patient_findings_insert.test.ts
+[0m[32mCheck[0m test/models/patient_findings_with_modifiers.test.ts
+[0m[32mCheck[0m test/models/patient_history.test.ts
+[0m[32mCheck[0m test/models/patient_insurance.test.ts
+[0m[32mCheck[0m test/models/patient_occupation.test.ts
+[0m[32mCheck[0m test/models/patient_procedures.test.ts
+[0m[32mCheck[0m test/models/patients.test.ts
+[0m[32mCheck[0m test/models/pharmacists.test.ts
+[0m[32mCheck[0m test/models/prescriptions.test.ts
+[0m[32mCheck[0m test/models/recommended_dose_calculator.test.ts
+[0m[32mCheck[0m test/models/recommended_doses.test.ts
+[0m[32mCheck[0m test/models/rendered_snomed_concepts.test.ts
+[0m[32mCheck[0m test/models/rules.test.ts
+[0m[32mCheck[0m test/models/rules_dry_run.test.ts
+[0m[32mCheck[0m test/models/s_expression.test.ts
+[0m[32mCheck[0m test/models/s_expression_concepts.test.ts
+[0m[32mCheck[0m test/models/s_expression_evidence.test.ts
+[0m[32mCheck[0m test/models/snomed.test.ts
+[0m[32mCheck[0m test/models/snomed_concept_finding_like.test.ts
+[0m[32mCheck[0m test/models/snomed_to_icd10.test.ts
+[0m[32mCheck[0m test/models/snomed_warning_signs.test.ts
+[0m[32mCheck[0m test/models/system_diagnosis_rules.test.ts
+[0m[32mCheck[0m test/models/system_priority_evaluations.test.ts
+[0m[32mCheck[0m test/models/waiting_room.test.ts
+[0m[32mCheck[0m test/models/workflows.test.ts
+[0m[32mCheck[0m test/routes.test.ts
+[0m[32mCheck[0m test/shared/common_symptoms.test.ts
+[0m[32mCheck[0m test/shared/compiled_s_expressions.test.ts
+[0m[32mCheck[0m test/shared/diagnosis_effects.test.ts
+[0m[32mCheck[0m test/shared/finding_site_icons.test.ts
+[0m[32mCheck[0m test/shared/finding_site_signs.test.ts
+[0m[32mCheck[0m test/shared/notifications/application_server_key.test.ts
+[0m[32mCheck[0m test/shared/notifications/dispatch_web_push_for_notification.test.ts
+[0m[32mCheck[0m test/shared/notifications/initialize_web_push_dispatcher.test.ts
+[0m[32mCheck[0m test/shared/patient_records.test.ts
+[0m[32mCheck[0m test/shared/priority_evaluation.test.ts
+[0m[32mCheck[0m test/shared/recommended_dose_calculator/patient_case_from_encounter.test.ts
+[0m[32mCheck[0m test/shared/rules.test.ts
+[0m[32mCheck[0m test/shared/s_expression.test.ts
+[0m[32mCheck[0m test/shared/scheduling/availability.test.ts
+[0m[32mCheck[0m test/shared/scheduling/makeAppointment.test.ts
+[0m[32mCheck[0m test/shared/tasks.test.ts
+[0m[32mCheck[0m test/shared/warning_signs.test.ts
+[0m[32mCheck[0m test/util/assertMatches.test.ts
+[0m[32mCheck[0m test/util/dashboard/dates.test.ts
+[0m[32mCheck[0m test/util/dashboard/filters.test.ts
+[0m[32mCheck[0m test/util/dashboard/notifiable_conditions.test.ts
+[0m[32mCheck[0m test/util/dashboard/provinces.test.ts
+[0m[32mCheck[0m test/util/date.test.ts
+[0m[32mCheck[0m test/util/inParallel.test.ts
+[0m[32mCheck[0m test/util/matchActiveLink.test.ts
+[0m[32mCheck[0m test/util/maxBy.test.ts
+[0m[32mCheck[0m test/util/pascal_case.test.ts
+[0m[32mCheck[0m test/util/replaceParams.test.ts
+[0m[32mCheck[0m test/util/set.test.ts
+[0m[32mCheck[0m test/util/snake_case.test.ts
+[0m[32mCheck[0m test/util/validators.test.ts
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... patients_in_care_widget ... is visible to any employee ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... patients_in_care_widget ... has a stable id ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... patients_in_care_widget ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... encounters_in_range_widget ... is visible to any employee ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... encounters_in_range_widget ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... staff_on_shift_widget ... is visible to any employee ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts =>[0m dashboard widgets: canSee ... staff_on_shift_widget ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts =>[0m notifiable_conditions_trends_widget.fetch ... produces 156 weeks ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts =>[0m notifiable_conditions_by_province_widget.fetch ... returns provinces in canonical order ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts =>[0m notifiable_conditions_trends_widget.fetch ... produces 32 condition rows ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts =>[0m notifiable_conditions_by_province_widget.fetch ... emits 32 condition rows ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts =>[0m notifiable_conditions_by_province_widget.fetch ... each row has 9 cells, one per province ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts =>[0m notifiable_conditions_trends_widget.fetch ... confirms each row has weeks-many points for both series ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts =>[0m notifiable_conditions_by_province_widget.fetch ... split is 8 Cat-1 and 24 Cat-2 rows ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts =>[0m notifiable_conditions_by_province_widget.fetch ... output is deterministic ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts =>[0m notifiable_conditions_trends_widget.fetch ... default_keys is the 8 Cat-1 conditions ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/backend/dashboard/widgets.test.ts => [0mdashboard widgets: canSee ... [0m[32mok[0m [0m[38;5;245m(9ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts =>[0m notifiable_conditions_trends_widget.fetch ... output is deterministic ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_by_province.test.ts => [0mnotifiable_conditions_by_province_widget.fetch ... [0m[32mok[0m [0m[38;5;245m(9ms)[0m
+[0m[38;5;245m./test/dashboard/widgets/country/notifiable_conditions_trends.test.ts => [0mnotifiable_conditions_trends_widget.fetch ... [0m[32mok[0m [0m[38;5;245m(13ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... signsToDisplay ... shows the warning signs when nothing is searched or filtered ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... signsToDisplay ... shows a chosen finding site's signs in place of the warning signs ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... signsToDisplay ... shows search results ahead of either ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... lists every sign on the page that is not checked as none_of_these, in a lisp array ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... sends the empty lisp array when every sign is checked ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... treats a sign as checked even when what was entered augments the sign ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/google-maps.test.ts =>[0m external-clients/google-maps.ts ... ok ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... lists the ids of positive records among the checked signs as saved_record_ids ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... signsToDisplay ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... lists the id a sign still saving will have, rather than the negative record it is overturning ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... lists a record once when two signs stand for it, as when a symptom and a warning sign match the same record ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... does not list a checked sign that has no record and is not saving ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... includes checked signs not among the page signs, such as search results, in saved_record_ids only ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... tableCategories ... is the usual categories with no finding site chosen ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... tableCategories ... is search results and the finding site, headed by its label, when one is chosen ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... tableCategories ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts =>[0m islands/WarningSigns/form_values.ts ... warningSignsFormValues ... [0m[32mok[0m [0m[38;5;245m(6ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... searchRouteFor ... leaves the route alone with no finding site chosen ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... searchRouteFor ... adds the finding site by name when one is chosen ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... searchRouteFor ... sends the site's excluding_structures as JSON, so a name with a comma survives ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/google-maps.test.ts => [0mexternal-clients/google-maps.ts ... [0m[32mok[0m [0m[38;5;245m(6ms)[0m
+[0m[38;5;245m./test/backend/generate_cases.test.ts => [0mgenerate test cases ... [0m[33mignored[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... searchRouteFor ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... findChecked ... finds the checked sign that is the same sign ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... findChecked ... finds a checked sign of another category standing for the same saved record ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts =>[0m islands/WarningSigns/shared.ts ... findChecked ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/form_values.test.ts => [0mislands/WarningSigns/form_values.ts ... [0m[32mok[0m [0m[38;5;245m(11ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/shared.test.ts => [0mislands/WarningSigns/shared.ts ... [0m[32mok[0m [0m[38;5;245m(16ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... uses configured keys and subject in production ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... requires a subject in production when keys are configured ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... allows a default development subject locally when keys are configured ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... generates keys locally when neither key is configured ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... rejects partial key configuration ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... does not generate ephemeral keys in production ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts =>[0m external-clients/web-push-config.ts ... resolveVapidConfig ... [0m[32mok[0m [0m[38;5;245m(12ms)[0m
+[0m[38;5;245m./test/external-clients/web-push-config.test.ts => [0mexternal-clients/web-push-config.ts ... [0m[32mok[0m [0m[38;5;245m(18ms)[0m
+[0m[38;5;245m./test/main.test.ts =>[0m main.ts ... wires web push dispatcher startup exactly once ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/main.test.ts => [0mmain.ts ... [0m[32mok[0m [0m[38;5;245m(21ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... parses multi-ingredient string with EQUIVALENT TO ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... retains parentheticals ... [0m[32mok[0m [0m[38;5;245m(8ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... parses xylotox ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:51.086Z db/seed/defs/inventory_medication/lookup.ts:358:11 Found 2 unique ingredient names across 1 medications
+2026-11-06T02:10:51.086Z db/seed/defs/inventory_medication/lookup.ts:42:11 Looking up SNOMED concepts for 2 unique ingredient names...
+2026-11-06T02:10:51.087Z db/seed/defs/inventory_medication/lookup.ts:48:15   SNOMED lookup 1/2: "ADRENALINE"
+2026-11-06T02:10:51.088Z db/seed/defs/inventory_medication/lookup.ts:48:15   SNOMED lookup 2/2: "LIDOCAINE HYDROCHLORIDE"
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/db/helpers.test.ts =>[0m temporaryTable ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(79ms)[0m
+[0m[38;5;245m./test/db/helpers.test.ts => [0mtemporaryTable ... [0m[32mok[0m [0m[38;5;245m(87ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... appends a group for a newly saved sign ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... keeps groups from earlier saves, most recent last ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... replaces the group when the same sign is saved again with an edited finding ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/addresses.test.ts =>[0m db/models/address.ts ... upsert ... inserts addresses, making a new id each time ... [0m[32mok[0m [0m[38;5;245m(135ms)[0m
+[0m[38;5;245m./test/models/addresses.test.ts =>[0m db/models/address.ts ... upsert ... [0m[32mok[0m [0m[38;5;245m(164ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... sweeps the diagnosis groups a sign raised when its own group is folded in again ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... drops the group when the re-saved sign has nothing to check for ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... adds nothing when a new sign has nothing to check for ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/addresses.test.ts => [0mdb/models/address.ts ... [0m[32mok[0m [0m[38;5;245m(174ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... removes the group for a sign ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... accumulateFollowUps ... [0m[32mok[0m [0m[38;5;245m(21ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... indicatedDiagnosisFollowUp ... is due to the diagnosis itself, keyed by the sign and the diagnosed concept ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... indicatedDiagnosisFollowUp ... is due to the diagnosis at the highest certainty any rule effect gives it, as the pipeline would record it ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts =>[0m islands/WarningSigns/follow_ups.ts ... indicatedDiagnosisFollowUp ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/islands/WarningSigns/follow_ups.test.ts => [0mislands/WarningSigns/follow_ups.ts ... [0m[32mok[0m [0m[38;5;245m(29ms)[0m
+[0m[38;5;245m./test/models/dashboard_metrics.test.ts => [0mdb/models/dashboard_metrics.ts ... [0m[33mignored[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+Query failed
+error: new row for relation "patients" violates check constraint "patient_name_matches_first_names_and_surname"
+    at file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/pg@8.16.0/node_modules/pg/lib/client.js:545:17
+    at async PostgresConnection.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/dialect/postgres/postgres-driver.js:90:49)
+    at async PostgresConnection.connection.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/driver/runtime-driver.js:110:24)
+    at async file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-executor/query-executor-base.js:35:28
+    at async SingleConnectionProvider.#run (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/driver/single-connection-provider.js:24:16)
+    at async DefaultQueryExecutor.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-executor/query-executor-base.js:34:16)
+    at async InsertQueryBuilder.execute (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1106:24)
+    at async InsertQueryBuilder.executeTakeFirst (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1122:26)
+    at async InsertQueryBuilder.executeTakeFirstOrThrow (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1134:24)
+    at async BaseModel.insert (file:///Users/syncytium/Developer/vha-main-base/db/models/patients.ts:160:21)
+    at PostgresConnection.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/dialect/postgres/postgres-driver.js:102:41)
+    at async PostgresConnection.connection.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/driver/runtime-driver.js:110:24)
+    at async file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-executor/query-executor-base.js:35:28
+    at async SingleConnectionProvider.#run (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/driver/single-connection-provider.js:24:16)
+    at async DefaultQueryExecutor.executeQuery (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-executor/query-executor-base.js:34:16)
+    at async InsertQueryBuilder.execute (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1106:24)
+    at async InsertQueryBuilder.executeTakeFirst (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1122:26)
+    at async InsertQueryBuilder.executeTakeFirstOrThrow (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/kysely@0.28.8/node_modules/kysely/dist/esm/query-builder/insert-query-builder.js:1134:24)
+    at async BaseModel.insert (file:///Users/syncytium/Developer/vha-main-base/db/models/patients.ts:160:21)
+    at async file:///Users/syncytium/Developer/vha-main-base/test/models/appointments.test.ts:18:25 {
+  length: 550,
+  severity: "ERROR",
+  code: "23514",
+  detail: "Failing row contains (0a4bb052-158e-49a8-9655-63c65ead9a2a, 2026-11-06 02:10:51.467227+00, 2026-11-06 02:10:51.467227+00, null, 1e843fe7-1b88-441d-89b5-dd10a128bd75, , 1e843fe7-1b88-441d-89b5-dd10a128bd75, 1e843fe7-1b88-441d-89b5-dd10a128bd75, null, null, null, ZA, null, null, null, null, null, null, null, f, null).",
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: "public",
+  table: "patients",
+  column: undefined,
+  dataType: undefined,
+  constraint: "patient_name_matches_first_names_and_surname",
+  file: "execMain.c",
+  line: "2055",
+  routine: "ExecConstraints"
+}
+insert into
+  "patients" (
+    "name",
+    "first_names",
+    "surname",
+    "preferred_name",
+    "country"
+  )
+values
+  (
+    '1e843fe7-1b88-441d-89b5-dd10a128bd75',
+    '',
+    '1e843fe7-1b88-441d-89b5-dd10a128bd75',
+    '1e843fe7-1b88-441d-89b5-dd10a128bd75',
+    'ZA'
+  )
+returning
+  *
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/appointments.test.ts =>[0m db/models/appointments.ts ... addOfferedTime ... rejects when does not add an offered time if employee_id is an admin ... [0m[32mok[0m [0m[38;5;245m(117ms)[0m
+[0m[38;5;245m./test/db/migrate.test.ts =>[0m test database ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(228ms)[0m
+[0m[38;5;245m./test/db/migrate.test.ts => [0mtest database ... [0m[32mok[0m [0m[38;5;245m(259ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:51.748Z db/seed/defs/inventory_medication/lookup.ts:115:11   SNOMED lookups complete: 2/2 matched
+2026-11-06T02:10:51.749Z db/seed/defs/inventory_medication/lookup.ts:396:11 Filtered to 1/1 medications (all ingredients have SNOMED matches)
+2026-11-06T02:10:51.749Z db/seed/defs/inventory_medication/lookup.ts:399:11 Looking up SNOMED concepts for medications...
+2026-11-06T02:10:51.749Z db/seed/defs/inventory_medication/lookup.ts:223:11   Looking up SNOMED products for 1 medications via HAS_ACTIVE_INGREDIENT relationships...
+2026-11-06T02:10:51.749Z db/seed/defs/inventory_medication/lookup.ts:233:15   SNOMED lookup 1/1
+2026-11-06T02:10:51.843Z db/seed/defs/inventory_medication/lookup.ts:336:11   Medication SNOMED lookups: 1/1 matched, 0 failures
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/family_history.test.ts =>[0m db/models/family_history.ts ... search ... can find a family history of melanoma ... [0m[32mok[0m [0m[38;5;245m(181ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... determines that xylotox is a |Product containing only epinephrine and lidocaine (medicinal product)| ... [0m[32mok[0m [0m[38;5;245m(761ms)[0m
+[0m[38;5;245m./test/models/family_history.test.ts =>[0m db/models/family_history.ts ... search ... [0m[32mok[0m [0m[38;5;245m(199ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:51.858Z db/seed/defs/inventory_medication/lookup.ts:358:11 Found 1 unique ingredient names across 1 medications
+2026-11-06T02:10:51.858Z db/seed/defs/inventory_medication/lookup.ts:42:11 Looking up SNOMED concepts for 1 unique ingredient names...
+2026-11-06T02:10:51.858Z db/seed/defs/inventory_medication/lookup.ts:48:15   SNOMED lookup 1/1: "NALBUPHINE HYDROCHLORIDE DIHYDRATE"
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/family_history.test.ts => [0mdb/models/family_history.ts ... [0m[32mok[0m [0m[38;5;245m(216ms)[0m
+[0m[38;5;245m./test/models/appointments.test.ts =>[0m db/models/appointments.ts ... addOfferedTime ... adds an offered time if employee_id is a doctor ... [0m[32mok[0m [0m[38;5;245m(354ms)[0m
+[0m[38;5;245m./test/models/appointments.test.ts =>[0m db/models/appointments.ts ... addOfferedTime ... [0m[32mok[0m [0m[38;5;245m(521ms)[0m
+[0m[38;5;245m./test/backend/recommended_doses_schema.test.ts => [0madheres to the schema ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/appointments.test.ts => [0mdb/models/appointments.ts ... [0m[32mok[0m [0m[38;5;245m(553ms)[0m
+[0m[38;5;245m./test/models/employees.test.ts =>[0m db/models/employees.ts ... passes 6 test cases ... [0m[32mok[0m [0m[38;5;245m(604ms)[0m
+[0m[38;5;245m./test/models/employees.test.ts => [0mdb/models/employees.ts ... [0m[32mok[0m [0m[38;5;245m(645ms)[0m
+[0m[38;5;245m./test/models/health_worker_web_push_subscriptions.test.ts =>[0m db/models/health_worker_web_push_subscriptions.ts ... upserts, lists, and deletes subscriptions by endpoint ... [0m[32mok[0m [0m[38;5;245m(570ms)[0m
+[0m[38;5;245m./test/models/health_worker_web_push_subscriptions.test.ts => [0mdb/models/health_worker_web_push_subscriptions.ts ... [0m[32mok[0m [0m[38;5;245m(599ms)[0m
+[0m[38;5;245m./test/models/employees_presence.test.ts =>[0m db/models/employees_presence.ts ... getAllAtOrganization ... orders employees at_work first, then by ascending seniority within each group ... [0m[32mok[0m [0m[38;5;245m(650ms)[0m
+[0m[38;5;245m./test/models/employees_presence.test.ts =>[0m db/models/employees_presence.ts ... getAllAtOrganization ... [0m[32mok[0m [0m[38;5;245m(670ms)[0m
+[0m[38;5;245m./test/models/employees_presence.test.ts => [0mdb/models/employees_presence.ts ... [0m[32mok[0m [0m[38;5;245m(703ms)[0m
+[0m[38;5;245m./test/models/due_to.test.ts =>[0m db/models/due_to.ts ... passes 5 test cases ... [0m[32mok[0m [0m[38;5;245m(852ms)[0m
+[0m[38;5;245m./test/models/due_to.test.ts => [0mdb/models/due_to.ts ... [0m[32mok[0m [0m[38;5;245m(876ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:52.570Z db/seed/defs/inventory_medication/lookup.ts:115:11   SNOMED lookups complete: 1/1 matched
+2026-11-06T02:10:52.570Z db/seed/defs/inventory_medication/lookup.ts:396:11 Filtered to 1/1 medications (all ingredients have SNOMED matches)
+2026-11-06T02:10:52.570Z db/seed/defs/inventory_medication/lookup.ts:399:11 Looking up SNOMED concepts for medications...
+2026-11-06T02:10:52.571Z db/seed/defs/inventory_medication/lookup.ts:223:11   Looking up SNOMED products for 1 medications via HAS_ACTIVE_INGREDIENT relationships...
+2026-11-06T02:10:52.571Z db/seed/defs/inventory_medication/lookup.ts:233:15   SNOMED lookup 1/1
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/health_workers.test.ts =>[0m db/models/health_workers.ts ... getById ... returns the health worker and their employment information ... [0m[32mok[0m [0m[38;5;245m(600ms)[0m
+[0m[38;5;245m./test/models/additional_tasks.test.ts =>[0m db/models/additional_tasks.ts ... passes 6 test cases (1 skipped) ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/additional_tasks.test.ts => [0mdb/models/additional_tasks.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/health_workers.test.ts =>[0m db/models/health_workers.ts ... getById ... handles a health worker who is both a nurse and admin at one organization ... [0m[32mok[0m [0m[38;5;245m(462ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:53.078Z db/seed/defs/inventory_medication/lookup.ts:336:11   Medication SNOMED lookups: 1/1 matched, 0 failures
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can find medicinal products with exact dosages ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:53.092Z test/db/import_medications.test.ts:193:13 {
+  value: "0.3",
+  form: "SOLUTION",
+  units: "ML",
+  ingredients: [ { name: "ADRENALINE", strength: { value: "0.15", units: "MG" } } ]
+}
+2026-11-06T02:10:53.093Z db/seed/defs/inventory_medication/lookup.ts:358:11 Found 1 unique ingredient names across 1 medications
+2026-11-06T02:10:53.093Z db/seed/defs/inventory_medication/lookup.ts:42:11 Looking up SNOMED concepts for 1 unique ingredient names...
+2026-11-06T02:10:53.093Z db/seed/defs/inventory_medication/lookup.ts:48:15   SNOMED lookup 1/1: "ADRENALINE"
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/patient_insurance.test.ts =>[0m patient_insurance ... passes 21 test cases ... [0m[32mok[0m [0m[38;5;245m(618ms)[0m
+[0m[38;5;245m./test/models/health_workers.test.ts =>[0m db/models/health_workers.ts ... getById ... handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first ... [0m[32mok[0m [0m[38;5;245m(217ms)[0m
+[0m[38;5;245m./test/models/patient_insurance.test.ts => [0mpatient_insurance ... [0m[32mok[0m [0m[38;5;245m(669ms)[0m
+[0m[38;5;245m./test/models/patients.test.ts =>[0m db/models/patients.ts ... getPatientAges ... [0m[33mignored[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... initializeNotificationsPubSub ... notifies global and matching health worker subscribers when a notification is inserted ... [0m[32mok[0m [0m[38;5;245m(772ms)[0m
+[0m[38;5;245m./test/models/patients.test.ts => [0mdb/models/patients.ts ... [0m[32mok[0m [0m[38;5;245m(69ms)[0m
+[0m[38;5;245m./test/models/health_workers.test.ts =>[0m db/models/health_workers.ts ... getById ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/health_workers.test.ts => [0mdb/models/health_workers.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/patient_encounters.test.ts =>[0m db/models/patient_encounters.ts ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/patient_encounters.test.ts => [0mdb/models/patient_encounters.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:53.593Z db/seed/defs/inventory_medication/lookup.ts:115:11   SNOMED lookups complete: 1/1 matched
+2026-11-06T02:10:53.593Z db/seed/defs/inventory_medication/lookup.ts:396:11 Filtered to 1/1 medications (all ingredients have SNOMED matches)
+2026-11-06T02:10:53.594Z db/seed/defs/inventory_medication/lookup.ts:399:11 Looking up SNOMED concepts for medications...
+2026-11-06T02:10:53.594Z db/seed/defs/inventory_medication/lookup.ts:223:11   Looking up SNOMED products for 1 medications via HAS_ACTIVE_INGREDIENT relationships...
+2026-11-06T02:10:53.594Z db/seed/defs/inventory_medication/lookup.ts:233:15   SNOMED lookup 1/1
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m------- post-test output -------[0m
+notifications pub/sub subscriber threw {
+  value: "8c5e065a-ccb6-4b7e-aa2f-0a5d80038af9",
+  error: Error: subscriber failed
+      at throwingCallback (file:///Users/syncytium/Developer/vha-main-base/test/models/notifications.test.ts:92:17)
+      at notifySubscribers (file:///Users/syncytium/Developer/vha-main-base/db/models/notifications.ts:37:7)
+      at Client.onNotification (file:///Users/syncytium/Developer/vha-main-base/db/models/notifications.ts:69:7)
+      at Client.emit (ext:deno_node/_events.mjs:415:20)
+      at Client._handleNotification (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/pg@8.16.0/node_modules/pg/lib/client.js:422:10)
+      at Connection.emit (ext:deno_node/_events.mjs:415:20)
+      at file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/pg@8.16.0/node_modules/pg/lib/connection.js:116:12
+      at Parser.parse (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/pg-protocol@1.13.0/node_modules/pg-protocol/dist/parser.js:38:17)
+      at Socket.<anonymous> (file:///Users/syncytium/Developer/vha-main-base/node_modules/.deno/pg-protocol@1.13.0/node_modules/pg-protocol/dist/index.js:11:42)
+      at Socket.emit (ext:deno_node/_events.mjs:415:20)
+}
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... initializeNotificationsPubSub ... still notifies other subscribers when one subscriber throws ... [0m[32mok[0m [0m[38;5;245m(300ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:53.730Z db/seed/defs/inventory_medication/lookup.ts:336:11   Medication SNOMED lookups: 1/1 matched, 0 failures
+2026-11-06T02:10:53.730Z test/db/import_medications.test.ts:197:13 {
+  form: "SOLUTION",
+  routes: [ "INJECTION", "ORAL", "INHALATION", "TOPICAL" ],
+  doses: [
+    {
+      value: "0.3",
+      form: "SOLUTION",
+      units: "ML",
+      ingredients: [
+        {
+          name: "ADRENALINE",
+          strength: [Object],
+          snomed_concept_id: "387362001"
+        }
+      ]
+    }
+  ],
+  country: "ZA",
+  trade_name: "EPIPEN JUNIOR AUTO-INJECTOR",
+  registration_no: "38/5.1/0278",
+  applicant_name: "Viatris Healthcare (Pty) Ltd",
+  manufacturers: "Viatris Healthcare (Pty) Ltd",
+  snomed_concept_id: "775784001"
+}
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... recommends nothing for a patient with no conditions ... [0m[32mok[0m [0m[38;5;245m(191ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... initializeNotificationsPubSub ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... recommends nothing when no medicine indication matches the patient conditions ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... matches when the patient condition code is more specific than the indicator code ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can find medicinal products with exact dosages ... [0m[32mok[0m [0m[38;5;245m(656ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... matches when any part of an indication matches ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... matches an "and" indication when every group matches, including wildcard codes by prefix ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:53.766Z db/seed/defs/inventory_medication/lookup.ts:358:11 Found 1 unique ingredient names across 1 medications
+2026-11-06T02:10:53.766Z db/seed/defs/inventory_medication/lookup.ts:42:11 Looking up SNOMED concepts for 1 unique ingredient names...
+2026-11-06T02:10:53.766Z db/seed/defs/inventory_medication/lookup.ts:48:15   SNOMED lookup 1/1: "ALBUMIN"
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... indication matching ... [0m[32mok[0m [0m[38;5;245m(235ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... gives an adult only the adult-classified schedules ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... gives a child in the adolescent age range only the adolescent schedules ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... matches an inclusive max age bound for the entire final year ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... excludes the medicine for a child below the adolescent age range ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... treats a patient 150cm or taller as an adult regardless of age ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... treats a patient 12 or older as an adult regardless of height ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... excludes a medicine when no schedule matches the patient age group ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... filters schedules by age ranges expressed in months ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... filters schedules by age ranges expressed in years ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... filters schedules whose age range mixes months and years ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... excludes a schedule whose age range does not match even when its age classifier does ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... includes schedules without an age classifier for patients of any age ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... age-based schedule filtering ... [0m[32mok[0m [0m[38;5;245m(94ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... leaves fixed doses unchanged ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... multiplies per-kg doses by the patient weight ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... divides doses expressed per N kg of body weight ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... applies weight to per-kg doses nested in low/high ranges ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... marks unread notifications belonging to the specified health worker ... [0m[32mok[0m [0m[38;5;245m(207ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... applies weight to per-kg doses nested in titration targets ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... applies weight for small patients without rounding artifacts ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... does not apply weight to per-m2 (body surface area) doses ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... leaves minimum/maximum untouched when the dose is not per-kg ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... applying patient weight ... [0m[32mok[0m [0m[38;5;245m(102ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... result shape ... attaches the patient case to each recommended medicine ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts =>[0m db/models/recommended_doses.ts ... result shape ... [0m[32mok[0m [0m[38;5;245m(56ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:54.179Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Beclomethasone",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "as needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "infrequent symptoms",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/ Children >6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 2, patients on protease inhibitors",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 3",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "as required",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/ Children >6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 1, patients on protease inhibitors",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.179Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Budesonide",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03BA02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "as needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "infrequent symptoms",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/ Children >6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 2",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 3",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BA02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "as required",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/ Children >6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 1",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.183Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Formoterol",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03AC13",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "12mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.184Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Hydrocortisone",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Injection · Intravenous/Intramuscular (IV/IM)",
+      options: [
+        {
+          atc: "H02AB09",
+          form: "Injection",
+          route: "Intravenous/Intramuscular (IV/IM)",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "100mg",
+          raw_dose_interval: "6 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB09",
+          form: "Injection",
+          route: "Intravenous/Intramuscular (IV/IM)",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "100mg",
+          raw_dose_interval: "6 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB09",
+          form: "Injection",
+          route: "Intravenous/Intramuscular (IV/IM)",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "100mg",
+          raw_dose_interval: "single dose",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB09",
+          form: "Injection",
+          route: "Intravenous/Intramuscular (IV/IM)",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "100mg",
+          raw_dose_interval: "single dose",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks - poor response to salbutamol, oral prednisone cannot be taken",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Injection",
+      route: "Intravenous/Intramuscular (IV/IM)"
+    }
+  ]
+}
+2026-11-06T02:10:54.184Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Ipratropium bromide",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Solution · Inhalation",
+      options: [
+        {
+          atc: "R03BB01",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "0.5mg/2ml",
+          raw_dose_interval: "20-30 minutes",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BB01",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "0.5mg/2ml",
+          raw_dose_interval: "20-30 minutes",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BB01",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "0.5mg",
+          raw_dose_interval: "every 20-30 minutes prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks - poor response to salbutamol",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BB01",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "0.5mg",
+          raw_dose_interval: "every 20-30 minutes prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Solution",
+      route: "Inhalation"
+    },
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03BB01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "80-160mcg",
+          raw_dose_interval: "20-30 minutes",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03BB01",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "80-160 mcg",
+          raw_dose_interval: "every 20-30 minutes prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks - poor response to salbutamol",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.185Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Magnesium sulfate",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Injection · Intravenous injection (IV)",
+      options: [
+        {
+          atc: "B05XA05",
+          form: "Injection",
+          route: "Intravenous injection (IV)",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "50mg/kg",
+          raw_dose_interval: "single dose",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Injection",
+      route: "Intravenous injection (IV)"
+    }
+  ]
+}
+2026-11-06T02:10:54.185Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Prednisone",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Tablet/Capsule · Oral",
+      options: [
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "10mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks - poor response to salbutamol",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "H02AB07",
+          form: "Tablet/Capsule",
+          route: "Oral",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "40mg",
+          raw_dose_interval: "Daily",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks, oral prednisone cannot be taken",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Tablet/Capsule",
+      route: "Oral"
+    }
+  ]
+}
+2026-11-06T02:10:54.188Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Salbutamol",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "100mcg",
+          raw_dose_interval: "As needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400-1000mcg",
+          raw_dose_interval: "As needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "As needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "As needed",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "infrequent symptoms",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400-1000mcg",
+          raw_dose_interval: "2-4 hours prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "400-1000mcg",
+          raw_dose_interval: "2-4 hours prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "6 hourly prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/Children > 6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 2, patients on protease inhibitors",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "6 hourly prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 3",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "200mcg",
+          raw_dose_interval: "as required",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adults/Children > 6 years",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 1",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    },
+    {
+      form_route: "Solution · Inhalation",
+      options: [
+        {
+          atc: "R03AC02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "5mg/ml",
+          raw_dose_interval: "20-30 minutes",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "5mg",
+          raw_dose_interval: "2-4 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "5mg",
+          raw_dose_interval: "2-4 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.1",
+          disorder_number: "16.1",
+          disorder: "Asthma, Acute - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "5mg",
+          raw_dose_interval: "2-4 hours prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AC02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "5mg",
+          raw_dose_interval: "2-4 hours prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - mild to moderate attacks",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AL02",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "1ml/2ml",
+          raw_dose_interval: "every 20-30 minutes prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - life threatening attacks",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Solution",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.189Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Salmeterol/fluticasone",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Inhaler · Inhalation",
+      options: [
+        {
+          atc: "R03AK06",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "50/500mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Adult Hospital Level",
+          chapter_name: "Respiratory Disorders",
+          chapter_number: "16",
+          adult_children: "Adult",
+          section_number: "16.2",
+          disorder_number: "16.2",
+          disorder: "symptoms > twice a month",
+          schedules: [Array],
+          due_to: [Array]
+        },
+        {
+          atc: "R03AK06",
+          form: "Inhaler",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Chronic",
+          prescriber: "Doctor",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "50/250 mcg",
+          raw_dose_interval: "12 hourly",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.3",
+          disorder: "Chronic Asthma - step 3",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Inhaler",
+      route: "Inhalation"
+    }
+  ]
+}
+2026-11-06T02:10:54.189Z test/models/recommended_dose_calculator.test.ts:50:15 {
+  medicine_name: "Sodium chloride 0.9%",
+  due_to: [ { id: "asthma", specific_snomed_concept_id: "195967001" } ],
+  forms: [
+    {
+      form_route: "Solution · Inhalation",
+      options: [
+        {
+          atc: "B05XA03",
+          form: "Solution",
+          route: "Inhalation",
+          aware: null,
+          acute_chronic: "Acute",
+          prescriber: "Doctor/Nurse",
+          icd10_indications: [Object],
+          medicine: [Object],
+          raw_dose: "n/a",
+          raw_dose_interval: "every 20-30 minutes prn",
+          raw_duration: null,
+          publication: "Primary Healthcare",
+          chapter_name: "Respiratory Conditions",
+          chapter_number: "17",
+          adult_children: "Adult",
+          section_number: "17.1",
+          disorder_number: "17.1.1",
+          disorder: "Acute Asthma and Acute exacerbation of COPD, Adults - severe attacks - poor response to salbutamol",
+          schedules: [Array],
+          due_to: [Array]
+        }
+      ],
+      form: "Solution",
+      route: "Inhalation"
+    }
+  ]
+}
+[0m[38;5;245m./test/models/recommended_doses.test.ts => [0mdb/models/recommended_doses.ts ...[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/recommended_doses.test.ts => [0mdb/models/recommended_doses.ts ... [0m[32mok[0m [0m[38;5;245m(665ms)[0m
+[0m[38;5;245m./test/models/recommended_dose_calculator.test.ts =>[0m db/models/recommended_dose_calculator.ts ... passes 7 test cases ... [0m[32mok[0m [0m[38;5;245m(718ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... does not mark another health worker's notification ... [0m[32mok[0m [0m[38;5;245m(311ms)[0m
+[0m[38;5;245m./test/models/recommended_dose_calculator.test.ts => [0mdb/models/recommended_dose_calculator.ts ... [0m[32mok[0m [0m[38;5;245m(728ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:54.381Z db/seed/defs/inventory_medication/lookup.ts:115:11   SNOMED lookups complete: 1/1 matched
+2026-11-06T02:10:54.381Z db/seed/defs/inventory_medication/lookup.ts:396:11 Filtered to 1/1 medications (all ingredients have SNOMED matches)
+2026-11-06T02:10:54.381Z db/seed/defs/inventory_medication/lookup.ts:399:11 Looking up SNOMED concepts for medications...
+2026-11-06T02:10:54.381Z db/seed/defs/inventory_medication/lookup.ts:223:11   Looking up SNOMED products for 1 medications via HAS_ACTIVE_INGREDIENT relationships...
+2026-11-06T02:10:54.381Z db/seed/defs/inventory_medication/lookup.ts:233:15   SNOMED lookup 1/1
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... does not overwrite an existing seen_at ... [0m[32mok[0m [0m[38;5;245m(102ms)[0m
+[0m[38;5;245m./test/models/patient_findings.test.ts =>[0m db/models/patient_findings.ts ... passes 3 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/patient_findings.test.ts => [0mdb/models/patient_findings.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m------- post-test output -------[0m
+2026-11-06T02:10:54.436Z db/seed/defs/inventory_medication/lookup.ts:336:11   Medication SNOMED lookups: 1/1 matched, 0 failures
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can find albumin human ... [0m[32mok[0m [0m[38;5;245m(672ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can parse an ingredient field with multiple ingredients ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can parse a partially incomplete equivalent to specification ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can parse a blister pack ingredient field which contains tablets of different dosages ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can parse an ingredient field that does not start with the word "each" ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... parses an ingredient field with a greater than character, interpreting this as just an exact strength ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... can parse an ingredient field with an equivalent to with a different strength value ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... handles OF in the ingredient field ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts =>[0m seed ... parses a medication with no EACH ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/patient_findings_with_modifiers.test.ts =>[0m db/models/patient_findings_with_modifiers.ts ... passes 12 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/patient_findings_with_modifiers.test.ts => [0mdb/models/patient_findings_with_modifiers.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/db/import_medications.test.ts => [0mseed ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/models/rules.test.ts =>[0m db/models/rules.ts ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/models/rules.test.ts => [0mdb/models/rules.ts ... [0m[32mok[0m [0m[38;5;245m(12ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... is idempotent when called twice ... [0m[32mok[0m [0m[38;5;245m(184ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... returns 0 for an empty notification_ids array ... [0m[32mok[0m [0m[38;5;245m(79ms)[0m
+[0m[38;5;245m./test/models/patient_procedures.test.ts =>[0m db/models/patient_procedures.ts ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/patient_procedures.test.ts => [0mdb/models/patient_procedures.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/s_expression_concepts.test.ts =>[0m db/models/s_expression_concepts.ts ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(128ms)[0m
+[0m[38;5;245m./test/models/s_expression_concepts.test.ts => [0mdb/models/s_expression_concepts.ts ... [0m[32mok[0m [0m[38;5;245m(152ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... countAll only_unread reflects notifications marked as seen ... [0m[32mok[0m [0m[38;5;245m(88ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... markSeen ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... notification summary data sources ... countAll only_unread reflects unread notifications and excludes seen ones ... [0m[32mok[0m [0m[38;5;245m(113ms)[0m
+[0m[38;5;245m./test/models/snomed_concept_finding_like.test.ts =>[0m db/models/snomed_concept_finding_like.ts ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(319ms)[0m
+[0m[38;5;245m./test/models/snomed_concept_finding_like.test.ts => [0mdb/models/snomed_concept_finding_like.ts ... [0m[32mok[0m [0m[38;5;245m(354ms)[0m
+[0m[38;5;245m./test/models/patient_findings_insert.test.ts =>[0m db/models/patient_findings.ts insert methods ... passes 27 test cases ... [0m[32mok[0m [0m[38;5;245m(2s)[0m
+[0m[38;5;245m./test/models/patient_findings_insert.test.ts => [0mdb/models/patient_findings.ts insert methods ... [0m[32mok[0m [0m[38;5;245m(2s)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... notification summary data sources ... highestUnreadPriority returns null when there are no unread encounter-linked notifications ... [0m[32mok[0m [0m[38;5;245m(290ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts =>[0m db/models/notifications.ts ... notification summary data sources ... [0m[32mok[0m [0m[38;5;245m(423ms)[0m
+[0m[38;5;245m./test/models/notifications.test.ts => [0mdb/models/notifications.ts ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/models/snomed.test.ts =>[0m db/models/snomed_concept_finding_like.ts ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(697ms)[0m
+[0m[38;5;245m./test/models/snomed.test.ts => [0mdb/models/snomed_concept_finding_like.ts ... [0m[32mok[0m [0m[38;5;245m(706ms)[0m
+[0m[38;5;245m./test/backend/recommended_doses_parser.test.ts =>[0m global ... parses all test cases ... [0m[32mok[0m [0m[38;5;245m(4s)[0m
+[0m[38;5;245m./test/models/snomed_to_icd10.test.ts =>[0m db/models/snomed_to_icd10.ts ... passes 13 test cases ... [0m[32mok[0m [0m[38;5;245m(642ms)[0m
+[0m[38;5;245m./test/models/snomed_to_icd10.test.ts => [0mdb/models/snomed_to_icd10.ts ... [0m[32mok[0m [0m[38;5;245m(672ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... returns "Just now" for a patient who arrived less than 1 minute ago ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... returns "5 minutes ago" for a patient who arrived 5 minutes ago ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... returns "2 hours ago" for a patient who arrived 2 hours ago ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... returns "1 day ago" for a patient who arrived 1 day ago ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... returns "2 days ago" for a patient who arrived 2 days ago ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts =>[0m db/models/waiting_room.ts ... timeAgoDisplay ... [0m[32mok[0m [0m[38;5;245m(19ms)[0m
+[0m[38;5;245m./test/models/waiting_room.test.ts => [0mdb/models/waiting_room.ts ... [0m[32mok[0m [0m[38;5;245m(44ms)[0m
+[0m[38;5;245m./test/routes.test.ts =>[0m /app/organizations/[organization_id]/patients/[patient_id]/open_encounter ... passes 1 test case ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/routes.test.ts => [0m/app/organizations/[organization_id]/patients/[patient_id]/open_encounter ... [0m[32mok[0m [0m[38;5;245m(18ms)[0m
+[0m[38;5;245m./test/models/workflows.test.ts =>[0m workflows ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(193ms)[0m
+[0m[38;5;245m./test/models/workflows.test.ts => [0mworkflows ... [0m[32mok[0m [0m[38;5;245m(208ms)[0m
+[0m[38;5;245m./test/shared/diagnosis_effects.test.ts =>[0m shared/diagnosis.ts groupDiagnosisEffectsByConcept ... groups effects by concept, keeping the highest certainty as strongest ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/diagnosis_effects.test.ts =>[0m shared/diagnosis.ts groupDiagnosisEffectsByConcept ... sorts groups by concept name and keeps each group in input order ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/diagnosis_effects.test.ts =>[0m shared/diagnosis.ts groupDiagnosisEffectsByConcept ... returns no groups for no effects ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/diagnosis_effects.test.ts =>[0m shared/diagnosis.ts groupDiagnosisEffectsByConcept ... orders certainties definite > probable > equivocal > possible > improbable ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/diagnosis_effects.test.ts => [0mshared/diagnosis.ts groupDiagnosisEffectsByConcept ... [0m[32mok[0m [0m[38;5;245m(38ms)[0m
+[0m[38;5;245m./test/models/patient_history.test.ts =>[0m db/models/patient_history.ts ... passes 9 test cases ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/models/patient_history.test.ts => [0mdb/models/patient_history.ts ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/shared/common_symptoms.test.ts =>[0m shared/common_symptoms.ts ... refers to existing snomed concepts in each case ... [0m[32mok[0m [0m[38;5;245m(448ms)[0m
+[0m[38;5;245m./test/shared/common_symptoms.test.ts => [0mshared/common_symptoms.ts ... [0m[32mok[0m [0m[38;5;245m(460ms)[0m
+[0m[38;5;245m./test/shared/notifications/application_server_key.test.ts =>[0m backend/notifications/application_server_key.ts ... applicationServerKeysMatch ... returns true when the subscription key bytes match the VAPID public key ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/notifications/application_server_key.test.ts =>[0m backend/notifications/application_server_key.ts ... applicationServerKeysMatch ... returns false when the subscription key bytes differ ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/notifications/application_server_key.test.ts =>[0m backend/notifications/application_server_key.ts ... applicationServerKeysMatch ... returns false when the subscription key is missing ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/backend/recommended_doses_parser.test.ts => [0mglobal ... [0m[32mok[0m [0m[38;5;245m(5s)[0m
+[0m[38;5;245m./test/shared/notifications/application_server_key.test.ts =>[0m backend/notifications/application_server_key.ts ... applicationServerKeysMatch ... [0m[32mok[0m [0m[38;5;245m(51ms)[0m
+[0m[38;5;245m./test/shared/notifications/application_server_key.test.ts => [0mbackend/notifications/application_server_key.ts ... [0m[32mok[0m [0m[38;5;245m(93ms)[0m
+[0m[38;5;245m./test/shared/finding_site_icons.test.ts =>[0m components/library/icons/finding_sites.tsx ... draws every finding site the warning signs page can filter by, and nothing besides ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/finding_site_icons.test.ts => [0mcomponents/library/icons/finding_sites.tsx ... [0m[32mok[0m [0m[38;5;245m(30ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... initializeWebPushDispatcher ... subscribes to pub_sub.any ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... initializeWebPushDispatcher ... calls the dispatcher when a global notification event is received ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... initializeWebPushDispatcher ... does not register the callback twice when initialized more than once ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... initializeWebPushDispatcher ... logs dispatcher rejections without throwing from the pub/sub callback ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... initializeWebPushDispatcher ... [0m[32mok[0m [0m[38;5;245m(10ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... startWebPushDispatcherAtStartup ... invokes initializeWebPushDispatcher when external connect is enabled ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... startWebPushDispatcherAtStartup ... does not invoke initializeWebPushDispatcher when NO_EXTERNAL_CONNECT is set ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... startWebPushDispatcherAtStartup ... does not register a second pub/sub callback when startup runs after initialization ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... startWebPushDispatcherAtStartup ... logs rejected initializer without escaping as an unhandled rejection ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts =>[0m backend/notifications/initialize_web_push_dispatcher.ts ... startWebPushDispatcherAtStartup ... [0m[32mok[0m [0m[38;5;245m(21ms)[0m
+[0m[38;5;245m./test/shared/notifications/initialize_web_push_dispatcher.test.ts => [0mbackend/notifications/initialize_web_push_dispatcher.ts ... [0m[32mok[0m [0m[38;5;245m(51ms)[0m
+[0m[38;5;245m./test/models/s_expression.test.ts =>[0m db/models/s_expression.ts ... passes 4 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/s_expression.test.ts => [0mdb/models/s_expression.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... lists every adult guide page presented by finding site, in guide order ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... takes a site's signs from the findings its guide page names, shaped like common symptoms ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... sites the breast findings, which no task checks for, on the breast or the nipple ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... curates the arm and hand pages apart, though the guide prints them together ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... keeps qualified findings distinct from their unqualified form by key ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... excludes only sites it also lists, so a page never excludes something unrecognised ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/recommended_dose_calculator/patient_case_from_encounter.test.ts =>[0m shared/recommended_dose_calculator/patient_case_from_encounter.ts ... yields positive diagnoses and findings, skipping negatives and measurements ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/recommended_dose_calculator/patient_case_from_encounter.test.ts => [0mshared/recommended_dose_calculator/patient_case_from_encounter.ts ... [0m[32mok[0m [0m[38;5;245m(9ms)[0m
+[0m[38;5;245m./test/shared/patient_records.test.ts =>[0m shared/patient_records.ts ... can format a node representing an allergy ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/patient_records.test.ts => [0mshared/patient_records.ts ... [0m[32mok[0m [0m[38;5;245m(10ms)[0m
+[0m[38;5;245m./test/models/s_expression_evidence.test.ts =>[0m db/models/s_expression_evidence.ts ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/s_expression_evidence.test.ts => [0mdb/models/s_expression_evidence.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/priority_evaluation.test.ts =>[0m shared/priority_evaluation.ts ... displays as the priority itself, with the records it is due to as source relations ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/priority_evaluation.test.ts =>[0m shared/priority_evaluation.ts ... adds the system priority evaluation rule it is based on, where one is known ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/priority_evaluation.test.ts => [0mshared/priority_evaluation.ts ... [0m[32mok[0m [0m[38;5;245m(17ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+[SLOW QUERY] 2756ms
+select
+  "snomed_concept"."id"::text as "id",
+  "snomed_inferred_canonical_name_and_category"."name",
+  "snomed_inferred_canonical_name_and_category"."category",
+  "snomed_concept"."active",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select
+          "snomed_description"."id"::text as "id",
+          "snomed_description"."term",
+          "snomed_description"."language_code",
+          "snomed_description"."type_id"::text as "type_id"
+        from
+          "snomed_description"
+        where
+          "snomed_description"."concept_id" = "snomed_concept"."id"
+          and "snomed_description"."active" = true
+        order by
+          "snomed_description"."term"
+      ) as agg
+  ) as "descriptions",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select
+          "snomed_text_definition"."id"::text as "id",
+          "snomed_text_definition"."term",
+          "snomed_text_definition"."language_code"
+        from
+          "snomed_text_definition"
+        where
+          "snomed_text_definition"."concept_id" = "snomed_concept"."id"
+          and "snomed_text_definition"."active" = true
+        order by
+          "snomed_text_definition"."language_code"
+      ) as agg
+  ) as "text_definitions",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select
+          "snomed_relationship"."id"::text as "id",
+          "snomed_relationship"."relationship_group",
+          "snomed_relationship"."type_id"::text as "type_id",
+          "rel_type"."name" as "type_name",
+          "snomed_relationship"."destination_id"::text as "destination_id",
+          "rel_dest"."name" as "destination_name",
+          "rel_dest"."category" as "destination_category"
+        from
+          "snomed_relationship"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_type" on "rel_type"."id" = "snomed_relationship"."type_id"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_dest" on "rel_dest"."id" = "snomed_relationship"."destination_id"
+        where
+          "snomed_relationship"."source_id" = "snomed_concept"."id"
+          and "snomed_relationship"."active" = true
+        order by
+          "snomed_relationship"."relationship_group",
+          "rel_type"."name"
+      ) as agg
+  ) as "relationships",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select
+          "snomed_stated_relationship"."id"::text as "id",
+          "snomed_stated_relationship"."relationship_group",
+          "snomed_stated_relationship"."type_id"::text as "type_id",
+          "sr_type"."name" as "type_name",
+          "snomed_stated_relationship"."destination_id"::text as "destination_id",
+          "sr_dest"."name" as "destination_name",
+          "sr_dest"."category" as "destination_category"
+        from
+          "snomed_stated_relationship"
+          inner join "snomed_inferred_canonical_name_and_category" as "sr_type" on "sr_type"."id" = "snomed_stated_relationship"."type_id"
+          inner join "snomed_inferred_canonical_name_and_category" as "sr_dest" on "sr_dest"."id" = "snomed_stated_relationship"."destination_id"
+        where
+          "snomed_stated_relationship"."source_id" = "snomed_concept"."id"
+          and "snomed_stated_relationship"."active" = true
+        order by
+          "snomed_stated_relationship"."relationship_group",
+          "sr_type"."name"
+      ) as agg
+  ) as "stated_relationships",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select
+          "snomed_relationship_concrete_values"."id"::text as "id",
+          "snomed_relationship_concrete_values"."relationship_group",
+          "snomed_relationship_concrete_values"."type_id"::text as "type_id",
+          "cv_type"."name" as "type_name",
+          "snomed_relationship_concrete_values"."value"
+        from
+          "snomed_relationship_concrete_values"
+          inner join "snomed_inferred_canonical_name_and_category" as "cv_type" on "cv_type"."id" = "snomed_relationship_concrete_values"."type_id"
+        where
+          "snomed_relationship_concrete_values"."source_id" = "snomed_concept"."id"
+          and "snomed_relationship_concrete_values"."active" = true
+        order by
+          "snomed_relationship_concrete_values"."relationship_group",
+          "cv_type"."name"
+      ) as agg
+  ) as "concrete_values"
+from
+  "snomed_concept"
+  inner join "snomed_inferred_canonical_name_and_category" on "snomed_inferred_canonical_name_and_category"."id" = "snomed_concept"."id"
+where
+  "snomed_inferred_canonical_name_and_category"."category" = 'substance'
+  and 'gar' <% snomed_inferred_canonical_name_and_category.name
+  and "snomed_concept"."active" = true
+order by
+  similarity (
+    'gar',
+    snomed_inferred_canonical_name_and_category.name
+  ) desc
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/models/rendered_snomed_concepts.test.ts =>[0m db/models/rendered_snomed_concepts.ts ... can find concepts by category ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/models/rendered_snomed_concepts.test.ts => [0mdb/models/rendered_snomed_concepts.ts ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... returns false for non-overlapping time slots ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... returns true for partially overlapping time slots: 9am-5pm and 4pm-6pm ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... returns true for partially overlapping time slots: 3pm-6pm and 10am-5pm ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... returns true for partially overlapping time slots: 10:30am-3:15pm and 11:30am-2:20pm ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... returns true when the first window is identical to the second window ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... windowsOverlap ... [0m[32mok[0m [0m[38;5;245m(10ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... overlaps ... returns true when the first window includes the other one ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... has schemas with proper casing ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... overlaps ... returns true when the second window includes the first ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... overlaps ... returns false even if the windows don't overlap, even if the windows are not in chronological order ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... can parse a clinical_finding expression with attributes & snomed concepts; its normal form is a (finding) ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... overlaps ... returns false if two windows do not overlap ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... can parse a measurement ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... can produce a normal form ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parses an event time comparison whose onset subject is an active_condition ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts =>[0m availability ... overlaps ... [0m[32mok[0m [0m[38;5;245m(6ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... sends a mapped payload to one subscription ... [0m[32mok[0m [0m[38;5;245m(644ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parses excluding ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parses manage with approved_by: role ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parses manage with approved_by: role/specialty ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parses manage with approved_by: multiple role/specialties ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parseArrayWithSchema ... parses a lisp array of findings ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parseArrayWithSchema ... parses the empty lisp array () as no findings ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parseArrayWithSchema ... rejects a single s expression that is not wrapped in an array ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... parseArrayWithSchema ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... helpful parse errors ... gives an error message pointing to the atom that is incorrect and what might be expected ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/scheduling/availability.test.ts => [0mavailability ... [0m[32mok[0m [0m[38;5;245m(81ms)[0m
+[0m[38;5;245m./test/shared/tasks.test.ts =>[0m ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS ... every page number is referred to by ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... helpful parse errors ... gives an error message for a value that is deeply nested ... [0m[32mok[0m [0m[38;5;245m(79ms)[0m
+[0m[38;5;245m./test/shared/tasks.test.ts => [0mADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS ... [0m[32mok[0m [0m[38;5;245m(45ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+[SLOW QUERY] 2007ms
+select
+  "results".*,
+  "snomed_concept_prioritizations"."priority",
+  "snomed_concept_prioritizations"."warning_sign" as "priority_by_virtue_of_matching_warning_sign",
+  case
+    when "chosen_site"."id" is null then null
+    when (
+      predefined_within_chosen.descendant_id is not null
+      and predefined_site.id != chosen_site.id
+    ) then "predefined_site"."name"
+    else "chosen_site"."name"
+  end as "chosen_finding_site_name",
+  coalesce(
+    predefined_within_chosen.descendant_id is not null,
+    false
+  ) as "finding_site_is_predefined",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select distinct
+          format(
+            '(attribute (snomed_concept "%s" "%s") (snomed_concept "%s" "%s"))',
+            rel_type.name,
+            rel_type.category,
+            rel_dest.name,
+            rel_dest.category
+          ) as "s_expression"
+        from
+          "snomed_relationship"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_type" on "rel_type"."id" = "snomed_relationship"."type_id"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_dest" on "rel_dest"."id" = "snomed_relationship"."destination_id"
+        where
+          "snomed_relationship"."source_id" = "results"."id"
+          and "snomed_relationship"."active" = true
+          and "snomed_relationship"."type_id" != '116680003'
+        order by
+          format(
+            '(attribute (snomed_concept "%s" "%s") (snomed_concept "%s" "%s"))',
+            rel_type.name,
+            rel_type.category,
+            rel_dest.name,
+            rel_dest.category
+          )
+      ) as agg
+  ) as "predefined_attributes",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select distinct
+          unnest(due_to.qualifiers) as "s_expression"
+        from
+          "due_to_findings"
+          inner join "due_to" on "due_to"."id" = "due_to_findings"."id"
+          inner join "snomed_concept_active_descendants_realized" on "ancestor_id" = "due_to_findings"."specific_snomed_concept_id"
+        where
+          "due_to_findings"."is_somehow_qualified" = true
+          and "due_to_findings"."value_snomed_concept_id" is null
+          and "snomed_concept_active_descendants_realized"."descendant_id" = "results"."id"
+        order by
+          "s_expression"
+      ) as agg
+  ) as "relevant_qualifiers",
+  exists (
+    select
+      "due_to_event_time_comparisons"."id"
+    from
+      "due_to_event_time_comparisons"
+      inner join "snomed_concept_active_descendants_realized" on "ancestor_id" = "due_to_event_time_comparisons"."specific_snomed_concept_id"
+    where
+      "snomed_concept_active_descendants_realized"."descendant_id" = "results"."id"
+  ) as "onset_required"
+from
+  (
+    select
+      coalesce(
+        "associated_finding"."id",
+        "snomed_inferred_canonical_name_and_category"."id"
+      ) as "id",
+      coalesce(
+        "associated_finding"."name",
+        "snomed_inferred_canonical_name_and_category"."name"
+      ) as "name",
+      coalesce(
+        "associated_finding"."category",
+        "snomed_inferred_canonical_name_and_category"."category"
+      ) as "category",
+      max(similarity ('abdominal pain', term)) - (
+        case
+          when snomed_inferred_canonical_name_and_category.category = 'morphologic abnormality' then 0.9
+          when snomed_inferred_canonical_name_and_category.category = 'event' then 0.7
+          else 0
+        end
+      ) + (
+        case
+          when exists (
+            select
+              1
+            from
+              snomed_concept_active_descendants_realized adr
+              join due_to_findings df on df.specific_snomed_concept_id = adr.ancestor_id
+            where
+              adr.descendant_id = snomed_inferred_canonical_name_and_category.id
+          ) then 0.4
+          else 0
+        end
+      ) as "best_similarity"
+    from
+      "snomed_concept_finding_like"
+      inner join "snomed_inferred_canonical_name_and_category" on "snomed_inferred_canonical_name_and_category"."id" = "snomed_concept_finding_like"."id"
+      left join "snomed_inferred_canonical_name_and_category" as "preferred_category_of_same_name" on (
+        (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'disorder'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'morphologic abnormality'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'morphologic abnormality'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'morphologic abnormality'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'morphologic abnormality'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'situation'
+        )
+      )
+      left join "snomed_relationship" as "associated_finding_relationship" on "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+      and "associated_finding_relationship"."source_id" = "snomed_inferred_canonical_name_and_category"."id"
+      and "associated_finding_relationship"."type_id" = '246090004'
+      left join "snomed_inferred_canonical_name_and_category" as "associated_finding" on "associated_finding"."id" = "associated_finding_relationship"."destination_id"
+    where
+      "preferred_category_of_same_name"."id" is null
+      and not exists (
+        select
+        from
+          "snomed_relationship"
+        where
+          "source_id" = "snomed_inferred_canonical_name_and_category"."id"
+          and "snomed_relationship"."type_id" = '408729009'
+          and "snomed_relationship"."destination_id" = '410516002'
+      )
+      and 'abdominal pain' <% term
+    group by
+      "snomed_concept_finding_like"."id",
+      "snomed_inferred_canonical_name_and_category"."id",
+      "associated_finding"."id"
+    order by
+      max(similarity ('abdominal pain', term)) - (
+        case
+          when snomed_inferred_canonical_name_and_category.category = 'morphologic abnormality' then 0.9
+          when snomed_inferred_canonical_name_and_category.category = 'event' then 0.7
+          else 0
+        end
+      ) + (
+        case
+          when exists (
+            select
+              1
+            from
+              snomed_concept_active_descendants_realized adr
+              join due_to_findings df on df.specific_snomed_concept_id = adr.ancestor_id
+            where
+              adr.descendant_id = snomed_inferred_canonical_name_and_category.id
+          ) then 0.4
+          else 0
+        end
+      ) desc
+  ) as "results"
+  left join "snomed_concept_prioritizations" on "snomed_concept_prioritizations"."id" = "results"."id"
+  and "snomed_concept_prioritizations"."age_determination" = 'adult'
+  and "snomed_concept_prioritizations"."pregnancy" = false
+  left join (
+    select
+      "id",
+      "name"
+    from
+      "snomed_inferred_canonical_name_and_category"
+    where
+      "name" = ''
+      and "category" = 'body structure'
+    limit
+      1
+  ) as "chosen_site" on true
+  left join lateral (
+    select
+      "site"."id",
+      "site"."name"
+    from
+      "snomed_relationship"
+      inner join "snomed_inferred_canonical_name_and_category" as "site" on "site"."id" = "snomed_relationship"."destination_id"
+    where
+      "snomed_relationship"."source_id" = "results"."id"
+      and "snomed_relationship"."type_id" = '363698007'
+      and "snomed_relationship"."active" = true
+    limit
+      1
+  ) as "predefined_site" on true
+  left join "snomed_concept_active_descendants_realized" as "predefined_within_chosen" on "predefined_within_chosen"."ancestor_id" = "chosen_site"."id"
+  and "predefined_within_chosen"."descendant_id" = "predefined_site"."id"
+  left join "snomed_concept_active_descendants_realized" as "chosen_within_predefined" on "chosen_within_predefined"."ancestor_id" = "predefined_site"."id"
+  and "chosen_within_predefined"."descendant_id" = "chosen_site"."id"
+  left join lateral (
+    select
+      "excluding_structure"."id"
+    from
+      "snomed_inferred_canonical_name_and_category" as "excluding_structure"
+      inner join "snomed_concept_active_descendants_realized" as "within_excluding" on "within_excluding"."ancestor_id" = "excluding_structure"."id"
+    where
+      "within_excluding"."descendant_id" = "predefined_site"."id"
+      and "excluding_structure"."category" = 'body structure'
+      and "excluding_structure"."name" in ('')
+    limit
+      1
+  ) as "excluded" on true
+where
+  (
+    "chosen_site"."id" is null
+    or "predefined_site"."id" is null
+    or predefined_within_chosen.descendant_id is not null
+    or chosen_within_predefined.descendant_id is not null
+  )
+  and "excluded"."id" is null
+order by
+  (
+    case
+      when chosen_site.id is null
+      or predefined_site.id is null then 0
+      when predefined_within_chosen.descendant_id is not null then 2
+      else 1
+    end
+  ) desc,
+  "results"."best_similarity" desc
+limit
+  11
+offset
+  0
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts =>[0m shared/s_expression.ts ... helpful parse errors ... [0m[32mok[0m [0m[38;5;245m(94ms)[0m
+[0m[38;5;245m./test/util/assertMatches.test.ts =>[0m assertMatches ... passes when the object matches the test ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+{
+  Emergency: [
+    "Obstructed airway",
+    "Cardiac arrest",
+    "Seizure",
+    "Burn Facial",
+    "Burn Inhalation"
+  ],
+  "Very urgent": [
+    "Acute shortness of breath",
+    "Chest pain",
+    "Seizure - post ictal",
+    "Focal neurology",
+    "Burn Chemical",
+    "Coughing blood",
+    "Poisoning",
+    "Aggression",
+    "Severe limb ischemia",
+    "Burn Circumferential",
+    "Vomiting fresh blood",
+    "High energy transfer",
+    "Stabbed neck",
+    "Eye injury",
+    "Burn Over 20%",
+    "Haemorrhage Uncontrolled",
+    "Dislocation of larger joint",
+    "Compound Fracture",
+    "Burn Moderate severity",
+    "Pregnancy and abdominal trauma",
+    "Pregnancy and abdominal pain"
+  ],
+  Urgent: [
+    "Persistent vomiting",
+    "Dislocation of finger",
+    "Closed fracture",
+    "Burn Other",
+    "Haemorrhage Controlled",
+    "Dislocation of toe joint",
+    "Abdominal pain"
+  ]
+}
+[0m[38;5;245m./test/shared/s_expression.test.ts => [0mshared/s_expression.ts ...[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/shared/s_expression.test.ts => [0mshared/s_expression.ts ... [0m[32mok[0m [0m[38;5;245m(234ms)[0m
+[0m[38;5;245m./test/shared/warning_signs.test.ts =>[0m shared/warning_signs.ts ... x ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/assertMatches.test.ts =>[0m assertMatches ... fails when the object does not match the test ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/util/assertMatches.test.ts =>[0m assertMatches ... handles arrays that pass ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/warning_signs.test.ts => [0mshared/warning_signs.ts ... [0m[32mok[0m [0m[38;5;245m(39ms)[0m
+[0m[38;5;245m./test/util/assertMatches.test.ts =>[0m assertMatches ... handles arrays that fail ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/assertMatches.test.ts => [0massertMatches ... [0m[32mok[0m [0m[38;5;245m(57ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... attempts delivery to every subscription ... [0m[32mok[0m [0m[38;5;245m(303ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... returns { null, null } when neither param is present ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/dates.test.ts =>[0m util/dashboard/dates.ts ... todayUtc ... returns a Date at 00:00:00.000 UTC of the current day ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts =>[0m util/dashboard/notifiable_conditions.ts ... hashCount is deterministic for same inputs ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... parses valid ISO date params (from, to) ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/dates.test.ts =>[0m util/dashboard/dates.ts ... todayUtc ... matches the current UTC year/month/date ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... accepts only one side of the range ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts =>[0m util/dashboard/notifiable_conditions.ts ... hashCount stays inside [0, ceiling) ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... returns null for malformed values ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts =>[0m util/dashboard/notifiable_conditions.ts ... PREVALENCE_WEIGHT covers every notifiable condition ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/dashboard/dates.test.ts =>[0m util/dashboard/dates.ts ... todayUtc ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... honors the prefix ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts =>[0m util/dashboard/notifiable_conditions.ts ... expectedCount is deterministic per (seed, condition) ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+test test insert_levels: 13.5ms
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts => [0mutil/dashboard/notifiable_conditions.ts ...[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/util/dashboard/notifiable_conditions.test.ts => [0mutil/dashboard/notifiable_conditions.ts ... [0m[32mok[0m [0m[38;5;245m(76ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... returns safely when there are no subscriptions ... [0m[32mok[0m [0m[38;5;245m(76ms)[0m
+[0m[38;5;245m./test/util/dashboard/dates.test.ts => [0mutil/dashboard/dates.ts ... [0m[32mok[0m [0m[38;5;245m(86ms)[0m
+[0m[38;5;245m./test/models/system_priority_evaluations.test.ts =>[0m db/models/system_priority_evaluations.ts ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseDateRange ... [0m[32mok[0m [0m[38;5;245m(87ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseSelect ... returns null when param is absent ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseSelect ... returns the value when it is in the whitelist ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/system_priority_evaluations.test.ts => [0mdb/models/system_priority_evaluations.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseSelect ... returns null when value is not in the whitelist ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts =>[0m util/dashboard/filters.ts ... parseSelect ... [0m[32mok[0m [0m[38;5;245m(8ms)[0m
+[0m[38;5;245m./test/util/dashboard/filters.test.ts => [0mutil/dashboard/filters.ts ... [0m[32mok[0m [0m[38;5;245m(154ms)[0m
+[0m[38;5;245m./test/shared/rules.test.ts =>[0m shared/rules.ts ... returns a single event_time_comparison insert for an onset comparison of an active_condition ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/rules.test.ts =>[0m shared/rules.ts ... returns a single event_time_comparison insert for an onset comparison of a clinical_finding ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+{
+  atom: "finding",
+  root_snomed_concept: {
+    atom: "snomed_concept",
+    name: "Clinical finding",
+    category: "finding"
+  },
+  specific_snomed_concept: null,
+  value_snomed_concept: null,
+  qualifiers: [],
+  attributes: [
+    {
+      atom: "attribute",
+      root_snomed_concept: {
+        atom: "snomed_concept",
+        name: "Attribute",
+        category: "attribute"
+      },
+      specific_snomed_concept: {
+        atom: "snomed_concept",
+        name: "Finding site",
+        category: "attribute"
+      },
+      value: {
+        atom: "snomed_concept",
+        name: "Face structure",
+        category: "body structure"
+      }
+    }
+  ],
+  excluding: [
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Eye / vision finding",
+          category: "finding"
+        },
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: null,
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [ [Object] ],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: null,
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [ [Object] ],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Nose finding",
+          category: "finding"
+        },
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: null,
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [ [Object] ],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: null,
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [ [Object] ],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    },
+    {
+      atom: "excluding",
+      finding: {
+        atom: "finding",
+        root_snomed_concept: {
+          atom: "snomed_concept",
+          name: "Clinical finding",
+          category: "finding"
+        },
+        specific_snomed_concept: null,
+        value_snomed_concept: null,
+        qualifiers: [],
+        attributes: [ [Object] ],
+        excluding: [],
+        exact: false,
+        history: false,
+        existence: "Yes"
+      }
+    }
+  ],
+  exact: false,
+  history: false,
+  existence: "Yes"
+}
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/shared/rules.test.ts =>[0m shared/rules.ts ... returns always_applies_if_present: false for dueToInsert for face symptoms ... [0m[32mok[0m [0m[38;5;245m(3ms)[0m
+[0m[38;5;245m./test/shared/rules.test.ts =>[0m shared/rules.ts ... keeps the excluding field within a task's due_to ... [0m[32mok[0m [0m[38;5;245m(6ms)[0m
+[0m[38;5;245m./test/shared/rules.test.ts =>[0m shared/rules.ts ... TODO: handle common symptoms by finding site differently ... [0m[33mignored[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m util/dashboard/provinces.ts ... PROVINCES contains all 9 SA provinces in display order ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... prettyPatientDateOfBirth ... formats a date, day first ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... returns safely when the notification does not exist ... [0m[32mok[0m [0m[38;5;245m(69ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m util/dashboard/provinces.ts ... PROVINCE_LABELS has a full name for every province ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... prettyPatientDateOfBirth ... [0m[32mok[0m [0m[38;5;245m(4ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m util/dashboard/provinces.ts ... PROVINCE_POPULATION_WEIGHT covers every province and sums to ~1.0 ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... formatJohannesburg ... converts between timezones ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... formatJohannesburg ... gives the start of the day in Johannesburg ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... formatJohannesburg ... handles parsed dates ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/rules.test.ts => [0mshared/rules.ts ... [0m[32mok[0m [0m[38;5;245m(25ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts => [0mutil/dashboard/provinces.ts ... [0m[32mok[0m [0m[38;5;245m(7ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m provinceForOrganization ... returns the province for a known org id ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m provinceForOrganization ... returns null for an unknown org id ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/date.test.ts =>[0m date ... formatJohannesburg ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts =>[0m provinceForOrganization ... returns null for an org with province: null ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/dashboard/provinces.test.ts => [0mprovinceForOrganization ... [0m[32mok[0m [0m[38;5;245m(4ms)[0m
+[0m[38;5;245m./test/util/date.test.ts => [0mdate ... [0m[32mok[0m [0m[38;5;245m(18ms)[0m
+[0m[38;5;245m./test/util/inParallel.test.ts =>[0m inParallel.forEach ... passes 3 test cases ... [0m[32mok[0m [0m[38;5;245m(26ms)[0m
+[0m[38;5;245m./test/util/matchActiveLink.test.ts =>[0m matchActiveLink ... highlights Employees for the employees href and organization employees routes ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/matchActiveLink.test.ts =>[0m matchActiveLink ... highlights Open Encounters on the waiting room ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/matchActiveLink.test.ts =>[0m matchActiveLink ... highlights Inventory on inventory routes ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... TASKS_LISP ... has valid snomed concepts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/util/inParallel.test.ts => [0minParallel.forEach ... [0m[32mok[0m [0m[38;5;245m(35ms)[0m
+[0m[38;5;245m./test/util/matchActiveLink.test.ts =>[0m matchActiveLink ... highlights Organizations on the organization index and list ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation ... [0m[33mignored[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... finds the max by key ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/matchActiveLink.test.ts => [0mmatchActiveLink ... [0m[32mok[0m [0m[38;5;245m(15ms)[0m
+[0m[38;5;245m./test/util/inParallel.test.ts =>[0m pMap ... passes 2 test cases ... [0m[32mok[0m [0m[38;5;245m(8ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... finds the max by accessor function ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/inParallel.test.ts => [0mpMap ... [0m[32mok[0m [0m[38;5;245m(9ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... returns the first item on ties ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... works on any iterable ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... compares dates ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m maxBy ... returns undefined for an empty iterable ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts => [0mmaxBy ... [0m[32mok[0m [0m[38;5;245m(11ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m minBy ... finds the min by key ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m minBy ... finds the min by accessor function ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts =>[0m minBy ... returns undefined for an empty iterable ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/maxBy.test.ts => [0mminBy ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/util/pascal_case.test.ts =>[0m pascalCase ... works ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/pascal_case.test.ts => [0mpascalCase ... [0m[32mok[0m [0m[38;5;245m(5ms)[0m
+[0m[38;5;245m------- post-test output -------[0m
+[SLOW QUERY] 2302ms
+select
+  "results".*,
+  "snomed_concept_prioritizations"."priority",
+  "snomed_concept_prioritizations"."warning_sign" as "priority_by_virtue_of_matching_warning_sign",
+  case
+    when "chosen_site"."id" is null then null
+    when (
+      predefined_within_chosen.descendant_id is not null
+      and predefined_site.id != chosen_site.id
+    ) then "predefined_site"."name"
+    else "chosen_site"."name"
+  end as "chosen_finding_site_name",
+  coalesce(
+    predefined_within_chosen.descendant_id is not null,
+    false
+  ) as "finding_site_is_predefined",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select distinct
+          format(
+            '(attribute (snomed_concept "%s" "%s") (snomed_concept "%s" "%s"))',
+            rel_type.name,
+            rel_type.category,
+            rel_dest.name,
+            rel_dest.category
+          ) as "s_expression"
+        from
+          "snomed_relationship"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_type" on "rel_type"."id" = "snomed_relationship"."type_id"
+          inner join "snomed_inferred_canonical_name_and_category" as "rel_dest" on "rel_dest"."id" = "snomed_relationship"."destination_id"
+        where
+          "snomed_relationship"."source_id" = "results"."id"
+          and "snomed_relationship"."active" = true
+          and "snomed_relationship"."type_id" != '116680003'
+        order by
+          format(
+            '(attribute (snomed_concept "%s" "%s") (snomed_concept "%s" "%s"))',
+            rel_type.name,
+            rel_type.category,
+            rel_dest.name,
+            rel_dest.category
+          )
+      ) as agg
+  ) as "predefined_attributes",
+  (
+    select
+      coalesce(json_agg(agg), '[]')
+    from
+      (
+        select distinct
+          unnest(due_to.qualifiers) as "s_expression"
+        from
+          "due_to_findings"
+          inner join "due_to" on "due_to"."id" = "due_to_findings"."id"
+          inner join "snomed_concept_active_descendants_realized" on "ancestor_id" = "due_to_findings"."specific_snomed_concept_id"
+        where
+          "due_to_findings"."is_somehow_qualified" = true
+          and "due_to_findings"."value_snomed_concept_id" is null
+          and "snomed_concept_active_descendants_realized"."descendant_id" = "results"."id"
+        order by
+          "s_expression"
+      ) as agg
+  ) as "relevant_qualifiers",
+  exists (
+    select
+      "due_to_event_time_comparisons"."id"
+    from
+      "due_to_event_time_comparisons"
+      inner join "snomed_concept_active_descendants_realized" on "ancestor_id" = "due_to_event_time_comparisons"."specific_snomed_concept_id"
+    where
+      "snomed_concept_active_descendants_realized"."descendant_id" = "results"."id"
+  ) as "onset_required"
+from
+  (
+    select
+      coalesce(
+        "associated_finding"."id",
+        "snomed_inferred_canonical_name_and_category"."id"
+      ) as "id",
+      coalesce(
+        "associated_finding"."name",
+        "snomed_inferred_canonical_name_and_category"."name"
+      ) as "name",
+      coalesce(
+        "associated_finding"."category",
+        "snomed_inferred_canonical_name_and_category"."category"
+      ) as "category",
+      max(similarity ('pain', term)) - (
+        case
+          when snomed_inferred_canonical_name_and_category.category = 'morphologic abnormality' then 0.9
+          when snomed_inferred_canonical_name_and_category.category = 'event' then 0.7
+          else 0
+        end
+      ) + (
+        case
+          when exists (
+            select
+              1
+            from
+              snomed_concept_active_descendants_realized adr
+              join due_to_findings df on df.specific_snomed_concept_id = adr.ancestor_id
+            where
+              adr.descendant_id = snomed_inferred_canonical_name_and_category.id
+          ) then 0.4
+          else 0
+        end
+      ) as "best_similarity"
+    from
+      "snomed_concept_finding_like"
+      inner join "snomed_inferred_canonical_name_and_category" on "snomed_inferred_canonical_name_and_category"."id" = "snomed_concept_finding_like"."id"
+      left join "snomed_inferred_canonical_name_and_category" as "preferred_category_of_same_name" on (
+        (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'disorder'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'morphologic abnormality'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'morphologic abnormality'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+          and "preferred_category_of_same_name"."category" = 'morphologic abnormality'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'finding'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'disorder'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'morphologic abnormality'
+        )
+        or (
+          "preferred_category_of_same_name"."name" = "snomed_inferred_canonical_name_and_category"."name"
+          and "snomed_inferred_canonical_name_and_category"."category" = 'event'
+          and "preferred_category_of_same_name"."category" = 'situation'
+        )
+      )
+      left join "snomed_relationship" as "associated_finding_relationship" on "snomed_inferred_canonical_name_and_category"."category" = 'situation'
+      and "associated_finding_relationship"."source_id" = "snomed_inferred_canonical_name_and_category"."id"
+      and "associated_finding_relationship"."type_id" = '246090004'
+      left join "snomed_inferred_canonical_name_and_category" as "associated_finding" on "associated_finding"."id" = "associated_finding_relationship"."destination_id"
+    where
+      "preferred_category_of_same_name"."id" is null
+      and not exists (
+        select
+        from
+          "snomed_relationship"
+        where
+          "source_id" = "snomed_inferred_canonical_name_and_category"."id"
+          and "snomed_relationship"."type_id" = '408729009'
+          and "snomed_relationship"."destination_id" = '410516002'
+      )
+      and 'pain' <% term
+    group by
+      "snomed_concept_finding_like"."id",
+      "snomed_inferred_canonical_name_and_category"."id",
+      "associated_finding"."id"
+    order by
+      max(similarity ('pain', term)) - (
+        case
+          when snomed_inferred_canonical_name_and_category.category = 'morphologic abnormality' then 0.9
+          when snomed_inferred_canonical_name_and_category.category = 'event' then 0.7
+          else 0
+        end
+      ) + (
+        case
+          when exists (
+            select
+              1
+            from
+              snomed_concept_active_descendants_realized adr
+              join due_to_findings df on df.specific_snomed_concept_id = adr.ancestor_id
+            where
+              adr.descendant_id = snomed_inferred_canonical_name_and_category.id
+          ) then 0.4
+          else 0
+        end
+      ) desc
+  ) as "results"
+  left join "snomed_concept_prioritizations" on "snomed_concept_prioritizations"."id" = "results"."id"
+  and "snomed_concept_prioritizations"."age_determination" = 'adult'
+  and "snomed_concept_prioritizations"."pregnancy" = false
+  left join (
+    select
+      "id",
+      "name"
+    from
+      "snomed_inferred_canonical_name_and_category"
+    where
+      "name" = 'Ear structure'
+      and "category" = 'body structure'
+    limit
+      1
+  ) as "chosen_site" on true
+  left join lateral (
+    select
+      "site"."id",
+      "site"."name"
+    from
+      "snomed_relationship"
+      inner join "snomed_inferred_canonical_name_and_category" as "site" on "site"."id" = "snomed_relationship"."destination_id"
+    where
+      "snomed_relationship"."source_id" = "results"."id"
+      and "snomed_relationship"."type_id" = '363698007'
+      and "snomed_relationship"."active" = true
+    limit
+      1
+  ) as "predefined_site" on true
+  left join "snomed_concept_active_descendants_realized" as "predefined_within_chosen" on "predefined_within_chosen"."ancestor_id" = "chosen_site"."id"
+  and "predefined_within_chosen"."descendant_id" = "predefined_site"."id"
+  left join "snomed_concept_active_descendants_realized" as "chosen_within_predefined" on "chosen_within_predefined"."ancestor_id" = "predefined_site"."id"
+  and "chosen_within_predefined"."descendant_id" = "chosen_site"."id"
+  left join lateral (
+    select
+      "excluding_structure"."id"
+    from
+      "snomed_inferred_canonical_name_and_category" as "excluding_structure"
+      inner join "snomed_concept_active_descendants_realized" as "within_excluding" on "within_excluding"."ancestor_id" = "excluding_structure"."id"
+    where
+      "within_excluding"."descendant_id" = "predefined_site"."id"
+      and "excluding_structure"."category" = 'body structure'
+      and "excluding_structure"."name" in ('')
+    limit
+      1
+  ) as "excluded" on true
+where
+  (
+    "chosen_site"."id" is null
+    or "predefined_site"."id" is null
+    or predefined_within_chosen.descendant_id is not null
+    or chosen_within_predefined.descendant_id is not null
+  )
+  and "excluded"."id" is null
+order by
+  (
+    case
+      when chosen_site.id is null
+      or predefined_site.id is null then 0
+      when predefined_within_chosen.descendant_id is not null then 2
+      else 1
+    end
+  ) desc,
+  "results"."best_similarity" desc
+limit
+  11
+offset
+  0
+[0m[38;5;245m----- post-test output end -----[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... returns safely when the notification belongs to a different health worker ... [0m[32mok[0m [0m[38;5;245m(71ms)[0m
+[0m[38;5;245m./test/models/snomed_warning_signs.test.ts =>[0m db/models/snomed_warning_signs.ts ... passes 19 test cases ... [0m[32mok[0m [0m[38;5;245m(2s)[0m
+[0m[38;5;245m./test/util/replaceParams.test.ts =>[0m replaceParams ... replaces params in the route ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/models/system_diagnosis_rules.test.ts =>[0m db/models/system_diagnosis_rules.ts ... passes 7 test cases ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/models/snomed_warning_signs.test.ts => [0mdb/models/snomed_warning_signs.ts ... [0m[32mok[0m [0m[38;5;245m(2s)[0m
+[0m[38;5;245m./test/models/system_diagnosis_rules.test.ts => [0mdb/models/system_diagnosis_rules.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/util/replaceParams.test.ts =>[0m replaceParams ... throws if insufficient params are supplied ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/snake_case.test.ts =>[0m snakeCase ... works ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/replaceParams.test.ts => [0mreplaceParams ... [0m[32mok[0m [0m[38;5;245m(63ms)[0m
+[0m[38;5;245m./test/util/snake_case.test.ts => [0msnakeCase ... [0m[32mok[0m [0m[38;5;245m(23ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... omits action_href when it is #todo ... [0m[32mok[0m [0m[38;5;245m(46ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... national_id_number ... parses a legitimate national_id_number ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... national_id_number ... parses a legitimate national_id_number in lowercase ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... national_id_number ... throws an error on an illegitimate national_id_number ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/util/set.test.ts =>[0m set ... sets a simple key/value pair ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... omits action_href when it is empty ... [0m[32mok[0m [0m[38;5;245m(26ms)[0m
+[0m[38;5;245m./test/util/set.test.ts =>[0m set ... sets an array when a key is an integer ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/set.test.ts =>[0m set ... sets a deep path ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/set.test.ts =>[0m set ... sets an array when a key is an integer in square brackets ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... national_id_number ... [0m[32mok[0m [0m[38;5;245m(35ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... phone_number ... parses a legitimate phone number, returning just the number ... [0m[32mok[0m [0m[38;5;245m(2ms)[0m
+[0m[38;5;245m./test/util/set.test.ts => [0mset ... [0m[32mok[0m [0m[38;5;245m(53ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... phone_number ... parses a legitimate phone number as a phone number, even if that string doesn't include a leading + ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... phone_number ... parses a legitimate phone number as a phone number, converting it to a string ... [0m[32mok[0m [0m[38;5;245m(1ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... phone_number ... throws an error on an illegitimate phone number ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts =>[0m validators ... phone_number ... [0m[32mok[0m [0m[38;5;245m(8ms)[0m
+[0m[38;5;245m./test/util/validators.test.ts => [0mvalidators ... [0m[32mok[0m [0m[38;5;245m(58ms)[0m
+[0m[38;5;245m./test/shared/scheduling/makeAppointment.test.ts =>[0m scheduling/makeAppointment.ts ... makeAppointmentWeb ... inserts an event on the specified health worker's google calendar, adding that event to the db ... [0m[32mok[0m [0m[38;5;245m(323ms)[0m
+[0m[38;5;245m./test/shared/scheduling/makeAppointment.test.ts =>[0m scheduling/makeAppointment.ts ... makeAppointmentWeb ... [0m[32mok[0m [0m[38;5;245m(344ms)[0m
+[0m[38;5;245m./test/shared/scheduling/makeAppointment.test.ts => [0mscheduling/makeAppointment.ts ... [0m[32mok[0m [0m[38;5;245m(358ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... deletes expired subscriptions ... [0m[32mok[0m [0m[38;5;245m(20ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... logs non-expired failures without deleting the subscription ... [0m[32mok[0m [0m[38;5;245m(16ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... still attempts other subscriptions when one send throws unexpectedly ... [0m[32mok[0m [0m[38;5;245m(15ms)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts =>[0m backend/notifications/dispatch_web_push_for_notification.ts ... dispatchWebPushForNotification ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/notifications/dispatch_web_push_for_notification.test.ts => [0mbackend/notifications/dispatch_web_push_for_notification.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts =>[0m shared/finding_site_signs.ts ... refers to existing snomed concepts in each case ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/finding_site_signs.test.ts => [0mshared/finding_site_signs.ts ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... TASKS_LISP ... no task checks for a finding that is already part of its own due_to ... [0m[32mok[0m [0m[38;5;245m(599ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... TASKS_LISP ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_PRIORITY_EVALUATIONS_LISP ... has valid snomed concepts ... [0m[32mok[0m [0m[38;5;245m(173ms)[0m
+[0m[38;5;245m./test/models/rules_dry_run.test.ts =>[0m db/models/rules_dry_run.ts ... passes 19 test cases ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/models/rules_dry_run.test.ts => [0mdb/models/rules_dry_run.ts ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_PRIORITY_EVALUATIONS_LISP ... [0m[32mok[0m [0m[38;5;245m(1s)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_DIAGNOSIS_RULES_LISP ... has valid snomed concepts ... [0m[32mok[0m [0m[38;5;245m(83ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines ... [0m[32mok[0m [0m[38;5;245m(737ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... SYSTEM_DIAGNOSIS_RULES_LISP ... [0m[32mok[0m [0m[38;5;245m(821ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... FINDING_SITE_FINDINGS_LISP ... is one parseable (finding_site_findings) declaration per lisp file ... [0m[32mok[0m [0m[38;5;245m(39ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... FINDING_SITE_FINDINGS_LISP ... is up to date with the lisp files it was compiled from ... [0m[32mok[0m [0m[38;5;245m(35ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... FINDING_SITE_FINDINGS_LISP ... has valid snomed concepts ... [0m[32mok[0m [0m[38;5;245m(120ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... FINDING_SITE_FINDINGS_LISP ... [0m[32mok[0m [0m[38;5;245m(195ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... apc-adult ... has maximum one file per page number ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts =>[0m s_expression ... apc-adult ... [0m[32mok[0m [0m[38;5;245m(0ms)[0m
+[0m[38;5;245m./test/shared/compiled_s_expressions.test.ts => [0ms_expression ... [0m[32mok[0m [0m[38;5;245m(3s)[0m
+
+[0m[32mok[0m | 83 passed (323 steps) | 0 failed | 2 ignored (3 steps) [0m[38;5;245m(9s)[0m
+

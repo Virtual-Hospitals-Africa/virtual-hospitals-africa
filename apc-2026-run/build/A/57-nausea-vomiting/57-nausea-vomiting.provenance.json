@@ -1,0 +1,1861 @@
+{
+ "edition": "2026",
+ "page": 57,
+ "lisp_file": "57-nausea-vomiting.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p57-78e24a64"
+   ],
+   "quote": "Headache",
+   "confidence": "high",
+   "note": "Red-box item; page points to 47 for management."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p57-4e798f8c"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Red-box item; page points to 24."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "medium",
+   "note": "Diarrhea qualified as Watery; no precoordinated watery diarrhoea concept."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "has been in cholera outbreak area in past 5 days",
+   "confidence": "medium",
+   "note": "Being in a cholera outbreak area modelled as exposure to Vibrio cholerae; alternative was the vaguer travel-with-communicable-disease-risk situation."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "confused",
+   "confidence": "high",
+   "note": "Acute confusion (VHA vocabulary / warning sign)."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "Purpuric rash (warning sign concept) for purple/red rash."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "rapid deep breathing",
+   "confidence": "medium",
+   "note": "Kussmaul's respiration is the named pattern of rapid deep breathing; alternative Deep breathing + Tachypnea."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "Guarding",
+   "confidence": "high",
+   "note": "\"during peri-umbilical percussion\" (how it is elicited) not modelled."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "rigidity",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "element_keys": [
+    "p57-b20ca69a"
+   ],
+   "quote": "Pain in right lower abdomen",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "Sudden severe upper abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset and Severe qualifiers both required."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "No general \"radiating to back\" concept; lumbar region is the closest."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "distension",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "no stools or flatus/wind",
+   "confidence": "medium",
+   "note": "Obstipation = no passage of stool or flatus."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p57-ac86afd4"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock encoded only as the page writes it (Shock/SBP < 80), no shared definition."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p57-e428d0d0"
+   ],
+   "quote": "Vomiting blood",
+   "confidence": "high",
+   "note": "General concept; the fresh-blood warning sign is a descendant."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p57-03fceff2"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "\"generalised\" read as applying to rash too."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "Medication",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; \"within the past few hours\" not modelled (exposure in current encounter taken as recent, as on gold page 20)."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; general Food substance; timing not modelled."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  },
+  {
+   "rule": "Check for urgent nausea/vomiting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "Increased thirst chosen; \"Thirst finding\" would include normal thirst."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "cramping abdominal pain",
+   "confidence": "medium",
+   "note": "Abdominal colic (cramping abdominal pain)."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "loss of appetite",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": ""
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "\"worse with eating\" modelled as Postprandial qualifier on epigastric pain."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain alongside epigastric pain."
+  },
+  {
+   "rule": "Check for dehydration, gastroenteritis and dyspepsia in nausea/vomiting",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "medium",
+   "note": "No concept for lying down/bending forward specifically; position-aggravated pain is the closest."
+  },
+  {
+   "rule": "Measure BMI and waist circumference for dyspepsia (nausea/vomiting page)",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Indigestion\" \"finding\"))",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "Dyspepsia (heartburn) likely",
+   "confidence": "high",
+   "note": "Measure task fires once dyspepsia is likely, as the BMI/waist bullet sits in that branch."
+  },
+  {
+   "rule": "Measure BMI and waist circumference for dyspepsia (nausea/vomiting page)",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "BMI ≥ 25",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Measure BMI and waist circumference for dyspepsia (nausea/vomiting page)",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "waist circumference ≥ 80cm (woman) or ≥ 94cm (man)",
+   "confidence": "low",
+   "note": "Sex is not representable; ≥ 94 cm used, which holds for both sexes (misses women 80-93 cm)."
+  },
+  {
+   "rule": "Diagnose probable cholera (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable cholera (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable cholera (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "medium",
+   "note": "Diarrhea qualified as Watery; no precoordinated watery diarrhoea concept."
+  },
+  {
+   "rule": "Diagnose probable cholera (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "has been in cholera outbreak area in past 5 days",
+   "confidence": "medium",
+   "note": "Being in a cholera outbreak area modelled as exposure to Vibrio cholerae; alternative was the vaguer travel-with-communicable-disease-risk situation."
+  },
+  {
+   "rule": "Diagnose probable cholera (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cholera\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "drowsy/confused",
+   "confidence": "medium",
+   "note": "Page lists drowsy/confused as a meningitis feature."
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "drowsy/confused",
+   "confidence": "medium",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "Purpuric rash (warning sign concept) for purple/red rash."
+  },
+  {
+   "rule": "Diagnose probable meningitis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable peritonitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable peritonitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable peritonitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "Guarding",
+   "confidence": "high",
+   "note": "\"during peri-umbilical percussion\" (how it is elicited) not modelled."
+  },
+  {
+   "rule": "Diagnose probable peritonitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "rigidity",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable peritonitis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Peritonitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "peritonitis likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable appendicitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable appendicitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable appendicitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "element_keys": [
+    "p57-b20ca69a"
+   ],
+   "quote": "Pain in right lower abdomen",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable appendicitis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute appendicitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-b20ca69a"
+   ],
+   "quote": "appendicitis likely",
+   "confidence": "medium",
+   "note": "Acute appendicitis (VHA vocabulary) for \"appendicitis\"."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "Sudden severe upper abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset and Severe qualifiers both required."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "spreading to back",
+   "confidence": "medium",
+   "note": "No general \"radiating to back\" concept; lumbar region is the closest."
+  },
+  {
+   "rule": "Diagnose probable pancreatitis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute pancreatitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "pancreatitis likely",
+   "confidence": "medium",
+   "note": "Acute pancreatitis (VHA vocabulary; sudden onset) for \"pancreatitis\"."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "\"generalised\" read as applying to rash too."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "Medication",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; \"within the past few hours\" not modelled (exposure in current encounter taken as recent, as on gold page 20)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; general Food substance; timing not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "medium",
+   "note": "\"check for\" read as possible; triggers the anaphylaxis page check."
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "Increased thirst chosen; \"Thirst finding\" would include normal thirst."
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable dehydration (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "recent onset vomiting",
+   "confidence": "medium",
+   "note": "\"recent onset\" has no number on the page; no time comparison."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "cramping abdominal pain",
+   "confidence": "medium",
+   "note": "Abdominal colic (cramping abdominal pain)."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "loss of appetite",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p57-04c948c5"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "Fever via active_condition as the briefing says."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-d2474310"
+   ],
+   "quote": "Gastroenteritis likely",
+   "confidence": "high",
+   "note": "FSN of gastroenteritis."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "\"worse with eating\" modelled as Postprandial qualifier on epigastric pain."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain alongside epigastric pain."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "medium",
+   "note": "No concept for lying down/bending forward specifically; position-aggravated pain is the closest."
+  },
+  {
+   "rule": "Diagnose probable dyspepsia (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Indigestion\" \"finding\") probable)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "Dyspepsia (heartburn) likely",
+   "confidence": "medium",
+   "note": "Indigestion (finding) is the dyspepsia concept; no \"Dyspepsia\" FSN."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-7e405c9a"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint of the non-urgent approach section."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain which is worse with eating",
+   "confidence": "medium",
+   "note": "\"worse with eating\" modelled as Postprandial qualifier on epigastric pain."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "Hunger pain alongside epigastric pain."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "epigastric pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p57-1a890083"
+   ],
+   "quote": "lying down/bending forward",
+   "confidence": "medium",
+   "note": "No concept for lying down/bending forward specifically; position-aggravated pain is the closest."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²) 25)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "BMI ≥ 25",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm) 94)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "waist circumference ≥ 80cm (woman) or ≥ 94cm (man)",
+   "confidence": "low",
+   "note": "Sex is not representable; ≥ 94 cm used, which holds for both sexes (misses women 80-93 cm)."
+  },
+  {
+   "rule": "Diagnose probable GORD (nausea/vomiting page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Gastroesophageal reflux disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p57-d05267f8"
+   ],
+   "quote": "gastro-oesophageal reflux disease likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p57-510665c9"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p57-78e24a64"
+   ],
+   "quote": "Headache",
+   "confidence": "high",
+   "note": "Red-box item; page points to 47 for management."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p57-4e798f8c"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Red-box item; page points to 24."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p57-5155aebb"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis referenced via active_condition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p57-709a8fcd"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis referenced via active_condition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "element_keys": [
+    "p57-3fc8ea6c"
+   ],
+   "quote": "peritonitis likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis referenced via active_condition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute appendicitis\" \"disorder\"))",
+   "element_keys": [
+    "p57-b20ca69a"
+   ],
+   "quote": "appendicitis likely",
+   "confidence": "medium",
+   "note": "Red-box likely diagnosis referenced via active_condition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute pancreatitis\" \"disorder\"))",
+   "element_keys": [
+    "p57-ce1c3234"
+   ],
+   "quote": "pancreatitis likely",
+   "confidence": "medium",
+   "note": "Red-box likely diagnosis referenced via active_condition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p57-ac86afd4"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock encoded only as the page writes it (Shock/SBP < 80), no shared definition."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p57-ac86afd4"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Exactly as written."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p57-e428d0d0"
+   ],
+   "quote": "Vomiting blood",
+   "confidence": "high",
+   "note": "General concept; the fresh-blood warning sign is a descendant."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p57-03fceff2"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "distension",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p57-438bba70"
+   ],
+   "quote": "no stools or flatus/wind",
+   "confidence": "medium",
+   "note": "Obstipation = no passage of stool or flatus."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "confused",
+   "confidence": "high",
+   "note": "Acute confusion (VHA vocabulary / warning sign)."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p57-28d6da11"
+   ],
+   "quote": "rapid deep breathing",
+   "confidence": "medium",
+   "note": "Kussmaul's respiration is the named pattern of rapid deep breathing; alternative Deep breathing + Tachypnea."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "sudden nausea/vomiting",
+   "confidence": "high",
+   "note": "Sudden onset qualifier on nausea or vomiting."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "\"generalised\" read as applying to rash too."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 = systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p57-2bd4707a"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "Medication",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; \"within the past few hours\" not modelled (exposure in current encounter taken as recent, as on gold page 20)."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Possible allergen per footnote 2; general Food substance; timing not modelled."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  },
+  {
+   "rule": "Urgent: nausea/vomiting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p57-2bd4707a",
+    "p57-1d7a9ee9"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "Footnote 2; timing not modelled."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p57-197f6811",
+   "element_id": "p57-rb1-e15",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the urgent management list."
+  },
+  {
+   "element_key": "p57-7d0dc892",
+   "element_id": "p57-rb1-e16",
+   "text": "If shock, SBP < 80 or pancreatitis likely, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if brea",
+   "reason_category": "management_step",
+   "reason": "IV fluids: management."
+  },
+  {
+   "element_key": "p57-6e61b3c5",
+   "element_id": "p57-rb1-e17",
+   "text": "If meningitis likely, give ceftriaxone 2g IV3/IM. Avoid injecting > 1g IM at one injection site.",
+   "reason_category": "management_step",
+   "reason": "Ceftriaxone: management."
+  },
+  {
+   "element_key": "p57-8f4db89a",
+   "element_id": "p57-rb1-e18",
+   "text": "If pain severe, give morphine 5-10mg IM, repeat 4-6 hourly until patient referred, or give diluted morphine4 3-10mg slow IV: start with 3mL IV over 3 minutes. I",
+   "reason_category": "management_step",
+   "reason": "Morphine for severe pain: management."
+  },
+  {
+   "element_key": "p57-219d45a3",
+   "element_id": "p57-rb1-e19",
+   "text": "Check fingerprick glucose. If glucose < 3 (< 4 if diabetes) or ≥ 11.1 19.",
+   "reason_category": "management_step",
+   "reason": "Glucose is a routine vital (no measure task); its thresholds point to page 19."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint in likely-diagnosis rules",
+   "decision": "Each red-box and approach \"X likely\" rule requires nausea or vomiting, because the page scopes them to the patient with nausea/vomiting.",
+   "alternatives": "Diagnose from the sign alone (fires on other pages too).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Meningitis criteria",
+   "decision": "Any one of neck stiffness, drowsy/confused or purple/red rash (with nausea/vomiting) gives probable meningitis, as the page lists them with \"or\".",
+   "alternatives": "Require neck stiffness plus another feature.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Cholera outbreak area",
+   "decision": "Exposure to Vibrio cholerae with onset within 5 days (<=).",
+   "alternatives": "History of travel with high risk of exposure to communicable disease (situation).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "GORD waist threshold",
+   "decision": "Waist >= 94 cm used for everyone because sex is not representable; fires less often than the page for women 80-93 cm.",
+   "alternatives": ">= 80 cm (fires more often for men) or not encoding GORD.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Flowchart No-branches",
+   "decision": "Dyspepsia rule does not require \"not gastroenteritis\" (Q1 = No), following the gold standard which does not model negated earlier branches.",
+   "alternatives": "(not ...) of the gastroenteritis evidence.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaphylaxis item",
+   "decision": "Possible anaphylaxis rule (triggers the anaphylaxis page) plus the same logic inline in the urgent priority rule.",
+   "alternatives": "Priority via (diagnosis Anaphylaxis possible), which the checker would not count as checked for.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "Shock finding or SBP < 80, as the page writes it; the footnote definition is not imported.",
+   "alternatives": "Footnote 1 criteria.",
+   "confidence": "high"
+  }
+ ]
+}

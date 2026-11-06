@@ -1,0 +1,492 @@
+{
+ "page": 84,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Grouped' papule approximates 'crops of bumps' but drops the page's red / blistered-or-healed-with-darkening / scratch-mark description; alone, any itchy rash with grouped papules (scabies, PPE too) becomes probable insect bites.",
+   "fix": "Add the remaining discriminators where SNOMED allows, or record the over-breadth as a known approximation",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Burrows are recorded with no site; the page places 'bumps and burrows' in finger webspaces, axillae, waist and genitals.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of hand\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of waist region of trunk\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Hyperpigmentation is recorded as a separate finding with no link to the bumps. The page describes hyperpigmented bumps, and healed insect bites also darken the skin (row above).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Xeroderma' (synonym: dry skin) is recorded with no site; the page says patches of dry, scaly skin at the flexural sites.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Antecubital region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Sudden onset' wheal drops 'usually disappear within 24 hours', the transience that defines urticaria, and drops 'red'.",
+   "fix": "Add (qualifier (snomed_concept \"Transitory\" \"qualifier value\")) if the language allows two qualifiers, or note the gap",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\") (qualifier (snomed_concept \"Diffuse\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Site 'mainly on trunk, arms and legs' is dropped, but 'Diffuse' covers it.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of generalised itchy rash",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable insect bites (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable insect bites (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Grouped' papule approximates 'crops of bumps' but drops the page's red / blistered-or-healed-with-darkening / scratch-mark description; alone, any itchy rash with grouped papules (scabies, PPE too) becomes probable insect bites.",
+   "fix": "Add the remaining discriminators where SNOMED allows, or record the over-breadth as a known approximation",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable insect bites (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Insect bite - wound\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Burrows are recorded with no site (see c003). Requiring burrows AND a papule at a site is a defensible reading of 'bumps and burrows in \u2026'. Nocturnal itch ('especially at night') is dropped.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of interdigital web of hand\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of waist region of trunk\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "Scabies concept; no plain 'Scabies' disorder concept exists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Hyperpigmentation is not tied to the papules (see c008). Any hyperpigmented skin plus itchy papules on a limb, the trunk or the face gives probable PPE; healed insect bites would qualify.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Papular pruritic eruption of skin due to human immunodeficiency virus infection\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "The only SNOMED PPE concept is HIV-attributed. The page has not established HIV at this point: it says 'Test for HIV'. So a probable diagnosis asserts HIV etiology before testing.",
+   "fix": "Keep it (no non-HIV PPE concept exists), but flag it for clinician review",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Dry skin is recorded with no site (see c012).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Antecubital region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable urticaria (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable urticaria (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Drops 'usually disappear within 24 hours' (transience) and 'red' (see c017).",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable urticaria (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Urticaria\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable drug rash (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Trigger 'Pruritic rash' drops 'generalised': any itchy rash, including a localised one, fires every rule on this page.",
+   "fix": "(clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))), or accept as-is and note it",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable drug rash (generalised itchy rash)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\") (qualifier (snomed_concept \"Diffuse\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable drug rash (generalised itchy rash)",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))) (time_ago 3 months))",
+   "verdict": "imprecise",
+   "reason": "The page times the rash's appearance relative to the drug start ('appeared within 3 months of starting'). The rule times the drug start relative to now. A drug started more than 3 months ago, with the rash appearing within 3 months of starting it, is missed. A recent drug with a rash that predates it still fires.",
+   "fix": "If the language can't compare two onsets, keep the approximation and record it in remaining questions",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable drug rash (generalised itchy rash)",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for causes of generalised itchy rash",
+   "verdict": "ok",
+   "problem": "The type and the check_for contents are right, and every listed finding is used. The trigger 'Pruritic rash' is broader than 'generalised'. Not checked for, though the page names them: nocturnal itch (scabies), transience under 24h (urticaria), yellow crusts (impetigo).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable insect bites (generalised itchy rash)",
+   "verdict": "problem",
+   "problem": "The page says 'likely', so probable is correct. The evidence is only Pruritic rash + Grouped papule, which also fits scabies and PPE presentations. It is the weakest-discriminating probable rule on the page.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable scabies (generalised itchy rash)",
+   "verdict": "ok",
+   "problem": "The AND of burrows with a papule at one of the four sites is a faithful reading. Burrow site and nocturnal itch are dropped. Not encoded: the page's 'If yellow crusts, also treat for likely impetigo' (a 'likely' with no probable Impetigo rule).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+   "verdict": "problem",
+   "problem": "Hyperpigmentation is decoupled from the papules. The diagnosis concept is HIV-attributed while the page still says to test for HIV.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable eczema (generalised itchy rash)",
+   "verdict": "ok",
+   "problem": "Dry skin isn't tied to the sites, which is minor. The structure (dry AND scaly at one flexural or wrist/ankle site) matches the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable urticaria (generalised itchy rash)",
+   "verdict": "problem",
+   "problem": "Drops 'usually disappear within 24 hours', the page's key discriminator. The page's 'exclude asthma' (possible Asthma) and the allergic conjunctivitis/rhinitis checks are not encoded; those are management cross-refs, so this is low priority.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable drug rash (generalised itchy rash)",
+   "verdict": "problem",
+   "problem": "The timing window is anchored to now rather than to the rash's onset relative to starting the drug. The comparison direction (<= time_ago = within the last 3 months) follows the house convention.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Nothing is invented: every condition traces to the page and all SNOMED concepts exist. The most consequential issues: the insect-bite rule rests on a single generic 'Grouped papule' and over-fires; the PPE rule decouples hyperpigmentation from the papules and asserts an HIV-attributed diagnosis before the HIV test the page orders; and the drug-rash 3-month window is anchored to today rather than to rash onset after the drug was started. Smaller issues: the trigger drops 'generalised', urticaria loses its 'disappear within 24 hours' discriminator, and 'likely impetigo' (yellow crusts) has no rule."
+}

@@ -1,0 +1,1241 @@
+{
+ "raw": 240,
+ "cases": 170,
+ "pages": [
+  "14",
+  "15",
+  "21",
+  "22",
+  "23",
+  "24",
+  "28",
+  "34",
+  "36",
+  "38",
+  "39",
+  "40",
+  "42",
+  "45",
+  "46",
+  "48",
+  "49",
+  "51",
+  "53",
+  "55",
+  "56",
+  "57",
+  "58",
+  "59",
+  "63",
+  "64",
+  "69",
+  "77",
+  "78",
+  "80",
+  "86",
+  "87",
+  "89",
+  "90",
+  "98",
+  "111",
+  "177"
+ ],
+ "split": {
+  "onset subject": 15,
+  "measured item": 9,
+  "(no X)": 116,
+  "(no X) [not in gate list]": 30
+ },
+ "list": [
+  {
+   "page": "42",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent lump/swelling in groin conditions"
+  },
+  {
+   "page": "98",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for generalised anxiety disorder and PTSD features"
+  },
+  {
+   "page": "39",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for exposure to a malaria area"
+  },
+  {
+   "page": "39",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent signs in suspected malaria"
+  },
+  {
+   "page": "28",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy"
+  },
+  {
+   "page": "36",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Memory impairment\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions"
+  },
+  {
+   "page": "36",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorientated\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions"
+  },
+  {
+   "page": "36",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Language difficulty\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions"
+  },
+  {
+   "page": "36",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty coping\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions"
+  },
+  {
+   "page": "34",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for self-harm or suicide risk"
+  },
+  {
+   "page": "34",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for self-harm or suicide risk"
+  },
+  {
+   "page": "51",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for causes of nose symptoms"
+  },
+  {
+   "page": "51",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for causes of nose symptoms"
+  },
+  {
+   "page": "51",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for causes of nose symptoms"
+  },
+  {
+   "page": "63",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Prolonged erection of penis\" \"finding\"))",
+   "kind": "onset subject",
+   "check": "TASKS_LISP ... each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+   "rule": "Check for urgent genital symptoms in a man"
+  },
+  {
+   "page": "89",
+   "s_expression": "(measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm)",
+   "kind": "measured item",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)"
+  },
+  {
+   "page": "57",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Passing flatus\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: nausea/vomiting with danger signs"
+  },
+  {
+   "page": "111",
+   "s_expression": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m\u00b2)",
+   "kind": "measured item",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission"
+  },
+  {
+   "page": "49",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs"
+  },
+  {
+   "page": "77",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: joint symptoms with danger signs"
+  },
+  {
+   "page": "22",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Emergency: life-threatening wheeze/tight chest"
+  },
+  {
+   "page": "22",
+   "s_expression": "(measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %)",
+   "kind": "measured item",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Emergency: life-threatening wheeze/tight chest"
+  },
+  {
+   "page": "24",
+   "s_expression": "(measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %)",
+   "kind": "measured item",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: chest pain with danger signs"
+  },
+  {
+   "page": "48",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: eye/vision symptoms with danger signs"
+  },
+  {
+   "page": "177",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: pregnant patient with antenatal danger signs"
+  },
+  {
+   "page": "21",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_PRIORITY_EVALUATIONS_LISP ... leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines",
+   "rule": "Urgent: same-day referral after a seizure/fit"
+  },
+  {
+   "page": "55",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable breast engorgement"
+  },
+  {
+   "page": "55",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Maternal breastfeeding\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mastalgia"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty drinking\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "59",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sunken eyes\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable some dehydration in cholera"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "78",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable mechanical back pain"
+  },
+  {
+   "page": "53",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable bacterial tonsillopharyngitis"
+  },
+  {
+   "page": "53",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable bacterial tonsillopharyngitis"
+  },
+  {
+   "page": "53",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of tonsil\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable viral tonsillopharyngitis"
+  },
+  {
+   "page": "53",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exudate on tonsils\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable viral tonsillopharyngitis"
+  },
+  {
+   "page": "42",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin"
+  },
+  {
+   "page": "42",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin"
+  },
+  {
+   "page": "42",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin"
+  },
+  {
+   "page": "42",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin"
+  },
+  {
+   "page": "89",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)"
+  },
+  {
+   "page": "89",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary catheter in situ\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable simple UTI in a woman (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable complicated UTI (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)"
+  },
+  {
+   "page": "69",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable male urethritis syndrome (urinary symptoms)"
+  },
+  {
+   "page": "23",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)"
+  },
+  {
+   "page": "23",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)"
+  },
+  {
+   "page": "23",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable post-infectious cough"
+  },
+  {
+   "page": "40",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable chickenpox in suspected mpox"
+  },
+  {
+   "page": "40",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable measles in suspected mpox"
+  },
+  {
+   "page": "57",
+   "s_expression": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m\u00b2)",
+   "kind": "measured item",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable GORD in nausea/vomiting with dyspepsia"
+  },
+  {
+   "page": "57",
+   "s_expression": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "kind": "measured item",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable GORD in nausea/vomiting with dyspepsia"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Varicose veins of lower extremity\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "90",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)"
+  },
+  {
+   "page": "45",
+   "s_expression": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)",
+   "kind": "measured item",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls"
+  },
+  {
+   "page": "45",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable common faint after collapse/falls"
+  },
+  {
+   "page": "45",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable common faint after collapse/falls"
+  },
+  {
+   "page": "86",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable dry skin in itch with no rash"
+  },
+  {
+   "page": "86",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable dry skin in itch with no rash"
+  },
+  {
+   "page": "86",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable dry skin in itch with no rash"
+  },
+  {
+   "page": "86",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable medication side-effect in itch with no rash"
+  },
+  {
+   "page": "86",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable jaundice in itch with no rash"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urticaria\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being cold\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eye region structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hand structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Low blood pressure\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory distress\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "14",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable pseudoallergic rash after vaccination"
+  },
+  {
+   "page": "58",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable cholera in diarrhoea"
+  },
+  {
+   "page": "58",
+   "s_expression": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable gastroenteritis in diarrhoea"
+  },
+  {
+   "page": "77",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)"
+  },
+  {
+   "page": "77",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute gout (joint symptoms)"
+  },
+  {
+   "page": "77",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute gout (joint symptoms)"
+  },
+  {
+   "page": "77",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute gout (joint symptoms)"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "34",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "page": "80",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable sciatic nerve irritation (leg symptoms)"
+  },
+  {
+   "page": "15",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable fainting episode following vaccination"
+  },
+  {
+   "page": "15",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable fainting episode following vaccination"
+  },
+  {
+   "page": "15",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable fainting episode following vaccination"
+  },
+  {
+   "page": "15",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable fainting episode following vaccination"
+  },
+  {
+   "page": "46",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable positional vertigo with dizziness"
+  },
+  {
+   "page": "46",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable positional vertigo with dizziness"
+  },
+  {
+   "page": "46",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable positional vertigo with dizziness"
+  },
+  {
+   "page": "46",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable positional vertigo with dizziness"
+  },
+  {
+   "page": "46",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable positional vertigo with dizziness"
+  },
+  {
+   "page": "51",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable common cold from nose symptoms"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge)"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge)"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge)"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable LAP syndrome (vaginal discharge)"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable cervicitis (vaginal discharge)"
+  },
+  {
+   "page": "64",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable cervicitis (vaginal discharge)"
+  },
+  {
+   "page": "24",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain"
+  },
+  {
+   "page": "24",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain"
+  },
+  {
+   "page": "24",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain"
+  },
+  {
+   "page": "24",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "kind": "(no X) [not in gate list]",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute coronary syndrome in chest pain"
+  },
+  {
+   "page": "24",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable stable angina in chest pain"
+  },
+  {
+   "page": "56",
+   "s_expression": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m\u00b2)",
+   "kind": "measured item",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist"
+  },
+  {
+   "page": "56",
+   "s_expression": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "kind": "measured item",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist"
+  },
+  {
+   "page": "38",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute viral infection from fever page"
+  },
+  {
+   "page": "38",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute viral infection from fever page"
+  },
+  {
+   "page": "38",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable acute viral infection from fever page"
+  },
+  {
+   "page": "48",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable viral conjunctivitis"
+  },
+  {
+   "page": "87",
+   "s_expression": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)"
+  },
+  {
+   "page": "177",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\")))",
+   "kind": "(no X)",
+   "check": "SYSTEM_DIAGNOSIS_RULES_LISP ... leverages findings we check for in TASKS_LISP based on the apc adult guidelines",
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient"
+  }
+ ]
+}

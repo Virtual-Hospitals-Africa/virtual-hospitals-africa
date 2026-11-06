@@ -1,0 +1,1324 @@
+{
+ "page": 26,
+ "slug": "26-palpitations",
+ "validation_ok": true,
+ "builder_agreement": 0.819,
+ "elements": 51,
+ "elements_agreed": 38,
+ "claims": 90,
+ "claims_agreed": 76,
+ "queue": 65,
+ "queue_by_priority": {
+  "low": 8,
+  "high": 13,
+  "medium": 44
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p26-aa2dfef1",
+   "id": "p26-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-496756d0",
+   "id": "p26-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-e82c9125",
+   "id": "p26-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-4629973a",
+   "id": "p26-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-bc26b5e3",
+   "id": "p26-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-a12d9250",
+   "id": "p26-rb1-e06",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p26-c7834187",
+   "id": "p26-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-a6e92e5c",
+   "id": "p26-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-850303bb",
+   "id": "p26-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-c2e787d2",
+   "id": "p26-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-547ade55",
+   "id": "p26-rb1-e11",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-2f958f66",
+   "id": "p26-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-1746eb86",
+   "id": "p26-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-b57cf078",
+   "id": "p26-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-885c8b9f",
+   "id": "p26-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-2771df4c",
+   "id": "p26-rb1-e16",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-2cdfc9ef",
+   "id": "p26-rb1-e17",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-3c301571",
+   "id": "p26-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-bf4aaad8",
+   "id": "p26-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-86554096",
+   "id": "p26-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-69890eed",
+   "id": "p26-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-6438e9f2",
+   "id": "p26-out-e05",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-970e558c",
+   "id": "p26-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-e172c137",
+   "id": "p26-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-5ec1a727",
+   "id": "p26-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p26-fa0da578",
+   "id": "p26-out-e09",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "partial": 2
+   }
+  },
+  {
+   "key": "p26-b734420c",
+   "id": "p26-out-e10",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p26-1840727f",
+   "id": "p26-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-c15da811",
+   "id": "p26-out-e12",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p26-4d998ebd",
+   "id": "p26-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-5a3d597d",
+   "id": "p26-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-5b3a3cd9",
+   "id": "p26-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-b91151ab",
+   "id": "p26-out-e16",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-9498010c",
+   "id": "p26-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-2495ecd2",
+   "id": "p26-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-a461875d",
+   "id": "p26-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-ae623d86",
+   "id": "p26-out-e20",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-0b237fcc",
+   "id": "p26-out-e21",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "in_scope": 1,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-9170d8df",
+   "id": "p26-out-e22",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-b5b50c22",
+   "id": "p26-out-e23",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-12820836",
+   "id": "p26-out-e24",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p26-07537519",
+   "id": "p26-out-e25",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p26-56387c6b",
+   "id": "p26-out-e26",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-a65157ba",
+   "id": "p26-out-e27",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-554b2c81",
+   "id": "p26-out-e28",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-eebf59df",
+   "id": "p26-out-e29",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-627627d9",
+   "id": "p26-out-e30",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-4ce98263",
+   "id": "p26-out-e31",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-8d335f29",
+   "id": "p26-out-e32",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p26-76d455e3",
+   "id": "p26-out-e33",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p26-0c31a454",
+   "id": "p26-out-e34",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent palpitations conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of palpitations",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible stroke from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible TIA from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: palpitations with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

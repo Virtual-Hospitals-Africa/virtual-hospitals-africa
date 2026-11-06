@@ -1,0 +1,246 @@
+{
+ "page": 35,
+ "lisp_file": "35-aggressive-disruptive-behaviour.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-80245a7f"
+   ],
+   "quote": "aggressive/disruptive patient"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disruptive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-80245a7f"
+   ],
+   "quote": "aggressive/disruptive patient"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "element_keys": [
+    "p35-aa9b9dcf"
+   ],
+   "quote": "Angry behaviour"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Challenging behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "Challenging"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "insulting"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "provocative behaviour"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "element_keys": [
+    "p35-9173924e"
+   ],
+   "quote": "Tense posturing"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbal aggression\" \"finding\"))",
+   "element_keys": [
+    "p35-61fd1d24"
+   ],
+   "quote": "Loud, aggressive speech"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p35-d906a979"
+   ],
+   "quote": "Frequently changing body position"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pacing up and down\" \"finding\"))",
+   "element_keys": [
+    "p35-d906a979"
+   ],
+   "quote": "pacing"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "element_keys": [
+    "p35-6ff7fb2b"
+   ],
+   "quote": "hitting"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-6ff7fb2b"
+   ],
+   "quote": "pounding walls, throwing objects"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-80245a7f"
+   ],
+   "quote": "aggressive/disruptive patient"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disruptive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-80245a7f"
+   ],
+   "quote": "aggressive/disruptive patient"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "element_keys": [
+    "p35-aa9b9dcf"
+   ],
+   "quote": "Angry behaviour"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Challenging behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "Challenging"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "insulting"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-20e04b0d"
+   ],
+   "quote": "provocative behaviour"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "element_keys": [
+    "p35-9173924e"
+   ],
+   "quote": "Tense posturing"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbal aggression\" \"finding\"))",
+   "element_keys": [
+    "p35-61fd1d24"
+   ],
+   "quote": "Loud, aggressive speech"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p35-d906a979"
+   ],
+   "quote": "Frequently changing body position"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pacing up and down\" \"finding\"))",
+   "element_keys": [
+    "p35-d906a979"
+   ],
+   "quote": "pacing"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "element_keys": [
+    "p35-6ff7fb2b"
+   ],
+   "quote": "hitting"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "element_keys": [
+    "p35-6ff7fb2b"
+   ],
+   "quote": "pounding walls, throwing objects"
+  }
+ ]
+}

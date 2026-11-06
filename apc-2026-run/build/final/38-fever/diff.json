@@ -1,0 +1,347 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/38-fever",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/38-fever",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible diphtheria in fever"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible mpox in fever"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute viral infection in fever"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable appendicitis in fever"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable fever from temperature ≥ 38°C"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable meningitis in fever"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tick bite fever"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: fever with danger signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for causes of fever not needing urgent attention"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent fever conditions"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible diphtheria from fever page"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible mpox from fever page"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute viral infection from fever page"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable appendicitis from fever page"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable meningitis from fever page"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tick bite fever"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: fever with red-box danger signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for causes of fever not needing urgent attention"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent fever conditions"
+  }
+ ],
+ "conditions_A": 92,
+ "conditions_B": 105,
+ "conditions_in_both": 72,
+ "agreement": 0.731,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)"
+   ],
+   "both": [
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of right lower quadrant of abdomen\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))"
+    }
+   ]
+  },
+  "priority_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))"
+   ],
+   "only_B": [
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(active_condition (snomed_concept \"Appendicitis\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption of skin\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))"
+   ],
+   "only_B": [
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "both": [
+    "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of right lower quadrant of abdomen\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Genital structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal cavity structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Fever\" \"finding\") probable)",
+    "(diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)"
+   ],
+   "only_B": [
+    "(diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Appendicitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)"
+   ],
+   "is_a_related": [
+    {
+     "A": "(diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)",
+     "B": "(diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

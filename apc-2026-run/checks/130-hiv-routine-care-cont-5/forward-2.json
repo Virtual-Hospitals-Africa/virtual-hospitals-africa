@@ -1,0 +1,263 @@
+{
+ "page": 130,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p130-270e769d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header 'delay ART and refer same day' encoded as Urgent priority gated on HIV plus a matching check task. HIV infection is a proxy for 'patient being assessed for ART'; Urgent level is a reasonable reading of 'refer same day'.",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (system_priority_evaluation ... Urgent (and HIV (or ...)))",
+    "task \"Check for HIV: danger signs before starting ART\" :: (check_for ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-10429d7d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-916e3c14",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (clinical_finding (snomed_concept \"Dyspnea at rest\" \"finding\")) / (clinical_finding (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-28388cee",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Dependent for walking' is slightly broader than 'unable to walk unaided' but acceptable.",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (clinical_finding (snomed_concept \"Unable to walk\" \"finding\")) / (clinical_finding (snomed_concept \"Dependent for walking\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-08862671",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (Drowsy) (Acute confusion) (Clouded consciousness)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-2b7c069e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-fe4fb28d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-eb260379",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "volume >= 1 tablespoon"
+   ],
+   "problem": "Page requires >= 1 tablespoon of fresh blood; any haemoptysis triggers Urgent. Volume is not representable, so this over-triggers (also in check_for).",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (clinical_finding (snomed_concept \"Hemoptysis\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-575a21f3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (Aggressive behavior) (Feeling agitated)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-3ef19a25",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (clinical_finding (snomed_concept \"Stiff neck\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-2a2e6228",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Visual disturbance concept exists only under 'disorder' semantic tag in this release (63102001); accepted. 'New' is covered by Sudden onset.",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: HIV danger signs before starting ART\" :: (Muscle weakness + Sudden onset) (Numbness + Sudden onset) (Visual disturbance \"disorder\" + Sudden onset)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-6064ffbf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Fever in check_for"
+   ],
+   "problem": "Fever is in the possible-TB rule but missing from the task check_for list, so check list and rule disagree. Known TB meningitis/brain tuberculoma branch not encoded (flowchart routing).",
+   "evidence": [
+    "task \"Check for HIV: TB symptoms and signs of meningitis before starting ART\" :: check_for Cough, Weight decreased, Night sweats, Chest pain, Bloodstained sputum",
+    "system_diagnosis_rule \"Diagnose possible TB in HIV patient before starting ART\" :: (or ... (active_condition (snomed_concept \"Fever\" \"finding\")) ...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p130-4bafdf36",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Known-TB gate used as a negation in the possible-TB rule and as a check item.",
+   "evidence": [
+    "(no (clinical_finding (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-01910b1f",
+   "scope": "borderline",
+   "scope_reason": "Flowchart decision partly encodable; jaundice/pneumonia/PJP could be findings.",
+   "verdict": "partial",
+   "parts_missing": [
+    "jaundice",
+    "pneumonia",
+    "PJP"
+   ],
+   "problem": "Meningitis signs encoded as an Urgent rule, but jaundice and acute illness (pneumonia, PJP) are not encoded. The page's meningitis branch outcome there is 'refer urgently'; the priority is the author's inference. Rule is also subsumed by the danger-sign rule for neck stiffness.",
+   "evidence": [
+    "task \"...TB symptoms and signs of meningitis...\" :: Headache(Severe)",
+    "system_priority_evaluation \"Urgent: HIV with signs of meningitis before starting ART\" :: (and HIV Severe headache (or Stiff neck Finding of vomiting))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-be90fc26",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "CD4 < 50 not representable (lab value); RR-TB and pregnant/breastfeeding could be findings but only drive management timing.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-bbd55e0b",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "CrAg result categories are lab results.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p130-7c895cd4",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "Symptomatic (headache, confusion, blurred/double vision, neck stiffness) or pregnant after CrAg positive: requires CrAg lab result.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p130-0d11b086",
+  "p130-1db3b775",
+  "p130-213268e3",
+  "p130-23892f2c",
+  "p130-24c92105",
+  "p130-277f4007",
+  "p130-2d308d03",
+  "p130-416fb46b",
+  "p130-4ffd981d",
+  "p130-50eb213e",
+  "p130-560d1de4",
+  "p130-5a4eb25a",
+  "p130-5bd5b327",
+  "p130-672cb2f1",
+  "p130-6d890576",
+  "p130-6eec1a2d",
+  "p130-73c95748",
+  "p130-8f613fe5",
+  "p130-93def9ae",
+  "p130-abed7d4a",
+  "p130-b6df7278",
+  "p130-dcab2a90",
+  "p130-ded3aaa3",
+  "p130-e7cdca2c",
+  "p130-ecf70216",
+  "p130-fb8f6add"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "possible TB diagnosis vs TB task check_for",
+   "problem": "Fever is a trigger in the diagnosis rule but absent from the TB task check_for list.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: HIV danger signs",
+   "problem": "Hemoptysis of any amount triggers Urgent; page needs >= 1 tablespoon of fresh blood (not representable, over-triggers).",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: HIV with signs of meningitis",
+   "problem": "Not from the red box; derived from the flowchart. Jaundice and acute illness branches are not encoded, and the rule is redundant with neck stiffness in the danger-sign rule.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: HIV danger signs",
+   "problem": "Gate on HIV infection is a proxy for 'starting ART'; any HIV patient with e.g. tachycardia becomes Urgent regardless of ART context. Acceptable but over-general.",
+   "severity": "low"
+  }
+ ],
+ "summary": "All eleven red-box elements are encoded with sound SNOMED concepts and thresholds; the only red-box gap is the unquantifiable haemoptysis volume, which over-triggers. The main outside-box inconsistency is Fever being in the possible-TB rule but not the TB check_for list; jaundice/pneumonia/PJP from the flowchart and lab-dependent branches (CD4, CrAg) are not encoded."
+}

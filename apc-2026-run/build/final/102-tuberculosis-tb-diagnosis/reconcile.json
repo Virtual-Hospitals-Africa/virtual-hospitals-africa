@@ -1,0 +1,63 @@
+{
+ "page": 102,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malnutrition (calorie)\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "The page says \"Severe malnutrition\" without restricting the type; Deficiency of macronutrients (protein-energy malnutrition) is the broader concept and A's calorie-only Malnutrition (calorie) is its descendant, so B covers what the general wording covers.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malnutrition (calorie)\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "The page says \"Severe malnutrition\" without restricting the type; Deficiency of macronutrients (protein-energy malnutrition) is the broader concept and A's calorie-only Malnutrition (calorie) is its descendant, so B covers what the general wording covers. Kept identical to the check_for form.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "\"drenching night sweats\" is a TB symptom that defines suspected TB (top box), not a red-box urgent sign; checking for it in a task that only runs once TB is already possible cannot change any rule's result.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "\"weight loss\" is a TB symptom feeding the possible-TB trigger, not one of the red-box items listed after \"Give urgent attention to the patient with suspected TB and any of\"; in this task it would be circular.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "\"TB contact\" is a reason to test for TB (top box), not a red-box urgent sign; it stays as diagnosis evidence only. How it gets recorded is listed under Questions for a clinician.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to Mycobacterium tuberculosis\" \"event\"))  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+   "reason": "\"TB contact\" is an exposure; Will's briefing and the page-20 gold standard record exposure as (finding Exposure to (contextual qualifier) X), which is in the shared vocabulary, whereas A's event concept wrapped as a clinical finding is not the documented pattern.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+   "reason": "The page lists \"Abnormal findings on digital CXR + computer aided detection (CAD) screening\" as a reason to test for TB even without symptoms, and this SNOMED finding is an exact fit apart from \"digital\"/\"CAD\"; B left it out as not expressible, but it is.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed and agreed on 32 of 36-38 conditions (all of the red-box vitals and signs, the possible-TB trigger, the TB symptoms, and the decision not to encode the lab-driven flowchart). Base A; B's severe-malnutrition concept and TB-contact exposure form were taken. B's flowchart and remaining questions were merged into A's (B's questions on known-TB patients and 'unable to walk unaided' firing less often kept). Rule descriptions are A's. Not settled by the page and left for the clinician: where weight loss, night sweats, TB contact and abnormal screening CXR get recorded, since no task on this page asks for them and they are not common symptoms or warning signs."
+}

@@ -1,0 +1,530 @@
+[
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-f48ead42",
+  "text": "If current head injury 30.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "current head injury (as a check_for item / evidence)"
+    ],
+    "problem": "Not checked for and not used by any rule. Page 30 presumably carries the head-injury logic, so the clinical loss is small; the omission mainly matters because the red-box check list is incomplete.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "check_for current head injury (e.g. Moderate/Major head injury disorder with Current qualifier)"
+    ],
+    "problem": "No head-injury finding is checked; the p30 route can never be triggered from this page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-7ccc0ac7",
+  "text": "Check fingerprick glucose: if glucose < 3 (< 4 if diabetes) or unable to measure 19.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "glucose < 3 mmol/L (missing)",
+     "glucose < 4 mmol/L if known diabetic (missing)",
+     "unable to measure glucose (not_representable)"
+    ],
+    "problem": "No glucose comparison, no diabetes check and no possible-hypoglycaemia rule anywhere in the file. The house pattern would be a `possible` Hypoglycemia rule with evidence (and Seizure (or (< glucose 3) (and (active_condition Diabetes mellitus) (< glucose 4)))). A reviewer could argue this belongs only on page 19 (cross-reference), hence medium confidence on scope; the diabetic-adjusted threshold is nonetheless stated in this red box.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "not_representable",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "glucose < 3 mmol/L criterion",
+     "glucose < 4 mmol/L if diabetes",
+     "Diabetes mellitus (Known present) as discriminating finding",
+     "unable to measure glucose branch (not representable)"
+    ],
+    "problem": "Hypoglycaemia as a cause of the fit is not encoded at all; no rule uses glucose.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-ffd7e709",
+  "text": "If ≥ 20 weeks pregnant up to 1 week postpartum 177.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     ">= 20 weeks pregnant (threshold not_representable; pregnancy as a finding is representable)",
+     "up to 1 week postpartum (representable via onset of Postpartum state)",
+     "fitting + pregnancy/postpartum -> eclampsia (possible diagnosis / check_for) missing"
+    ],
+    "problem": "Pregnancy and postpartum status are neither checked for nor used. A fitting pregnant woman gets no eclampsia flag from this page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Pregnancy/postpartum branch not encoded; reasonable to omit as it only redirects management",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "pregnancy ≥ 20 weeks gestation",
+     "postpartum up to 1 week (Postpartum state)"
+    ],
+    "problem": "No pregnancy/postpartum finding is checked; the eclampsia branch is lost.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-6872493a",
+  "text": "If fit has lasted ≥ 5 minutes, give medication to stop the fit and refer urgently:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "seizure duration >= 5 minutes",
+     "refer urgently (priority consequence of the >= 5 minute fit)"
+    ],
+    "problem": "Nothing in the file mentions duration or status epilepticus. The rules give the same output for a 30-second fit and a 20-minute one; the page's escalation point is lost. The onset form is an approximation (\"onset at least 5 minutes ago\" rather than \"still fitting after 5 minutes\") but it is the standard pattern for this language.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No duration criterion; likely not_representable",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "seizure duration ≥ 5 minutes criterion",
+     "possible/probable Status epilepticus diagnosis",
+     "urgent referral escalation tied to that criterion"
+    ],
+    "problem": "The one triage discriminator in the algorithm (fit ≥ 5 min) is not encoded; the Emergency rule fires on any unconscious fitting patient regardless of duration, so it neither distinguishes status epilepticus nor carries the 'refer urgently' trigger.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-2882d2e5",
+  "text": "Monitor airway and breathing: if slow or shallow breathing, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds) 16 and refer urgently.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "slow or shallow breathing (respiratory depression after benzodiazepine) as a checked-for finding"
+    ],
+    "problem": "Not checked for or used. Low weight: the patient is already at the top priority under the existing rule, so the practical effect is only that the finding is never prompted for.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "slow or shallow breathing (Bradypnea / Shallow breathing) as check item or escalation"
+    ],
+    "problem": "Not encoded; low impact since the Emergency rule already fires.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p20-2da89c59",
+  "text": "If known with epilepsy and discontinued treatment, restart antiseizure medication or start new antiseizure medication if indicated.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "\"If known with epilepsy and discontinued treatment, restart / start antiseizure medication\" is a medication decision; the page makes no \"epilepsy likely\" statement, so there is no diagnosis rule to expect. The known-epilepsy / stopped-treatment history is a plausible check_for item but nothing in scope would consume it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Epilepsy (Known present)",
+     "discontinued antiseizure medication"
+    ],
+    "problem": "Not checked; low impact for triage.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c001",
+  "text": "Check for unconsciousness in the fitting patient :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page has no check task; 'unconscious and fitting' is one entry condition of the red box, so using fitting as a trigger to check for unconsciousness distorts the logic (the page states both together, not a check step). Concept Seizure itself is correct.",
+    "fix": "Drop the task rule, or justify it as a triage step; the box's logic is the conjunction in the priority rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for unconsciousness in the fitting patient :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page never instructs checking for unconsciousness; it is a stated condition of the patient, not a check_for item. Concept Unconscious (418107008) is right.",
+    "fix": "Remove task rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(whole file)",
+  "text": "The page's one explicit time threshold, \"If fit has lasted >= 5 minutes ... refer urgently\", is not encoded. No onset/time_ago comparison and no Status epilepticus diagnosis exist, so seizure duration never changes the output. This is the page's main escalation point.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: unconscious and fitting (seizures/fits)",
+  "text": "Priority level Emergency is not justified by the page text. The red box says \"Give urgent attention\" and the algorithm says \"refer urgently\", which the house standard maps to Urgent (the gold standard's anaphylaxis red box is Urgent). Emergency is reserved for explicit escalation such as CPR or airway, or a warning sign that already carries that level; unconscious + fitting with ventilation on the page makes Emergency defensible, but it should be stated as a decision, and if the Seizure warning sign already carries a level this rule should agree with it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "Red-box glucose threshold not encoded: glucose < 3 mmol/L (< 4 if diabetic) in a fitting patient -> hypoglycaemia (page 19). Glucose is a routine vital with mmol/L available and \"Hypoglycemia\" (disorder) and \"Diabetes mellitus\" (disorder) exist, so a possible-Hypoglycemia rule was expressible; only \"unable to measure\" is not.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "Red-box pregnancy criterion not encoded: fitting at >= 20 weeks pregnant or up to 1 week postpartum -> eclampsia (page 177). The 20-week threshold is not representable, but pregnancy / postpartum state as findings and \"Eclamptic seizure\" (finding) are, so a possible rule or at least check_for items were expected.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for unconsciousness in the fitting patient",
+  "text": "The check_for list has a single item. The house standard says the list must include every item in the red box; current head injury, pregnancy/postpartum status, diabetes (for the 4 mmol/L threshold) and slow/shallow breathing are all red-box items that are expressible and absent. The one item present (Unconscious) is correctly consumed by the priority rule, and the task's due_to (Seizure) is the warning-sign concept, so the task itself is well-formed.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: unconscious and fitting (seizures/fits)",
+  "text": "The rule requires both Seizure and Unconscious, which matches the header wording, but it means a patient recorded only as fitting (the Seizure warning sign) gets no priority from this page until the check_for has been answered. Acceptable if the Seizure warning sign already carries its own priority; flagged so a reviewer can confirm.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_priority_evaluation Emergency",
+  "text": "Priority rule requires both Seizure and Unconscious; page header targets unconscious and fitting, so this matches. Check list and priority agree. Minor: the Seizure finding as trigger plus 'Unconscious' check_for is consistent. 'Unconscious' concept (finding) is a valid fit for the page.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: unconscious and fitting (seizures/fits)",
+  "text": "Priority is Emergency while the red-box header says 'urgent attention'. House standard maps red box → Urgent unless the page explicitly escalates; airway compromise/unconsciousness arguably justifies it, but this should be confirmed against the Seizure warning-sign level in shared/warning_signs.ts.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(whole file)",
+  "text": "The file encodes only the box header. The red box's discriminating findings (current head injury, glucose < 3/< 4 mmol/L with diabetes, pregnancy ≥ 20 weeks/postpartum ≤ 1 week, fit ≥ 5 minutes) are absent from check_for and from every rule, so the routes to p19, p30 and p177 and the status-epilepticus threshold are all lost.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for unconsciousness in the fitting patient",
+  "text": "check_for contains only 'Unconscious'; the house standard requires every red-box item in the check list. No status epilepticus / eclampsia / hypoglycaemia 'possible' rules exist even though the page's routing implies them.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: unconscious and fitting (seizures/fits)",
+  "text": "Priority level Emergency is not stated by the box heading, which says 'Give urgent attention' and 'refer urgently'; the house default for a red box is Urgent, with Emergency reserved for explicit escalation. It is defensible here because the patient is unconscious and the box manages airway, oxygen and bag-valve ventilation, but the choice should be recorded as a judgment, not read off the page. The (and Seizure Unconscious) structure itself is faithful to 'unconscious and fitting'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for unconsciousness in the fitting patient",
+  "text": "Invented task: the page has no instruction to check for unconsciousness; it is a precondition in the box heading. Redundant with the priority rule.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for unconsciousness in the fitting patient",
+  "text": "Trigger and check_for item are right, but the box branches on findings this task never asks about: a fit lasting 5 minutes or more (the step that decides on medication and urgent referral; Status epilepticus finding exists), current head injury, pregnancy of 20 weeks or more up to 1 week postpartum, glucose < 3 (< 4 if diabetic), and slow or shallow breathing. Nothing listed is invented; the task is just incomplete.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: unconscious and fitting (seizures/fits)",
+  "text": "Using (and Seizure Unconscious) matches the heading 'the patient who is unconscious and fitting'. But the heading says 'Give urgent attention', which the house standard maps to Urgent, and the page never escalates to Emergency in words. Emergency holds only if the shared warning sign for convulsions or unconsciousness already carries Emergency. A reviewer must confirm that, or the level should be Urgent. Also, the 'fit lasted >= 5 minutes, refer urgently' branch has no priority rule of its own.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_level",
+  "text": "A: Emergency \"Emergency: unconscious and fitting (seizures/fits)\"  vs  B: Urgent \"Urgent: unconscious and fitting\" (conditions identical: (and Seizure Unconscious))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (clinical_finding (snomed_concept \"Unconscious\" \"finding\")))",
+    "reason": "The page says \"Give urgent attention to the patient who is unconscious and fitting\", but Will's briefing allows Emergency where the corresponding warning sign already carries that level, and the Seizure warning sign (rules-guide / warning_signs.ts) is Emergency, so an Urgent rule would rank below the sign that already fires for every patient this rule matches.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "slug": "20-seizures-fits",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "rule_description",
+  "text": "A: \"Check for unconsciousness in the fitting patient\"  vs  B: \"Check for urgent seizure/fit conditions\"",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(check_for (clinical_finding (snomed_concept \"Unconscious\" \"finding\")))",
+    "reason": "Naming only; both are page-specific and unique. A's describes what the task checks for (\"unconscious\") and keeps the pair of descriptions consistent with the chosen base.",
+    "unsettled": false
+   }
+  ]
+ }
+]

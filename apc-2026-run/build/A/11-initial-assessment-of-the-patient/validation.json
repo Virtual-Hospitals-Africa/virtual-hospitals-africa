@@ -1,0 +1,43 @@
+{
+ "ok": true,
+ "summary": {
+  "parse": 0,
+  "snomed": 0,
+  "database": 0,
+  "provenance": 0,
+  "quotes": 0,
+  "keys": 0,
+  "coverage": 0,
+  "always_true": 0,
+  "will": 0,
+  "files": 0
+ },
+ "problems": {
+  "parse": [],
+  "snomed": [],
+  "database": [],
+  "provenance": [],
+  "quotes": [],
+  "keys": [],
+  "coverage": [],
+  "always_true": [],
+  "will": [],
+  "files": []
+ },
+ "warnings": [
+  "trigger does not cite a box header or page heading: rule 'Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of conscious",
+  "trigger does not cite a box header or page heading: rule 'Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+  "trigger does not cite a box header or page heading: rule 'Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"find",
+  "trigger does not cite a box header or page heading: rule 'Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to sit up\" \"finding\")",
+  "trigger does not cite a box header or page heading: rule 'Initial assessment: measure glucose if decreased consciousness, seizures, confused, unable to sit up or diabetic' :: (active_condition (snomed_concept \"Diabetes mellitus\" \"disorder\"))"
+ ],
+ "counts": {
+  "task": 6,
+  "system_priority_evaluation": 1
+ },
+ "n_conditions": 86,
+ "n_elements": 24,
+ "n_outside": 14,
+ "n_cited": 30,
+ "n_not_encoded": 2
+}

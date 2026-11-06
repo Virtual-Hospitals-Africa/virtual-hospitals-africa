@@ -1,0 +1,223 @@
+{
+  "page": 48,
+  "base": "A",
+  "decisions": [
+    {
+      "role": "check_for",
+      "difference": "A: (Weakness of face muscles + Sudden onset)  vs  B: (Weakness of face muscles + New + Sudden onset + Asymmetry)",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+      "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Numbness of face + Sudden onset)  vs  B: (Numbness of face + New + Sudden onset + Asymmetry)",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+      "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Muscle weakness of upper limb + Sudden onset), (Weakness of muscle of lower limb + Sudden onset)  vs  B: (Muscle weakness of limb + New + Sudden onset + Asymmetry)",
+      "choice": "new",
+      "final_expr": "(clinical_finding \"Muscle weakness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Weakness of muscle of lower limb\" New Sudden onset Asymmetry)",
+      "reason": "The page says \"arm or leg\" (A's concepts are the closer match) and \"new sudden asymmetric\" (B's qualifiers), so the final build combines them.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Numbness of upper limb + Sudden onset), (Numbness of lower limb + Sudden onset)  vs  B: (Numbness of limbs + New + Sudden onset + Asymmetry)",
+      "choice": "new",
+      "final_expr": "(clinical_finding \"Numbness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Numbness of lower limb\" New Sudden onset Asymmetry)",
+      "reason": "\"numbness of ... arm or leg\": A's single-limb concepts fit \"arm or leg\" better than B's plural \"limbs\"; B's qualifiers carry \"new sudden asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Difficulty talking + Sudden onset)  vs  B: (Difficulty talking + New + Sudden onset)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Difficulty talking\" New Sudden onset)",
+      "reason": "\"New sudden ... difficulty speaking\": B carries \"new\" as well as \"sudden\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Weakness of face muscles + Sudden onset)  vs  B: (Weakness of face muscles + New + Sudden onset + Asymmetry)",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+      "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Numbness of face + Sudden onset)  vs  B: (Numbness of face + New + Sudden onset + Asymmetry)",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+      "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Muscle weakness of upper limb + Sudden onset), (Weakness of muscle of lower limb + Sudden onset)  vs  B: (Muscle weakness of limb + New + Sudden onset + Asymmetry)",
+      "choice": "new",
+      "final_expr": "(clinical_finding \"Muscle weakness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Weakness of muscle of lower limb\" New Sudden onset Asymmetry)",
+      "reason": "The page says \"arm or leg\" (A's concepts are the closer match) and \"new sudden asymmetric\" (B's qualifiers), so the final build combines them.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Numbness of upper limb + Sudden onset), (Numbness of lower limb + Sudden onset)  vs  B: (Numbness of limbs + New + Sudden onset + Asymmetry)",
+      "choice": "new",
+      "final_expr": "(clinical_finding \"Numbness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Numbness of lower limb\" New Sudden onset Asymmetry)",
+      "reason": "\"numbness of ... arm or leg\": A's single-limb concepts fit \"arm or leg\" better than B's plural \"limbs\"; B's qualifiers carry \"new sudden asymmetric\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Difficulty talking + Sudden onset)  vs  B: (Difficulty talking + New + Sudden onset)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Difficulty talking\" New Sudden onset)",
+      "reason": "\"New sudden ... difficulty speaking\": B carries \"new\" as well as \"sudden\".",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Visual disturbance + Sudden onset) in the stroke rule  vs  B: (Visual disturbance + New + Sudden onset)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Visual disturbance\" New Sudden onset)",
+      "reason": "\"New sudden ... visual disturbance: stroke or TIA likely\"; B carries \"new\", and it keeps the stroke item distinct from the separate \"Sudden loss or change in vision\" item.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "B only: (Visual disturbance + New + Sudden onset)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Visual disturbance\" New Sudden onset)",
+      "reason": "Needed so the stroke rule's evidence is checked for; the plain Sudden onset form stays for \"Sudden loss or change in vision\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Eczema/Allergic rhinitis caused by pollen/Asthma + Known present)  vs  B: (same concepts, no qualifier)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Eczema\"), (clinical_finding \"Allergic rhinitis caused by pollen\"), (clinical_finding \"Asthma\")",
+      "reason": "\"patient has eczema, hayfever or asthma\": the page adds nothing that \"Known present\" expresses; the plain form is closer.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Eczema/Allergic rhinitis caused by pollen/Asthma + Known present)  vs  B: (same concepts, no qualifier)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Eczema\"), (clinical_finding \"Allergic rhinitis caused by pollen\"), (clinical_finding \"Asthma\")",
+      "reason": "\"patient has eczema, hayfever or asthma\": the page adds nothing that \"Known present\" expresses; the plain form is closer.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Red eye), (Watery eye) unqualified, with Unilateral only on Pain in eye  vs  B: (Red eye + Unilateral), (Watery eye + Unilateral)",
+      "choice": "B",
+      "final_expr": "(and (Pain in eye Unilateral) (or (Red eye Unilateral) (Watery eye Unilateral)))",
+      "reason": "\"One painful red/watery eye\": \"one\" qualifies the eye that is red/watery as well as painful, so B applies Unilateral throughout.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Herpes zoster involving tip of nose)  vs  B: (Herpes zoster, finding_site Nasal structure)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Herpes zoster\" (finding_site \"Nasal structure\"))",
+      "reason": "\"Shingles involving eye or nose\" names the nose, not its tip; A's concept is narrower than the page.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Chemical burn)  vs  B: (Chemical burn, finding_site Eye region structure)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Chemical burn\")",
+      "reason": "The page says just \"Chemical burn\"; the eye site is not in its words, and the trigger already requires an eye finding.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Red eye), (Watery eye) unqualified, with Unilateral only on Pain in eye  vs  B: (Red eye + Unilateral), (Watery eye + Unilateral)",
+      "choice": "B",
+      "final_expr": "(and (Pain in eye Unilateral) (or (Red eye Unilateral) (Watery eye Unilateral)))",
+      "reason": "\"One painful red/watery eye\": \"one\" qualifies the eye that is red/watery as well as painful, so B applies Unilateral throughout.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Herpes zoster involving tip of nose)  vs  B: (Herpes zoster, finding_site Nasal structure)",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Herpes zoster\" (finding_site \"Nasal structure\"))",
+      "reason": "\"Shingles involving eye or nose\" names the nose, not its tip; A's concept is narrower than the page.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (Chemical burn)  vs  B: (Chemical burn, finding_site Eye region structure)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Chemical burn\")",
+      "reason": "The page says just \"Chemical burn\"; the eye site is not in its words, and the trigger already requires an eye finding.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A only: (Headache), (Nausea), (Finding of vomiting)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Headache\"), (clinical_finding \"Nausea\"), (clinical_finding \"Finding of vomiting\")",
+      "reason": "\"headache/nausea/vomiting\" is evidence for \"acute glaucoma likely\", so it is checked for.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "Acute glaucoma rule structure. A: pain AND red AND blurred AND haloes AND dilated pupil AND (headache OR nausea OR vomiting)  vs  B: pain AND red AND (any one of the rest)",
+      "choice": "A",
+      "final_expr": "(and Pain in eye, Red eye, Blurring of visual image, Sees haloes around lights, Fixed dilatation of pupil, (or Headache Nausea Finding of vomiting))",
+      "reason": "\"If painful eye with redness, blurred vision, haloes around light, dilated unreactive pupil, headache/nausea/vomiting\" lists features with commas and only the slash marks alternatives; A follows that literally, but the page does not say how many are needed.",
+      "unsettled": true
+    },
+    {
+      "role": "check_for",
+      "difference": "A only: (Sore throat), (Localized enlarged lymph nodes)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Sore throat\"), (clinical_finding \"Localized enlarged lymph nodes\")",
+      "reason": "They are evidence in the final viral conjunctivitis rule (\"Clear watery discharge, fever, sore throat, enlarged lymph nodes\").",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A only: (active_condition Fever), (Sore throat), (Localized enlarged lymph nodes) in viral conjunctivitis  vs  B: clear discharge alone",
+      "choice": "A",
+      "final_expr": "(and (no Itching of eye) (Serous conjunctival discharge) (or (active_condition Fever) (Sore throat) (Localized enlarged lymph nodes)))",
+      "reason": "The node reads \"Clear watery discharge, fever, sore throat, enlarged lymph nodes\"; A keeps the page's features (as an or), B drops them, and the page does not say how many are required.",
+      "unsettled": true
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Lump in eyelid)  vs  B: (Mass [morphologic abnormality], finding_site Eyelid structure)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Lump in eyelid\")",
+      "reason": "\"painful lump on eyelid\": A's finding concept says \"lump in eyelid\" directly; B uses a morphologic abnormality as a clinical finding.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis_condition",
+      "difference": "A: (Lump in eyelid)  vs  B: (Mass [morphologic abnormality], finding_site Eyelid structure)",
+      "choice": "A",
+      "final_expr": "(clinical_finding \"Lump in eyelid\")",
+      "reason": "\"painful lump on eyelid\": A's finding concept says \"lump in eyelid\" directly; B uses a morphologic abnormality as a clinical finding.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for",
+      "difference": "A: (Watery eye) in the urgent task  vs  B: (Watery eye) in the non-urgent task",
+      "choice": "B",
+      "final_expr": "(clinical_finding \"Watery eye\") in \"Check for causes of non-urgent eye/vision symptoms\"",
+      "reason": "Plain watery eye now serves only \"Eyes discharging or watery\" (allergic rule); the urgent item uses the Unilateral form.",
+      "unsettled": false
+    }
+  ],
+  "notes": "Both builds passed. Base A (more complete: checks headache/nausea/vomiting and the viral features, uses arm/leg concepts and a finding concept for the eyelid lump). Taken from B: New/Asymmetry qualifiers on the stroke features, Unilateral on red/watery eye, Herpes zoster + Nasal structure, plain eczema/hayfever/asthma. Rule descriptions are A's. The glaucoma and viral-conjunctivitis logic structure differed (same atoms, different and/or) and is recorded as unsettled. B cited the 'Manage and refer urgently' header; A (and the final build) lists it as management_step."
+}

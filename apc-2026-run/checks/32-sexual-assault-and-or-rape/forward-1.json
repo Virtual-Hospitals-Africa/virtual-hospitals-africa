@@ -1,0 +1,224 @@
+{
+  "page": 32,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p32-83ced725",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the Urgent priority structure (presenting complaint AND any of the listed items).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: sexual assault/rape with urgent features :: (system_priority_evaluation ... Urgent (and (or (clinical_finding (snomed_concept \"Sexual assault\" \"event\")) (clinical_finding (snomed_concept \"Rape\" \"event\"))) (or ...)))",
+        "Check for urgent sexual assault/rape conditions :: (task ... (or (clinical_finding (snomed_concept \"Sexual assault\" \"event\")) (clinical_finding (snomed_concept \"Rape\" \"event\"))) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-1565c8a9",
+      "scope": "in_scope",
+      "scope_reason": "Time-window criterion with a sex split; the language has onset/time_ago comparisons.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts, all encoded: (a) the event is sexual assault or rape (both concepts, and Rape is_a Sexual assault so the or is redundant but harmless); (b) woman -> within 5 days: (and Female (or (<= (onset Sexual assault) (time_ago 5 days)) (<= (onset Rape) (time_ago 5 days)))); (c) man -> within 3 days: same shape with Male and 3 days. Direction follows the house convention ((< (onset X) (time_ago N days)) = within the last N days). Note the dependency on sex being recorded as the findings \"Female\"/\"Male\"; see rule_level_problems.",
+      "evidence": [
+        "Urgent: sexual assault/rape with urgent features :: (and (clinical_finding (snomed_concept \"Female\" \"finding\")) (or (<= (onset (clinical_finding (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days)) (<= (onset (clinical_finding (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))))",
+        "Urgent: sexual assault/rape with urgent features :: (and (clinical_finding (snomed_concept \"Male\" \"finding\")) (or (<= (onset (clinical_finding (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days)) (<= (onset (clinical_finding (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))))",
+        "Check for urgent sexual assault/rape conditions :: (clinical_finding (snomed_concept \"Female\" \"finding\")) (clinical_finding (snomed_concept \"Male\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-c2e4440c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion (cross-reference to page 30 is incidental).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as the general concept \"Traumatic injury\" (disorder). The qualifier \"needing attention\" is dropped, so any recorded injury, however trivial, makes the patient Urgent. The language has no clean way to say \"needing attention\" and page 30 owns that judgement, so this is acceptable, but it over-includes.",
+      "evidence": [
+        "Urgent: sexual assault/rape with urgent features :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))",
+        "Check for urgent sexual assault/rape conditions :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p32-d7902574",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with four parts.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Four parts, all encoded with concepts that exist and mean what the page says: suicidal thoughts -> \"Suicidal thoughts\" (finding); suicidal plans -> \"Planning suicide\" (finding); overdose -> \"Overdose\" (disorder); self harm -> \"Intentionally harming self\" (event). All four are in the check_for and in the or-list of the Urgent rule.",
+      "evidence": [
+        "Urgent: sexual assault/rape with urgent features :: (clinical_finding (snomed_concept \"Suicidal thoughts\" \"finding\")) (clinical_finding (snomed_concept \"Planning suicide\" \"finding\")) (clinical_finding (snomed_concept \"Overdose\" \"disorder\")) (clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))",
+        "Check for urgent sexual assault/rape conditions :: same four clinical_finding forms in check_for"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-1acff658",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "\"Pregnancy\" (finding) exists (77386006); \"Pregnant\"/\"Patient currently pregnant\" are not VHA names, so this is the right concept.",
+      "evidence": [
+        "Urgent: sexual assault/rape with urgent features :: (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))",
+        "Check for urgent sexual assault/rape conditions :: (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-4025182b",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header for the management block; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-44367ff7",
+      "scope": "borderline",
+      "scope_reason": "The sentence is a management/referral instruction, but its condition is a list of clinical findings (severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, foreign object) that selects the subset of urgent patients who must go to the next level of care. The house standard says the check_for must include every item in the red box, and these are red-box items the language can express (\"Bleeding\" + Severe qualifier, \"Multiple injuries\" (disorder), \"Abdominal pain\" + Severe qualifier, \"Difficulty breathing\" (finding), \"Assault by strangulation\" (event), \"Foreign body\" (disorder) all exist). Reasonable people could call it a pure management step.",
+      "verdict": "missing",
+      "parts_missing": [
+        "severe bleeding",
+        "multiple injuries",
+        "severe abdominal pain",
+        "difficulty breathing",
+        "strangled/choked",
+        "use of a foreign object"
+      ],
+      "problem": "None of the six findings (pregnant excepted, which is covered by the header criterion) is checked for or used in any rule, so the system never prompts the nurse to look for them in a sexual-assault patient. The referral action itself is out of scope, but the findings are red-box check items.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p32-88cbb9cd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "BP < 90/60 -> IV fluids. BP is a routine vital; the threshold only gates a treatment, and the page does not escalate the priority level on it.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-1a56fe79",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "SpO2 < 95% or difficulty breathing -> oxygen. Routine vital gating a treatment.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-95b9d9a9",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "PEP for HIV/hepatitis B; cross-reference to page 122.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-2dcdca69",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Presumptive STI treatment with drug doses; cross-reference to page 62.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-cd35a65a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Emergency contraception conditions (woman of child-bearing age, pregnancy test negative, not on reliable contraception, <= 5 days) gate a treatment, not a priority or diagnosis; cross-reference to page 170.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-bc3bcf9d",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Referral to Thuthuzela Care Centre for forensic examination.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p32-23691e73",
+      "scope": "borderline",
+      "scope_reason": "\"Suspect sexual assault if ... Suspect rape if ...\" reads like a consider/suspect conclusion, which the house standard maps to a possible diagnosis rule. But the condition (forced sexual act / penetration without consent) is the definition of the event concept itself, not a separate recordable finding, so the natural encoding is to record \"Sexual assault\"/\"Rape\" (event) directly, which is what the task's due_to does.",
+      "verdict": "missing",
+      "parts_missing": [
+        "possible/suspected sexual assault rule",
+        "possible/suspected rape rule"
+      ],
+      "problem": "No possible-diagnosis rule for sexual assault or rape. Low consequence: there is no discriminating finding to put in the evidence that is not the event itself, and the rules fire off the recorded event. The second sentence (safe space, confidentiality) is advice.",
+      "evidence": [
+        "Check for urgent sexual assault/rape conditions :: (or (clinical_finding (snomed_concept \"Sexual assault\" \"event\")) (clinical_finding (snomed_concept \"Rape\" \"event\")))"
+      ],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p32-5bab79a8",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Substance-use screen (>= 4 drinks/session, illegal drugs, misused medications) routes to page 165, which owns that logic.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p32-a042e1d9",
+    "p32-47dd43cd",
+    "p32-9246eb9b",
+    "p32-bd4e273b",
+    "p32-ea863d3a",
+    "p32-a7f62dfa",
+    "p32-ba48f588",
+    "p32-d9600db6",
+    "p32-06874b9c",
+    "p32-f1198fe4",
+    "p32-e8d45260",
+    "p32-77a9d250",
+    "p32-57d6e20a",
+    "p32-b9ceca95",
+    "p32-7cd33709"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: sexual assault/rape with urgent features",
+      "problem": "The time-window branch (the page's first and most common urgent criterion) only fires if the patient's sex has been recorded as the clinical findings \"Female\" (finding) or \"Male\" (finding). If VHA holds sex as a demographic rather than a recorded finding, neither branch matches and a woman raped yesterday with no other urgent feature is not flagged Urgent. The check_for does list Female/Male, which mitigates this only if the nurse answers those items. Worth confirming how sex is represented before relying on this rule.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent sexual assault/rape conditions",
+      "problem": "The check_for omits the red-box findings in the \"manage and refer urgently\" line (severe bleeding, multiple injuries, severe abdominal pain, difficulty breathing, strangled/choked, foreign object). The house standard asks for every red-box item in the check_for; these would need to be consumed by a rule (e.g. added to the Urgent or-list) to satisfy the never-used-as-evidence test.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: sexual assault/rape with urgent features",
+      "problem": "The evidence \"Sexual assault\" and \"Rape\" (event) appear only as the task's due_to, not in a check_for. The house constraint 5 says priority-evaluation evidence must be checked for in the same file (constraint 4 explicitly allows a task due_to; constraint 5 does not say). If the test does not accept a task due_to for priority evaluations, this will be reported as PRIORITY EVALUATION ... NOT CHECKED FOR. Also, the task due_to uses the general \"Sexual assault\" which already matches \"Rape\" by descent; harmless redundancy.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: sexual assault/rape with urgent features",
+      "problem": "\"Traumatic injury\" (disorder) without any qualifier makes every recorded injury, however minor, an Urgent criterion, whereas the page says \"injuries needing attention\". No clean representation exists; noted so a clinician can decide whether the over-inclusion is acceptable.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red-box criteria are all encoded correctly: the sex-specific 5-day/3-day window uses the house onset/time_ago convention in the right direction, and pregnancy, injury and the four suicide/self-harm items use concepts that exist and mean what the page says. The main gaps are that the time-window branch depends on sex being recorded as the findings Female/Male, and the refer-urgently findings (severe bleeding, multiple injuries, severe abdominal pain, difficulty breathing, strangulation, foreign object) are neither checked for nor used. There is no possible-diagnosis rule for suspected sexual assault/rape, but the page's definition offers no separate finding to drive one."
+}

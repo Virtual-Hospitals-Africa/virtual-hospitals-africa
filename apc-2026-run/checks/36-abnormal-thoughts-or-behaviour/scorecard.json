@@ -1,0 +1,1699 @@
+{
+ "page": 36,
+ "slug": "36-abnormal-thoughts-or-behaviour",
+ "validation_ok": true,
+ "builder_agreement": 0.897,
+ "elements": 52,
+ "elements_agreed": 42,
+ "claims": 133,
+ "claims_agreed": 102,
+ "queue": 97,
+ "queue_by_priority": {
+  "low": 15,
+  "medium": 79,
+  "high": 3
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p36-cf86a3e4",
+   "id": "p36-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-2765dde2",
+   "id": "p36-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-48cbdcc4",
+   "id": "p36-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-87ca516f",
+   "id": "p36-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-8371dba7",
+   "id": "p36-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-7c6c7464",
+   "id": "p36-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-a1527c8a",
+   "id": "p36-rb1-e07",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p36-c7a79db7",
+   "id": "p36-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-0753fb49",
+   "id": "p36-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-ef521aae",
+   "id": "p36-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-9371e240",
+   "id": "p36-rb1-e11",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-11306d7e",
+   "id": "p36-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-bbd51d26",
+   "id": "p36-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-7dee22aa",
+   "id": "p36-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-432f30bd",
+   "id": "p36-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-72e8a36d",
+   "id": "p36-rb1-e16",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p36-e6ee5b80",
+   "id": "p36-rb1-e17",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p36-a8c75101",
+   "id": "p36-rb1-e18",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-419e9709",
+   "id": "p36-rb1-e19",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-02505318",
+   "id": "p36-rb1-e20",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-663005f3",
+   "id": "p36-rb1-e21",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p36-64320099",
+   "id": "p36-rb1-e22",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p36-9e02913e",
+   "id": "p36-rb1-e23",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-dc378146",
+   "id": "p36-rb1-e24",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 1,
+    "(no verdict)": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p36-a6e87f30",
+   "id": "p36-rb1-e25",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-a1da20c2",
+   "id": "p36-rb1-e26",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-4dba80b5",
+   "id": "p36-rb1-e27",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-a5e3889c",
+   "id": "p36-rb1-e28",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-f9d45a98",
+   "id": "p36-rb1-e29",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p36-970dd0ce",
+   "id": "p36-rb1-e30",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-5fef3b21",
+   "id": "p36-rb1-e31",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-bcaa3702",
+   "id": "p36-rb1-e32",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-1b5f50a9",
+   "id": "p36-rb1-e33",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-c1656caf",
+   "id": "p36-rb1-e34",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-af3a0016",
+   "id": "p36-rb1-e35",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-cd4d5484",
+   "id": "p36-rb1-e36",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-4d48d28e",
+   "id": "p36-rb1-e37",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-863ac997",
+   "id": "p36-rb1-e38",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-1546eb2b",
+   "id": "p36-rb1-e39",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-0391ed5c",
+   "id": "p36-rb1-e40",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-12f5ea48",
+   "id": "p36-rb1-e41",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-855ac708",
+   "id": "p36-rb1-e42",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p36-1fa4180d",
+   "id": "p36-rb1-e43",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-5767195c",
+   "id": "p36-rb1-e44",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-286ca926",
+   "id": "p36-rb1-e45",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p36-5901c4c8",
+   "id": "p36-rb1-e46",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-30912b6c",
+   "id": "p36-rb1-e47",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-61e931a3",
+   "id": "p36-rb1-e48",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-83566ce2",
+   "id": "p36-rb1-e49",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-330b4924",
+   "id": "p36-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p36-ee7af581",
+   "id": "p36-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 1,
+    "correct": 2
+   }
+  },
+  {
+   "key": "p36-8cb634e4",
+   "id": "p36-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible stroke in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible TIA in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable delirium in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable mania in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable psychosis in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable poisoning in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

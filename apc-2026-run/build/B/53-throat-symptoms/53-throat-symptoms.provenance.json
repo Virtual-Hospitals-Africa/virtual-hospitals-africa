@@ -1,0 +1,1112 @@
+{
+ "edition": "2026",
+ "page": 53,
+ "lisp_file": "53-throat-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-fd377cac"
+   ],
+   "quote": "throat symptoms",
+   "confidence": "medium",
+   "note": "\"Throat symptoms\" anchored to the recorded common symptom Sore throat; other throat complaints do not trigger."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to open mouth\" \"finding\"))",
+   "element_keys": [
+    "p53-e1960032"
+   ],
+   "quote": "Unable to open mouth",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to swallow\" \"finding\"))",
+   "element_keys": [
+    "p53-4bc617be"
+   ],
+   "quote": "Unable to swallow at all",
+   "confidence": "high",
+   "note": "\"at all\" is not separately qualified; Unable to swallow already means complete inability."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pharyngeal swelling\" \"finding\"))",
+   "element_keys": [
+    "p53-74ae0994"
+   ],
+   "quote": "Red swelling",
+   "confidence": "medium",
+   "note": "\"Red swelling\" in the throat as Pharyngeal swelling; redness not encoded separately. Paired by and with the airway obstruction."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory tract obstruction\" \"disorder\"))",
+   "element_keys": [
+    "p53-74ae0994"
+   ],
+   "quote": "blocking airway",
+   "confidence": "medium",
+   "note": "No generic \"airway obstruction\" concept; Upper respiratory tract obstruction is the closest that exists."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "rash",
+   "confidence": "medium",
+   "note": "Generalised rash as Eruption (gold-standard concept); no generalised qualifier."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 lists the possible allergens; exposure to medication encoded as in page 20."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: food in general (Food substance), not the page-20 list of specific foods."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Check for urgent throat symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "throat symptoms",
+   "confidence": "medium",
+   "note": "Anchored to the common symptom Sore throat."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "difficulty or pain on swallowing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swallowing painful\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "difficulty or pain on swallowing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "white patches on cheeks/gums/tongue/palate",
+   "confidence": "high",
+   "note": "Cheeks/gums/tongue/palate together are the oral mucosa."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of throat\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "Check for redness",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "grey membrane",
+   "confidence": "high",
+   "note": "Pseudomembrane with finding site pharynx / nose, one check each."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "grey membrane",
+   "confidence": "high",
+   "note": "Pseudomembrane with finding site pharynx / nose, one check each."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palatine tonsillar structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "swollen tonsils",
+   "confidence": "medium",
+   "note": "Swelling with finding site Palatine tonsillar structure (no precoordinated swollen tonsils concept)."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exudate on tonsils\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "white patches",
+   "confidence": "medium",
+   "note": "Examination for white patches; Exudate on tonsils is the tonsil-specific finding the flowchart uses."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "no cough",
+   "confidence": "high",
+   "note": "Checked so that a negative can be recorded."
+  },
+  {
+   "rule": "Assess throat symptoms not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "no runny nose",
+   "confidence": "high",
+   "note": "Runny nose as Nasal discharge."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-fd377cac"
+   ],
+   "quote": "throat symptoms",
+   "confidence": "medium",
+   "note": "Red-box context: patient with throat symptoms."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "rash",
+   "confidence": "medium",
+   "note": "Generalised rash as Eruption (gold-standard concept); no generalised qualifier."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 lists the possible allergens; exposure to medication encoded as in page 20."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: food in general (Food substance), not the page-20 list of specific foods."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider anaphylaxis with throat symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "high",
+   "note": "\"check for anaphylaxis\" read as consider/possible; hands over to the anaphylaxis page."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis from throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "difficulty or pain on swallowing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis from throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swallowing painful\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "difficulty or pain on swallowing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis from throat symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White patches on oral mucosa\" \"finding\"))",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "white patches on cheeks/gums/tongue/palate",
+   "confidence": "high",
+   "note": "Cheeks/gums/tongue/palate together are the oral mucosa."
+  },
+  {
+   "rule": "Diagnose probable oesophageal candidiasis from throat symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Candidiasis of esophagus\" \"disorder\") probable)",
+   "element_keys": [
+    "p53-c9dbe520"
+   ],
+   "quote": "oesophageal candida likely",
+   "confidence": "high",
+   "note": "Candidiasis of esophagus."
+  },
+  {
+   "rule": "Consider diphtheria with sore throat and pseudomembrane",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Consider diphtheria with sore throat and pseudomembrane",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "high",
+   "note": "\"throat/nose\" as two sited findings (Pharyngeal structure, Nasal structure); \"thick grey\" not encoded."
+  },
+  {
+   "rule": "Consider diphtheria with sore throat and pseudomembrane",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "high",
+   "note": "\"throat/nose\" as two sited findings (Pharyngeal structure, Nasal structure); \"thick grey\" not encoded."
+  },
+  {
+   "rule": "Consider diphtheria with sore throat and pseudomembrane",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+   "element_keys": [
+    "p53-4541362e"
+   ],
+   "quote": "Consider diphtheria",
+   "confidence": "high",
+   "note": "\"Diphtheria\" alone does not exist; the C. diphtheriae disorder is the parent concept."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "medium",
+   "note": "\"No\" branch of the pseudomembrane question: a recorded negative at each site."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "medium",
+   "note": "\"No\" branch of the pseudomembrane question: a recorded negative at each site."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palatine tonsillar structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "swollen tonsils",
+   "confidence": "medium",
+   "note": "Swelling with finding site Palatine tonsillar structure."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exudate on tonsils\" \"finding\"))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "pus/white patches on tonsils",
+   "confidence": "high",
+   "note": "Exudate on tonsils."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "no cough",
+   "confidence": "high",
+   "note": "Recorded negative (no) form."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "no runny nose",
+   "confidence": "high",
+   "note": "Runny nose as Nasal discharge, recorded negative."
+  },
+  {
+   "rule": "Diagnose probable bacterial tonsillopharyngitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Bacterial tonsillitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p53-49e9e5a3"
+   ],
+   "quote": "Bacterial tonsillopharyngitis likely",
+   "confidence": "medium",
+   "note": "No tonsillopharyngitis concept; Bacterial tonsillitis (child of Infective pharyngitis) is closest."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "medium",
+   "note": "\"No\" branch of the pseudomembrane question: a recorded negative at each site."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))",
+   "element_keys": [
+    "p53-ca6dd6e5"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in throat/nose",
+   "confidence": "medium",
+   "note": "\"No\" branch of the pseudomembrane question: a recorded negative at each site."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palatine tonsillar structure\" \"body structure\"))))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "swollen tonsils",
+   "confidence": "medium",
+   "note": "No branch of the tonsil question: no swollen tonsils (then red throat required)."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of throat\" \"finding\"))",
+   "element_keys": [
+    "p53-5038e0e1"
+   ],
+   "quote": "Red throat",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palatine tonsillar structure\" \"body structure\")))",
+   "element_keys": [
+    "p53-5038e0e1"
+   ],
+   "quote": "swollen tonsils",
+   "confidence": "medium",
+   "note": "Viral box: swollen tonsils (with negated tonsil-question criteria)."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exudate on tonsils\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-21cb9b35"
+   ],
+   "quote": "pus/white patches on tonsils",
+   "confidence": "high",
+   "note": "Exudate on tonsils. Negated: No branch."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p53-5038e0e1"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Negation of \"no cough\" in the tonsil question."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p53-5038e0e1",
+    "p53-effdf1e3"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Negation of \"no runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable viral tonsillopharyngitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Viral tonsillitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p53-3b105e15",
+    "p53-61676b21"
+   ],
+   "quote": "Viral tonsillopharyngitis likely",
+   "confidence": "medium",
+   "note": "No tonsillopharyngitis concept; Viral tonsillitis (child of Viral pharyngitis) is closest."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p53-fd377cac"
+   ],
+   "quote": "throat symptoms",
+   "confidence": "medium",
+   "note": "\"Throat symptoms\" anchored to the recorded common symptom Sore throat; other throat complaints do not trigger."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to open mouth\" \"finding\"))",
+   "element_keys": [
+    "p53-e1960032"
+   ],
+   "quote": "Unable to open mouth",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to swallow\" \"finding\"))",
+   "element_keys": [
+    "p53-4bc617be"
+   ],
+   "quote": "Unable to swallow at all",
+   "confidence": "high",
+   "note": "\"at all\" is not separately qualified; Unable to swallow already means complete inability."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pharyngeal swelling\" \"finding\"))",
+   "element_keys": [
+    "p53-74ae0994"
+   ],
+   "quote": "Red swelling",
+   "confidence": "medium",
+   "note": "\"Red swelling\" in the throat as Pharyngeal swelling; redness not encoded separately. Paired by and with the airway obstruction."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory tract obstruction\" \"disorder\"))",
+   "element_keys": [
+    "p53-74ae0994"
+   ],
+   "quote": "blocking airway",
+   "confidence": "medium",
+   "note": "No generic \"airway obstruction\" concept; Upper respiratory tract obstruction is the closest that exists."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "sudden face/tongue swelling",
+   "confidence": "high",
+   "note": "Same form as the gold standard page 20."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "rash",
+   "confidence": "medium",
+   "note": "Generalised rash as Eruption (gold-standard concept); no generalised qualifier."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p53-d9d8d330"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1 lists the possible allergens; exposure to medication encoded as in page 20."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: food in general (Food substance), not the page-20 list of specific foods."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  },
+  {
+   "rule": "Urgent: throat symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p53-a3a375c6"
+   ],
+   "quote": "medication, food or insect bite/sting",
+   "confidence": "high",
+   "note": "Direct encoding of the page wording."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p53-d84a84c6",
+   "element_id": "p53-rb1-e06",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral instruction; no manage tasks or referral steps in this pass."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))",
+   "reason": "The positive finding is checked for in 'Assess throat symptoms not needing urgent attention'. The gate appears not to match a (no X) whose X carries a finding_site (it does match (no Cough) etc.). Faithful encoding kept."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))",
+   "reason": "The positive finding is checked for in 'Assess throat symptoms not needing urgent attention'. The gate appears not to match a (no X) whose X carries a finding_site (it does match (no Cough) etc.). Faithful encoding kept."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palatine tonsillar structure\" \"body structure\"))))",
+   "reason": "The positive finding is checked for in 'Assess throat symptoms not needing urgent attention'. The gate appears not to match a (no X) whose X carries a finding_site (it does match (no Cough) etc.). Faithful encoding kept."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "'Throat symptoms' anchored to the common symptom Sore throat for every rule.",
+   "alternatives": "An or of sore throat, difficulty/painful swallowing; rejected because Unable to swallow must then be checked for in its own due_to family.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaphylaxis bullet in red box",
+   "decision": "Encoded both inside the Urgent priority and as a possible Anaphylaxis diagnosis (\"check for anaphylaxis 28\").",
+   "alternatives": "Treat as cross_reference_only; rejected because the bullet lists its own criteria inside the urgent box.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Red swelling blocking airway",
+   "decision": "and of Pharyngeal swelling and Upper respiratory tract obstruction.",
+   "alternatives": "Upper respiratory tract obstruction alone (broader) or Pharyngeal swelling alone (fires on any swelling).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Viral tonsillopharyngitis",
+   "decision": "No branch of the tonsil question, with red throat required when tonsils are not swollen; tender neck lymph nodes not required.",
+   "alternatives": "Requiring all features in the viral box (too narrow) or the No branch alone (fires on any sore throat without swollen tonsils).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Pseudomembrane 'No' branch",
+   "decision": "Bacterial and viral rules require a recorded negative for pseudomembrane in both pharynx and nose.",
+   "alternatives": "Single unsited Pseudomembrane finding; or omit the negative and rely on page order.",
+   "confidence": "medium"
+  }
+ ]
+}

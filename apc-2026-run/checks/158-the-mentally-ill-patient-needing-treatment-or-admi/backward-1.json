@@ -1,0 +1,111 @@
+{
+ "page": 158,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mental disorder\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk for suicide\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "The page says 'serious harm to self', never 'suicide'; suicide risk is a narrower builder inference (and in SNOMED it is not a descendant of 'At increased risk of self-injurious behavior', so it is a genuine extra disjunct rather than a duplicate).",
+   "fix": "Acceptable as an added disjunct for safety; if kept, note it in remaining questions as an expansion of 'harm to self' rather than page wording.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"High risk of harm to others\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'High risk' grades the risk level, which the page does not; the page's 'serious' qualifies the harm. The concept excludes its sibling 'Moderate risk of harm to others', and the parent is the natural match for the other three 'At increased risk ...' concepts used.",
+   "fix": "(snomed_concept \"At increased risk for other-directed violence\" \"finding\") (exists; its children are High and Moderate risk of harm to others, which then match by descent).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk for destructive behavior to property\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mental disorder\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk for suicide\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c003: 'suicide' is not on the page; it is a narrower inference from 'serious harm to self'.",
+   "fix": "Keep as an extra disjunct if desired, but record it as an expansion.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"High risk of harm to others\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c004: a graded 'High risk' concept where the page has no risk grading; drops 'Moderate risk of harm to others'.",
+   "fix": "(snomed_concept \"At increased risk for other-directed violence\" \"finding\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk for destructive behavior to property\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent risks in the mentally ill patient needing admission",
+   "verdict": "problem",
+   "problem": "The red box lists four criteria ('any of'); the task checks for only the last two. 'Death' (p158-39cb50d9) and 'Irreversible health problem/s' (p158-108e7146) are not checked for at all. No clean SNOMED finding was found for either ('risk of death', 'irreversible', 'life threatening', 'deterioration' searches give nothing usable), so this is a SNOMED gap that must be recorded in remaining questions, with the closest proxy considered (e.g. the red box's own 'not alert, fully conscious or physically stable' cue, or 'General health deterioration' finding). Minor: the red-box management cue 'If aggressive/disruptive' maps to the existing warning sign 'Aggressive behavior' / 'Disruptive behavior' (finding), which could reasonably be checked for or used as an anchor, since it is the page's concrete sign of the harm-to-others risk. Type (check task), trigger and grouping are otherwise right.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: mentally ill patient at risk of harm or property damage if referral delayed",
+   "verdict": "problem",
+   "problem": "Type and level are right (box heading 'Give urgent attention' -> Urgent) and the (and trigger (or ...)) shape follows the house pattern, but the 'or' is missing two of the page's four disjuncts (Death; Irreversible health problem/s), so the rule under-fires relative to the box. The suicide disjunct is an addition not worded on the page, and 'High risk of harm to others' narrows the harm-to-others branch to a graded high-risk finding; prefer its parent 'At increased risk for other-directed violence'. No diagnosis rules are needed: the page has no 'X likely' or 'consider X' statements, and the voluntary/assisted/involuntary flow below the red box is admission management, not triage.",
+   "severity": "high"
+  }
+ ],
+ "summary": "The most consequential problem is coverage of the red box: it lists four 'any of' criteria but the rules encode only harm to self/others and property damage, dropping 'Death' and 'Irreversible health problem/s' from both the check task and the Urgent evaluation, without a recorded SNOMED gap. The two harm branches are also slightly off the page: 'At increased risk for suicide' is an inference the page never words, and 'High risk of harm to others' is a graded concept that excludes moderate risk; its parent 'At increased risk for other-directed violence' matches the page and the other three risk concepts better. Everything else (trigger, Urgent level, rule types, no diagnosis rules on a page with no 'likely'/'consider' statements) is faithful."
+}

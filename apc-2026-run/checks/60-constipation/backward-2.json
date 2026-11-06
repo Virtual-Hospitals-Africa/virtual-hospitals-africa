@@ -1,0 +1,477 @@
+{
+ "page": 60,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Obstipation means intractable constipation; page says simply no stools in 24h",
+   "fix": "keep, or use an absence-of-stool concept if one exists",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "verdict": "wrong",
+   "reason": "Bed-bound/palliative/overflow belong to the impaction check (bullet 7), not to the red-box urgent task; the red box has only no stools/flatus with pain/distension",
+   "fix": "remove from the urgent task check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "verdict": "wrong",
+   "reason": "Misplaced in urgent task (page: palliative care is part of impaction check). Also 'Seen by palliative care service' is a service contact, not 'receiving palliative care'",
+   "fix": "remove from urgent task",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent constipation conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "verdict": "wrong",
+   "reason": "'Chronic constipation with overflow' is a reasonable match for overflow diarrhoea (prolonged constipation then watery stool); but misplaced in urgent task",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page criterion is '> 65 years, bed-bound/receiving palliative care, or overflow diarrhoea'; the age > 65 branch is missing from the OR",
+   "fix": "add (>= age 65 years) alternative to the OR",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Age > 65 branch missing; 'Seen by palliative care service' is only approximate for 'receiving palliative care'",
+   "fix": "add age >65 alternative",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Chronic constipation with overflow' is a reasonable match for overflow diarrhoea (prolonged constipation then watery stool); age >65 branch missing from OR",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Page: solid immobile bulk of stool in rectum; 'Hard stool' at rectum is broader/softer than immobile impacted bulk; closer is (snomed_concept \"Fecal impaction of rectum\" \"disorder\") but that equals the diagnosis",
+   "fix": "acceptable; consider noting",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rectal hemorrhage\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Persistent' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Abdominal colic' narrower than 'cramps'; closer concept may exist (e.g. abdominal cramps)",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flatulence symptom\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Flatulence symptom' plausible for 'gas'",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Unexplained' applies to weight loss/weakness/fatigue per page; weakness and fatigue encoded without 'unexplained'",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Unexplained' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Unexplained' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page criterion is '> 65 years, bed-bound/receiving palliative care, or overflow diarrhoea'; the age > 65 branch is missing from the OR",
+   "fix": "add (>= age 65 years) alternative to the OR",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Age > 65 branch missing; 'Seen by palliative care service' is only approximate for 'receiving palliative care'",
+   "fix": "add age >65 alternative",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Chronic constipation with overflow' is a reasonable match for overflow diarrhoea (prolonged constipation then watery stool); age >65 branch missing from OR",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Page: solid immobile bulk of stool in rectum; 'Hard stool' at rectum is broader/softer than immobile impacted bulk; closer is (snomed_concept \"Fecal impaction of rectum\" \"disorder\") but that equals the diagnosis",
+   "fix": "acceptable; consider noting",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "expr": "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rectal hemorrhage\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Persistent' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flatulence symptom\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Flatulence symptom' plausible for 'gas'",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Unexplained' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Unexplained' qualifier dropped",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "expr": "(diagnosis (snomed_concept \"Malignant neoplasm of cecum and/or colon and/or rectum\" \"disorder\") possible)",
+   "verdict": "imprecise",
+   "reason": "Page says 'assess for colorectal cancer' and 'increased risk if >50 years and risk factor'; no explicit 'consider/suspect', and the >50 + risk-factor gate is dropped; possible is a reasonable mapping",
+   "fix": "gate on age >50 or note",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent constipation conditions",
+   "verdict": "problem",
+   "problem": "check_for contains bed-ridden, palliative care and overflow, which belong to the impaction check, not the urgent box; the task duplicates the priority evaluation's role and lacks the 24h no-stool/flatus timing. Also task trigger/check structure is loose (urgent box items are conjunctive: no stool/flatus AND pain/distension).",
+   "severity": "high"
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "verdict": "problem",
+   "problem": "Trigger omits the '> 65 years' branch of the OR (page: >65, bed-bound/palliative, or overflow diarrhoea).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "verdict": "problem",
+   "problem": "check_for omits Abdominal pain although the page says 'cramps, gas or pain' and the diagnosis rule includes it; inconsistent with the diagnosis rule.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "verdict": "problem",
+   "problem": "Missing >65 years branch. 'probable' is justified by 'impaction likely'.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "verdict": "problem",
+   "problem": "Page has no 'consider/suspect' wording and gates risk on age >50 plus risk factors; any single symptom triggering 'possible' is loose; the action on the page is 'discuss/refer'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "verdict": "ok",
+   "problem": "Faithful to red box (and of pain/distension, Urgent). Obstipation as 'no stools' is approximate. Heading says 'Refer same day', which Urgent plausibly maps to.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The most consequential problem is the urgent check task, whose check_for lists bed-bound, palliative care and overflow, which belong only to the impaction branch, not the red box. The impaction rules and task drop the '> 65 years' alternative, and the colorectal cancer task omits abdominal pain that its diagnosis rule includes. The priority evaluation and concept choices are otherwise faithful; several qualifiers (persistent, unexplained) are dropped."
+}

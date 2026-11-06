@@ -1,0 +1,95 @@
+{
+ "page": 14,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))  vs  B: (absent)",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "\"Feeling faint/unwell symptoms\" is the heading of a list; the symptoms the page asks about are its bullets, so the heading is not encoded as a symptom of its own.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\"))",
+   "reason": "\"Feeling warm or cold\": Sensation of being warm is the closer wording and the sibling of the Sensation of being cold both builds use.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\"))",
+   "reason": "\"Reduced hearing\" matches Decreased hearing; Hearing difficulty is a narrower child and would miss a recorded Decreased hearing.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "reason": "\"Cramps\" sits under Gastrointestinal symptoms; Abdominal colic is_a Abdominal pain, while Stomach cramps sits only under Cramp (muscle) in SNOMED.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\"))",
+   "reason": "Needed as the checked evidence for \"otherwise well\" / \"patient remains well\" in the pseudoallergic rash rule.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\")) in the faint/unwell any2 group and (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\") (snomed_concept \"No\" \"qualifier value\"))) in the pseudoallergic rule  vs  B: (absent)",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "Same as the check_for decision: the heading is not a symptom of its own; the group holds the page's bullets.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feels hot\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "reason": "\"Feeling warm\": closer wording, paired with Sensation of being cold.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "reason": "\"Reduced hearing\" = Decreased hearing; A's concept is narrower.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stomach cramps\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")) / (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")); (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "reason": "GI \"Cramps\" = abdominal cramping pain; Abdominal colic is under Abdominal pain.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "reason": "The page requires the patient be \"otherwise well\" and \"remains well\"; A encodes that, B leaves it out.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "reason": "The page says \"isolated rash ... without other symptoms\" and lists Itchiness as a separate skin symptom, so the literal reading excludes itching; B left it out because hives itch, which is a clinical reading.",
+   "unsettled": true
+  }
+ ],
+ "notes": "Both builds passed and agreed on structure (any2 of four body-system groups, generalised urticaria and serious single-system signs → probable Anaphylaxis; isolated urticaria with every other sign recorded absent → probable Non-allergic hypersensitivity reaction). Base A (it encodes 'otherwise well' and 'without other symptoms' more fully), with B's three concept choices (warm, hearing, cramps) and without A's 'Feeling faint' heading-as-symptom. The 'improve quickly (minutes)?' branch remains unrepresentable in both: faint symptoms count toward the body-system count regardless, so anaphylaxis fires more often than the page. Oxygen sats < 92% is not in the pseudoallergic no-list (a measurement cannot be wrapped in no). Nine known_issues are the gate's string-match limitation for (no X) with a finding_site/qualifier."
+}

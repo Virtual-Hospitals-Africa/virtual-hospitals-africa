@@ -1,0 +1,131 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/176-manage-the-patient-requesting-a-termination-of-pre",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/176-manage-the-patient-requesting-a-termination-of-pre",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable ectopic pregnancy after a termination of pregnancy"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable incomplete termination of pregnancy"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: complications within 14 days of a termination of pregnancy"
+  },
+  {
+   "atom": "task",
+   "description": "Check for complications after a termination of pregnancy"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable ectopic pregnancy after recent termination of pregnancy"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable incomplete termination of pregnancy"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: complications after recent termination of pregnancy"
+  },
+  {
+   "atom": "task",
+   "description": "Check for complications after recent termination of pregnancy"
+  }
+ ],
+ "conditions_A": 35,
+ "conditions_B": 27,
+ "conditions_in_both": 27,
+ "agreement": 0.871,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Incomplete induced termination of pregnancy\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

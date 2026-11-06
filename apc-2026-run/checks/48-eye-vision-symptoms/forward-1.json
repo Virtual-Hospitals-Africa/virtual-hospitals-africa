@@ -1,0 +1,472 @@
+{
+  "page": 48,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p48-93b4be0c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the Urgent priority evaluation (presenting complaint AND any of the listed items).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (system_priority_evaluation \"Urgent: eye/vision symptoms with danger signs\" adult Urgent (and (clinical_finding (snomed_concept \"Eye / vision finding\" \"finding\")) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-dd6dc05d",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with an 'X likely' conclusion (stroke or TIA).",
+      "verdict": "partial",
+      "parts_missing": [
+        "TIA: the page says 'stroke or TIA likely' but only Cerebrovascular accident is diagnosed. Transient ischemic attack (disorder) exists in SNOMED and is not a descendant of Cerebrovascular accident, so the TIA half of the conclusion is lost."
+      ],
+      "problem": "All eight symptom parts (new sudden asymmetric weakness of face/arm/leg, numbness of face/arm/leg, difficulty speaking, visual disturbance) are checked for and OR-ed into a probable CVA rule, and the priority rule references (active_condition Cerebrovascular accident), so triage is right. Only the TIA diagnosis is missing. Minor: 'New'+'Sudden onset' are attached to difficulty talking and visual disturbance as well as to the weakness/numbness items; the page's 'new sudden' most naturally scopes all of them, so this is acceptable.",
+      "evidence": [
+        "Diagnose probable stroke or TIA in a patient with eye/vision symptoms :: (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable) ... (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))))",
+        "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Cerebrovascular accident\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-0b115322",
+      "scope": "in_scope",
+      "scope_reason": "Threshold criterion with a negative condition.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "BP >= 180/110 read as systolic >= 180 OR diastolic >= 110 (the usual reading of a '/' threshold), and 'not pregnant' as (no Pregnancy). The page-148 arrow is a cross-reference only.",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (no (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-857aaf03",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion, two parts (penetrating foreign body; metallic foreign body).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts are checked for and in the priority OR. 'Penetrating wound of eyeball with foreign body' is a child of 'Penetrating wound of eye' (already in the OR for 'Penetrating injury'), so it is redundant in the priority rule but harmless.",
+      "evidence": [
+        "Check for urgent eye/vision conditions :: (clinical_finding (snomed_concept \"Penetrating wound of eyeball with foreign body\" \"disorder\"))",
+        "Check for urgent eye/vision conditions :: (clinical_finding (snomed_concept \"Metal foreign body in eye region\" \"disorder\"))",
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Penetrating wound of eyeball with foreign body\" \"disorder\")) (clinical_finding (snomed_concept \"Metal foreign body in eye region\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-d72551b5",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: one eye, painful, and red or watery.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as unilateral eye pain AND (unilateral red eye OR unilateral watery eye); matches the page.",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (and (clinical_finding (snomed_concept \"Pain in eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-8c2d9685",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Generic 'Chemical burn' (any body site). SNOMED has no sideless 'Chemical burn of eye' (only left/right and eyelid variants), so the generic concept is the practical choice; within the eye-symptom task it is acceptable. Note that a chemical burn elsewhere on a patient with an eye complaint would also trigger Urgent, which is over-broad but safe.",
+      "evidence": [
+        "Check for urgent eye/vision conditions :: (clinical_finding (snomed_concept \"Chemical burn\" \"disorder\"))",
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Chemical burn\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-af81bb60",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with an 'X likely' conclusion (gonococcal conjunctivitis).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Sudden redness AND excessive discharge AND recent STI, probable Gonococcal conjunctivitis, referenced from the priority rule. 'Recent STI symptoms' is approximated as a recent sexually transmitted infectious disease rather than its symptoms (e.g. urethral/genital discharge); acceptable, but a nurse answering the check_for will be asked about an STI, not STI symptoms.",
+      "evidence": [
+        "Diagnose probable gonococcal conjunctivitis :: (and (clinical_finding (snomed_concept \"Red eye\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Sexually transmitted infectious disease\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))",
+        "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Gonococcal conjunctivitis\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-9fe98398",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion, two parts (eye; nose).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Herpes zoster ophthalmicus\" \"disorder\")) (clinical_finding (snomed_concept \"Herpes zoster\" \"disorder\") (finding_site (snomed_concept \"Nasal structure\" \"body structure\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-03250185",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Corneal ulcer\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-e06d0b96",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with an 'X likely' conclusion (orbital cellulitis).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Swollen AND red AND painful eyelid -> probable Orbital cellulitis, referenced from the priority rule. 'Whole' eyelid is not representable. Because 'Pain' at Eyelid structure is also a stye criterion, a painful stye with a swollen red lid will also satisfy this rule; that mirrors the page's own wording and is acceptable.",
+      "evidence": [
+        "Diagnose probable orbital cellulitis :: (and (clinical_finding (snomed_concept \"Swelling of eyelid\" \"finding\")) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Eyelid structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain\" \"finding\") (finding_site (snomed_concept \"Eyelid structure\" \"body structure\"))))",
+        "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Orbital cellulitis\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-8f11b2bc",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Exophthalmos\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-2ac78178",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Corneal haze\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-94c2910b",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion, three parts (sudden loss of vision; sudden change in vision; sudden loss/change of eye movement).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Sudden visual loss; Visual disturbance + Sudden onset; Disorder of eye movements + Sudden onset. All three in check_for and the priority OR.",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Sudden visual loss\" \"disorder\")) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disorder of eye movements\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-c3ff2afc",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as Penetrating wound of eye, which is the right reading in an eye-symptom context.",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Penetrating wound of eye\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-fb1e58cd",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Ptosis of eyelid\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-41c8d88b",
+      "scope": "in_scope",
+      "scope_reason": "Threshold criterion with a conclusion ('treat as severe pre-eclampsia').",
+      "verdict": "partial",
+      "parts_missing": [
+        "The conclusion 'treat as severe pre-eclampsia' is not produced as a diagnosis. 'Severe pre-eclampsia' (disorder) exists in SNOMED; the house pattern for a red-box item that names a condition is a probable diagnosis rule referenced from the priority rule. Borderline, since the page says 'treat as' rather than 'likely' and arrows to page 177."
+      ],
+      "problem": "The triage criterion itself is right: (Pregnancy OR Postpartum state with onset within the last 1 week) AND (SBP >= 140 OR DBP >= 90), Urgent. The onset comparator direction follows the briefing's convention ((<= (onset X) (time_ago 1 weeks)) = within the last week).",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (and (or (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))) (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-4c8ff3ad",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: eye/vision symptoms with danger signs :: (clinical_finding (snomed_concept \"Laceration of eyelid\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-098c3df8",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with an 'X likely' conclusion (jaundice).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Scleral icterus (synonym 'yellow eyes') -> probable Jaundice, referenced from the priority rule. The page-94 arrow is a cross-reference only.",
+      "evidence": [
+        "Diagnose probable jaundice from yellow eyes :: (diagnosis (snomed_concept \"Jaundice\" \"finding\") probable) adult (clinical_finding (snomed_concept \"Scleral icterus\" \"finding\"))",
+        "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Jaundice\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-7aace80e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header for the management list. The 'refer urgently' sense is already carried by the Urgent priority rule, which covers every diagnosis named under this header.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-664dfa1e",
+      "scope": "in_scope",
+      "scope_reason": "Contains an 'X likely' conclusion (acute glaucoma) with its criteria; the acetazolamide part is a management step and out of scope.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Painful eye AND redness AND blurred vision AND haloes AND fixed dilated pupil AND (headache OR nausea OR vomiting) -> probable diagnosis, referenced from the priority rule so it is Urgent. Two notes. (1) Concept: 'Acute angle closure' (disorder, UK-extension id 1111451000000106) is not a descendant of Glaucoma in this release; the page says 'acute glaucoma'. Clinically acute angle closure is the same attack, so I accept it, but 'Angle-closure glaucoma' (disorder) would sit under Glaucoma. (2) Logic: the rule demands all five eye findings; the page lists them with commas, so the literal AND is defensible, but a clinician may expect fewer to suffice (any2/any3). Not marked as an error.",
+      "evidence": [
+        "Diagnose probable acute glaucoma in a patient with eye/vision symptoms :: (diagnosis (snomed_concept \"Acute angle closure\" \"disorder\") probable) ... (and (clinical_finding (snomed_concept \"Pain in eye\" \"finding\")) (clinical_finding (snomed_concept \"Red eye\" \"finding\")) (clinical_finding (snomed_concept \"Blurring of visual image\" \"finding\")) (clinical_finding (snomed_concept \"Sees haloes around lights\" \"finding\")) (clinical_finding (snomed_concept \"Fixed dilatation of pupil\" \"finding\")) (or (clinical_finding (snomed_concept \"Headache\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))))",
+        "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Acute angle closure\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-5d1aaa3a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Drug treatment for gonococcal conjunctivitis; the diagnosis itself is judged at p48-af81bb60.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-4f5b876c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Drug treatment for orbital cellulitis; the diagnosis is judged at p48-e06d0b96.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-93df5483",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Irrigation, tetracaine, chloramphenicol: management. The criterion 'Chemical burn' is judged at p48-8c2d9685.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-13bafe2a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Handling of a penetrating/metallic foreign body; 'if deep corneal/scleral injury and transfer delay' is a condition on treatment, not triage. The criterion is judged at p48-857aaf03.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-5e4820f5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Analgesia.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-9bd33347",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: discharging/watery eyes, prominent itch yes/no (plus the 'Eyelid problems' branch label).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Discharge from eye, Watery eye and Itching of eye are checked for; the itch branch is used positively by the allergic rule and as (no Itching of eye) by the viral and bacterial rules, which is the flowchart's split.",
+      "evidence": [
+        "Check for causes of non-urgent eye/vision symptoms :: (clinical_finding (snomed_concept \"Discharge from eye\" \"finding\")) (clinical_finding (snomed_concept \"Watery eye\" \"finding\")) (clinical_finding (snomed_concept \"Itching of eye\" \"finding\"))",
+        "Diagnose probable viral conjunctivitis :: (no (clinical_finding (snomed_concept \"Itching of eye\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-f22cf852",
+      "scope": "in_scope",
+      "scope_reason": "'X likely' conclusion (allergic conjunctivitis) with its criteria.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "(discharge OR watery) AND itch AND (both eyes OR eczema OR hayfever OR asthma) -> probable Allergic conjunctivitis. 'Both eyes' is expressed as the discharge/watery finding with the 'Right and left' qualifier; hayfever is 'Allergic rhinitis caused by pollen' (SNOMED synonym 'hay fever'). All fine.",
+      "evidence": [
+        "Diagnose probable allergic conjunctivitis :: (and (or (clinical_finding (snomed_concept \"Discharge from eye\" \"finding\")) (clinical_finding (snomed_concept \"Watery eye\" \"finding\"))) (clinical_finding (snomed_concept \"Itching of eye\" \"finding\")) (or (clinical_finding (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Eczema\" \"disorder\")) (clinical_finding (snomed_concept \"Allergic rhinitis caused by pollen\" \"disorder\")) (clinical_finding (snomed_concept \"Asthma\" \"disorder\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-54242764",
+      "scope": "in_scope",
+      "scope_reason": "Contains the 'clear or pus' flowchart decision and the 'stye likely' conclusion; the compresses/wash/refer text is management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Clear vs pus is encoded as Serous vs Purulent conjunctival discharge (judged with p48-16ecc272). Painful lump on eyelid -> probable Hordeolum: Lump in eyelid AND Pain at Eyelid structure. Correct.",
+      "evidence": [
+        "Diagnose probable stye :: (and (clinical_finding (snomed_concept \"Lump in eyelid\" \"finding\")) (clinical_finding (snomed_concept \"Pain\" \"finding\") (finding_site (snomed_concept \"Eyelid structure\" \"body structure\"))))",
+        "Check for causes of non-urgent eye/vision symptoms :: (clinical_finding (snomed_concept \"Lump in eyelid\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-16ecc272",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch boxes: 'Pus' (-> bacterial) and 'Clear watery discharge, fever, sore throat, enlarged lymph nodes' (-> viral).",
+      "verdict": "error",
+      "parts_missing": [],
+      "problem": "The flowchart's decision is 'Is the discharge clear or pus?'; the box text describes the viral picture, with fever/sore throat/lymph nodes as accompanying features. The viral rule instead requires clear discharge AND at least one of fever/sore throat/enlarged lymph nodes. A patient with no itch and clear watery discharge but none of those three gets no diagnosis at all, although the page sends them to 'Viral conjunctivitis likely'. Reasonable people could read the box as a conjunction, so confidence is medium; the safer encoding is serous discharge alone (or with the systemic features as optional support). The 'Pus' part is correct: Purulent conjunctival discharge AND no itch -> bacterial.",
+      "evidence": [
+        "Diagnose probable viral conjunctivitis :: (and (no (clinical_finding (snomed_concept \"Itching of eye\" \"finding\"))) (clinical_finding (snomed_concept \"Serous conjunctival discharge\" \"finding\")) (or (active_condition (snomed_concept \"Fever\" \"finding\")) (clinical_finding (snomed_concept \"Sore throat\" \"finding\")) (clinical_finding (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))))",
+        "Diagnose probable bacterial conjunctivitis :: (and (no (clinical_finding (snomed_concept \"Itching of eye\" \"finding\"))) (clinical_finding (snomed_concept \"Purulent conjunctival discharge\" \"finding\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-d6d3696c",
+      "scope": "in_scope",
+      "scope_reason": "Fragment of the viral-branch box ('enlarged lymph nodes').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Enlarged lymph nodes is checked for as Localized enlarged lymph nodes and used in the viral rule. The logic problem for this box is recorded under p48-16ecc272.",
+      "evidence": [
+        "Check for causes of non-urgent eye/vision symptoms :: (clinical_finding (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-2fa0d385",
+      "scope": "in_scope",
+      "scope_reason": "'Viral conjunctivitis likely' conclusion; the rest is management and referral.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "A probable Viral conjunctivitis rule exists with the right rule type and concept. Its criteria are judged at p48-16ecc272 (error).",
+      "evidence": [
+        "Diagnose probable viral conjunctivitis :: (diagnosis (snomed_concept \"Viral conjunctivitis\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-3ea1d024",
+      "scope": "in_scope",
+      "scope_reason": "'Bacterial conjunctivitis likely' conclusion; the rest is management and referral.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "No itch AND purulent discharge -> probable Bacterial conjunctivitis. Matches the flowchart.",
+      "evidence": [
+        "Diagnose probable bacterial conjunctivitis :: (diagnosis (snomed_concept \"Bacterial conjunctivitis\" \"disorder\") probable) adult (and (no (clinical_finding (snomed_concept \"Itching of eye\" \"finding\"))) (clinical_finding (snomed_concept \"Purulent conjunctival discharge\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p48-05c0c7c2",
+      "scope": "borderline",
+      "scope_reason": "Contains 'localised cause likely' (one eye involved and no eczema, hayfever or asthma), which is an 'X likely' conclusion, but 'localised cause' is not a SNOMED diagnosis; the allergic-rhinitis/eczema/asthma check-for items are cross-references to other pages. Reasonable builders would leave it out.",
+      "verdict": "missing",
+      "parts_missing": [
+        "No rule for the 'one eye, no atopy -> localised cause likely' branch. Nothing in SNOMED names 'localised cause'; the nearest usable concepts are 'Foreign body on external eye' or 'Irritant contact blepharoconjunctivitis', neither of which is what the page says. Acceptable to omit, but the negative branch of the itch=Yes flowchart is then silent."
+      ],
+      "problem": "",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p48-9959db21",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Check vision using Snellen E chart and pinhole test' is a measurement the page asks for, but the language has no unit for visual acuity (units are %, bpm, °C, cm, kg, mmol/L, mmHg, mm) and the pinhole result is a procedure outcome, so no measure task can express it.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p48-bc3a3a52",
+    "p48-5b92c4c6",
+    "p48-f0fac4dc",
+    "p48-358aa5b3",
+    "p48-c706e05c",
+    "p48-f4ff1311",
+    "p48-eeb9ff07",
+    "p48-7607a4e7",
+    "p48-590fd190",
+    "p48-0051c150",
+    "p48-5f262a94",
+    "p48-a17c75af",
+    "p48-278f4a8c",
+    "p48-f65a22c0",
+    "p48-bee166f5",
+    "p48-6b6656b3",
+    "p48-106be279"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Diagnose probable viral conjunctivitis",
+      "problem": "Requires clear discharge AND one of fever / sore throat / enlarged lymph nodes. The flowchart decides on discharge type alone ('clear or pus'), so a no-itch patient with clear discharge and no systemic feature falls through every rule with no diagnosis. Drop the systemic-feature conjunct or make it optional.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+      "problem": "The description says 'stroke or TIA' but the diagnosis is only Cerebrovascular accident. 'Transient ischemic attack' (disorder) exists and is not a descendant of CVA, so the TIA conclusion is not produced. Triage is unaffected because the priority rule keys on the CVA active_condition.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: eye/vision symptoms with danger signs (pregnancy/post-partum BP branch)",
+      "problem": "The page's conclusion 'treat as severe pre-eclampsia' is not produced as a diagnosis. 'Severe pre-eclampsia' (disorder) exists; the house pattern for a red-box item naming a condition is a probable rule referenced from the priority rule. Borderline because the page says 'treat as' rather than 'likely'.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+      "problem": "'Acute angle closure' (UK-extension concept 1111451000000106) is not under Glaucoma in this SNOMED release (parents: Acute disease of eye, Disorder of iridocorneal angle, Angle closed). The page says 'acute glaucoma'. Clinically equivalent, but 'Angle-closure glaucoma' would keep the diagnosis inside the glaucoma hierarchy. Separately, requiring all five ocular findings is a strict literal reading of the page's comma list.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent eye/vision conditions",
+      "problem": "Near-duplicate check_for items for the same finding differing only by a qualifier: 'Visual disturbance' with New+Sudden onset (stroke rule) and with Sudden onset only (priority rule); 'Red eye' plain, with Sudden onset, and with Unilateral; 'Pain in eye' plain and with Unilateral. Each is consumed by a rule so the test passes, but the nurse will be asked overlapping questions, and a 'Visual disturbance, Sudden onset' answer without 'New' will not reach the stroke rule.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable orbital cellulitis / Diagnose probable stye",
+      "problem": "Both consume 'Pain' at Eyelid structure. A painful stye with a swollen, red lid satisfies the orbital cellulitis rule and becomes Urgent. This mirrors the page's own wording ('whole eyelid' is not representable), so it is noted, not faulted.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent eye/vision conditions (Chemical burn)",
+      "problem": "Generic 'Chemical burn' is not eye-specific; a chemical burn anywhere will trigger Urgent in a patient with an eye complaint. SNOMED has no sideless 'Chemical burn of eye', so this is a pragmatic choice; over-triage rather than under-triage.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is fully covered: all 17 criteria are checked for and in the Urgent OR, and the four 'likely' conclusions in it (stroke, gonococcal conjunctivitis, orbital cellulitis, jaundice) plus acute glaucoma are probable rules referenced from the priority rule. The most consequential problem is in the non-urgent flowchart: the viral conjunctivitis rule demands a systemic feature (fever, sore throat or lymph nodes) on top of clear discharge, so a no-itch patient with clear discharge alone gets no diagnosis although the page calls viral conjunctivitis likely. Smaller gaps: 'stroke or TIA likely' yields only CVA (TIA is not a CVA descendant), 'treat as severe pre-eclampsia' and 'localised cause likely' produce no diagnosis, and 'Acute angle closure' sits outside the Glaucoma hierarchy."
+}

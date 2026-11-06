@@ -1,0 +1,351 @@
+{
+ "page": 102,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page threshold is coughing up >= 1 tablespoon of FRESH blood (significant haemoptysis); plain Hemoptysis also matches blood-streaked sputum, which is common in TB and would over-trigger Urgent. No 'massive hemoptysis' concept found in the release.",
+   "fix": "Add a severity qualifier, e.g. (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")), in both the check_for and the priority rule, or note the volume threshold for the reviewer.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'confused' with no acuity; 'Acute confusion' adds a qualifier the page doesn't state (likely the intended clinical meaning, so minor).",
+   "fix": "Consider (snomed_concept \"Confusional state\" \"disorder\") if chronic confusion should also count; otherwise accept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'unable to walk UNAIDED' (includes patients who can walk only with help); 'Unable to walk' is narrower and misses them.",
+   "fix": "Add qualifier (snomed_concept \"Unaided\" \"qualifier value\") or document that 'Unable to walk' is meant to cover needs-assistance.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent suspected TB conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page specifies DRENCHING night sweats; the qualifier is dropped, so any night sweats trigger possible TB.",
+   "fix": "Add (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) or accept as deliberate broadening for a possible-TB screen.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+   "verdict": "imprecise",
+   "reason": "Page lists TB contact as an indication to TEST for TB 'even in the absence of symptoms', not a reason to suspect TB; encoding it as possible TB lets an asymptomatic contact with e.g. persistent vomiting be flagged as 'suspected TB' Urgent. Also a closer concept exists, and the footnote's definition (shared enclosed space, >=1 night, 3 months before index treatment) is not captured.",
+   "fix": "Prefer (clinical_finding (snomed_concept \"Exposure to tuberculosis\" \"event\")) (confirmed exists); consider a separate 'test for TB' path rather than the possible-TB diagnosis.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Abnormal CAD-screening CXR is also listed as a test-even-without-symptoms indication rather than 'suspect TB'; concept itself matches well (digital/CAD detail lost, acceptable).",
+   "fix": "Accept, or route to a test-for-TB task rather than the possible diagnosis.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 39)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page threshold is coughing up >= 1 tablespoon of FRESH blood (significant haemoptysis); plain Hemoptysis also matches blood-streaked sputum, which is common in TB and would over-trigger Urgent. No 'massive hemoptysis' concept found in the release.",
+   "fix": "Add a severity qualifier, e.g. (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")), in both the check_for and the priority rule, or note the volume threshold for the reviewer.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'confused' with no acuity; 'Acute confusion' adds a qualifier the page doesn't state (likely the intended clinical meaning, so minor).",
+   "fix": "Consider (snomed_concept \"Confusional state\" \"disorder\") if chronic confusion should also count; otherwise accept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'unable to walk UNAIDED' (includes patients who can walk only with help); 'Unable to walk' is narrower and misses them.",
+   "fix": "Add qualifier (snomed_concept \"Unaided\" \"qualifier value\") or document that 'Unable to walk' is meant to cover needs-assistance.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: suspected TB with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "verdict": "problem",
+   "problem": "Type, trigger (possible TB) and coverage of the red box are right (vitals are routine and need no check). It inherits the Hemoptysis threshold and 'unaided' problems from its items. Because the trigger fires on any cough or fever (via the possible-TB rule), this 12-item check will run for every coughing or febrile adult.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "verdict": "problem",
+   "problem": "'Check for TB if any TB symptoms' as a possible TB diagnosis is reasonable. But the page's 'also test for TB even in the absence of symptoms' indications (TB contact, abnormal CAD CXR) are merged in as if they were grounds to suspect TB. The other two indications (DS-TB in last 2 years, PLHIV) are left out, so the treatment of that list is inconsistent. Cough alone and fever alone each make possible TB, which is very broad, though the page literally says 'any'.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "verdict": "ok",
+   "problem": "(and suspected-TB (or red-box items)) matches the box heading 'Give urgent attention to the patient with suspected TB and any of'. Urgent is justified and the thresholds (RR >= 30, pulse > 120, temp > 39 °C) match. The only issue is the item-level imprecision (Hemoptysis volume, unaided walking).",
+   "severity": "low"
+  }
+ ],
+ "summary": "The most consequential problem is that the haemoptysis item drops the page's '>= 1 tablespoon of fresh blood' threshold, so any blood-streaked sputum in a suspected-TB patient is triaged Urgent. The possible-TB diagnosis rule also folds in the asymptomatic test indications (TB contact, abnormal CAD CXR) as grounds for 'suspected TB', and uses a generic Exposure+organism form where 'Exposure to tuberculosis' (event) exists. Otherwise the red box is faithfully and completely encoded with correct thresholds and Urgent priority; 'unable to walk unaided' and 'drenching' night sweats lose their qualifiers."
+}

@@ -1,0 +1,762 @@
+{
+ "page": 21,
+ "lisp_file": "21-seizures-fits-cont-2.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "seizure/fit"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "New/different headache"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "headache getting worse"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Frequent headache\" \"finding\"))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "more frequent"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "Patient with HIV"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "no known epilepsy"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "overdose"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Substance withdrawal syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "withdrawal"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-a4e97de2"
+   ],
+   "quote": "Recent head injury"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "up to 1 week postpartum"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "Collapse with twitching"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "twitching"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flushing\" \"disorder\"))",
+   "element_keys": [
+    "p21-043b35ba"
+   ],
+   "quote": "flushing"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for same-day referral after a seizure/fit",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "sweating"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "seizure/fit"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "Temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable stroke from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable stroke from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6",
+    "p21-2a412755"
+   ],
+   "quote": "or numbness of face"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable stroke from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-116550d6",
+    "p21-aea60bd2"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable stroke from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-aea60bd2",
+    "p21-d6061831"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable stroke from focal signs (seizure/fit page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable)",
+   "element_keys": [
+    "p21-1fd67945"
+   ],
+   "quote": "Stroke or TIA likely"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable TIA from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable TIA from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6",
+    "p21-2a412755"
+   ],
+   "quote": "or numbness of face"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable TIA from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-116550d6",
+    "p21-aea60bd2"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable TIA from focal signs (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-aea60bd2",
+    "p21-d6061831"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable TIA from focal signs (seizure/fit page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") probable)",
+   "element_keys": [
+    "p21-1fd67945"
+   ],
+   "quote": "Stroke or TIA likely"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "Collapse with twitching"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "twitching"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flushing\" \"disorder\"))",
+   "element_keys": [
+    "p21-043b35ba"
+   ],
+   "quote": "flushing"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "sweating"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable common faint (seizure/fit page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Vasovagal syncope\" \"finding\") probable)",
+   "element_keys": [
+    "p21-b47bb643"
+   ],
+   "quote": "Common faint likely"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-aa908c15"
+   ],
+   "quote": "Refer patient same day if any of:"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "New/different headache"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "headache getting worse"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Frequent headache\" \"finding\"))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "more frequent"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "Patient with HIV"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "no known epilepsy"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))) (time_ago 1 hours))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "> 1 hour after fit"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "Glucose <3"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p21-e535ebb9"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "BP ≥ 180/130"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 130)",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "BP ≥ 180/130"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))) (time_ago 1 hours))",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "more than 1 hour after fit has stopped"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "overdose"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Substance withdrawal syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "withdrawal"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-a4e97de2"
+   ],
+   "quote": "Recent head injury"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "up to 1 week postpartum"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: same-day referral after a seizure/fit",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "up to 1 week postpartum"
+  }
+ ]
+}

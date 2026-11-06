@@ -1,0 +1,598 @@
+{
+ "edition": "2026",
+ "page": 44,
+ "lisp_file": "44-pallor-and-anaemia.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "element_keys": [
+    "p44-6a455751"
+   ],
+   "quote": "pale conjunctiva",
+   "confidence": "high",
+   "note": "Page defines pallor as pale conjunctiva or palms; exact SNOMED finding."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "VHA vocabulary term for pallor (3 uses); stands in for skin/palm pallor, no 'pale palms' concept."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "SNOMED synonym 'Pallor'; general pallor finding."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "high",
+   "note": "Anaemia has no probable rule (Hb not representable), so clinical_finding form per brief."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p44-6d7615f6"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock finding; or-ed with SBP < 80 per the all-pages decision."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p44-e4c47dc8"
+   ],
+   "quote": "Dizzy",
+   "confidence": "high",
+   "note": "Common symptom Dizziness."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+   "element_keys": [
+    "p44-e4c47dc8"
+   ],
+   "quote": "faint",
+   "confidence": "high",
+   "note": "'faint' read as feeling faint (VHA vocabulary)."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p44-535b6112"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p44-535b6112"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p44-7de4f779"
+   ],
+   "quote": "Swollen legs",
+   "confidence": "high",
+   "note": "VHA vocabulary term for swollen legs (8 uses)."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p44-46fa518e"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "element_keys": [
+    "p44-0087408f"
+   ],
+   "quote": "Black2",
+   "confidence": "medium",
+   "note": "Black stools = melena; footnote 2 (iron tablets) not modelled. 'Dark stools' finding considered."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p44-0087408f"
+   ],
+   "quote": "bloody stools",
+   "confidence": "high",
+   "note": "Bloody stools; VHA vocabulary."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "element_keys": [
+    "p44-090ce294"
+   ],
+   "quote": "Widespread",
+   "confidence": "medium",
+   "note": "'Widespread bruising' read as Multiple bruising; alternative Easy bruising with Widespread qualifier."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p44-090ce294"
+   ],
+   "quote": "easy bruising",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Check for urgent pallor/anaemia conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p44-68cf035b"
+   ],
+   "quote": "Purple/red rash that does not disappear with pressure",
+   "confidence": "high",
+   "note": "Non-blanching rash = purpuric rash (VHA vocabulary)."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "element_keys": [
+    "p44-6a455751"
+   ],
+   "quote": "pale conjunctiva",
+   "confidence": "high",
+   "note": "Page defines pallor as pale conjunctiva or palms; exact SNOMED finding. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "VHA vocabulary term for pallor (3 uses); stands in for skin/palm pallor, no 'pale palms' concept. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "SNOMED synonym 'Pallor'; general pallor finding. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "high",
+   "note": "Anaemia has no probable rule (Hb not representable), so clinical_finding form per brief. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "If fever now or in past 3 days",
+   "confidence": "medium",
+   "note": "Active Fever stands for 'fever now'; a resolved fever in the past 3 days is not separately recorded."
+  },
+  {
+   "rule": "Check for malaria exposure in pallor/anaemia",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "in a malaria area in past 3 months",
+   "confidence": "low",
+   "note": "No SNOMED concept for being in a malaria area; VHA vocabulary situation for high-risk travel used (2 uses). onset < 3 months ago where in a due_to. Misses residents of malaria areas."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "element_keys": [
+    "p44-6a455751"
+   ],
+   "quote": "pale conjunctiva",
+   "confidence": "high",
+   "note": "Page defines pallor as pale conjunctiva or palms; exact SNOMED finding. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "VHA vocabulary term for pallor (3 uses); stands in for skin/palm pallor, no 'pale palms' concept. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "SNOMED synonym 'Pallor'; general pallor finding. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "high",
+   "note": "Anaemia has no probable rule (Hb not representable), so clinical_finding form per brief. Malaria branch sits under the pallor/anaemia approach box."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "If fever now or in past 3 days",
+   "confidence": "medium",
+   "note": "Active Fever stands for 'fever now'; a resolved fever in the past 3 days is not separately recorded."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis_condition",
+   "expr": "(< (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))) (time_ago 3 months))",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "in a malaria area in past 3 months",
+   "confidence": "low",
+   "note": "No SNOMED concept for being in a malaria area; VHA vocabulary situation for high-risk travel used (2 uses). onset < 3 months ago where in a due_to. Misses residents of malaria areas."
+  },
+  {
+   "rule": "Diagnose probable malaria in pallor/anaemia",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Malaria\" \"disorder\") probable)",
+   "element_keys": [
+    "p44-72e4dbad"
+   ],
+   "quote": "malaria likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale conjunctiva\" \"finding\"))",
+   "element_keys": [
+    "p44-6a455751"
+   ],
+   "quote": "pale conjunctiva",
+   "confidence": "high",
+   "note": "Page defines pallor as pale conjunctiva or palms; exact SNOMED finding."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "VHA vocabulary term for pallor (3 uses); stands in for skin/palm pallor, no 'pale palms' concept."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "medium",
+   "note": "SNOMED synonym 'Pallor'; general pallor finding."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anemia\" \"disorder\"))",
+   "element_keys": [
+    "p44-d93d6fb0"
+   ],
+   "quote": "pallor/anaemia",
+   "confidence": "high",
+   "note": "Anaemia has no probable rule (Hb not representable), so clinical_finding form per brief."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p44-6d7615f6"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock finding; or-ed with SBP < 80 per the all-pages decision."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p44-6d7615f6"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Exact threshold and direction."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p44-6a59f54f"
+   ],
+   "quote": "Pulse ≥ 100",
+   "confidence": "high",
+   "note": "Routine vital; >= 100 bpm."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p44-3af4e6b8"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital; >= 30."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p44-e4c47dc8"
+   ],
+   "quote": "Dizzy",
+   "confidence": "high",
+   "note": "Common symptom Dizziness."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))",
+   "element_keys": [
+    "p44-e4c47dc8"
+   ],
+   "quote": "faint",
+   "confidence": "high",
+   "note": "'faint' read as feeling faint (VHA vocabulary)."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p44-535b6112"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p44-535b6112"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p44-7de4f779"
+   ],
+   "quote": "Swollen legs",
+   "confidence": "high",
+   "note": "VHA vocabulary term for swollen legs (8 uses)."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p44-46fa518e"
+   ],
+   "quote": "Jaundice",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "element_keys": [
+    "p44-0087408f"
+   ],
+   "quote": "Black2",
+   "confidence": "medium",
+   "note": "Black stools = melena; footnote 2 (iron tablets) not modelled. 'Dark stools' finding considered."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p44-0087408f"
+   ],
+   "quote": "bloody stools",
+   "confidence": "high",
+   "note": "Bloody stools; VHA vocabulary."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "element_keys": [
+    "p44-090ce294"
+   ],
+   "quote": "Widespread",
+   "confidence": "medium",
+   "note": "'Widespread bruising' read as Multiple bruising; alternative Easy bruising with Widespread qualifier."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p44-090ce294"
+   ],
+   "quote": "easy bruising",
+   "confidence": "high",
+   "note": "Exact."
+  },
+  {
+   "rule": "Urgent: pallor/anaemia with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p44-68cf035b"
+   ],
+   "quote": "Purple/red rash that does not disappear with pressure",
+   "confidence": "high",
+   "note": "Non-blanching rash = purpuric rash (VHA vocabulary)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p44-0d734d89",
+   "element_id": "p44-rb1-e02",
+   "text": "Hb < 6",
+   "reason_category": "not_representable",
+   "reason": "Hb has no observable or unit in the language; the urgent rule fires less often than the page intends (Hb < 6 alone does not trigger)."
+  },
+  {
+   "element_key": "p44-4067ef12",
+   "element_id": "p44-rb1-e13",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Management header."
+  },
+  {
+   "element_key": "p44-12512a96",
+   "element_id": "p44-rb1-e14",
+   "text": "If respiratory rate increased, give face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen: management, no manage tasks in this pass."
+  },
+  {
+   "element_key": "p44-e5fb2b62",
+   "element_id": "p44-rb1-e15",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluids: management, no medicines in this pass."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))",
+   "reason": "It is used as evidence inside (< (onset …) (time_ago 3 months)) in 'Diagnose probable malaria in pallor/anaemia', which the page's 'in past 3 months' requires; the usage check matches the bare string only."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Malaria area",
+   "decision": "History of travel with high risk of exposure to communicable disease (situation), onset within 3 months",
+   "alternatives": "Exposure to Plasmodium organism; no time criterion",
+   "confidence": "low"
+  },
+  {
+   "topic": "Pallor forms",
+   "decision": "or of Pale conjunctiva, Pale complexion, Pale discoloration of entire skin of body, Anemia",
+   "alternatives": "Pale conjunctiva + Anemia only",
+   "confidence": "medium"
+  },
+  {
+   "topic": "MCV branches",
+   "decision": "Iron deficiency, systemic disease, macrocytic anaemia and folate deficiency rules not written: each hangs on the MCV result",
+   "alternatives": "Folate deficiency from pallor + postpartum/alcohol misuse alone (would fire far more often)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "or of Shock finding and SBP < 80; footnote 1 not built into a shock definition",
+   "alternatives": "Footnote as a probable shock rule",
+   "confidence": "high"
+  }
+ ]
+}

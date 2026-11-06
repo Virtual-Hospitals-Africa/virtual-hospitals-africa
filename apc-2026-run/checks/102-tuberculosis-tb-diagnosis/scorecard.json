@@ -1,0 +1,877 @@
+{
+ "page": 102,
+ "slug": "102-tuberculosis-tb-diagnosis",
+ "validation_ok": true,
+ "builder_agreement": 0.865,
+ "elements": 49,
+ "elements_agreed": 33,
+ "claims": 36,
+ "claims_agreed": 18,
+ "queue": 60,
+ "queue_by_priority": {
+  "low": 17,
+  "medium": 32,
+  "high": 11
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p102-8d1cf36b",
+   "id": "p102-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-d73eb0c6",
+   "id": "p102-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-0dc99669",
+   "id": "p102-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-12ed0574",
+   "id": "p102-rb1-e04",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p102-56ca0cdf",
+   "id": "p102-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-3b56083a",
+   "id": "p102-rb1-e06",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 2,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p102-2fbcc260",
+   "id": "p102-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-ada0c81e",
+   "id": "p102-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-937da012",
+   "id": "p102-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-010b5c09",
+   "id": "p102-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-d66060d7",
+   "id": "p102-rb1-e11",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p102-edc01452",
+   "id": "p102-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-ac568a06",
+   "id": "p102-rb1-e13",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p102-a177ff83",
+   "id": "p102-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-b5f8b47b",
+   "id": "p102-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-3b97e746",
+   "id": "p102-out-e01",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p102-c40f108f",
+   "id": "p102-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p102-505d4c58",
+   "id": "p102-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p102-688f44a4",
+   "id": "p102-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p102-2b801a97",
+   "id": "p102-out-e05",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p102-63b01687",
+   "id": "p102-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-cdbf5d64",
+   "id": "p102-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-133dd53b",
+   "id": "p102-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-bf03d836",
+   "id": "p102-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-e9d1ac25",
+   "id": "p102-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-164436b0",
+   "id": "p102-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-4e9a7c2a",
+   "id": "p102-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-961ce2fa",
+   "id": "p102-out-e13",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p102-1ee08fdc",
+   "id": "p102-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-23053e52",
+   "id": "p102-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-e89722ef",
+   "id": "p102-out-e16",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-71ca2e73",
+   "id": "p102-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-3df70f20",
+   "id": "p102-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-21b979e6",
+   "id": "p102-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-7728f754",
+   "id": "p102-out-e20",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p102-bfa056d1",
+   "id": "p102-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-758f428c",
+   "id": "p102-out-e22",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-a680223d",
+   "id": "p102-out-e23",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-f0862318",
+   "id": "p102-out-e24",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-614fe580",
+   "id": "p102-out-e25",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p102-863e00e0",
+   "id": "p102-out-e26",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-ce6f3d9f",
+   "id": "p102-out-e27",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-fda2c52a",
+   "id": "p102-out-e28",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-6ef809e7",
+   "id": "p102-out-e29",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-00fdd25c",
+   "id": "p102-out-e30",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-d1047051",
+   "id": "p102-out-e31",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-4a8cf562",
+   "id": "p102-out-e32",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-ea16e7d5",
+   "id": "p102-out-e33",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p102-f6aec8cc",
+   "id": "p102-out-e34",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent suspected TB conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: suspected TB with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  }
+ ]
+}

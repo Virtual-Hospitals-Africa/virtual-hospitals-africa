@@ -1,0 +1,540 @@
+{
+ "edition": "2026",
+ "page": 58,
+ "lisp_file": "58-diarrhoea.lisp",
+ "conditions": [
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Presenting complaint; Diarrhea is a recorded common symptom."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Red box shock finding, encoded as written (no shared shock definition, per all-pages decision)."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "high",
+   "note": "Watery qualifier on the Diarrhea finding; no precoordinated watery diarrhoea concept exists."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "has been in cholera outbreak area",
+   "confidence": "medium",
+   "note": "Exposure to Vibrio cholerae as the recordable form of being in a cholera outbreak area; SNOMED has no outbreak-area situation."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "Increased thirst chosen for the symptom \"thirst\"; vocabulary has Thirst due to water deprivation, which presumes a cause. Reconciler: chosen over \"Thirst due to water deprivation\", which presumes a cause the page does not state."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia is the SNOMED name for dry mouth; the dehydration-caused child would presume the diagnosis."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Decreased skin turgor (vocabulary term)."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "history of prolonged constipation",
+   "confidence": "medium",
+   "note": "Chronic constipation disorder for \"prolonged constipation\"; the page gives no duration."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "blood in the stool",
+   "confidence": "high",
+   "note": "Hematochezia (synonym: blood in stool); asked so the Yes/No branch can be recorded."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound",
+   "confidence": "high",
+   "note": "Bed-ridden finding (synonym bed-bound)."
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care",
+   "confidence": "low",
+   "note": "Seen by palliative care service: closest finding; no \"receiving palliative care\" finding exists."
+  },
+  {
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Presenting complaint; the impaction check is on the diarrhoea page."
+  },
+  {
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound",
+   "confidence": "high",
+   "note": "Gate for the rectal check. The \"> 65 years\" alternative is not representable (no age comparison)."
+  },
+  {
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care",
+   "confidence": "low",
+   "note": "Gate for the rectal check; closest available finding."
+  },
+  {
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "solid immobile bulk of stool in rectum",
+   "confidence": "medium",
+   "note": "Fullness of rectum due to feces is the closest finding; \"solid immobile\" is not separately expressible."
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "has been in cholera outbreak area",
+   "confidence": "medium",
+   "note": "Shared by both cholera branches (red box and flowchart). \"In past 5 days\" not modelled as time (exposure records have no onset)."
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "high",
+   "note": "Red box branch: watery diarrhoea with or without vomiting (vomiting not required)."
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks",
+   "confidence": "high",
+   "note": "Flowchart branch; <= with time_ago, the only allowed comparator form."
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "Is there blood in the stool?",
+   "confidence": "high",
+   "note": "Flowchart No branch before the cholera question; requires an explicit No."
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cholera\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "Red box and flowchart both say cholera likely -> probable."
+  },
+  {
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "medium",
+   "note": "Section context: approach to the patient with diarrhoea."
+  },
+  {
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "Any one of the three signs. Reconciler: chosen over \"Thirst due to water deprivation\", which presumes a cause the page does not state."
+  },
+  {
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Any one of the three signs."
+  },
+  {
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Any one of the three signs."
+  },
+  {
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "history of prolonged constipation",
+   "confidence": "medium",
+   "note": "\"followed by\" ordering not modelled; both findings must be present."
+  },
+  {
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "watery stool",
+   "confidence": "high",
+   "note": "Watery qualifier on Diarrhea."
+  },
+  {
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chronic constipation with overflow\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "overflow diarrhoea likely",
+   "confidence": "medium",
+   "note": "Chronic constipation with overflow is the SNOMED concept for overflow diarrhoea."
+  },
+  {
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks",
+   "confidence": "high",
+   "note": "<= with time_ago."
+  },
+  {
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "blood in the stool",
+   "confidence": "high",
+   "note": "Yes branch."
+  },
+  {
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dysenteric diarrhea\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-c4c91295"
+   ],
+   "quote": "Dysentery likely",
+   "confidence": "medium",
+   "note": "No plain Dysentery concept; Dysenteric diarrhea is the general one (bacterial would be narrower)."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks",
+   "confidence": "high",
+   "note": "<= with time_ago."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "Is there blood in the stool?",
+   "confidence": "high",
+   "note": "No branch; requires an explicit No."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-b2b17c35"
+   ],
+   "quote": "Has patient been in cholera outbreak area in past 5 days?",
+   "confidence": "high",
+   "note": "No branch; requires an explicit No."
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-478a52a7"
+   ],
+   "quote": "Gastroenteritis likely",
+   "confidence": "medium",
+   "note": "Inflammation of stomach and intestine has the synonym gastroenteritis; Infectious gastroenteritis would be narrower."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "medium",
+   "note": "Page context."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound",
+   "confidence": "high",
+   "note": "Gate; \"> 65 years\" not representable, so fires less often than the page."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care",
+   "confidence": "low",
+   "note": "Gate; closest finding."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "If present",
+   "confidence": "medium",
+   "note": "The rectal finding checked for in the impaction task."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "impaction likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable Fecal impaction."
+  },
+  {
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "patient with diarrhoea",
+   "confidence": "high",
+   "note": "(and <presenting complaint> (or red box items))."
+  },
+  {
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Red box item."
+  },
+  {
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Red box item, systolic < 80 mmHg."
+  },
+  {
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "cholera likely",
+   "confidence": "medium",
+   "note": "Red box names a likely diagnosis -> (active_condition Cholera) as Will's briefing directs; this also fires for the flowchart cholera branch."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p58-e3fbfc0a",
+   "element_id": "p58-rb1-e04",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management instructions."
+  },
+  {
+   "element_key": "p58-30f91a10",
+   "element_id": "p58-rb1-e05",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens. Refer same day.",
+   "reason_category": "management_step",
+   "reason": "IV fluids and referral; no manage tasks on this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Cholera outbreak area",
+   "decision": "Exposure to (contextual qualifier) + Vibrio cholerae organism; the 5-day window is not a time comparison",
+   "alternatives": "History of travel with high risk of exposure to communicable disease (situation); onset comparison <= 5 days on the exposure finding; builder B used an onset comparison on the exposure, but exposure findings record no onset (gold page 20), so the reconciler kept A",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Red box cholera in the priority rule",
+   "decision": "(active_condition Cholera), so the flowchart cholera branch (any diarrhoea <= 2 weeks, no blood, outbreak area) also makes the patient urgent",
+   "alternatives": "Encode watery diarrhoea AND exposure directly in the priority rule",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Treat for giardiasis",
+   "decision": "Not encoded: \"Treat for giardiasis\" is a treatment instruction, not \"giardiasis likely\" or \"consider giardiasis\" (reconciler took builder B)",
+   "alternatives": "possible Giardiasis for diarrhoea > 2 weeks with explicit HIV negative (builder A)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Faecal impaction gate",
+   "decision": "Separate check_for task for the rectal finding, due to diarrhoea and (bed-ridden or palliative care); > 65 years omitted",
+   "alternatives": "Put the rectal finding in the main check_for",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Duration boundary",
+   "decision": "<= 2 weeks and >= 2 weeks (VHA forbids > in onset comparisons)",
+   "alternatives": "none in the language",
+   "confidence": "high"
+  }
+ ]
+}

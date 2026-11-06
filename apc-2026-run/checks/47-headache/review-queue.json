@@ -1,0 +1,3898 @@
+[
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-537e59c7",
+  "text": "Give urgent attention to the patient with headache and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header: defines the presenting complaint (headache) and the Urgent level for the whole box.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Header only",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Header is encoded as an Urgent priority evaluation anchored on Headache; 'urgent attention' justifies Urgent.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-24edc0aa",
+  "text": "Sudden severe headache or dizziness",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "dizziness without the 'sudden' and 'severe' qualifiers"
+    ],
+    "problem": "Two parts. (a) 'Sudden severe headache' is encoded correctly as Headache + Sudden onset + Severe. (b) 'or dizziness': the page most naturally reads as headache with any dizziness (dizziness is a recorded common symptom); the rule requires Dizziness + Sudden onset + Severe, which narrows the trigger so a patient with headache and ordinary dizziness is not flagged. Borderline reading, but the stricter form loses patients the page would escalate.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Page text can be read as sudden severe (headache or dizziness); both encoded with both qualifiers, which is the right reading.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts are present. Reading the qualifiers as applying to dizziness as well is a reasonable reading.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-70cc9737",
+  "text": "BP ≥ 180/110 and not pregnant 148",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "SBP >= 180 or DBP >= 110 encoded. 'and not pregnant' is omitted, but this is harmless for the priority: a pregnant patient at >= 180/110 already meets the >= 140/90 pregnancy criterion, so the Urgent outcome is identical. The 148 arrow is a cross-reference.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'and not pregnant' is not encoded, but harmless: pregnant patients are already Urgent at the lower 140/90 threshold.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'and not pregnant': the BP >= 180/110 branch has no (no Pregnancy) condition"
+    ],
+    "problem": "Encoded as bare (>= SBP 180) or (>= DBP 110). The 'not pregnant' condition is dropped. Pregnant patients are already caught at 140/90, so triage is unaffected, but the criterion is not encoded faithfully.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-2bf1f17b",
+  "text": "Headache that is getting worse and more frequent",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the conjunction of Headache + Worsening and Frequent headache, which matches 'getting worse and more frequent'. Both findings are in the check_for.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'more frequent' (increasing frequency) is approximated by the static concept 'Frequent headache'"
+    ],
+    "problem": "Concept 'Frequent headache' means frequent, not becoming more frequent; best available, so low-severity.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts are present. 'Frequent headache' only approximates 'more frequent'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-961a59c0",
+  "text": "Persistent nausea/vomiting",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "persistent nausea"
+    ],
+    "problem": "Two parts: persistent nausea and persistent vomiting. Only vomiting is encoded (Persistent vomiting, disorder). Persistent nausea is not checked for or used; the builder's own pattern for 'persistent' (Headache + 'Chronic persistent' qualifier) could have been applied to Nausea.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Persistent nausea (only vomiting encoded; no nausea in the urgent rule or its check_for)"
+    ],
+    "problem": "Page says 'Persistent nausea/vomiting'. Only 'Persistent vomiting' is encoded. Nausea alone with persistence is not caught.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Persistent nausea (only 'Persistent vomiting' is checked and used)"
+    ],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-0c149e18",
+  "text": "New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking: consider stroke or TIA 152",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Parts: sudden weakness of face/arm/leg (3), sudden numbness of face/arm/leg (3), difficulty speaking (1), 'consider stroke or TIA' (2 possible diagnoses). All seven findings are in the check_for and the priority rule, and both possible rules (Cerebrovascular accident, Transient ischemic attack) exist with the same evidence anchored on Headache. 'New' is subsumed by 'Sudden onset'; 'asymmetric' has no SNOMED expression and its omission widens the trigger slightly, which is the safe direction.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'asymmetric' (one-sided) not representable"
+    ],
+    "problem": "Weakness/numbness face, arm, leg with Sudden onset encoded; stroke and TIA both as possible. Asymmetry dropped; 'Difficulty talking' has no Sudden onset, defensible as the page's wording is ambiguous.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'asymmetric' (unilateral) is not expressed; bilateral weakness or numbness would also trigger"
+    ],
+    "problem": "The weakness and numbness of face/arm/leg (Sudden onset) and the difficulty talking are encoded in the priority rule. 'Consider stroke or TIA' becomes two possible-diagnosis rules (correct rule type). 'New' is carried only by 'Sudden onset'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p47-c873b15d",
+  "text": "Headache that wakes patient or is worse in the morning",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Two parts. (a) 'Headache that wakes patient' is encoded as (clinical_finding \"Wakes up during night\"), a generic sleep finding (parent: Finding related to sleep) that says nothing about headache. Any headache patient who reports waking at night for any reason (nocturia, insomnia) becomes Urgent. SNOMED has no 'headache wakes patient' concept, so an approximation was needed, but it should be tied to the headache (e.g. a qualifier on Headache) or at least the mismatch recorded. (b) 'worse in the morning' -> Morning headache: correct.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Wakes up during night' is a generic nocturnal waking finding, not 'headache that wakes patient'; any night waking triggers Urgent. Over-triggering risk.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [
+     "headache-specific waking (e.g. Headache with a qualifier, or noted as no closer concept)"
+    ],
+    "problem": "'Headache that wakes patient' is encoded as 'Wakes up during night' (a sleep finding, child of 'Finding related to sleep'), not a headache that wakes the patient. Combined with the Headache anchor, any headache patient who wakes at night for any reason (e.g. nocturia) is triaged Urgent. 'Worse in the morning' is correctly 'Morning headache'.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-569bae21",
+  "text": "Neck stiffness, drowsy/confused or purple/red rash: meningitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Parts: neck stiffness, drowsy, confused, purple/red rash, and 'meningitis likely'. All four signs are in the check_for and in the probable Meningitis rule (or-ed, anchored on Headache); the priority rule references (active_condition Meningitis) as the briefing prescribes. 'Purple/red rash' -> Purpuric rash is a reasonable specific mapping (page means a non-blanching rash). 'Clouded consciousness' is an extra but harmless synonym for confused.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'red' rash (only purpuric)"
+    ],
+    "problem": "Meningitis probable rule has stiff neck, drowsy, confused (plus Clouded consciousness extra), purpuric rash. 'Purple/red rash' is narrowed to purpuric. The urgent rule reaches this only through active_condition Meningitis (diagnosis chaining), which works if the engine chains; no direct stiff-neck branch in the urgent rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Purpuric rash' is narrower than 'purple/red rash', but it is the closest concept found.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p47-6d185854",
+  "text": "Persistent headache since starting ART",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "temporal link: headache began after ART was started ('since starting')"
+    ],
+    "problem": "Encoded as persistent headache AND on HAART. The 'since starting' relation (onset of headache after ART start, i.e. a new persistent headache in a patient recently started on ART) is reduced to co-occurrence, so a patient with long-standing headache who is on ART also triggers. 'Chronic persistent' is a defensible qualifier for 'persistent'. The ART form (finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\")) is not a pattern shown in the gold or the briefing; it should be confirmed that the parser accepts it and that this is how an active ART regimen is recorded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Encoded as chronic persistent headache AND (finding (snomed_concept 'Procedure' 'procedure') (snomed_concept 'Highly active antiretroviral therapy' 'procedure')). The finding form with a root 'Procedure' concept is an unusual construction that may not parse/evaluate as 'on ART' (not a clinical_finding or history of treatment; gold uses clinical_finding/active_condition/manage). 'Since starting ART' temporal link lost; and HAART is not a suitable stand-in for ART status, so false negatives are likely.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Since starting ART' is not expressed temporally. That is acceptable in this language.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p47-dac037d9",
+  "text": "If fever now or in past 3 days, and in a malaria area in past 3 months, malaria likely 39.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "fever now or in past 3 days",
+     "in a malaria area in past 3 months",
+     "probable Malaria diagnosis rule"
+    ],
+    "problem": "No Malaria rule, no fever-timing evidence and no malaria-exposure finding anywhere in the file. (snomed_concept \"Malaria\" \"disorder\") exists. The same conclusion is repeated outside the box (p47-71e24623) and is also missing there.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'malaria likely' needs a malaria-area travel history (not representable) and has no rule; borderline if Will wants a possible-malaria rule on fever alone.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'Fever now or in past 3 days, and in a malaria area in past 3 months: malaria likely' has no probable Malaria rule. The fever window is expressible as (< (onset (active_condition Fever)) (time_ago 3 days)). Malaria-area exposure has no obvious concept; the closest is 'Recent countries visited' (observable) or an Exposure-to finding. At minimum the rule, or a note that it is not representable, is expected.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-146580d4",
+  "text": "Approach to the patient with headache not needing urgent attention",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-12196c85",
+  "text": "Yes Has patient had recent common cold and now any of: thick nasal/postnasal discharge,",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Recent common cold is required (and), thick nasal discharge and thick postnasal discharge are two of the or-ed features. Posterior rhinorrhea has 'postnasal discharge' as a synonym.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "headache worse on bending forward (in next fragment)"
+    ],
+    "problem": "Cold + any of thick discharge / tenderness encoded as 'and' with 'or' correctly. 'Thick' qualifier on discharge is a reasonable proxy.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'headache worse on bending forward' (third alternative) is absent from the sinusitis rule and the check_for"
+    ],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-3a0b65bf",
+  "text": "pain when pushing on forehead/cheeks, headache worse on bending forward?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "headache worse on bending forward"
+    ],
+    "problem": "'Pain when pushing on forehead/cheeks' is encoded as Tenderness at Forehead structure / Cheek structure (good). 'Headache worse on bending forward' is absent from both the check_for and the sinusitis or-list, so a patient with recent cold and only that feature is not diagnosed. SNOMED has no precoordinated concept, but a Headache finding with a qualifier or a note in remaining questions was expected; the exclusion branch of the acute viral rule also therefore omits it.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "headache worse on bending forward"
+    ],
+    "problem": "Pain on pushing forehead/cheeks encoded; bending forward not.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "headache worse on bending forward"
+    ],
+    "problem": "Pain on pushing forehead/cheeks is encoded as Tenderness at the forehead or cheek. The bending-forward alternative is missing.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-eef9c1a5",
+  "text": "No Does patient get recurrent headaches that are throbbing, disabling with nausea or",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "disabling",
+     "flowchart 'No' gate: no fever+body pain and no recent common cold"
+    ],
+    "problem": "Recurrent throbbing headache and nausea are encoded. 'Disabling' is not encoded (no SNOMED concept found; arguably a Severe qualifier would approximate it). The migraine rule is also not gated on the 'No' answer to the fever/body pain/common cold question, so a patient on the infective branch can be diagnosed with migraine as well (flowchart routing, low impact).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "gate: only if 'No' to fever/cold question"
+    ],
+    "problem": "Migraine rule requires Throbbing headache + Recurrent and any of nausea/photophobia/phonophobia but has no negation of the fever/body pain or recent cold branch, so it can fire alongside sinusitis/viral rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'disabling'",
+     "the 'No' branch precondition (no fever+body pain, no recent cold)"
+    ],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-17444a17",
+  "text": "light/noise sensitivity, that resolve completely within 72 hours?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "resolves completely within 72 hours"
+    ],
+    "problem": "Photophobia and Phonophobia are encoded. The 72-hour complete-resolution criterion is not encoded; episode duration is hard to express (onset comparisons describe when a finding started, not how long an attack lasted), so this may be not_representable, but it should then be recorded as such rather than silently dropped.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "disabling",
+     "resolves completely within 72 hours"
+    ],
+    "problem": "Duration and disability not encoded (duration not obviously representable); 'light/noise sensitivity' correctly two findings.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'resolve completely within 72 hours' is not expressed or noted"
+    ],
+    "problem": "Light/noise sensitivity is mapped to Photophobia/Phonophobia (correct). The 72-hour resolution is dropped.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p47-e3edaec5",
+  "text": "Advise to use analgesia only when necessary. Overuse may cause headaches: if using analgesia > 2 days/week",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Analgesia-overuse advice; the '> 2 days/week' threshold gates advice, not a diagnosis or priority on this page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No rule. The usage frequency (>2 days/week for >=3 months) is hard to express.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p47-80352fef",
+  "text": "for ≥ 3 months, advise to reduce amount used. Headache should improve within 2 months of decreased use.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Continuation of the analgesia-overuse advice.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "See p47-e3edaec5.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-b1c981c6",
+  "text": "Patient > 50 years, pain over temples Tightness around head or generalised",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "patient > 50 years (not representable: the language has only adult / older child / younger child, no numeric age comparison)"
+    ],
+    "problem": "Pain over temples -> Temporal headache (correct). Age > 50 cannot be expressed, so the GCA rule fires on any adult with temporal headache; this should be recorded as a known gap. 'Tightness around head' -> Tightness sensation at Head structure (correct); 'generalised' is carried by Generalized headache in the tension rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "age > 50 years (no age comparison in the language, not_representable)"
+    ],
+    "problem": "GCA rule fires on 'Temporal headache' for any adult, not only > 50. Tension criteria: 'Tightness' + 'Generalized headache' encoded; 'pressure-like' not.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Patient > 50 years (age threshold for GCA) is absent; the GCA rule fires on 'Temporal headache' alone"
+    ],
+    "problem": "Pain over the temples is 'Temporal headache' (correct). Tightness around the head is 'Tightness sensation' at 'Head structure' (correct). The language may lack an age-in-years criterion. If so it should be noted as not representable, but as written any adult with temporal headache gets probable GCA.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-b4e8e49e",
+  "text": "pressure-like pain",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as Generalized headache. The 'pressure-like' quality is not separately expressed (no SNOMED finding for it), which widens the trigger slightly; acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'pressure-like' character: encoded as plain 'Generalized headache'"
+    ],
+    "problem": "Any generalised headache reaching this rule gives probable tension headache, without the pressure-like quality.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-71e24623",
+  "text": "No • If patient has been in a malaria area in past 3 months, malaria likely 39. • If patient has a tick bite (small dark brown/ black scab) or tick present, tick bite fever likely 38.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "malaria likely if in a malaria area in past 3 months (no Malaria rule at all)"
+    ],
+    "problem": "Tick bite fever: encoded as probable African tick bite fever requiring Headache, the infective-branch gate and Tick bite; 'tick present' is covered by Tick bite. Malaria: entirely missing (see also red-box p47-dac037d9). Note that the page's malaria criterion here differs from the red box (3-month exposure alone, on the fever/body-pain branch), so the single rule would need the branch gate as well. The 'No sinusitis' gate is not enforced on the tick bite fever rule (low impact).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "malaria likely (malaria-area travel; no rule)",
+     "tick present (only 'Tick bite' finding)"
+    ],
+    "problem": "Tick bite fever rule exists; but it is gated on (fever+aches or cold) AND tick bite, whereas the page's tick/malaria checks hang off 'No' to sinusitis, so the recent-cold-without-sinus-signs path is intended. Roughly matches. Malaria not encoded. Concept 'African tick bite fever' fine.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "malaria likely (malaria area in past 3 months): no rule",
+     "tick bite fever: 'tick present' and the black scab/eschar ('Eschar' exists) are not encoded; only 'Tick bite' is"
+    ],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-534c194c",
+  "text": "Giant cell arteritis",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Probable Giant cell arteritis rule exists (concept exists; Temporal arteritis is its synonym). Its only evidence is Temporal headache because age cannot be expressed; see p47-b1c981c6.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Patient > 50 years"
+    ],
+    "problem": "GCA probable with only temporal headache; age criterion absent, no Headache clause (fine given concept).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "age > 50"
+    ],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-db418138",
+  "text": "likely • Check CRP. • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) for up to 5 days. • Review next day: if CRP > 5, discuss with specialist same day.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "CRP check and review. CRP > 5 is a lab value that is not representable.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-9fe1dd63",
+  "text": "likely • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed up to 5 days. • Assess for stress and anxiety 98.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-d6c7fbd4",
+  "text": "Constant",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the Continuous qualifier on Aching pain.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-729b6fd9",
+  "text": "aching",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Aching pain, finding. The page's aching pain is the headache itself; the sideless generic concept is acceptable, and the rule is anchored on Headache.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-c098fa07",
+  "text": "neck muscles",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'neck muscles' (muscular neck pain).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-1d1b1934",
+  "text": "neck",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Fragment of the diagnosis name 'Muscular neck pain likely'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p47-384e4f74",
+  "text": "pain likely 79.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'pain likely 79.' completes the 'Muscular neck pain likely' conclusion.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p47-725fbe7e",
+  "text": "• If none of above, treat as acute viral infection:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "exclusion of malaria (not in a malaria area in past 3 months), because malaria is not encoded",
+     "exclusion of 'headache worse on bending forward' (not encoded in the sinusitis criteria)"
+    ],
+    "problem": "Encoded as possible Acute viral disease requiring the branch gate, not-sinusitis (no recent cold, or none of the four encoded sinusitis features) and no tick bite. The translation of 'none of the above' is otherwise faithful. Because malaria and the bending-forward feature are missing, the 'none of above' exclusion is incomplete, so a patient in a malaria area with fever is told 'acute viral infection' instead of 'malaria likely'. The builder chose possible rather than probable; the gold allows a broad possible pre-screen, but here the page says 'treat as', which the house standard would more naturally render as probable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'none of above' also excludes malaria likely (not encoded)"
+    ],
+    "problem": "'Acute viral infection' encoded as 'possible' not 'probable'. The page says 'treat as', and it is the default branch; possible is defensible. Logic for 'none of above' reasonable. Rule also requires the fever/cold gate, matching the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as possible Acute viral disease when the Yes branch holds, sinusitis criteria are absent and there is no tick bite. It cannot exclude the malaria branch (that rule is missing).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "check_for cannot hold an onset comparison; the 1-week window is applied in the priority rule (c114).",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Postpartum state listed with no timing in check_for ('1 week postpartum' window dropped).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c004",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c005",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c006",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c008",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c009",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c017",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wakes up during night\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Wakes up during night' is a generic sleep finding (parent: Finding related to sleep), not 'headache that wakes the patient'; it fires on any night waking. No closer SNOMED concept found (searched headache+sleep/awaken, nocturnal headache).",
+    "fix": "No clean concept; at minimum document the substitution. 'Morning headache' already carries the clinically adjacent sign.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: headache that wakes the patient; 'Wakes up during night' is not linked to headache and fires without any headache wakening.",
+    "fix": "Add headache linkage (qualifier or and with Headache; Headache is already required at the priority level)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Wakes up during night' is a sleep finding not tied to headache; page says headache that wakes the patient. Any night waking (e.g. nocturia) in a headache patient makes them Urgent.",
+    "fix": "No precoordinated concept; consider (clinical_finding (snomed_concept \"Headache\" \"finding\") ...) with a note, or record in remaining questions.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Morning headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Morning headache' for 'headache ... worse in the morning' is the standard encoding.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: headache worse in the morning; 'Morning headache' is present-in-morning rather than 'worse'. Acceptable but loose.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'confused' covered by both Clouded consciousness and Acute confusion; together they span the page's meaning.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'confused' mapped to both Clouded consciousness and Acute confusion; Clouded consciousness is a different, drowsiness-like concept and double-counts the page's 'confused'.",
+    "fix": "Keep Acute confusion only",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Clouded consciousness' is closer to decreased consciousness than 'confused'; redundant with Acute confusion.",
+    "fix": "Drop and keep (snomed_concept \"Acute confusion\" \"finding\").",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c024",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Chronic persistent' qualifier implies chronicity the page does not state; the page says 'persistent ... since starting ART'. No plain 'Persistent' qualifier value exists in SNOMED.",
+    "fix": "Acceptable approximation; note it in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: persistent headache since starting ART. 'Chronic persistent' overstates duration and 'since' temporal link to ART start is dropped.",
+    "fix": "Use persistent headache with onset after ART start",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Chronic persistent' implies long duration; page says persistent headache since starting ART. The time link to ART start is not encoded.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Recording HAART as a procedure loses 'since starting': the page means headache that began after ART initiation, not merely a patient on ART. 'Highly active antiretroviral therapy' is the only ART procedure concept.",
+    "fix": "Acceptable approximation (the and-pairing with persistent headache limits over-firing); document.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "ART encoded as odd (finding Procedure HAART) with no timing; page says headache since starting ART (current/recent ART start). No explicit relation between onset and ART start.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c027",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Persistent nausea/vomiting'; only vomiting is encoded, persistent nausea alone would not trigger.",
+    "fix": "Add (clinical_finding (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\"))) alongside Persistent vomiting.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says persistent nausea/vomiting; 'Persistent vomiting' drops nausea.",
+    "fix": "(snomed_concept \"Nausea and vomiting\" \"disorder\") with Persistent qualifier, or OR of nausea and persistent vomiting",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Persistent nausea/vomiting'; persistent nausea alone is dropped.",
+    "fix": "Add (clinical_finding (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\"))) or use (snomed_concept \"Nausea and vomiting\" \"disorder\") as well.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c028",
+  "text": "Check for urgent headache conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Following a first seizure' (post-seizure state); 'Seizure / First episode' is close but loses the 'following' timing.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c032",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Generalized aches and pains' is a fair reading of 'body pain'; 'Generalized acute body pains' also exists but adds an acuity the page does not state.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'body pain' mapped to 'Generalized aches and pains'; acceptable but 'fever and body pain' on page is an AND which the rule keeps; ok.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c038",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'or tick present' is not separately encoded; Tick bite is the reasonable single concept.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says tick bite (scab) 'or tick present'; tick present is not captured.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c039",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Throbbing headache\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Claim itself is faithful; the rule drops 'disabling' and 'resolve completely within 72 hours' (see rule note).",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page also requires disabling/resolving within 72 hours and the absence of fever/body pain/cold (top 'No' branch); not encoded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page's migraine question also requires 'disabling' and 'resolve completely within 72 hours'; both dropped.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c044",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'pressure-like' has no SNOMED headache concept (only 'Low pressure headache', a different entity); Generalized headache carries 'generalised'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Generalised pressure-like pain' mapped to 'Generalized headache', losing 'pressure-like' quality.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'generalised pressure-like pain'; 'Generalized headache' loses pressure-like, so any generalized headache gives probable tension headache.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c045",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Page gives no site for 'constant aching pain' either; Aching pain + Continuous matches the wording.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Constant aching pain' mapped to aching pain/Continuous; acceptable but the page text splits the phrase across elements.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c047",
+  "text": "Check for causes of headache not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temporal headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Cited element also says 'Patient > 50 years'; age cannot be a check_for item, so the task claim is fine. See c110 for the rule.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'Patient > 50 years, pain over temples'. The age > 50 condition is missing, so GCA fires for any age.",
+    "fix": "Add age > 50 condition to the GCA rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c051",
+  "text": "Diagnose probable meningitis in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'confused' covered by both Clouded consciousness and Acute confusion; together they span the page's meaning.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'confused' mapped to both Clouded consciousness and Acute confusion; Clouded consciousness is a different, drowsiness-like concept and double-counts the page's 'confused'.",
+    "fix": "Keep Acute confusion only",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Clouded consciousness' is closer to decreased consciousness than 'confused'; redundant with Acute confusion.",
+    "fix": "Drop it.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c056",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c057",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c058",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c059",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c060",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c061",
+  "text": "Diagnose possible stroke in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c065",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c066",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c067",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c068",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c069",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c070",
+  "text": "Diagnose possible TIA in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c082",
+  "text": "Diagnose probable tick bite fever in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Generalized aches and pains' is a fair reading of 'body pain'; 'Generalized acute body pains' also exists but adds an acuity the page does not state.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'body pain' mapped to 'Generalized aches and pains'; acceptable but 'fever and body pain' on page is an AND which the rule keeps; ok.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c084",
+  "text": "Diagnose probable tick bite fever in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'or tick present' is not separately encoded; Tick bite is the reasonable single concept.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says tick bite (scab) 'or tick present'; tick present is not captured.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c088",
+  "text": "Diagnose possible acute viral infection in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Generalized aches and pains' is a fair reading of 'body pain'; 'Generalized acute body pains' also exists but adds an acuity the page does not state.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'body pain' mapped to 'Generalized aches and pains'; acceptable but 'fever and body pain' on page is an AND which the rule keeps; ok.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c090",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c091",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Thick\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c092",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Thick\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c093",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Forehead structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c094",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cheek structure\" \"body structure\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c095",
+  "text": "Diagnose possible acute viral infection in headache :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'If none of above' means sinusitis not likely and malaria/tick bite fever not likely; malaria is not encoded and the 'or no cold' escape is a reasonable but invented construction.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c097",
+  "text": "Diagnose probable migraine in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Throbbing headache\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Claim itself is faithful; the rule drops 'disabling' and 'resolve completely within 72 hours' (see rule note).",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page also requires disabling/resolving within 72 hours and the absence of fever/body pain/cold (top 'No' branch); not encoded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'disabling' and 'resolve completely within 72 hours' dropped, so any recurrent throbbing headache with nausea gives probable migraine.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c104",
+  "text": "Diagnose probable tension headache in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'pressure-like' has no SNOMED headache concept (only 'Low pressure headache', a different entity); Generalized headache carries 'generalised'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Generalised pressure-like pain' mapped to 'Generalized headache', losing 'pressure-like' quality.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'generalised pressure-like pain'; 'Generalized headache' loses pressure-like.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c107",
+  "text": "Diagnose probable muscular neck pain in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Page gives no site for 'constant aching pain' either; Aching pain + Continuous matches the wording.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Constant aching pain' mapped to aching pain/Continuous; acceptable but the page text splits the phrase across elements.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c110",
+  "text": "Diagnose probable giant cell arteritis in headache :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temporal headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page requires 'Patient > 50 years' AND pain over temples; the rule fires probable giant cell arteritis on temporal headache at any adult age. The grammar has no patient-age expression (ages are only adult/older child/younger child; measurement units have no years), so the condition cannot be encoded.",
+    "fix": "Downgrade to possible, or keep probable and record the unexpressible age criterion in remaining questions for a clinician to accept.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'Patient > 50 years, pain over temples'. The age > 50 condition is missing, so GCA fires for any age.",
+    "fix": "Add age > 50 condition to the GCA rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Patient > 50 years, pain over temples'; the age > 50 condition is dropped, so temporal headache at any adult age gives probable giant cell arteritis.",
+    "fix": "Add age > 50 if the language supports it; otherwise record it as could-not-model and consider downgrading to possible.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c114",
+  "text": "Urgent: headache with red-box danger signs :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Comparison direction: (<= onset (time_ago 1 weeks)) means onset at or before one week ago, i.e. MORE than a week postpartum. Page says within 1 week postpartum.",
+    "fix": "(>= (onset ...) (time_ago 1 weeks))",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c117",
+  "text": "Urgent: headache with red-box danger signs :: (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'and not pregnant' is dropped, but a pregnant patient with BP >= 140/90 already fires the first branch, so the result is identical.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'and not pregnant' is dropped; harmless in effect because pregnant+BP>=140/90 is already urgent, but not what the page says (page routes to 148 vs 177).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'and not pregnant' is dropped. Low impact: pregnant/postpartum patients with BP ≥ 180/110 are Urgent via the ≥ 140/90 branch anyway.",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c118",
+  "text": "Urgent: headache with red-box danger signs :: (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'and not pregnant' is dropped, but a pregnant patient with BP >= 140/90 already fires the first branch, so the result is identical.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'and not pregnant' is dropped; harmless in effect because pregnant+BP>=140/90 is already urgent, but not what the page says (page routes to 148 vs 177).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'and not pregnant' is dropped. Low impact: the pregnancy branch already covers it.",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c119",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c120",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c121",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c122",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c123",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c124",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'asymmetric' is dropped (no SNOMED qualifier or precoordinated asymmetric limb-weakness concept); 'Sudden onset' covers 'new sudden'. Slightly broader than the page, safe direction for an urgent/possible rule.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' is dropped; otherwise weakness/numbness x face/arm/leg are correctly expanded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'asymmetric' from the page is dropped; bilateral new weakness/numbness would also match.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c132",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wakes up during night\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Wakes up during night' is a generic sleep finding (parent: Finding related to sleep), not 'headache that wakes the patient'; it fires on any night waking. No closer SNOMED concept found (searched headache+sleep/awaken, nocturnal headache).",
+    "fix": "No clean concept; at minimum document the substitution. 'Morning headache' already carries the clinically adjacent sign.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: headache that wakes the patient; 'Wakes up during night' is not linked to headache and fires without any headache wakening.",
+    "fix": "Add headache linkage (qualifier or and with Headache; Headache is already required at the priority level)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Wakes up during night' is not headache-specific; page says headache that wakes patient. Any night waking makes a headache patient Urgent.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c133",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Morning headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Morning headache' for 'headache ... worse in the morning' is the standard encoding.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: headache worse in the morning; 'Morning headache' is present-in-morning rather than 'worse'. Acceptable but loose.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c134",
+  "text": "Urgent: headache with red-box danger signs :: (active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page lists the meningitis SIGNS (neck stiffness, drowsy/confused, purple rash) as an urgent criterion; the priority encodes only active_condition Meningitis, so urgent triage depends on the diagnosis rule firing first. The signs themselves are not direct disjuncts.",
+    "fix": "Add or-branch with the stiff neck / drowsy / acute confusion / purpuric rash findings",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c135",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Chronic persistent' qualifier implies chronicity the page does not state; the page says 'persistent ... since starting ART'. No plain 'Persistent' qualifier value exists in SNOMED.",
+    "fix": "Acceptable approximation; note it in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: persistent headache since starting ART. 'Chronic persistent' overstates duration and 'since' temporal link to ART start is dropped.",
+    "fix": "Use persistent headache with onset after ART start",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Chronic persistent' implies long duration; the 'since starting ART' time link is not encoded.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c136",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Recording HAART as a procedure loses 'since starting': the page means headache that began after ART initiation, not merely a patient on ART. 'Highly active antiretroviral therapy' is the only ART procedure concept.",
+    "fix": "Acceptable approximation (the and-pairing with persistent headache limits over-firing); document.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "ART encoded as odd (finding Procedure HAART) with no timing; page says headache since starting ART (current/recent ART start). No explicit relation between onset and ART start.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c138",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Persistent nausea/vomiting'; only vomiting is encoded, persistent nausea alone would not trigger.",
+    "fix": "Add (clinical_finding (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\"))) alongside Persistent vomiting.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says persistent nausea/vomiting; 'Persistent vomiting' drops nausea.",
+    "fix": "(snomed_concept \"Nausea and vomiting\" \"disorder\") with Persistent qualifier, or OR of nausea and persistent vomiting",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Persistent nausea/vomiting'; persistent nausea alone is dropped.",
+    "fix": "Add a persistent nausea alternative to the or.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c139",
+  "text": "Urgent: headache with red-box danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Following a first seizure' (post-seizure state); 'Seizure / First episode' is close but loses the 'following' timing.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) Diagnose probable malaria in headache",
+  "text": "The page says 'malaria likely' twice (red box: fever now or in past 3 days and in a malaria area in past 3 months; flowchart: in a malaria area in past 3 months on the fever/body-pain/cold branch) and there is no Malaria rule, no fever-timing evidence and no exposure finding. The acute viral infection default therefore also fails to exclude malaria. The exposure finding is a SNOMED gap, but the fever part is expressible and the gap should at least be declared.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "'Headache that wakes patient' is encoded as the generic sleep finding 'Wakes up during night', so any headache patient who wakes at night for any reason is made Urgent; the finding is not tied to the headache.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sinusitis in headache / Diagnose possible acute viral infection in headache",
+  "text": "The sinusitis feature 'headache worse on bending forward' is absent from the check_for, the sinusitis or-list and the acute-viral exclusion list.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "'Persistent nausea/vomiting' is encoded as Persistent vomiting only; persistent nausea is not checked for or used.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable migraine in headache",
+  "text": "'Disabling' and 'resolve completely within 72 hours' are not encoded, and the rule is not gated on the 'No' answer to the fever/body pain/common cold question. Nothing in the file records which of these were judged not representable.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "Dizziness carries the Sudden onset and Severe qualifiers, narrowing 'sudden severe headache or dizziness' to sudden severe dizziness; the plainer reading is headache with any dizziness (a recorded common symptom).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable giant cell arteritis in headache",
+  "text": "Age > 50 years cannot be expressed in the language (only adult / older child / younger child), so the rule fires on any adult with temporal headache. Acceptable as a limitation, but it is not declared anywhere in the rule file and the diagnosis is probable on one finding alone.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension headache / muscular neck pain / giant cell arteritis / migraine",
+  "text": "None of the pain-type rules is gated on the flowchart's 'No' branches (no fever/body pain/cold; not migraine), so a patient on the infective branch can receive these diagnoses too. Flowchart routing, consistent with how the gold handles branches, so low.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible acute viral infection in headache",
+  "text": "'Treat as acute viral infection' is encoded as a possible rather than a probable diagnosis; the page's wording is a conclusion, not a 'consider'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "'Persistent headache since starting ART' loses the temporal relation (headache began after ART start) and uses an unusual finding form (finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\")) that is not shown in the gold or the briefing; confirm it parses and matches how ART is recorded. Likewise confirm that the onset-wrapped Postpartum state in the priority rule counts as 'checked for' under the test's exact-string matching.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "Persistent-ART branch uses an unusual (finding Procedure HAART) construction and may not evaluate; verify it parses against the VHA grammar.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable giant cell arteritis in headache",
+  "text": "Fires on temporal headache alone; the page requires age > 50 as well. Over-diagnoses in young adults (not_representable but unflagged).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable migraine in headache",
+  "text": "No exclusion of the fever/body pain or recent-cold branch; omits 72h resolution and disability.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "'Persistent nausea' missing, only vomiting; 'Wakes up during night' triggers on any night waking.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible stroke / TIA in headache",
+  "text": "Identical criteria for both; asymmetry dropped. Matches page ('consider stroke or TIA'), but the 'Difficulty talking' lacks Sudden onset.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of headache not needing urgent attention",
+  "text": "check_for omits Fever and Tick-bite-related absence checks is fine, but Fever (used in tick bite fever and viral rules) is not in check_for; Throbbing headache's qualifiers fine. Pregnancy checks fine.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule)",
+  "text": "Malaria likely (fever now or past 3 days and malaria area) has no diagnosis rule; travel history not representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible acute viral infection in headache",
+  "text": "Mixed level: page says 'treat as', encoded possible; acceptable but the 'none of above' does not exclude malaria.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable migraine / tension headache / muscular neck pain / giant cell arteritis",
+  "text": "The flowchart's 'No' branch is lost. These four rules do not require the absence of (fever AND body pain) or recent cold, and tension, muscular and GCA do not require 'not migraine'. They can fire alongside sinusitis or viral infection. GCA in particular fires on 'Temporal headache' alone, with no age > 50 condition, so any adult with temporal headache gets probable GCA.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) probable Malaria",
+  "text": "'Malaria likely' appears twice on the page (red-box manage line, and the flowchart Yes -> No branch), yet there is no malaria rule and no check_for for fever timing or malaria-area exposure. Even if the exposure part is not representable, that should be explicit.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "'Wakes up during night' (a generic sleep finding) is an independent Urgent trigger in the OR, so any headache patient who wakes at night is Urgent. That over-triages, because the page means a headache that wakes the patient.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "The BP >= 180/110 branch omits 'and not pregnant', and 'Persistent nausea' is missing from the nausea/vomiting criterion (only 'Persistent vomiting').",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sinusitis in headache",
+  "text": "The 'headache worse on bending forward' alternative is dropped from the OR.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever in headache",
+  "text": "Only 'Tick bite' is used. 'Tick present' and the small dark scab (Eschar) alternatives are missing. Also, the rule does not require the 'No' answer to the sinusitis question.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of headache not needing urgent attention",
+  "text": "Fever is used via active_condition in the tick-bite and viral rules but is not in either check_for. That is acceptable because Fever is a recorded common symptom, but there is nothing to check for the 'past 3 days' timing.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent headache conditions",
+  "text": "Every red-box criterion is covered and the trigger (Headache) is right. But the red box's 'Manage and refer urgently' names 'malaria likely' (fever now or in past 3 days, and in a malaria area in past 3 months), and the file has no malaria-area finding and no probable Malaria rule; the same 'malaria likely' appears again in the non-urgent flow. House rule: every 'X likely' becomes a probable diagnosis.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of headache not needing urgent attention",
+  "text": "Omits two page discriminators: 'headache worse on bending forward' (third sinusitis criterion) and 'been in a malaria area in past 3 months' (malaria likely). Everything listed is on the page and nothing is invented.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sinusitis in headache",
+  "text": "Page: recent common cold AND any of {thick nasal/postnasal discharge, pain on pushing forehead/cheeks, headache worse on bending forward}. The or-list is missing 'headache worse on bending forward', so a patient with cold + positional headache alone never gets Sinusitis likely. Structure and probable level otherwise faithful.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible acute viral infection in headache",
+  "text": "'If none of above' on the page also excludes 'in a malaria area in past 3 months' (malaria likely); the rule excludes only sinusitis signs and tick bite. Negation structure for the sinusitis question (no recent cold OR none of the signs) is faithful. possible is a defensible level for 'treat as'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable migraine in headache",
+  "text": "Page: recurrent, throbbing, disabling, with nausea or light/noise sensitivity, resolving completely within 72 hours, in a patient WITHOUT fever/body pain/recent cold. The rule keeps recurrent + throbbing + (nausea | photophobia | phonophobia) but drops 'disabling', the 72-hour resolution, and the No-branch gate, so it is broader than the page (fires alongside sinusitis/viral in a febrile patient). probable is right ('Migraine likely').",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable giant cell arteritis in headache",
+  "text": "Page: 'Patient > 50 years, pain over temples' -> GCA likely. The rule has only Temporal headache; the age criterion is absent and the grammar cannot express patient age. As written, any adult with temple pain is labelled probable giant cell arteritis (CRP, same-day specialist discussion). Downgrade to possible or document the unexpressible criterion explicitly.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent headache conditions",
+  "text": "Check_for list omits Fever/BP items used by the priority rule and merges management; mostly aligned with the red box. Acceptable.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of headache not needing urgent attention",
+  "text": "Omits 'headache worse on bending forward' (sinusitis criterion), 'patient > 50 years' and fever/malaria items.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sinusitis in headache",
+  "text": "Page criterion 'headache worse on bending forward' is missing; otherwise structure faithful. Also should sit inside the 'fever+body pain or cold' Yes branch (cold is required, so ok).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible acute viral infection in headache",
+  "text": "Malaria-likely exclusion not encoded; 'if none of above' only approximated. Page says 'treat as', so possible is justified.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable migraine in headache",
+  "text": "Not gated by the page's top 'No' branch (no fever+body pain / no recent cold), so overlaps acute viral/sinusitis; 'disabling' and 'resolves within 72 hours' dropped.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension headache in headache",
+  "text": "Page places this after migraine 'No' and top 'No'; rule is ungated and will fire alongside migraine/viral diagnoses.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable giant cell arteritis in headache",
+  "text": "Age > 50 years is missing, a key page criterion; any headache with temporal pain would give probable GCA.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "Postpartum onset comparison direction is reversed (<= time_ago 1 weeks = older than a week). Meningitis signs enter only via active_condition Meningitis. 'wakes patient' not linked to headache. Priority level Urgent fits the 'Give urgent attention' heading.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent headache conditions",
+  "text": "No check for persistent nausea (page: 'Persistent nausea/vomiting'); 'Wakes up during night' is not headache-specific.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of headache not needing urgent attention",
+  "text": "Missing page discriminators: 'headache worse on bending forward' (sinusitis), age > 50 (GCA), tick present, malaria-area travel in past 3 months.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable sinusitis in headache",
+  "text": "Page's or-list includes 'headache worse on bending forward', which is missing.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever in headache",
+  "text": "'Or tick present' is not encoded. The structure (fever+body pain or recent cold, and tick bite) is otherwise faithful.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible acute viral infection in headache",
+  "text": "'If none of above' should also exclude the malaria-likely branch (malaria area in past 3 months) and the bending-forward sinusitis feature; neither is negated.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable migraine in headache",
+  "text": "Drops 'disabling' and 'resolve completely within 72 hours', and doesn't require the 'No' answer to fever/body pain/recent cold. Over-diagnoses migraine.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension headache in headache",
+  "text": "'Generalized headache' alone (pressure-like dropped) gives probable tension headache, so nearly any diffuse headache qualifies.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable giant cell arteritis in headache",
+  "text": "The page's 'Patient > 50 years' condition is omitted, so any temporal headache gives probable GCA.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: headache with red-box danger signs",
+  "text": "Type, trigger and Urgent level are right, and the pregnancy/postpartum time window has the right direction. But persistent nausea is dropped, 'wakes patient' uses a non-headache sleep finding, and 'not pregnant' is dropped from the 180/110 branch (harmless).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for, priority_condition, diagnosis_condition (stroke, TIA)",
+  "text": "A: (Difficulty talking)  vs  B: (Difficulty talking + Sudden onset)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\"))",
+    "reason": "\"New sudden\" qualifies the weakness/numbness clause; \"difficulty speaking\" follows a semicolon without it, so the unqualified form is closer to the words.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, priority_condition",
+  "text": "A: (and (Headache + Worsening) (Frequent headache))  vs  B: (Frequent headache + Worsening)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (clinical_finding Headache (qualifier Worsening)) (clinical_finding Frequent headache))",
+    "reason": "\"Getting worse and more frequent\" names two properties joined by \"and\"; A encodes each, B's single concept reads as a frequent headache that worsens.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, priority_condition",
+  "text": "A: (Wakes up during night)  vs  B: not encoded",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Wakes up during night\" \"finding\"))",
+    "reason": "\"Headache that wakes patient\" is a red-box item; A's concept (already in VHA's vocabulary) approximates it inside the headache rule, whereas B drops it entirely.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, priority_condition",
+  "text": "A: (and (Headache + Chronic persistent) (Procedure: Highly active antiretroviral therapy))  vs  B: not encoded",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (clinical_finding Headache (qualifier Chronic persistent)) (finding Procedure Highly active antiretroviral therapy))",
+    "reason": "\"Persistent headache since starting ART\" is a red-box item; A's encoding passes all checks and uses a concept already in VHA's vocabulary, so it is kept with \"since\" recorded as not modelled.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (meningitis)",
+  "text": "A: not present  vs  B: (Clouded consciousness)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "\"Drowsy/confused\": Clouded consciousness is VHA's common term for confusion and sits beside Acute confusion, so both record forms of \"confused\" count.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (sinusitis)",
+  "text": "A: (Purulent nasal discharge)  vs  B: (Nasal discharge + Thick)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+    "reason": "The page says \"thick nasal ... discharge\", not purulent; B uses the page's word.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (sinusitis)",
+  "text": "A: (Posterior rhinorrhea)  vs  B: (Posterior rhinorrhea + Thick)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+    "reason": "\"Thick\" applies to \"nasal/postnasal discharge\" alike.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (tension headache)",
+  "text": "A: (Tightness sensation @ Head structure)  vs  B: (Tightening pain @ Head structure)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Tightness sensation\" \"finding\") (finding_site (snomed_concept \"Head structure\" \"body structure\")))",
+    "reason": "\"Tightness around head\" matches Tightness sensation; the page lists pain separately (\"or generalised pressure-like pain\").",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (muscular neck pain)",
+  "text": "A: (Aching headache + Continuous)  vs  B: (Aching pain + Continuous)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+    "reason": "The page says \"constant aching pain\"; B uses the page's words, and the rule's Headache condition keeps the headache context.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for, diagnosis_condition (muscular neck pain)",
+  "text": "A: (Tenderness @ Entire skeletal muscle of neck)  vs  B: (Tenderness @ Skeletal muscle structure of neck)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Tenderness\" \"finding\") (finding_site (snomed_concept \"Skeletal muscle structure of neck\" \"body structure\")))",
+    "reason": "\"Tender neck muscles\" is any part of the neck muscles; the structure concept (both resolve) fits better than the \"entire\" concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (SBP >= 180 or DBP >= 110) without the pregnancy clause  vs  B: (and (SBP >= 180 or DBP >= 110) (no Pregnancy))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(>= SBP 180) / (>= DBP 110) as members of the red-box or",
+    "reason": "Inside the red-box \"or\" a pregnant patient with BP >= 180/110 already meets \"Pregnant ... and BP >= 140/90\", so dropping \"and not pregnant\" leaves the urgent result unchanged, whereas B's (no Pregnancy) misses men and anyone without a recorded \"not pregnant\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis (tick bite fever)",
+  "text": "A: Spotted fever group rickettsial disease  vs  B: African tick bite fever",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"African tick bite fever\" \"disorder\") probable)",
+    "reason": "The page writes \"tick bite fever\", which matches African tick bite fever by name; whether it is also meant to cover Boutonneuse fever (A's broader parent) the page does not say.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis, diagnosis_condition (acute viral infection)",
+  "text": "A: not encoded  vs  B: possible Acute viral disease when Q0 = Yes, sinusitis branch absent and no tick bite",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(system_diagnosis_rule \"Diagnose possible acute viral infection in headache\" ... possible)",
+    "reason": "The page names a diagnosis for the \"none of above\" branch (\"treat as acute viral infection\"); \"treat as\" is neither \"likely\" nor \"consider\", so it is kept at possible and the malaria exclusion cannot be modelled.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition (tension headache, muscular neck pain)",
+  "text": "A: no Headache condition  vs  B: (Headache) in each rule",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Headache\" \"finding\"))",
+    "reason": "Both nodes sit in \"Approach to the patient with headache\", so anchoring the rule on Headache follows the page and matches the other flowchart rules.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "slug": "47-headache",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "rule descriptions",
+  "text": "A: \"… in headache\" / \"Check for urgent headache conditions\" / \"Urgent: headache with red-box danger signs\"  vs  B: \"… in patient with headache\" / \"Check for urgent headache danger signs\" / \"Urgent: headache with danger signs (APC p47)\"",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "Both are topic-specific and unique; the base build's names are kept (acute viral infection takes the same pattern).",
+    "unsettled": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,212 @@
+{
+ "page": 196,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p196-9dbf7719",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "splash to eye/mouth/nose/broken skin as a trigger",
+    "health worker / occupational context"
+   ],
+   "problem": "Trigger is (or Sharps injury, Exposure to blood and/or body fluid event). The splash-to-mucosa/broken-skin route is only covered loosely by the generic exposure event; no site (eye, mouth, nose, broken skin) is encoded. The 'Exposure to blood and/or body fluid' event also makes the first half of the and redundant with the fluid list.",
+   "evidence": [
+    "Check for occupational ... :: (or (clinical_finding (snomed_concept \"Sharps injury\" \"disorder\")) (clinical_finding (snomed_concept \"Exposure to blood and/or body fluid\" \"event\")))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: (and (or Sharps injury / Exposure event) (or ...fluids))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p196-5670955a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-6ecc4d0c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-32f2a256",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "tissue (blood-stained tissue)"
+   ],
+   "problem": "Encoded as 'Serosanguinous fluid', which is a different substance (serum plus blood) and only approximates 'blood-stained fluid'. Blood-stained tissue is not captured.",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-8684cf83",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-eb498253",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "'Exudate' is a loose stand-in for wound secretions; a wound-specific concept (e.g. wound exudate/discharge) would match the page better.",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p196-63208398",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-f3effcd3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Six fluids split correctly into pleural, pericardial, peritoneal, amniotic, synovial, cerebrospinal.",
+   "evidence": [
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)",
+    "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+    "system_priority_evaluation \"Urgent: occupational sharps/splash exposure to body fluids\" :: same finding inside (or ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p196-791eb0f4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": "",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p196-c2cd1ae2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": "",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p196-c507dd87",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": "",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p196-6fe88738",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": "",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p196-35974afd",
+   "scope": "borderline",
+   "scope_reason": "Outside box; 'patient has TB symptoms' is the only identification logic, referring to the footnote",
+   "verdict": "partial",
+   "parts_missing": [
+    "no priority/check task; no link to the facility triage"
+   ],
+   "problem": "A possible-TB diagnosis rule exists, which is reasonable, but the page frames it as infection-control identification, not a diagnosis.",
+   "evidence": [
+    "Diagnose possible TB from TB symptoms (occupational infection control) :: (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p196-589511b3",
+   "scope": "borderline",
+   "scope_reason": "Footnote defines TB symptoms",
+   "verdict": "partial",
+   "parts_missing": [
+    "'drenching' qualifier on night sweats",
+    "duration for cough if >= 2 weeks was intended"
+   ],
+   "problem": "Fever >= 2 weeks is encoded as (>= (onset ...) (time_ago 2 weeks)); the direction should be checked against the language convention (onset at least 2 weeks ago). Cough has no duration, which may be right per the literal footnote wording but is ambiguous. Unexplained weight loss and night sweats are plain findings.",
+   "evidence": [
+    "(or (clinical_finding Cough) (>= (onset (active_condition Fever)) (time_ago 2 weeks)) (clinical_finding Unexplained weight loss) (clinical_finding Night sweats))"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p196-dbc20141",
+  "p196-5e7dbeea",
+  "p196-4380fcab",
+  "p196-b06831fc",
+  "p196-d9b99505",
+  "p196-0ec9874e"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "problem": "Trigger 'sharps injury OR splash' reduced to sharps injury or a generic exposure event; splash site not represented, and 'Exposure to blood and/or body fluid' event duplicates the fluid list, so an exposure to any fluid event alone with any fluid satisfies it.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "problem": "Task trigger is an 'or' of sharps injury / exposure event, while the check_for list repeats fluids already required by the priority rule; consistent, but fluids approximated (Serosanguinous fluid, Exudate).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms",
+   "problem": "Fever onset comparison direction and missing cough duration are unverified; rule fires on any single symptom (cough alone), which may over-trigger.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "The red box is encoded as one task and one Urgent priority rule with all 12 fluids, but the splash-to-eye/mouth/nose/broken-skin trigger is not represented and two fluids are loose approximations (Serosanguinous fluid for blood-stained fluid/tissue, Exudate for wound secretions). The possible-TB rule is plausible but its fever-onset direction and cough duration are uncertain. Management steps are correctly out of scope."
+}

@@ -1,0 +1,615 @@
+{
+ "page": 73,
+ "slug": "73-abnormal-vaginal-bleeding",
+ "validation_ok": true,
+ "builder_agreement": 0.885,
+ "elements": 34,
+ "elements_agreed": 25,
+ "claims": 27,
+ "claims_agreed": 21,
+ "queue": 43,
+ "queue_by_priority": {
+  "low": 10,
+  "high": 12,
+  "medium": 21
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p73-21042048",
+   "id": "p73-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p73-16a7fd6c",
+   "id": "p73-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p73-3beb8da5",
+   "id": "p73-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p73-04e86008",
+   "id": "p73-rb1-e04",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "error": 1,
+    "correct": 1,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p73-98907d97",
+   "id": "p73-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p73-37cf32fe",
+   "id": "p73-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-2595c48c",
+   "id": "p73-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p73-2015f372",
+   "id": "p73-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-72251281",
+   "id": "p73-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-ab10e222",
+   "id": "p73-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-34ca81b5",
+   "id": "p73-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p73-490131a0",
+   "id": "p73-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-0c390427",
+   "id": "p73-out-e04",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p73-63d7f9ca",
+   "id": "p73-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-5901ed40",
+   "id": "p73-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p73-a24e1d8d",
+   "id": "p73-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-a08fd98d",
+   "id": "p73-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p73-39e59a10",
+   "id": "p73-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-aa448ecb",
+   "id": "p73-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-fca0fbdf",
+   "id": "p73-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-a282dcd0",
+   "id": "p73-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-b5da4d5b",
+   "id": "p73-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-b6ff1b5c",
+   "id": "p73-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-80f2be0a",
+   "id": "p73-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-b18b2bd0",
+   "id": "p73-out-e16",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p73-93bb98e8",
+   "id": "p73-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-b4845c38",
+   "id": "p73-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-46cb572d",
+   "id": "p73-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-1e1aa7cc",
+   "id": "p73-out-e20",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-4889e29c",
+   "id": "p73-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-31083fcd",
+   "id": "p73-out-e22",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-4be72786",
+   "id": "p73-out-e23",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-687a8dea",
+   "id": "p73-out-e24",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p73-61f8d432",
+   "id": "p73-out-e25",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

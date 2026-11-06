@@ -1,0 +1,772 @@
+[
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p122-d3c61078",
+  "text": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as an Urgent priority evaluation whose evidence is an (or ...) of the two bullet items. The usual (and <presenting complaint> (or ...)) shape is not needed here because the exposure itself is the presenting complaint. The check_for task is triggered by the same complaint.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Give urgent attention' gate is encoded but the rule fires without the follow-up Yes/No question"
+    ],
+    "problem": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header 'Give urgent attention ... either of' encoded as one Urgent priority rule over an (or ...) of the two bullets, with a check_for task triggered by body-fluid exposure or human bite. Level Urgent matches the page.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p122-ece680e3",
+  "text": "Exposure to blood, blood-stained fluid/tissue, pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid, vaginal secretions, semen or breast milk",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "blood-stained fluid/tissue: no exposure finding for it in the check_for or the priority rule. SNOMED has no general 'blood-stained fluid' substance (only fluid-specific findings such as 'Pleural fluid bloodstained'); the nearest substance is (snomed_concept \"Serosanguinous fluid\" \"substance\") or (snomed_concept \"Blood material\" \"substance\"). At minimum the gap should be recorded; as encoded, exposure to blood-stained saliva (which the page treats as infectious, since only non-bloodstained saliva is excluded) only fires if the health worker records it as 'Blood'."
+    ],
+    "problem": "Ten of eleven fluids are encoded with the right concept and the right 'Exposure to' form, in both the check_for and the priority rule; each is verified to exist and to sit under Body fluid (Vaginal secretion < Female genital fluid, Seminal fluid < Male genital fluid, Breast milk < Mammary fluid), so the task's Body fluid trigger covers them.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "blood-stained fluid/tissue (only Blood encoded)"
+    ],
+    "problem": "Task trigger uses generic 'Body fluid' (not one of the listed fluids) while check_for/priority list specific fluids; trigger and checks disagree. Exposure-to-X pairing is plausible.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "blood-stained fluid/tissue (no concept or rule for exposure to bloodstained fluid or tissue; e.g. 'Body substance' substance, or bloodstained-fluid findings, could have been used)"
+    ],
+    "problem": "Blood, pleural, pericardial, peritoneal, amniotic, synovial, CSF, vaginal secretion, semen (Seminal fluid) and breast milk are each encoded with the Exposure-to qualifier pattern, checked for, and in the Urgent (or ...). Only 'blood-stained fluid/tissue' is missing.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p122-f91d1f4a",
+  "text": "Human bite severe enough to cause bleeding",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts are present and combined with 'and', which matches the page. Two imprecisions worth noting, neither a wrong concept: (1) 'Bleeding' is the generic finding, so a patient with a human bite wound and any unrelated bleeding (e.g. vaginal bleeding) satisfies the branch; (snomed_concept \"Wound hemorrhage\" \"finding\") or Bleeding with a finding_site would tie it to the bite. (2) In the check list the health worker is asked a bare 'Bleeding' item with no link to the bite. 'Human bite - wound' is the task trigger rather than a check_for item, which is the only legal placement given constraint 3.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "task trigger fires on any human bite, not only bleeding one; bleeding appears only as separate check_for item"
+    ],
+    "problem": "Priority rule correctly ANDs bite and bleeding, but the task trigger omits bleeding, so task and priority rule disagree.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Human bite severe enough to cause bleeding' encoded as (and Human bite - wound, Bleeding); both checked (bite as trigger, Bleeding in check_for). Bleeding is generic, not tied to the bite site, so a bleeding elsewhere plus a non-bleeding bite would also fire; minor.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p122-f4e69d03",
+  "text": "Yes: was there sexual contact, sharps injury, splash to eye/open wound/mouth/nose?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "sexual contact: not checked for. (snomed_concept \"Sexual exposure\" \"finding\") and (snomed_concept \"Unprotected sexual intercourse\" \"finding\") exist.",
+     "sharps injury: not checked for. (snomed_concept \"Sharps injury\" \"disorder\") and (snomed_concept \"Needle stick injury with contaminated needle\" \"disorder\") exist.",
+     "splash to open wound (broken skin): not checked for. (snomed_concept \"Broken skin\" \"disorder\") exists.",
+     "splash to eye/mouth/nose: not checked for; no precoordinated SNOMED concept found (nearest is the event (snomed_concept \"Exposure to blood and/or body fluid\" \"event\") or a finding_site of Mucous membrane structure)."
+    ],
+    "problem": "The rules cannot tell a sexual/sharps/mucosal exposure (HIV PEP pathway) from a human bite or 'all other exposures' (no HIV PEP). Everything in the box is treated identically as Urgent. If this is accepted as routing-only, it should be recorded as a deliberate decision.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "sexual contact",
+     "sharps injury",
+     "splash to eye/open wound/mouth/nose"
+    ],
+    "problem": "Yes branch qualifier determines whether PEP is needed; no rule or check_for item encodes these. Urgent fires for any listed-fluid exposure regardless.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No route-of-exposure findings (sexual contact, Sharps injury, splash to eye/mouth/nose/open wound) in check_for or any rule; the 'No' branch (reassure, no PEP) cannot be distinguished.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p122-50cf76d4",
+  "text": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "exposure within the last 72 hours: no onset/time_ago comparison anywhere in the file"
+    ],
+    "problem": "Not encoded. Acceptable under the no-manage-tasks policy, but the 72-hour window is the single most important number on the page and would be cheap to carry if a future manage task needs it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "72 hour window"
+    ],
+    "problem": "Not encoded; may be not_representable.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p122-1552264b",
+  "text": "Patient known HIV positive",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'Patient known HIV positive' routes to 'avoid PEP, routine HIV care' (management). Representable as (active_condition (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\")) if ever needed.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "known HIV positive modifies need for PEP (avoid PEP)"
+    ],
+    "problem": "HIV-positive status is expressible as a finding but not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p122-9d8e81dc",
+  "text": "Positive",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Rapid test 'Positive' branch.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "positive rapid test"
+    ],
+    "problem": "test result branch; outcome is management (avoid PEP)",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "HIV-status / 72-hour branches decide whether to give PEP (management), not triage or diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p122-cdff65fd",
+  "text": "If source HIV rapid negative, no need to continue PEP unless signs of acute HIV infection (history of flu-like symptoms - fever, sore throat, headache). If unsure, discuss PEP with HIV hotline 200.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Stop PEP if source rapid negative unless the source has acute-HIV symptoms. The symptom list (fever, sore throat, headache) describes the source person, not the exposed patient, so it cannot be recorded as the patient's findings.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "fever",
+     "sore throat",
+     "headache"
+    ],
+    "problem": "signs of acute HIV infection (flu-like symptoms: fever, sore throat, headache) are expressible clinical findings that modify PEP",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No possible diagnosis of acute HIV infection from flu-like symptoms after exposure.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p122-975cbcf7",
+  "text": "Body fluids transmit infection through sexual exposure (rape/sexual assault or consensual sex, burst condom), occupational or non-occupational exposure (sharps injury, splash to eye, mouth, nose or",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "sexual exposure",
+     "sharps injury / shared needles",
+     "splash to eye/mouth/nose/broken skin",
+     "contact with used condom"
+    ],
+    "problem": "Exposure to blood is encoded; routes are not (same gap as p122-f4e69d03).",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p122-f2abb36e",
+  "text": "broken skin), sharing needles, contact with used condom and exposure to blood. Tears, saliva (non-bloodstained), sweat, urine and stool are considered non-infectious fluids.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "exclusion of tears, non-bloodstained saliva, sweat, urine and stool: the priority rule honours it implicitly by listing only the infectious fluids, but the check_for task's due_to is the general (snomed_concept \"Body fluid\" \"substance\"), whose descendants include (snomed_concept \"Sweat\" \"substance\"), (snomed_concept \"Urinary tract fluid\" \"substance\"), (snomed_concept \"Oral fluid\" \"substance\") and (snomed_concept \"Eye fluid\" \"substance\"), so an exposure recorded to any of those still launches the PEP check list."
+    ],
+    "problem": "The over-broad trigger is harmless for the Urgent evaluation but contradicts the page's own exclusion at the task level. Triggering on an (or ...) of the ten specific exposures, or on (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"), would match the page; the (no ...) form could alternatively carry the exclusion.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Non-infectious fluids (tears, non-bloodstained saliva, sweat, urine, stool) are correctly absent from the Urgent rule. Note the check_for trigger uses 'Body fluid', of which Tears, Saliva, Sweat and Urine are descendants, so exposure to them would raise the check task (harmless, no priority).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c001",
+  "text": "Check for HIV PEP: exposure to infectious fluid or human bite :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Body fluid\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Box heading is 'patient exposed to infectious fluid'. 'Body fluid' is deliberately broader (it also covers the tears/saliva/sweat/urine/stool the intro calls non-infectious), which is acceptable for a task trigger since the check_for then narrows to the page's list; every listed fluid is_a Body fluid so descendant matching works. No usable closer concept: 'Exposure to blood and/or body fluid' is an event, not a finding/substance pair.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Generic \"Body fluid\" also covers fluids the page calls non-infectious (tears, saliva, sweat, urine, stool); page says \"infectious fluid\" and lists specific fluids.",
+    "fix": "Drop it, or use \"Exposure to blood and/or body fluid\" only if narrowed; rely on the listed fluids.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Body fluid' includes sweat, tears (Eye fluid), urine and non-bloodstained saliva, which the page explicitly lists as non-infectious; the trigger is broader than 'infectious fluid' and is not a recorded common symptom or warning sign, so whether it is ever recorded is unclear.",
+    "fix": "Keep as broad pre-screen but note in remaining-questions; consider anchoring on (snomed_concept \"Exposure to blood and/or body fluid\" \"event\") or on the specific infectious-fluid exposures.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for HIV PEP: exposure to infectious fluid or human bite :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Trigger fires on any human bite; page only says \"Human bite severe enough to cause bleeding\".",
+    "fix": "Make trigger (and (bite)(Bleeding)) as in the priority rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c013",
+  "text": "Check for HIV PEP: exposure to infectious fluid or human bite :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page's item is 'Human bite severe enough to cause bleeding': bleeding caused by the bite. A bare 'Bleeding' finding is any bleeding anywhere (e.g. a nosebleed recorded on another page) and is only tied to the bite by the and in the priority rule, so a patient with a trivial human bite plus unrelated bleeding becomes Urgent. No precoordinated 'bleeding human bite' concept exists.",
+    "fix": "Record the severity on the bite itself: (clinical_finding (snomed_concept \"Human bite - wound\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))), and use that single qualified finding in the priority rule; or keep Bleeding but document the approximation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Bleeding as a standalone check_for item is not on the page; it is only meaningful qualifying the bite, and alone it would match any bleeding patient.",
+    "fix": "Remove, or combine with Human bite in an and.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Unqualified 'Bleeding' is asked of every exposed patient; the page only means bleeding caused by the human bite (wound bleeding), not bleeding in general.",
+    "fix": "Qualify, e.g. (clinical_finding (snomed_concept \"Bleeding\" \"finding\") (finding_site …bite wound site…)) or note the and-pairing with the bite in the priority rule as the only intended use.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c013: bare Bleeding is not tied to the bite; any recorded bleeding plus any human bite satisfies the and.",
+    "fix": "Same as c013.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same unqualified 'Bleeding' as c013; within the (and bite bleeding) it reads correctly, but any unrelated bleeding plus any bite would satisfy it.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "No route-of-exposure findings (sexual contact, sharps injury, broken skin, splash to eye/mouth/nose) are checked for, so the rules cannot separate the HIV PEP pathway from the human-bite / 'all other exposures' branches of the flowchart. The house standard asks for every discriminating finding the algorithm uses; the counter-argument is that only management depends on it and constraint 2 would reject unused check_for items. Either add them with a consuming rule or record the omission as a decision.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "The task's due_to uses the general concept Body fluid, which by descendant matching includes Sweat, Urinary tract fluid, Oral fluid (saliva) and Eye fluid (tears), the very fluids the page declares non-infectious. The priority rule is correctly restricted; the task is not.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "'Blood-stained fluid/tissue' from the red box has no corresponding exposure finding in either rule, and the gap is not visible in the file. Exposure to bloodstained saliva (infectious per the page) only reaches Urgent if recorded as Blood.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "The human-bite branch pairs Human bite - wound with the unqualified finding Bleeding, so any bleeding anywhere plus a bite wound satisfies 'bite severe enough to cause bleeding'. Wound hemorrhage (finding) or Bleeding with a finding_site would be tighter, and the check list would then ask a meaningful question instead of a bare 'Bleeding'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "(clinical_finding (snomed_concept \"Human bite - wound\" \"disorder\")) is priority-rule evidence that appears in the file only as a task due_to, never in a check_for. Constraint 4 explicitly accepts a task due_to for probable rules; constraint 5 for priority rules says only 'checked for in the same file'. If the test reads that literally, this is a PRIORITY EVALUATION ... NOT CHECKED FOR failure that cannot be fixed by moving it into check_for (constraint 3), so it may need a known-issue entry.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_priority_evaluation Urgent",
+  "text": "Fires on any exposure to a listed fluid without the page's Yes/No qualifier (sexual contact, sharps injury, splash); the No branch says reassure and avoid PEP. Also fires Urgent for bleeding bite where page says HIV PEP not needed (hep B only), though 'give urgent attention' header supports it.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task Check for HIV PEP",
+  "text": "Trigger (Body fluid exposure OR any human bite) differs from priority rule (specific fluids; bite AND bleeding); generic 'Body fluid' concept is not one of the page's fluids and 'Exposure to' qualifier pairing semantics unverified; non-bleeding bites trigger the task though the page does not.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task Check for HIV PEP check_for",
+  "text": "Bleeding is a check_for item but no check asks sexual contact, sharps injury, splash, known HIV positive, or acute HIV symptoms. Bite wound itself not in check_for.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "whole file",
+  "text": "No diagnosis rules; acceptable as page has no 'X likely'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "'Blood-stained fluid/tissue' exposure from the red box is not in the (or ...) or the check_for, so an exposure recorded as bloodstained fluid/tissue (not blood itself) gets no Urgent priority.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "Route of exposure (sexual contact, sharps injury, splash to eye/open wound/mouth/nose) is the page's next decision node and is not checked for or used anywhere; the flowchart's Yes/No branch is lost.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "Trigger anchors on (Exposure to + Body fluid) and Human bite - wound, neither of which is a common symptom or warning sign; the task fires only if one of these is recorded elsewhere. Trigger also covers non-infectious fluids (tears, saliva, urine, sweat are Body fluid descendants). The Exposure-to qualifier pattern is the house pattern; 'Exposure to blood and/or body fluid' (event) exists as an alternative.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "Bleeding in the bite conjunct is generic (not finding_site/linked to the bite), so any bleeding plus any human bite satisfies it; also Will's (and <presenting complaint> (or ...)) structure is not used, though the items themselves imply the complaint.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "Type and trigger are right, but the check_for is incomplete against the red box and its follow-on question. (1) The box's first bullet also lists 'blood-stained fluid/tissue'; nothing encodes it and 'Exposure to Blood' does not match it by descent, so no SNOMED pairing is attempted (no precoordinated concept exists; a remaining-questions note or an approximation such as a second Blood exposure finding with a documented caveat is needed). (2) The page's next triage step, 'Yes: was there sexual contact, sharps injury, splash to eye/open wound/mouth/nose?', is the gate that separates the PEP pathway from 'for all other exposures, reassure ... avoid giving PEP'; it is not checked for although (snomed_concept \"Sharps injury\" \"disorder\") and (snomed_concept \"Sexual exposure\" \"finding\") exist. (3) 'Bleeding' is unlinked to the bite (c013).",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "Type and level are right: the box heading is 'Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:', so Urgent on an or of the two bullets is faithful, and the bite bullet is correctly an and of bite plus bleeding. Two gaps: exposure to blood-stained fluid/tissue (explicitly in the box) never triggers Urgent, and the bare Bleeding finding lets an unrelated bleed plus any human bite trigger it (c025). Every piece of evidence is checked for in the same file.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "Trigger is broader than the page (any body fluid, any human bite) and check_for lists a bare Bleeding finding; also omits blood-stained fluid/tissue and the follow-up qualifier (sexual contact, sharps injury, splash to eye/open wound/mouth/nose). Page header is a management-style question, so a check task is reasonable.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for HIV PEP: exposure to infectious fluid or human bite",
+  "text": "The check_for list leaves out the red box's 'blood-stained fluid/tissue' (exposure to Blood does not cover blood-stained fluid or tissue). It also leaves out the page's second decision node, the exposure route (sexual contact, sharps injury, splash to eye/open wound/mouth/nose), and the 72-hour window, which together decide HIV PEP versus 'reassure, avoid PEP'. The trigger 'Exposure to Body fluid' takes in fluids the page calls non-infectious. The task type is right for a red-box pre-screen.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+  "text": "Urgent is justified by 'Give urgent attention to the patient exposed to infectious fluid', and the or-of-fluids plus (and human-bite bleeding) matches 'either of'. However: 'blood-stained fluid/tissue' is missing from the or; there is no presenting-complaint/exposure wrapper (house pattern is (and <complaint> (or …))); and the title says 'HIV PEP' although the page says a bleeding human bite needs hepatitis B prevention only and no HIV PEP.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 122,
+  "slug": "122-hiv-post-exposure-prophylaxis-pep",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (and (or exposure to Body fluid, Human bite - wound) (or …10 fluids…, (and Human bite - wound, Bleeding)))  vs  B: (or …10 fluids…, (and Human bite - wound, Bleeding)); A's two extra conditions are exposure to Body fluid and Human bite - wound as a gating conjunct",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "The box asks 'Does patient have either of:' the two bullets, so either bullet alone makes the patient urgent; A's extra gate on a separately recorded generic body-fluid exposure or bite is not on the page and can only make the rule fire less often.",
+    "unsettled": false
+   }
+  ]
+ }
+]

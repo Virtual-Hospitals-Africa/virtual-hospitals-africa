@@ -1,0 +1,552 @@
+{
+ "page": 19,
+ "lisp_file": "19-assess-and-manage-glucose.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for known diabetes when fingerprick glucose is low or high",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1 Check if patient needs urgent attention"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-036f41a9"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p19-26afd857"
+   ],
+   "quote": "Drowsiness"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-1c7e135f"
+   ],
+   "quote": "Confusion"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p19-d5f1d3b7"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p19-9f36bfaf"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p19-bdbce5be"
+   ],
+   "quote": "Rapid deep breathing"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "Nausea"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p19-15c8589e"
+   ],
+   "quote": "Abdominal pain"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent signs when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p19-d56f473b"
+   ],
+   "quote": "Dehydration"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check urine for ketones when fingerprick glucose is 11.1 or more",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check urine for ketones when fingerprick glucose is 11.1 or more",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p19-fcf9e32e"
+   ],
+   "quote": "check urine for ketones"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "No ketones"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "trigger",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "If not known diabetes"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "Unexplained weight loss"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "thirst (especially at night)"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Polyuria\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "passing excessive amounts of urine often"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "periodic changes in vision"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for symptoms of diabetes when glucose is 11.1 or more without ketones",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent infectious disease\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "frequent infections (e.g. urinary, skin)"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "Glucose < 3"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "if diabetes"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable hypoglycaemia from fingerprick glucose",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hypoglycemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p19-77ae0499"
+   ],
+   "quote": "Patient has hypoglycaemia"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "No ketones"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p19-e059b1ef"
+   ],
+   "quote": "If not known diabetes"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "Unexplained weight loss"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive thirst\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "thirst (especially at night)"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Polyuria\" \"finding\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "passing excessive amounts of urine often"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "periodic changes in vision"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent infectious disease\" \"disorder\"))",
+   "element_keys": [
+    "p19-9997268e"
+   ],
+   "quote": "frequent infections (e.g. urinary, skin)"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable diabetes from random glucose 11.1 or more with symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") probable)",
+   "element_keys": [
+    "p19-560cbf1b"
+   ],
+   "quote": "Diagnose diabetes"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: hypoglycaemia on fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Hypoglycemia\" \"disorder\"))",
+   "element_keys": [
+    "p19-77ae0499",
+    "p19-db588a57"
+   ],
+   "quote": "Patient has hypoglycaemia. Give urgent attention"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6",
+    "p19-03968614"
+   ],
+   "quote": "Glucose ≥ 11.1 Check if patient needs urgent attention"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-036f41a9"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p19-9f36bfaf"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p19-d5f1d3b7"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p19-26afd857"
+   ],
+   "quote": "Drowsiness"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p19-1c7e135f"
+   ],
+   "quote": "Confusion"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "Nausea"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p19-b3cae127"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p19-15c8589e"
+   ],
+   "quote": "Abdominal pain"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p19-bdbce5be"
+   ],
+   "quote": "Rapid deep breathing"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p19-415aa503"
+   ],
+   "quote": "Temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: glucose 11.1 or more with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p19-d56f473b"
+   ],
+   "quote": "Dehydration"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: glucose 11.1 or more with urine ketones",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p19-e28afbd6"
+   ],
+   "quote": "Glucose ≥ 11.1"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: glucose 11.1 or more with urine ketones",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p19-f6759649",
+    "p19-9618a9ba",
+    "p19-4fb1dafe"
+   ],
+   "quote": "Ketones present Refer urgently"
+  }
+ ]
+}

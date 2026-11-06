@@ -1,0 +1,314 @@
+{
+  "page": 79,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p79-d3e29d0c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: sets the presenting complaint (neck pain) and the 'any of' structure of the Urgent priority rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: neck pain with meningitis, neurological symptoms or recent injury :: (and (clinical_finding (snomed_concept \"Neck pain\" \"finding\")) (or (active_condition (snomed_concept \"Meningitis\" \"disorder\")) ... ))",
+        "Check for urgent neck pain conditions :: (task \"Check for urgent neck pain conditions\" adult (clinical_finding (snomed_concept \"Neck pain\" \"finding\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-56738f8a",
+      "scope": "in_scope",
+      "scope_reason": "Criterion plus 'meningitis likely'. Parts: neck stiffness; temperature >= 38; headache; drowsy; confused; purple/red rash; meningitis likely. The ceftriaxone instruction is a management step and out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All seven logic parts are encoded with the right concept and the page's and/or structure: Stiff neck AND any of (Body temperature >= 38 °C, Headache, Drowsy, Acute confusion, Purpuric rash, Erythematous rash) gives probable Meningitis, which the priority rule consumes as (active_condition Meningitis). All six findings are in the check_for. 'Acute confusion' is the closest finding-category concept ('Confusion' does not exist as a finding); 'Purpuric rash' + 'Erythematous rash' cover purple/red. Ceftriaxone 2g IV/IM and the >1g-per-site note are management (out of scope).",
+      "evidence": [
+        "Diagnose probable meningitis from neck pain page :: (and (clinical_finding (snomed_concept \"Stiff neck\" \"finding\")) (or (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38) (clinical_finding (snomed_concept \"Headache\" \"finding\")) (clinical_finding (snomed_concept \"Drowsy\" \"finding\")) (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) (clinical_finding (snomed_concept \"Purpuric rash\" \"disorder\")) (clinical_finding (snomed_concept \"Erythematous rash\" \"disorder\"))))",
+        "Urgent: neck pain with meningitis, neurological symptoms or recent injury :: (active_condition (snomed_concept \"Meningitis\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-69244b7e",
+      "scope": "in_scope",
+      "scope_reason": "Criterion with six parts: weakness, numbness, clumsiness, stiffness, change in gait, difficulty with co-ordination, each in arms/legs.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All six parts are in the check_for and as or-branches of the Urgent rule. Concepts are limb-level and descendants match: 'Muscle weakness of limb' has upper/lower-limb children, 'Numbness of limbs' has 'Numbness of upper limb' and 'Numbness of lower limb' (and catches 'Numbness of finger'). 'Stiff limbs' only has 'Stiff legs' as a child, so an arm-stiffness recording would need the parent itself, but no closer concept exists. 'Abnormal gait' and 'Decreased coordination' are apt.",
+      "evidence": [
+        "Urgent: neck pain with meningitis, neurological symptoms or recent injury :: (or ... (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\")) (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\")) (clinical_finding (snomed_concept \"Clumsiness\" \"finding\")) (clinical_finding (snomed_concept \"Stiff limbs\" \"finding\")) (clinical_finding (snomed_concept \"Abnormal gait\" \"finding\")) (clinical_finding (snomed_concept \"Decreased coordination\" \"finding\")) ...)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-047d2731",
+      "scope": "in_scope",
+      "scope_reason": "Criterion: recent injury AND (x-ray unavailable OR x-ray abnormal OR neurological symptoms). The collar/immobilisation instruction is a management step, out of scope by design.",
+      "verdict": "partial",
+      "parts_missing": [
+        "x-ray unavailable (the page escalates a recent injury when no x-ray can be done; the rules only escalate when an x-ray has been done and is abnormal)"
+      ],
+      "problem": "Recent injury (Injury of neck + Recent), x-ray abnormal (Plain X-ray of cervical spine abnormal) and the neurological-symptom branch are encoded with the page's and/or structure. 'X-ray unavailable' is not encoded; the language has no way to state that a procedure cannot be done, so this part is probably not representable, but it should be recorded as a known gap. The neurological-symptom sub-branch is logically redundant (those findings already escalate on their own in the same rule) but harmless.",
+      "evidence": [
+        "Urgent: neck pain with meningitis, neurological symptoms or recent injury :: (and (clinical_finding (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\")) (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\")) ... (clinical_finding (snomed_concept \"Decreased coordination\" \"finding\"))))",
+        "Check for urgent neck pain conditions :: (clinical_finding (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) ; (clinical_finding (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p79-6e6a449f",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: 'Refer urgently' is the action for the red box. The Urgent priority level in both priority rules is consistent with it.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-7390b8c2",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: sets the presenting complaint (arm or hand symptoms) and the 'any of' structure of the Urgent priority rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as (and Finding of upper limb (or ...)). 'Finding of upper limb' is a broad anchor for 'arm or hand symptoms', which is what the page means; Pain in upper limb, Hand pain, Pain in thumb, Pain of shoulder region and Muscle weakness of upper limb are all its descendants, so recording any of them satisfies the trigger.",
+      "evidence": [
+        "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness :: (and (clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\")) (or ...))",
+        "Check for urgent arm or hand conditions :: (task \"Check for urgent arm or hand conditions\" adult (clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-87df1224",
+      "scope": "in_scope",
+      "scope_reason": "Criterion: arm pain AND chest pain. The page reference (24) is a cross-reference.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness :: (and (clinical_finding (snomed_concept \"Pain in upper limb\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\")))",
+        "Check for urgent arm or hand conditions :: (clinical_finding (snomed_concept \"Pain in upper limb\" \"finding\")) ; (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-886ca53f",
+      "scope": "in_scope",
+      "scope_reason": "Criterion plus 'fracture likely': recent injury AND (severe pain OR severe swelling OR deformity). Page reference (30) is a cross-reference.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Fracture of upper limb' with the page's and/or structure; the priority rule consumes it as (active_condition). 'Severe' is applied to swelling as well as pain, which is one fair reading of 'severe pain/swelling'. All four findings are in the check_for.",
+      "evidence": [
+        "Diagnose probable fracture of upper limb from arm or hand symptoms :: (and (clinical_finding (snomed_concept \"Injury of upper extremity\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Deformity of upper limb\" \"finding\"))))",
+        "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness :: (active_condition (snomed_concept \"Fracture of upper limb\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-ba963842",
+      "scope": "in_scope",
+      "scope_reason": "Criterion plus 'consider stroke or TIA': new sudden-onset arm weakness; difficulty speaking and visual disturbance are 'with/without', so they do not change the logic. Page reference (152) is a cross-reference.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Two possible diagnoses (Cerebrovascular accident, Transient ischemic attack) from 'Muscle weakness of upper limb' + Sudden onset, and the same finding escalates in the priority rule. 'Stroke' does not exist as a disorder name; CVA is the right concept. The optional speech/visual features are not in the check_for; since they are 'with/without' they cannot be consumed by any rule, so leaving them out is consistent with the test constraints, though the house standard would prefer every red-box item to be checked for.",
+      "evidence": [
+        "Diagnose possible stroke from sudden arm weakness :: (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+        "Diagnose possible TIA from sudden arm weakness :: (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+        "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness :: (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p79-164e84c2",
+      "scope": "borderline",
+      "scope_reason": "This is the page's non-urgent triage decision (red flags: >50 years, pain progressive or lasting >6 weeks, oral steroid use, HIV, diabetes, IV drug use, unexplained weight loss/fever or TB, neck surgery, previous cancer). Its outcome is 'do cervical spine x-ray, refer to doctor' with no priority level, and there are no manage tasks in this pass, so it could be classed flowchart_routing; but it is a clinical criterion set the house standard's check_for would normally capture, and most parts (duration via onset, HIV/diabetes/TB as known conditions, steroid use, IV drug use, weight loss, fever, previous surgery/cancer) are expressible. Age >50 is not representable (age is only adult/child).",
+      "verdict": "missing",
+      "parts_missing": [
+        ">50 years (not representable)",
+        "pain progressive or lasting > 6 weeks",
+        "oral steroid use",
+        "HIV",
+        "diabetes",
+        "IV drug use",
+        "unexplained weight loss",
+        "unexplained fever",
+        "TB",
+        "neck surgery",
+        "previous cancer"
+      ],
+      "problem": "No rule, check_for item or priority evaluation covers any of these red flags. If the team's position is that a decision whose only outcome is 'x-ray and refer' is routing, this should be recorded as a deliberate omission rather than silently dropped.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p79-493edd8d",
+      "scope": "in_scope",
+      "scope_reason": "Joint examination and 'joint problem likely' (page 77). Parts: joint warm; joint tender; joint swollen; unable to do all actions comfortably.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Arthropathy' from any of Joint warm, Tenderness of joint, Joint swelling, Limitation of joint movement, anchored on Finding of upper limb. 'Joint problem' has no SNOMED concept; Arthropathy (disorder) is the natural diagnosis for it. 'Unable to do all actions comfortably' is approximated by 'Limitation of joint movement', which is the closest finding available. The examination manoeuvres themselves are instructions, not logic.",
+      "evidence": [
+        "Diagnose probable joint problem from arm or hand symptoms :: (and (clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\")) (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p79-9f8dff45",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision node: painful shoulder leads to 'Referred pain likely'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for causes of arm or hand symptoms :: (clinical_finding (snomed_concept \"Pain of shoulder region\" \"finding\"))",
+        "Diagnose probable referred pain from painful shoulder :: (clinical_finding (snomed_concept \"Pain of shoulder region\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-c240934b",
+      "scope": "in_scope",
+      "scope_reason": "'Referred pain likely' conclusion. The 'Ask about neck pain (see above)...' continuation is a set of cross-references to other pages.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Referred pain' (finding) from shoulder pain, as the page says. Note the rule does not exclude patients whose shoulder pain has joint signs (the page runs the joint check first); see rule-level problems.",
+      "evidence": [
+        "Diagnose probable referred pain from painful shoulder :: (diagnosis (snomed_concept \"Referred pain\" \"finding\") probable) ... (clinical_finding (snomed_concept \"Pain of shoulder region\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-a24da820",
+      "scope": "in_scope",
+      "scope_reason": "Criteria for 'Carpal tunnel syndrome likely'. Parts: wrist/hand pain; intermittent; worse at night; relieved by shaking; may be numbness/tingling in 1st-3rd fingers; may be weakness of hand.",
+      "verdict": "partial",
+      "parts_missing": [
+        "relieved by shaking",
+        "numbness/tingling in 1st, 2nd and 3rd fingers (supporting feature, 'may be')",
+        "weakness of hand (supporting feature, 'may be')"
+      ],
+      "problem": "Wrist pain / hand pain with Intermittent and Night time qualifiers are encoded and consumed by the probable rule. 'Relieved by shaking' has no finding or qualifier form in SNOMED ('Relieved' is a bare qualifier value without a 'by shaking' object) and is a reasonable omission; 'Night pain' exists as a finding and is a closer match for 'worse at night' than the 'Night time' qualifier, though it loses the site. The optional numbness/tingling (Numbness of finger, Paresthesia of hand exist) and hand weakness are discriminating features the house standard's check_for would normally list; they are absent from the check_for and from the rule.",
+      "evidence": [
+        "Check for causes of arm or hand symptoms :: (clinical_finding (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\"))) ; (clinical_finding (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+        "Diagnose probable carpal tunnel syndrome from wrist or hand pain :: (or (clinical_finding (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")) (qualifier (snomed_concept \"Night time\" \"qualifier value\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p79-def40763",
+      "scope": "in_scope",
+      "scope_reason": "'Carpal tunnel syndrome likely' conclusion; the treatment bullets are management steps, out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Carpal tunnel syndrome' (disorder) is the right concept and rule type.",
+      "evidence": [
+        "Diagnose probable carpal tunnel syndrome from wrist or hand pain :: (diagnosis (snomed_concept \"Carpal tunnel syndrome\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-93c4cdb1",
+      "scope": "in_scope",
+      "scope_reason": "Criterion for 'Tennis or golfer's elbow likely': elbow pain with or after elbow flexion/extension.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Pain provoked by movement' at 'Elbow region structure' captures pain with/after elbow movement; it is in the check_for and consumed by the probable rule.",
+      "evidence": [
+        "Check for causes of arm or hand symptoms :: (clinical_finding (snomed_concept \"Pain provoked by movement\" \"finding\") (finding_site (snomed_concept \"Elbow region structure\" \"body structure\")))",
+        "Diagnose probable elbow tendinopathy from elbow pain on movement :: (clinical_finding (snomed_concept \"Pain provoked by movement\" \"finding\") (finding_site (snomed_concept \"Elbow region structure\" \"body structure\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-ef304adc",
+      "scope": "borderline",
+      "scope_reason": "'May have decreased grip strength' is an optional supporting feature of tennis/golfer's elbow; it does not change the decision, so it is not strictly needed by any rule, but the house standard lists discriminating findings in the check_for.",
+      "verdict": "missing",
+      "parts_missing": ["decreased grip strength"],
+      "problem": "Not in any check_for or rule. SNOMED has 'Grip strength' (observable entity) but no plain 'decreased grip strength' finding surfaced, so a check_for item would need a qualified form; low impact.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p79-892fd9ea",
+      "scope": "in_scope",
+      "scope_reason": "'Tennis or golfer's elbow likely' conclusion; the treatment bullets are management steps, out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Elbow tendinopathy' (disorder) is the SNOMED parent whose only two children are 'Lateral epicondylitis' (tennis elbow) and 'Medial epicondylitis of elbow joint' (golfer's elbow), so it is exactly 'tennis or golfer's elbow'.",
+      "evidence": [
+        "Diagnose probable elbow tendinopathy from elbow pain on movement :: (diagnosis (snomed_concept \"Elbow tendinopathy\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-4832f1fd",
+      "scope": "in_scope",
+      "scope_reason": "Criteria for 'Tenosynovitis likely'. Parts: thumb pain worse with thumb movement; thumb pain worse with wrist movement; catching of finger; locking of finger.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as (or (and Pain in thumb (or movement-provoked pain at Thumb, movement-provoked pain at Wrist)) Joint catching at Finger, Locking of joint at Finger), which matches the page's two alternatives (De Quervain's pattern or trigger-finger pattern). All five findings are in the check_for.",
+      "evidence": [
+        "Diagnose probable tenosynovitis from thumb pain or finger locking :: (or (and (clinical_finding (snomed_concept \"Pain in thumb\" \"finding\")) (or (clinical_finding (snomed_concept \"Pain provoked by movement\" \"finding\") (finding_site (snomed_concept \"Thumb structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain provoked by movement\" \"finding\") (finding_site (snomed_concept \"Wrist region structure\" \"body structure\"))))) (clinical_finding (snomed_concept \"Joint catching\" \"finding\") (finding_site (snomed_concept \"Finger structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Locking of joint\" \"finding\") (finding_site (snomed_concept \"Finger structure\" \"body structure\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p79-268d4d2d",
+      "scope": "in_scope",
+      "scope_reason": "'Tenosynovitis likely' conclusion; the treatment bullets are management steps, out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Tenosynovitis' (disorder) is the page's own term; 'Radial styloid tenosynovitis' (De Quervain's) is a descendant.",
+      "evidence": [
+        "Diagnose probable tenosynovitis from thumb pain or finger locking :: (diagnosis (snomed_concept \"Tenosynovitis\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p79-c01b25ce",
+    "p79-75f32f60",
+    "p79-a4bfa3cc",
+    "p79-925faf12",
+    "p79-ba537bc3",
+    "p79-67f2660d",
+    "p79-7edfe4a2",
+    "p79-0d4d69f0",
+    "p79-30ebbba7",
+    "p79-fcb9c432"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "(whole file) non-urgent neck pain red-flag screen",
+      "problem": "The page's 'Approach to the patient with neck pain not needing urgent attention' decision (>50 years, pain progressive or lasting >6 weeks, oral steroid use, HIV, diabetes, IV drug use, unexplained weight loss/fever or TB, neck surgery, previous cancer -> x-ray and refer to doctor) is not encoded anywhere. The outcome is management rather than a priority level, so this may be a deliberate scoping choice, but it is the page's main non-urgent triage branch and most of its parts are expressible.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+      "problem": "The 'x-ray unavailable' arm of the recent-injury criterion is dropped; only 'Plain X-ray of cervical spine abnormal' escalates. The language cannot express 'procedure unavailable', so this is a known gap rather than a fixable error, but it should be documented.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+      "problem": "The rule is gated on (clinical_finding \"Neck pain\"), and 'Stiff neck' is not a descendant of 'Neck pain'. A patient recorded with stiff neck + fever (probable Meningitis fires) but without a separate 'Neck pain' finding gets no Urgent priority from this page. This is faithful to the header wording, but the check_for task is also only triggered by Neck pain, so the meningitis pathway depends entirely on that one finding being recorded.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable carpal tunnel syndrome from wrist or hand pain",
+      "problem": "The supporting features the page lists (numbness/tingling in 1st-3rd fingers, weakness of hand, relieved by shaking) are not checked for; SNOMED has 'Numbness of finger' and 'Paresthesia of hand'. 'Night pain' (finding) also exists as a closer match for 'worse at night' than the 'Night time' qualifier.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable referred pain from painful shoulder",
+      "problem": "Fires on any shoulder pain. The page reaches 'Referred pain likely' only after the joint check ('joint problem likely' if warm/tender/swollen or restricted), so a patient with an inflamed shoulder joint gets both probable Arthropathy and probable Referred pain. Adding (not (active_condition Arthropathy)) or the equivalent would follow the page's order; low impact because the page gives no explicit exclusion.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+      "problem": "Inside the recent-injury branch the six neurological findings are repeated, although each already escalates on its own at the outer 'or'. Redundant, not wrong.",
+      "severity": "low"
+    }
+  ],
+  "summary": "No encoding errors found: both red boxes, the meningitis and fracture 'likely' rules, the stroke/TIA 'consider' rules and all five outside 'X likely' rules use correct concepts, thresholds and and/or structure, and every SNOMED concept resolves. The one red-box gap is the 'x-ray unavailable' arm of the recent-injury criterion, which the language probably cannot express. The largest omission is the non-urgent red-flag screen (>50 years, >6 weeks, steroids, HIV, diabetes, IV drug use, weight loss/fever/TB, neck surgery, previous cancer), which is not encoded at all; whether that is in scope is a judgment call, and the carpal tunnel rule leaves out the page's supporting features."
+}

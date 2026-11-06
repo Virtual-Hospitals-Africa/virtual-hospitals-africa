@@ -1,0 +1,646 @@
+{
+ "page": 33,
+ "slug": "33-traumatised-abused-patient",
+ "validation_ok": true,
+ "builder_agreement": 0.681,
+ "elements": 20,
+ "elements_agreed": 14,
+ "claims": 48,
+ "claims_agreed": 25,
+ "queue": 72,
+ "queue_by_priority": {
+  "low": 17,
+  "medium": 42,
+  "high": 13
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p33-ae45ef98",
+   "id": "p33-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p33-ad385df3",
+   "id": "p33-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p33-48769124",
+   "id": "p33-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p33-0b08397b",
+   "id": "p33-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p33-af319d48",
+   "id": "p33-out-e01",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p33-551f2ad1",
+   "id": "p33-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-e38d14e3",
+   "id": "p33-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-8c8235f3",
+   "id": "p33-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-fbbfe68c",
+   "id": "p33-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-79aa6d72",
+   "id": "p33-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "error": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p33-0a8c7096",
+   "id": "p33-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-d8c4df5f",
+   "id": "p33-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-d368ee91",
+   "id": "p33-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-fdf49565",
+   "id": "p33-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-2d774dd4",
+   "id": "p33-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p33-d596424b",
+   "id": "p33-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-db900727",
+   "id": "p33-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-3c6077d3",
+   "id": "p33-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-4c9cd5eb",
+   "id": "p33-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p33-3f8d026d",
+   "id": "p33-out-e16",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "wrong": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "unsupported": 1,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "unsupported": 1,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "wrong": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,351 @@
+{
+ "page": 83,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Poorly defined\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says the borders are poorly defined, not the erythema; qualifier attached to Erythema is acceptable but approximates a border-description finding.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page describes borders as clearly defined and raised; encoded as qualifiers on Erythema (approximation). 'Well defined' maps 'clearly-defined'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (qualifier (snomed_concept \"Zosteriform\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for painful skin conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "expr": "(diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "Page says 'Boil/abscess'; concept covers abscess only, boil (Furuncle 416675009) is not represented.",
+   "fix": "Consider (snomed_concept \"Furuncle\" \"disorder\") as an additional rule or accept the broader abscess concept.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Cellulitis box (p83-5122e44b) mentions red, warm, swollen skin only; pain comes only from the page title, so it is an inherited entry condition, not stated for this diagnosis.",
+   "fix": "Keep only if Pain of skin is treated as the task trigger; otherwise drop from cellulitis rule.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Poorly defined\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Same as c006: border definition attached to Erythema as a qualifier.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "expr": "(diagnosis (snomed_concept \"Cellulitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Erysipelas box states red, warm, swollen skin only; pain comes only from the page title.",
+   "fix": "Same as c017.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Same as c007.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "expr": "(diagnosis (snomed_concept \"Erysipelas\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (qualifier (snomed_concept \"Zosteriform\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "expr": "(diagnosis (snomed_concept \"Herpes zoster\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "expr": "(diagnosis (snomed_concept \"Hidradenitis suppurativa\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for painful skin conditions",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "verdict": "problem",
+   "problem": "Page lists boil/abscess as 'likely' (probable correct) but the abscess concept omits boil. Also overlaps with hidradenitis; recurrent-abscess branch not distinguished, acceptable.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "verdict": "problem",
+   "problem": "Requires Pain of skin, which is only in the page title, not in the cellulitis box. Otherwise erythema poorly defined, warm, swollen matches 'Cellulitis likely'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "verdict": "problem",
+   "problem": "Same Pain of skin dependency from title; border qualifiers modeled on Erythema.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  }
+ ],
+ "summary": "All 34 claims map to real page text and all SNOMED concepts exist; no invented or wrong content found. Most consequential: cellulitis and erysipelas rules require Pain of skin though only the page title supplies pain, and border definition is modelled as an Erythema qualifier. Boil is not represented separately from abscess."
+}

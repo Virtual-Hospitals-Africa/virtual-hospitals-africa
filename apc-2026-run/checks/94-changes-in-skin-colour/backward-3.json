@@ -1,0 +1,594 @@
+{
+ "page": 94,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Page says the tinea-versicolor patches are 'usually on trunk, neck and upper arms'; Trunk structure alone is narrower than the page's trunk branch description.",
+   "fix": "Accept neck/upper arm sites too, or note that the Trunk branch covers them.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Patchy\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says albinism 'involves hair'; White hair is narrower (hair in albinism can be white, yellow or light brown).",
+   "fix": "Consider a broader hair hypopigmentation concept if one exists; otherwise accept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for causes of changes in skin colour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(active_condition (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Confused' is already covered by Acute confusion; Clouded consciousness is a reduced-awareness concept closer to 'drowsy', an extra interpretation rather than the page's word.",
+   "fix": "Acceptable as a synonym net; otherwise drop.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol dependence\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 3 on 'Using any medication' says 'If on atazanavir ↻131' (atazanavir jaundice is managed on p131), but the condition counts every drug, including atazanavir, as an urgent trigger. Exposure-to-drug also does not specify current use.",
+   "fix": "Exclude atazanavir (or route it to p131) and use a current-medication concept.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable jaundice (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable jaundice (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable venous stasis (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable venous stasis (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Venous stasis\" \"finding\") probable)",
+   "verdict": "imprecise",
+   "reason": "Venous stasis (finding) sits directly under 'Venous finding', a generic haemodynamic state; the page means the skin changes of chronic venous disease (red-brown discolouration, ulcers, spidery veins).",
+   "fix": "(snomed_concept \"Venous stasis syndrome\" \"disorder\") or (snomed_concept \"Stasis dermatitis\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable melasma (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable melasma (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Chloasma\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Trunk-only finding site drops the neck and upper arms that the page names as usual sites for tinea versicolor.",
+   "fix": "(or …Trunk structure… …Neck structure… …Upper arm structure…) as finding sites.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Pityriasis versicolor\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable vitiligo (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Patchy\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable vitiligo (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Vitiligo\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c010: 'Involves skin, hair' is broader than White hair, and requiring it in an AND may miss albinism with light (not white) hair.",
+   "fix": "Consider a broader hair concept or drop it from the AND.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "expr": "(diagnosis (snomed_concept \"Albinism\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(active_condition (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c018: Clouded consciousness is not quite 'confused'.",
+   "fix": "Acceptable as a synonym net; otherwise drop.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol dependence\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c025: the atazanavir footnote exception is lost, so a patient on atazanavir with jaundice is flagged Urgent when the page sends them to p131.",
+   "fix": "Add (not … atazanavir) or a separate rule for atazanavir.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "verdict": "problem",
+   "problem": "The red-box criterion 'Hb < 12 (woman) or < 13 (man)' is missing from the OR entirely, so a jaundiced, anaemic patient is not flagged Urgent. The atazanavir exception in footnote 3 is also lost (see c058). Otherwise, the jaundice AND any-of structure, the Urgent level and the footnote-1 SBP<80 are faithful.",
+   "severity": "high"
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "verdict": "problem",
+   "problem": "There is no prompt to obtain a haemoglobin (Hb level estimation), so the missing Hb danger sign can't be captured either. Temperature and BP come from vitals, so their absence here is acceptable.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of changes in skin colour",
+   "verdict": "ok",
+   "problem": "Trigger and check_for list follow the page's top-level question and branches. The Trunk site is a little narrow (c005).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable jaundice (changes in skin colour)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable venous stasis (changes in skin colour)",
+   "verdict": "problem",
+   "problem": "Trigger (dark patches on lower legs) and 'likely'→probable are right, but the diagnosis concept is a generic venous finding; Venous stasis syndrome or Stasis dermatitis is closer.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable melasma (changes in skin colour)",
+   "verdict": "ok",
+   "problem": "Chloasma is the SNOMED name for melasma; dark facial patches → melasma likely is faithful.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "verdict": "problem",
+   "problem": "The structure scale AND (dark trunk patches OR light patches) matches the page, but dark patches are restricted to the trunk although the page says 'trunk, neck and upper arms'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable vitiligo (changes in skin colour)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "verdict": "ok",
+   "problem": "The AND of generalised congenital achromia, hair and eyes matches 'Present from birth. Involves skin, hair and eyes'. White hair is slightly narrow (c040).",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most consequential: the Urgent rule drops the red-box criterion 'Hb < 12 (woman) or < 13 (man)', so jaundice with anaemia never triggers urgent referral. The footnote-3 atazanavir exception is also lost, so any medication (including atazanavir, which the page routes to p131) triggers Urgent. Smaller points: Venous stasis (finding) is a generic venous concept where Stasis dermatitis or Venous stasis syndrome is closer, tinea versicolor's dark patches are limited to the trunk (the page also says neck and upper arms), and the page's 'Hepatitis A IgM positive → acute hepatitis A infection' is not encoded as a diagnosis."
+}

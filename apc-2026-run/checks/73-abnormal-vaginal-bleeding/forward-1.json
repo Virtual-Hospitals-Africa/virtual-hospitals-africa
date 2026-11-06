@@ -1,0 +1,305 @@
+{
+  "page": 73,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p73-21042048",
+      "scope": "in_scope",
+      "scope_reason": "Header carries the presenting complaint (vaginal bleeding) and the priority level (urgent attention) that frame the whole red box.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Presenting complaint encoded as (clinical_finding \"Bleeding from vagina\") as the check task's due_to and as the first conjunct of the Urgent priority rule, structured (and <complaint> (or ...)) as the house standard asks. \"Bleeding from vagina\" (289530006) is the general concept; \"Abnormal vaginal bleeding\" (301822002) also exists but the red box says plain \"vaginal bleeding\" and descendants match automatically, so the general concept is the right choice.",
+      "evidence": [
+        "Check for urgent abnormal vaginal bleeding conditions :: (task \"Check for urgent abnormal vaginal bleeding conditions\" adult (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\")) (check_for ...))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" adult Urgent (and (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\")) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-16a7fd6c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent abnormal vaginal bleeding conditions :: (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-3beb8da5",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: clinical shock, or SBP < 80.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present and or-ed: Shock (27942005, disorder) as a checked finding, and SBP < 80 mmHg as a routine-vital comparison with the right direction and unit. Note the footnote that defines when \"shock likely\" (element p73-61f8d432) is not turned into a probable Shock rule; see that element.",
+      "evidence": [
+        "Check for urgent abnormal vaginal bleeding conditions :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-04e86008",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: pallor AND any of (pulse >= 100, RR >= 30, dizziness, weakness, chest pain). Six parts.",
+      "verdict": "error",
+      "parts_missing": [],
+      "problem": "Logic is right: (and Pallor (or pulse>=100 RR>=30 Dizziness Asthenia Chest pain)) matches the page's \"Pallor with ... or ...\" reading, and all six parts are present with correct thresholds, directions and the only available rate unit (bpm). Two concept problems. (1) Pulse >= 100 is measured on \"Pulse, function\" (8499008), whose parent is \"Cardiovascular function\": it names a physiological function, not a rate. The measurable observable is \"Heart rate\" (364075005, parent \"Cardiovascular measure\"). If the routine pulse vital is recorded under Heart rate this comparison never matches, and the pulse part of the criterion is silently lost. (2) Pallor is encoded as \"Pallor of skin of face\" (1209208002), which narrows the page's generic \"pallor\" (in APC usually conjunctival/palmar pallor) to the face; \"Pale discoloration of entire skin of body\" is the other candidate and SNOMED has no plain \"Pallor\" finding, so this is a lesser concern but should be noted. \"Asthenia\" for weakness and the routine \"Respiratory rate\" concept are acceptable.",
+      "evidence": [
+        "Urgent: abnormal vaginal bleeding with danger signs :: (and (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\")) (or (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))))",
+        "Check for urgent abnormal vaginal bleeding conditions :: (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\")) (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p73-98907d97",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with three parts: recent delivery, recent miscarriage, recent termination of pregnancy.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All three parts present and or-ed. Miscarriage and Induced termination of pregnancy carry the \"Recent\" qualifier; \"Postpartum state\" carries none, which is inconsistent but acceptable since the concept is inherently time-bounded. No SNOMED finding for \"recent delivery\" exists, so Postpartum state is a reasonable substitute.",
+      "evidence": [
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-37cf32fe",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Haemoglobin has no unit in the language, so Hb < 6 cannot be encoded. Nothing was attempted (no proxy finding), so the Urgent rule under-triggers for severe anaemia; this is by design, but it is the one red-box criterion the rule set cannot fire on.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-2595c48c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: sexual assault, rape.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present. \"Victim of rape\" is a direct child of \"Victim of sexual aggression\", so listing both is redundant (descendants match automatically) but harmless. The event concepts \"Sexual assault\" / \"Rape\" exist, but the victim findings are the right patient-side form.",
+      "evidence": [
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+        "Urgent: abnormal vaginal bleeding with danger signs :: (clinical_finding (snomed_concept \"Victim of rape\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-2015f372",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header for the management block; the Urgent priority already covers \"refer urgently\".",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-72251281",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "IV fluid regimen; manage tasks are out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-61f8d432",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 1 is an explicit \"X likely\": \"If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.\" The house standard turns every \"X likely\" into a probable diagnosis rule, and the red box references it (Shock^1). Footnotes 2-4 (COC/ibuprofen contraindications) are management and out of scope.",
+      "verdict": "missing",
+      "parts_missing": [
+        "probable Shock diagnosis rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness",
+        "check_for of confusion/restlessness (not in the check list at all)"
+      ],
+      "problem": "No system_diagnosis_rule exists. Shock is only a tickable clinical_finding in the check_for, so the health worker must recognise shock unaided; the page gives the criteria and the rules do not use them. Note RR > 30 in the footnote vs RR >= 30 in the red box.",
+      "evidence": [
+        "Check for urgent abnormal vaginal bleeding conditions :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p73-34ca81b5",
+      "scope": "borderline",
+      "scope_reason": "Mostly cross-references and examination steps, but contains one decision with a threshold: \"If new bleeding occurs > 1 year after final period, refer within 2 weeks\" (postmenopausal bleeding) and an age gate \"> 40 years\". It is a referral criterion rather than an \"X likely\", and \"time since final period\" has no obvious representation, so reasonable people could leave it out.",
+      "verdict": "missing",
+      "parts_missing": [
+        "postmenopausal bleeding (> 1 year after final period) as a checked finding / referral criterion"
+      ],
+      "problem": "Not encoded. A check_for of \"Postmenopausal bleeding\" (or similar) would at least capture the finding, even if the two-week referral itself is management.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p73-0c390427",
+      "scope": "borderline",
+      "scope_reason": "Contains \"If Hb < 12, treat for likely anaemia\" (an \"X likely\", but Hb is not_representable) and \"If bleeding from elsewhere like easy bruising/purple rash/bleeding gums, arrange FBC and refer next day\" (a discriminating finding leading to referral, without a named diagnosis). The rest is management.",
+      "verdict": "missing",
+      "parts_missing": [
+        "easy bruising / purpura / bleeding gums as checked findings"
+      ],
+      "problem": "Anaemia likely cannot be encoded (Hb has no unit). The bleeding-from-elsewhere findings are not checked for anywhere; the page uses them to route to next-day doctor review, which is the closest thing to a diagnostic branch on the lower page.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p73-a282dcd0",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "\"If Hb < 12, treat for likely anaemia\" needs a haemoglobin unit; the STI assessment is a cross-reference.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-a08fd98d",
+      "scope": "borderline",
+      "scope_reason": "The irregular-periods branch lists thyroid-disease screening criteria (weight change, pulse >= 100, tremor, weakness/tiredness, dry skin, constipation, cold/heat intolerance) that decide whether to check TSH. No diagnosis is named (\"check TSH\" rather than \"consider thyroid disease\"), so it is not a literal \"consider X\", but it is the page's only symptom-based diagnostic discrimination outside the red box and the house standard asks for discriminating findings in a check_for.",
+      "verdict": "missing",
+      "parts_missing": [
+        "check_for of the thyroid-symptom cluster",
+        "a possible thyroid-disorder rule (or measure task for TSH) driven by them"
+      ],
+      "problem": "Nothing from the lower page is encoded; the rule set has no system_diagnosis_rule at all.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p73-490131a0",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Branch header for the type-of-bleeding classification; leads to management, not a diagnosis.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-39e59a10",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Branch header; the cycle-length thresholds (< 21 or > 35 days) define the branch rather than a triage or diagnostic conclusion.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p73-aa448ecb",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Fragment of the irregular-periods header.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-fca0fbdf",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Branch header.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-31083fcd",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Branch header fragment (\"Bleeding after sex\").",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-4be72786",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Branch header fragment.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-687a8dea",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Pointers to STI (62), sexual assault (32) and abuse (33) pages.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p73-b18b2bd0",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Two-week referral criteria (pelvic pain, persistence after treatment) are routine referral management, not red-box triage; cross-reference to page 72 for dysmenorrhoea.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p73-ab10e222",
+    "p73-b5da4d5b",
+    "p73-93bb98e8",
+    "p73-4889e29c",
+    "p73-b4845c38",
+    "p73-63d7f9ca",
+    "p73-46cb572d",
+    "p73-5901ed40",
+    "p73-1e1aa7cc",
+    "p73-b6ff1b5c",
+    "p73-80f2be0a",
+    "p73-a24e1d8d"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+      "problem": "Pulse >= 100 is compared on (measurement \"Pulse, function\" bpm). \"Pulse, function\" (8499008) is a cardiovascular-function observable, not a rate; \"Heart rate\" (364075005) is the measurable. If the routine pulse vital is not recorded under this concept the comparison never matches and the pulse arm of the pallor criterion is silently lost.",
+      "severity": "medium"
+    },
+    {
+      "rule": "(missing) Diagnose probable shock",
+      "problem": "Footnote 1 defines \"shock likely\" (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) and the red box cites it. The house standard says a red-box criterion backed by an \"X likely\" gets a probable rule referenced via (active_condition X). Instead Shock is a bare tickable finding and confusion/restlessness is not checked for at all.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+      "problem": "Hb < 6 is absent (not representable). The rule therefore cannot fire on the one laboratory danger sign; no proxy finding was attempted. By design, but it should be recorded as a known gap.",
+      "severity": "low"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "No system_diagnosis_rule exists for the page. The lower page's only symptom-driven discrimination (thyroid-symptom cluster leading to TSH, bleeding-from-elsewhere leading to FBC/referral, postmenopausal bleeding leading to 2-week referral) is not captured as check_for findings. Defensible under a strict reading of \"X likely / consider X\", but the house standard also asks for every discriminating finding the algorithm uses.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent abnormal vaginal bleeding conditions",
+      "problem": "\"Pallor of skin of face\" narrows the page's generic pallor to the face; SNOMED has no plain \"Pallor\" finding, and \"Pale discoloration of entire skin of body\" is the alternative. Minor concept-fit issue, not a logic error.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent abnormal vaginal bleeding conditions",
+      "problem": "\"Victim of rape\" is a child of \"Victim of sexual aggression\"; both are listed, which is redundant since descendants match. \"Postpartum state\" lacks the \"Recent\" qualifier its sibling findings carry. Neither changes behaviour.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded with the right (and <complaint> (or ...)) structure and every representable criterion is present with correct thresholds and logic; the one likely-functional defect is the pulse measurement on \"Pulse, function\" rather than \"Heart rate\", which may stop the pulse >= 100 arm from ever matching. The footnote's \"shock likely\" definition was not turned into a probable Shock rule, and confusion/restlessness is not checked for. Hb < 6 is unrepresentable and absent; the lower page yields no diagnosis rules or check_for findings (thyroid-symptom cluster, bleeding from elsewhere, postmenopausal bleeding), which is defensible but thin."
+}

@@ -1,0 +1,735 @@
+{
+ "page": 18,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "Footnote 1 names medication, food, insect bite/sting; the 'past few hours' window cannot appear in a check_for",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "Footnote 1 names medication, food, insect bite/sting; the 'past few hours' window cannot appear in a check_for",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Footnote 1 names medication, food, insect bite/sting; the 'past few hours' window cannot appear in a check_for",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Footnote 1 names medication, food, insect bite/sting; the 'past few hours' window cannot appear in a check_for",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive salivation\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Excessive secretions' generically; SNOMED has no generic concept, and salivation plus bronchial secretion is a narrower (toxidrome-based) reading that leaves out e.g. lacrimation/sweating; acceptable approximation",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive bronchial secretion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Excessive secretions' generically; SNOMED has no generic concept, and salivation plus bronchial secretion is a narrower (toxidrome-based) reading that leaves out e.g. lacrimation/sweating; acceptable approximation",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of pupil of both eyes\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "'Both equally dilated' = bilateral dilated pupils; no precoordinated bilateral mydriasis concept exists",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the allergen exposure to 'within the past few hours'; the diagnosis condition drops that window ('few hours' has no numeric value, so no clean onset expression)",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the allergen exposure to 'within the past few hours'; the diagnosis condition drops that window ('few hours' has no numeric value, so no clean onset expression)",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the allergen exposure to 'within the past few hours'; the diagnosis condition drops that window ('few hours' has no numeric value, so no clean onset expression)",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits the allergen exposure to 'within the past few hours'; the diagnosis condition drops that window ('few hours' has no numeric value, so no clean onset expression)",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "verdict": "faithful",
+   "reason": "Number, unit and direction match the page; observable concept assumed to be the house routine-vital form",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "Number, unit and direction match the page; observable concept assumed to be the house routine-vital form",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "expr": "(diagnosis (snomed_concept \"Shock\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of pupil of both eyes\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "'Both equally dilated' = bilateral dilated pupils; no precoordinated bilateral mydriasis concept exists",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "expr": "(diagnosis (snomed_concept \"Overdose\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "'Overdose' (disorder, child of Poisoning) is the right breadth for 'Stimulant or other drug overdose'; no 'Drug overdose' concept in this release",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 12)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive salivation\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Excessive secretions' generically; SNOMED has no generic concept, and salivation plus bronchial secretion is a narrower (toxidrome-based) reading that leaves out e.g. lacrimation/sweating; acceptable approximation",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive bronchial secretion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Excessive secretions' generically; SNOMED has no generic concept, and salivation plus bronchial secretion is a narrower (toxidrome-based) reading that leaves out e.g. lacrimation/sweating; acceptable approximation",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of pupil of both eyes\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "'Both equally dilated' = bilateral dilated pupils; no precoordinated bilateral mydriasis concept exists",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "expr": "(diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "'Poisoning likely' bar spans both the Pinpoint and Both-equally-dilated columns, so both branches are on the page",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of mental alertness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Impairment of mental alertness' is neither an ancestor nor a descendant of 'Decreased level of consciousness' (its only child is 'Cognitive deficit in attention'), so it reaches inattention states the page does not mean; acceptable only if it is the system's recorded alertness finding",
+   "fix": "Drop it unless it is the recorded level-of-consciousness anchor; 'Decreased level of consciousness' plus the AVPU findings already cover the page",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Responds to pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'P' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: decreased consciousness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "AVPU 'U' is a form of decreased consciousness; not a SNOMED descendant, so an explicit disjunct is justified",
+   "fix": "",
+   "confidence": "medium"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for causes of decreased consciousness",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "verdict": "ok",
+   "problem": "Page text 'If SBP < 80, pulse ≥ 100, respiratory rate > 30, weakness, shock likely' is a comma list; the rule reads it as any-of, which is the usual APC reading. Gating on glucose ≥ 11.1 follows the column the text sits in.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable drug overdose with decreased consciousness and dilated pupils",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable poisoning with decreased consciousness",
+   "verdict": "ok",
+   "problem": "Pinpoint branch requires one of the sub-box findings; the page's layout (Pinpoint → two feature boxes → Poisoning likely) supports that, though pinpoint alone could also be read as sufficient. Dilated-pupil branch is justified by the Poisoning bar spanning that column and by Overdose being a child of Poisoning.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: decreased consciousness",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  }
+ ],
+ "summary": "Nothing invented: every condition traces to the red box, the footnote or a column heading, every number, unit and comparison direction matches, and each probable/possible level matches the page's 'likely' / 'possible' / 'check for' wording. The one concept worth a look is the trigger disjunct 'Impairment of mental alertness' (repeated in every rule): it is unrelated in SNOMED to 'Decreased level of consciousness' and is broader than the page, so it should stay only if it is the system's recorded alertness finding. Minor imprecisions: 'Excessive secretions' is split into salivation plus bronchial secretion, and the footnote's 'within the past few hours' window on allergen exposure is dropped in the anaphylaxis rule. Not in this file's scope but visible on the page: 'If patient was in malaria area in past 3 months, manage 39' under temperature ≥ 38 is not encoded as a possible diagnosis."
+}

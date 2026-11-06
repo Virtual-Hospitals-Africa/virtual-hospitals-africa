@@ -1,0 +1,670 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 84,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.8,
+    806.4,
+    108.3
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p84-rb1-e01",
+   "page": 84,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check if the patient needs urgent attention 82.",
+   "bbox": [
+    323.1,
+    92.0,
+    518.8,
+    103.1
+   ],
+   "key": "p84-79a55d69"
+  },
+  {
+   "id": "p84-out-e01",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "GENERALISED ITCHY RASH",
+   "bbox": [
+    311.2,
+    48.7,
+    530.7,
+    71.0
+   ],
+   "key": "p84-a55b72cc"
+  },
+  {
+   "id": "p84-out-e02",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If red itchy crops of bumps that may have blistered or healed with darkening of skin, may have scratch marks, insect bites likely 85.",
+   "bbox": [
+    176.5,
+    120.8,
+    665.3,
+    131.8
+   ],
+   "key": "p84-80a8b92b"
+  },
+  {
+   "id": "p84-out-e03",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Small red bumps and burrows in webspaces",
+   "bbox": [
+    53.6,
+    143.7,
+    217.7,
+    153.9
+   ],
+   "key": "p84-85358be3"
+  },
+  {
+   "id": "p84-out-e04",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "of fingers, axillae, waist and genitals. Very",
+   "bbox": [
+    59.9,
+    153.7,
+    211.4,
+    163.9
+   ],
+   "key": "p84-5c1e4bda"
+  },
+  {
+   "id": "p84-out-e05",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "itchy, especially at night",
+   "bbox": [
+    90.8,
+    163.7,
+    178.5,
+    173.9
+   ],
+   "key": "p84-39db2e16"
+  },
+  {
+   "id": "p84-out-e06",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    151.4,
+    281.1,
+    216.1,
+    288.4
+   ],
+   "key": "p84-db3200fa"
+  },
+  {
+   "id": "p84-out-e07",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Hyperpigmented, itchy",
+   "bbox": [
+    255.3,
+    143.7,
+    341.9,
+    153.9
+   ],
+   "key": "p84-63977f2e"
+  },
+  {
+   "id": "p84-out-e08",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "bumps on limbs, trunk",
+   "bbox": [
+    256.4,
+    153.7,
+    340.9,
+    163.9
+   ],
+   "key": "p84-99961fff"
+  },
+  {
+   "id": "p84-out-e09",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "or face",
+   "bbox": [
+    285.2,
+    163.7,
+    310.0,
+    173.9
+   ],
+   "key": "p84-9ecbeb70"
+  },
+  {
+   "id": "p84-out-e10",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    278.9,
+    270.7,
+    343.6,
+    278.0
+   ],
+   "key": "p84-6d3022c5"
+  },
+  {
+   "id": "p84-out-e11",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patches of dry, scaly, itchy skin on wrists,",
+   "bbox": [
+    399.8,
+    143.7,
+    548.9,
+    153.9
+   ],
+   "key": "p84-f9ab68e5"
+  },
+  {
+   "id": "p84-out-e12",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ankles, inside elbows or behind knees",
+   "bbox": [
+    403.2,
+    153.7,
+    543.6,
+    163.9
+   ],
+   "key": "p84-0db93026"
+  },
+  {
+   "id": "p84-out-e13",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    506.2,
+    242.0,
+    570.9,
+    249.4
+   ],
+   "key": "p84-1c09d11a"
+  },
+  {
+   "id": "p84-out-e14",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Very itchy, red, raised wheals",
+   "bbox": [
+    599.9,
+    147.0,
+    706.1,
+    157.2
+   ],
+   "key": "p84-c92b1237"
+  },
+  {
+   "id": "p84-out-e15",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "that appear suddenly and",
+   "bbox": [
+    604.8,
+    157.0,
+    701.1,
+    167.2
+   ],
+   "key": "p84-946ad93f"
+  },
+  {
+   "id": "p84-out-e16",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "usually disappear within",
+   "bbox": [
+    607.6,
+    167.0,
+    698.3,
+    177.2
+   ],
+   "key": "p84-14f14bc9"
+  },
+  {
+   "id": "p84-out-e17",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "24 hours",
+   "bbox": [
+    636.1,
+    177.0,
+    667.9,
+    187.2
+   ],
+   "key": "p84-654807c2"
+  },
+  {
+   "id": "p84-out-e18",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    639.4,
+    250.5,
+    704.2,
+    257.9
+   ],
+   "key": "p84-ce0b66b4"
+  },
+  {
+   "id": "p84-out-e19",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Diffuse red rash mainly on trunk, arms and legs, which",
+   "bbox": [
+    724.0,
+    147.0,
+    803.0,
+    177.2
+   ],
+   "key": "p84-b2736e71"
+  },
+  {
+   "id": "p84-out-e20",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "appeared within 3 months of starting a new medication",
+   "bbox": [
+    725.2,
+    177.0,
+    801.8,
+    207.2
+   ],
+   "key": "p84-5861a82b"
+  },
+  {
+   "id": "p84-out-e21",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© BMJ Best Practice",
+   "bbox": [
+    753.5,
+    286.2,
+    802.8,
+    293.6
+   ],
+   "key": "p84-7c43be29"
+  },
+  {
+   "id": "p84-out-e22",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Drug rash likely",
+   "bbox": [
+    732.8,
+    307.3,
+    794.2,
+    318.3
+   ],
+   "key": "p84-82ef7e41"
+  },
+  {
+   "id": "p84-out-e23",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Urticaria likely • Help to identify and advise to avoid triggers2. • Apply calamine lotion as needed. • If recurrent eye problem, check for allergic conjunctivitis 48. • If recurrent nose problem, check for allergic rhinitis 51. • If recurrent cough or wheeze, exclude asthma 138. • For itch, give chlorphenamine 4mg 6-8 hourly. If known with chronic urticaria, give instead cetirizine 10mg daily. • Advise to return immediately if any symptoms of anaphylaxis3 occur. • If no better after 24 hours, discuss/refer.",
+   "bbox": [
+    599.5,
+    273.0,
+    705.2,
+    534.0
+   ],
+   "key": "p84-c6824b07"
+  },
+  {
+   "id": "p84-out-e24",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Eczema likely • Eczema is a chronic condition with acute exacerbations. • Advise to avoid triggers such as soap, detergents, heat, fabrics that cause itch, overheating at night. • If low mood, stress or anxiety 98. • Wash with aqueous cream (UEA) instead of soap. • If severe, start at Step 3. • Step 1. Moisturise skin with emulsifying ointment (UE) twice a day and immediately after bathing. • Step 2. If no better after 7 days: apply hydrocortisone 1% cream twice a day for 7 days (apply sparingly to face, avoid eyes). If good response, reduce to once a day for 3 days, then stop. Continue with UEA and UE as above. • Step 3. If poor response to hydrocortisone or severe eczema, apply instead betamethasone 0.1% ointment once a day for 7 days (avoid face, neck, flexures). If good response, reduce use to every second day for a few days, then stop. Continue with UEA and UE as above. • For itch, give chlorphenamine 4mg at night for up to 2 weeks. If no better/severe daytime itch, give instead cetirizine 10mg daily. • If oozing/pus/yellow crusts, treat for infection: give cefalexin 500mg or flucloxacillin 500mg 6 hourly for 5 days. If severe penicillin allergy1, give instead azithromycin 500mg daily for 3 days. • Refer if: no better after 2 weeks, extensive involvement or painful pustules.",
+   "bbox": [
+    365.7,
+    263.0,
+    582.8,
+    534.0
+   ],
+   "key": "p84-5041ed38"
+  },
+  {
+   "id": "p84-out-e25",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Papular pruritic eruption",
+   "bbox": [
+    248.5,
+    291.7,
+    348.8,
+    302.7
+   ],
+   "key": "p84-b43cc0b9"
+  },
+  {
+   "id": "p84-out-e26",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(PPE) likely • Test for HIV 124. • If lesions in webspaces, axillae or genitals, also treat for scabies in adjacent column. • Apply hydrocortisone 1% cream twice a day for 7 days (apply sparingly to face, avoid eyes) • For itch, give cetirizine 10mg daily. • Advise patient: - Reduce exposure to",
+   "bbox": [
+    248.0,
+    301.7,
+    348.8,
+    442.7
+   ],
+   "key": "p84-03225de4"
+  },
+  {
+   "id": "p84-out-e27",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "insect bites. - May be long-standing",
+   "bbox": [
+    253.7,
+    442.5,
+    340.8,
+    462.7
+   ],
+   "key": "p84-63674bd6"
+  },
+  {
+   "id": "p84-out-e28",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "and skin often remains hyperpigmented. - May temporarily worsen",
+   "bbox": [
+    253.7,
+    462.5,
+    348.8,
+    492.7
+   ],
+   "key": "p84-4cd8cee2"
+  },
+  {
+   "id": "p84-out-e29",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "after starting ART.",
+   "bbox": [
+    259.4,
+    492.5,
+    324.0,
+    502.7
+   ],
+   "key": "p84-46fdfdad"
+  },
+  {
+   "id": "p84-out-e30",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Scabies likely • Apply benzyl benzoate 25% lotion from neck to soles of feet and rub in well:",
+   "bbox": [
+    39.7,
+    302.1,
+    222.2,
+    333.1
+   ],
+   "key": "p84-f9f2a803"
+  },
+  {
+   "id": "p84-out-e31",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Leave on for 24 hours, then wash off with soap",
+   "bbox": [
+    45.4,
+    332.9,
+    222.4,
+    343.1
+   ],
+   "key": "p84-fd05e4a5"
+  },
+  {
+   "id": "p84-out-e32",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "and water. - If severe, repeat once after 24 hours or within",
+   "bbox": [
+    45.4,
+    342.9,
+    217.3,
+    363.1
+   ],
+   "key": "p84-44c09406"
+  },
+  {
+   "id": "p84-out-e33",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "5 days. • Only if no better, apply permethrin 5% lotion at night from neck to soles of feet. Wash off after 8-12 hours. Repeat after 1 week if needed. Avoid using permethrin and benzyl benzoate together. • For itch, give chlorphenamine 4mg 8 hourly for up to 10 days. If mild itch, use only at night. • Advise can return to work after first treatment. • Treat all household contacts and sexual partners at the same time, even if asymptomatic. • Wash recently used linen and clothing in very hot water and dry well. Expose to direct sunlight. • If yellow crusts, also treat for likely impetigo 93.",
+   "bbox": [
+    39.7,
+    362.9,
+    229.3,
+    503.1
+   ],
+   "key": "p84-f4e5148f"
+  },
+  {
+   "id": "p84-out-e34",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If no response to treatment, discuss/refer.",
+   "bbox": [
+    117.8,
+    516.9,
+    269.1,
+    527.1
+   ],
+   "key": "p84-155a061d"
+  },
+  {
+   "id": "p84-out-e35",
+   "page": 84,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1History of anaphylaxis, urticaria or angioedema. 2Common triggers: foods (milk, eggs, nuts, wheat, seafood), medications, insect bites/stings and latex. 3Wheeze, difficulty breathing, dizziness/collapse, abdominal pain, vomiting.",
+   "bbox": [
+    34.0,
+    543.5,
+    728.4,
+    552.0
+   ],
+   "key": "p84-fa6f4dd1"
+  }
+ ]
+}

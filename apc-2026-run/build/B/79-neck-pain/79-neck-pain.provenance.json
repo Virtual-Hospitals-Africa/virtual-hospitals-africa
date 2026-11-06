@@ -1,0 +1,1125 @@
+{
+ "edition": "2026",
+ "page": 79,
+ "lisp_file": "79-neck-pain.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Neck pain\" \"finding\"))",
+   "element_keys": [
+    "p79-d3e29d0c"
+   ],
+   "quote": "neck pain",
+   "confidence": "high",
+   "note": "Presenting complaint of the neck pain red box."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck is the SNOMED finding for neck stiffness."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "headache",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confusion\" (finding) does not exist; Acute confusion is the warning-sign concept VHA already uses. Confusional state (disorder) considered."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "high",
+   "note": "Purple rash = purpuric rash."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "\"red rash\" read as erythematous rash; page lists purple OR red, so both are alternatives."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "weakness",
+   "confidence": "high",
+   "note": "Weakness in arms/legs; limb-level concept covers both."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "numbness",
+   "confidence": "high",
+   "note": "Numbness in arms/legs."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "clumsiness",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle rigidity\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "stiffness",
+   "confidence": "medium",
+   "note": "No \"stiffness of limb\" concept; Muscle rigidity with finding site Limb structure (both resolve)."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "change in gait",
+   "confidence": "high",
+   "note": "Change in gait = abnormal gait."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "difficulty with co-ordination",
+   "confidence": "high",
+   "note": "Exact meaning."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "Recent injury",
+   "confidence": "medium",
+   "note": "In the neck pain box the injury is read as a neck injury; Recent qualifier for \"recent\"."
+  },
+  {
+   "rule": "Check for urgent neck pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "x-ray unavailable/abnormal",
+   "confidence": "medium",
+   "note": "Abnormal cervical spine x-ray finding; \"x-ray unavailable\" cannot be expressed (see Could not model)."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-7390b8c2"
+   ],
+   "quote": "arm or hand symptoms",
+   "confidence": "medium",
+   "note": "General upper-limb finding as the presenting complaint; hand, wrist, elbow, shoulder pain are descendants (checked with is_a)."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-87df1224"
+   ],
+   "quote": "Arm pain",
+   "confidence": "high",
+   "note": "Arm pain = pain in upper limb."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p79-87df1224"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of upper extremity\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "recent injury",
+   "confidence": "medium",
+   "note": "\"Injury of upper limb\" does not exist; Injury of upper extremity with Recent qualifier."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "severe pain",
+   "confidence": "medium",
+   "note": "Arm pain with Severe qualifier."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "severe pain/swelling",
+   "confidence": "medium",
+   "note": "\"severe\" read as applying to both pain and swelling."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "deformity",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "New sudden onset of weakness of arm",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"New\" not added as a second required qualifier."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Joint tender."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Joint swollen."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "unable to do all actions comfortably",
+   "confidence": "low",
+   "note": "Closest concept for being unable to do the movements comfortably; discomfort without limitation is not captured."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of shoulder region\" \"finding\"))",
+   "element_keys": [
+    "p79-9f8dff45"
+   ],
+   "quote": "Painful shoulder",
+   "confidence": "high",
+   "note": "\"Shoulder pain\" does not exist; Pain of shoulder region."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "Wrist/hand pain: intermittent",
+   "confidence": "medium",
+   "note": "Intermittent qualifier; \"relieved by shaking\" not representable."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "Wrist/hand pain: intermittent",
+   "confidence": "medium",
+   "note": "Intermittent qualifier; alternative to wrist pain."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night pain\" \"finding\"))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "worse at night",
+   "confidence": "medium",
+   "note": "Night pain finding for \"worse at night\"; not tied to a site."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of elbow region\" \"finding\"))",
+   "element_keys": [
+    "p79-93c4cdb1"
+   ],
+   "quote": "Elbow pain",
+   "confidence": "medium",
+   "note": "\"with or after elbow flexion/extension\" cannot be expressed; elbow pain alone."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in thumb\" \"finding\"))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "Thumb pain",
+   "confidence": "medium",
+   "note": "\"worse with thumb/wrist movement\" cannot be expressed; thumb pain alone."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint catching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "catching/locking of finger",
+   "confidence": "medium",
+   "note": "Joint catching with finding site Finger structure."
+  },
+  {
+   "rule": "Check for arm or hand symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Locking of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "catching/locking of finger",
+   "confidence": "medium",
+   "note": "Locking of joint with finding site Finger structure."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck is the SNOMED finding for neck stiffness."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital, page threshold and direction."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "headache",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confusion\" (finding) does not exist; Acute confusion is the warning-sign concept VHA already uses. Confusional state (disorder) considered."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "high",
+   "note": "Purple rash = purpuric rash."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythematous rash\" \"disorder\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "\"red rash\" read as erythematous rash; page lists purple OR red, so both are alternatives."
+  },
+  {
+   "rule": "Diagnose probable meningitis from neck stiffness (neck pain page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": "Page says \"meningitis likely\" -> probable; priority references the active condition."
+  },
+  {
+   "rule": "Diagnose probable fracture of upper limb (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of upper extremity\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "recent injury",
+   "confidence": "medium",
+   "note": "\"Injury of upper limb\" does not exist; Injury of upper extremity with Recent qualifier."
+  },
+  {
+   "rule": "Diagnose probable fracture of upper limb (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "severe pain",
+   "confidence": "medium",
+   "note": "Arm pain with Severe qualifier."
+  },
+  {
+   "rule": "Diagnose probable fracture of upper limb (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of upper limb\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "severe pain/swelling",
+   "confidence": "medium",
+   "note": "\"severe\" read as applying to both pain and swelling."
+  },
+  {
+   "rule": "Diagnose probable fracture of upper limb (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "deformity",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable fracture of upper limb (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fracture of upper limb\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "fracture likely",
+   "confidence": "high",
+   "note": "\"fracture likely\" -> probable; upper limb because the box is about arm or hand symptoms."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden arm weakness (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "New sudden onset of weakness of arm",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"New\" not added as a second required qualifier."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden arm weakness (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "consider stroke",
+   "confidence": "high",
+   "note": "\"consider\" -> possible."
+  },
+  {
+   "rule": "Diagnose possible TIA from sudden arm weakness (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "New sudden onset of weakness of arm",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"New\" not added as a second required qualifier."
+  },
+  {
+   "rule": "Diagnose possible TIA from sudden arm weakness (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "TIA",
+   "confidence": "high",
+   "note": "\"consider ... TIA\" -> possible."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-a4bfa3cc"
+   ],
+   "quote": "arm or hand symptoms",
+   "confidence": "medium",
+   "note": "The joint check sits in the arm or hand symptoms section, so the rule requires an upper-limb finding."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Joint tender."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint warm/tender/swollen",
+   "confidence": "high",
+   "note": "Joint swollen."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "unable to do all actions comfortably",
+   "confidence": "low",
+   "note": "Closest concept for being unable to do the movements comfortably; discomfort without limitation is not captured."
+  },
+  {
+   "rule": "Diagnose probable joint problem (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Arthropathy\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-493edd8d"
+   ],
+   "quote": "joint problem likely",
+   "confidence": "medium",
+   "note": "\"Disorder of joint\" does not exist; Arthropathy is the general joint disorder."
+  },
+  {
+   "rule": "Diagnose probable referred pain from painful shoulder (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of shoulder region\" \"finding\"))",
+   "element_keys": [
+    "p79-9f8dff45"
+   ],
+   "quote": "Painful shoulder",
+   "confidence": "high",
+   "note": "\"Shoulder pain\" does not exist; Pain of shoulder region."
+  },
+  {
+   "rule": "Diagnose probable referred pain from painful shoulder (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Referred pain\" \"finding\") probable)",
+   "element_keys": [
+    "p79-c240934b"
+   ],
+   "quote": "Referred pain likely",
+   "confidence": "medium",
+   "note": "Referred pain is a finding concept used as the diagnosis, as the page names it."
+  },
+  {
+   "rule": "Diagnose probable carpal tunnel syndrome (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "Wrist/hand pain: intermittent",
+   "confidence": "medium",
+   "note": "Intermittent qualifier; \"relieved by shaking\" not representable."
+  },
+  {
+   "rule": "Diagnose probable carpal tunnel syndrome (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\") (qualifier (snomed_concept \"Intermittent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "Wrist/hand pain: intermittent",
+   "confidence": "medium",
+   "note": "Intermittent qualifier; alternative to wrist pain."
+  },
+  {
+   "rule": "Diagnose probable carpal tunnel syndrome (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night pain\" \"finding\"))",
+   "element_keys": [
+    "p79-a24da820"
+   ],
+   "quote": "worse at night",
+   "confidence": "medium",
+   "note": "Night pain finding for \"worse at night\"; not tied to a site."
+  },
+  {
+   "rule": "Diagnose probable carpal tunnel syndrome (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Carpal tunnel syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-def40763"
+   ],
+   "quote": "Carpal tunnel syndrome likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable tennis or golfer's elbow (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of elbow region\" \"finding\"))",
+   "element_keys": [
+    "p79-93c4cdb1"
+   ],
+   "quote": "Elbow pain",
+   "confidence": "medium",
+   "note": "\"with or after elbow flexion/extension\" cannot be expressed; elbow pain alone."
+  },
+  {
+   "rule": "Diagnose probable tennis or golfer's elbow (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Elbow tendinopathy\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-892fd9ea"
+   ],
+   "quote": "Tennis or golfer’s elbow likely",
+   "confidence": "medium",
+   "note": "Elbow tendinopathy is the parent of Lateral epicondylitis (tennis) and Medial epicondylitis of elbow joint (golfer's), so one rule covers \"tennis or golfer's elbow\"."
+  },
+  {
+   "rule": "Diagnose probable tenosynovitis (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in thumb\" \"finding\"))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "Thumb pain",
+   "confidence": "medium",
+   "note": "\"worse with thumb/wrist movement\" cannot be expressed; thumb pain alone."
+  },
+  {
+   "rule": "Diagnose probable tenosynovitis (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint catching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "catching/locking of finger",
+   "confidence": "medium",
+   "note": "Joint catching with finding site Finger structure."
+  },
+  {
+   "rule": "Diagnose probable tenosynovitis (arm or hand symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Locking of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Finger structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-4832f1fd"
+   ],
+   "quote": "catching/locking of finger",
+   "confidence": "medium",
+   "note": "Locking of joint with finding site Finger structure."
+  },
+  {
+   "rule": "Diagnose probable tenosynovitis (arm or hand symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tenosynovitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p79-268d4d2d"
+   ],
+   "quote": "Tenosynovitis likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Neck pain\" \"finding\"))",
+   "element_keys": [
+    "p79-d3e29d0c"
+   ],
+   "quote": "neck pain",
+   "confidence": "high",
+   "note": "Presenting complaint of the red box."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p79-56738f8a"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": "Page says \"meningitis likely\" -> probable; priority references the active condition."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "weakness",
+   "confidence": "high",
+   "note": "Weakness in arms/legs; limb-level concept covers both."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "numbness",
+   "confidence": "high",
+   "note": "Numbness in arms/legs."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "clumsiness",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle rigidity\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "stiffness",
+   "confidence": "medium",
+   "note": "No \"stiffness of limb\" concept; Muscle rigidity with finding site Limb structure (both resolve)."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "change in gait",
+   "confidence": "high",
+   "note": "Change in gait = abnormal gait."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "element_keys": [
+    "p79-69244b7e"
+   ],
+   "quote": "difficulty with co-ordination",
+   "confidence": "high",
+   "note": "Exact meaning."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "Recent injury",
+   "confidence": "medium",
+   "note": "In the neck pain box the injury is read as a neck injury; Recent qualifier for \"recent\"."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "x-ray unavailable/abnormal",
+   "confidence": "medium",
+   "note": "Abnormal cervical spine x-ray finding; \"x-ray unavailable\" cannot be expressed (see Could not model)."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle rigidity\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: neck pain with meningitis, neurological symptoms or recent injury",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "element_keys": [
+    "p79-047d2731"
+   ],
+   "quote": "or neurological symptoms",
+   "confidence": "high",
+   "note": "Recent injury with neurological symptoms (bullet 3); same findings as bullet 2."
+  },
+  {
+   "rule": "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-7390b8c2"
+   ],
+   "quote": "arm or hand symptoms",
+   "confidence": "medium",
+   "note": "General upper-limb finding as the presenting complaint; hand, wrist, elbow, shoulder pain are descendants (checked with is_a)."
+  },
+  {
+   "rule": "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in upper limb\" \"finding\"))",
+   "element_keys": [
+    "p79-87df1224"
+   ],
+   "quote": "Arm pain",
+   "confidence": "high",
+   "note": "Arm pain = pain in upper limb."
+  },
+  {
+   "rule": "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p79-87df1224"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Fracture of upper limb\" \"disorder\"))",
+   "element_keys": [
+    "p79-886ca53f"
+   ],
+   "quote": "fracture likely",
+   "confidence": "high",
+   "note": "\"fracture likely\" -> probable; upper limb because the box is about arm or hand symptoms."
+  },
+  {
+   "rule": "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p79-ba963842"
+   ],
+   "quote": "New sudden onset of weakness of arm",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"New\" not added as a second required qualifier."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p79-6e6a449f",
+   "element_id": "p79-rb2-e05",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral instruction; no referral steps in this pass."
+  },
+  {
+   "element_key": "p79-164e84c2",
+   "element_id": "p79-out-e19",
+   "text": "Approach to the patient with neck pain not needing urgent attention Any of: >50 years, pain progressive or lasting > 6 weeks, oral steroid use, HIV, diabetes, IV drug use, unexplained weight loss/fever or TB, neck surgery, previous cancer?",
+   "reason_category": "flowchart_routing",
+   "reason": "The Yes/No question routes to x-ray/referral or analgesia; it names no diagnosis, so no rule. See Could not model."
+  },
+  {
+   "element_key": "p79-925faf12",
+   "element_id": "p79-out-e20",
+   "text": "Yes • Do cervical spine x-ray. • Refer to doctor.",
+   "reason_category": "management_step",
+   "reason": "X-ray and referral."
+  },
+  {
+   "element_key": "p79-ba537bc3",
+   "element_id": "p79-out-e21",
+   "text": "No • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) for up to 5 days. If no response, give ibuprofen2 400mg 8 hourly with/after food for up to 5 days. • If no better after 5 days and no arm pain, refer for physiotherapy. If pain ≥ 3 months, assess and advise 76. • If no better after 6 weeks, arm pain, weakness/numbness develops or pain worsens, do cervical spine x-rays and refer.",
+   "reason_category": "management_step",
+   "reason": "Medicines, physiotherapy, follow-up."
+  },
+  {
+   "element_key": "p79-67f2660d",
+   "element_id": "p79-out-e05",
+   "text": "above), cough/difficulty",
+   "reason_category": "cross_reference_only",
+   "reason": "Referral to other symptom pages."
+  },
+  {
+   "element_key": "p79-7edfe4a2",
+   "element_id": "p79-out-e06",
+   "text": "breathing 23, chest pain 24, abdominal pain",
+   "reason_category": "cross_reference_only",
+   "reason": "Referral to other symptom pages."
+  },
+  {
+   "element_key": "p79-0d4d69f0",
+   "element_id": "p79-out-e07",
+   "text": "56, pregnancy 174.",
+   "reason_category": "cross_reference_only",
+   "reason": "Referral to other symptom pages."
+  },
+  {
+   "element_key": "p79-ef304adc",
+   "element_id": "p79-out-e12",
+   "text": "May have decreased grip strength.",
+   "reason_category": "figure_or_note",
+   "reason": "\"May have\" finding is optional, not a criterion."
+  },
+  {
+   "element_key": "p79-30ebbba7",
+   "element_id": "p79-out-e10",
+   "text": "If no better after 6 weeks or worsens, refer to doctor.",
+   "reason_category": "management_step",
+   "reason": "Follow-up/referral."
+  },
+  {
+   "element_key": "p79-fcb9c432",
+   "element_id": "p79-out-e18",
+   "text": "1Do not mix Ringer's lactate and IV ceftriaxone. 2Avoid if peptic ulcer, asthma, hypertension, heart failure, kidney disease, pregnant. If patient also taking aspirin, advise to wait at least 30 minutes after taking aspirin before taking ibuprofen.",
+   "reason_category": "figure_or_note",
+   "reason": "Medicine footnotes."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Two complaints on one page",
+   "decision": "Two check_for tasks and two Urgent priority rules: neck pain, and arm or hand symptoms (trigger Finding of upper limb).",
+   "alternatives": "Split into two files (not allowed: one .lisp per page).",
+   "confidence": "high"
+  },
+  {
+   "topic": "Recent neck injury and x-ray unavailable",
+   "decision": "Encoded as recent neck injury AND (abnormal cervical spine x-ray OR neurological symptoms). 'x-ray unavailable' is not representable, so the rule fires less often than the page intends.",
+   "alternatives": "Recent neck injury alone (fires more often); (no (procedure x-ray)) as a proxy for unavailable (rejected as invented proxy).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Tenosynovitis evidence",
+   "decision": "Thumb pain OR catching/locking of finger; 'worse with thumb/wrist movement' not representable, so thumb pain alone fires probable tenosynovitis.",
+   "alternatives": "Thumb pain AND (catching or locking) would miss de Quervain-type thumb pain.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Arm fracture severity",
+   "decision": "'severe pain/swelling' read as severe pain or severe swelling; deformity unqualified.",
+   "alternatives": "Severe only on pain.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Joint problem",
+   "decision": "Arthropathy probable from joint warm/tender/swollen or Limitation of joint movement, within an upper-limb finding.",
+   "alternatives": "Leave 'unable to do all actions comfortably' unencoded.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Red rash",
+   "decision": "purple/red rash = Purpuric rash OR Erythematous rash.",
+   "alternatives": "Purpuric rash only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Meningitis diagnosis without neck pain",
+   "decision": "The probable meningitis rule uses stiff neck + any one sign, without requiring neck pain; the priority rule requires neck pain.",
+   "alternatives": "Require neck pain in the diagnosis rule too.",
+   "confidence": "medium"
+  }
+ ]
+}

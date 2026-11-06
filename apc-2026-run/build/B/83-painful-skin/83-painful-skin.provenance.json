@@ -1,0 +1,413 @@
+{
+ "edition": "2026",
+ "page": 83,
+ "lisp_file": "83-painful-skin.lisp",
+ "conditions": [
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-8302e99f"
+   ],
+   "quote": "PAINFUL SKIN",
+   "confidence": "medium",
+   "note": "Page title is the presenting complaint; the red box is a pointer only. 'Pain of skin' is not a recorded common symptom or warning sign."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "painful lump",
+   "confidence": "high",
+   "note": "'Lump' on the skin = Mass of skin (in vocabulary)."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "Red",
+   "confidence": "high",
+   "note": "'Red' skin = Erythema (finding)."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": "Warm skin (in vocabulary)."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-5122e44b"
+   ],
+   "quote": "swollen skin",
+   "confidence": "high",
+   "note": "Swelling of skin (in vocabulary)."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Poorly defined\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-7b4b80fa"
+   ],
+   "quote": "Poorly-defined borders",
+   "confidence": "medium",
+   "note": "Border character expressed as a qualifier on Erythema (the red area); no precoordinated border concept exists."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-d5e8fb63"
+   ],
+   "quote": "Clearly-defined raised borders",
+   "confidence": "medium",
+   "note": "Clearly-defined + raised expressed as two qualifiers on Erythema; no precoordinated border concept exists."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Dermatome\" \"body structure\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-9061a0cc"
+   ],
+   "quote": "blisters in a band along one side",
+   "confidence": "medium",
+   "note": "'Band along one side' read as a unilateral dermatomal distribution: Blister of skin, finding_site Dermatome, qualifier Unilateral. No precoordinated concept for dermatomal blistering."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "painful abscesses in axilla",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "groin",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Check for painful skin conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "perineum",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "painful lump",
+   "confidence": "medium",
+   "note": "'Painful' required (the panel says painful lump); same form as the task trigger."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "painful lump",
+   "confidence": "high",
+   "note": "'Lump' on the skin = Mass of skin (in vocabulary)."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "Red",
+   "confidence": "high",
+   "note": "'Red' skin = Erythema (finding)."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9ab10688"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": "Warm skin (in vocabulary)."
+  },
+  {
+   "rule": "Diagnose probable boil/abscess (painful skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable)",
+   "element_keys": [
+    "p83-d868ac51"
+   ],
+   "quote": "Boil/abscess likely",
+   "confidence": "medium",
+   "note": "'Boil/abscess' as one diagnosis: Abscess of skin and/or subcutaneous tissue. Furuncle exists but is not a descendant of it in SNOMED; one concept chosen for the slash."
+  },
+  {
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Poorly defined\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-7b4b80fa"
+   ],
+   "quote": "Poorly-defined borders",
+   "confidence": "medium",
+   "note": "Border character expressed as a qualifier on Erythema (the red area); no precoordinated border concept exists."
+  },
+  {
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p83-5122e44b"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": "Warm skin (in vocabulary); from the shared 'Red, warm, swollen skin' stem."
+  },
+  {
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-5122e44b"
+   ],
+   "quote": "swollen skin",
+   "confidence": "high",
+   "note": "Swelling of skin (in vocabulary)."
+  },
+  {
+   "rule": "Diagnose probable cellulitis (painful skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cellulitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p83-54892a94"
+   ],
+   "quote": "Cellulitis likely",
+   "confidence": "high",
+   "note": "Cellulitis likely -> probable."
+  },
+  {
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-d5e8fb63"
+   ],
+   "quote": "Clearly-defined raised borders",
+   "confidence": "medium",
+   "note": "Clearly-defined + raised expressed as two qualifiers on Erythema; no precoordinated border concept exists."
+  },
+  {
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p83-5122e44b"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": "Warm skin (in vocabulary); from the shared 'Red, warm, swollen skin' stem."
+  },
+  {
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-5122e44b"
+   ],
+   "quote": "swollen skin",
+   "confidence": "high",
+   "note": "Swelling of skin (in vocabulary)."
+  },
+  {
+   "rule": "Diagnose probable erysipelas (painful skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Erysipelas\" \"disorder\") probable)",
+   "element_keys": [
+    "p83-54892a94"
+   ],
+   "quote": "Erysipelas likely",
+   "confidence": "high",
+   "note": "Erysipelas likely -> probable."
+  },
+  {
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-9061a0cc"
+   ],
+   "quote": "Painful blisters",
+   "confidence": "medium",
+   "note": "'Painful' required (the panel says painful blisters); same form as the task trigger."
+  },
+  {
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Dermatome\" \"body structure\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p83-9061a0cc"
+   ],
+   "quote": "blisters in a band along one side",
+   "confidence": "medium",
+   "note": "'Band along one side' read as a unilateral dermatomal distribution: Blister of skin, finding_site Dermatome, qualifier Unilateral. No precoordinated concept for dermatomal blistering."
+  },
+  {
+   "rule": "Diagnose probable herpes zoster (painful skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Herpes zoster\" \"disorder\") probable)",
+   "element_keys": [
+    "p83-30d497d1"
+   ],
+   "quote": "Herpes zoster (shingles) likely",
+   "confidence": "high",
+   "note": "Herpes zoster likely -> probable."
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p83-dc3ff445"
+   ],
+   "quote": "painful abscesses",
+   "confidence": "medium",
+   "note": "'Painful' required (the line says painful abscesses); same form as the task trigger."
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Axillary region structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "painful abscesses in axilla",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "groin",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Perineal structure\" \"body structure\")))",
+   "element_keys": [
+    "p83-dc3ff445",
+    "p83-61808112"
+   ],
+   "quote": "perineum",
+   "confidence": "medium",
+   "note": "Recurrent abscess of skin (no precoordinated 'abscess of axilla/groin/perineum' used) with finding_site; the page's 'If recurrent boils or abscesses' context is carried by the Recurrent concept."
+  },
+  {
+   "rule": "Diagnose probable hidradenitis suppurativa (painful skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hidradenitis suppurativa\" \"disorder\") probable)",
+   "element_keys": [
+    "p83-61808112"
+   ],
+   "quote": "hidradenitis suppurativa likely",
+   "confidence": "high",
+   "note": "hidradenitis suppurativa likely -> probable."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p83-233eeda6",
+   "element_id": "p83-rb1-e01",
+   "text": "Check if the patient needs urgent attention 82.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer-only red box to page 82; no urgent criteria on this page."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "Task trigger is (clinical_finding Pain of skin), from the page title, since the red box is a pointer only",
+   "alternatives": "An or of erythema/swelling/blister/lump as trigger; a broad possible pre-screen rule",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Border definition",
+   "decision": "Poorly-defined vs clearly-defined raised borders expressed as qualifiers (Poorly defined / Well defined + Raised) on Erythema",
+   "alternatives": "Qualifiers on Swelling of skin; a separate border finding (none exists in SNOMED)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Band along one side",
+   "decision": "Blister of skin with finding_site Dermatome and qualifier Unilateral",
+   "alternatives": "Blister of skin alone (loses the page's distinguishing feature)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Boil/abscess concept",
+   "decision": "One probable rule diagnosing Abscess of skin and/or subcutaneous tissue",
+   "alternatives": "Furuncle; two parallel rules (Furuncle and skin abscess) with the same evidence",
+   "confidence": "medium"
+  },
+  {
+   "topic": "'May be fluctuant', 'May discharge pus'",
+   "decision": "Not required for boil/abscess (page says 'may')",
+   "alternatives": "Add as alternative evidence",
+   "confidence": "high"
+  },
+  {
+   "topic": "Painful as a criterion",
+   "decision": "Pain of skin required in boil, herpes zoster and hidradenitis rules (their text says painful); not in cellulitis/erysipelas (their stem does not)",
+   "alternatives": "Require it everywhere (page title) or nowhere",
+   "confidence": "low"
+  }
+ ]
+}

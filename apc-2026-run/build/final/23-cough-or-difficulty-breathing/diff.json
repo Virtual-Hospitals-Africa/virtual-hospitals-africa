@@ -1,0 +1,429 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/23-cough-or-difficulty-breathing",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/23-cough-or-difficulty-breathing",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible nose disorder (chronic or recurrent cough)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable COPD (smoker with cough for 2 years or more)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable PJP (chronic cough with HIV)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute bronchitis (short cough, recent cold)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute viral infection (short cough, no crackles)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable heart failure (cough/difficulty breathing page)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable obstructive sleep apnoea (chronic cough page)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable post-infectious cough"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: cough or difficulty breathing with red-box signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for causes of cough or difficulty breathing not needing urgent attention"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent cough or difficulty breathing conditions"
+  },
+  {
+   "atom": "task",
+   "description": "Measure fingerprick glucose if rapid deep breathing with cough/difficulty breathing"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible COPD from long-standing cough or difficulty breathing"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible asthma from long-standing cough or difficulty breathing"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible lung cancer from long-standing cough in a smoker"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible nose problem from long-standing cough"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable COPD from cough for 2 years in a smoker"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable PJP from long-standing dry cough in HIV"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute bronchitis from short cough after a cold"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute viral respiratory infection from short cough"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable heart failure from cough or difficulty breathing"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable obstructive sleep apnoea from long-standing cough"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pneumonia from short cough with crackles or bronchial breathing"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable post-infectious cough"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable tension pneumothorax from cough or difficulty breathing"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: cough or difficulty breathing with danger signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for causes of cough or difficulty breathing not needing urgent attention"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent cough or difficulty breathing conditions"
+  }
+ ],
+ "conditions_A": 144,
+ "conditions_B": 139,
+ "conditions_in_both": 125,
+ "agreement": 0.883,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cyanosis\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dry cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor sleep pattern\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory infection\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+     "relation": "B_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))"
+    }
+   ]
+  },
+  "priority_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 92)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+    "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(active_condition (snomed_concept \"Heart failure\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cyanosis\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))"
+    }
+   ]
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 years))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dry cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor sleep pattern\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory infection\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\"))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\"))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Disorder of the nose\" \"disorder\") possible)"
+   ],
+   "only_B": [
+    "(diagnosis (snomed_concept \"Disorder of nose AND/OR nasopharynx\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Viral respiratory infection\" \"disorder\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Acute bronchitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Asthma\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Chronic obstructive pulmonary disease\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Chronic obstructive pulmonary disease\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Malignant neoplasm of lung\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Obstructive sleep apnea syndrome\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Persistent cough after viral respiratory infection\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Pneumocystosis jirovecii pneumonia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Pneumonia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)"
+   ],
+   "is_a_related": [
+    {
+     "A": "(diagnosis (snomed_concept \"Disorder of the nose\" \"disorder\") possible)",
+     "B": "(diagnosis (snomed_concept \"Disorder of nose AND/OR nasopharynx\" \"disorder\") possible)",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [
+    "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)"
+   ],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

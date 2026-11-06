@@ -1,0 +1,849 @@
+{
+ "page": 16,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Cardiac arrest is inferred from 'No pulse felt'; the page's actual criterion is pulse absent or unsure in an unresponsive patient. Acceptable as a trigger but 'or unsure' is not encoded anywhere.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory obstruction\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Respiratory obstruction' is too broad: its descendants include Obstructive sleep apnea syndrome, Nasal obstruction and Nasal sinus obstruction (via Upper respiratory tract obstruction), so a blocked nose or known OSA would fire Emergency; the page means an obstructed airway (snoring, gurgling, noisy breathing).",
+   "fix": "Use (or (snomed_concept \"Partially obstructed airway\" \"disorder\") (snomed_concept \"Totally obstructed airway\" \"disorder\")) instead.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Trigger only; broad trigger for a check_for task is acceptable.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "imprecise",
+   "reason": "Page reads 'If shock/SBP < 80, pulse ≥ 100 or heavy bleeding' and footnote 3 lists SBP<80 and pulse≥100 together as shock features; as a standalone trigger every tachycardic adult gets this check_for task, which over-reads the page.",
+   "fix": "Trigger on SBP<80 and pulse≥100 together, or on Shock.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 9)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gasping for breath\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Gasping for breath' is a child of Dyspnea and means a breathless (often conscious) patient; the page's 'gasping' is agonal breathing in an unresponsive patient. Standalone it would make any gasping-for-breath dyspnoea Emergency.",
+   "fix": "Keep Agonal respiration; drop Gasping for breath or anchor it to Unresponsive.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Agonal respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Apnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gurgling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noisy respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue lips\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue tongue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'more resonant ... on 1 side' → unilateral hyperresonance.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'pain on 1 side' (chest implied); Chest pain+Unilateral is reasonable, but Pleuritic pain may be closer; minor.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute heart failure\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Footnote 3 (acute heart failure) — leg swelling.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea on exertion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'confusion'; 'Clouded consciousness' is a different (broader disturbance-of-consciousness) concept and is the parent of 'Acute confusion', so the pair is redundant.",
+   "fix": "Use only (snomed_concept \"Acute confusion\" \"finding\") (or Confusional state).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 3\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 4\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 5\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 6\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 7\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 8\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'pain on 1 side' (chest implied); Chest pain+Unilateral is reasonable, but Pleuritic pain may be closer; minor.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'confusion'; 'Clouded consciousness' is a different (broader disturbance-of-consciousness) concept and is the parent of 'Acute confusion', so the pair is redundant.",
+   "fix": "Use only (snomed_concept \"Acute confusion\" \"finding\") (or Confusional state).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "expr": "(diagnosis (snomed_concept \"Shock\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Quote 'Start CPR' is a management step, not a finding; Cardiac arrest is an inference from 'No pulse felt or unsure'. 'Unsure' (pulse uncertain) is not encoded.",
+   "fix": "Cite p16-e4810de1 'No pulse felt or unsure'; consider an explicit pulse-uncertain finding if one exists.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gasping for breath\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Gasping for breath' is a child of Dyspnea and means a breathless (often conscious) patient; the page's 'gasping' is agonal breathing in an unresponsive patient. Standalone it would make any gasping-for-breath dyspnoea Emergency.",
+   "fix": "Keep Agonal respiration; drop Gasping for breath or anchor it to Unresponsive.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Agonal respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Apnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory obstruction\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Respiratory obstruction' is too broad: its descendants include Obstructive sleep apnea syndrome, Nasal obstruction and Nasal sinus obstruction (via Upper respiratory tract obstruction), so a blocked nose or known OSA would fire Emergency; the page means an obstructed airway (snoring, gurgling, noisy breathing).",
+   "fix": "Use (or (snomed_concept \"Partially obstructed airway\" \"disorder\") (snomed_concept \"Totally obstructed airway\" \"disorder\")) instead.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gurgling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noisy respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Difficulty breathing' is an ancestor of Dyspnea (common symptom), Labored breathing and Respiratory distress, so as a standalone Emergency criterion any adult recording dyspnea becomes Emergency; the page uses it only to start oxygen inside the emergency-patient pathway.",
+   "fix": "Gate the priority rule on the emergency context, or use (clinical_finding (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) / Respiratory distress.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 9)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue lips\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue tongue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute heart failure\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea on exertion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(active_condition (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "imprecise",
+   "reason": "Page reads 'If shock/SBP < 80, pulse ≥ 100 or heavy bleeding' and footnote 3 lists SBP<80 and pulse≥100 together as shock features; as a standalone Emergency criterion, any adult with HR ≥100 (e.g. fever, anxiety) is triaged Emergency, which over-reads the page.",
+   "fix": "Use (and SBP<80 pulse≥100) or rely on (active_condition Shock)/SBP<80; drop pulse ≥100 alone.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 3\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 4\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 5\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 6\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 7\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 8\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "verdict": "problem",
+   "severity": "low",
+   "problem": "Type and content fine (every red-box sign and discriminating finding is checked for). Trigger 'Respiratory obstruction' is over-broad (nasal obstruction, OSA); 'Clouded consciousness' duplicates/misnames 'confusion'; 'Gasping for breath' is a dyspnoea concept, not agonal gasping. Pulse 'unsure' branch not represented."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "verdict": "ok",
+   "severity": "low",
+   "problem": "Page says 'tension pneumothorax likely' → probable is right. AND of sudden breathlessness + any one-sided sign + deviated trachea is a defensible reading of the comma list (one could argue for or/any2, since tracheal deviation is a late sign), but not wrong."
+  },
+  {
+   "rule": "Diagnose probable shock (emergency patient)",
+   "verdict": "problem",
+   "severity": "medium",
+   "problem": "Footnote 3 'If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' is encoded as AND of all five, which almost never fires (a hypotensive tachycardic patient with RR 28 or no recorded weakness is not shock). APC comma lists of signs are usually 'any of'; a looser structure (e.g. SBP<80 and (pulse≥100 or RR>30 or confusion/restlessness or weakness), or any2) is closer. Clouded consciousness is also the wrong concept for 'confusion'."
+  },
+  {
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "verdict": "problem",
+   "severity": "medium",
+   "problem": "Emergency is justified (CPR / unresponsive). But 'Gasping for breath' (child of Dyspnea) as a standalone criterion makes breathless conscious patients Emergency; the page's gasping is agonal, which 'Agonal respiration' already covers. 'Cardiac arrest' is inferred rather than stated (acceptable)."
+  },
+  {
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "verdict": "problem",
+   "severity": "high",
+   "problem": "No emergency-patient anchor: the briefing pattern is (and <presenting complaint> (or …)), but this is a bare global (or …). Combined with broad concepts it over-triages any adult: 'Difficulty breathing' subsumes Dyspnea (a common symptom), 'Respiratory obstruction' subsumes nasal obstruction and OSA, pulse ≥100 alone, snoring alone. The page applies these inside an already-identified emergency patient. Bradycardia branch (pulse<50 and unstable with HF per footnote 3) is faithful; GCS 3–8 and heavy bleeding are faithful."
+  }
+ ],
+ "summary": "Most consequential: the ABC Emergency priority rule has no emergency-patient anchor and uses broad concepts, so 'Difficulty breathing' (ancestor of the common symptom Dyspnea), 'Respiratory obstruction' (includes nasal obstruction and OSA) and pulse ≥100 alone would make ordinary adults Emergency. The shock rule ANDs all five footnote signs, so it will rarely fire, and 'Clouded consciousness' and 'Gasping for breath' are poorer fits than Acute confusion and Agonal respiration. Most other conditions, including the tension pneumothorax rule, bradycardia-instability criteria and GCS ≤ 8, faithfully match the page."
+}

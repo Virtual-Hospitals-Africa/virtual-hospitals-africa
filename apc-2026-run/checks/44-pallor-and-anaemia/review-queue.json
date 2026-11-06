@@ -1,0 +1,1519 @@
+[
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p44-d93d6fb0",
+  "text": "Give urgent attention to the patient with pallor/anaemia and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Structure and level match the house pattern: (and <pallor or anaemia> (or ...)) at Urgent. Pallor is anchored on Pale complexion (SNOMED id 398979000, the FSN is Pallor), Pale conjunctiva and Pale discoloration of entire skin of body; anaemia on Anemia (disorder). The page's 'pale palms' has no SNOMED concept (searched 'pale palm', 'palmar pallor': none), so nothing closer was available.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "pallor defined as pale palms (only conjunctiva/skin/complexion encoded)",
+     "Hb thresholds for anaemia (Anemia disorder used as proxy)"
+    ],
+    "problem": "Trigger is reasonable and used in both task and priority rule; palms and Hb-defined anaemia not expressible.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Trigger is an or of pallor concepts plus Anemia, the priority is Urgent, structured as (and <complaint> (or ...)). 'Pale palms' has no SNOMED concept, so the generic pallor concepts are a reasonable stand-in.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p44-6d7615f6",
+  "text": "Shock1/SBP < 80",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts present with the right direction and unit. Note that 'Shock' is encoded as a bare clinical_finding the nurse ticks; the page's footnote 1 defines when shock is 'likely' and the house pattern would be a probable Shock diagnosis rule referenced as (active_condition ...) from here. That gap is recorded against the footnote element p44-cc85f839.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts encoded correctly (Shock finding; SBP < 80 mmHg).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "A probable Shock diagnosis rule from footnote 1 (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness), referenced as (active_condition Shock) from the priority rule, as the house standard requires when the red box names a likely diagnosis"
+    ],
+    "problem": "SBP < 80 is encoded correctly. Shock is entered only as a raw clinical_finding that the health worker has to record, and footnote 1's 'shock likely' logic is not encoded.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p44-68cf035b",
+  "text": "Purple/red rash that does not disappear with pressure",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'rash that does not disappear with pressure' = SNOMED 'Non-blanching rash' (disorder, 400991008), which is the exact concept for the page wording and is not encoded"
+    ],
+    "problem": "Encoded as Purpuric rash (284078000). SNOMED has the exact concept 'Non-blanching rash' (disorder), and the two are not in a subsumption relation (is_a check both ways: NO; Purpuric rash sits under Eruption of skin and Bleeding skin, Non-blanching rash under Eruption of skin and Finding of color of skin). A nurse who records 'Non-blanching rash' would not trigger this rule. Best fix: use Non-blanching rash, or list both.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Purpuric rash is a reasonable proxy for a non-blanching purple/red rash; acceptable but concept is a disorder and the 'red' non-blanching petechial aspect is implicit.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "The 'does not disappear with pressure' (non-blanching) qualifier is not encoded explicitly"
+    ],
+    "problem": "'Purpuric rash' implies non-blanching, but SNOMED has 'Non-blanching rash' (disorder), which matches the page's wording directly and also covers red petechial rashes that are not purpura.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p44-0087408f",
+  "text": "Black2 or bloody stools",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Melena (2901004) for black stools and Hematochezia (405729008, synonym 'blood in stool') for bloody stools. Footnote 2's qualifier (black stools count only if they started before iron treatment) is not encoded; see p44-cc85f839.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Black and bloody stools encoded. Footnote 2 (black stools from iron tablets do not count unless started before iron) is not encoded; minor.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Footnote 2's qualification (black stools count only if they started before iron treatment) is not expressed, for example by excluding current iron therapy"
+    ],
+    "problem": "Bloody stools as Hematochezia is correct. Black stools as Melena (disorder) is acceptable, but 'Dark stools' (finding) is closer to what the page observes. Without the iron-treatment caveat, patients on iron whose stools turned black will be wrongly prioritised Urgent.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p44-6a455751",
+  "text": "• Patient has pallor if s/he has pale conjunctiva or palms. Compare patient’s palms to your own. • Check Hb: anaemia likely if: - Non-pregnant woman has Hb < 12. Pregnant woman has Hb < 11 178. - Man has Hb < 13.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "pale palms (no SNOMED concept found; closest available is the general 'Pale complexion', which is already used)",
+     "anaemia likely if Hb < 12 (non-pregnant woman) / < 11 (pregnant) / < 13 (man): not representable (no g/dL unit)"
+    ],
+    "problem": "The trigger captures pale conjunctiva and general pallor; 'pale palms' has no concept to use, so this is a SNOMED gap rather than a builder error. The Hb thresholds cannot be expressed. The rules anchor 'anaemia' on Anemia (disorder); SNOMED's 'Hemoglobin below reference range' (finding, 165397008) would be a reasonable extra trigger if the system records lab findings.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Pallor by palms; anaemia 'likely' by Hb < 12/11/13 by sex and pregnancy. Needs Hb values; the Anemia trigger is a proxy. Palms-as-pallor not captured (no Pale palm concept used).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "Pale palms has no SNOMED concept, so it is approximated by Pale complexion / Pale discoloration of entire skin",
+     "The 'anaemia likely' Hb thresholds (12 non-pregnant woman / 11 pregnant / 13 man) cannot be represented"
+    ],
+    "problem": "Pallor definition used as the trigger; acceptable.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p44-72e4dbad",
+  "text": "Approach to the patient with pallor/anaemia not needing urgent attention • Test for HIV 124 and check for TB 102. • Check for pregnancy 174. • If fever now or in past 3 days, and in a malaria area in past 3 months, malaria likely 39. • If not pregnant, send full blood count (FBC) and manage further ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "fever 'now or in past 3 days': rule requires current (active_condition Fever) only; the recent-fever window is not expressed although onset comparisons exist in the language",
+     "malaria area 'in past 3 months': no time window on the exposure finding",
+     "applies to 'the patient not needing urgent attention': rule is not gated on the absence of red-box signs (minor, arguably acceptable)"
+    ],
+    "problem": "Malaria likely is correctly a probable diagnosis anchored on pallor/anaemia + Fever + 'Disease that is endemic in recent area visited' = Malaria, with a matching check_for task. The two time windows are dropped. HIV/TB/pregnancy testing and FBC are management steps (out of scope); MCV is not representable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "fever 'now or in past 3 days' timing and malaria area 'in past 3 months' (rules use current fever active_condition and generic recent-area-visited observable)",
+     "HIV test / TB check / pregnancy check tasks (cross-reference only)"
+    ],
+    "problem": "Malaria likely is encoded as a probable rule and a task, but fever timing window is lost and the page puts this under the non-urgent approach; rule fires regardless of urgency. Pallor/anaemia is added to the criteria correctly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Fever now or in past 3 days': only current fever (active_condition Fever) is encoded, so recent fever is lost",
+     "'In a malaria area in past 3 months': the 3-month window is not expressed"
+    ],
+    "problem": "A probable Malaria rule exists with the right and-logic, but both time windows have been narrowed or dropped. A patient whose fever has resolved but who had fever 2 days ago will not get the malaria diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p44-cc85f839",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Black stools may be caused by iron tablets. Only refer if black stools started before iron treatment. 3Mean cell volume (MCV) helps identify cause of anaemia. Check on FBC result sheet if MCV low, norm",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "footnote 1: probable Shock diagnosis rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness (all expressible: Systolic blood pressure mmHg, pulse bpm, Respiratory rate bpm, 'Acute confusion'/'Confusional state', 'Restlessness', 'Weakness present'); the priority rule should then reference (active_condition Shock)",
+     "footnote 2: black stools only count if they started before iron treatment (not encoded; a qualifier on Melena, borderline-expressible)",
+     "footnote 4: alcohol misuse definition (> 14 drinks/week or >= 4/session): not representable, and only feeds the MCV-high branch anyway"
+    ],
+    "problem": "The red box says 'Shock¹' and footnote 1 is the page's definition of when shock is likely. Will's briefing: where the red box names a likely diagnosis for a subset of criteria, write a probable diagnosis rule and reference (active_condition X) from the priority rule. Instead, Shock is a bare clinical_finding the nurse must tick in the check_for. The footnote's conjunction/disjunction is ambiguous (it reads as a list of signs), so the builder would need to make and record a judgment call, but nothing was attempted. Footnote 3 (MCV) carries no new logic.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No probable Shock diagnosis rule from footnote 1; Shock is only a user-entered finding. Also footnote RR is > 30, box is >= 30.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Probable Shock rule: SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness (page's combination logic is unstated; any-of or any2 both defensible)",
+     "Footnote 2 iron-treatment caveat on black stools"
+    ],
+    "problem": "Footnote 1 'shock likely' is not encoded as a diagnosis rule; Shock appears only as a raw finding.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c001",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms, not a general complexion; and the cited quote is only the word \"pallor\".",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+    "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c003",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page defines pallor as pale conjunctiva or palms; 'entire skin of body' is a narrower, different finding that appears nowhere on the page, and it is not a descendant of Pale complexion (parent: Discoloration of skin).",
+    "fix": "Drop this branch; (snomed_concept \"Pale complexion\" \"finding\") (SNOMED 398979000, the general pallor concept) plus Pale conjunctiva already cover the page's definition.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page never says whole-body skin pallor; it says pale conjunctiva or palms. Concept is broader/different.",
+    "fix": "Use a pale palms concept if one exists, or drop.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+    "fix": "Add finding_site palm structure if the grammar allows",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c010",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Leg swelling symptom' is the subject-reported subtype (parent: Finding reported by subject or history provider); the page's 'Swollen legs' is a sign the clinician looks for. The parent concept covers both.",
+    "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Leg swelling symptom' is the patient-reported child concept; page 'Swollen legs' is an observable sign.",
+    "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c012",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Right concept, but footnote 2 qualifies the criterion: black stools may be caused by iron tablets and count only if they started before iron treatment; the qualifier is dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Black stools\" with footnote: black stools from iron tablets only count if they started before iron treatment; that qualifier is dropped.",
+    "fix": "Add condition excluding black stools that began on iron treatment.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Melena assumes GI bleeding; page footnote 2 says black stools may be due to iron tablets and count only if they started before iron treatment, a qualifier the rule drops.",
+    "fix": "Keep Melena (or \"Dark stools\" finding) but exclude/qualify black stools that began after starting iron, or note the qualifier for the health worker",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c013",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"bloody stools\" (any blood in stool); hematochezia means fresh red blood per rectum, narrower.",
+    "fix": "Consider \"Blood in stool\" if confirmed with exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Widespread/easy bruising\"; Multiple bruising only loosely matches \"widespread\" and is cited via a single word.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c016",
+  "text": "Check for urgent pallor/anaemia conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Clinically the right idea, but the page describes the sign by its test ('does not disappear with pressure'); a concept matching that wording exists.",
+    "fix": "Use or add (snomed_concept \"Non-blanching rash\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page wording is 'purple/red rash that does not disappear with pressure' (non-blanching); a closer concept exists.",
+    "fix": "(snomed_concept \"Non-blanching rash\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c017",
+  "text": "Check for malaria area exposure in pallor/anaemia with fever :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms, not a general complexion; and the cited quote is only the word \"pallor\".",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor. Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+    "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Check for malaria area exposure in pallor/anaemia with fever :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: 'entire skin of body' is not the page's definition of pallor (pale conjunctiva or palms).",
+    "fix": "Drop this branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page never says whole-body skin pallor; it says pale conjunctiva or palms. Concept is broader/different.",
+    "fix": "Use a pale palms concept if one exists, or drop.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign. Citation is the red-box header; the malaria step is in 'Approach to the patient ... not needing urgent attention' (p44-72e4dbad).",
+    "fix": "Add finding_site palm structure if the grammar allows",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Check for malaria area exposure in pallor/anaemia with fever :: (active_condition (snomed_concept \"Fever\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page says 'fever now or in past 3 days'; an active fever only captures 'now', so a patient whose fever settled two days ago is missed.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says fever now or in the past 3 days; active_condition Fever drops the past-3-days window.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'fever now or in past 3 days'; active_condition Fever captures only current fever and drops the 3-day window.",
+    "fix": "Use (or (active_condition Fever) (< (onset (clinical_finding Fever)) (time_ago 3 days))) in the diagnosis rule",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c022",
+  "text": "Check for malaria area exposure in pallor/anaemia with fever :: (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Right idea, but the page's 'in past 3 months' window is dropped (the concept only says 'recent'), and 'in a malaria area' includes living there, not only visiting.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires being in a malaria area in the past 3 months; the time window is not expressed.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page requires being in a malaria area 'in past 3 months'; the 3-month window is dropped.",
+    "fix": "Add a 3-month time qualifier if the grammar allows, else flag",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c023",
+  "text": "Diagnose probable malaria in pallor/anaemia :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms, not a general complexion; and the cited quote is only the word \"pallor\".",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+    "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Diagnose probable malaria in pallor/anaemia :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: 'entire skin of body' is not the page's definition of pallor.",
+    "fix": "Drop this branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page never says whole-body skin pallor; it says pale conjunctiva or palms. Concept is broader/different.",
+    "fix": "Use a pale palms concept if one exists, or drop.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+    "fix": "Add finding_site palm structure if the grammar allows",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c027",
+  "text": "Diagnose probable malaria in pallor/anaemia :: (active_condition (snomed_concept \"Fever\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c021: 'fever now or in past 3 days' reduced to current fever only.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says fever now or in the past 3 days; active_condition Fever drops the past-3-days window.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'fever now or in past 3 days'; active_condition Fever captures only current fever and drops the 3-day window.",
+    "fix": "Use (or (active_condition Fever) (< (onset (clinical_finding Fever)) (time_ago 3 days))) in the diagnosis rule",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c028",
+  "text": "Diagnose probable malaria in pallor/anaemia :: (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c022: the 3-month window is dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires being in a malaria area in the past 3 months; the time window is not expressed.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page requires being in a malaria area 'in past 3 months'; the 3-month window is dropped.",
+    "fix": "Add a 3-month time qualifier if the grammar allows, else flag",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c030",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms, not a general complexion; and the cited quote is only the word \"pallor\".",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page defines pallor as pale conjunctiva or palms; 'Pale complexion' is a facial complexion finding, not palmar pallor.",
+    "fix": "Rely on Pale conjunctiva plus a palm-site pallor finding (e.g. Pallor with finding_site palm), or Pale discoloration of entire skin of body",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c032",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: 'entire skin of body' is not the page's definition of pallor.",
+    "fix": "Drop this branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page never says whole-body skin pallor; it says pale conjunctiva or palms. Concept is broader/different.",
+    "fix": "Use a pale palms concept if one exists, or drop.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generalised whole-body pallor is broader than the page's 'pale conjunctiva or palms' test; acceptable proxy but not the page's sign.",
+    "fix": "Add finding_site palm structure if the grammar allows",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c035",
+  "text": "Urgent: pallor/anaemia with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Unit bpm for respiratory rate is breaths per minute; check unit convention (page also has footnote RR > 30 vs box >= 30; box value used correctly).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c042",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c010: subject-reported subtype where the page means an examination sign.",
+    "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Leg swelling symptom' is the patient-reported child concept; page 'Swollen legs' is an observable sign.",
+    "fix": "(snomed_concept \"Swelling of lower limb\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c044",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c012: footnote 2 (black stools on iron tablets only count if they started before iron treatment) is dropped, so a patient on iron with expected black stools is flagged Urgent.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Black stools\" with footnote: black stools from iron tablets only count if they started before iron treatment; that qualifier is dropped.",
+    "fix": "Add condition excluding black stools that began on iron treatment.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Melena assumes GI bleeding; page footnote 2 says black stools may be due to iron tablets and count only if they started before iron treatment, a qualifier the rule drops.",
+    "fix": "Keep Melena (or \"Dark stools\" finding) but exclude/qualify black stools that began after starting iron, or note the qualifier for the health worker",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c045",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"bloody stools\" (any blood in stool); hematochezia means fresh red blood per rectum, narrower.",
+    "fix": "Consider \"Blood in stool\" if confirmed with exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c047",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Widespread/easy bruising\"; Multiple bruising only loosely matches \"widespread\" and is cited via a single word.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c048",
+  "text": "Urgent: pallor/anaemia with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c016: 'Non-blanching rash' matches the page's wording more closely.",
+    "fix": "Use or add (snomed_concept \"Non-blanching rash\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page wording is 'purple/red rash that does not disappear with pressure' (non-blanching); a closer concept exists.",
+    "fix": "(snomed_concept \"Non-blanching rash\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs / Check for urgent pallor/anaemia conditions",
+  "text": "No probable Shock diagnosis rule despite footnote 1 defining 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness). The priority rule and check_for use a bare (clinical_finding Shock) that the nurse must tick as if it were a sign, which is the pattern the briefing says to avoid when the page gives criteria for the likely diagnosis.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Pulse >= 100 is measured against 'Pulse, function' (8499008, a cardiovascular-function observable), not a rate observable such as 'Heart rate' (364075005). If the routine pulse vital is recorded under a different concept this branch never fires. Needs confirming against the vitals the system records.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs / Check for urgent pallor/anaemia conditions",
+  "text": "'Purple/red rash that does not disappear with pressure' is encoded as 'Purpuric rash' although SNOMED has the exact 'Non-blanching rash' (disorder, 400991008); neither subsumes the other, so a recorded Non-blanching rash does not trigger Urgent.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable malaria in pallor/anaemia / Check for malaria area exposure in pallor/anaemia with fever",
+  "text": "Both time windows dropped: fever 'now or in past 3 days' (only current Fever triggers; an onset comparison could approximate the window) and malaria area 'in past 3 months'. The rule also is not restricted to patients 'not needing urgent attention', though that is defensible.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "'Swollen legs' encoded as 'Leg swelling symptom', a subject-reported finding; the parent 'Swelling of lower limb' (finding) or 'Edema of lower extremity' would also match an examined sign and all descendants.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "None of the page's four MCV-branch 'X likely' diagnoses (iron deficiency anaemia, systemic disease/long-term condition, macrocytic anaemia, folate deficiency) nor the implied B12 deficiency is encoded. This is expected: MCV has no unit and SNOMED has no MCV low/high finding, but it means the page's main diagnostic flowchart is absent and should be recorded as 'could not model'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(trigger)",
+  "text": "'Pale palms' from the page's pallor definition has no SNOMED concept and is not encoded; 'Pale complexion' (FSN Pallor) is the nearest general concept and is already used. Pale conjunctiva is not a descendant of Pale complexion, so listing it separately (as done) is necessary.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable malaria in pallor/anaemia",
+  "text": "Fever encoded as current active_condition; page allows fever in past 3 days and exposure within 3 months. Also requires pallor/anaemia, which the page does not (malaria likely is conditioned on fever and area only).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Hb < 6 criterion absent, so Hb-only urgency is never raised; not_representable but unflagged. Pulse and respiratory rate use the same 'bpm' unit.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent pallor/anaemia conditions",
+  "text": "check_for omits measurement criteria (pulse, RR, SBP), acceptable; check list otherwise matches the priority rule's findings.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Shock probable",
+  "text": "Footnote 1 'shock likely' criteria not encoded as diagnosis rule.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "The red box's footnote names a likely diagnosis (shock), but there is no probable Shock rule and the priority rule does not reference it as (active_condition Shock). This goes against the house standard, and Shock is detected only if someone records it by hand.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Melena triggers Urgent unconditionally, but footnote 2 says black stools count only if they started before iron treatment. Patients on iron therapy (a common treatment on this same page) will be over-triaged.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable malaria in pallor/anaemia",
+  "text": "The time windows are lost: 'fever now or in past 3 days' became current fever only, and 'malaria area in past 3 months' has no window.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable malaria in pallor/anaemia",
+  "text": "The page places malaria under 'not needing urgent attention', but the rule doesn't depend on that, so it also fires for urgent patients. This is harmless and arguably desirable.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent pallor/anaemia conditions",
+  "text": "Type and trigger are right, but the list omits the first red-box item, Hb < 6 (the grammar's unit list may lack g/dL; (snomed_concept \"Hemoglobin below reference range\" \"finding\") exists as a fallback finding), and omits every discriminating finding the page uses to reach its 'likely' diagnoses: MCV low/normal/high (SNOMED 'Mean corpuscular volume below/within/above reference range'), man or woman who no longer has periods, postpartum state, alcohol misuse (> 14 drinks/week or >= 4/session), zidovudine or antiseizure medication, pregnancy.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for malaria area exposure in pallor/anaemia with fever",
+  "text": "Structure is faithful (pallor/anaemia AND fever, then ask about malaria area), but the trigger reduces 'fever now or in past 3 days' to a current fever, and the page places this step under 'not needing urgent attention'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Level (Urgent) and (and presenting (or ...)) structure match the red box, but Hb < 6, the first danger sign in the box, is missing, so a patient with Hb 5 and no other sign is not escalated. The other 11 box items are present.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "MISSING: Diagnose probable anaemia from Hb thresholds",
+  "text": "Page: 'anaemia likely if non-pregnant woman Hb < 12, pregnant woman Hb < 11, man Hb < 13'. No probable Anemia rule exists, so the Anemia trigger used by every rule in the file is never produced from the page's own criteria.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "MISSING: Diagnose probable iron deficiency anaemia (MCV low)",
+  "text": "Page: MCV low -> 'Iron deficiency anaemia likely'. Not encoded. (snomed_concept \"Iron deficiency anemia\" \"disorder\") and (snomed_concept \"Mean corpuscular volume below reference range\" \"finding\") both exist. The Yes branch (man or postmenopausal woman -> discuss/refer for hidden blood loss) is also absent.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "MISSING: Diagnose probable systemic disease or long-term condition (MCV normal)",
+  "text": "Page: MCV normal -> 'Systemic disease or long-term condition likely'. Not encoded; (snomed_concept \"Systemic disease\" \"disorder\") exists.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "MISSING: Diagnose probable macrocytic anaemia (MCV high) and probable folate deficiency",
+  "text": "Page: MCV high -> 'Macrocytic anaemia likely'; postpartum or alcohol misuse -> 'Folate deficiency likely'; otherwise refer to investigate for vitamin B12 deficiency (a possible diagnosis). None encoded. Concepts exist: (snomed_concept \"Macrocytic anemia\" \"disorder\"), (snomed_concept \"Mean corpuscular volume above reference range\" \"finding\"), (snomed_concept \"Folic acid deficiency\" \"disorder\"), (snomed_concept \"Postpartum state\" \"finding\"), (snomed_concept \"Cobalamin deficiency\" \"disorder\").",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent pallor/anaemia conditions",
+  "text": "Check_for omits Hb < 6, which is the first red-box criterion; trigger includes anaemia as a disorder without Hb thresholds.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for malaria area exposure in pallor/anaemia with fever",
+  "text": "Fever window (now or past 3 days) and malaria-area 3-month window dropped; page presents this as a single 'malaria likely' step, so a task plus a diagnosis rule duplicate each other.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Missing Hb < 6 criterion from the red box (no measurement of haemoglobin anywhere). Black stools lack the iron-treatment qualifier. Otherwise structure (pallor AND any of) is faithful.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing rules)",
+  "text": "Page diagnoses not encoded: iron deficiency anaemia likely (MCV low), systemic disease/long-term condition likely (MCV normal), macrocytic anaemia likely (MCV high), folate deficiency likely; also anaemia by Hb thresholds (<12 woman, <11 pregnant, <13 man).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent pallor/anaemia conditions",
+  "text": "Red-box item 'Hb < 6' is absent (no measure task or check item for Hb); the task also omits the page's discriminating inputs for its 'likely' diagnoses (Hb thresholds by sex/pregnancy, pregnancy status, MCV low/normal/high, postpartum, alcohol misuse, zidovudine/antiseizure use, periods). Trigger 'Pale complexion' is not the page's palm/conjunctiva test.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for malaria area exposure in pallor/anaemia with fever",
+  "text": "Type and trigger fine, but trigger uses current fever only (page: now or past 3 days), so patients with fever in the past 3 days are never asked about malaria-area exposure; claims cite the red-box header rather than the non-urgent approach block.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable malaria in pallor/anaemia",
+  "text": "'malaria likely' correctly probable with an and-structure, but both timing windows (fever in past 3 days, malaria area in past 3 months) are dropped: misses recent-but-resolved fever and over-fires on remote travel.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: pallor/anaemia with danger signs",
+  "text": "Urgent level and (and complaint (or ...)) structure match the red box, but 'Hb < 6' is missing from the or-list, so a pallid patient with Hb < 6 and otherwise stable vitals is not flagged Urgent. (Grammar units lack g/dL, which may explain it; it must be flagged, not silently dropped.) Black-stool iron qualifier also lost.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "trigger",
+  "text": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+    "reason": "The header complaint is \"pallor/anaemia\" and the page defines pallor as \"pale conjunctiva or palms\"; with no pale-palm concept, whole-body skin pallor (synonym \"Abnormal pallor skin of body\") is kept beside Pale complexion as a stand-in for skin pallor, though it is broader than \"palms\".",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+    "reason": "\"Swollen legs\" fits both concepts; B's Leg swelling symptom is the VHA vocabulary term (8 uses vs 1), which the builder pack says to prefer so the same idea is written the same way across pages.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+    "reason": "\"in a malaria area\" is malaria-specific and A's observable names Malaria and a recent area visited, while B's high-risk-travel situation covers any communicable disease and its onset is when the finding is recorded, not when the patient was in the area; neither captures \"past 3 months\" exactly.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+    "reason": "\"Swollen legs\" fits both concepts; B's Leg swelling symptom is the VHA vocabulary term (8 uses vs 1), which the builder pack says to prefer so the same idea is written the same way across pages.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+    "reason": "The header complaint is \"pallor/anaemia\" and the page defines pallor as \"pale conjunctiva or palms\"; with no pale-palm concept, whole-body skin pallor (synonym \"Abnormal pallor skin of body\") is kept beside Pale complexion as a stand-in for skin pallor, though it is broader than \"palms\".",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))  vs  B: (< (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))) (time_ago 3 months))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Disease that is endemic in recent area visited\" \"observable entity\") (snomed_concept \"Malaria\" \"disorder\"))",
+    "reason": "\"in a malaria area\" is malaria-specific and A's observable names Malaria and a recent area visited, while B's high-risk-travel situation covers any communicable disease and its onset is when the finding is recorded, not when the patient was in the area; neither captures \"past 3 months\" exactly.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "slug": "44-pallor-and-anaemia",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale discoloration of entire skin of body\" \"finding\"))",
+    "reason": "The header complaint is \"pallor/anaemia\" and the page defines pallor as \"pale conjunctiva or palms\"; with no pale-palm concept, whole-body skin pallor (synonym \"Abnormal pallor skin of body\") is kept beside Pale complexion as a stand-in for skin pallor, though it is broader than \"palms\".",
+    "unsettled": true
+   }
+  ]
+ }
+]

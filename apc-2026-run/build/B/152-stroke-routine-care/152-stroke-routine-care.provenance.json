@@ -1,0 +1,786 @@
+{
+ "edition": "2026",
+ "page": 152,
+ "lisp_file": "152-stroke-routine-care.lisp",
+ "conditions": [
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face",
+   "confidence": "medium",
+   "note": "Weakness of face; 'Weakness of face muscles' is the vocabulary concept. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm",
+   "confidence": "medium",
+   "note": "Arm weakness; vocabulary concept. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Leg weakness; vocabulary concept. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "Face numbness. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm",
+   "confidence": "medium",
+   "note": "Arm numbness; no 'Numbness of arm' concept, upper limb is the nearest. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Leg numbness. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred",
+   "confidence": "medium",
+   "note": "Blurred vision; 'Blurred vision' is a synonym, FSN is 'Blurring of visual image'. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes",
+   "confidence": "medium",
+   "note": "Decreased vision; 'Decreased vision' has no FSN. Alternative 'Sight deteriorating' (finding) considered. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "double vision",
+   "confidence": "medium",
+   "note": "Double vision = Diplopia (disorder). Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking",
+   "confidence": "medium",
+   "note": "'Difficulty speaking' has no FSN; 'Difficulty talking' is the exact sense. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding",
+   "confidence": "medium",
+   "note": "Difficulty understanding (speech); no plain 'Difficulty understanding' concept. Receptive dysphasia (disorder) considered, rejected as a diagnosis rather than a symptom. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking",
+   "confidence": "medium",
+   "note": "Exact. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness",
+   "confidence": "medium",
+   "note": "Common symptom. Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor balance\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance",
+   "confidence": "medium",
+   "note": "No 'Loss of balance' FSN; 'Poor balance' chosen over 'Unable to balance' (too severe). Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination",
+   "confidence": "medium",
+   "note": "Loss of co-ordination; 'Decreased coordination' is the vocabulary concept (alternative: Incoordination). Trigger is the unqualified symptom (any onset); the check then asks whether onset was sudden. Header cited for the complaint 'new stroke/TIA'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face",
+   "confidence": "high",
+   "note": "Weakness of face; 'Weakness of face muscles' is the vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm",
+   "confidence": "high",
+   "note": "Arm weakness; vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg",
+   "confidence": "high",
+   "note": "Leg weakness; vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face",
+   "confidence": "high",
+   "note": "Face numbness. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm",
+   "confidence": "high",
+   "note": "Arm numbness; no 'Numbness of arm' concept, upper limb is the nearest. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "high",
+   "note": "Leg numbness. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred",
+   "confidence": "high",
+   "note": "Blurred vision; 'Blurred vision' is a synonym, FSN is 'Blurring of visual image'. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes",
+   "confidence": "medium",
+   "note": "Decreased vision; 'Decreased vision' has no FSN. Alternative 'Sight deteriorating' (finding) considered. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "double vision",
+   "confidence": "high",
+   "note": "Double vision = Diplopia (disorder). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking",
+   "confidence": "high",
+   "note": "'Difficulty speaking' has no FSN; 'Difficulty talking' is the exact sense. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding",
+   "confidence": "medium",
+   "note": "Difficulty understanding (speech); no plain 'Difficulty understanding' concept. Receptive dysphasia (disorder) considered, rejected as a diagnosis rather than a symptom. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking",
+   "confidence": "high",
+   "note": "Exact. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance",
+   "confidence": "medium",
+   "note": "No 'Loss of balance' FSN; 'Poor balance' chosen over 'Unable to balance' (too severe). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination",
+   "confidence": "medium",
+   "note": "Loss of co-ordination; 'Decreased coordination' is the vocabulary concept (alternative: Incoordination). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face",
+   "confidence": "high",
+   "note": "Weakness of face; 'Weakness of face muscles' is the vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm",
+   "confidence": "high",
+   "note": "Arm weakness; vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg",
+   "confidence": "high",
+   "note": "Leg weakness; vocabulary concept. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face",
+   "confidence": "high",
+   "note": "Face numbness. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm",
+   "confidence": "high",
+   "note": "Arm numbness; no 'Numbness of arm' concept, upper limb is the nearest. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "high",
+   "note": "Leg numbness. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred",
+   "confidence": "high",
+   "note": "Blurred vision; 'Blurred vision' is a synonym, FSN is 'Blurring of visual image'. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes",
+   "confidence": "medium",
+   "note": "Decreased vision; 'Decreased vision' has no FSN. Alternative 'Sight deteriorating' (finding) considered. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "double vision",
+   "confidence": "high",
+   "note": "Double vision = Diplopia (disorder). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking",
+   "confidence": "high",
+   "note": "'Difficulty speaking' has no FSN; 'Difficulty talking' is the exact sense. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding",
+   "confidence": "medium",
+   "note": "Difficulty understanding (speech); no plain 'Difficulty understanding' concept. Receptive dysphasia (disorder) considered, rejected as a diagnosis rather than a symptom. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking",
+   "confidence": "high",
+   "note": "Exact. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom. Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance",
+   "confidence": "medium",
+   "note": "No 'Loss of balance' FSN; 'Poor balance' chosen over 'Unable to balance' (too severe). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination",
+   "confidence": "medium",
+   "note": "Loss of co-ordination; 'Decreased coordination' is the vocabulary concept (alternative: Incoordination). Qualified 'Sudden onset' from the lead-in 'Sudden onset of one or more of the following'."
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "suggests a stroke",
+   "confidence": "medium",
+   "note": "'suggests a stroke' read as possible (suspect), not probable ('likely'). TIA not given its own diagnosis: duration < 24 h and complete resolution cannot be expressed."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face",
+   "confidence": "medium",
+   "note": "Weakness of face; 'Weakness of face muscles' is the vocabulary concept. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm",
+   "confidence": "medium",
+   "note": "Arm weakness; vocabulary concept. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Leg weakness; vocabulary concept. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "Face numbness. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm",
+   "confidence": "medium",
+   "note": "Arm numbness; no 'Numbness of arm' concept, upper limb is the nearest. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg",
+   "confidence": "medium",
+   "note": "Leg numbness. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred",
+   "confidence": "medium",
+   "note": "Blurred vision; 'Blurred vision' is a synonym, FSN is 'Blurring of visual image'. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes",
+   "confidence": "medium",
+   "note": "Decreased vision; 'Decreased vision' has no FSN. Alternative 'Sight deteriorating' (finding) considered. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "double vision",
+   "confidence": "medium",
+   "note": "Double vision = Diplopia (disorder). Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking",
+   "confidence": "medium",
+   "note": "'Difficulty speaking' has no FSN; 'Difficulty talking' is the exact sense. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding",
+   "confidence": "medium",
+   "note": "Difficulty understanding (speech); no plain 'Difficulty understanding' concept. Receptive dysphasia (disorder) considered, rejected as a diagnosis rather than a symptom. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking",
+   "confidence": "medium",
+   "note": "Exact. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness",
+   "confidence": "medium",
+   "note": "Common symptom. Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance",
+   "confidence": "medium",
+   "note": "No 'Loss of balance' FSN; 'Poor balance' chosen over 'Unable to balance' (too severe). Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination",
+   "confidence": "medium",
+   "note": "Loss of co-ordination; 'Decreased coordination' is the vocabulary concept (alternative: Incoordination). Sudden-onset qualifier from the lead-in 'Sudden onset of one or more of the following'; a new stroke/TIA is taken to be any one sudden-onset symptom."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p152-44a87834",
+   "element_id": "p152-rb1-e02",
+   "text": "If oxygen saturation < 94% or respiratory rate ≥ 30, give face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy instruction; SpO2 and RR thresholds only gate a management step (no manage tasks)."
+  },
+  {
+   "element_key": "p152-91f92c92",
+   "element_id": "p152-rb1-e03",
+   "text": "Keep patient nil by mouth until swallowing is formally assessed.",
+   "reason_category": "management_step",
+   "reason": "Nil by mouth instruction."
+  },
+  {
+   "element_key": "p152-7cb29c8d",
+   "element_id": "p152-rb1-e04",
+   "text": "Check glucose: if < 3 (< 4 if diabetes) 19.",
+   "reason_category": "cross_reference_only",
+   "reason": "Glucose is a routine vital (no measure task); low glucose handled on page 19."
+  },
+  {
+   "element_key": "p152-69125f15",
+   "element_id": "p152-rb1-e05",
+   "text": "Avoid treating BP ≥ 140/90 as this may worsen stroke. If BP ≥ 220/120, discuss with specialist about need for pre-referral treatment.",
+   "reason_category": "management_step",
+   "reason": "BP treatment/discussion instruction; thresholds gate management only."
+  },
+  {
+   "element_key": "p152-6a448a3b",
+   "element_id": "p152-rb1-e06",
+   "text": "Decide where to refer the patient depending on when symptoms started:",
+   "reason_category": "management_step",
+   "reason": "Referral decision."
+  },
+  {
+   "element_key": "p152-e340c884",
+   "element_id": "p152-rb1-e07",
+   "text": "If patient can reach hospital within 3 hours of onset of symptoms, refer urgently for thrombolysis to specialist stroke unit (if available).",
+   "reason_category": "management_step",
+   "reason": "Referral for thrombolysis within 3 hours of onset."
+  },
+  {
+   "element_key": "p152-c506fb23",
+   "element_id": "p152-rb1-e08",
+   "text": "If patient cannot reach hospital within 3 hours of symptoms onset, refer same day and give single dose aspirin 300mg if fully conscious and can swallow (avoid i",
+   "reason_category": "management_step",
+   "reason": "Same-day referral and aspirin dose with its contraindications."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Strength of the diagnosis",
+   "decision": "'Sudden onset of one or more … suggests a stroke' encoded as a possible Cerebrovascular accident diagnosis",
+   "alternatives": "probable diagnosis (then the priority rule could use active_condition)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Urgent priority",
+   "decision": "Urgent when any one of the 15 sudden-onset stroke symptoms is recorded; the red box has no 'and any of' list, only management steps",
+   "alternatives": "priority on a possible diagnosis (not allowed by the language/test)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Trigger",
+   "decision": "Check task fires on any of the stroke symptoms without the onset qualifier; only Dizziness is a recorded common symptom",
+   "alternatives": "trigger on Dizziness only",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Scope",
+   "decision": "Lower half (assess/advise/treat the patient with previous stroke/TIA) is routine care and is not modelled, as on the gold page",
+   "alternatives": "measure tasks for cholesterol/triglycerides",
+   "confidence": "medium"
+  }
+ ]
+}

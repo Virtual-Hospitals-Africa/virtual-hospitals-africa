@@ -1,0 +1,1112 @@
+{
+ "edition": "2026",
+ "page": 46,
+ "lisp_file": "46-dizziness.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Dizziness is a recorded common symptom; plain clinical_finding is the recorded form."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-54287577"
+   ],
+   "quote": "Recent head injury",
+   "confidence": "high",
+   "note": "Injury of head + Recent qualifier."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to stand\" \"finding\"))",
+   "element_keys": [
+    "p46-42a384fa"
+   ],
+   "quote": "Unable to stand without support",
+   "confidence": "high",
+   "note": "\"without support\" is implied by Unable to stand."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "New sudden severe dizziness",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier, \"severe\" as Severe qualifier; both must be recorded."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "medium",
+   "note": "Read \"with nausea/vomiting, abnormal eye movements/walk\" as with any of these."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "medium",
+   "note": "Read \"with nausea/vomiting, abnormal eye movements/walk\" as with any of these."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "abnormal eye movements",
+   "confidence": "medium",
+   "note": "Closest exact concept for abnormal eye movements."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "abnormal eye movements/walk",
+   "confidence": "medium",
+   "note": "\"abnormal ... walk\" as Abnormal gait."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p46-cd95b6d0"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock/SBP < 80 encoded as this page's own or of Shock and SBP < 80."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p46-4a33b8e9"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "\"especially on lying flat with leg swelling\" is emphasis, not a requirement; Difficulty breathing alone triggers."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p46-d0f123ec"
+   ],
+   "quote": "Pulse < 50 or irregular",
+   "confidence": "high",
+   "note": "Irregular pulse."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p46-73e6e85c"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain (also a warning sign)."
+  },
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-5dda541c"
+   ],
+   "quote": "if diabetes",
+   "confidence": "high",
+   "note": "Known present diabetes; same clinical_finding form in check_for and priority rule."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Dizziness is a recorded common symptom; plain clinical_finding is the recorded form."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "\"very quickly\" as Tachypnea, \"deeply\" as Deep breathing; \"immediately before or during the collapse\" timing not encoded."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep breathing\" \"finding\"))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "\"very quickly\" as Tachypnea, \"deeply\" as Deep breathing; \"immediately before or during the collapse\" timing not encoded."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\"))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "hearing loss",
+   "confidence": "high",
+   "note": "Asked by the flowchart; Yes -> refer."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\"))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "tinnitus",
+   "confidence": "high",
+   "note": "Asked by the flowchart; Yes -> refer."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Positional vertigo\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-c8d6bd86"
+   ],
+   "quote": "Sudden dizziness lasting seconds, precipitated by head movements",
+   "confidence": "medium",
+   "note": "Positional vertigo finding + Sudden onset for \"sudden ... precipitated by head movements\"; \"lasting seconds\" not expressible."
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-3aa28bc7"
+   ],
+   "quote": "Sudden dizziness lasting hours/days",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"lasting hours/days\" (episode duration) cannot be expressed."
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Dizziness is a recorded common symptom; plain clinical_finding is the recorded form."
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Lying systolic blood pressure\" \"observable entity\") mmHg)",
+   "element_keys": [
+    "p46-b580d203"
+   ],
+   "quote": "Measure BP after lying for 5 minutes and repeat again after standing for 3 minutes",
+   "confidence": "high",
+   "note": "Page asks for lying then standing BP; the drop itself cannot be computed (see Could not model)."
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Lying diastolic blood pressure\" \"observable entity\") mmHg)",
+   "element_keys": [
+    "p46-b580d203"
+   ],
+   "quote": "Measure BP after lying for 5 minutes and repeat again after standing for 3 minutes",
+   "confidence": "high",
+   "note": "Page asks for lying then standing BP; the drop itself cannot be computed (see Could not model)."
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Standing systolic blood pressure\" \"observable entity\") mmHg)",
+   "element_keys": [
+    "p46-b580d203"
+   ],
+   "quote": "Measure BP after lying for 5 minutes and repeat again after standing for 3 minutes",
+   "confidence": "high",
+   "note": "Page asks for lying then standing BP; the drop itself cannot be computed (see Could not model)."
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Standing diastolic blood pressure\" \"observable entity\") mmHg)",
+   "element_keys": [
+    "p46-b580d203"
+   ],
+   "quote": "Measure BP after lying for 5 minutes and repeat again after standing for 3 minutes",
+   "confidence": "high",
+   "note": "Page asks for lying then standing BP; the drop itself cannot be computed (see Could not model)."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Presenting complaint (red box header)."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Diagnose possible stroke in dizziness",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "consider stroke or TIA",
+   "confidence": "high",
+   "note": "\"consider\" -> possible."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Presenting complaint (red box header)."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Diagnose possible TIA in dizziness",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "consider stroke or TIA",
+   "confidence": "high",
+   "note": "\"consider\" -> possible; separate rule because a rule diagnoses one concept."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-b580d203"
+   ],
+   "quote": "dizziness not needing urgent attention",
+   "confidence": "high",
+   "note": "Rule anchored to the presenting complaint."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "\"very quickly\" as Tachypnea, \"deeply\" as Deep breathing; \"immediately before or during the collapse\" timing not encoded."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation in dizziness",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep breathing\" \"finding\"))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "\"very quickly\" as Tachypnea, \"deeply\" as Deep breathing; \"immediately before or during the collapse\" timing not encoded."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation in dizziness",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hyperventilation\" \"finding\") probable)",
+   "element_keys": [
+    "p46-0c0e4ac3"
+   ],
+   "quote": "Hyperventilation likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable; Hyperventilation exists only as a finding."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "Flowchart HV = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "Flowchart HV = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "hearing loss",
+   "confidence": "high",
+   "note": "EAR = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "tinnitus",
+   "confidence": "high",
+   "note": "EAR = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Positional vertigo\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-c8d6bd86"
+   ],
+   "quote": "Sudden dizziness lasting seconds, precipitated by head movements",
+   "confidence": "medium",
+   "note": "Positional vertigo finding + Sudden onset for \"sudden ... precipitated by head movements\"; \"lasting seconds\" not expressible."
+  },
+  {
+   "rule": "Diagnose probable positional vertigo",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Positional vertigo\" \"finding\") probable)",
+   "element_keys": [
+    "p46-c19e110b"
+   ],
+   "quote": "Positional vertigo likely",
+   "confidence": "medium",
+   "note": "Page name used; Benign paroxysmal positional vertigo (disorder) considered but the page does not say benign paroxysmal."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "Flowchart HV = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-07e12b76"
+   ],
+   "quote": "breathing very quickly or deeply",
+   "confidence": "medium",
+   "note": "Flowchart HV = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "hearing loss",
+   "confidence": "high",
+   "note": "EAR = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-97a425ad"
+   ],
+   "quote": "tinnitus",
+   "confidence": "high",
+   "note": "EAR = No branch, encoded as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-3aa28bc7"
+   ],
+   "quote": "Sudden dizziness lasting hours/days",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier; \"lasting hours/days\" (episode duration) cannot be expressed."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p46-de04e4eb"
+   ],
+   "quote": "with nausea/vomiting",
+   "confidence": "high",
+   "note": "Nausea or vomiting (or)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p46-de04e4eb"
+   ],
+   "quote": "with nausea/vomiting",
+   "confidence": "high",
+   "note": "Nausea or vomiting (or)."
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Vestibular neuronitis of inner ear\" \"disorder\") probable)",
+   "element_keys": [
+    "p46-09cabdb8"
+   ],
+   "quote": "Vestibular neuronitis likely",
+   "confidence": "medium",
+   "note": "\"Vestibular neuronitis\" alone has no FSN; the inner-ear concept is the exact match."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p46-228a99ad"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Presenting complaint (red box header)."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier; \"asymmetric\" not encoded (no Asymmetry qualifier added; would need recording) -> fires slightly more often."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-567e3c91"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from \"New sudden\" in the same bullet (judgment call)."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-54287577"
+   ],
+   "quote": "Recent head injury",
+   "confidence": "high",
+   "note": "Injury of head + Recent qualifier."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to stand\" \"finding\"))",
+   "element_keys": [
+    "p46-42a384fa"
+   ],
+   "quote": "Unable to stand without support",
+   "confidence": "high",
+   "note": "\"without support\" is implied by Unable to stand."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "New sudden severe dizziness",
+   "confidence": "medium",
+   "note": "\"New sudden\" as Sudden onset qualifier, \"severe\" as Severe qualifier; both must be recorded."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "medium",
+   "note": "Read \"with nausea/vomiting, abnormal eye movements/walk\" as with any of these."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "nausea/vomiting",
+   "confidence": "medium",
+   "note": "Read \"with nausea/vomiting, abnormal eye movements/walk\" as with any of these."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "abnormal eye movements",
+   "confidence": "medium",
+   "note": "Closest exact concept for abnormal eye movements."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "element_keys": [
+    "p46-76dcaec7"
+   ],
+   "quote": "abnormal eye movements/walk",
+   "confidence": "medium",
+   "note": "\"abnormal ... walk\" as Abnormal gait."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p46-cd95b6d0"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock/SBP < 80 encoded as this page's own or of Shock and SBP < 80."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p46-cd95b6d0"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Exact threshold and direction."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p46-4a33b8e9"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "\"especially on lying flat with leg swelling\" is emphasis, not a requirement; Difficulty breathing alone triggers."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p46-d0f123ec"
+   ],
+   "quote": "Pulse < 50",
+   "confidence": "high",
+   "note": "Exact threshold."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p46-d0f123ec"
+   ],
+   "quote": "Pulse < 50 or irregular",
+   "confidence": "high",
+   "note": "Irregular pulse."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p46-73e6e85c"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Chest pain (also a warning sign)."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p46-5dda541c"
+   ],
+   "quote": "Glucose < 3",
+   "confidence": "high",
+   "note": "Exact threshold, mmol/L."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p46-5dda541c"
+   ],
+   "quote": "if diabetes",
+   "confidence": "high",
+   "note": "Known present diabetes; same clinical_finding form in check_for and priority rule."
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p46-5dda541c"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Combined with known diabetes."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p46-c6aae0de",
+   "element_id": "p46-rb1-e11",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management section; no triage logic."
+  },
+  {
+   "element_key": "p46-dd1261e4",
+   "element_id": "p46-rb1-e12",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluid dose; management tasks are out of scope."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "New sudden ... qualifiers",
+   "decision": "Sudden onset qualifier on every item of the stroke bullet and on severe dizziness; no separate New qualifier; asymmetric not encoded",
+   "alternatives": "Add New and Asymmetry qualifiers (all required) or no qualifier",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Severe dizziness bullet",
+   "decision": "(and sudden severe dizziness (or nausea vomiting eye-movement-disorder abnormal-gait))",
+   "alternatives": "Require nausea/vomiting AND abnormal eye movements/walk",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Orthostatic hypotension",
+   "decision": "Not modelled (no way to compare two measurements); lying/standing BP measure task only",
+   "alternatives": "Possible rule on Dizziness on standing up (not the page's logic)",
+   "confidence": "high"
+  },
+  {
+   "topic": "Hyperventilation branch",
+   "decision": "Tachypnea or Deep breathing with dizziness; collapse not required",
+   "alternatives": "Require Collapse/Syncope as well",
+   "confidence": "low"
+  },
+  {
+   "topic": "Positional vertigo vs vestibular neuronitis",
+   "decision": "Duration (seconds vs hours/days) not expressible; positional vertigo keyed on Positional vertigo finding, vestibular neuronitis on sudden dizziness with nausea/vomiting",
+   "alternatives": "Add (no Positional vertigo) to vestibular neuronitis rule",
+   "confidence": "low"
+  }
+ ]
+}

@@ -1,0 +1,437 @@
+{
+ "page": 15,
+ "slug": "15-collapse-following-vaccination",
+ "validation_ok": true,
+ "builder_agreement": 0.723,
+ "elements": 15,
+ "elements_agreed": 6,
+ "claims": 29,
+ "claims_agreed": 14,
+ "queue": 52,
+ "queue_by_priority": {
+  "medium": 32,
+  "low": 14,
+  "high": 6
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p15-9f025f7d",
+   "id": "p15-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p15-f73f4e66",
+   "id": "p15-out-e01",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-2414a22d",
+   "id": "p15-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p15-d247855b",
+   "id": "p15-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "partial": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p15-668d2784",
+   "id": "p15-out-e04",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "partial": 1
+   }
+  },
+  {
+   "key": "p15-1220e69b",
+   "id": "p15-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-1f44ce15",
+   "id": "p15-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 2
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p15-833b98d5",
+   "id": "p15-out-e07",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "correct": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p15-76eb1509",
+   "id": "p15-out-e08",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "(no verdict)": 1
+   },
+   "verdicts": {
+    "partial": 2,
+    "(no verdict)": 1
+   }
+  },
+  {
+   "key": "p15-7cdfec6e",
+   "id": "p15-out-e09",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "partial": 1
+   }
+  },
+  {
+   "key": "p15-744941a1",
+   "id": "p15-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-36f4be3f",
+   "id": "p15-out-e11",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-1e265f86",
+   "id": "p15-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-da05a3cb",
+   "id": "p15-out-e13",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p15-7949b2ea",
+   "id": "p15-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for collapse following vaccination features",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for collapse following vaccination features",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

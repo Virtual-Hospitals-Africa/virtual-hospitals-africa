@@ -1,0 +1,634 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 45,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    234.2
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p45-rb1-e01",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient who has collapsed and any of:",
+   "bbox": [
+    289.1,
+    91.6,
+    552.8,
+    102.7
+   ],
+   "key": "p45-1084b7ed"
+  },
+  {
+   "id": "p45-rb1-e02",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking or visual disturbance: consider stroke or TIA 152",
+   "bbox": [
+    86.5,
+    102.2,
+    387.8,
+    123.0
+   ],
+   "key": "p45-da0e5870"
+  },
+  {
+   "id": "p45-rb1-e03",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Recent injury",
+   "bbox": [
+    432.3,
+    102.2,
+    490.3,
+    113.0
+   ],
+   "key": "p45-6e9f1bb5"
+  },
+  {
+   "id": "p45-rb1-e04",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock2/SBP < 80",
+   "bbox": [
+    432.3,
+    112.2,
+    500.0,
+    123.0
+   ],
+   "key": "p45-a77996df"
+  },
+  {
+   "id": "p45-rb1-e05",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Sudden collapse and any of: generalised itch/rash, face/tongue swelling, wheeze, difficulty breathing, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28",
+   "bbox": [
+    86.5,
+    122.2,
+    403.4,
+    153.0
+   ],
+   "key": "p45-1b2591c4"
+  },
+  {
+   "id": "p45-rb1-e06",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Palpitations 26, pulse < 50 or irregular",
+   "bbox": [
+    432.3,
+    122.2,
+    591.4,
+    133.0
+   ],
+   "key": "p45-c1cc432c"
+  },
+  {
+   "id": "p45-rb1-e07",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Family history of collapse or sudden death",
+   "bbox": [
+    432.3,
+    132.2,
+    601.4,
+    143.0
+   ],
+   "key": "p45-55100604"
+  },
+  {
+   "id": "p45-rb1-e08",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Abnormal ECG or known heart problem",
+   "bbox": [
+    432.3,
+    142.2,
+    589.2,
+    153.0
+   ],
+   "key": "p45-0176b604"
+  },
+  {
+   "id": "p45-rb1-e09",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Decreased consciousness 18",
+   "bbox": [
+    86.5,
+    152.2,
+    209.3,
+    163.0
+   ],
+   "key": "p45-bc660f91"
+  },
+  {
+   "id": "p45-rb1-e10",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Collapse with exercise",
+   "bbox": [
+    432.3,
+    152.2,
+    522.3,
+    163.0
+   ],
+   "key": "p45-87ed6e4d"
+  },
+  {
+   "id": "p45-rb1-e11",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Seizure 20",
+   "bbox": [
+    86.5,
+    162.2,
+    140.1,
+    173.0
+   ],
+   "key": "p45-c62013a6"
+  },
+  {
+   "id": "p45-rb1-e12",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Collapse following vaccination 45",
+   "bbox": [
+    432.3,
+    162.2,
+    574.7,
+    173.0
+   ],
+   "key": "p45-a081ac16"
+  },
+  {
+   "id": "p45-rb1-e13",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Chest pain 24",
+   "bbox": [
+    86.5,
+    172.2,
+    152.8,
+    183.0
+   ],
+   "key": "p45-fd3224fc"
+  },
+  {
+   "id": "p45-rb1-e14",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Vomited blood or blood in stool",
+   "bbox": [
+    432.3,
+    172.2,
+    561.8,
+    183.0
+   ],
+   "key": "p45-b1f1d792"
+  },
+  {
+   "id": "p45-rb1-e15",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty breathing 23",
+   "bbox": [
+    86.5,
+    182.2,
+    186.4,
+    193.0
+   ],
+   "key": "p45-adde8c5f"
+  },
+  {
+   "id": "p45-rb1-e16",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe back or abdominal pain",
+   "bbox": [
+    432.3,
+    182.2,
+    555.9,
+    193.0
+   ],
+   "key": "p45-6bb49666"
+  },
+  {
+   "id": "p45-rb1-e17",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Glucose < 3 (or < 4 if diabetes) 19",
+   "bbox": [
+    86.5,
+    192.2,
+    229.6,
+    203.0
+   ],
+   "key": "p45-986c342b"
+  },
+  {
+   "id": "p45-rb1-e18",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient who has collapsed and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Pregnant or missed/overdue period with abdominal pain and vaginal bleeding 177",
+   "bbox": [
+    432.3,
+    192.2,
+    755.4,
+    203.0
+   ],
+   "key": "p45-831c4f89"
+  },
+  {
+   "id": "p45-rb1-e19",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 208.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    208.0,
+    158.9,
+    219.0
+   ],
+   "key": "p45-32cf9dee"
+  },
+  {
+   "id": "p45-rb1-e20",
+   "page": 45,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 208.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    218.2,
+    605.9,
+    229.0
+   ],
+   "key": "p45-ae88a240"
+  },
+  {
+   "id": "p45-out-e01",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "COLLAPSE/FALLS",
+   "bbox": [
+    350.5,
+    48.5,
+    491.4,
+    70.8
+   ],
+   "key": "p45-b03b62ce"
+  },
+  {
+   "id": "p45-out-e02",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient who has collapsed not needing urgent attention • Do an ECG. If abnormal, refer same day. • Check Hb: if < 12 (woman) or < 13 (man), anaemia likely 44. • Screen for substance use. In the past year, has patient drunk ≥ 4 drinks3/session, used illegal drugs or misused prescription/over-the-counter medications? If yes to any 165. • Check BP: if ≥ 140/90 148. Then measure BP after lying for 5 minutes and repeat again after standing for 3 minutes. Does systolic BP drop by ≥ 20 or diastolic BP drop by ≥ 10?",
+   "bbox": [
+    90.7,
+    251.1,
+    741.2,
+    302.2
+   ],
+   "key": "p45-ce6c6f0b"
+  },
+  {
+   "id": "p45-out-e03",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Was patient breathing very quickly or deeply immediately before or during the collapse?",
+   "bbox": [
+    388.1,
+    340.1,
+    711.8,
+    350.3
+   ],
+   "key": "p45-62cabe1c"
+  },
+  {
+   "id": "p45-out-e04",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    741.0,
+    364.2,
+    752.9,
+    374.4
+   ],
+   "key": "p45-b3a3c59c"
+  },
+  {
+   "id": "p45-out-e05",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Hyperventilation likely • May also have light- headedness, chest tightness, tingling of hands/feet and visual changes. Usually with emotional stress. • Reassure and encourage to breathe at normal rate. • Assess for stress and anxiety 98.",
+   "bbox": [
+    691.7,
+    387.4,
+    804.2,
+    488.4
+   ],
+   "key": "p45-0036c82f"
+  },
+  {
+   "id": "p45-out-e06",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Did patient have dizziness, light-headedness, nausea, sweating,",
+   "bbox": [
+    366.4,
+    388.2,
+    599.4,
+    398.4
+   ],
+   "key": "p45-8428e74f"
+  },
+  {
+   "id": "p45-out-e07",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "weakness or vision changes before the collapse?",
+   "bbox": [
+    393.2,
+    398.2,
+    570.6,
+    408.4
+   ],
+   "key": "p45-2b385735"
+  },
+  {
+   "id": "p45-out-e08",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    403.6,
+    422.3,
+    415.6,
+    432.5
+   ],
+   "key": "p45-faaa9a70"
+  },
+  {
+   "id": "p45-out-e09",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Common faint likely • Advise to avoid triggers like overheating, dehydration and prolonged standing. • Advise to lie flat with legs raised as soon as symptoms occur.",
+   "bbox": [
+    297.6,
+    445.5,
+    518.1,
+    486.5
+   ],
+   "key": "p45-2fcc28e5"
+  },
+  {
+   "id": "p45-out-e10",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If collapse associated with coughing, swallowing, head turning, refer. • If known diabetes 145.",
+   "bbox": [
+    547.1,
+    446.3,
+    657.5,
+    486.5
+   ],
+   "key": "p45-8ce24594"
+  },
+  {
+   "id": "p45-out-e11",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If none of the above, look for and manage likely cause: if vision problems 48, joint problems 77, foot problems 81, leg problems 80, dementia 166. • Refer if patient > 65 years with possible heart disease, patient collapses/falls repeatedly or cause for collapse/falls is uncertain.",
+   "bbox": [
+    102.0,
+    499.9,
+    692.6,
+    520.7
+   ],
+   "key": "p45-a6ff7fb3"
+  },
+  {
+   "id": "p45-out-e12",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    149.9,
+    316.1,
+    161.9,
+    326.3
+   ],
+   "key": "p45-fdf8215d"
+  },
+  {
+   "id": "p45-out-e13",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Orthostatic hypotension likely • Common in the elderly. • Review medications: e.g. fluoxetine, amitriptyline, amlodipine, enalapril, furosemide, hydrochlorothiazide, isosorbide dinitrate can cause collapse/falls. Discuss with doctor. • If diarrhoea 58, if vomiting 57, if fever 38. If poor fluid intake, encourage fluids, give oral rehydration solution. • Advise patient to sit first before standing up from lying down. • Refer if: - Diabetes - Peripheral neuropathy (pain/numbness of feet) - Tremor, slow movements or stiffness - History of constipation or erection problems",
+   "bbox": [
+    39.7,
+    339.3,
+    273.2,
+    480.3
+   ],
+   "key": "p45-82aae406"
+  },
+  {
+   "id": "p45-out-e14",
+   "page": 45,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens: medication, food or insect bite/sting within the past few hours. 2If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 3One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/ bottle (330mL) of beer.",
+   "bbox": [
+    34.0,
+    535.3,
+    790.2,
+    551.8
+   ],
+   "key": "p45-2c192c7f"
+  }
+ ]
+}

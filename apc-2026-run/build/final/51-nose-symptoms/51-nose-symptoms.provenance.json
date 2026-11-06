@@ -1,0 +1,849 @@
+{
+ "edition": "2026",
+ "page": 51,
+ "lisp_file": "51-nose-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent nose symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nose finding\" \"finding\"))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "nose symptoms",
+   "confidence": "medium",
+   "note": "Page names the complaint generally (\"nose symptoms\"); Will: descendants match in due_to, so the general Nose finding covers Nasal discharge, Nasal congestion and Bleeding from nose. Alternative (builder B): or of those three."
+  },
+  {
+   "rule": "Check for urgent nose symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "Head injury",
+   "confidence": "high",
+   "note": "Red-box item, first half of \"Head injury with clear watery discharge from nose\"."
+  },
+  {
+   "rule": "Check for urgent nose symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "clear watery discharge from nose",
+   "confidence": "high",
+   "note": "Nasal discharge qualified Clear and Watery; considered Cerebrospinal fluid rhinorrhea but that is an inference the page leaves to the referral, the nurse records what is seen."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nose finding\" \"finding\"))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "nose symptoms",
+   "confidence": "medium",
+   "note": "Page names the complaint generally (\"nose symptoms\"); Will: descendants match in due_to, so the general Nose finding covers Nasal discharge, Nasal congestion and Bleeding from nose. Alternative (builder B): or of those three."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "Blocked",
+   "confidence": "high",
+   "note": "Blocked nose (Blocked/runny nose column); checked for so the probable rules that use it are anchored. Builder B had it as a task trigger."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+   "element_keys": [
+    "p51-31f56219"
+   ],
+   "quote": "Bleeding nose",
+   "confidence": "high",
+   "note": "Bleeding nose column; evidence for the possible allergic rhinitis rule. Builder B had it as a task trigger."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Diphtheria rule; also onset for common cold / acute viral infection."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "mild fever",
+   "confidence": "medium",
+   "note": "Needed by the possible diphtheria rule."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "thick grey layer in nose/throat (pseudomembrane)",
+   "confidence": "medium",
+   "note": "Pseudomembrane with finding site nose; \"thick grey\" not representable beyond the morphology."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "thick grey layer in nose/throat (pseudomembrane)",
+   "confidence": "medium",
+   "note": "Pseudomembrane with finding site pharynx (\"throat\"); no \"Throat structure\" concept."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "chills",
+   "confidence": "high",
+   "note": "Common cold vs acute viral infection branch."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common cold vs acute viral infection branch."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "sore muscles",
+   "confidence": "high",
+   "note": "\"Sore muscles\" = Muscle pain (common symptom)."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over frontal sinus\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "Pain when pushing on forehead",
+   "confidence": "high",
+   "note": "Frontal sinus tenderness = pain on pressing forehead."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over maxillary sinus\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "cheeks",
+   "confidence": "medium",
+   "note": "Maxillary sinus tenderness = pain on pressing cheeks."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "headache worse on bending",
+   "confidence": "low",
+   "note": "No concept for headache aggravated by bending forward; general Headache used."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-39b0c17f"
+   ],
+   "quote": "recent common cold",
+   "confidence": "medium",
+   "note": "Common cold with Recent qualifier."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-455e89f9"
+   ],
+   "quote": "Recurrent sneezing",
+   "confidence": "high",
+   "note": "Recurrent qualifier."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-455e89f9"
+   ],
+   "quote": "itchy",
+   "confidence": "medium",
+   "note": "Recurrent itching of the nose (finding site Nasal structure)."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-455e89f9"
+   ],
+   "quote": "runny",
+   "confidence": "high",
+   "note": "Recurrent runny nose."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-455e89f9"
+   ],
+   "quote": "blocked nose",
+   "confidence": "high",
+   "note": "Recurrent blocked nose."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent cough\" \"finding\"))",
+   "element_keys": [
+    "p51-a0cd4531"
+   ],
+   "quote": "persistent cough",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\") (qualifier (snomed_concept \"Frequent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-8ca5afc5",
+    "p51-848b8619"
+   ],
+   "quote": "frequent throat clearing",
+   "confidence": "medium",
+   "note": "Frequent qualifier on the throat-clearing finding."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Repetitive rubbing of body parts\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-d6492a8d"
+   ],
+   "quote": "continually rubbing",
+   "confidence": "medium",
+   "note": "Repetitive rubbing with finding site nose; no \"rubbing nose\" concept."
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-d6492a8d"
+   ],
+   "quote": "itchy nose",
+   "confidence": "medium",
+   "note": "Itching with finding site Nasal structure (bleeding-nose column)."
+  },
+  {
+   "rule": "Diagnose possible diphtheria from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible diphtheria from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "mild fever",
+   "confidence": "medium",
+   "note": "Fever with Mild severity qualifier, as the page says \"mild fever\"."
+  },
+  {
+   "rule": "Diagnose possible diphtheria from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "thick grey layer in nose/throat (pseudomembrane)",
+   "confidence": "medium",
+   "note": "Pseudomembrane with finding site nose; \"thick grey\" not representable beyond the morphology."
+  },
+  {
+   "rule": "Diagnose possible diphtheria from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "thick grey layer in nose/throat (pseudomembrane)",
+   "confidence": "medium",
+   "note": "Pseudomembrane with finding site pharynx (\"throat\"); no \"Throat structure\" concept."
+  },
+  {
+   "rule": "Diagnose possible diphtheria from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+   "element_keys": [
+    "p51-0700b10b"
+   ],
+   "quote": "consider diphtheria",
+   "confidence": "high",
+   "note": "\"consider\" -> possible. Plain \"Diphtheria\" has no active FSN; this is the closest concept."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "Blocked",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p51-2b217b08"
+   ],
+   "quote": "Sore throat or fever for less than 3 days",
+   "confidence": "medium",
+   "note": "\"less than 3 days\" written as (<= (onset) (time_ago 3 days)) per the time-comparison decision (database rejects <)."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p51-2b217b08"
+   ],
+   "quote": "Sore throat or fever for less than 3 days",
+   "confidence": "medium",
+   "note": "Fever uses the active_condition form; \"less than\" written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p51-2e835257",
+    "p51-372ec676"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "medium",
+   "note": "\"No\" branch: temperature below 38°C (negation of ≥ 38)."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-2e835257",
+    "p51-372ec676"
+   ],
+   "quote": "chills",
+   "confidence": "high",
+   "note": "\"No\" branch: absence recorded as (no …)."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-2e835257",
+    "p51-372ec676"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "\"No\" branch: absence recorded as (no …)."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-2e835257",
+    "p51-372ec676"
+   ],
+   "quote": "sore muscles",
+   "confidence": "high",
+   "note": "\"No\" branch: absence recorded as (no …)."
+  },
+  {
+   "rule": "Diagnose probable common cold from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Common cold\" \"disorder\") probable)",
+   "element_keys": [
+    "p51-084cbdd6"
+   ],
+   "quote": "Common cold",
+   "confidence": "high",
+   "note": "\"Common cold likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "Blocked",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p51-2b217b08"
+   ],
+   "quote": "Sore throat or fever for less than 3 days",
+   "confidence": "medium",
+   "note": "\"less than 3 days\" written as (<= (onset) (time_ago 3 days)) per the time-comparison decision (database rejects <)."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p51-2b217b08"
+   ],
+   "quote": "Sore throat or fever for less than 3 days",
+   "confidence": "medium",
+   "note": "Fever uses the active_condition form; \"less than\" written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "\"Yes\" branch."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "chills",
+   "confidence": "high",
+   "note": "\"Yes\" branch: any of."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "\"Yes\" branch: any of."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+   "element_keys": [
+    "p51-2e835257"
+   ],
+   "quote": "sore muscles",
+   "confidence": "high",
+   "note": "\"Yes\" branch: any of."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p51-2c2ee3d2",
+    "p51-00d8ddb4"
+   ],
+   "quote": "Acute viral infection likely",
+   "confidence": "high",
+   "note": "\"Acute viral infection likely\" -> probable; Acute viral disease is the matching concept."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p51-9d7df307"
+   ],
+   "quote": "Blocked",
+   "confidence": "high",
+   "note": "Column sits under \"Blocked/runny nose\"."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over frontal sinus\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "Pain when pushing on forehead",
+   "confidence": "high",
+   "note": "Frontal sinus tenderness = pain on pressing forehead. All three features required (and); see judgment calls."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness over maxillary sinus\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "cheeks",
+   "confidence": "medium",
+   "note": "Maxillary sinus tenderness = pain on pressing cheeks. All three features required (and); see judgment calls."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p51-e4cafebe"
+   ],
+   "quote": "headache worse on bending",
+   "confidence": "low",
+   "note": "No concept for headache aggravated by bending forward; general Headache used. All three features required (and); see judgment calls."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-39b0c17f"
+   ],
+   "quote": "recent common cold",
+   "confidence": "medium",
+   "note": "Common cold with Recent qualifier. All three features required (and); see judgment calls."
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Sinusitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p51-efc1a4e0"
+   ],
+   "quote": "Sinusitis likely",
+   "confidence": "high",
+   "note": "\"Sinusitis likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p51-455e89f9",
+    "p51-f2572fed"
+   ],
+   "quote": "Recurrent sneezing",
+   "confidence": "medium",
+   "note": "\"most days for > 4 weeks\" written as (>= (onset) (time_ago 4 weeks)) per the time-comparison decision; \"most days\" not representable beyond the Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p51-455e89f9",
+    "p51-f2572fed"
+   ],
+   "quote": "itchy",
+   "confidence": "medium",
+   "note": "\"most days for > 4 weeks\" written as (>= (onset) (time_ago 4 weeks)) per the time-comparison decision; \"most days\" not representable beyond the Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p51-455e89f9",
+    "p51-f2572fed"
+   ],
+   "quote": "runny",
+   "confidence": "medium",
+   "note": "\"most days for > 4 weeks\" written as (>= (onset) (time_ago 4 weeks)) per the time-comparison decision; \"most days\" not representable beyond the Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p51-455e89f9",
+    "p51-f2572fed"
+   ],
+   "quote": "blocked nose",
+   "confidence": "medium",
+   "note": "\"most days for > 4 weeks\" written as (>= (onset) (time_ago 4 weeks)) per the time-comparison decision; \"most days\" not representable beyond the Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p51-d1fb393f"
+   ],
+   "quote": "Allergic rhinitis likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable postnasal drip from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p51-a0cd4531"
+   ],
+   "quote": "Runny nose",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable postnasal drip from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent cough\" \"finding\"))",
+   "element_keys": [
+    "p51-a0cd4531"
+   ],
+   "quote": "persistent cough",
+   "confidence": "high",
+   "note": "\"and/or\" -> or with throat clearing."
+  },
+  {
+   "rule": "Diagnose probable postnasal drip from nose symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\") (qualifier (snomed_concept \"Frequent\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-8ca5afc5",
+    "p51-848b8619"
+   ],
+   "quote": "frequent throat clearing",
+   "confidence": "medium",
+   "note": "Frequent qualifier."
+  },
+  {
+   "rule": "Diagnose probable postnasal drip from nose symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Posterior rhinorrhea\" \"disorder\") probable)",
+   "element_keys": [
+    "p51-4c77f343",
+    "p51-9ab31317"
+   ],
+   "quote": "Upper airway cough syndrome (postnasal drip)",
+   "confidence": "medium",
+   "note": "No \"Upper airway cough syndrome\" FSN; Posterior rhinorrhea has synonym postnasal drip."
+  },
+  {
+   "rule": "Diagnose possible allergic rhinitis from nosebleed",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from nose\" \"finding\"))",
+   "element_keys": [
+    "p51-31f56219"
+   ],
+   "quote": "Bleeding nose",
+   "confidence": "high",
+   "note": "Bleeding-nose column."
+  },
+  {
+   "rule": "Diagnose possible allergic rhinitis from nosebleed",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Repetitive rubbing of body parts\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-d6492a8d"
+   ],
+   "quote": "continually rubbing",
+   "confidence": "medium",
+   "note": "Repetitive rubbing with finding site nose."
+  },
+  {
+   "rule": "Diagnose possible allergic rhinitis from nosebleed",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p51-d6492a8d"
+   ],
+   "quote": "itchy nose",
+   "confidence": "medium",
+   "note": "Itching with finding site nose."
+  },
+  {
+   "rule": "Diagnose possible allergic rhinitis from nosebleed",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") possible)",
+   "element_keys": [
+    "p51-d6492a8d"
+   ],
+   "quote": "consider allergic rhinitis",
+   "confidence": "high",
+   "note": "\"consider\" -> possible, from the bleeding-nose column."
+  },
+  {
+   "rule": "Urgent: nose symptoms with head injury and clear watery nasal discharge",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\"))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "Head injury",
+   "confidence": "high",
+   "note": "Red-box item, first half of \"Head injury with clear watery discharge from nose\"."
+  },
+  {
+   "rule": "Urgent: nose symptoms with head injury and clear watery nasal discharge",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")) (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p51-a6b50479"
+   ],
+   "quote": "clear watery discharge from nose",
+   "confidence": "high",
+   "note": "Nasal discharge qualified Clear and Watery; considered Cerebrospinal fluid rhinorrhea but that is an inference the page leaves to the referral, the nurse records what is seen."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p51-5b347fb0",
+   "element_id": "p51-rb1-e02",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral instruction; the Urgent priority evaluation carries the urgency, referral steps are out of scope."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Sinusitis evidence logic",
+   "decision": "All of: blocked/runny nose, frontal or maxillary sinus tenderness, headache, recent common cold (and).",
+   "alternatives": "any2 of the three features, or tenderness alone; the page lists the features with commas and no and/or.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Headache worse on bending forward",
+   "decision": "General Headache concept (no concept for the bending-aggravated form).",
+   "alternatives": "Leave the criterion out (no_snomed_concept).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Head injury with clear watery discharge",
+   "decision": "Injury of head AND Nasal discharge qualified Clear + Watery; priority rule drops the separate nose-symptom trigger because the watery discharge is itself a nose symptom (gate flagged the or as always true).",
+   "alternatives": "Cerebrospinal fluid rhinorrhea (disorder), which is what the page is screening for but is a diagnosis rather than an observation.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Allergic rhinitis duration",
+   "decision": "Each of recurrent sneezing / itchy / runny / blocked nose with onset at least 4 weeks ago (>=), 'most days' carried by the Recurrent qualifier only.",
+   "alternatives": "Drop Recurrent and rely on onset alone.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Common cold 'No' branch",
+   "decision": "Temperature < 38 °C and (no Chill), (no Nausea), (no Muscle pain).",
+   "alternatives": "Omit the negatives (rule would overlap with acute viral infection).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Upper airway cough syndrome concept",
+   "decision": "Posterior rhinorrhea (disorder), synonym postnasal drip.",
+   "alternatives": "None found for 'Upper airway cough syndrome'.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Entry trigger for nose symptoms",
+   "decision": "General Nose finding as due_to of both check tasks (reconciler took builder A's choice); Nasal congestion and Bleeding from nose added to check_for.",
+   "alternatives": "or of Nasal discharge, Nasal congestion, Bleeding from nose (builder B).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Blocked nose concept",
+   "decision": "Nasal congestion (finding), the symptom form (builder B).",
+   "alternatives": "Nasal obstruction (disorder) (builder A).",
+   "confidence": "medium"
+  }
+ ]
+}

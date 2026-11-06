@@ -1,0 +1,2412 @@
+[
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p57-438bba70",
+  "text": "Abdominal pain/distension and no stools or flatus/wind",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as (Abdominal pain OR Distension of abdomen) AND (Obstipation OR (Constipation AND no Passing flatus)). This reads 'no stools or flatus/wind' as 'passing neither stool nor wind' (absolute constipation), which is the clinically intended meaning. The alternative literal reading ('no stools' OR 'no flatus', either alone sufficient) would make the rule under-fire for a patient with constipation recorded but nothing recorded about flatus. Reasonable people could disagree; the chosen reading is defensible.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'no stools' as an absence of stool is not encoded (Obstipation/Constipation used as proxy)"
+    ],
+    "problem": "Abdominal pain/distension AND (no stools or flatus). Encoded as (pain or distension) and (Obstipation or (Constipation and no Passing flatus)). Page's 'no stools or flatus' is most plausibly no stools and no flatus; the Obstipation branch alone and the constipation-without-flatus branch are interpretive approximations (constipation is not 'no stools'). Obstipation tagged 'disorder'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'no stools AND no flatus' is encoded as Obstipation OR (Constipation AND no Passing flatus); Constipation is not 'no stools', and Obstipation alone does not require absent flatus",
+     "SNOMED 'Unable to break wind' (finding) exists and is a positive, checkable form of 'no flatus' instead of (no Passing flatus)"
+    ],
+    "problem": "Approximation of absolute constipation (bowel obstruction picture); abdominal pain/distension part is correct.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p57-5155aebb",
+  "text": "If patient has watery diarrhoea (with or without vomiting) and has been in cholera outbreak area in past 5 days, cholera likely 59",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Three parts: (1) watery diarrhoea: Diarrhea + Watery qualifier, correct; (2) cholera outbreak area in the past 5 days: encoded as exposure to Vibrio cholerae with onset within 5 days (<= onset, time_ago 5 days), the closest the language offers for 'been in an outbreak area'; (3) 'cholera likely': probable Cholera, referenced as active_condition in the Urgent rule, correct. Minor: the page says 'with or without vomiting', so cholera does not require vomiting; the rule additionally requires nausea or vomiting. Within this page's context (patient presenting with nausea/vomiting) this is acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Time direction is wrong. The rule has (<= (onset <exposure>) (time_ago 5 days)); per the house briefing (<= onset (time_ago N)) means onset was at least N days ago, whereas the page says exposure within the past 5 days, which needs (< onset (time_ago 5 days)). As written the rule fires only for exposure 5+ days ago and never for the recent exposure, so cholera (and the Urgent priority that depends on active Cholera) misfires. Also 'with or without vomiting' makes the nausea/vomiting conjunct in the rule harmful: a patient with watery diarrhoea and exposure but no nausea/vomiting does not get probable cholera (though the urgent trigger itself requires N/V so the effect is limited to the diagnosis).  Exposure as 'Exposure to (contextual qualifier)' + Vibrio cholerae is a reasonable stand-in for 'in cholera outbreak area'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'been in cholera outbreak area' is encoded as exposure to the organism Vibrio cholerae, which is not the same thing (a patient from an outbreak area has no known exposure); SNOMED 'Exposure to Vibrio cholerae' (event) / 'Disease outbreak' (event) exist",
+     "the 5-day window is applied to the onset of the exposure finding, which is captured when it is recorded, so it tests recording time rather than time since being in the area"
+    ],
+    "problem": "Watery diarrhoea and cholera probable rule present and referenced from the Urgent rule; the travel/outbreak criterion is approximated.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p57-2bd4707a",
+  "text": "If sudden nausea/vomiting and any of: generalised itch/rash, face/tongue swelling, wheeze, difficulty breathing, BP < 90/60, dizziness/collapse or exposure to possible allergen2, check for anaphylaxis 28",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts present: sudden nausea/vomiting (Sudden onset qualifier on Nausea / Finding of vomiting) AND any of generalised itch (Generalized pruritus), generalised rash (Generalized rash), face swelling, tongue swelling, wheeze (Wheezing), difficulty breathing, BP < 90/60 (SBP < 90 or DBP < 60, the house convention), dizziness, collapse, exposure to possible allergen expanded per footnote 2 to exposure to a drug, exposure to food, insect bite, insect sting. 'Check for anaphylaxis' -> possible Anaphylaxis. The same block makes the patient Urgent. The footnote's 'within the past few hours' is not encoded; it is too vague to encode as a time comparison, and this is acceptable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Possible anaphylaxis rule and the Urgent priority both encode the full list with Sudden onset N/V. SBP<90 and DBP<60 as separate or-branches matches 'BP < 90/60' reasonably. Minor: 'within the past few hours' of footnote 2 for exposures not encoded; Urgent priority duplicates the criteria inline rather than using active Anaphylaxis, so the two could drift.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "footnote 2 limits 'exposure to possible allergen' to medication, food or insect bite/sting 'within the past few hours'; the time window is dropped, so any recorded food/drug exposure plus sudden nausea makes the patient Urgent"
+    ],
+    "problem": "Sudden-onset nausea/vomiting AND any-of is correctly structured as a possible anaphylaxis rule and in the Urgent rule; BP < 90/60 encoded as SBP<90 OR DBP<60, matching the gold page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p57-709a8fcd",
+  "text": "Neck stiffness, drowsy/confused or purple/red rash: meningitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Four parts, all present as an 'or': neck stiffness (Stiff neck, the SNOMED name), drowsy (Drowsy), confused (Acute confusion, the house warning-sign form), purple/red rash (Purpuric rash, the house warning-sign form). Probable Meningitis is referenced by the Urgent rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'red' of purple/red rash: only Purpuric rash (purple) encoded, a generic non-blanching/red rash alternative missing"
+    ],
+    "problem": "Purpuric rash is tagged 'disorder' and is narrower than 'purple/red rash'. Neck stiffness, drowsy and confusion are correctly encoded in an or and the probable Meningitis rule exists and feeds Urgent.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Any-of logic matches the page. 'purple/red rash' mapped to Purpuric rash (Non-blanching rash also exists); acceptable.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p57-ac86afd4",
+  "text": "Shock1/SBP < 80",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts present: Shock as a recorded finding and SBP < 80 mmHg. The footnote that defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) is judged under p57-1d7a9ee9 and is not encoded, so 'Shock' only fires if someone records it directly.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Shock as defined by footnote 1 (pulse >= 100, RR > 30, confusion, weakness) is not derived; Shock is only a reported finding"
+    ],
+    "problem": "SBP < 80 and the Shock finding are encoded as separate or-branches, correct. The footnote criteria are not encoded as a shock-likely rule; borderline since the footnote is outside the box.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Shock and SBP < 80 both present; the footnote-1 definition of 'shock likely' is judged under p57-1d7a9ee9.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p57-7e405c9a",
+  "text": "Approach to the patient with nausea/vomiting not needing urgent attention • If thirst, dry mouth or poor skin turgor, dehydration likely, give single dose metoclopramide 10mg orally/IM/IV. Then give oral rehydration solution and observe: encourage small frequent sips. Aim for 1-2L in first 2 hours. ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Thirst (general): the rule checks only 'Thirst due to water deprivation', a narrow child of 'Thirst finding'; a record of 'Increased thirst' or 'Excessive thirst' would not match. The general concept 'Thirst finding' (finding) exists."
+    ],
+    "problem": "Dehydration likely: probable Dehydration from nausea/vomiting AND any of thirst / dry mouth (Xerostomia) / poor skin turgor (Decreased skin turgor); structure correct, thirst concept too narrow. Exclude pregnancy: possible Pregnancy triggered by nausea/vomiting alone, which is the house pattern for 'exclude X'; the language has no sex, so it will also fire for men (unavoidable, low).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Dehydration probable rule is correct. Pregnancy possible rule fires on any nausea/vomiting with no other criterion; page only says 'Exclude pregnancy', so arguably a task/check rather than a diagnosis; borderline but harmless. Thirst is mapped to 'Thirst due to water deprivation' (slightly narrower).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Review medication: NSAIDs, metformin, contraceptives, hormone therapy, chemotherapy, morphine can cause nausea/vomiting' is not encoded (e.g. possible 'Nausea and vomiting caused by drug' (disorder))",
+     "'Exclude pregnancy' is encoded as possible Pregnancy for every adult with nausea/vomiting, including men; no sex restriction (SNOMED 'Female' (finding) exists)",
+     "'thirst' mapped to the narrow 'Thirst due to water deprivation'; a recorded 'Increased thirst'/'Thirst finding' would not match"
+    ],
+    "problem": "Dehydration probable rule (thirst / dry mouth / poor skin turgor, any-of) is present. Dizziness (->46) and alcohol screen (->165) are cross-references, out of scope.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p57-04c948c5",
+  "text": "Is there recent onset vomiting with cramping abdominal pain, diarrhoea, loss of appetite, body pain or fever?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Recent-onset vomiting (Finding of vomiting with 'Recent' qualifier; 'recent' is unquantified on the page so a qualifier rather than a time comparison is reasonable) AND any of cramping abdominal pain (Abdominal colic), diarrhoea, loss of appetite, body pain (Generalized aches and pains), fever (active_condition Fever). All five discriminators are checked for in the second task (fever is exempt).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'recent onset' applies to the vomiting only in the rule; 'body pain' mapped to generalized aches; 'cramping abdominal pain' mapped to Abdominal colic"
+    ],
+    "problem": "Rule requires Finding of vomiting (recent), so the question's 'recent onset vomiting WITH any of cramps/diarrhoea/..' reading is kept, but the page text could also be read as recent-onset N/V; nausea-only patients are excluded. Fever uses active_condition while other items use clinical_finding (inconsistent but valid). Also there is no 'no urgent' precondition, so gastroenteritis can fire in urgent patients.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p57-2aec0ef4",
+  "text": "persists > 2 weeks. - Uncertain of diagnosis.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "N/V duration > 2 weeks"
+    ],
+    "problem": "Not encoded; refer criterion only.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Refer if persists > 2 weeks or uncertain diagnosis: referral criterion.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p57-d05267f8",
+  "text": "Yes. Dyspepsia (heartburn) likely • Advise to stop NSAIDS (e.g. ibuprofen/aspirin). If smoking, encourage to stop 164. Avoid fizzy drinks, fatty/ late night meals. • Limit alcohol/caffeine/spicy food. Eat small frequent meals. Sleep on left side with upper body elevated. • If BMI ≥ 25 and waist circ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "GORD waist threshold for men (>= 94 cm): the rule uses >= 80 cm for everyone. The language has no sex, so one threshold must be chosen, but the choice means men with a waist of 80-93 cm are called probable GORD when the page would not."
+    ],
+    "problem": "Dyspepsia likely -> probable Indigestion (SNOMED's name for dyspepsia; no standalone 'Dyspepsia' disorder exists), correct. GORD likely -> probable GORD requiring the dyspepsia evidence AND BMI >= 25 AND waist >= 80, so it is correctly nested under the dyspepsia branch; BMI threshold correct; waist threshold sex-specific on the page and encoded with the woman's value only. A measure task for BMI and waist circumference is triggered by active Indigestion (BMI is a routine vital so that half is redundant but harmless). The referral alarm features (melaena, dysphagia, persistent vomiting, weight loss, > 50 years with recurrent symptoms, gastric surgery, family history of stomach/oesophageal cancer) are not encoded; by the house standard they are referral management, not a priority level, so not counted as missing here, but a clinician may want them as a check list.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [
+     "waist >= 94 cm for men",
+     "sex split"
+    ],
+    "problem": "GORD rule applies waist >= 80 cm to everyone. For men the page requires >= 94, so men with waist 80-93 cm and BMI >= 25 are wrongly given probable GORD. Sex-specific thresholds should be split or flagged if sex cannot be expressed. Dyspepsia concept 'Indigestion' fine. Discuss/refer red flags (Hb, melaena, dysphagia etc.) are management/referral and not encoded (Hb not representable).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [
+     "Discuss/refer criteria (Hb, melaena, dysphagia, persistent vomiting, weight loss, >50 years, previous gastric surgery, family history) not encoded; referral, out of scope by house standard, Hb not representable"
+    ],
+    "problem": "GORD rule uses waist circumference >= 80 cm for everyone; the page says >= 80 cm (woman) or >= 94 cm (man). Men with waist 80-93 cm get a false 'GORD likely'. The 'Dyspepsia (heartburn) likely' conclusion itself is encoded correctly (Indigestion probable), and BMI >= 25 is right.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p57-1d7a9ee9",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Medication, food or insect bite/sting within the past few hours. 3Do not mix Ringer's lactate and IV ceftriaxone. 4Dilute 10mg morphine with 9mL sodium chloride 0.9%. 5One drink is 1 tot of spirits, or",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "Footnote 1: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' is not encoded as a probable Shock rule; the Urgent rule only uses a directly recorded 'Shock' finding and SBP < 80, so pulse >= 100, RR > 30, restlessness and weakness never contribute."
+    ],
+    "problem": "Footnote 2 (medication, food or insect bite/sting) is fully encoded inside the anaphylaxis evidence. Footnote 1 is missing. Whether the footnote's list is conjunctive or 'any of' is ambiguous on the page, which may be why it was left out; a clinician should decide.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "pulse >= 100",
+     "respiratory rate > 30",
+     "weakness/restlessness as shock likely definition",
+     "exposure within past few hours"
+    ],
+    "problem": "The footnote's definition of shock is not encoded as a rule; Shock is only a reported finding. Probably borderline since it is a footnote.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Footnote 1 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' has no probable Shock rule; the Urgent rule only fires on a recorded Shock finding or SBP < 80, so pulse/RR/confusion-based shock is reached only via the Acute confusion item"
+    ],
+    "problem": "Footnote 2 (allergen = medication, food, insect bite/sting) is encoded, minus the time window. Footnotes 3-6 are management/definitions.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c006",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says the patient 'has been in cholera outbreak area', i.e. presence in an area, not exposure to the organism; no closer SNOMED concept (only 'Exposure to Vibrio cholerae' event, same idea), so this is the best approximation.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'been in cholera outbreak area'; encoded as exposure to the organism (outbreak-area residence/travel is not organism exposure). Closer concept 'Exposure to Vibrio cholerae' exists but as type \"event\", and the rule uses the organism concept.",
+    "fix": "Consider (snomed_concept \"Exposure to Vibrio cholerae\" \"event\") or an outbreak-area-travel concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says \"has been in a cholera outbreak area\", which is presence in an outbreak area. Exposure to the organism V. cholerae is a stronger claim that a health worker will rarely be able to record. The 5-day window lives only in the diagnosis rule, which is unavoidable in check_for.",
+    "fix": "Consider (snomed_concept \"Exposure to Vibrio cholerae\" \"event\") if the grammar allows it, or note that it encodes travel to an outbreak area",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c012",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says guarding or rigidity 'during peri-umbilical percussion'; the elicitation method is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c013",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says guarding or rigidity 'during peri-umbilical percussion'; the elicitation method is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c016",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says pain 'spreading to back' (any part of the back); 'Pain radiating to lumbar region of back' is narrower, and pancreatic pain classically goes to the mid/thoracic back. No sideless general 'pain radiating to back' concept exists.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says pain 'spreading to back'; encoded as lumbar region only (narrower).",
+    "fix": "Use a general 'Radiating pain'/back-radiation concept if one exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says \"spreading to back\" with no level. Lumbar is narrower, but SNOMED has no \"Pain radiating to back\" (checked), so this is the closest available.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'No stools' is absence of stool; 'Constipation' is broader (infrequent/hard stools). Obstipation already captures 'no stools or flatus'; the Constipation + no-flatus branch widens the trigger beyond the page.",
+    "fix": "Keep Obstipation; drop the Constipation branch or accept as a deliberate widening.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same: 'Constipation' stands in for 'no stools'.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"no stools\" is absence of stool, not constipation in general. Constipation is broader, e.g. hard or infrequent stools.",
+    "fix": "Rely on Obstipation, or keep Constipation only alongside the flatus negation",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c021",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Passing flatus\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page needs absence of flatus. A recorded \"no Passing flatus\" depends on an explicit negative being entered.",
+    "fix": "(snomed_concept \"Unable to break wind\" \"finding\") as a positive finding",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c035",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c036",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c037",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c038",
+  "text": "Check for urgent nausea/vomiting conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c041",
+  "text": "Check for causes of nausea/vomiting not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'thirst'; 'Thirst due to water deprivation' is narrower (implies cause).",
+    "fix": "Use (snomed_concept \"Thirst finding\" \"finding\") (exists).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Thirst due to water deprivation\" asserts a cause; the page lists thirst only as a dehydration sign",
+    "fix": "(snomed_concept \"Increased thirst\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c044",
+  "text": "Check for causes of nausea/vomiting not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'recent onset vomiting'; 'Recent' as qualifier is vague (acute/sudden onset concept might be closer).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Check for causes of nausea/vomiting not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by eating\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c051",
+  "text": "Check for causes of nausea/vomiting not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c052",
+  "text": "Check for causes of nausea/vomiting not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says pain worse 'lying down/bending forward'; 'Pain aggravated by position' is broader (any posture). No closer concept found (only 'Neck pain aggravated by recumbency').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"lying down/bending forward\" is specific, but \"Pain aggravated by position\" is any position. No closer concept was found.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c055",
+  "text": "Measure BMI and waist circumference in dyspepsia with nausea/vomiting :: (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Measure task ignores sex-specific cut-offs, but measuring waist is faithful.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c056",
+  "text": "Diagnose probable cholera in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page says watery diarrhoea 'with or without vomiting' for cholera; rule requires nausea/vomiting.",
+    "fix": "Drop the nausea/vomiting conjunct from the cholera rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c057",
+  "text": "Diagnose probable cholera in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page says watery diarrhoea 'with or without vomiting' for cholera; rule requires nausea/vomiting.",
+    "fix": "Drop the nausea/vomiting conjunct from the cholera rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c059",
+  "text": "Diagnose probable cholera in nausea/vomiting :: (<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says the patient 'has been in cholera outbreak area', i.e. presence in an area, not exposure to the organism; no closer SNOMED concept (only 'Exposure to Vibrio cholerae' event, same idea), so this is the best approximation.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'been in cholera outbreak area'; encoded as exposure to the organism (outbreak-area residence/travel is not organism exposure). Closer concept 'Exposure to Vibrio cholerae' exists but as type \"event\", and the rule uses the organism concept.",
+    "fix": "Consider (snomed_concept \"Exposure to Vibrio cholerae\" \"event\") or an outbreak-area-travel concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The 5-day window and its direction are right under the house convention (<= time_ago means within). The subject is organism exposure, not \"been in cholera outbreak area\".",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c070",
+  "text": "Diagnose probable peritonitis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says guarding or rigidity 'during peri-umbilical percussion'; the elicitation method is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c071",
+  "text": "Diagnose probable peritonitis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says guarding or rigidity 'during peri-umbilical percussion'; the elicitation method is dropped.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c080",
+  "text": "Diagnose probable pancreatitis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says pain 'spreading to back' (any part of the back); 'Pain radiating to lumbar region of back' is narrower, and pancreatic pain classically goes to the mid/thoracic back. No sideless general 'pain radiating to back' concept exists.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says pain 'spreading to back'; encoded as lumbar region only (narrower).",
+    "fix": "Use a general 'Radiating pain'/back-radiation concept if one exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says \"spreading to back\" with no level. Lumbar is narrower, but SNOMED has no \"Pain radiating to back\" (checked), so this is the closest available.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c094",
+  "text": "Diagnose possible anaphylaxis in nausea/vomiting :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c095",
+  "text": "Diagnose possible anaphylaxis in nausea/vomiting :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c096",
+  "text": "Diagnose possible anaphylaxis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c097",
+  "text": "Diagnose possible anaphylaxis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c101",
+  "text": "Diagnose probable dehydration in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'thirst'; 'Thirst due to water deprivation' is narrower (implies cause).",
+    "fix": "Use (snomed_concept \"Thirst finding\" \"finding\") (exists).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Thirst due to water deprivation\" asserts a cause; the page lists thirst only as a dehydration sign",
+    "fix": "(snomed_concept \"Increased thirst\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c107",
+  "text": "Diagnose possible pregnancy in nausea/vomiting :: (diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Exclude pregnancy' is a management step, not a 'consider/suspect' diagnosis; rule makes possible pregnancy fire for every nausea/vomiting patient with no distinguishing condition.",
+    "fix": "Encode as a task (pregnancy test) rather than a diagnosis rule, or limit to women of childbearing age.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Exclude pregnancy\" → possible fits the house convention, but the rule fires for every adult with nausea/vomiting, men included.",
+    "fix": "Restrict to female patients if the grammar supports sex",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c108",
+  "text": "Diagnose probable gastroenteritis in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'recent onset vomiting'; 'Recent' as qualifier is vague (acute/sudden onset concept might be closer).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c113",
+  "text": "Diagnose probable gastroenteritis in nausea/vomiting :: (active_condition (snomed_concept \"Fever\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Fever encoded as active_condition while the sibling features are clinical_finding; fever is a finding on the page.",
+    "fix": "Use clinical_finding.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c114",
+  "text": "Diagnose probable gastroenteritis in nausea/vomiting :: (diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page's gate is \"recent onset vomiting\", so acute gastroenteritis is the closer concept.",
+    "fix": "(snomed_concept \"Acute gastroenteritis\" \"disorder\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c118",
+  "text": "Diagnose probable dyspepsia in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by eating\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c119",
+  "text": "Diagnose probable dyspepsia in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c120",
+  "text": "Diagnose probable dyspepsia in nausea/vomiting :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says pain worse 'lying down/bending forward'; 'Pain aggravated by position' is broader (any posture). No closer concept found (only 'Neck pain aggravated by recumbency').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"lying down/bending forward\" is specific, but \"Pain aggravated by position\" is any position. No closer concept was found.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c125",
+  "text": "Diagnose probable GORD in nausea/vomiting with dyspepsia :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by eating\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c126",
+  "text": "Diagnose probable GORD in nausea/vomiting with dyspepsia :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c127",
+  "text": "Diagnose probable GORD in nausea/vomiting with dyspepsia :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says pain worse 'lying down/bending forward'; 'Pain aggravated by position' is broader (any posture). No closer concept found (only 'Neck pain aggravated by recumbency').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the EPIGASTRIC pain is worse with eating/hunger/lying down; concept is generic pain provocation, not tied to the epigastric pain.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"lying down/bending forward\" is specific, but \"Pain aggravated by position\" is any position. No closer concept was found.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c129",
+  "text": "Diagnose probable GORD in nausea/vomiting with dyspepsia :: (>= (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm) 80)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "wrong",
+    "reason": "Page threshold is >= 80cm for a woman OR >= 94cm for a man; the rule uses 80 for everyone, so a man with waist 80-93cm is wrongly labelled GORD likely. The grammar has no sex predicate.",
+    "fix": "Use the conservative 94cm for all, or document that the sex-specific threshold cannot be expressed; builder's quote hides the '(man)' clause.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page: waist >= 80cm (woman) or >= 94cm (man). Rule uses 80cm for everyone, so men with 80-93cm wrongly satisfy GORD criterion.",
+    "fix": "Make waist threshold sex-dependent: (or (and woman (>= waist 80)) (and man (>= waist 94))).",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "wrong",
+    "reason": "The page's threshold is ≥ 80cm for women and ≥ 94cm for men. The rule applies ≥ 80 to everyone, so men with a waist of 80–93cm are wrongly labelled probable GORD.",
+    "fix": "Split by sex: female AND waist ≥ 80, or male AND waist ≥ 94",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c147",
+  "text": "Urgent: nausea/vomiting with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'No stools' is absence of stool; 'Constipation' is broader (infrequent/hard stools). Obstipation already captures 'no stools or flatus'; the Constipation + no-flatus branch widens the trigger beyond the page.",
+    "fix": "Keep Obstipation; drop the Constipation branch or accept as a deliberate widening.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'no stools'; 'Constipation' is broader/different from absence of stools; paired with 'no flatus' via Obstipation alternative.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"no stools\" is narrower than Constipation. Also, Constipation AND no flatus is weaker than the page's \"no stools or flatus\".",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c148",
+  "text": "Urgent: nausea/vomiting with danger signs :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Passing flatus\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The intent is right (no flatus). An absence encoded as (no Passing flatus) only fires if the negative is explicitly recorded, and a positive concept exists.",
+    "fix": "(clinical_finding (snomed_concept \"Unable to break wind\" \"finding\"))",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c164",
+  "text": "Urgent: nausea/vomiting with danger signs :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c165",
+  "text": "Urgent: nausea/vomiting with danger signs :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c166",
+  "text": "Urgent: nausea/vomiting with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c167",
+  "text": "Urgent: nausea/vomiting with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines the allergen exposure as 'Medication, food or insect bite/sting within the past few hours'; the timing window is dropped, so any recorded exposure counts.",
+    "fix": "Wrap each exposure in an onset bound, e.g. (<= (onset <exposure>) (time_ago 6 hours)), in the diagnosis and priority rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 defines possible allergen exposure as medication, food or insect bite/sting within the past few hours; the time window is dropped, so any current medication/food exposure satisfies it (very broad).",
+    "fix": "Add an onset window such as (<= (onset ...) (time_ago 6 hours)) where the grammar permits.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 2 limits the allergen exposure to \"within the past few hours\". The time window is dropped, so any drug, food or insect exposure at any time counts.",
+    "fix": "Add (< (onset …) (time_ago N hours)) where the grammar allows, or a Sudden onset qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: nausea/vomiting with danger signs",
+  "text": "'Shock' is used as a recorded finding but the page's definition of shock (footnote 1: SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) has no probable Shock rule, so the criterion only works if a clinician records shock by hand. SBP < 80 is covered separately; pulse, respiratory rate, restlessness and weakness are not.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "Waist circumference threshold is sex-specific on the page (>= 80 cm woman, >= 94 cm man) and the rule uses 80 for all patients. Sex is not expressible in the language, so this should be recorded as a known approximation (over-calls GORD in men with waist 80-93 cm).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable dehydration in nausea/vomiting",
+  "text": "'Thirst due to water deprivation' is a narrow child concept; the page says 'thirst'. Descendants match but ancestors and siblings do not, so 'Thirst finding' (the general concept) would be the house-standard choice.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy in nausea/vomiting",
+  "text": "Fires for every adult with nausea or vomiting, including men; the language cannot restrict by sex. Acceptable as an 'exclude X' pre-screen, but worth noting.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "The page says cholera is likely with watery diarrhoea 'with or without vomiting'; the rule additionally requires nausea or vomiting. On this page the patient has nausea/vomiting by definition, so the effect is nil here, but the rule would not help a diarrhoea-only presentation (presumably page 59 covers it).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Measure BMI and waist circumference in dyspepsia with nausea/vomiting",
+  "text": "BMI is a routine vital (anchors/vitals.ts body_mass_index), so measuring it is redundant; waist circumference is the only non-routine measurement. Harmless.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "(<= onset (time_ago 5 days)) means exposure at least 5 days ago; page means within past 5 days, requiring (<). Cholera never fires for recent exposure, and Urgent via active Cholera is lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "Waist circumference >= 80 applied to men too; men need >= 94. Also requires full dyspepsia criteria duplicated rather than active Dyspepsia.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "Requires nausea/vomiting although the page says watery diarrhoea 'with or without vomiting'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: nausea/vomiting with danger signs",
+  "text": "Priority depends on active_condition of diagnoses that are only probable rule outputs and on duplicated inline anaphylaxis criteria; could drift from the diagnosis rule. Obstruction branch uses Constipation-without-flatus as proxy for 'no stools'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy in nausea/vomiting",
+  "text": "Fires on any nausea/vomiting; page only says 'Exclude pregnancy' (a check), so it is a catch-all possible diagnosis.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of nausea/vomiting not needing urgent attention",
+  "text": "The check list covers gastroenteritis/dyspepsia/dehydration items but dehydration-leading check items are fine; no check_for for 'recent vomiting' pregnancy/medication/alcohol (management/cross-refs, acceptable).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "Waist threshold 80 cm applied to all patients; the male threshold (94 cm) is lost, giving false GORD likely in men with waist 80-93 cm.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) probable Shock from footnote 1",
+  "text": "The page defines 'shock likely' (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness); no rule derives Shock, so the Urgent item 'Shock' depends on a clinician recording Shock directly.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy in nausea/vomiting",
+  "text": "Fires for every adult with nausea/vomiting, men included; no sex restriction even though 'Female' (finding) exists in SNOMED.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "'In cholera outbreak area in past 5 days' is encoded as exposure to Vibrio cholerae with an onset window; onset is the recording time, so the 5-day test does not measure time since being in the area.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: nausea/vomiting with danger signs",
+  "text": "'No stools or flatus' approximated by Obstipation OR (Constipation AND no Passing flatus); 'Unable to break wind' (finding) exists and is closer.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable dyspepsia / GORD in nausea/vomiting",
+  "text": "Flowchart puts dyspepsia on the 'No' branch of the gastroenteritis question; the rules do not exclude gastroenteritis criteria, so both can fire together (flowchart branch lost).",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis in nausea/vomiting / Urgent: nausea/vomiting with danger signs",
+  "text": "Allergen exposure lacks the 'within the past few hours' window, so any recorded food/drug exposure plus sudden nausea makes the patient Urgent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "Page says cholera likely with watery diarrhoea 'with or without vomiting'; the rule requires nausea/vomiting as a conjunct, so it is narrower than the page (acceptable as this page's trigger, but the page defers to p59). 'Exposure to Vibrio cholerae' approximates 'been in cholera outbreak area'. Time bound (<= onset, time_ago 5 days) reads as 'within the past 5 days' per the briefing.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis in nausea/vomiting",
+  "text": "Structure (sudden nausea/vomiting AND any of the list) and 'possible' level match 'check for anaphylaxis'; but the allergen exposures drop footnote 2's 'within the past few hours' window.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable dyspepsia in nausea/vomiting",
+  "text": "Page only asks the epigastric-pain question on the 'No' branch of the gastroenteritis question; the rule does not exclude recent-onset vomiting with gastroenteritis features, so a patient can be labelled both gastroenteritis and dyspepsia likely. 'Pain aggravated by position' is broader than 'lying down/bending forward'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "Waist circumference threshold uses 80cm for everyone; the page says >= 80cm (woman) or >= 94cm (man), so men with waist 80-93cm are wrongly diagnosed. Same missing 'No to gastroenteritis' gating as the dyspepsia rule.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "Requires nausea/vomiting, but page says watery diarrhoea 'with or without vomiting'; exposure concept is organism exposure rather than outbreak area.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pancreatitis in nausea/vomiting",
+  "text": "AND of severe sudden upper pain with back radiation is faithful to 'sudden severe upper abdominal pain spreading to back'; only issue is lumbar narrowing.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis in nausea/vomiting",
+  "text": "Page says 'check for anaphylaxis' so possible is right, but allergen exposure lacks the 'within past few hours' window, making the OR very broad.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy in nausea/vomiting",
+  "text": "'Exclude pregnancy' is a management step; rule fires for every nausea/vomiting patient with no further condition. Better as a task.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable dyspepsia in nausea/vomiting",
+  "text": "Page branch requires 'No' to the gastroenteritis question; rule has no (no gastroenteritis-features) condition. Also N/V is not stated as required for dyspepsia; provocation concepts not tied to epigastric pain.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "Waist threshold 80cm applied to both sexes; page gives 94cm for men.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of nausea/vomiting not needing urgent attention",
+  "text": "It omits fever from the gastroenteritis question (fever is consumed as active_condition, which is acceptable). It also uses \"Thirst due to water deprivation\" instead of Increased thirst.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera in nausea/vomiting",
+  "text": "The page says the patient \"has been in cholera outbreak area\". The rule encodes this as exposure to the organism Vibrio cholerae, which is rarely knowable, so the rule may seldom fire. The time direction is correct under the house convention.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis in nausea/vomiting",
+  "text": "Footnote 2's \"within the past few hours\" window on allergen exposure is dropped, so a past exposure plus sudden nausea triggers possible anaphylaxis. \"Check for anaphylaxis\" as possible is correct.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy in nausea/vomiting",
+  "text": "This fires for all adults, including men. There is no sex restriction.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable dyspepsia in nausea/vomiting",
+  "text": "The page reaches dyspepsia only on the \"No\" branch of the gastroenteritis question. The rule has no exclusion, so both can fire. This is minor.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+  "text": "The waist threshold is ≥ 80cm for everyone. The page says ≥ 80 for women and ≥ 94 for men, so men are over-diagnosed.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Increased thirst  vs  B: Thirst due to water deprivation",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+    "reason": "Page says only \"thirst\"; both are siblings under Thirst finding, and B's concept is the one VHA's vocabulary already uses, so the same idea is written the same way.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Epigastric pain + Postprandial qualifier  vs  B: Pain provoked by eating",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pain provoked by eating\" \"finding\"))",
+    "reason": "\"Epigastric pain which is worse with eating\": B's epigastric pain AND (provoked by eating | hunger | position) mirrors the page's single question; A's three-way or is logically equivalent but less direct.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "B only: Backache (pancreatitis 'spreading to back')",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+    "reason": "\"upper abdominal pain spreading to back\" requires the pain to spread, which back pain alone does not express.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / priority_condition",
+  "text": "B only: Constipation and (no Passing flatus) as an alternative to Obstipation",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(or (clinical_finding Obstipation) (and (clinical_finding Constipation) (no (clinical_finding Passing flatus))))",
+    "reason": "\"no stools or flatus/wind\": Obstipation is the literal concept, and constipation with recorded absence of flatus is the same state expressed through the recorded common symptom.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: Diarrhea (plain) in the non-urgent task",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))",
+    "reason": "Q1 lists \"diarrhoea\" (not only watery), and the gastroenteritis rule uses it, so it belongs in check_for.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Finding of vomiting  vs  B: Finding of vomiting + Recent qualifier (gastroenteritis)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "reason": "\"Is there recent onset vomiting …\": the Recent qualifier is closer to the page words than plain vomiting; the page gives no span for a time comparison.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition / diagnosis",
+  "text": "A: Acute appendicitis  vs  B: Appendicitis",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Acute appendicitis\" \"disorder\") probable)",
+    "reason": "Page says \"appendicitis likely\" in an urgent red box; Acute appendicitis is the concept VHA's vocabulary uses, so cross-page references line up.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition / diagnosis",
+  "text": "A: Acute pancreatitis  vs  B: Pancreatitis",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Acute pancreatitis\" \"disorder\") probable)",
+    "reason": "\"Sudden severe upper abdominal pain …: pancreatitis likely\" describes an acute presentation, and Acute pancreatitis is VHA's vocabulary concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: Waist circumference >= 94 cm  vs  B: >= 80 cm (GORD)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(>= (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm) 80)",
+    "reason": "Page gives \"≥ 80cm (woman) or ≥ 94cm (man)\" and sex is not representable; 80 cm is the page's lower threshold so no patient the page includes is missed (fires more often for men 80-93 cm).",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: cholera requires nausea or vomiting  vs  B: cholera without the presenting complaint but with an explicit Vibrio cholerae exposure condition",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (or Nausea Finding-of-vomiting) (Diarrhea Watery) (<= (onset (exposure Vibrio cholerae)) (time_ago 5 days)))",
+    "reason": "The box is for \"the patient with nausea/vomiting\" and nausea alone satisfies \"(with or without vomiting)\"; the separate exposure condition is implied by the onset comparison.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "slug": "57-nausea-vomiting",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "B only: possible Pregnancy",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible)",
+    "reason": "\"Exclude pregnancy ↻174\" maps to a possible diagnosis under Will's briefing (\"exclude X\" → possible); fires for men too since sex is not representable.",
+    "unsettled": false
+   }
+  ]
+ }
+]

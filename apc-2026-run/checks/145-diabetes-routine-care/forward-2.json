@@ -1,0 +1,327 @@
+{
+ "page": 145,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p145-6e70ecd4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header: diabetes condition plus any-of, encoded as and/or. Correct.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (and (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-adb2a697",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Acute confusion' is slightly narrower than 'confusion'; acceptable.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-52324c85",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Sweating\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-0608cd10",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Nausea\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-bf64ad64",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "temperature in check_for"
+   ],
+   "problem": "Threshold and unit correct in the priority rule, but temperature is absent from the check_for list of the 'Check for urgent diabetes conditions' task (check list and priority rule disagree).",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") \u00b0C) 38)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-7132e5e1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Cross-reference to p24 not needed.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-9c62f7c4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Asthenia\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Dizziness\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-4e094283",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-64addeac",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-b8c80000",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "BP and pulse measurements in check_for"
+   ],
+   "problem": "All parts present in the priority rule with correct thresholds. BP < 90/60 split into SBP<90 OR DBP<60 (reasonable reading). BP and pulse measurements are not in check_for. 'Dehydration' itself added as an extra trigger (page lists it as a heading). 'Pulse, function' is a weak concept for a rate; check whether a better pulse-rate observable exists.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Dehydration\" \"disorder\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Xerostomia\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "Urgent: diabetes with danger signs :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "Urgent: diabetes with danger signs :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-b057bf1b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-c97d0963",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Shaking mapped to Tremor; acceptable, though 'shaking' could also mean rigors.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Tremor\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-f9bc01c9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Rapid deep breathing = Kussmaul-type breathing; clinically apt but narrower than the page's lay wording (no 'tachypnoea'/'hyperventilation' concept).",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Kussmaul's respiration\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-563b6113",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Excessive thirst\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Hungry\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-6fb0bf73",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-8da6d34b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "measure task for random fingerprick glucose"
+   ],
+   "problem": "Header 'Check random fingerprick glucose' has no measure task for glucose on a diabetic patient.",
+   "evidence": [
+    "(task \"Check urine dipstick for ketones ...\") only; no task/measure for random fingerprick glucose"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-9fd55114",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Correct threshold/unit/no symptom condition. 'Blood glucose status' vs 'Blood glucose concentration' (observable) - the latter looks the more natural numeric concept; verify the chosen one resolves as a measurement.",
+   "evidence": [
+    "Urgent: diabetes with low or high fingerprick glucose :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-a4f7ec0f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "explicit >= 11.1 with symptoms branch"
+   ],
+   "problem": "No glucose >= 11.1 + symptom branch; the outcome is only reached through rule 1 (any symptom => Urgent regardless of glucose), which gives the same urgency, but the glucose-with-symptoms condition is never stated and a symptom outside the page's list is not covered.",
+   "evidence": [
+    "Urgent: diabetes with danger signs :: (or ... symptoms)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p145-d94dcc12",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Ketone check task and ketones-present urgent branch both present; 'without symptoms' qualifier dropped, which is harmless because symptoms already give Urgent.",
+   "evidence": [
+    "Check urine dipstick for ketones ... :: (and Diabetes (>= glucose 11.1)) (check_for Ketonuria)",
+    "Urgent: diabetes with low or high fingerprick glucose :: (and (>= glucose 11.1) (clinical_finding Ketonuria))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p145-015a8fdd",
+   "scope": "borderline",
+   "scope_reason": "Cross-reference to another page, but also a criterion (BP >= 140/90 without known hypertension).",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "'If not known hypertension and BP >= 140/90' is a diagnostic cue to possible hypertension (p148); not encoded. Borderline: routing to another page.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p145-4c6adb65",
+   "scope": "borderline",
+   "scope_reason": "Targets/aims and frequency are management-like; measurement task is in house standard.",
+   "verdict": "partial",
+   "parts_missing": [
+    "BMI >= 25 criterion",
+    "sex-specific WC thresholds",
+    "BMI/WHR measurement"
+   ],
+   "problem": "A measure task for WC exists but without the aims (WC < 80 woman / < 94 man; BMI >= 25; WHR) and without 'at diagnosis, yearly'; BMI and WHR have no task.",
+   "evidence": [
+    "Measure waist circumference in routine diabetes care :: (measure (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm))"
+   ],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p145-d9427373",
+  "p145-9f13ca82",
+  "p145-5099b69b",
+  "p145-76558c40",
+  "p145-08132150",
+  "p145-9f8a6694",
+  "p145-f133e4cb",
+  "p145-20bd642d",
+  "p145-119863da",
+  "p145-00d2a881",
+  "p145-c205dd95",
+  "p145-57d30f0f",
+  "p145-6d403d0e",
+  "p145-5d1fc8dc",
+  "p145-27916db7",
+  "p145-318b4584",
+  "p145-ad1acddd",
+  "p145-a4479303",
+  "p145-ea6db2cb",
+  "p145-6df89a82",
+  "p145-fd9cb31c",
+  "p145-e2b497d1",
+  "p145-3375b06b"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "problem": "check_for omits items the priority rule uses: temperature, systolic/diastolic BP, pulse. Check list and priority rule disagree.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Measure waist circumference in routine diabetes care",
+   "problem": "Fires for every diabetic adult with no timing (at diagnosis/yearly) and no thresholds; the only other table row encoded; BMI, WHR, BP>=140/90 and other table criteria are absent (mostly management/lab, but BP>=140/90 and BMI>=25 are expressible).",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "problem": "Single very large OR mixes the 'any of' symptoms with Dehydration signs and vitals; correct logically, but 'Dehydration' disorder is added as an extra trigger not stated as a separate criterion on the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "problem": "Glucose >= 11.1 with symptoms branch not explicit (covered by rule 1). 'Blood glucose status' concept may be less apt than 'Blood glucose concentration'. No measure task for random fingerprick glucose.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Symptom coverage of the red box is complete and thresholds (temp >=38, BP <90/60, pulse >=100, glucose <4, >=11.1 + ketones) are right. Most consequential gaps: check_for lacks temperature/BP/pulse and any random-glucose measure task, the glucose >=11.1-with-symptoms branch is only implicit, and glucose/pulse concept choices ('Blood glucose status', 'Pulse, function') are questionable. Outside table (BP>=140/90, BMI, WC aims) is largely unencoded."
+}

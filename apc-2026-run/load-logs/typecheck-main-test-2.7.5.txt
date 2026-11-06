@@ -1,0 +1,9 @@
+# Deno 2.7.5: deno check of VHA main's own test/shared/compiled_s_expressions.test.ts at 211b16110 (clean export, run 2026-11-05; checked under a temporary file name)
+Check test/shared/compiled_s_expressions.test.ts
+TS2488 [ERROR]: Type '({ atom: "snomed_concept"; } & SnomedConcept & ({ atom: "finding"; } & { root_snomed_concept: ({ atom: "snomed_concept"; } & SnomedConcept) | null; ... 7 more ...; existence: Existence | "Any"; })[]) | ... 12 more ... | (MatchingFinding[] & ... 1 more ... & ({ ...; } & { ...; })[])' must have a '[Symbol.iterator]()' method that returns an iterator.
+          for (const finding of task_node.to_be_done.value) {
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file://<vha-211b16110>/test/shared/compiled_s_expressions.test.ts:189:33
+
+error: Type checking failed.
+# exit code: 1

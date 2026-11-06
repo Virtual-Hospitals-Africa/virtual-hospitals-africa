@@ -1,0 +1,418 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 54,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.2,
+    149.9
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p54-rb1-e01",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "bbox": [
+    272.6,
+    91.6,
+    569.1,
+    102.7
+   ],
+   "key": "p54-d516b4e7"
+  },
+  {
+   "id": "p54-rb1-e02",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Temperature ≥ 38°C and swelling of face/jaw/next to tooth",
+   "bbox": [
+    238.3,
+    101.9,
+    469.9,
+    112.7
+   ],
+   "key": "p54-5176d624"
+  },
+  {
+   "id": "p54-rb1-e03",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Unable to eat or drink",
+   "bbox": [
+    238.3,
+    111.9,
+    327.3,
+    122.7
+   ],
+   "key": "p54-344aa684"
+  },
+  {
+   "id": "p54-rb1-e04",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Tooth pain that is felt without touching tooth/gum or that wakes patient at night",
+   "bbox": [
+    238.3,
+    121.9,
+    552.9,
+    132.7
+   ],
+   "key": "p54-643f0c3e"
+  },
+  {
+   "id": "p54-rb1-e05",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer urgently.",
+   "bbox": [
+    221.3,
+    133.7,
+    278.4,
+    144.7
+   ],
+   "key": "p54-c8879178"
+  },
+  {
+   "id": "p54-rb1-e06",
+   "page": 54,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with gum/teeth symptoms and any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "© BMJ Best Practice",
+   "bbox": [
+    691.3,
+    139.1,
+    739.3,
+    146.5
+   ],
+   "key": "p54-9c6fb10b"
+  },
+  {
+   "id": "p54-out-e01",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "GUM/TEETH SYMPTOMS",
+   "bbox": [
+    321.4,
+    48.5,
+    520.6,
+    70.8
+   ],
+   "key": "p54-e67aa779"
+  },
+  {
+   "id": "p54-out-e02",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Mix ½ teaspoon salt in ½ cup lukewarm water. 2Advise no alcohol until 24 hours after last dose of metronidazole.",
+   "bbox": [
+    34.0,
+    543.3,
+    382.3,
+    551.8
+   ],
+   "key": "p54-f6cf110d"
+  },
+  {
+   "id": "p54-out-e03",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the patient with gum/teeth symptoms to care for his/her mouth • Advise a healthy diet 13. • Advise to brush and floss teeth twice a day. • If dentures, advise to clean thoroughly every day. If poorly fitting dentures or discomfort, refer to dentist. • Ask about smoking and substance use. If patient smokes, encourage to stop 164. If substance use 165.",
+   "bbox": [
+    51.0,
+    484.2,
+    561.7,
+    535.3
+   ],
+   "key": "p54-21ff7229"
+  },
+  {
+   "id": "p54-out-e04",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with gum/teeth symptoms not needing urgent attention • Is there tooth pain, red or bleeding/enlarged gums? • Look in mouth: lift lips to look at teeth and gums:",
+   "bbox": [
+    255.1,
+    160.2,
+    582.0,
+    191.4
+   ],
+   "key": "p54-dcca49c9"
+  },
+  {
+   "id": "p54-out-e05",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Brown/black staining of teeth at gumline, holes, pits or missing teeth. May have tooth",
+   "bbox": [
+    57.3,
+    204.5,
+    218.5,
+    224.7
+   ],
+   "key": "p54-c5bb22f4"
+  },
+  {
+   "id": "p54-out-e06",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "pain with hot or cold food/drink.",
+   "bbox": [
+    77.1,
+    224.5,
+    196.7,
+    234.7
+   ],
+   "key": "p54-2c4393c6"
+  },
+  {
+   "id": "p54-out-e07",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© BMJ Best Practice",
+   "bbox": [
+    151.8,
+    330.4,
+    199.8,
+    337.8
+   ],
+   "key": "p54-e7eaae9a"
+  },
+  {
+   "id": "p54-out-e08",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Dental caries likely • Advise patient to care for his/her mouth (below). • Refer to dentist.",
+   "bbox": [
+    48.2,
+    350.7,
+    225.6,
+    381.7
+   ],
+   "key": "p54-0ec14f4e"
+  },
+  {
+   "id": "p54-out-e09",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Gums red/bleeding or enlarged",
+   "bbox": [
+    339.8,
+    204.5,
+    455.8,
+    214.7
+   ],
+   "key": "p54-87167443"
+  },
+  {
+   "id": "p54-out-e10",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© BMJ Best Practice",
+   "bbox": [
+    441.8,
+    250.3,
+    489.8,
+    257.7
+   ],
+   "key": "p54-39d419a6"
+  },
+  {
+   "id": "p54-out-e11",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Gum problem likely • Advise patient to care for his/her mouth (below). • Review medication: phenytoin and amlodipine may cause gum overgrowth. Discuss with doctor. • Rinse mouth with salt water mouthwash1 for 1 minute twice a day. • If no better with good mouth care, rinse with chlorhexidine 0.2% mouthwash twice a day for 5 days, after brushing teeth:",
+   "bbox": [
+    270.9,
+    270.7,
+    525.9,
+    341.6
+   ],
+   "key": "p54-9b793f47"
+  },
+  {
+   "id": "p54-out-e12",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Swirl in mouth but do not swallow. - Avoid repeated use as can damage teeth. - Advise to avoid eating/drinking for 30 minutes after rinsing. • Give as needed for pain paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) for up to 5 days. • Refer to dentist if: - No better after 5 days - Foul-smelling breath - Swollen gums - Temperature ≥ 38°C - Mobile teeth - Loss of gum or bone around tooth - HIV or diabetes.",
+   "bbox": [
+    270.9,
+    341.5,
+    525.7,
+    471.6
+   ],
+   "key": "p54-f3dc6e99"
+  },
+  {
+   "id": "p54-out-e13",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Previous/current tooth pain with pus in mouth,",
+   "bbox": [
+    595.4,
+    204.5,
+    770.2,
+    214.7
+   ],
+   "key": "p54-50b5e5b0"
+  },
+  {
+   "id": "p54-out-e14",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "swelling next to tooth",
+   "bbox": [
+    641.4,
+    214.5,
+    722.2,
+    224.7
+   ],
+   "key": "p54-7f0f7151"
+  },
+  {
+   "id": "p54-out-e15",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    706.0,
+    338.2,
+    770.7,
+    345.5
+   ],
+   "key": "p54-80b5d23b"
+  },
+  {
+   "id": "p54-out-e16",
+   "page": 54,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Dental abscess likely • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) for up to 5 days. • Give amoxicillin 500mg 8 hourly for 5 days. If penicillin allergy (history of anaphylaxis, urticaria or angioedema), give instead azithromycin 500mg daily for 3 days. • Also give metronidazole2 400mg 8 hourly for 5 days. • Refer to dentist. • Advise to return and refer urgently if symptoms worsen, temperature ≥ 38°C or no better after 2 days. • Refer same day if > 65 years, alcohol/drug misuse, HIV, diabetes.",
+   "bbox": [
+    567.1,
+    358.5,
+    796.1,
+    469.5
+   ],
+   "key": "p54-e16ade11"
+  }
+ ]
+}

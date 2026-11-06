@@ -1,0 +1,823 @@
+{
+ "edition": "2026",
+ "page": 148,
+ "lisp_file": "148-hypertension-diagnosis.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "systolic BP ≥ 180",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "diastolic BP ≥ 110",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "severe headache",
+   "confidence": "high",
+   "note": "Headache with both Severe and Sudden onset qualifiers (\"Sudden onset of: severe headache\")."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "weakness on 1 or both sides",
+   "confidence": "high",
+   "note": "\"Muscle weakness\" covers weakness of limbs/face on one or both sides; Sudden onset qualifier from \"Sudden onset of:\". Alternative Hemiparesis (one side only) rejected because the page says 1 or both sides."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "seizure/s",
+   "confidence": "high",
+   "note": "Sudden onset qualifier applied uniformly to every item after \"Sudden onset of:\", as the page writes it."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "visual disturbances",
+   "confidence": "high",
+   "note": "Vocabulary term \"Visual disturbance\" (disorder) with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom concept with Sudden onset qualifier; the plain recorded form would not carry the qualifier."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the FSN (vocabulary term). Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking or swallowing",
+   "confidence": "high",
+   "note": "\"Difficulty swallowing\" (finding) with Sudden onset qualifier; quote spans the shared \"difficulty\"."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-43160d1f",
+    "p148-1380671b"
+   ],
+   "quote": "Severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier; listed under both hypertensive emergency and urgency."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-60d92e41"
+   ],
+   "quote": "Known kidney failure",
+   "confidence": "medium",
+   "note": "eGFR < 15 is CKD stage 5; eGFR itself has no unit in the language, so the known diagnosis with Known present qualifier is used. \"Kidney failure\" has no FSN."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning-sign form of Chest pain."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Preinfarction syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "unstable angina",
+   "confidence": "medium",
+   "note": "\"Unstable angina\" is a synonym of FSN \"Preinfarction syndrome\"; the exact name does not exist as FSN."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "Shortness of breath",
+   "confidence": "medium",
+   "note": "Severe dyspnoea (warning-sign form) for the \"Shortness of breath/severe heart failure\" item; \"severe\" read as applying to both halves."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "severe heart failure",
+   "confidence": "high",
+   "note": "Heart failure with Severe qualifier."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Renal impairment\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9f89b72"
+   ],
+   "quote": "Known kidney impairment",
+   "confidence": "medium",
+   "note": "\"Renal impairment\" (disorder) with Known present; descendants (incl. CKD stage 5) match. eGFR < 60 not representable."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea is breathlessness worse on lying flat."
+  },
+  {
+   "rule": "Check for urgent symptoms with BP ≥ 180/110",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "\"Swelling of lower limb\" (finding); \"Leg swelling symptom\" is a descendant and matches too."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "systolic BP ≥ 180",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "diastolic BP ≥ 110",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "severe headache",
+   "confidence": "high",
+   "note": "Headache with both Severe and Sudden onset qualifiers (\"Sudden onset of: severe headache\")."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "weakness on 1 or both sides",
+   "confidence": "high",
+   "note": "\"Muscle weakness\" covers weakness of limbs/face on one or both sides; Sudden onset qualifier from \"Sudden onset of:\". Alternative Hemiparesis (one side only) rejected because the page says 1 or both sides."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "seizure/s",
+   "confidence": "high",
+   "note": "Sudden onset qualifier applied uniformly to every item after \"Sudden onset of:\", as the page writes it."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "visual disturbances",
+   "confidence": "high",
+   "note": "Vocabulary term \"Visual disturbance\" (disorder) with Sudden onset qualifier."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom concept with Sudden onset qualifier; the plain recorded form would not carry the qualifier."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the FSN (vocabulary term). Sudden onset qualifier."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking or swallowing",
+   "confidence": "high",
+   "note": "\"Difficulty swallowing\" (finding) with Sudden onset qualifier; quote spans the shared \"difficulty\"."
+  },
+  {
+   "rule": "Diagnose probable stroke with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable)",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "stroke likely",
+   "confidence": "high",
+   "note": "\"stroke likely\" → probable Cerebrovascular accident."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-6241788d"
+   ],
+   "quote": "SBP ≥ 180",
+   "confidence": "high",
+   "note": "\"and/or\" encoded as or of SBP and DBP thresholds; ≥ as >=."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 130)",
+   "element_keys": [
+    "p148-6241788d"
+   ],
+   "quote": "DBP ≥ 130",
+   "confidence": "high",
+   "note": "\"and/or\" encoded as or of SBP and DBP thresholds; ≥ as >=."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-43160d1f"
+   ],
+   "quote": "Severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier (no sudden-onset requirement in this list)."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-60d92e41"
+   ],
+   "quote": "Known kidney failure",
+   "confidence": "medium",
+   "note": "eGFR < 15 is CKD stage 5; eGFR itself has no unit in the language, so the known diagnosis with Known present qualifier is used. \"Kidney failure\" has no FSN."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning-sign form of Chest pain."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Preinfarction syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "unstable angina",
+   "confidence": "medium",
+   "note": "\"Unstable angina\" is a synonym of FSN \"Preinfarction syndrome\"; the exact name does not exist as FSN."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "Shortness of breath",
+   "confidence": "medium",
+   "note": "Severe dyspnoea (warning-sign form) for the \"Shortness of breath/severe heart failure\" item; \"severe\" read as applying to both halves."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "severe heart failure",
+   "confidence": "high",
+   "note": "Heart failure with Severe qualifier."
+  },
+  {
+   "rule": "Diagnose probable hypertensive emergency",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hypertensive emergency\" \"disorder\") probable)",
+   "element_keys": [
+    "p148-6241788d"
+   ],
+   "quote": "Hypertensive emergency likely",
+   "confidence": "high",
+   "note": "\"likely\" → probable."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-120c8298"
+   ],
+   "quote": "SBP ≥ 180",
+   "confidence": "high",
+   "note": "\"and/or\" encoded as or; ≥ as >=."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p148-120c8298"
+   ],
+   "quote": "DBP ≥ 110",
+   "confidence": "high",
+   "note": "\"and/or\" encoded as or; ≥ as >=."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-1380671b"
+   ],
+   "quote": "Severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier (no sudden-onset requirement in this list)."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Renal impairment\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9f89b72"
+   ],
+   "quote": "Known kidney impairment",
+   "confidence": "medium",
+   "note": "\"Renal impairment\" (disorder) with Known present; descendants (incl. CKD stage 5) match. eGFR < 60 not representable."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea is breathlessness worse on lying flat."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "\"Swelling of lower limb\" (finding); \"Leg swelling symptom\" is a descendant and matches too."
+  },
+  {
+   "rule": "Diagnose probable hypertensive urgency",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hypertensive urgency\" \"disorder\") probable)",
+   "element_keys": [
+    "p148-120c8298"
+   ],
+   "quote": "Hypertensive urgency likely",
+   "confidence": "high",
+   "note": "\"likely\" → probable."
+  },
+  {
+   "rule": "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "systolic BP ≥ 180",
+   "confidence": "high",
+   "note": "Heart failure likely sits in the hypertensive-urgency column under the header BP threshold; Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "diastolic BP ≥ 110",
+   "confidence": "high",
+   "note": "Heart failure likely sits in the hypertensive-urgency column under the header BP threshold; Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea is breathlessness worse on lying flat."
+  },
+  {
+   "rule": "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "\"Swelling of lower limb\" (finding); \"Leg swelling symptom\" is a descendant and matches too."
+  },
+  {
+   "rule": "Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "medium",
+   "note": "\"heart failure likely\" → probable Heart failure, gated by the box header BP threshold since it sits inside the red box."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "systolic BP ≥ 180",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p148-ce322ade"
+   ],
+   "quote": "diastolic BP ≥ 110",
+   "confidence": "high",
+   "note": "Header condition \"systolic BP ≥ 180 and/or diastolic BP ≥ 110\" encoded as or of the two thresholds; single reading (the page asks for averaged readings, not representable)."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "severe headache",
+   "confidence": "high",
+   "note": "Headache with both Severe and Sudden onset qualifiers (\"Sudden onset of: severe headache\")."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "weakness on 1 or both sides",
+   "confidence": "high",
+   "note": "\"Muscle weakness\" covers weakness of limbs/face on one or both sides; Sudden onset qualifier from \"Sudden onset of:\". Alternative Hemiparesis (one side only) rejected because the page says 1 or both sides."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "seizure/s",
+   "confidence": "high",
+   "note": "Sudden onset qualifier applied uniformly to every item after \"Sudden onset of:\", as the page writes it."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "visual disturbances",
+   "confidence": "high",
+   "note": "Vocabulary term \"Visual disturbance\" (disorder) with Sudden onset qualifier."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom concept with Sudden onset qualifier; the plain recorded form would not carry the qualifier."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the FSN (vocabulary term). Sudden onset qualifier."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9dbc9ba"
+   ],
+   "quote": "difficulty speaking or swallowing",
+   "confidence": "high",
+   "note": "\"Difficulty swallowing\" (finding) with Sudden onset qualifier; quote spans the shared \"difficulty\"."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-43160d1f",
+    "p148-1380671b"
+   ],
+   "quote": "Severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier; listed under both hypertensive emergency and urgency."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic kidney disease stage 5\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-60d92e41"
+   ],
+   "quote": "Known kidney failure",
+   "confidence": "medium",
+   "note": "eGFR < 15 is CKD stage 5; eGFR itself has no unit in the language, so the known diagnosis with Known present qualifier is used. \"Kidney failure\" has no FSN."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning-sign form of Chest pain."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Preinfarction syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p148-0fb3f9e8"
+   ],
+   "quote": "unstable angina",
+   "confidence": "medium",
+   "note": "\"Unstable angina\" is a synonym of FSN \"Preinfarction syndrome\"; the exact name does not exist as FSN."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "Shortness of breath",
+   "confidence": "medium",
+   "note": "Severe dyspnoea (warning-sign form) for the \"Shortness of breath/severe heart failure\" item; \"severe\" read as applying to both halves."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-2a9b788b"
+   ],
+   "quote": "severe heart failure",
+   "confidence": "high",
+   "note": "Heart failure with Severe qualifier."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Renal impairment\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p148-d9f89b72"
+   ],
+   "quote": "Known kidney impairment",
+   "confidence": "medium",
+   "note": "\"Renal impairment\" (disorder) with Known present; descendants (incl. CKD stage 5) match. eGFR < 60 not representable."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea is breathlessness worse on lying flat."
+  },
+  {
+   "rule": "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p148-67f6b099"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "\"Swelling of lower limb\" (finding); \"Leg swelling symptom\" is a descendant and matches too."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p148-d70de91e",
+   "element_id": "p148-rb1-e12",
+   "text": "Manage and refer same day:",
+   "reason_category": "management_step",
+   "reason": "Header of the same-day management/referral list; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p148-b65e46de",
+   "element_id": "p148-rb1-e13",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the urgent management/referral list; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p148-82b83731",
+   "element_id": "p148-rb1-e14",
+   "text": "If normal kidney function and no heart failure, give amlodipine 5mg or enalapril 10mg followed by hydrochlorothiazide (HCTZ) 12.5mg to lower BP slowly.",
+   "reason_category": "management_step",
+   "reason": "Medicines and doses (amlodipine/enalapril/HCTZ)."
+  },
+  {
+   "element_key": "p148-4e17b747",
+   "element_id": "p148-rb1-e15",
+   "text": "Give amlodipine 10mg.",
+   "reason_category": "management_step",
+   "reason": "Medicine and dose (amlodipine 10mg)."
+  },
+  {
+   "element_key": "p148-4d1a2f2c",
+   "element_id": "p148-rb1-e16",
+   "text": "If shortness of breath/severe heart failure, also give single dose furosemide 40mg IV and face mask oxygen at 6-8 L/minute.",
+   "reason_category": "management_step",
+   "reason": "Medicines and oxygen (furosemide IV, face mask oxygen)."
+  },
+  {
+   "element_key": "p148-db03536d",
+   "element_id": "p148-rb1-e17",
+   "text": "If eGFR < 60 or heart failure likely, give instead amlodipine 5mg followed by furosemide 40mg orally or hydrochlorothiazide (HCTZ) 12.5mg",
+   "reason_category": "management_step",
+   "reason": "Medicines and doses (amlodipine, furosemide, HCTZ)."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Trigger",
+   "decision": "The check task fires on a single recorded SBP ≥ 180 or DBP ≥ 110 (routine vitals).",
+   "alternatives": "Averaged last-two readings as the page asks: not representable.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Sudden onset qualifier",
+   "decision": "Applied to every item after \"Sudden onset of:\" (including seizure and dizziness), so these are distinct from plain recorded seizure/dizziness.",
+   "alternatives": "Plain warning-sign forms for seizure/dizziness so routine recordings match.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "One Urgent priority rule for BP ≥ 180/110 with any red-box symptom; no escalation for hypertensive emergency.",
+   "alternatives": "\"Very urgent\" for hypertensive emergency (\"Manage and refer urgently\" vs \"same day\"). Chest pain, seizure and severe dyspnoea already carry Very urgent as warning signs.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Kidney items",
+   "decision": "Known kidney failure (eGFR < 15) → CKD stage 5 Known present; known kidney impairment (eGFR < 60) → Renal impairment Known present. eGFR is not representable.",
+   "alternatives": "End-stage renal disease; Kidney disease; CKD stage 3.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Lower chart (mild/moderate/severe hypertension)",
+   "decision": "Not encoded: the diagnoses require readings on separate occasions (\"Avoid diagnosing hypertension on one reading alone\"), and SNOMED has no mild/moderate/severe hypertension FSNs.",
+   "alternatives": "possible Hypertensive disorder on a single reading ≥ 140/90 (rejected: the page does not say consider/suspect).",
+   "confidence": "medium"
+  }
+ ]
+}

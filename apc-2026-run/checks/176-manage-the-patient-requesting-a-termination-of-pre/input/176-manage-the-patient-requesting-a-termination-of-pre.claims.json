@@ -1,0 +1,356 @@
+{
+ "page": 176,
+ "lisp_file": "176-manage-the-patient-requesting-a-termination-of-pre.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "trigger",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "adnexal mass"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "guarding"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "rebound abdominal tenderness"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "foul-smelling discharge"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "enlarged uterus"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "open cervical os"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "bleeding"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-956dd68e"
+   ],
+   "quote": "If adnexal mass"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") probable)",
+   "element_keys": [
+    "p176-956dd68e"
+   ],
+   "quote": "ectopic pregnancy likely"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "enlarged uterus"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "open cervical os"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "bleeding"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Incomplete induced termination of pregnancy\" \"disorder\") probable)",
+   "element_keys": [
+    "p176-e29f46d0"
+   ],
+   "quote": "incomplete TOP likely"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "adnexal mass"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "guarding"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "rebound abdominal tenderness"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "foul-smelling discharge"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "temperature ≥ 38˚C"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "respiratory rate ≥ 30"
+  }
+ ]
+}

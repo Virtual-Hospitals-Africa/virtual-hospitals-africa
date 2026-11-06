@@ -1,0 +1,569 @@
+{
+ "edition": "2026",
+ "page": 130,
+ "lisp_file": "130-hiv-routine-care-cont-5.lisp",
+ "conditions": [
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-270e769d"
+   ],
+   "quote": "delay starting ART",
+   "confidence": "medium",
+   "note": "Page is HIV routine care before ART start; HIV infection is the context. clinical_finding form used in trigger and priority (no probable HIV rule on this page). ART-naive status not representable."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "Breathlessness at rest",
+   "confidence": "high",
+   "note": "\"at rest\" half of the item; SNOMED Dyspnea at rest."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "\"while talking\" half; closest exact concept is Unable to complete a sentence in one breath. Difficulty talking (not breath-specific) rejected."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p130-eb260379"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood",
+   "confidence": "medium",
+   "note": "Quantity (≥ 1 tablespoon) and \"fresh\" not representable; plain Hemoptysis fires more often than the page intends."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "Unable to walk is what VHA vitals mobility records (Stretcher/Immobile); paired with Dependent for walking to cover \"unaided\"."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "\"unaided\" = needs help to walk; Dependent for walking is the exact concept for that."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "No \"Confusion\" finding; Clouded consciousness is VHA ACVPU \"Confused\" form (synonym confused). Acute confusion rejected as narrower."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p130-2b7c069e"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "Aggressive",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "No Agitation finding; Feeling agitated is the exact concept in vocabulary."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p130-3ef19a25"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "SNOMED name is Stiff neck."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "New sudden weakness",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier expresses \"new sudden\"; New qualifier not added (one qualifier keeps matching simpler)."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carries \"New sudden\" (shared across the item)."
+  },
+  {
+   "rule": "Check for danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carries \"New sudden\" (shared across the item)."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-50eb213e"
+   ],
+   "quote": "Check if there is a reason to delay ART",
+   "confidence": "medium",
+   "note": "Step 4 of HIV routine care applies to people with HIV about to start ART; HIV infection is the anchor."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-4bafdf36"
+   ],
+   "quote": "Is patient known with TB",
+   "confidence": "high",
+   "note": "Known chronic condition form (Known present qualifier), per briefing."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "TB symptom screen (Q1 = No)."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "weight loss",
+   "confidence": "high",
+   "note": "No \"Weight loss\" finding; Weight decreased is the general concept (not Unintentional/Unexplained, which the page does not say)."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "night sweats",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Check for TB before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "blood-stained sputum",
+   "confidence": "high",
+   "note": "Exact concept (not a child of Hemoptysis)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-50eb213e"
+   ],
+   "quote": "Check if there is a reason to delay ART",
+   "confidence": "medium",
+   "note": "Step 4 of HIV routine care applies to people with HIV about to start ART; HIV infection is the anchor."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p130-4bafdf36"
+   ],
+   "quote": "Is patient known with TB",
+   "confidence": "high",
+   "note": "Q1 = No branch, as (no known TB)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "TB symptom screen (Q1 = No)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "weight loss",
+   "confidence": "high",
+   "note": "No \"Weight loss\" finding; Weight decreased is the general concept (not Unintentional/Unexplained, which the page does not say)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "night sweats",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "Recorded common-symptom form (active_condition Fever)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "blood-stained sputum",
+   "confidence": "high",
+   "note": "Exact concept (not a child of Hemoptysis)."
+  },
+  {
+   "rule": "Diagnose possible TB before starting ART",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p130-5bd5b327"
+   ],
+   "quote": "Exclude TB",
+   "confidence": "high",
+   "note": "\"Exclude X\" = possible diagnosis, per briefing."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-270e769d"
+   ],
+   "quote": "delay starting ART",
+   "confidence": "medium",
+   "note": "Page is HIV routine care before ART start; HIV infection is the context. clinical_finding form used in trigger and priority (no probable HIV rule on this page). ART-naive status not representable."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p130-10429d7d"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital, >= 30 bpm as written."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "Breathlessness at rest",
+   "confidence": "high",
+   "note": "\"at rest\" half of the item; SNOMED Dyspnea at rest."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "\"while talking\" half; closest exact concept is Unable to complete a sentence in one breath. Difficulty talking (not breath-specific) rejected."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "Unable to walk is what VHA vitals mobility records (Stretcher/Immobile); paired with Dependent for walking to cover \"unaided\"."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "\"unaided\" = needs help to walk; Dependent for walking is the exact concept for that."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "No \"Confusion\" finding; Clouded consciousness is VHA ACVPU \"Confused\" form (synonym confused). Acute confusion rejected as narrower."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p130-2b7c069e"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p130-fe4fb28d"
+   ],
+   "quote": "Pulse rate ≥120",
+   "confidence": "high",
+   "note": "Routine vital (VHA heart-rate observable), >= 120 bpm as written."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p130-eb260379"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood",
+   "confidence": "medium",
+   "note": "Quantity (≥ 1 tablespoon) and \"fresh\" not representable; plain Hemoptysis fires more often than the page intends."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "Aggressive",
+   "confidence": "high",
+   "note": "Warning-sign concept."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "No Agitation finding; Feeling agitated is the exact concept in vocabulary."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p130-3ef19a25"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "SNOMED name is Stiff neck."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "New sudden weakness",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier expresses \"new sudden\"; New qualifier not added (one qualifier keeps matching simpler)."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carries \"New sudden\" (shared across the item)."
+  },
+  {
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carries \"New sudden\" (shared across the item)."
+  }
+ ],
+ "elements_not_encoded": [],
+ "known_issues": [
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "reason": "It is used, as (no …) in 'Diagnose possible TB before starting ART' (Q1 = No). The gate's NO_RE only recognises the rendered (no …) form when the finding has no qualifier: VHA renders the No qualifier before the Known present qualifier, so the regex misses it. Faithful encoding kept."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Trigger",
+   "decision": "HIV infection (clinical_finding) triggers both check_for tasks and the priority rule",
+   "alternatives": "active_condition HIV (would need a probable HIV rule); adding an 'on ART' exclusion (no concept for ART-naive)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, because the page says 'refer same day'",
+   "alternatives": "Very urgent/Emergency for seizure etc. as their global warning signs carry; page does not escalate",
+   "confidence": "medium"
+  },
+  {
+   "topic": "TB screen",
+   "decision": "Encode 'Exclude TB' as possible Tuberculosis for HIV + not known TB + any listed symptom",
+   "alternatives": "Leave the flowchart unencoded (management only)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Lab-gated branches",
+   "decision": "CD4, CrAg branches and their downstream nodes (jaundice/meningitis/acute illness, TB timing) not encoded",
+   "alternatives": "Encode the jaundice/meningitis node without the lab gate (would change the page's logic)",
+   "confidence": "medium"
+  }
+ ]
+}

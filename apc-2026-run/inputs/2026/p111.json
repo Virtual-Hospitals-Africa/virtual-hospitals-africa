@@ -1,0 +1,508 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 111,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    120.0,
+    806.3,
+    161.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p111-rb1-e01",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 0,
+   "parent": null,
+   "text": "If any of the following, discuss or refer to hospital for admission:",
+   "bbox": [
+    293.4,
+    125.0,
+    548.4,
+    136.2
+   ],
+   "key": "p111-7bf9d847"
+  },
+  {
+   "id": "p111-rb1-e02",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Respiratory rate ≥ 30",
+   "bbox": [
+    53.8,
+    136.3,
+    135.5,
+    146.5
+   ],
+   "key": "p111-844e8de3"
+  },
+  {
+   "id": "p111-rb1-e03",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Drowsy/confused/neckstiffness/severe headache/persistent vomiting",
+   "bbox": [
+    150.9,
+    136.3,
+    411.2,
+    146.5
+   ],
+   "key": "p111-35bd3688"
+  },
+  {
+   "id": "p111-rb1-e04",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Unable to walk unaided",
+   "bbox": [
+    435.9,
+    136.3,
+    530.7,
+    146.5
+   ],
+   "key": "p111-a139211e"
+  },
+  {
+   "id": "p111-rb1-e05",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty with adherence",
+   "bbox": [
+    570.7,
+    136.3,
+    668.7,
+    146.5
+   ],
+   "key": "p111-23d0b6ba"
+  },
+  {
+   "id": "p111-rb1-e06",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Infection control challenges at home",
+   "bbox": [
+    696.0,
+    136.3,
+    773.9,
+    156.5
+   ],
+   "key": "p111-64978c08"
+  },
+  {
+   "id": "p111-rb1-e07",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Hb < 8 or BMI < 18",
+   "bbox": [
+    53.8,
+    146.3,
+    128.4,
+    156.5
+   ],
+   "key": "p111-20306c48"
+  },
+  {
+   "id": "p111-rb1-e08",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Any condition that would be better managed in an inpatient setting",
+   "bbox": [
+    150.9,
+    146.3,
+    408.7,
+    156.5
+   ],
+   "key": "p111-991269b0"
+  },
+  {
+   "id": "p111-rb1-e09",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Unstable social circumstances",
+   "bbox": [
+    435.9,
+    146.3,
+    551.4,
+    156.5
+   ],
+   "key": "p111-4ba50538"
+  },
+  {
+   "id": "p111-rb1-e10",
+   "page": 111,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "If any of the following, discuss or refer to hospital for admission:",
+   "section_y": 125.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Patient requests admission",
+   "bbox": [
+    570.7,
+    146.3,
+    674.4,
+    156.5
+   ],
+   "key": "p111-ccf478a4"
+  },
+  {
+   "id": "p111-out-e01",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "RIFAMPICIN-RESISTANT TB (RR-TB): ROUTINE CARE",
+   "bbox": [
+    214.1,
+    48.5,
+    627.9,
+    70.8
+   ],
+   "key": "p111-b997cfca"
+  },
+  {
+   "id": "p111-out-e02",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient with RR-TB At diagnosis, notify1. Also register the patient in the RR-TB register (EDRWeb) once treatment started. Update register at every visit and upon discharge from care.",
+   "bbox": [
+    127.2,
+    171.9,
+    714.6,
+    193.0
+   ],
+   "key": "p111-5cf11dcf"
+  },
+  {
+   "id": "p111-out-e03",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess When to assess Note",
+   "bbox": [
+    39.7,
+    197.3,
+    248.8,
+    208.3
+   ],
+   "key": "p111-9328f89b"
+  },
+  {
+   "id": "p111-out-e04",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Symptoms Every visit • If respiratory rate ≥ 30, breathless at rest or while talking, prominent use of breathing muscles, drowsy/confused, coughs up ≥ 1 tablespoon fresh blood, neck stiffness, persistent vomiting or new weakness of arm/leg, give urgent attention and refer. If persistent episodes of coughing blood, consider referral for surgical review. • Expect gradual improvement. If not improving, assess adherence, other long-term conditions and review DST results. • If still no clinical improvement at 3-4 months or month 3 culture positive, request extended phenotypic DST and present to PCAC/NCAC 200 to advise on rescue regimen.",
+   "bbox": [
+    39.7,
+    211.7,
+    802.6,
+    261.8
+   ],
+   "key": "p111-fdc6d6b7"
+  },
+  {
+   "id": "p111-out-e05",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Adherence Every visit Ask about factors that may influence adherence and give adherence support 195. If returning after loss to follow-up, request extended phenotypic DST on latest positive culture and present to PCAC/NCAC 200 to advise on regimen.",
+   "bbox": [
+    39.7,
+    264.8,
+    787.0,
+    285.6
+   ],
+   "key": "p111-70d29801"
+  },
+  {
+   "id": "p111-out-e06",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Side effects Every visit • Ask about side effects of treatment 118. Manage promptly as side effects are common cause of treatment interruption. • If intolerance to any medication, present to PCAC/NCAC 200 for medication substitution. • Report adverse events on EDRWeb and to SAHPRA via EDRWeb.",
+   "bbox": [
+    39.7,
+    288.5,
+    649.3,
+    319.3
+   ],
+   "key": "p111-8334c736"
+  },
+  {
+   "id": "p111-out-e07",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TB contacts At diagnosis • Ask if patient is a TB contact2 of index patient with RR-TB. If yes, check index patient's DST results to help decide patient's RR-TB treatment regimen. • Advise that all TB contacts2 of newly diagnosed RR-TB patient have symptom screen and TB NAAT. If TB NAAT negative, assess for TPT and continue TB symptom screening 3 monthly for first 12 months then 6 monthly up to 24 months. Refer to CHW/WBOTs to do home visit for TB screening/testing or advise self-screening via TB HealthCheck 200.",
+   "bbox": [
+    39.7,
+    322.1,
+    794.7,
+    362.9
+   ],
+   "key": "p111-875f51f0"
+  },
+  {
+   "id": "p111-out-e08",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Family planning Every visit • Check for pregnancy if patient is a woman of child-bearing potential. If not pregnant, advise to avoid pregnancy during treatment and assess patient's contraceptive needs 170. If pregnant, give routine antenatal care 175 and start RR-TB treatment. • If on injectable contraceptive, no need to change interval between doses.",
+   "bbox": [
+    39.7,
+    366.2,
+    796.7,
+    396.4
+   ],
+   "key": "p111-9b90f505"
+  },
+  {
+   "id": "p111-out-e09",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mental health Every visit If stress, anxiety or low mood, assess and manage further 98.",
+   "bbox": [
+    39.7,
+    399.4,
+    444.8,
+    410.2
+   ],
+   "key": "p111-eb6dc1c5"
+  },
+  {
+   "id": "p111-out-e10",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Alcohol/drug use At diagnosis, if poor adherence In the past year, has patient: drunk ≥ 4 drinks3/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+   "bbox": [
+    39.7,
+    414.1,
+    743.2,
+    424.9
+   ],
+   "key": "p111-c58c85b2"
+  },
+  {
+   "id": "p111-out-e11",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Palliative care If deteriorating If the patient has any of: in bed or chair for 50% or more of the day, dependent on others for most care, has had 2 or more unplanned hospital admissions in past 6 months, unintentional weight loss over the past 3-6 months or the patient/family requests palliative care; chooses to reduce, stop or not have treatment and wishes to focus on quality of life 191.",
+   "bbox": [
+    39.7,
+    429.3,
+    798.3,
+    459.5
+   ],
+   "key": "p111-dd2f469f"
+  },
+  {
+   "id": "p111-out-e12",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Weight and BMI4 Every visit If BMI < 18.5, refer for nutritional support. Expect weight gain on treatment and adjust treatment doses. If losing weight on treatment, discuss with specialist/refer.",
+   "bbox": [
+    39.7,
+    462.8,
+    782.4,
+    473.0
+   ],
+   "key": "p111-e8247b38"
+  },
+  {
+   "id": "p111-out-e13",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP At diagnosis If known hypertension 149. If not, check BP: if ≥ 140/90 148.",
+   "bbox": [
+    39.7,
+    476.0,
+    452.6,
+    486.8
+   ],
+   "key": "p111-4ac11d99"
+  },
+  {
+   "id": "p111-out-e14",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "HIV At diagnosis and after 3 months of RR-TB treatment if previous test negative",
+   "bbox": [
+    39.7,
+    491.0,
+    216.7,
+    521.2
+   ],
+   "key": "p111-e832b97b"
+  },
+  {
+   "id": "p111-out-e15",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Test for HIV 124. If positive, give HIV routine care 126. • Avoid giving the following medications together: zidovudine with linezolid; efavirenz with bedaquiline or pretomanid; tenofovir with amikacin.",
+   "bbox": [
+    229.6,
+    490.6,
+    720.9,
+    511.4
+   ],
+   "key": "p111-9077d0f2"
+  },
+  {
+   "id": "p111-out-e16",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "RR-TB refers to TB that is resistant to rifampicin, with or without resistance to other TB medications. If patient has INH-resistant TB 107. If RR-TB care not available, refer to closest DR-TB treatment initiation site.",
+   "bbox": [
+    51.0,
+    89.1,
+    763.7,
+    109.9
+   ],
+   "key": "p111-c3a9c53f"
+  },
+  {
+   "id": "p111-out-e17",
+   "page": 111,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Complete notifiable medical conditions (NMC) case notification form and send to NMCsurveillanceReport@nicd.ac.za or notify electronically: www.nicd.ac.za/nmc-overview/notification-process. 2A TB contact refers to any person who shared an enclosed space (at school, socially, or in a household setting), for ≥ 1 night or for frequent/extended daytime periods, with an adult/adolescent with pulmonary TB (\"index patient\"), during the 3-month period before the index patient started their TB treatment. 3One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 4BMI = weight (kg) ÷ height (m) ÷ height (m).",
+   "bbox": [
+    34.0,
+    526.8,
+    791.4,
+    551.8
+   ],
+   "key": "p111-93332c67"
+  }
+ ]
+}

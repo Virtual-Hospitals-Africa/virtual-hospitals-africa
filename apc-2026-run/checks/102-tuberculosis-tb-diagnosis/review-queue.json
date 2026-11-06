@@ -1,0 +1,1552 @@
+[
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p102-12ed0574",
+  "text": "Drowsy/confused",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Two parts, both encoded: Drowsy (exact) and Acute confusion (Confusional state is also available as a disorder; Acute confusion as a finding is the better fit for a bedside sign).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "plain 'confused' (not necessarily acute) is narrowed to 'Acute confusion'"
+    ],
+    "problem": "Drowsy and Acute confusion encoded as separate alternatives. The page says 'Drowsy/confused'; 'Acute' is not on the page and could miss chronic/unspecified confusion.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Drowsy and confused both encoded. 'Acute confusion' is narrower than the page's plain 'confused' (Confusional state would be broader), but acceptable for an acute presentation.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p102-3b56083a",
+  "text": "Unable to walk unaided",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'unaided': a patient who can walk only with help is not 'Unable to walk' and would not trigger the rule"
+    ],
+    "problem": "Encoded as Unable to walk (282145008), which is stricter than the page. The page's criterion includes the patient who walks with assistance. SNOMED has (snomed_concept \"Dependent for walking\" \"finding\") (synonym matched on 'walk assist'), which matches 'unable to walk unaided' more closely; alternatively keep Unable to walk and add Dependent for walking as an or-branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Unable to walk' drops 'unaided' nuance; acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'unaided': patients who can walk only with assistance are not captured"
+    ],
+    "problem": "'Unable to walk' (282145008) is narrower than 'unable to walk unaided'; a patient needing help to walk would not trigger Urgent. No 'unable to walk without assistance' concept was found; a qualifier or Difficulty walking + Severe would be closer.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p102-d66060d7",
+  "text": "Severe malnutrition or wasted",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Two parts, both encoded. 'Severe malnutrition' = Deficiency of macronutrients (synonym: protein-calorie malnutrition; SNOMED has no plain 'Malnutrition' or 'Severe malnutrition' concept, and the severe PCM concept is a paediatric Gomez definition) with the Severe qualifier. 'Wasted' = Nutritional wasting, a child of Deficiency of macronutrients; Cachexia (finding) would be an acceptable alternative.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Severe malnutrition' mapped to Deficiency of macronutrients + Severe; a closer malnutrition concept may exist"
+    ],
+    "problem": "Two parts: severe malnutrition and wasted. 'Wasted' encoded as Nutritional wasting (fine). 'Severe malnutrition' uses the broader 'Deficiency of macronutrients' with a severity qualifier; fidelity of concept is questionable and the qualifier may not match recorded form.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts encoded: severe malnutrition as Deficiency of macronutrients + Severe; wasted as Nutritional wasting.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p102-ac568a06",
+  "text": "Coughs up ≥ 1 tablespoon of fresh blood",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "the volume threshold '>= 1 tablespoon' (not representable: the language has no volume unit); as written any hemoptysis, including blood-streaked sputum, makes the patient Urgent"
+    ],
+    "problem": "Hemoptysis is the right concept; the quantity is lost. Over-triggers rather than misses, so low consequence. Could be noted for the clinician as a deliberate approximation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "quantity >= 1 tablespoon of fresh blood"
+    ],
+    "problem": "Encoded as any Hemoptysis; the volume threshold is lost, so any blood-streaked sputum triggers Urgent (over-triage). Volume is not representable in the language, so this is a known approximation.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "volume threshold >= 1 tablespoon",
+     "'fresh' blood"
+    ],
+    "problem": "Encoded as plain Hemoptysis with no quantity or 'fresh' qualifier, so any blood-streaked sputum in suspected TB triggers Urgent (over-triage). The volume cannot be expressed; the gap is not flagged.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p102-3b97e746",
+  "text": "Check for TB if the patient has any TB symptoms: current cough, weight loss, drenching night sweats or fever. Also test for TB, even in the absence of symptoms, if:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Four symptoms, all encoded as an or: Cough (common-symptom anchor; 'current' not qualified, acceptable since any recorded cough is current), Weight decreased ('Weight loss' does not exist; Weight decreased is the general concept), Night sweats ('drenching' lost, acceptable), Fever as active_condition per the house convention.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'drenching' qualifier on night sweats"
+    ],
+    "problem": "TB symptoms cough, weight loss, night sweats, fever encoded as possible TB. Cough and fever are anchored; 'current' and 'drenching' not expressed. Weight decreased/cough are broad.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'current' qualifier on cough",
+     "'drenching' on night sweats",
+     "Weight decreased and Night sweats are not checked for anywhere in the file, so those branches depend on another page recording them"
+    ],
+    "problem": "'Check for TB if any TB symptoms' is encoded as a possible-TB rule ORing Cough, Weight decreased, Night sweats and Fever. Logic and rule type are right; qualifiers are lost, and two of the four symptoms have no capture on this page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-c40f108f",
+  "text": "- DS-TB in last 2 years: check for TB yearly for 2 years after completing TB treatment - PLHIV: at diagnosis, at re-engagement if interrupted ART > 90 days, yearly (when viral load checked) and if",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "DS-TB treatment completed within the last 2 years as a trigger for possible TB",
+     "HIV infection (PLHIV) as a trigger for possible TB",
+     "the timing rules (yearly, at diagnosis, at re-engagement after ART interruption > 90 days, at first antenatal visit): not representable"
+    ],
+    "problem": "The possible-TB rule has no branch for prior TB or HIV status, so an asymptomatic PLHIV or recently treated patient is never flagged for the TB check_for, although the page asks for them to be tested. Consequence is limited (the check_for list is danger signs, not the symptom screen), so medium.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "DS-TB in last 2 years (yearly check)",
+     "PLHIV (at diagnosis, re-engagement, yearly)"
+    ],
+    "problem": "Test-for-TB-even-without-symptoms triggers for previous DS-TB treatment and PLHIV are not encoded in the possible-TB rule; timing parts not representable but the conditions (history of TB, HIV) could be evidence.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "DS-TB in last 2 years -> test for TB",
+     "PLHIV (at diagnosis, re-engagement after ART interruption > 90 days, yearly) -> test for TB"
+    ],
+    "problem": "Neither screening group feeds the possible-TB rule, though TB contact and abnormal CXR (the same 'also test' list) do. This is inconsistent.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-505d4c58",
+  "text": "pregnant at first antenatal visit",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "PLHIV and pregnant (first antenatal visit) as a trigger for possible TB"
+    ],
+    "problem": "Not encoded; part of the same omission as p102-c40f108f.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "pregnant at first antenatal visit"
+    ],
+    "problem": "Pregnancy at first antenatal visit (PLHIV condition) not encoded; it is conditional on HIV so borderline.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "PLHIV pregnant at first antenatal visit -> test for TB"
+    ],
+    "problem": "Continuation of the PLHIV screening item (pregnant PLHIV at first antenatal visit); a schedule.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-2b801a97",
+  "text": "Start the workup to diagnose TB in the patient not needing urgent attention • Determine whether the patient has been on TB treatment and interrupted treatment for > 2 months: if DS-TB 110; if INH-resistant TB or RR-TB, refer to doctor or discuss with PCAC/NCAC 200. • Send 1 sputum sample for TB NAAT",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "LAM positive -> TB (definite/probable) diagnosis",
+     "urine-LAM test criterion (management; CD4 not representable)"
+    ],
+    "problem": "No rule turns a positive urine LAM into a TB diagnosis. Low severity: the language has no lab-result atom in the schema beyond a clinical_finding, and the house standard does not ask for result-driven diagnoses.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Diagnose TB on positive urine LAM"
+    ],
+    "problem": "No probable/confirmed TB diagnosis rule for LAM positive.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "LAM-positive -> diagnose TB (definite/probable)",
+     "interrupted TB treatment > 2 months routing"
+    ],
+    "problem": "No rule for the 'diagnose TB on urine LAM' conclusion and no not-representable note in the rules.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-63b01687",
+  "text": "Rifampicin resistant or both rifampicin and INH-resistant",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "DST branch (rifampicin resistant or both): lab-result routing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "rifampicin resistant (or rif + INH resistant) -> RR-TB"
+    ],
+    "problem": "DST branch criterion for RR-TB; lab result.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-164436b0",
+  "text": "Rifampicin sensitive or unsuccessful Rifampicin sensitive and",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "DST branches (rifampicin sensitive or unsuccessful / rifampicin sensitive and INH-resistant): lab-result routing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "rifampicin sensitive + INH-resistant -> INH-resistant TB"
+    ],
+    "problem": "DST branch criteria (rifampicin sensitive/unsuccessful; rifampicin sensitive and INH-resistant); lab results.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-961ce2fa",
+  "text": "Diagnose INH-resistant TB:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "INH-resistant TB diagnosis from DST result"
+    ],
+    "problem": "Not encoded. Low severity for the reasons in scope_reason; if result-driven diagnoses are wanted, a clinical_finding for the DST result would be needed and none is in the check_for.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "INH-resistant TB diagnosis"
+    ],
+    "problem": "'Diagnose INH-resistant TB' is a diagnosis conclusion but depends on DST lab result (not representable).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "diagnosis rule for Isoniazid resistant tuberculosis"
+    ],
+    "problem": "Neither a rule nor a recorded not-representable decision appears in the rules.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-7728f754",
+  "text": "Diagnose RR-TB: • Refer or start RR-TB treatment 111. • Review reflex test results 104.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "RR-TB diagnosis from rifampicin-resistant result"
+    ],
+    "problem": "Not encoded. Low severity; result-driven.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "RR-TB diagnosis"
+    ],
+    "problem": "'Diagnose RR-TB' is a diagnosis conclusion but depends on DST lab result (not representable).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "diagnosis rule for Rifampicin resistant tuberculosis"
+    ],
+    "problem": "Explicit 'Diagnose RR-TB'. The concept exists ('Rifampicin resistant tuberculosis' disorder); the trigger is a DST lab result. The rest of the element is management.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-758f428c",
+  "text": "MTB detected: TB NAAT positive Was the patient treated for TB in the last 2 years?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "NAAT-positive branch root: a lab-result decision node routing to treatment pages; the diagnosis of TB itself is implied by the result, not stated as an 'X likely'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "MTB detected NAAT positive is a lab result branch; no confirmed-TB rule. Flowchart branches (treated in last 2 years, DST) not encoded.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "TB NAAT positive -> TB diagnosis"
+    ],
+    "problem": "'MTB detected: TB NAAT positive' leads to a TB diagnosis on every branch (start DS-TB / INH-R / RR-TB treatment). The NAAT result is a lab result, probably not representable as a finding (no 'MTB detected' concept found).",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-a680223d",
+  "text": "MTB detected: TB NAAT trace Was the patient treated for TB in the last 2 years?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "NAAT-trace branch root; lab-result routing.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "NAAT trace branch; lab result.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "NAAT trace + no TB in last 2 years + TB symptoms/abnormal CXR -> start DS-TB (TB diagnosis)",
+     "NAAT trace + TB in last 2 years + symptoms -> start DS-TB"
+    ],
+    "problem": "'TB NAAT trace' branch: same lab-result issue as the NAAT-positive branch.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-f0862318",
+  "text": "TB symptoms and signs present and/",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Decision node under NAAT trace / not treated in 2 years: symptoms and/or abnormal CXR -> culture + start DS-TB; otherwise routine care. Depends on a lab result; routes to management.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "symptoms and/or abnormal CXR given NAAT trace -> TB"
+    ],
+    "problem": "Decision node within the NAAT-trace branch ('TB symptoms and signs present and/or abnormal CXR suggestive TB?'); depends on a lab result.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p102-614fe580",
+  "text": "or abnormal CXR suggestive TB? • Send sputum for culture and DST. • TB symptoms and signs present?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Fragment of the NAAT-trace decision nodes (symptoms/signs present? abnormal CXR?) plus 'send sputum for culture and DST' (management).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "NAAT trace + previous TB + symptoms -> TB"
+    ],
+    "problem": "Continuation of the NAAT-trace decision nodes (abnormal CXR / TB symptoms present?).",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c003",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'breathlessness ... while talking'; the concept is a stricter sign (cannot finish a sentence). No closer concept found (searches for dyspnea/breathless + talking return nothing), so this is the best available proxy.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Breathless while talking\" is not the same as unable to complete a sentence in one breath (stricter, not on the page).",
+    "fix": "Use a \"dyspnea on talking\"/speech dyspnea concept if one exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c005",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page sets a volume threshold ('≥ 1 tablespoon of fresh blood'); plain Hemoptysis fires on any blood-streaked sputum, so the danger sign is broader than the page. SNOMED has no 'massive hemoptysis' concept and the language has no volume unit for it.",
+    "fix": "Record the threshold in remaining questions; no expressible fix.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires >= 1 tablespoon of fresh blood; any hemoptysis would trigger.",
+    "fix": "Hemoptysis is the closest concept; volume threshold cannot be expressed. Flag as known loss.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page threshold is coughing up >= 1 tablespoon of FRESH blood (significant haemoptysis); plain Hemoptysis also matches blood-streaked sputum, which is common in TB and would over-trigger Urgent. No 'massive hemoptysis' concept found in the release.",
+    "fix": "Add a severity qualifier, e.g. (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")), in both the check_for and the priority rule, or note the volume threshold for the reviewer.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' with no acuity; Acute confusion is narrower (excludes chronic confusion). Defensible for a danger sign, but the broader (snomed_concept \"Confusional state\" \"disorder\") exists.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' with no acuity; 'Acute confusion' adds a qualifier the page doesn't state (likely the intended clinical meaning, so minor).",
+    "fix": "Consider (snomed_concept \"Confusional state\" \"disorder\") if chronic confusion should also count; otherwise accept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c010",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Concept carries the \"disorder\" tag rather than finding; page says persistent vomiting as a sign. Meaning is fine.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c011",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'unable to walk unaided'; a patient who can walk only with support meets the page but not 'Unable to walk'. No SNOMED concept for walking unaided/independently was found.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says unable to walk UNAIDED; \"Unable to walk\" drops the unaided qualifier.",
+    "fix": "Use a concept such as unable to walk without assistance if available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unable to walk UNAIDED' (includes patients who can walk only with help); 'Unable to walk' is narrower and misses them.",
+    "fix": "Add qualifier (snomed_concept \"Unaided\" \"qualifier value\") or document that 'Unable to walk' is meant to cover needs-assistance.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c012",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "No precoordinated 'severe malnutrition' concept for adults; general concept plus Severe qualifier follows the house pattern.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Severe malnutrition or wasted\": a Deficiency of macronutrients + Severe qualifier is a convoluted proxy; a direct severe malnutrition concept would be closer.",
+    "fix": "Consider a single severe malnutrition concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c013",
+  "text": "Check for urgent suspected TB conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"wasted\" encoded as Nutritional wasting; acceptable, but the OR with severe malnutrition is split across two items without noting they are one page bullet.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c016",
+  "text": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Drenching' has no SNOMED expression; Night sweats is the right concept.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page specifies DRENCHING night sweats; the qualifier is dropped, so any night sweats trigger possible TB.",
+    "fix": "Add (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) or accept as deliberate broadening for a possible-TB screen.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c017",
+  "text": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR :: (active_condition (snomed_concept \"Fever\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Fever encoded with active_condition while the other symptoms use clinical_finding; inconsistent role for a symptom reported on history.",
+    "fix": "Use clinical_finding.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c018",
+  "text": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "House exposure pattern for 'TB contact'. The footnote's precise definition (enclosed space, ≥ 1 night or frequent daytime, 3 months before index treatment) cannot be expressed. (snomed_concept \"Exposure to tuberculosis\" \"event\") exists but is an event, not a finding.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page defines TB contact as exposure within 3 months before index patient treatment, to pulmonary TB; the concept is generic exposure to M. tuberculosis complex.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page lists TB contact as an indication to TEST for TB 'even in the absence of symptoms', not a reason to suspect TB; encoding it as possible TB lets an asymptomatic contact with e.g. persistent vomiting be flagged as 'suspected TB' Urgent. Also a closer concept exists, and the footnote's definition (shared enclosed space, >=1 night, 3 months before index treatment) is not captured.",
+    "fix": "Prefer (clinical_finding (snomed_concept \"Exposure to tuberculosis\" \"event\")) (confirmed exists); consider a separate 'test for TB' path rather than the possible-TB diagnosis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says abnormal findings on digital CXR with CAD screening; concept is a TB-screening plain X-ray abnormal, which omits the CAD element.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Abnormal CAD-screening CXR is also listed as a test-even-without-symptoms indication rather than 'suspect TB'; concept itself matches well (digital/CAD detail lost, acceptable).",
+    "fix": "Accept, or route to a test-for-TB task rather than the possible diagnosis.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c026",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: stricter than 'breathlessness while talking'; no closer concept found.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c003: sentence-completion concept is stricter than \"breathless while talking\".",
+    "fix": "As c003.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c028",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c005: the page's '≥ 1 tablespoon of fresh blood' threshold is dropped, so any hemoptysis escalates to Urgent.",
+    "fix": "Record the threshold in remaining questions; no expressible fix.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires >= 1 tablespoon of fresh blood; any hemoptysis would trigger.",
+    "fix": "Same as c005.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page threshold is coughing up >= 1 tablespoon of FRESH blood (significant haemoptysis); plain Hemoptysis also matches blood-streaked sputum, which is common in TB and would over-trigger Urgent. No 'massive hemoptysis' concept found in the release.",
+    "fix": "Add a severity qualifier, e.g. (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")), in both the check_for and the priority rule, or note the volume threshold for the reviewer.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c030",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c007: narrower than the page's 'confused'.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' with no acuity; 'Acute confusion' adds a qualifier the page doesn't state (likely the intended clinical meaning, so minor).",
+    "fix": "Consider (snomed_concept \"Confusional state\" \"disorder\") if chronic confusion should also count; otherwise accept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c033",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As c010.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c034",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c011: 'unaided' is dropped; narrower than the page.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Drops the \"unaided\" qualifier.",
+    "fix": "As c011.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unable to walk UNAIDED' (includes patients who can walk only with help); 'Unable to walk' is narrower and misses them.",
+    "fix": "Add qualifier (snomed_concept \"Unaided\" \"qualifier value\") or document that 'Unable to walk' is meant to cover needs-assistance.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c035",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As c012.",
+    "fix": "As c012.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c036",
+  "text": "Urgent: suspected TB with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As c013.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "The rule encodes two of the page's four 'test even without symptoms' triggers (contact, screening CXR) but not the other two (DS-TB in the last 2 years; PLHIV). Both omitted triggers are expressible as patient state (active_condition / history with a 2-year onset window; active_condition HIV infection) even though their timing schedules are not. Asymptomatic PLHIV and recently treated patients therefore never reach the suspected-TB state on this page.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected TB with danger signs",
+  "text": "'Unable to walk unaided' is encoded as Unable to walk, which is stricter than the page; a patient who can walk only with help does not trigger Urgent. (snomed_concept \"Dependent for walking\" \"finding\") is closer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected TB with danger signs",
+  "text": "Pulse is measured under (snomed_concept \"Pulse, function\" \"observable entity\"), a body-function concept, rather than (snomed_concept \"Heart rate\" \"observable entity\"). Whether this branch ever fires depends on which concept the system records the routine pulse vital under; this cannot be confirmed from the checker inputs and should be checked against the vitals vocabulary. Direction, unit and threshold (> 120 bpm) are right.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected TB with danger signs",
+  "text": "'Coughs up >= 1 tablespoon of fresh blood' is reduced to any Hemoptysis (volume not representable), so blood-streaked sputum also makes the patient Urgent. Over-triggers rather than misses.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "The page's result-driven diagnoses (TB on positive urine LAM; INH-resistant TB and RR-TB from DST) and the NAAT positive / trace branches are not encoded. These depend on lab results, which the house standard does not ask rule authors to model, so this is a scope note rather than a defect; but if the team decides result-driven diagnoses are wanted, this page has three of them.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent suspected TB conditions",
+  "text": "No structural defects: all 12 check_for findings are consumed by the Urgent rule with identical s-expressions, the priority rule's remaining evidence is routine vitals, the task's due_to is not in its own check_for, the Urgent level matches the page's 'Give urgent attention', and the red box is not merged with anything outside it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent suspected TB conditions (task) / system_diagnosis_rule",
+  "text": "Possible-TB rule omits two of the page's 'test even without symptoms' triggers (recent DS-TB treatment, PLHIV/pregnant at first antenatal visit); only symptoms, contact and CXR are encoded.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected TB with danger signs",
+  "text": "Hemoptysis fires without the >= 1 tablespoon volume; Drowsy/confused narrowed to Acute confusion.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "whole page",
+  "text": "No TB diagnosis rule for confirmed pathways (NAAT positive, urine LAM, INH-resistant, RR-TB); these depend on lab results and are arguably not representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_diagnosis_rule possible TB",
+  "text": "Broad evidence: any Cough, Weight decreased or Fever makes TB possible, which then combines with any danger sign (e.g. Fever > 39 alone) to give Urgent. Page logic is 'suspected TB' so acceptable but over-triages.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "Four of six triggers (Weight decreased, Night sweats, TB exposure, abnormal screening CXR) are never checked for on this page. Only Cough and Fever are common symptoms, so the other branches fire only if another page happens to record them. The 'test even without symptoms' groups (TB contact, CXR) are the most likely to be lost.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected TB with danger signs",
+  "text": "'Suspected TB' is anchored to a possible-TB rule that fires on any cough or any fever. In practice this priority rule applies the TB red box to every adult with a cough and a danger sign. That is faithful to the page, but broad. Combined with unqualified Hemoptysis (no >= 1 tablespoon / fresh), it over-triages minor blood-streaked sputum.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(page flowchart)",
+  "text": "No diagnosis rules for the page's explicit conclusions: 'diagnose TB on urine LAM', NAAT positive/trace -> TB, 'Diagnose INH-resistant TB', 'Diagnose RR-TB'. The concepts exist for INH-resistant and RR-TB. The triggers are lab results that are probably not representable, but the file shows no sign this was considered.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "The 'also test for TB' list is half encoded: TB contact and abnormal CXR are included, but DS-TB in the last 2 years ('History of tuberculosis' situation exists) and PLHIV (HIV infection) are omitted.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "Type (possible, since the page says 'check for'/'suspected') and the flat 'or' are faithful to the first panel, and nothing is invented. But two of the page's four asymptomatic test triggers are missing: 'DS-TB in last 2 years' (yearly for 2 years after completing treatment) and 'PLHIV' (at diagnosis, at re-engagement after > 90 days interrupted ART, yearly, and at first antenatal visit if pregnant). The rule title acknowledges the narrower scope; the omission should be recorded as a schedule-based criterion the language cannot time, not left silent.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent suspected TB conditions",
+  "text": "Check task lists only symptoms and not vitals, and omits the management items (oxygen, ceftriaxone) from the red box; acceptable, but the trigger Tuberculosis possible comes from the box header 'suspected TB'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "Page also says to test for TB without symptoms in: DS-TB in last 2 years, PLHIV (at diagnosis/yearly), pregnant at first antenatal visit. These are omitted. Also the page's wording is 'check/test for TB', not 'likely', so possible is right but the abnormal-CXR and contact entries are screening indications not symptoms.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent suspected TB conditions",
+  "text": "Type, trigger (possible TB) and coverage of the red box are right (vitals are routine and need no check). It inherits the Hemoptysis threshold and 'unaided' problems from its items. Because the trigger fires on any cough or fever (via the possible-TB rule), this 12-item check will run for every coughing or febrile adult.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+  "text": "'Check for TB if any TB symptoms' as a possible TB diagnosis is reasonable. But the page's 'also test for TB even in the absence of symptoms' indications (TB contact, abnormal CAD CXR) are merged in as if they were grounds to suspect TB. The other two indications (DS-TB in last 2 years, PLHIV) are left out, so the treatment of that list is inconsistent. Cough alone and fever alone each make possible TB, which is very broad, though the page literally says 'any'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malnutrition (calorie)\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "reason": "The page says \"Severe malnutrition\" without restricting the type; Deficiency of macronutrients (protein-energy malnutrition) is the broader concept and A's calorie-only Malnutrition (calorie) is its descendant, so B covers what the general wording covers.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malnutrition (calorie)\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "reason": "The page says \"Severe malnutrition\" without restricting the type; Deficiency of macronutrients (protein-energy malnutrition) is the broader concept and A's calorie-only Malnutrition (calorie) is its descendant, so B covers what the general wording covers. Kept identical to the check_for form.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "\"drenching night sweats\" is a TB symptom that defines suspected TB (top box), not a red-box urgent sign; checking for it in a task that only runs once TB is already possible cannot change any rule's result.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "\"weight loss\" is a TB symptom feeding the possible-TB trigger, not one of the red-box items listed after \"Give urgent attention to the patient with suspected TB and any of\"; in this task it would be circular.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "",
+    "reason": "\"TB contact\" is a reason to test for TB (top box), not a red-box urgent sign; it stays as diagnosis evidence only. How it gets recorded is listed under Questions for a clinician.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to Mycobacterium tuberculosis\" \"event\"))  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+    "reason": "\"TB contact\" is an exposure; Will's briefing and the page-20 gold standard record exposure as (finding Exposure to (contextual qualifier) X), which is in the shared vocabulary, whereas A's event concept wrapped as a clinical finding is not the documented pattern.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 102,
+  "slug": "102-tuberculosis-tb-diagnosis",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+    "reason": "The page lists \"Abnormal findings on digital CXR + computer aided detection (CAD) screening\" as a reason to test for TB even without symptoms, and this SNOMED finding is an exact fit apart from \"digital\"/\"CAD\"; B left it out as not expressible, but it is.",
+    "unsettled": false
+   }
+  ]
+ }
+]

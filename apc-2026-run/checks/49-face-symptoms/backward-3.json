@@ -1,0 +1,1587 @@
+{
+ "page": 49,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Right idea (sudden face swelling); Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "SNOMED has precoordinated (snomed_concept \"Tongue swelling\" \"finding\")",
+   "fix": "Use (clinical_finding (snomed_concept \"Tongue swelling\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"whole eyelid swollen\"; \"whole\" is dropped, so partial eyelid swelling (common in facial cellulitis) gives probable orbital cellulitis",
+   "fix": "Add a qualifier for whole/generalized eyelid involvement if available, or record in remaining questions",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of skin of eyelid\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "New face swelling right; Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent face symptom conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stabbing pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"Recurrent intense, superficial, stabbing pain\": \"superficial\" is dropped (SNOMED has (snomed_concept \"Superficial pain\" \"finding\"))",
+   "fix": "Add qualifier or note the omission",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of herpes zoster\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"Previous shingles on same side of face\"; History of herpes zoster covers shingles anywhere on the body, so the same-side/face restriction is lost",
+   "fix": "Note the limitation; no precoordinated facial herpes zoster history concept found",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"headache worse on bending forward\"; plain Headache drops the positional qualifier that discriminates sinusitis (no SNOMED concept found)",
+   "fix": "Note in remaining questions",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"Thick nasal/postnasal discharge\"; Thick qualifier is applied to nasal discharge but not to Posterior rhinorrhea",
+   "fix": "Add (qualifier (snomed_concept \"Thick\" \"qualifier value\")) to Posterior rhinorrhea",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of facial weakness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of facial weakness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of facial weakness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to close eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for causes of facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"no/minimal forehead involvement\": the (no Upper facial weakness) form excludes minimal forehead involvement, which the page keeps as stroke-compatible",
+   "fix": "Accept as closest available, or note in remaining questions",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"no/minimal forehead involvement\": the (no Upper facial weakness) form excludes minimal forehead involvement, which the page keeps as stroke-compatible",
+   "fix": "Accept as closest available, or note in remaining questions",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Right idea (sudden face swelling); Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "SNOMED has precoordinated (snomed_concept \"Tongue swelling\" \"finding\")",
+   "fix": "Use (clinical_finding (snomed_concept \"Tongue swelling\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable facial cellulitis",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable facial cellulitis",
+   "expr": "(diagnosis (snomed_concept \"Cellulitis of face\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"whole eyelid swollen\"; \"whole\" is dropped, so partial eyelid swelling (common in facial cellulitis) gives probable orbital cellulitis",
+   "fix": "Add a qualifier for whole/generalized eyelid involvement if available, or record in remaining questions",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of skin of eyelid\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "expr": "(diagnosis (snomed_concept \"Orbital cellulitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "New face swelling right; Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "expr": "(diagnosis (snomed_concept \"Kidney disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stabbing pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"Recurrent intense, superficial, stabbing pain\": \"superficial\" is dropped (SNOMED has (snomed_concept \"Superficial pain\" \"finding\"))",
+   "fix": "Add qualifier or note the omission",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "expr": "(diagnosis (snomed_concept \"Trigeminal neuralgia\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of herpes zoster\" \"situation\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"Previous shingles on same side of face\"; History of herpes zoster covers shingles anywhere on the body, so the same-side/face restriction is lost",
+   "fix": "Note the limitation; no precoordinated facial herpes zoster history concept found",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "expr": "(diagnosis (snomed_concept \"Postherpetic neuralgia\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"headache worse on bending forward\"; plain Headache drops the positional qualifier that discriminates sinusitis (no SNOMED concept found)",
+   "fix": "Note in remaining questions",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says \"Thick nasal/postnasal discharge\"; Thick qualifier is applied to nasal discharge but not to Posterior rhinorrhea",
+   "fix": "Add (qualifier (snomed_concept \"Thick\" \"qualifier value\")) to Posterior rhinorrhea",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "expr": "(diagnosis (snomed_concept \"Sinusitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose probable Bell's palsy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose probable Bell's palsy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose probable Bell's palsy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to close eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Diagnose probable Bell's palsy",
+   "expr": "(diagnosis (snomed_concept \"Bell's palsy\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "expr": "(diagnosis (snomed_concept \"Angioedema\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "\"Painful swelling of one/both sides of face\": Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form; (snomed_concept \"Parotid swelling\" \"finding\") is a closer clinical fit for mumps but goes beyond the page wording",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "expr": "(diagnosis (snomed_concept \"Mumps\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "imprecise",
+   "reason": "Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c142",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c143",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c144",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "\"no/minimal forehead involvement\": the (no Upper facial weakness) form excludes minimal forehead involvement, which the page keeps as stroke-compatible",
+   "fix": "Accept as closest available, or note in remaining questions",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c145",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c146",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c147",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c148",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c149",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page qualifies the whole stroke list with \"New sudden\"; difficulty speaking/visual disturbance are encoded without Sudden onset, so long-standing visual disturbance plus any face symptom gives possible stroke/TIA and Urgent",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to Difficulty talking and Visual disturbance",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c150",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Right idea (sudden face swelling); Swelling with finding_site Face structure: SNOMED has the precoordinated (snomed_concept \"Facial swelling\" \"finding\"), parent of Lip swelling, Swelling around eyes, Parotid swelling; a recorded Facial swelling may not match the postcoordinated form",
+   "fix": "Use (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) with the same qualifiers",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c151",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "SNOMED has precoordinated (snomed_concept \"Tongue swelling\" \"finding\")",
+   "fix": "Use (clinical_finding (snomed_concept \"Tongue swelling\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c152",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c153",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c154",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c155",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c156",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c157",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c158",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c159",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c160",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c161",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c162",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote 1 limits allergen exposure to medication, food or insect bite/sting \"within the past few hours\"; the timing window is dropped, so any past exposure/bite counts",
+   "fix": "Add an onset window, e.g. (< (onset ...) (time_ago 6 hours)), in the due_to uses",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c163",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(active_condition (snomed_concept \"Cellulitis of face\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c164",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "expr": "(active_condition (snomed_concept \"Kidney disease\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page escalates \"New swelling of face and blood/protein in urine\"; (active_condition Kidney disease) also matches any known/chronic kidney disease, so any face symptom in a CKD patient becomes Urgent",
+   "fix": "Reference the findings (new face swelling and haematuria/proteinuria) rather than any active kidney disease, or accept the house pattern knowingly",
+   "confidence": "medium"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent face symptom conditions",
+   "verdict": "problem",
+   "problem": "Trigger OR omits tongue swelling, though the red box names \"Sudden face/tongue swelling\"; face swelling is postcoordinated (Swelling + Face structure) instead of Facial swelling; allergen exposures lack the 'past few hours' window.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of face pain",
+   "verdict": "problem",
+   "problem": "Drops discriminating qualifiers: 'headache worse on bending forward', 'superficial' pain, shingles 'on same side of face'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of facial weakness",
+   "verdict": "ok",
+   "problem": "'May have impaired taste or dry eye' not checked for (supporting, not discriminating).",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of facial swelling",
+   "verdict": "problem",
+   "problem": "Checks for headache and body pain for mumps but not fever, which the mumps rule requires (fever is a common symptom so may be recorded elsewhere); trigger misses precoordinated Facial swelling.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible stroke from face symptoms",
+   "verdict": "problem",
+   "problem": "Possible is right for 'consider stroke'. Third branch fires on any face symptom (pain, lip swelling) plus non-sudden difficulty talking or visual disturbance; page's 'New sudden' qualifier not carried. Forehead sparing modelled as absence of Upper facial weakness, which excludes 'minimal' involvement.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible TIA from face symptoms",
+   "verdict": "problem",
+   "problem": "Same as stroke rule (identical evidence): non-sudden speech/visual items accepted.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "verdict": "problem",
+   "problem": "Structure (sudden face/tongue swelling AND any of) and 'possible' for 'check for anaphylaxis' are right; BP<90/60 as SBP<90 OR DBP<60 acceptable. Allergen exposure has no time window, so any medication exposure or old insect bite plus sudden face swelling qualifies.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable facial cellulitis",
+   "verdict": "ok",
+   "problem": "Faithful AND of painful red facial swelling and T>=38; only the Facial swelling concept choice.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "verdict": "problem",
+   "problem": "Re-expands facial cellulitis criteria correctly, but drops 'whole' eyelid, so any eyelid swelling with facial cellulitis yields probable orbital cellulitis.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "verdict": "ok",
+   "problem": "'superficial' dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "verdict": "problem",
+   "problem": "History of herpes zoster anywhere satisfies 'previous shingles on same side of face'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable sinusitis from face pain",
+   "verdict": "problem",
+   "problem": "Requires all five features in AND (pain, tenderness, headache, thick discharge, recent cold), stricter than the descriptive box may intend; positional headache qualifier dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable Bell's palsy",
+   "verdict": "ok",
+   "problem": "Sudden unilateral facial weakness AND (forehead involved OR unable to close eye) matches the page and is consistent with the stroke rule's forehead-sparing split.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable angioedema from face swelling",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "verdict": "ok",
+   "problem": "AND of fever, headache and body pain follows 'with fever, headache, body pain' literally; Facial swelling concept choice.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "verdict": "problem",
+   "problem": "Urgent matches the red-box heading. But the outer face-symptom anchor omits tongue swelling, so sudden tongue swelling with difficulty breathing is not escalated unless a face symptom is also recorded; non-sudden speech/visual items escalate; active_condition Kidney disease escalates any face symptom in a known CKD patient.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Most consequential: the Urgent priority evaluation and the urgent check_for task are anchored on a face-symptom OR that leaves out tongue swelling, so 'Sudden face/tongue swelling' with breathing difficulty only escalates if a face finding is also recorded; in the same rule, difficulty speaking and visual disturbance count without the page's 'new sudden' qualifier. Allergen exposure loses the footnote's 'within the past few hours' window, orbital cellulitis drops 'whole' eyelid, and face/tongue swelling are postcoordinated where precoordinated Facial swelling / Tongue swelling exist. No invented or wrong conditions found."
+}

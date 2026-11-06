@@ -1,0 +1,624 @@
+{
+ "page": 98,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'impaired function/distress' (either); rule encodes only the generic 'Distress' (direct child of Clinical finding), dropping impaired function and missing the closer mental-distress concept.",
+   "fix": "Use (snomed_concept \"Mental distress\" \"finding\") and add an (or ...) alternative for impaired function (no exact SNOMED concept found; e.g. a functional-impairment finding or qualifier).",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle tension\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'tiredness'; 'Fatigue' is acceptable but the literal concept exists and is a child of Fatigue.",
+   "fix": "Optionally use (snomed_concept \"Tired\" \"finding\"); keep Fatigue if the house prefers the broader concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Victim of psychological trauma' fits 'bad experience'; the causal link ('anxiety linked to') is not expressible and is implied by the conjunction.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nightmares\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flashback due to and following trauma\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Predisposed to startle' (a character-trait concept) is the closest match for 'easily startled'; no 'easily startled' concept exists.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))) (time_ago 6 months))",
+   "verdict": "faithful",
+   "reason": "'at least 6 months' -> (>= (onset excessive worry) (time_ago 6 months)) matches the house convention (>= means onset at least 6 months ago).",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'impaired function/distress' (either); rule encodes only the generic 'Distress' (direct child of Clinical finding), dropping impaired function and missing the closer mental-distress concept.",
+   "fix": "Use (snomed_concept \"Mental distress\" \"finding\") and add an (or ...) alternative for impaired function (no exact SNOMED concept found; e.g. a functional-impairment finding or qualifier).",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle tension\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'tiredness'; 'Fatigue' is acceptable but the literal concept exists and is a child of Fatigue.",
+   "fix": "Optionally use (snomed_concept \"Tired\" \"finding\"); keep Fatigue if the house prefers the broader concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'tiredness'; 'Fatigue' is acceptable but the literal concept exists and is a child of Fatigue.",
+   "fix": "Optionally use (snomed_concept \"Tired\" \"finding\"); keep Fatigue if the house prefers the broader concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'tiredness'; 'Fatigue' is acceptable but the literal concept exists and is a child of Fatigue.",
+   "fix": "Optionally use (snomed_concept \"Tired\" \"finding\"); keep Fatigue if the house prefers the broader concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'tiredness'; 'Fatigue' is acceptable but the literal concept exists and is a child of Fatigue.",
+   "fix": "Optionally use (snomed_concept \"Tired\" \"finding\"); keep Fatigue if the house prefers the broader concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "expr": "(diagnosis (snomed_concept \"Generalized anxiety disorder\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))) (time_ago 1 months))",
+   "verdict": "imprecise",
+   "reason": "Page says anxiety '> 1 month'; rule uses >= 1 month (boundary differs at exactly 1 month, otherwise correct direction per house convention).",
+   "fix": "Use (> (onset ...) (time_ago 1 months)).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Victim of psychological trauma' fits 'bad experience'; the causal link ('anxiety linked to') is not expressible and is implied by the conjunction.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nightmares\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flashback due to and following trauma\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Predisposed to startle' (a character-trait concept) is the closest match for 'easily startled'; no 'easily startled' concept exists.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Predisposed to startle' (a character-trait concept) is the closest match for 'easily startled'; no 'easily startled' concept exists.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "expr": "(diagnosis (snomed_concept \"Post-traumatic stress disorder\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "verdict": "problem",
+   "problem": "'Distress' stands in for 'impaired function/distress'; impaired function is never asked about. Otherwise the list covers every GAD and PTSD discriminator and each one is consumed by a probable rule.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "verdict": "problem",
+   "problem": "The '≥3 of 6' expansion is correct (every 3-subset is covered) and 'likely' -> probable is right, but the gate 'impaired function/distress' is encoded as generic Distress only, so a patient with impaired function but no recorded distress cannot qualify.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "verdict": "ok",
+   "problem": "Four symptom groups with the '/' pairs as ors, and the '≥3 of 4' expansion is correct; 'likely' -> probable is right. Minor: '> 1 month' is encoded as >=. The page's 'Discuss/refer' action is (correctly) not encoded.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "verdict": "ok",
+   "problem": "The red box 'Give urgent attention' -> Urgent is justified; structure (and complaint (or suicidal thoughts, suicidal behavior)) matches the house pattern.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The most consequential problem: GAD's 'impaired function/distress' gate is encoded as the generic SNOMED 'Distress' only (closer: 'Mental distress'), and impaired function is dropped, so a patient with functional impairment but no recorded distress cannot qualify. Otherwise the rules are faithful. Both ≥3-of-N expansions are correct, the 6-month window follows the house convention, PTSD's '> 1 month' is encoded as >= (boundary only), and 'tiredness' could use the literal 'Tired' concept. No invented content; page logic not encoded at all (phobia/panic discuss/refer, the depression and substance-use screens) is outside the backward check."
+}

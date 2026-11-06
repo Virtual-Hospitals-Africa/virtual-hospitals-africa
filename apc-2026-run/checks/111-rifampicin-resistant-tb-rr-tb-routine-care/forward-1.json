@@ -1,0 +1,249 @@
+{
+  "page": 111,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p111-7bf9d847",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: 'discuss or refer to hospital for admission' sets the priority level and the trigger (patient with RR-TB) for the box's criteria.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as an Urgent priority evaluation anchored on RR-TB with the box items in an (or ...), which matches the house pattern. Urgent is the right level: the page says discuss/refer for admission, not emergency.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (system_priority_evaluation \"Urgent: RR-TB routine care with criteria for hospital admission\" adult Urgent (and (clinical_finding (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\")) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-844e8de3",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Respiratory rate >= 30 in bpm, correct comparator and threshold. Respiratory rate is a routine vital so no measure task is needed.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-35bd3688",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Five parts, all present in both check_for and the admission priority rule. 'Drowsy' = Drowsy (finding). 'Confused' = Acute confusion (finding): SNOMED has no plain 'Confusion' finding (closest alternatives are Clouded consciousness and Disorientated), so Acute confusion is an acceptable choice. 'Neck stiffness' = Stiff neck. 'Severe headache' = Headache + Severe (severity modifier) qualifier. 'Persistent vomiting' = Persistent vomiting (disorder).",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))",
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))",
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Stiff neck\" \"finding\"))",
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Persistent vomiting\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-a139211e",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "error",
+      "parts_missing": [],
+      "problem": "'Unable to walk unaided' means the patient needs help or an aid to walk. It is encoded as (or 'Difficulty walking' 'Unable to walk'). 'Difficulty walking' is much broader than the page (any difficulty walking makes an RR-TB patient Urgent for admission), and 'Unable to walk' is narrower. SNOMED has exact matches: 'Needs help with walking' (finding) and 'Dependent for walking' (finding), both children of 'Finding related to ability to walk'. Either should replace 'Difficulty walking'; 'Unable to walk' can stay as a stricter sibling.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Difficulty walking\" \"finding\"))",
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Unable to walk\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p111-23d0b6ba",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Difficulty with adherence' = Noncompliance with treatment (finding). The more specific child 'Noncompliance with medication regimen' exists, but descendants match in due_to so the parent is the right general choice.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Noncompliance with treatment\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-64978c08",
+      "scope": "in_scope",
+      "scope_reason": "A yes/no admission criterion the health worker asks about; SNOMED has a usable finding for it ('Inadequate infection control measures', finding, under 'Infection control status').",
+      "verdict": "missing",
+      "parts_missing": ["Infection control challenges at home"],
+      "problem": "Not in the check_for and not in the admission priority rule. 'Inadequate infection control measures' (finding) is a close enough concept to encode it.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p111-20306c48",
+      "scope": "in_scope",
+      "scope_reason": "Two parts. BMI < 18 is representable (kg/m² unit exists). Hb < 8 is not_representable: there is no g/dL unit in the language, as the brief states.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "BMI < 18 is encoded with the right comparator, unit and threshold (18, as in the red box, not the 18.5 used in the nutrition row), and a measure task for BMI backs it. Hb < 8 is absent, which is expected because it cannot be expressed.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (< (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²) 18)",
+        "Measure BMI at RR-TB routine visit :: (measure (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-991269b0",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable: 'any condition that would be better managed in an inpatient setting' is open clinical judgement with no finding to record.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-4ba50538",
+      "scope": "borderline",
+      "scope_reason": "'Unstable social circumstances' is a social criterion with no exact SNOMED finding, but a general one exists ('Social problem not due to a mental disorder', finding, under 'Social context finding'), with 'Homeless' and 'Housing unsatisfactory' as specific descendants. Reasonable builders could either encode it with the general concept or leave it out.",
+      "verdict": "missing",
+      "parts_missing": ["Unstable social circumstances"],
+      "problem": "Not encoded anywhere. If encoded, 'Social problem not due to a mental disorder' (finding) is the natural general concept.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p111-ccf478a4",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Patient requests admission' = 'Patient requests a hospital referral' (situation). SNOMED has no 'requests admission' concept ('Listed for admission to hospital' means something else), so this is the closest available.",
+      "evidence": [
+        "Urgent: RR-TB routine care with criteria for hospital admission :: (clinical_finding (snomed_concept \"Patient requests a hospital referral\" \"situation\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p111-fdc6d6b7",
+      "scope": "in_scope",
+      "scope_reason": "Symptoms row: 'If respiratory rate >= 30, breathless at rest or while talking, prominent use of breathing muscles, drowsy/confused, coughs up >= 1 tablespoon fresh blood, neck stiffness, persistent vomiting or new weakness of arm/leg, give urgent attention and refer' is a triage criterion list with an Urgent conclusion. The rest of the row (surgical review for persistent haemoptysis, assess adherence if not improving, extended DST at 3-4 months, PCAC/NCAC) is management_step and out of scope.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All ten triage parts are in the second priority rule and in the check_for: RR >= 30; breathless at rest = Dyspnea at rest; breathless while talking = 'Unable to complete a sentence in one breath' (a reasonable proxy); prominent use of breathing muscles = Accessory respiratory muscles used; drowsy; confused = Acute confusion; coughs up fresh blood = Hemoptysis (the '>= 1 tablespoon' volume cannot be expressed, so plain Hemoptysis will trigger on smaller volumes, which is the safe direction); neck stiffness = Stiff neck; persistent vomiting; new weakness of arm/leg = Muscle weakness of limb + New qualifier. Urgent matches 'give urgent attention and refer'.",
+      "evidence": [
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Hemoptysis\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Stiff neck\" \"finding\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+        "Urgent: RR-TB with urgent symptoms at routine visit :: (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-c3a9c53f",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: 'If patient has INH-resistant TB -> 107' routes to another page; 'if RR-TB care not available, refer to DR-TB site' is a management step.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-eb6dc1c5",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: stress/anxiety/low mood -> page 98.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-c58c85b2",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: the alcohol/drug screening questions (>= 4 drinks/session etc.) conclude with 'if yes to any -> 165', which is that page's logic, not this one's.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-dd2f469f",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: the palliative-care criteria route to page 191, which carries that logic.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p111-e8247b38",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: 'If BMI < 18.5, refer for nutritional support' and dose adjustment are management, not triage or diagnosis. The 'every visit' BMI measurement itself is covered by the measure task.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Measure BMI at RR-TB routine visit :: (measure (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p111-4ac11d99",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: known hypertension -> 149; BP >= 140/90 -> 148. BP is a routine vital and the hypertension logic lives on those pages.",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p111-b997cfca",
+    "p111-5cf11dcf",
+    "p111-9328f89b",
+    "p111-70d29801",
+    "p111-8334c736",
+    "p111-875f51f0",
+    "p111-9b90f505",
+    "p111-e832b97b",
+    "p111-9077d0f2",
+    "p111-93332c67"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+      "problem": "Two of the ten red-box admission criteria are absent from both the check_for and the priority rule: 'Infection control challenges at home' (encodable as 'Inadequate infection control measures', finding) and 'Unstable social circumstances' (encodable as 'Social problem not due to a mental disorder', finding). Only 'Hb < 8' (no unit) and 'any condition better managed inpatient' (judgement) are legitimately unrepresentable.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+      "problem": "'Unable to walk unaided' is encoded as 'Difficulty walking' OR 'Unable to walk'. 'Difficulty walking' is broader than the page and will mark any RR-TB patient with mild gait difficulty Urgent for admission; SNOMED has the exact finding 'Needs help with walking' (and 'Dependent for walking').",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for RR-TB admission and urgent referral criteria; both priority evaluations",
+      "problem": "All rules are anchored on (clinical_finding (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\")). The page is routine care for a patient already diagnosed with RR-TB; the house standard records a known condition as (active_condition X) in a due_to (with a Known present clinical_finding form in the check_for). If the system records the RR-TB diagnosis as an active condition rather than a clinical finding, none of these rules will fire.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: RR-TB routine care with criteria for hospital admission; Urgent: RR-TB with urgent symptoms at routine visit",
+      "problem": "The two priority rules overlap (RR >= 30, Drowsy, Acute confusion, Stiff neck, Persistent vomiting appear in both at the same level). Not wrong, since the page has two lists with the same Urgent conclusion, but the duplication is redundant and the split by source is the only thing that distinguishes them.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+      "problem": "'Coughs up >= 1 tablespoon fresh blood' is encoded as plain Hemoptysis; the volume threshold cannot be expressed. This over-triggers on streaky haemoptysis, which errs toward safety, but should be noted as an approximation.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box and the Symptoms row's urgent list are both encoded as Urgent priority rules with correct thresholds and existing SNOMED concepts, but two red-box admission criteria are missing outright ('Infection control challenges at home' and 'Unstable social circumstances', both encodable), and 'Unable to walk unaided' is widened to 'Difficulty walking' when SNOMED has 'Needs help with walking'. Every rule is anchored on a clinical_finding of the RR-TB disorder rather than an active_condition, which may stop the rules firing for a diagnosed patient. Hb < 8 is correctly left out as unrepresentable; the check_for list is fully consumed by the priority rules."
+}

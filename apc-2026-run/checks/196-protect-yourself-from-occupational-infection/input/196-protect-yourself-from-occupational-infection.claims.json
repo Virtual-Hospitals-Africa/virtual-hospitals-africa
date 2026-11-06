@@ -1,0 +1,336 @@
+{
+ "page": 196,
+ "lisp_file": "196-protect-yourself-from-occupational-infection.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "splash to eye/mouth/nose/broken skin"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "pericardial"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "peritoneal"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "amniotic"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "synovial"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for occupational sharps/splash exposure to body fluids",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "cerebrospinal fluid"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "splash to eye/mouth/nose/broken skin"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "pericardial"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "peritoneal"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "amniotic"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "synovial"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: occupational sharps/splash exposure to body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "cerebrospinal fluid"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "fever ≥ 2 weeks"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "unexplained weight loss"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "drenching night sweats"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p196-35974afd"
+   ],
+   "quote": "Identify patients with possible TB promptly: • The patient has TB symptoms1"
+  }
+ ]
+}

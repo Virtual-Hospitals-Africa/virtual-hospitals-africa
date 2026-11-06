@@ -1,0 +1,1681 @@
+{
+ "edition": "2026",
+ "page": 23,
+ "lisp_file": "23-cough-or-difficulty-breathing.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Presenting complaint; Cough is a recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Presenting complaint; Difficulty breathing subsumes the recorded common symptom Dyspnea."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnea = breathlessness worse lying flat."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "leg swellin",
+   "confidence": "high",
+   "note": "Page typo 'swellin'; general leg swelling concept so Leg swelling symptom (descendant) also matches."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cyanosis\" \"finding\"))",
+   "element_keys": [
+    "p23-c141d3be"
+   ],
+   "quote": "Cyanosed",
+   "confidence": "high",
+   "note": "General Cyanosis; Central cyanosis is a descendant."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "Sudden breathlessness",
+   "confidence": "medium",
+   "note": "Dyspnea with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "'More resonant ... on 1 side' as Hyperresonance + Unilateral."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "decreased breath sounds",
+   "confidence": "medium",
+   "note": "'on 1 side' as Unilateral qualifier."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "pain on 1 side",
+   "confidence": "medium",
+   "note": "'pain on 1 side' read as one-sided chest pain (Chest pain + Unilateral)."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "Trachea displaced = deviated trachea."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p23-6861e109"
+   ],
+   "quote": "Wheeze",
+   "confidence": "high",
+   "note": "Arrow to 22 is a cross-reference only."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p23-6861e109"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "Confused",
+   "confidence": "medium",
+   "note": "Clouded consciousness is VHA's ACVPU 'Confused' finding."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "reduced consciousness",
+   "confidence": "high",
+   "note": "ACVPU V/P/U findings are not descendants; not added."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p23-1a01453c"
+   ],
+   "quote": "Breathless at rest",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p23-1a01453c"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "Breathless while talking ~ unable to complete a sentence in one breath."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p23-b4cfda62"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page-local or(Shock, SBP < 80); footnote 1 not built into a shock definition."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p23-959d4e89"
+   ],
+   "quote": "Coughs ≥ 1 tablespoon fresh blood",
+   "confidence": "medium",
+   "note": "Amount (≥ 1 tablespoon) and 'fresh' not representable; any hemoptysis matches (fires more often)."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ffc3b65e"
+   ],
+   "quote": "Swelling and pain in one calf",
+   "confidence": "high",
+   "note": "'one calf' as Unilateral qualifier."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ffc3b65e"
+   ],
+   "quote": "Swelling and pain in one calf",
+   "confidence": "high",
+   "note": "'one calf' as Unilateral qualifier."
+  },
+  {
+   "rule": "Check for urgent cough or difficulty breathing conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p23-324d1341"
+   ],
+   "quote": "rapid deep breathing",
+   "confidence": "high",
+   "note": "Kussmaul's respiration = rapid deep breathing; drives the glucose measure task."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Presenting complaint; Cough is a recorded common symptom."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Presenting complaint; Difficulty breathing subsumes the recorded common symptom Dyspnea."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-1128cc7a"
+   ],
+   "quote": "Ask about duration and recurrence of cough or difficulty breathing",
+   "confidence": "high",
+   "note": "Recurrence asked as a qualified finding; duration comes from onset."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-1128cc7a"
+   ],
+   "quote": "Ask about duration and recurrence of cough or difficulty breathing",
+   "confidence": "high",
+   "note": "Recurrence asked as a qualified finding; duration comes from onset."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\"))",
+   "element_keys": [
+    "p23-620b3770"
+   ],
+   "quote": "crackles",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\"))",
+   "element_keys": [
+    "p23-620b3770"
+   ],
+   "quote": "bronchial breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "recent cold",
+   "confidence": "medium",
+   "note": "'recent' not modelled as time."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "sore chest",
+   "confidence": "medium",
+   "note": "No SNOMED concept for sore chest; Chest pain used."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "coughing sputum",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "itchy",
+   "confidence": "medium",
+   "note": "Itching with finding site Nasal structure (itchy nose)."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "blocked nose",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\"))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "frequent throat clearing",
+   "confidence": "medium",
+   "note": "'frequent' not encoded."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-6b62b40a"
+   ],
+   "quote": "HIV",
+   "confidence": "high",
+   "note": "Known HIV, same form in check_for and rule."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dry cough\" \"finding\"))",
+   "element_keys": [
+    "p23-6b62b40a",
+    "p23-556bdf75"
+   ],
+   "quote": "dry cough",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+   "element_keys": [
+    "p23-ec986182"
+   ],
+   "quote": "Persistent snoring",
+   "confidence": "medium",
+   "note": "Persistent snoring ~ Habitual snoring."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor sleep pattern\" \"finding\"))",
+   "element_keys": [
+    "p23-ec986182"
+   ],
+   "quote": "poor sleep",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory infection\" \"disorder\"))",
+   "element_keys": [
+    "p23-2cff60d9",
+    "p23-efe482a5"
+   ],
+   "quote": "Recent upper respiratory tract infection",
+   "confidence": "medium",
+   "note": "'recent' not modelled as time."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-f2c32620"
+   ],
+   "quote": "Smoker",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-36b1eddf"
+   ],
+   "quote": "recently stopped",
+   "confidence": "medium",
+   "note": "Ex-smoker; 'recently' not modelled."
+  },
+  {
+   "rule": "Check for causes of cough or difficulty breathing not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p23-81e8590b"
+   ],
+   "quote": "weight loss",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Measure fingerprick glucose if rapid deep breathing with cough/difficulty breathing",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p23-324d1341"
+   ],
+   "quote": "rapid deep breathing",
+   "confidence": "high",
+   "note": "Kussmaul's respiration = rapid deep breathing; drives the glucose measure task."
+  },
+  {
+   "rule": "Measure fingerprick glucose if rapid deep breathing with cough/difficulty breathing",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L)",
+   "element_keys": [
+    "p23-324d1341"
+   ],
+   "quote": "check fingerprick glucose",
+   "confidence": "high",
+   "note": "Measure task; the > 11.1 -> 19 follow-on is a cross-reference."
+  },
+  {
+   "rule": "Diagnose probable heart failure (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnea = breathlessness worse lying flat."
+  },
+  {
+   "rule": "Diagnose probable heart failure (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "leg swellin",
+   "confidence": "high",
+   "note": "Page typo 'swellin'; general leg swelling concept so Leg swelling symptom (descendant) also matches."
+  },
+  {
+   "rule": "Diagnose probable heart failure (cough/difficulty breathing page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "'More resonant ... on 1 side' as Hyperresonance + Unilateral."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "decreased breath sounds",
+   "confidence": "medium",
+   "note": "'on 1 side' as Unilateral qualifier."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "pain on 1 side",
+   "confidence": "medium",
+   "note": "'pain on 1 side' read as one-sided chest pain (Chest pain + Unilateral)."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "Trachea displaced = deviated trachea."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "Systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "Systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "tension pneumothorax likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "Cough < 2 weeks",
+   "confidence": "medium",
+   "note": "'< 2 weeks' written as (<= (onset Cough) (time_ago 2 weeks)); onset comparisons accept only >=/<=, so exactly 2 weeks also matches."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "not recurrent",
+   "confidence": "medium",
+   "note": "Explicit 'No' to recurrent cough (Cough + Recurrent qualifier)."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "No: Acute viral infection likely",
+   "confidence": "high",
+   "note": "'No' answer to crackles/bronchial breathing question, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "No: Acute viral infection likely",
+   "confidence": "high",
+   "note": "'No' answer to crackles/bronchial breathing question, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "Acute viral infection likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "Cough < 2 weeks",
+   "confidence": "medium",
+   "note": "'< 2 weeks' written as (<= (onset Cough) (time_ago 2 weeks)); onset comparisons accept only >=/<=, so exactly 2 weeks also matches."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "not recurrent",
+   "confidence": "medium",
+   "note": "Explicit 'No' to recurrent cough (Cough + Recurrent qualifier)."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "No: Acute viral infection likely",
+   "confidence": "high",
+   "note": "'No' answer to crackles/bronchial breathing question, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "No: Acute viral infection likely",
+   "confidence": "high",
+   "note": "'No' answer to crackles/bronchial breathing question, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "recent cold",
+   "confidence": "medium",
+   "note": "'recent' not modelled as time."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p23-6861e109"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "sore chest",
+   "confidence": "medium",
+   "note": "No SNOMED concept for sore chest; Chest pain used."
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "coughing sputum",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute bronchitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-b3d80faf"
+   ],
+   "quote": "acute bronchitis likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "Cough < 2 weeks",
+   "confidence": "medium",
+   "note": "'< 2 weeks' written as (<= (onset Cough) (time_ago 2 weeks)); onset comparisons accept only >=/<=, so exactly 2 weeks also matches."
+  },
+  {
+   "rule": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))",
+   "element_keys": [
+    "p23-88004b5f"
+   ],
+   "quote": "not recurrent",
+   "confidence": "medium",
+   "note": "Explicit 'No' to recurrent cough (Cough + Recurrent qualifier)."
+  },
+  {
+   "rule": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\"))",
+   "element_keys": [
+    "p23-620b3770"
+   ],
+   "quote": "crackles",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\"))",
+   "element_keys": [
+    "p23-620b3770"
+   ],
+   "quote": "bronchial breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable pneumonia (short cough with crackles/bronchial breathing)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pneumonia\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-04553a03"
+   ],
+   "quote": "Pneumonia likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "itchy",
+   "confidence": "medium",
+   "note": "Itching with finding site Nasal structure (itchy nose)."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "blocked nose",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clearing throat - hawking\" \"finding\"))",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "frequent throat clearing",
+   "confidence": "medium",
+   "note": "'frequent' not encoded."
+  },
+  {
+   "rule": "Diagnose possible nose disorder (chronic or recurrent cough)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Disorder of the nose\" \"disorder\") possible)",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "consider underlying nose problems",
+   "confidence": "medium",
+   "note": "Possible (consider)."
+  },
+  {
+   "rule": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Asthma\" \"disorder\") possible)",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "consider asthma",
+   "confidence": "high",
+   "note": "Possible (consider)."
+  },
+  {
+   "rule": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chronic obstructive pulmonary disease\" \"disorder\") possible)",
+   "element_keys": [
+    "p23-5f9ce05b"
+   ],
+   "quote": "consider asthma and COPD",
+   "confidence": "high",
+   "note": "Possible (consider)."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-6b62b40a"
+   ],
+   "quote": "HIV",
+   "confidence": "high",
+   "note": "Known HIV, same form in check_for and rule."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dry cough\" \"finding\"))",
+   "element_keys": [
+    "p23-6b62b40a",
+    "p23-556bdf75"
+   ],
+   "quote": "dry cough",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\"))",
+   "element_keys": [
+    "p23-556bdf75"
+   ],
+   "quote": "shortness of breath",
+   "confidence": "high",
+   "note": "Dyspnea is the recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable PJP (chronic cough with HIV)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pneumocystosis jirovecii pneumonia\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-6357cc45",
+    "p23-21128af7"
+   ],
+   "quote": "Pneumocystis pneumonia (PJP) likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Habitual snoring\" \"finding\"))",
+   "element_keys": [
+    "p23-ec986182"
+   ],
+   "quote": "Persistent snoring",
+   "confidence": "medium",
+   "note": "Persistent snoring ~ Habitual snoring."
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor sleep pattern\" \"finding\"))",
+   "element_keys": [
+    "p23-ec986182"
+   ],
+   "quote": "poor sleep",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable obstructive sleep apnoea (chronic cough page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Obstructive sleep apnea syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-75e01b32",
+    "p23-6559e2ac"
+   ],
+   "quote": "Obstructive sleep apnoea likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable post-infectious cough",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose probable post-infectious cough",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose probable post-infectious cough",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper respiratory infection\" \"disorder\"))",
+   "element_keys": [
+    "p23-2cff60d9",
+    "p23-efe482a5"
+   ],
+   "quote": "Recent upper respiratory tract infection",
+   "confidence": "medium",
+   "note": "'recent' not modelled as time."
+  },
+  {
+   "rule": "Diagnose probable post-infectious cough",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-d00344dc",
+    "p23-7b93b459"
+   ],
+   "quote": "no difficulty breathing",
+   "confidence": "medium",
+   "note": "Requires an explicit 'No' to difficulty breathing."
+  },
+  {
+   "rule": "Diagnose probable post-infectious cough",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Persistent cough after viral respiratory infection\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-652e1c50",
+    "p23-307beea4"
+   ],
+   "quote": "Post-infectious cough likely",
+   "confidence": "medium",
+   "note": "Closest SNOMED concept to post-infectious cough."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Cough onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "Cough/difficulty breathing ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "Difficulty breathing onset at least 2 weeks ago."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Cough with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ba551fd6"
+   ],
+   "quote": "recurrent episodes",
+   "confidence": "medium",
+   "note": "Recurrent episodes expressed as Difficulty breathing with Recurrent qualifier."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-f2c32620"
+   ],
+   "quote": "Smoker",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-36b1eddf"
+   ],
+   "quote": "recently stopped",
+   "confidence": "medium",
+   "note": "Ex-smoker; 'recently' not modelled."
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p23-81e8590b"
+   ],
+   "quote": "weight loss",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible lung cancer (smoker with chronic cough and weight loss)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Malignant neoplasm of lung\" \"disorder\") possible)",
+   "element_keys": [
+    "p23-81e8590b"
+   ],
+   "quote": "consider lung cancer",
+   "confidence": "high",
+   "note": "Possible (consider)."
+  },
+  {
+   "rule": "Diagnose probable COPD (smoker with cough for 2 years or more)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-f2c32620"
+   ],
+   "quote": "Smoker",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable COPD (smoker with cough for 2 years or more)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ex-smoker\" \"finding\"))",
+   "element_keys": [
+    "p23-36b1eddf"
+   ],
+   "quote": "recently stopped",
+   "confidence": "medium",
+   "note": "Ex-smoker; 'recently' not modelled."
+  },
+  {
+   "rule": "Diagnose probable COPD (smoker with cough for 2 years or more)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 years))",
+   "element_keys": [
+    "p23-81e8590b"
+   ],
+   "quote": "coughing with/without sputum most days of 3 months for ≥ 2 years",
+   "confidence": "low",
+   "note": "Only 'cough onset >= 2 years ago' is representable; 'most days of 3 months' per year is not."
+  },
+  {
+   "rule": "Diagnose probable COPD (smoker with cough for 2 years or more)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chronic obstructive pulmonary disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p23-81e8590b"
+   ],
+   "quote": "COPD likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Presenting complaint; Cough is a recorded common symptom."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p23-a5357eb9"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Presenting complaint; Difficulty breathing subsumes the recorded common symptom Dyspnea."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p23-1a1fd5e0"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cyanosis\" \"finding\"))",
+   "element_keys": [
+    "p23-c141d3be"
+   ],
+   "quote": "Cyanosed",
+   "confidence": "high",
+   "note": "General Cyanosis; Central cyanosis is a descendant."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 92)",
+   "element_keys": [
+    "p23-c141d3be"
+   ],
+   "quote": "oxygen saturation < 92% at rest",
+   "confidence": "high",
+   "note": "'drops to < 87% on exertion' not representable (no exertion context)."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))",
+   "element_keys": [
+    "p23-668e2972"
+   ],
+   "quote": "tension pneumothorax likely",
+   "confidence": "high",
+   "note": "Red-box likely diagnosis."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p23-6861e109"
+   ],
+   "quote": "Wheeze",
+   "confidence": "high",
+   "note": "Arrow to 22 is a cross-reference only."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p23-6861e109"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "Confused",
+   "confidence": "medium",
+   "note": "Clouded consciousness is VHA's ACVPU 'Confused' finding."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p23-01fd8d09"
+   ],
+   "quote": "reduced consciousness",
+   "confidence": "high",
+   "note": "ACVPU V/P/U findings are not descendants; not added."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p23-1a01453c"
+   ],
+   "quote": "Breathless at rest",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p23-1a01453c"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "Breathless while talking ~ unable to complete a sentence in one breath."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p23-9102a553"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p23-b4cfda62"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page-local or(Shock, SBP < 80); footnote 1 not built into a shock definition."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p23-b4cfda62"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p23-cc83a21d"
+   ],
+   "quote": "Pulse > 120",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p23-959d4e89"
+   ],
+   "quote": "Coughs ≥ 1 tablespoon fresh blood",
+   "confidence": "medium",
+   "note": "Amount (≥ 1 tablespoon) and 'fresh' not representable; any hemoptysis matches (fires more often)."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ffc3b65e"
+   ],
+   "quote": "Swelling and pain in one calf",
+   "confidence": "high",
+   "note": "'one calf' as Unilateral qualifier."
+  },
+  {
+   "rule": "Urgent: cough or difficulty breathing with red-box signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p23-ffc3b65e"
+   ],
+   "quote": "Swelling and pain in one calf",
+   "confidence": "high",
+   "note": "'one calf' as Unilateral qualifier."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p23-513f0a6e",
+   "element_id": "p23-rb1-e13",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the urgent management list; management is out of scope."
+  },
+  {
+   "element_key": "p23-03f55f0d",
+   "element_id": "p23-rb1-e14",
+   "text": "If short of breath or oxygen saturation < 95%, give oxygen: 1-4L/min via nasal prongs or 6-10L/min via facemask, up to 10-15L/min via non-rebreather mask. Aim f",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy."
+  },
+  {
+   "element_key": "p23-1d9fa461",
+   "element_id": "p23-rb1-e15",
+   "text": "If tension pneumothorax likely: insert large bore cannula2 above 6th rib, anterior axillary line. Arrange urgent chest tube.",
+   "reason_category": "management_step",
+   "reason": "Needle decompression and chest tube."
+  },
+  {
+   "element_key": "p23-10759f4e",
+   "element_id": "p23-rb1-e16",
+   "text": "If shock/systolic BP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluids for shock."
+  },
+  {
+   "element_key": "p23-e9ac69ab",
+   "element_id": "p23-rb1-e17",
+   "text": "If severe pneumonia (2 or more of: confusion/decreased level of consciousness, BP < 90/60, RR ≥ 30 or age > 65): give ceftriaxone3 1g IV/IM.",
+   "reason_category": "management_step",
+   "reason": "Ceftriaxone for severe pneumonia; the severe-pneumonia definition only selects treatment, and age > 65 is not representable."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Tension pneumothorax bullet structure",
+   "decision": "Probable tension pneumothorax = sudden-onset dyspnoea AND one unilateral sign (hyperresonance / decreased breath sounds / chest pain) AND displaced trachea AND BP < 90/60; the priority rule references (active_condition Tension pneumothorax).",
+   "alternatives": "Treat each listed feature as its own urgent criterion (fires far more often, e.g. BP < 90/60 alone), or require only sudden breathlessness plus a one-sided sign.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Duration gates",
+   "decision": "'Cough < 2 weeks' = (<= (onset Cough) (time_ago 2 weeks)); '>= 2 weeks' = (>= ... (time_ago 2 weeks)); 'recurrent' = Cough/Difficulty breathing with Recurrent qualifier; 'not recurrent' = (no Cough+Recurrent).",
+   "alternatives": "Chronic cough / Acute cough precoordinated concepts (no fixed duration in SNOMED).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "COPD likely criterion",
+   "decision": "Smoker or ex-smoker AND cough onset at least 2 years ago.",
+   "alternatives": "Chronic cough concept; no way to express 'most days of 3 months each year'.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Heart failure in priority",
+   "decision": "(active_condition Heart failure) in the urgent rule, per Will's pattern for red-box likely diagnoses.",
+   "alternatives": "Use the raw orthopnea+leg swelling findings so that known chronic heart failure alone does not make every cough urgent.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fingerprick glucose",
+   "decision": "A measure task triggered by Kussmaul's respiration, although glucose is a routine vital, because the page ties the measurement to this sign.",
+   "alternatives": "No task (routine vital), leaving rapid deep breathing unencoded.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hemoptysis amount",
+   "decision": "Any Hemoptysis; '>= 1 tablespoon fresh blood' not representable.",
+   "alternatives": "None found in SNOMED.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "Page-local or(Shock disorder, SBP < 80); footnote 1 not built into a shock rule.",
+   "alternatives": "Encode footnote 1 as a probable Shock rule (brief says not to).",
+   "confidence": "high"
+  }
+ ]
+}

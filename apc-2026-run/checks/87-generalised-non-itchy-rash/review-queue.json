@@ -1,0 +1,826 @@
+[
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-8cdf7fc2",
+  "text": "Check if the patient needs urgent attention 82.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: the red box is a single pointer to page 82 ('Check if the patient needs urgent attention'); it lists no criteria of its own, so there is nothing for a priority evaluation on this page to encode. The file correctly has no system_priority_evaluation.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "No priority evaluation here, which is right because page 82 holds the criteria. Not linked to page 82 beyond the task itself; acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Red box is only 'Check if the patient needs urgent attention -> 82'; no criteria on this page. No priority evaluation in the file, which is correct: page 82 carries the urgent criteria.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-7bd6d699",
+  "text": "GENERALISED NON-ITCHY RASH",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p87-56468e2b",
+  "text": "• Rash often on palms and soles. May have wart-like lesions on genitals and patchy hair loss. • Treat syphilis 67.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Rash on palms and soles (no finding recorded)",
+     "Wart-like lesions on genitals (no finding recorded)",
+     "Patchy hair loss (no finding recorded)"
+    ],
+    "problem": "None of the three features is checked for or used. Low impact: the page's own logic does not condition the diagnosis on them, and adding them to check_for without a rule consuming them would break test constraint 2.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "palms/soles rash",
+     "wart-like genital lesions (condylomata lata)",
+     "patchy hair loss"
+    ],
+    "problem": "Not encoded anywhere. Defensible because the page makes syphilis 'likely' only from the reactive test.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-89554e4e",
+  "text": "• Check for tick bite (small dark brown/black scab). If tick bite or tick present and headache, temperature ≥ 38°C or body pain, tick bite fever likely 38. • If unexplained rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes and ≥ 1 of: headache/backache/body pain, swollen lymph nodes, temperat",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Parts judged: (1) 'tick bite or tick present' = Tick bite OR Infestation caused by Ixodidae OR Infestation caused by Argasidae: correct (SNOMED has no plain 'tick present' finding; the two infestation disorders cover hard and soft ticks). (2) 'and headache, temperature >= 38C or body pain' = and + or(Headache, >= Body temperature 38, Generalized aches and pains): correct, right comparator and unit. (3) 'tick bite fever likely' = probable Spotted fever group rickettsial disease: correct. Closer children exist (African tick bite fever, South African tick-bite fever/Boutonneuse fever) but the page does not distinguish R. africae from R. conorii, so the common parent is the right choice. (4) mpox 'unexplained rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes' = or(Skin lesion, Lesion of genitalia, Lesion+finding_site Anal structure, Lesion of rectum, Oral lesion, Lesion of eye): correct; Generalized rash is_a Skin lesion so the presenting rash satisfies it; there is no precoordinated anal-lesion disorder so finding_site is the right form. (5) '>= 1 of headache/backache/body pain, swollen lymph nodes, temperature > 38.5C, fatigue, sore throat/nasal congestion/cough' = or of nine items with > 38.5: correct, all nine present. (6) 'consider mpox' = possible Monkeypox: correct (Mpox is a synonym of Monkeypox in this release). (7) 'started any medication ... in the past 3 months' = (<= (onset exposure to Drug or medicament) (time_ago 3 months)): correct direction per the briefing's convention (<= time_ago N = within the last N); the named examples (antiseizure, ART, TB drugs, co-trimoxazole, TPT) are covered by the generic substance. (8) 'consider drug rash' = possible Eruption caused by drug: correct. (9) 'Test for syphilis and HIV' is a test order (management); its results are checked for as Syphilis titer detected / not detected and HIV not detected. The positive HIV result is not checked for; see p87-fd394714.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'unexplained' qualifier on the mpox rash/lesion not encoded",
+     "tick bite fever concept is the parent group 'Spotted fever group rickettsial disease'; a closer concept 'African tick bite fever' exists in SNOMED",
+     "'Skin lesion' used in the mpox rule but absent from check_for",
+     "medication examples (antiseizure, ART, TB drugs, co-trimoxazole, TPT) collapse to the generic 'Drug or medicament'"
+    ],
+    "problem": "Parts: (1) Tick bite fever probable: tick bite/tick present (3 concepts) AND (headache OR temp >= 38 OR body pain), correct logic, threshold and unit; only concept specificity is debatable, and the rule adds Generalized rash as a conjunct, which is reasonable in page context. (2) Mpox possible: lesion sites skin/genitals/anus/rectum/mouth/eyes OR'd, symptom list OR'd (headache, backache, body pain, lymphadenopathy, temp > 38.5, fatigue, sore throat, nasal congestion, cough): all present with strict > 38.5 correct. (3) Drug rash possible: onset of drug exposure within 3 months, direction correct per briefing semantics (<= time_ago = within). (4) Test for syphilis/HIV is management, out of scope but reflected by the result-based rules. Anal body-site lesion uses a body structure concept that VHA's own test does not verify (cannot confirm it resolves).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Only the 'unexplained' qualifier on the mpox bullet is lost (not representable); drug-rash concept could be more specific.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-fd394714",
+  "text": "Syphilis reactive HIV positive",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'HIV positive' branch: no (clinical_finding (snomed_concept \"Human immunodeficiency virus detected\" \"finding\")) anywhere in the file, although the concept exists and the page says 'Test for ... HIV'."
+    ],
+    "problem": "'Syphilis reactive' is encoded correctly as Syphilis titer detected in the probable secondary syphilis rule. The HIV-positive branch is not represented. This is defensible: the branch leads only to routine HIV care (management, out of scope), and test constraint 2 forbids a check_for item that no rule consumes. The cost is that the HIV test result can only be recorded as 'not detected', which is an odd check list for a page that says to test for HIV.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Branch labels 'Syphilis reactive' and 'HIV positive'. Syphilis reactive is used as the secondary syphilis criterion. HIV positive leads only to routine HIV care (management) and no 'HIV detected' finding is in check_for, which is fine.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Two flowchart branch labels. 'Syphilis reactive' -> Syphilis titer detected, used in the secondary syphilis rule independent of HIV status, as the page's parallel branches imply. 'HIV positive' leads only to routine HIV care (management/flowchart_routing), so no rule is needed; note 'Human immunodeficiency virus detected' is not in check_for, so only the negative HIV result can be recorded from this task.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-9c7e5806",
+  "text": "Yes No",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing: the 'Yes' / 'No' labels of the HIV-risk question; the logic they route is judged under p87-e1419590.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Yes/No labels; both branches handled via the two rules above.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Yes/No branch labels; both branches kept as separate rules with complementary time conditions.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p87-18275fb8",
+  "text": "1HIV can be transmitted via exposure to infectious body fluids, through sexual contact (rape/sexual assault or consensual sex, burst condom), occupational or non-occupational exposure (sharps injury, splash to eye/mouth/nose/broken skin), sharing needles, contact with used condom and exposure to blo",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "figure_or_note: footnote defining HIV risk exposure routes; the rules' generic 'Exposure to Human immunodeficiency virus' finding covers all of them.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "sexual contact (rape/sexual assault, consensual sex, burst condom)",
+     "occupational/non-occupational exposure (sharps injury, splash to eye/mouth/nose/broken skin)",
+     "sharing needles",
+     "contact with used condom / exposure to blood"
+    ],
+    "problem": "Collapsed into a single 'Exposure to Human immunodeficiency virus' finding. The listed exposure routes are not enumerated or checked for, so the health worker must already judge 'exposure to HIV'; e.g. unprotected consensual sex is not captured unless recorded as HIV exposure.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c001",
+  "text": "Check for causes of generalised non-itchy rash :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page title is 'generalised NON-ITCHY rash'; the 'non-itchy' qualifier is dropped. SNOMED has no non-itchy rash concept, and the itchy-rash page presumably triggers separately, so this is a minor loss.",
+    "fix": "Optionally add (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))) alongside the trigger; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Trigger 'Generalized rash' drops the page's 'non-itchy' qualifier, so this task (and every rule anchored on it) also fires for itchy generalised rash, which the guide routes elsewhere.",
+    "fix": "Accept as the closest anchor, or add an absent-itching discriminator if the grammar allows one; record the choice in remaining questions.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c030",
+  "text": "Diagnose probable tick bite fever (generalised rash page) :: (diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "South African 'tick bite fever' covers both R. africae (African tick bite fever) and R. conorii (South African tick-bite fever), both descendants of Spotted fever group rickettsial disease, so the group concept is the right umbrella; 'likely' -> probable.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"tick bite fever\" (South African tick bite fever); the order-level spotted fever group disease is broader than the named disease.",
+    "fix": "(snomed_concept \"South African tick-bite fever\" \"disorder\") or \"African tick bite fever\" (both exist; the latter is_a Spotted fever group rickettsial disease)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c031",
+  "text": "Diagnose possible mpox (generalised rash page) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'unexplained rash or lesion/s of skin': Generalized rash is-a Skin lesion (confirmed), so Skin lesion covers both the rash and skin-lesion branches. The 'unexplained' qualifier cannot be modelled.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"unexplained rash or lesion/s of skin/...\": the rash alternative is dropped, so rash without a lesion record cannot trigger mpox; \"unexplained\" is also not encoded.",
+    "fix": "Add (clinical_finding (snomed_concept \"Generalized rash\" \"disorder\")) to the or-group; note \"unexplained\" in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unexplained rash or lesion/s of skin…'; 'Skin lesion' covers the rash arm only through descendant matching (Generalized rash is_a Skin lesion), and 'unexplained' is not encoded, so any generalised rash plus one symptom triggers possible mpox even when tick bite fever or syphilis explains it.",
+    "fix": "Keep Skin lesion, but record in remaining questions that 'unexplained' cannot be encoded.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c049",
+  "text": "Diagnose possible drug rash (generalised rash page) :: (diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'consider drug rash' -> possible Eruption caused by drug (synonym 'drug eruption').",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "On a generalised rash page a closer concept exists: (snomed_concept \"Generalized skin eruption caused by drug and medicament\" \"disorder\"), which is_a Generalized rash; 'Eruption caused by drug' includes localised and fixed drug eruptions.",
+    "fix": "(diagnosis (snomed_concept \"Generalized skin eruption caused by drug and medicament\" \"disorder\") possible)",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c061",
+  "text": "Diagnose probable non-specific viral rash (generalised rash page) :: (no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "No recorded HIV exposure = the 'No' branch.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Claim expr carries a \"No\" qualifier that is not in the lisp; the lisp encodes \"no recorded HIV exposure\", which is a reasonable reading of the \"No\" answer but depends on absence of data.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c062",
+  "text": "Diagnose probable non-specific viral rash (generalised rash page) :: (>= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\"))) (time_ago 6 weeks))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Exposure at least 6 weeks ago is not 'at risk in the past 6 weeks', so it also lands on the 'No' branch.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page \"No\" = not at risk in the past 6 weeks; the lisp instead says exposure onset at least 6 weeks ago. Logically compatible but the page never mentions older exposure.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable non-specific viral rash (generalised rash page)",
+  "text": "A probable rule whose HIV-exposure evidence appears only in wrapped forms: (no (finding ...)) and (>= (onset (finding ...)) (time_ago 6 weeks)). Test constraint 4 matches evidence to check_for by exact s-expression string; the check_for holds only the bare (finding (snomed_concept \"Exposure to (contextual qualifier)\" ...) (snomed_concept \"Human immunodeficiency virus\" \"organism\")). If the test does not unwrap no/onset, this reports PROBABLE DIAGNOSIS ... NOT CHECKED FOR. Also, (no ...) needs an explicit negative record; if the exposure question is simply unanswered the viral-rash conclusion never fires.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of generalised non-itchy rash",
+  "text": "The check list records the HIV test only as 'not detected'. 'Human immunodeficiency virus detected' exists in SNOMED and the page's HIV-positive branch is real, but no rule on the page would consume it (the branch is management only), so under test constraint 2 it was left out. Worth a clinician/maintainer decision rather than silent omission.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox (generalised rash page)",
+  "text": "Unlike the other four diagnosis rules, this one is not anchored to Generalized rash; it fires from any Skin lesion (or site lesion) plus one symptom, and 'Skin lesion' itself is not in the check_for although every other lesion site is. Acceptable for a 'consider' rule (and Generalized rash is_a Skin lesion so the page's own patients qualify), but inconsistent with the file's pattern.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever (generalised rash page)",
+  "text": "Uses the broad parent 'Spotted fever group rickettsial disease'; 'African tick bite fever' exists in SNOMED and is the South African entity. Also the rule conjoins Generalized rash although the page criterion does not itself say rash.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for vs Diagnose possible mpox",
+  "text": "'Skin lesion' is used in the mpox rule but is not a check_for item; the check list and rule disagree.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox",
+  "text": "'Unexplained' is not captured, and the rule does not require absence of other explanations; mpox can fire alongside syphilis or tick bite fever. Likely acceptable for a possible-level rule.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible drug rash",
+  "text": "Any drug exposure counts, with no start-of-treatment nuance or the page's named drug classes; broad but defensible.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable non-specific viral rash",
+  "text": "Fires whenever both tests negative and no recent risk; requires tests to have been recorded, so does not fire untested, which matches the flowchart.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible drug rash / Diagnose possible HIV seroconversion illness / Diagnose probable non-specific viral rash",
+  "text": "All three depend on the onset of an Exposure finding. The house standard says onset is captured when a finding is recorded, so a long-standing medication (e.g. ART for years) or an old HIV exposure recorded at this visit would get onset = now. Drug rash would then fire for every patient with any recorded medication, seroconversion would fire for any recorded HIV exposure, and non-specific viral rash could only fire on (no exposure). The logic is right only if the onset is entered explicitly.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox (generalised rash page)",
+  "text": "Because Generalized rash is_a Skin lesion and 'unexplained' cannot be represented, possible mpox fires for almost every generalised-rash patient who has headache, fatigue, cough or any other common symptom, including patients with a reactive syphilis result or a recent drug start. This is broader than the page intends.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "HIV seroconversion vs non-specific viral rash",
+  "text": "The boundaries overlap: (<= onset 6 weeks) and (>= onset 6 weeks) are both true at exactly 6 weeks, so possible seroconversion and probable viral rash fire together on that day.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All rules (due_to Generalized rash)",
+  "text": "The 'non-itchy' part of the presenting complaint is not encoded, so these rules (e.g. probable non-specific viral rash) also fire for itchy generalised rash, which belongs on a different page. Generalized rash is not a common symptom; the rules fire only if another task records it.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable non-specific viral rash (generalised rash page)",
+  "text": "The rule does not exclude the earlier bullets (tick bite fever, mpox, drug rash), so it can be probable alongside probable tick bite fever in the same patient. The page orders those bullets first, but it does not say explicitly that they exclude viral rash.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "'Human immunodeficiency virus detected' is not checked for, so the 'HIV positive' branch result cannot be recorded from this task. This is harmless for the rules because that branch only routes to routine HIV care.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of generalised non-itchy rash",
+  "text": "check_for omits Skin lesion (used by the mpox rule), the temperature thresholds, and HIV detected/positive (page has an HIV positive branch). The red box 'Check if the patient needs urgent attention (page 82)' is not encoded as a priority/pointer.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tick bite fever (generalised rash page)",
+  "text": "Diagnosis concept is the broad group Spotted fever group rickettsial disease rather than tick bite fever; the page's bullet does not itself require rash (page context only).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox (generalised rash page)",
+  "text": "Page trigger is 'unexplained rash OR lesion/s'; rule requires a lesion concept only, dropping rash and 'unexplained'. Structure and thresholds (>38.5) otherwise faithful; possible is right for 'consider'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox (generalised rash page)",
+  "text": "'consider' gives possible, and the >=1-of symptom OR is faithful, but 'unexplained' is dropped. Because Generalized rash is_a Skin lesion, every generalised rash patient with headache, fatigue, cough, etc. gets possible mpox, even when another rule explains the rash.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (New medication commenced finding)  vs  B: (Exposure to (contextual qualifier) + Drug or medicament)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+    "reason": "\"started any medication ... in the past 3 months\" needs an exposure with an onset; B's exposure form is the gold standard's pattern, while the onset of a 'New medication commenced' finding is a roundabout reading.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (none)  vs  B: (Infestation caused by Ixodidae), (Infestation caused by Argasidae)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\")); (finding ... \"Infestation caused by Argasidae\" ...)",
+    "reason": "The page says \"If tick bite or tick present\"; A dropped \"tick present\" entirely, B covers it with the hard- and soft-tick infestation concepts.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (none)  vs  B: lesion of genitalia / anus / rectum / mouth / eye",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(Lesion of genitalia), (Lesion + finding_site Anal structure), (Lesion of rectum), (Oral lesion), (Lesion of eye)",
+    "reason": "The page lists \"lesion/s of skin/genitals/anus/rectum/mouth/eyes\" as mpox evidence and both builds use them in the mpox rule, so the task asks for them; A omitted them only because the rash already satisfies that part (raised as a clinician question).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: onset of New medication commenced <= 3 months  vs  B: onset of exposure to Drug or medicament <= 3 months",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))) (time_ago 3 months))",
+    "reason": "Same as the check_for decision: \"started any medication\" in the past 3 months is the onset of a drug exposure, and the examples are \"such as\" so the generic substance fits.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (none)  vs  B: Infestation caused by Ixodidae / Argasidae in the tick-bite-fever rule",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or Tick bite, Infestation caused by Ixodidae, Infestation caused by Argasidae)",
+    "reason": "\"If tick bite or tick present\" is a disjunction; B encodes both halves.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Generalized rash required in the tick-bite-fever rule  vs  B: not required",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+    "reason": "The bullet sits on the GENERALISED NON-ITCHY RASH page and every other diagnosis rule in both builds requires the rash as page context; without it the rule would diagnose tick bite fever on any page's patient.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Generalized rash listed in the mpox 'rash or lesion' or  vs  B: Skin lesion only",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\"))",
+    "reason": "\"rash or lesion/s of skin\": snomed is_a confirms Generalized rash is a descendant of Skin lesion, so A's extra disjunct is redundant and B's form matches the page's wording.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "slug": "87-generalised-non-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: African tick bite fever (probable)  vs  B: Spotted fever group rickettsial disease (probable)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)",
+    "reason": "The page says only \"tick bite fever\", which covers both African tick bite fever and Boutonneuse fever (both children of the spotted-fever parent); A's choice is narrower than the page, but the page does not name an organism.",
+    "unsettled": true
+   }
+  ]
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "page": 20,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "priority_level",
+   "difference": "A: Emergency \"Emergency: unconscious and fitting (seizures/fits)\"  vs  B: Urgent \"Urgent: unconscious and fitting\" (conditions identical: (and Seizure Unconscious))",
+   "choice": "A",
+   "final_expr": "(and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (clinical_finding (snomed_concept \"Unconscious\" \"finding\")))",
+   "reason": "The page says \"Give urgent attention to the patient who is unconscious and fitting\", but Will's briefing allows Emergency where the corresponding warning sign already carries that level, and the Seizure warning sign (rules-guide / warning_signs.ts) is Emergency, so an Urgent rule would rank below the sign that already fires for every patient this rule matches.",
+   "unsettled": true
+  },
+  {
+   "role": "rule_description",
+   "difference": "A: \"Check for unconsciousness in the fitting patient\"  vs  B: \"Check for urgent seizure/fit conditions\"",
+   "choice": "A",
+   "final_expr": "(check_for (clinical_finding (snomed_concept \"Unconscious\" \"finding\")))",
+   "reason": "Naming only; both are page-specific and unique. A's describes what the task checks for (\"unconscious\") and keeps the pair of descriptions consistent with the chosen base.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed and agree on every condition (agreement 1.0: trigger Seizure, check_for Unconscious, priority (and Seizure Unconscious)); diff.json lists no condition differences. The only substantive difference is the priority level (A Emergency, B Urgent), which diff.json does not compare; it is recorded above. Final build is A's files with the priority note extended to explain the level; remaining questions merged from both builders. Element accounting (25 not encoded: pointers to 30/19/177 as cross_reference_only, the rest management_step) is identical in substance between builds; A's wording kept."
+}

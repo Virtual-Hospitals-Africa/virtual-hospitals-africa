@@ -1,0 +1,825 @@
+[
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p196-9dbf7719",
+  "text": "Give urgent attention to the health worker with a sharps injury or splash to eye/mouth/nose/broken skin with exposure to any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Splash route (eye / mouth / nose / broken skin) is not encoded; it is replaced by the generic event 'Exposure to blood and/or body fluid', which covers any route. SNOMED has 'Exposure to biological agent via mucous membrane' (event) and 'Broken skin' (disorder), which would carry the page's routes.",
+     "'Health worker' (the exposed person is the clinician, not a patient) is not representable in the language; this is a limitation, not a builder error."
+    ],
+    "problem": "Part (a) 'Sharps injury' (disorder, 304235000) is the right concept. Part (c) is correctly structured as (and <trigger> (or <fluids>)) and the level Urgent matches 'Give urgent attention'. Part (b) is approximated only. Note also that the trigger wraps an 'event'-category concept in clinical_finding, which the gold standard and briefing never do (exposures are written with the 'Exposure to (contextual qualifier)' finding form); the grammar accepts it, but whether the app can record an event as a clinical finding is unverified.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "splash to eye/mouth/nose/broken skin as a trigger",
+     "health worker / occupational context"
+    ],
+    "problem": "Trigger is (or Sharps injury, Exposure to blood and/or body fluid event). The splash-to-mucosa/broken-skin route is only covered loosely by the generic exposure event; no site (eye, mouth, nose, broken skin) is encoded. The 'Exposure to blood and/or body fluid' event also makes the first half of the and redundant with the fluid list.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "route of the splash: eye/mouth/nose/broken skin (mucosal or non-intact skin) is not encoded; the generic 'Exposure to blood and/or body fluid' event also matches intact-skin exposure",
+     "'health worker' (occupational) context is not encoded; the rule fires for any person with these exposures"
+    ],
+    "problem": "Sharps injury part is encoded correctly. The splash part is stood in for by the generic event 'Exposure to blood and/or body fluid', which drops the four routes that make a splash significant. No closer precoordinated SNOMED concept was found (no mucosal-exposure or splash concept); 'Exposure to body fluid due to accidental needle stick injury' exists but is narrower than 'sharps injury'. Occupational context is probably not representable, but the routes could be added as finding_site qualifiers or check_for items.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p196-32f2a256",
+  "text": "Blood-stained fluid/tissue",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Blood-stained tissue is not encoded. 'Human tissue' (substance, 272171002) exists and could carry it."
+    ],
+    "problem": "Blood-stained fluid is approximated by 'Serosanguinous fluid' (substance, 734132004; a child of Body fluid). SNOMED has no 'blood-stained fluid' substance, so this is a reasonable substitute for the fluid half. The tissue half is simply absent.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "tissue (blood-stained tissue)"
+    ],
+    "problem": "Encoded as 'Serosanguinous fluid', which is a different substance (serum plus blood) and only approximates 'blood-stained fluid'. Blood-stained tissue is not captured.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "blood-stained tissue (only a fluid is encoded)"
+    ],
+    "problem": "'Blood-stained fluid' is mapped to 'Serosanguinous fluid', a wound-drainage term for thin, pale-red serum with some blood. It is an approximation of 'any blood-stained body fluid' (for example bloodstained CSF, pleural fluid or sputum). No 'bloodstained fluid' substance concept was found, so the approximation is defensible, but the tissue half is absent. 'Body fluid' (substance) with a blood-stained qualifier, or the general 'Blood' already present, would have been alternatives; this should be noted as a judgment call.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p196-eb498253",
+  "text": "Wound secretions",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as 'Exudate' (substance, 247450001), which is broader than wound secretions (any exudate). SNOMED has no wound-specific secretion substance ('Wound discharge' is a finding, not a substance), so this is the closest usable concept; accepted with the generalisation noted.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [],
+    "problem": "'Exudate' is a loose stand-in for wound secretions; a wound-specific concept (e.g. wound exudate/discharge) would match the page better.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Wound secretions' is mapped to the general 'Exudate' (substance). That is broader than wound-specific, but no wound-exudate substance concept exists ('Wound discharge' is a finding, not a substance), so this is acceptable.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p196-35974afd",
+  "text": "Reduce TB risk Identify patients with possible TB promptly: • The patient has TB symptoms1. • Separate patients with possible TB from others in the facility. • Educate about cough hygiene and give face mask/tissues to cover mouth/nose to protect others. Diagnose TB rapidly: • Fast track TB workup an",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as a possible Tuberculosis rule triggered by any one TB symptom, which matches 'possible TB' + 'has TB symptoms' (plural used generically; any one symptom qualifies on the page). Rule type (possible) and concept (Tuberculosis, disorder) are right. The symptom definition itself is judged under the footnote key.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "no priority/check task; no link to the facility triage"
+    ],
+    "problem": "A possible-TB diagnosis rule exists, which is reasonable, but the page frames it as infection-control identification, not a diagnosis.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The conclusion is encoded with the right rule type (possible) and concept. The criteria come from footnote p196-589511b3 and are judged there.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p196-589511b3",
+  "text": "1TB symptoms: cough, fever ≥ 2 weeks, unexplained weight loss or drenching night sweats.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All four parts are present with the right concepts and 'or' logic. '>= 2 weeks' is attached to fever only, as (>= (onset Fever) (time_ago 2 weeks)) = fever began at least 2 weeks ago, which is the right direction. The footnote's punctuation ('cough, fever >= 2 weeks') can also be read as the duration applying to both cough and fever, as in the usual SA TB symptom screen (cough >= 2 weeks); the builder took the literal reading. 'Drenching' has no SNOMED qualifier; plain 'Night sweats' is the closest concept. Cough and Fever are common symptoms; Unexplained weight loss and Night sweats are not checked for on this page, which is allowed for a possible rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'drenching' qualifier on night sweats",
+     "duration for cough if >= 2 weeks was intended"
+    ],
+    "problem": "Fever >= 2 weeks is encoded as (>= (onset ...) (time_ago 2 weeks)); the direction should be checked against the language convention (onset at least 2 weeks ago). Cough has no duration, which may be right per the literal footnote wording but is ambiguous. Unexplained weight loss and night sweats are plain findings.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'≥ 2 weeks' on cough: the footnote reads 'cough, fever ≥ 2 weeks', and the APC TB symptom screen applies ≥ 2 weeks to cough as well, but the rule takes cough of any duration",
+     "'drenching' on night sweats (encoded as plain 'Night sweats')"
+    ],
+    "problem": "Fever ≥ 2 weeks is encoded correctly with the house onset convention ((>= (onset ...) (time_ago 2 weeks)) = onset at least 2 weeks ago). Cough has no duration, so any cough of any length yields possible TB. That is the most consequential reading choice here and it is not justified by the page's wording. Unexplained weight loss is correct.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c002",
+  "text": "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'splash to eye/mouth/nose/broken skin'; the concept drops the route (mucous membrane or non-intact skin) so a splash onto intact skin also triggers. No exact SNOMED concept for a body-fluid splash; (snomed_concept \"Exposure to biological agent via mucous membrane\" \"event\") exists but covers only eye/mouth/nose, not broken skin.",
+    "fix": "Keep as the nearest available concept, or add (snomed_concept \"Exposure to biological agent via mucous membrane\" \"event\") as an alternative trigger; record the lost route qualifier in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says splash to eye/mouth/nose/broken skin (mucosal/non-intact skin route); the concept is generic exposure and drops the route/site; also redundant with the fluid list below.",
+    "fix": "Consider more specific splash/mucous-membrane exposure concept if one exists, or accept as the closest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page restricts to a splash to eye/mouth/nose/broken skin (mucous membrane or non-intact skin); 'Exposure to blood and/or body fluid' also covers intact-skin contact, which the page does not treat as urgent. The splash site is dropped.",
+    "fix": "Add finding_site qualifiers (eye / mouth / nose / non-intact skin) to the exposure event, or record the limit in Could-not-model.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c005",
+  "text": "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Blood-stained fluid/tissue'. Serosanguinous fluid is narrower than any blood-stained fluid, and blood-stained tissue is dropped. No closer substance exists (only 'Body fluid', which is too broad).",
+    "fix": "Keep Serosanguinous fluid as the nearest concept; note the dropped 'tissue' in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Blood-stained fluid/tissue'; serosanguinous fluid is a narrower serous+blood fluid and omits tissue.",
+    "fix": "Keep, but note tissue is not covered; consider a blood-stained fluid/tissue concept if one exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Blood-stained fluid/tissue': Serosanguinous fluid (serum mixed with blood) is narrower than any blood-stained fluid, and 'tissue' is dropped completely.",
+    "fix": "Keep Serosanguinous fluid and add exposure to (snomed_concept \"Body tissue material\" \"substance\"), or note the gap.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Wound secretions'; Exudate is any exudate, not wound-specific. No wound-specific substance exists in SNOMED (only specimen and finding concepts).",
+    "fix": "Keep Exudate as the nearest substance; note in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Wound secretions'; generic Exudate substance loses the wound qualifier.",
+    "fix": "Look for wound exudate/drainage substance concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Wound secretions': Exudate (substance) is any exudate, not only from a wound. No wound-specific substance concept exists ('Wound discharge' is a finding), so the substitute is acceptable but broader.",
+    "fix": "Keep, and note it under SNOMED gaps.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c016",
+  "text": "Urgent: occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c002: the splash route (eye/mouth/nose/broken skin) is dropped, so the Urgent rule also fires for a splash onto intact skin. No exact SNOMED concept; (snomed_concept \"Exposure to biological agent via mucous membrane\" \"event\") is the nearest for the mucosal route.",
+    "fix": "Keep as nearest concept; record the lost route qualifier.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says splash to eye/mouth/nose/broken skin (mucosal/non-intact skin route); the concept is generic exposure and drops the route/site; also redundant with the fluid list below.",
+    "fix": "Consider more specific splash/mucous-membrane exposure concept if one exists, or accept as the closest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page restricts to a splash to eye/mouth/nose/broken skin (mucous membrane or non-intact skin); 'Exposure to blood and/or body fluid' also covers intact-skin contact, which the page does not treat as urgent. The splash site is dropped.",
+    "fix": "Add finding_site qualifiers (eye / mouth / nose / non-intact skin) to the exposure event, or record the limit in Could-not-model.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Urgent: occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c005: narrower than 'blood-stained fluid' and drops 'tissue'; no closer substance exists.",
+    "fix": "Keep; note in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Blood-stained fluid/tissue'; serosanguinous fluid is a narrower serous+blood fluid and omits tissue.",
+    "fix": "Keep, but note tissue is not covered; consider a blood-stained fluid/tissue concept if one exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Blood-stained fluid/tissue': Serosanguinous fluid (serum mixed with blood) is narrower than any blood-stained fluid, and 'tissue' is dropped completely.",
+    "fix": "Keep Serosanguinous fluid and add exposure to (snomed_concept \"Body tissue material\" \"substance\"), or note the gap.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Urgent: occupational sharps/splash exposure to body fluids :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c007: Exudate is broader than 'wound secretions'; no wound-specific substance exists.",
+    "fix": "Keep; note in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Wound secretions'; generic Exudate substance loses the wound qualifier.",
+    "fix": "Look for wound exudate/drainage substance concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Wound secretions': Exudate (substance) is any exudate, not only from a wound. No wound-specific substance concept exists ('Wound discharge' is a finding), so the substitute is acceptable but broader.",
+    "fix": "Keep, and note it under SNOMED gaps.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c032",
+  "text": "Diagnose possible TB from TB symptoms (occupational infection control) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'drenching night sweats'; the 'drenching' qualifier is dropped. SNOMED has no drenching-night-sweats concept, so this is the nearest available.",
+    "fix": "Keep; note the dropped qualifier in remaining questions.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires 'drenching' night sweats; concept is plain night sweats (severity dropped).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'drenching' night sweats. Night sweats without a severity qualifier is broader.",
+    "fix": "Add (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")), or accept it and note that no 'drenching' concept exists.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c033",
+  "text": "Diagnose possible TB from TB symptoms (occupational infection control) :: (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'possible TB' for patients with TB symptoms, so 'possible' is right, but the diagnosis applies to the patient, not the exposed health worker; fine as triage logic.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "The page says 'possible TB' (identify patients with possible TB: the patient has TB symptoms), so the possible level fits.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids; Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "The 'splash' half of the trigger is a clinical_finding wrapping an event-category concept ('Exposure to blood and/or body fluid', event). The briefing and gold standard express exposures as (finding (snomed_concept \"Exposure to (contextual qualifier)\" ...) <substance>) and never put an event concept under clinical_finding. The grammar parses it, but whether a nurse can record it in the app, and so whether the task and the priority rule ever fire on a splash without a sharps injury, is unverified. If it cannot be recorded, the whole splash branch is dead.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "The exposure route the page names (eye / mouth / nose / broken skin) is lost: any exposure to blood/body fluid counts, including one to intact skin, which the page does not escalate. SNOMED offers 'Exposure to biological agent via mucous membrane' (event) and 'Broken skin' (disorder) if a route-specific trigger is wanted. Also, the generic event trigger overlaps the specific fluid findings: a record of 'Exposure to Blood' alone (without the generic event or a sharps injury) does not fire the rule, which may surprise a nurse who records only the specific exposure.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids",
+  "text": "'Blood-stained tissue' is not in the check_for list or the priority rule; only the fluid half of that red-box item is covered (as Serosanguinous fluid). 'Human tissue' (substance) exists.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms (occupational infection control)",
+  "text": "The >= 2 weeks duration is applied to fever only. The footnote 'cough, fever >= 2 weeks, ...' is ambiguous and the standard SA TB screen applies >= 2 weeks to cough; if that reading is intended, the rule fires on any cough, which is broader than the page. Question for a clinician; not a clear error.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "whole file",
+  "text": "The page addresses the health worker, not a patient. The language has no way to say that the exposed person is the clinician, so the rules will fire for any patient with a recorded sharps injury or body-fluid exposure. Not representable; worth a note in the remaining questions rather than a fix.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "Trigger 'sharps injury OR splash' reduced to sharps injury or a generic exposure event; splash site not represented, and 'Exposure to blood and/or body fluid' event duplicates the fluid list, so an exposure to any fluid event alone with any fluid satisfies it.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids",
+  "text": "Task trigger is an 'or' of sharps injury / exposure event, while the check_for list repeats fluids already required by the priority rule; consistent, but fluids approximated (Serosanguinous fluid, Exudate).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms",
+  "text": "Fever onset comparison direction and missing cough duration are unverified; rule fires on any single symptom (cough alone), which may over-trigger.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms (occupational infection control)",
+  "text": "The rule is anchored on bare Cough (a common symptom), so every coughing adult gets a possible-TB diagnosis from this infection-control page. It probably duplicates or conflicts with the TB chapter's own screening rules. Night sweats and Unexplained weight loss are not in any check_for task on this page, so those branches depend on other pages recording them.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids / Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "The due_to anchors ('Sharps injury' disorder, 'Exposure to blood and/or body fluid' event) are neither common symptoms nor warning signs, and no pre-screen rule records them. The check task and Urgent rule may never fire in practice. The trigger event 'Exposure to blood and/or body fluid' already implies the exposure the or-list then re-asks for, so the 'splash' arm is semantically circular and does not restrict to eye/mouth/nose/broken skin.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "There is no occupational or health-worker restriction, so the rule applies to any adult (for example, non-occupational exposure to semen). The page addresses health workers only. This is probably not representable, but it should be recorded as a known deviation.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids",
+  "text": "Type and structure are right: trigger (sharps injury OR splash) and check_for covers every fluid in the red box. Two scope qualifiers from the heading are not encoded: 'health worker' (no finding form exists; the rule fires for any patient with a sharps injury or fluid exposure) and the splash route 'eye/mouth/nose/broken skin' (c002). Both widen the trigger slightly; the clinical response (PEP assessment) is the same, so this is acceptable if recorded.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "Urgent is justified by 'Give urgent attention'. The (and (or sharps, splash) (or fluids...)) structure matches the heading 'with a sharps injury or splash ... with exposure to any of'. Same two dropped qualifiers as the task ('health worker', splash route), so the Urgent priority also applies to a non-health-worker or to a splash onto intact skin.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids",
+  "text": "Check task duplicates the priority rule's trigger and fluid list as check_for items, so the fluids are asked as separate checks rather than a trigger; none of the page's management steps (wash broken skin, rinse/irrigate eye/mouth/nose with water or sodium chloride 0.9%, assess HIV/hepatitis B PEP) are encoded.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB from TB symptoms (occupational infection control)",
+  "text": "TB-symptom rule is drawn from an outside-box footnote and a management bullet, not the red box; the 'possible' label is supported, but it concerns patients while the rest of the page is about the health worker, and 'drenching' is dropped. The OR structure matches the footnote.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for occupational sharps/splash exposure to body fluids",
+  "text": "The trigger drops the splash site (eye/mouth/nose/broken skin), so the generic exposure event is broader than the page. The check list covers all 12 substances, but 'tissue' from 'Blood-stained fluid/tissue' is missing and 'Wound secretions' became generic Exudate.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: occupational sharps/splash exposure to body fluids",
+  "text": "Urgent and (and <sharps injury or exposure> (or <substances>)) faithfully follow 'Give urgent attention … with exposure to any of'. The same splash-site and tissue gaps apply, so intact-skin contact with blood would wrongly make it urgent. Both trigger concepts are checked only as triggers and not in check_for. Confirm that the house test accepts that.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "trigger",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+    "reason": "The header says 'a sharps injury or splash to eye/mouth/nose/broken skin', so the splash branch must be represented; A's event concept is the only resolvable stand-in, though broader than the page's routes.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+    "reason": "The header says 'a sharps injury or splash to eye/mouth/nose/broken skin', so the splash branch must be represented; A's event concept is the only resolvable stand-in, though broader than the page's routes.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+    "reason": "The box lists 'Blood-stained fluid/tissue' as an exposure; B's Serosanguinous fluid (blood-stained serous fluid) is the closest resolvable substance, whereas A left the item out.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+    "reason": "The box lists 'Blood-stained fluid/tissue' as an exposure; B's Serosanguinous fluid (blood-stained serous fluid) is the closest resolvable substance, whereas A left the item out.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+    "reason": "The page says 'Identify patients with possible TB promptly: The patient has TB symptoms1', which is 'possible X' wording that the scope decision encodes as a possible diagnosis rule.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+    "reason": "Footnote 1 lists 'cough' as a TB symptom; whether '≥ 2 weeks' also applies to cough is not settled by the page, so the plain reading (duration on fever only) is kept.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+    "reason": "Footnote 1: 'fever ≥ 2 weeks', written with >= as the page says and the database requires.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+    "reason": "Footnote 1: 'unexplained weight loss', an exact concept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 196,
+  "slug": "196-protect-yourself-from-occupational-infection",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+    "reason": "Footnote 1: 'drenching night sweats'; no 'drenching' qualifier exists, so plain Night sweats (broader) is used.",
+    "unsettled": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,249 @@
+{
+ "page_2026": 29,
+ "page_2023": 22,
+ "will_file": "22-bites-and-stings.lisp",
+ "redbox_status_2023": [
+  "changed"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))"
+   ],
+   "only_2023": [],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Venomous sting\" \"disorder\"))"
+   ],
+   "is_a_related": []
+  },
+  "check_for": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep bite wound\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Has drooping eyelids\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avulsion - injury\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized muscle weakness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infection of bite wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Snake venom\" \"substance\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cramp\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toxic effect of venom\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized muscle weakness\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infection of bite wound\" \"disorder\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "priority_condition": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep bite wound\" \"morphologic abnormality\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Has drooping eyelids\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))"
+   ],
+   "only_2023": [
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized muscle weakness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infection of bite wound\" \"disorder\"))"
+   ],
+   "only_2026": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cramp\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toxic effect of venom\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Venomous sting\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Bone structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+     "relation": "2026 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized muscle weakness\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infection of bite wound\" \"disorder\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "diagnosis_condition": {
+   "both": [],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Snake venom\" \"substance\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Venomous sting\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "diagnosis": {
+   "both": [],
+   "only_2023": [
+    "(diagnosis (snomed_concept \"Poisoning caused by venomous snake\" \"disorder\") possible)"
+   ],
+   "only_2026": [
+    "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Cellulitis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Prurigo simplex\" \"disorder\") probable)"
+   ],
+   "is_a_related": []
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 34,
+  "build_2026": 87,
+  "exact": 14,
+  "related": 15
+ }
+}

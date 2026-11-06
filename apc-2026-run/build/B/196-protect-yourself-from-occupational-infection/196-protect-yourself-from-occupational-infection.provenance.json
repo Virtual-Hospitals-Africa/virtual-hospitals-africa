@@ -1,0 +1,405 @@
+{
+ "edition": "2026",
+ "page": 196,
+ "lisp_file": "196-protect-yourself-from-occupational-infection.lisp",
+ "conditions": [
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury",
+   "confidence": "high",
+   "note": "Presenting complaint. Sharps injury (disorder) also matches its child Accidental needle stick injury. The 'splash to eye/mouth/nose/broken skin' alternative has no SNOMED concept, so it is not part of the trigger/priority (fires less often)."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood",
+   "confidence": "high",
+   "note": "Exposure to Blood (substance), as page 20 pairs exposure with substances."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions",
+   "confidence": "high",
+   "note": "Exact substance concept (singular)."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid",
+   "confidence": "low",
+   "note": "No 'blood-stained fluid' substance; Serosanguinous fluid (blood-stained serous fluid) is the closest. 'Bloody discharge' considered. The '/tissue' part has no substance concept and is not encoded."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen",
+   "confidence": "medium",
+   "note": "No 'Semen' substance FSN; Seminal fluid is the fluid itself (Semen component is its parent grouping). Male genital fluid considered (broader)."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions",
+   "confidence": "low",
+   "note": "No wound secretion/exudate substance; Exudate (substance) is broader (exudate from any site). Wound discharge exists only as a patient finding, not a substance."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk",
+   "confidence": "high",
+   "note": "Exact substance concept."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Pleural fluid exists exactly."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Pericardial fluid exists exactly."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Peritoneal fluid exists exactly."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Amniotic fluid exists exactly."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Synovial fluid exists exactly."
+  },
+  {
+   "rule": "Check for body fluid exposure after a sharps injury",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Cerebrospinal fluid exists exactly."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "cough",
+   "confidence": "medium",
+   "note": "Footnote list read as four items separated by commas; '≥ 2 weeks' attached to fever only. Alternative: duration applies to cough too."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "fever ≥ 2 weeks",
+   "confidence": "medium",
+   "note": "(>= (onset Fever) (time_ago 2 weeks)) = fever began at least 2 weeks ago; >= as the page says and as the database requires."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "unexplained weight loss",
+   "confidence": "high",
+   "note": "Exact finding."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p196-589511b3"
+   ],
+   "quote": "drenching night sweats",
+   "confidence": "medium",
+   "note": "No 'drenching' qualifier found; plain Night sweats is broader (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms (occupational infection control)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p196-35974afd"
+   ],
+   "quote": "Identify patients with possible TB promptly: • The patient has TB symptoms1",
+   "confidence": "medium",
+   "note": "'possible TB' wording -> possible diagnosis; evidence is the footnote's TB symptoms."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sharps injury\" \"disorder\"))",
+   "element_keys": [
+    "p196-9dbf7719"
+   ],
+   "quote": "sharps injury",
+   "confidence": "medium",
+   "note": "Presenting complaint. Sharps injury (disorder) also matches its child Accidental needle stick injury. The 'splash to eye/mouth/nose/broken skin' alternative has no SNOMED concept, so it is not part of the trigger/priority (fires less often)."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p196-5670955a"
+   ],
+   "quote": "Blood",
+   "confidence": "high",
+   "note": "Exposure to Blood (substance), as page 20 pairs exposure with substances. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p196-6ecc4d0c"
+   ],
+   "quote": "Vaginal secretions",
+   "confidence": "high",
+   "note": "Exact substance concept (singular). Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-32f2a256"
+   ],
+   "quote": "Blood-stained fluid",
+   "confidence": "low",
+   "note": "No 'blood-stained fluid' substance; Serosanguinous fluid (blood-stained serous fluid) is the closest. 'Bloody discharge' considered. The '/tissue' part has no substance concept and is not encoded. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-8684cf83"
+   ],
+   "quote": "Semen",
+   "confidence": "medium",
+   "note": "No 'Semen' substance FSN; Seminal fluid is the fluid itself (Semen component is its parent grouping). Male genital fluid considered (broader). Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Exudate\" \"substance\"))",
+   "element_keys": [
+    "p196-eb498253"
+   ],
+   "quote": "Wound secretions",
+   "confidence": "low",
+   "note": "No wound secretion/exudate substance; Exudate (substance) is broader (exudate from any site). Wound discharge exists only as a patient finding, not a substance. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p196-63208398"
+   ],
+   "quote": "Breast milk",
+   "confidence": "high",
+   "note": "Exact substance concept. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Pleural fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Pericardial fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Peritoneal fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Amniotic fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Synovial fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  },
+  {
+   "rule": "Urgent: sharps injury with exposure to blood or body fluids",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p196-f3effcd3"
+   ],
+   "quote": "Pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Split the combined line into one substance each; Cerebrospinal fluid exists exactly. Priority: any listed exposure together with the sharps injury."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p196-791eb0f4",
+   "element_id": "p196-rb1-e09",
+   "text": "Management:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list; no management tasks in this pass."
+  },
+  {
+   "element_key": "p196-c2cd1ae2",
+   "element_id": "p196-rb1-e10",
+   "text": "If broken skin, clean area immediately with soap and water.",
+   "reason_category": "management_step",
+   "reason": "Wound cleaning is management."
+  },
+  {
+   "element_key": "p196-c507dd87",
+   "element_id": "p196-rb1-e11",
+   "text": "If splash to eye/mouth/nose: immediately rinse mouth/nose with water or irrigate eye thoroughly with sodium chloride 0.9% or sterile water.",
+   "reason_category": "management_step",
+   "reason": "Rinsing/irrigation (sodium chloride 0.9%) is management; no medicines."
+  },
+  {
+   "element_key": "p196-6fe88738",
+   "element_id": "p196-rb1-e12",
+   "text": "Assess need for HIV and hepatitis B post-exposure prophylaxis 135.",
+   "reason_category": "management_step",
+   "reason": "PEP assessment with a pointer to page 135; management/referral, not triage."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Splash exposure",
+   "decision": "Trigger and priority use Sharps injury only; splash to eye/mouth/nose/broken skin has no SNOMED concept (searched splash, contamination, mucosal, body fluid exposure).",
+   "alternatives": "Event concept 'Exposure to blood and/or body fluid' (not a clinical finding; unclear if recordable); treating any recorded exposure alone as urgent (fires more often).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Substitute substances",
+   "decision": "Wound secretions -> Exudate; Blood-stained fluid -> Serosanguinous fluid; Semen -> Seminal fluid.",
+   "alternatives": "Leave these as SNOMED gaps (rule fires less often).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Possible TB rule",
+   "decision": "Encoded 'Identify patients with possible TB … The patient has TB symptoms' as a possible Tuberculosis rule from the footnote's symptoms, ≥ 2 weeks applied to fever only.",
+   "alternatives": "Leave TB screening to the TB pages; apply ≥ 2 weeks to cough as well.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Health worker",
+   "decision": "The red box is for a health worker; the language has no occupation criterion, so the rule fires for any adult with a sharps injury and exposure.",
+   "alternatives": "None in the language.",
+   "confidence": "high"
+  }
+ ]
+}

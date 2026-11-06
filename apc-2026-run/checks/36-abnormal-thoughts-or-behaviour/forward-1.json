@@ -1,0 +1,662 @@
+{
+ "page": 36,
+ "checker": "forward-1",
+ "elements": [
+  {
+   "element_key": "p36-cf86a3e4",
+   "element_id": "p36-rb1-e01",
+   "scope": "in_scope",
+   "scope_reason": "The header names the presenting complaint (abnormal thoughts or behaviour) and the Urgent level.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Presenting complaint encoded as Abnormal behavior OR Disturbance in thinking, which reads the page faithfully. Note the trigger is not a listed common symptom or warning sign, and Aggressive behavior (a warning sign) is not a SNOMED descendant of Abnormal behavior, so nothing recorded elsewhere anchors it (see rule_level_problems).",
+   "evidence": [
+    "Check for urgent abnormal thoughts or behaviour conditions :: (task ... adult (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (check_for ...))",
+    "Urgent: abnormal thoughts or behaviour of sudden or recent onset :: (system_priority_evaluation ... Urgent (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-2765dde2",
+   "element_id": "p36-rb1-e02",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) / (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "Urgent: abnormal thoughts or behaviour of sudden or recent onset :: (system_priority_evaluation ... Urgent (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-48cbdcc4",
+   "element_id": "p36-rb1-e03",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) / (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "Urgent: abnormal thoughts or behaviour of sudden or recent onset :: (system_priority_evaluation ... Urgent (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-87ca516f",
+   "element_id": "p36-rb1-e04",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-8371dba7",
+   "element_id": "p36-rb1-e05",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Routes a patient who just had a seizure to page 20; no logic of its own on this page.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-7c6c7464",
+   "element_id": "p36-rb1-e06",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Routes aggressive/disruptive patients to page 35.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-a1527c8a",
+   "element_id": "p36-rb1-e07",
+   "scope": "in_scope",
+   "scope_reason": "'consider stroke or TIA' is a possible-diagnosis conclusion with four criteria.",
+   "verdict": "partial",
+   "parts_missing": [
+    "'asymmetric' (one-sided) is not expressed: the rule fires on any sudden weakness/numbness of face, arm or leg, symmetric or not. SNOMED has Hemiparesis (disorder) for one-sided weakness; no site-specific 'unilateral numbness' concept was found, so a partial fix is possible for the weakness arm only."
+   ],
+   "problem": "Parts: sudden weakness of face/arm/leg = correct (three site-specific concepts, Sudden onset qualifier covers 'new sudden'); sudden numbness of face/arm/leg = correct; difficulty speaking = Difficulty talking, correct; visual disturbance = correct; two identical possible rules for stroke and TIA, matching 'stroke or TIA'. Only the asymmetry is lost.",
+   "evidence": [
+    "Diagnose possible stroke in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))))",
+    "Diagnose possible TIA in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\") (qualifier ...)) (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: the eight Sudden-onset stroke findings"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-c7a79db7",
+   "element_id": "p36-rb1-e08",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Routes recent head injury to page 30.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-0753fb49",
+   "element_id": "p36-rb1-e09",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Routes suicidal thoughts/plans to page 34.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-ef521aae",
+   "element_id": "p36-rb1-e10",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "'give face mask oxygen' is a management step; its conditions (difficulty breathing, RR > 30, SpO2 < 94%) are routine vitals or generic warning signs, not page-specific diagnostic logic.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-9371e240",
+   "element_id": "p36-rb1-e11",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Glucose thresholds route to page 19 (glucose is a routine vital; the thresholds belong to that page).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-11306d7e",
+   "element_id": "p36-rb1-e12",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Dehydration signs leading to ORS / IV fluids: a management instruction, not a diagnosis on this page.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-bbd51d26",
+   "element_id": "p36-rb1-e13",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Involuntary admission criteria, routed to page 158.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-7dee22aa",
+   "element_id": "p36-rb1-e14",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "HIV positive + recent positive CrAg -> refer for urgent LP: a referral instruction.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-432f30bd",
+   "element_id": "p36-rb1-e15",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "Introduces the six 'likely' boxes; each box is judged separately.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-72e8a36d",
+   "element_id": "p36-rb1-e16",
+   "scope": "in_scope",
+   "scope_reason": "Criteria for 'Delirium likely'.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Parts: varying levels of consciousness over hours/days = Fluctuation of level of consciousness (the 'over hours/days' time course is not expressed and the language has no way to say it; acceptable); temperature >= 38 C = correct threshold, unit and direction; the page's 'and' is kept as 'and'.",
+   "evidence": [
+    "Diagnose probable delirium in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Delirium\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Fluctuation of level of consciousness\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Fluctuation of level of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-e6ee5b80",
+   "element_id": "p36-rb1-e17",
+   "scope": "in_scope",
+   "scope_reason": "Criteria for 'Mania likely'.",
+   "verdict": "partial",
+   "parts_missing": [
+    "'reckless' has no encoding. SNOMED has only Reckless character (finding, a personality trait under Irresponsible character), which is not the same as reckless behaviour, so this may be a genuine gap; it should at least be noted."
+   ],
+   "problem": "Parts: abnormally happy = Elevated mood (correct); energetic = Increased energy (correct); talkative = Pressure of speech (an approximation: pressured speech is the clinical sign of mania and SNOMED has no plain 'talkative', acceptable); irritable = Feeling irritable (correct); reckless = missing. 'or' logic matches the page's comma/or list.",
+   "evidence": [
+    "Diagnose probable mania in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Mania\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Elevated mood\" \"finding\")) (clinical_finding (snomed_concept \"Increased energy\" \"finding\")) (clinical_finding (snomed_concept \"Pressure of speech\" \"finding\")) (clinical_finding (snomed_concept \"Feeling irritable\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: Elevated mood / Increased energy / Pressure of speech / Feeling irritable"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-a8c75101",
+   "element_id": "p36-rb1-e18",
+   "scope": "in_scope",
+   "scope_reason": "Top of the psychosis box: Lack of insight AND >= 1 of the three listed.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Lack of insight is required and the three features are in an 'or', exactly the page's structure.",
+   "evidence": [
+    "Diagnose probable psychosis in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Lack of insight\" \"finding\")) (or (clinical_finding (snomed_concept \"Hallucinations\" \"finding\")) (clinical_finding (snomed_concept \"Delusion\" \"finding\")) (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Lack of insight\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-419e9709",
+   "element_id": "p36-rb1-e19",
+   "scope": "in_scope",
+   "scope_reason": "First fragment of the stimulant intoxication criteria.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Dilated pupils = Dilated pupil (correct); restlessness = Restlessness (correct). See rule_level_problems on the 'or' over this whole list.",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) / (clinical_finding (snomed_concept \"Restlessness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-02505318",
+   "element_id": "p36-rb1-e20",
+   "scope": "in_scope",
+   "scope_reason": "Criteria for 'Alcohol intoxication likely'.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Smells of alcohol = Smell of alcohol on breath; slurred speech = Slurred speech; incoordination = Incoordination; unsteady gait = Unsteady when walking. All four correct; 'or' matches the page's list.",
+   "evidence": [
+    "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Alcohol intoxication\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Smell of alcohol on breath\" \"finding\")) (clinical_finding (snomed_concept \"Slurred speech\" \"finding\")) (clinical_finding (snomed_concept \"Incoordination\" \"finding\")) (clinical_finding (snomed_concept \"Unsteady when walking\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: Smell of alcohol on breath / Slurred speech / Incoordination / Unsteady when walking"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-663005f3",
+   "element_id": "p36-rb1-e21",
+   "scope": "in_scope",
+   "scope_reason": "First fragment of the withdrawal criteria: 'Known alcohol/drug user who has' [stopped/reduced intake].",
+   "verdict": "partial",
+   "parts_missing": [
+    "'reduced' drug intake: for alcohol the rule has both Stopped drinking alcohol and Decreased alcohol consumption, but for drugs only Abstinent from drug misuse (stopped). A drug user who has cut down but not stopped is not matched. No SNOMED 'decreased drug use' finding was found in a quick search, so this may need a looser concept or a remaining-questions note."
+   ],
+   "problem": "'Known alcohol/drug user' is carried implicitly by the stopped/decreased findings (one cannot stop drinking without having been a drinker), which is a reasonable reading.",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Stopped drinking alcohol\" \"finding\")) (clinical_finding (snomed_concept \"Decreased alcohol consumption\" \"finding\")) (clinical_finding (snomed_concept \"Abstinent from drug misuse\" \"finding\"))) (or (clinical_finding (snomed_concept \"Tremor\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Stopped drinking alcohol\" \"finding\")) / (clinical_finding (snomed_concept \"Decreased alcohol consumption\" \"finding\")) / (clinical_finding (snomed_concept \"Abstinent from drug misuse\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-64320099",
+   "element_id": "p36-rb1-e22",
+   "scope": "in_scope",
+   "scope_reason": "Criteria for 'Poisoning likely'.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Exposure to Drug or medicament covers 'medication'; Exposure to Substance (the root substance concept) covers 'unknown substance'. The route (ingestion/inhalation/absorption) is not expressed and the language has no slot for it; acceptable. Same exposure pattern as the gold page.",
+   "evidence": [
+    "Diagnose probable poisoning in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\")) (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\")) / (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-9e02913e",
+   "element_id": "p36-rb1-e23",
+   "scope": "in_scope",
+   "scope_reason": "Psychosis feature.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable psychosis in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Lack of insight\" \"finding\")) (or (clinical_finding (snomed_concept \"Hallucinations\" \"finding\")) (clinical_finding (snomed_concept \"Delusion\" \"finding\")) (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-dc378146",
+   "element_id": "p36-rb1-e24",
+   "scope": "in_scope",
+   "scope_reason": "Middle fragment of the withdrawal criteria: stopped/reduced intake with tremor, sweating, nausea, severe restlessness.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Tremor, Sweating, Nausea correct; severe restlessness = Restlessness + Severe qualifier, correct. The structure and(stopped/reduced, or(symptoms)) follows the page's 'who has stopped/reduced intake WITH tremor, ...'. (The 'reduced' gap is recorded under e21.)",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Stopped drinking alcohol\" \"finding\")) (clinical_finding (snomed_concept \"Decreased alcohol consumption\" \"finding\")) (clinical_finding (snomed_concept \"Abstinent from drug misuse\" \"finding\"))) (or (clinical_finding (snomed_concept \"Tremor\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: Tremor / Sweating / Nausea / (clinical_finding (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-a6e87f30",
+   "element_id": "p36-rb1-e25",
+   "scope": "in_scope",
+   "scope_reason": "Stimulant intoxication fragment: paranoia, nausea.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Paranoia = Paranoid ideation (correct); nausea = Nausea (correct).",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) / (clinical_finding (snomed_concept \"Nausea\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-a1da20c2",
+   "element_id": "p36-rb1-e26",
+   "scope": "in_scope",
+   "scope_reason": "Psychosis feature.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable psychosis in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Lack of insight\" \"finding\")) (or (clinical_finding (snomed_concept \"Hallucinations\" \"finding\")) (clinical_finding (snomed_concept \"Delusion\" \"finding\")) (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Delusion\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-4dba80b5",
+   "element_id": "p36-rb1-e27",
+   "scope": "in_scope",
+   "scope_reason": "Stimulant intoxication fragment: sweating, pulse >= 100, BP >= 140/90.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Sweating correct; pulse >= 100 bpm correct threshold and direction; BP >= 140/90 encoded as SBP >= 140 OR DBP >= 90, the conventional reading of a BP threshold and the same pattern the gold page uses for < 90/60. Concept caveat: pulse is measured against 'Pulse, function' rather than 'Heart rate' (observable entity); if the vital VHA records is Heart rate this comparison never fires (see rule_level_problems).",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-a5e3889c",
+   "element_id": "p36-rb1-e28",
+   "scope": "in_scope",
+   "scope_reason": "Last fragment of the withdrawal criteria: [severe restlessness/] agitation or hallucinations.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Agitation = Feeling agitated + Severe (the page's 'severe' is read as applying to both restlessness and agitation, a fair reading); hallucinations = Hallucinations. Note Psychomotor agitation (finding) is the observed sign and is arguably closer than Feeling agitated (the patient's subjective feeling); low importance.",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Stopped drinking alcohol\" \"finding\")) (clinical_finding (snomed_concept \"Decreased alcohol consumption\" \"finding\")) (clinical_finding (snomed_concept \"Abstinent from drug misuse\" \"finding\"))) (or (clinical_finding (snomed_concept \"Tremor\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) / (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-f9d45a98",
+   "element_id": "p36-rb1-e29",
+   "scope": "in_scope",
+   "scope_reason": "Psychosis feature with two parts: disorganised speech OR disorganised behaviour.",
+   "verdict": "partial",
+   "parts_missing": [
+    "disorganised behaviour: only speech is encoded (Incoherent speech). SNOMED search found no 'disorganized behavior' finding; Disorganized thinking (finding) exists but is not behaviour. If nothing closer exists this should be recorded as a SNOMED gap rather than silently dropped."
+   ],
+   "problem": "Disorganised speech = Incoherent speech (acceptable).",
+   "evidence": [
+    "Diagnose probable psychosis in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Lack of insight\" \"finding\")) (or (clinical_finding (snomed_concept \"Hallucinations\" \"finding\")) (clinical_finding (snomed_concept \"Delusion\" \"finding\")) (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-970dd0ce",
+   "element_id": "p36-rb1-e30",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion label 'Alcohol intoxication' (+ 'likely', e34).",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Alcohol intoxication\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Smell of alcohol on breath\" \"finding\")) (clinical_finding (snomed_concept \"Slurred speech\" \"finding\")) (clinical_finding (snomed_concept \"Incoordination\" \"finding\")) (clinical_finding (snomed_concept \"Unsteady when walking\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-5fef3b21",
+   "element_id": "p36-rb1-e31",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion 'Alcohol/drug withdrawal likely'.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as one probable diagnosis of Substance withdrawal syndrome, of which Alcohol withdrawal syndrome is a SNOMED child, so the general concept covers both arms of 'alcohol/drug'. Acceptable; a more specific pair (Alcohol withdrawal syndrome when the alcohol findings match) would let later management ('If alcohol withdrawal, also give thiamine') key off the diagnosis, but management is out of scope.",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Stopped drinking alcohol\" \"finding\")) (clinical_finding (snomed_concept \"Decreased alcohol consumption\" \"finding\")) (clinical_finding (snomed_concept \"Abstinent from drug misuse\" \"finding\"))) (or (clinical_finding (snomed_concept \"Tremor\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-bcaa3702",
+   "element_id": "p36-rb1-e32",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion 'Delirium likely'; the ceftriaxone instruction is a management step and out of scope.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable delirium in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Delirium\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Fluctuation of level of consciousness\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-1b5f50a9",
+   "element_id": "p36-rb1-e33",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion label 'Stimulant drug' (+ 'intoxication likely', e37).",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Intoxication caused by stimulant (disorder) is the right concept; the footnote's list of stimulants is informational.",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-c1656caf",
+   "element_id": "p36-rb1-e34",
+   "scope": "in_scope",
+   "scope_reason": "Fragment 'likely' belonging to the Alcohol intoxication label (e30); judged with it.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable alcohol intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Alcohol intoxication\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Smell of alcohol on breath\" \"finding\")) (clinical_finding (snomed_concept \"Slurred speech\" \"finding\")) (clinical_finding (snomed_concept \"Incoordination\" \"finding\")) (clinical_finding (snomed_concept \"Unsteady when walking\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-af3a0016",
+   "element_id": "p36-rb1-e35",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-cd4d5484",
+   "element_id": "p36-rb1-e36",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion 'Mania likely'.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable mania in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Mania\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Elevated mood\" \"finding\")) (clinical_finding (snomed_concept \"Increased energy\" \"finding\")) (clinical_finding (snomed_concept \"Pressure of speech\" \"finding\")) (clinical_finding (snomed_concept \"Feeling irritable\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-4d48d28e",
+   "element_id": "p36-rb1-e37",
+   "scope": "in_scope",
+   "scope_reason": "Fragment 'intoxication likely' belonging to the Stimulant drug label (e33); judged with it.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (clinical_finding (snomed_concept \"Dilated pupil\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Sweating\" \"finding\")) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-863ac997",
+   "element_id": "p36-rb1-e38",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-1546eb2b",
+   "element_id": "p36-rb1-e39",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion 'Psychosis likely' -> probable Psychotic disorder.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable psychosis in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (clinical_finding (snomed_concept \"Lack of insight\" \"finding\")) (or (clinical_finding (snomed_concept \"Hallucinations\" \"finding\")) (clinical_finding (snomed_concept \"Delusion\" \"finding\")) (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-0391ed5c",
+   "element_id": "p36-rb1-e40",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Conditions (pulse irregular, chest pain, BP >= 140/90) that gate an ECG and a specialist call inside the stimulant box; no diagnosis or priority is attached on the page.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-12f5ea48",
+   "element_id": "p36-rb1-e41",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-855ac708",
+   "element_id": "p36-rb1-e42",
+   "scope": "in_scope",
+   "scope_reason": "Conclusion 'Poisoning likely'; 'discuss urgently with specialist or poison helpline' is management.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable poisoning in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\")) (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-1fa4180d",
+   "element_id": "p36-rb1-e43",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-5767195c",
+   "element_id": "p36-rb1-e44",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "'>= 8 hours since last alcohol' gates a referral to a detox programme; no diagnosis or priority.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-286ca926",
+   "element_id": "p36-rb1-e45",
+   "scope": "borderline",
+   "scope_reason": "An explicit instruction to check for a finding (head injury) after alcohol intoxication, but nothing on this page consumes it: the page routes head injury to page 30 (e08). It could be a check_for of Injury of head (disorder) triggered by (active_condition Alcohol intoxication), consumed by page 30's rules; the house standard would also accept treating it as routing.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Not encoded. Low consequence here because page 30 owns the head-injury logic.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p36-5901c4c8",
+   "element_id": "p36-rb1-e46",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-30912b6c",
+   "element_id": "p36-rb1-e47",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Referral exception for known schizophrenia, routed to page 162.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-61e931a3",
+   "element_id": "p36-rb1-e48",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Referral exception for diabetic hypoglycaemia resolving with dextrose, routed to page 145.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-83566ce2",
+   "element_id": "p36-rb1-e49",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Referral exception for known alcohol use resolving once sober, routed to page 165.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p36-ee7af581",
+   "element_id": "p36-out-e02",
+   "scope": "in_scope",
+   "scope_reason": "'consider dementia' with four features present for at least 6 months -> possible diagnosis; the 'if unsure, refer' sentence is management.",
+   "verdict": "partial",
+   "parts_missing": [
+    "'less able to cope with daily activities and work/social function' is encoded as Difficulty coping (finding), whose SNOMED parent is 'Finding related to ability to cope', i.e. psychological coping, not functional decline. Decline in functional status (finding) or Requires assistance with all activities of daily living (finding) are closer to the page's meaning; the current concept will match the wrong patients and miss the intended ones."
+   ],
+   "problem": "Memory problems = Memory impairment, disorientation = Disorientated, language difficulty = Language difficulty: all correct. '>= 1 of' = 'or', correct. 'for at least 6 months' = (>= (onset X) (time_ago 6 months)), the right direction per the house standard. Rule type possible is right for 'consider'.",
+   "evidence": [
+    "Diagnose possible dementia in abnormal thoughts or behaviour :: (diagnosis (snomed_concept \"Dementia\" \"disorder\") possible) ... (and (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\"))) (or (>= (onset (clinical_finding (snomed_concept \"Memory impairment\" \"finding\"))) (time_ago 6 months)) (>= (onset (clinical_finding (snomed_concept \"Disorientated\" \"finding\"))) (time_ago 6 months)) (>= (onset (clinical_finding (snomed_concept \"Language difficulty\" \"finding\"))) (time_ago 6 months)) (>= (onset (clinical_finding (snomed_concept \"Difficulty coping\" \"finding\"))) (time_ago 6 months))))",
+    "Check for urgent abnormal thoughts or behaviour conditions :: Memory impairment / Disorientated / Language difficulty / Difficulty coping"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p36-330b4924",
+  "p36-8cb634e4"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions / all rules (trigger)",
+   "problem": "Every rule is anchored on (or Abnormal behavior, Disturbance in thinking), but neither concept is a common symptom or warning sign per the house standard, and the natural warning-sign entry point, Aggressive behavior, is NOT a SNOMED descendant of Abnormal behavior (checked with is_a), nor are Hallucinations a descendant of Disturbance in thinking. Unless the VHA intake records one of these two concepts, nothing fires on this page. Needs a remaining-questions note and ideally an extra trigger (e.g. Aggressive behavior, or a broad possible pre-screen as on the gold page).",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "problem": "The six 'likely' diagnoses (delirium, mania, psychosis, stimulant intoxication, alcohol intoxication, withdrawal, poisoning) sit inside the red box under 'Manage urgently', yet the priority rule fires only on the Sudden/Recent onset qualifiers. A patient recorded with Abnormal behavior (no onset qualifier) + Fluctuation of level of consciousness + temperature 39 gets probable Delirium but no Urgent priority. The house standard says to reference (active_condition X) for likely diagnoses named in the red box; adding the seven active_condition alternates to the priority rule's 'or' would close this.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable stimulant drug intoxication in abnormal thoughts or behaviour",
+   "problem": "The comma list is encoded as a flat 'or', so a single non-specific finding (Nausea, which is a common symptom; Sweating; Restlessness; or a BP of 140/90 alone) plus abnormal behaviour yields a PROBABLE stimulant intoxication. Nausea, Sweating and Restlessness are also withdrawal findings, so the same patient is simultaneously probable withdrawal if any stopped/decreased finding is present. The page shows a cluster; any2 (available in the language) would be a more faithful reading. The same flat-'or' choice in the mania and alcohol-intoxication rules is less harmful because those findings are specific.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable stimulant drug intoxication (pulse measurement)",
+   "problem": "Pulse is compared via (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm). SNOMED also has Heart rate (observable entity); whichever concept VHA records as the routine vital is the only one that will ever match. The gold page gives no precedent for pulse. Worth confirming against the recorded vital, otherwise the 'pulse >= 100' arm is dead.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible dementia in abnormal thoughts or behaviour / check_for",
+   "problem": "The four dementia findings are in check_for but are consumed only inside (onset ...) wrappers in a possible rule. Evidence matching in the house tests is by exact s-expression string, so if the wrapped form does not count as 'used as evidence' the gate will flag four CHECKED FOR BUT NEVER USED items. Also, Difficulty coping is the wrong concept for functional decline (see p36-out-e02).",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent abnormal thoughts or behaviour conditions (Restlessness)",
+   "problem": "Restlessness is checked for twice, plain (for stimulant intoxication) and with the Severe qualifier (for withdrawal). Both are consumed, so the gate passes, but the health worker is asked the same question twice; the unqualified form in the stimulant rule would match the severe recording only if the runtime treats qualified findings as descendants of the plain one.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset (structure)",
+   "problem": "The outer conjunct (plain Abnormal behavior / Disturbance in thinking) is redundant with the qualified alternates; if runtime matching of a qualified recording against an unqualified pattern is exact rather than subsuming, the rule needs two separate recordings before it fires. Harmless if qualifiers subsume; worth a check.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page's triage and all seven 'likely' conclusions plus stroke/TIA and dementia are encoded with the right rule types and correct thresholds; the most consequential concern is that nothing anchors the page: the trigger concepts (Abnormal behavior, Disturbance in thinking) are not recorded symptoms or warning signs and Aggressive behavior is not a descendant of either, so the rules may never fire in VHA. Next, the Urgent priority ignores the six likely diagnoses inside the red box and the stimulant rule fires on a single non-specific finding (Nausea or Sweating). Element gaps are small: 'reckless' (mania), 'disorganised behaviour' (psychosis), 'reduced' drug intake (withdrawal), 'asymmetric' (stroke), and Difficulty coping is the wrong concept for the dementia functional-decline criterion."
+}

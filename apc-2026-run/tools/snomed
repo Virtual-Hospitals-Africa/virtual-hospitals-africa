@@ -1,0 +1,3 @@
+#!/bin/sh
+# snomed search|exists|parents|children|is_a ...   (see tools/snomed.py)
+exec "$HOME/.venvs/vha/bin/python" -I "$(cd "$(dirname "$0")" && pwd)/snomed.py" "$@"

@@ -1,0 +1,686 @@
+{
+ "page": 152,
+ "lisp_file": "152-stroke-routine-care.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "double vision"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for new stroke/TIA",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+   "element_keys": [
+    "p152-b3ce8fa8"
+   ],
+   "quote": "stroke"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "double vision"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for new stroke/TIA",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8"
+   ],
+   "quote": "new stroke/TIA"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "double vision"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p152-272f6a19"
+   ],
+   "quote": "suggests a stroke"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Weakness or numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "numbness of face/arm/leg"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Blurred"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "decreased vision in one/both eyes"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "double vision"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty speaking or understanding"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "Difficulty walking"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "loss of balance"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8",
+    "p152-272f6a19"
+   ],
+   "quote": "co-ordination"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+   "element_keys": [
+    "p152-b3ce8fa8"
+   ],
+   "quote": "new stroke"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: new stroke/TIA",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p152-b3ce8fa8"
+   ],
+   "quote": "new stroke/TIA"
+  }
+ ]
+}

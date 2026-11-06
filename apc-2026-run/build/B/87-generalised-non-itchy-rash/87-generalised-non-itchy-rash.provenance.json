@@ -1,0 +1,745 @@
+{
+ "edition": "2026",
+ "page": 87,
+ "lisp_file": "87-generalised-non-itchy-rash.lisp",
+ "conditions": [
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p87-7bd6d699"
+   ],
+   "quote": "GENERALISED NON-ITCHY RASH",
+   "confidence": "high",
+   "note": "Generalized rash (disorder); \"non-itchy\" not required (see judgment calls). Box has no header (pointer only), so the page title is cited."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "If tick bite",
+   "confidence": "high",
+   "note": "Tick bite (disorder) for \"tick bite (small dark brown/black scab)\"."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "tick present",
+   "confidence": "medium",
+   "note": "\"Tick present\": no generic tick-infestation concept; hard-tick (Ixodidae) and soft-tick (Argasidae) infestation both listed."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "tick present",
+   "confidence": "medium",
+   "note": "\"Tick present\": soft-tick infestation, paired with Ixodidae."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "headache",
+   "confidence": "high",
+   "note": "Headache (common symptom), used for tick bite fever and mpox."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "\"Body pain\" as Generalized aches and pains (finding)."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals",
+   "confidence": "high",
+   "note": "Genital lesion."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus",
+   "confidence": "medium",
+   "note": "No precoordinated anal lesion concept; Lesion (morphology) with finding_site Anal structure."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum",
+   "confidence": "high",
+   "note": "Rectal lesion."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth",
+   "confidence": "high",
+   "note": "Mouth lesion."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes",
+   "confidence": "high",
+   "note": "Eye lesion."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "headache/backache",
+   "confidence": "high",
+   "note": "Backache, used for mpox."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "swollen lymph nodes",
+   "confidence": "high",
+   "note": "Swollen lymph nodes = Lymphadenopathy (disorder)."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "fatigue",
+   "confidence": "high",
+   "note": "Fatigue, used for mpox."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Sore throat, used for mpox."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "nasal congestion",
+   "confidence": "high",
+   "note": "Common-symptom form not available; Nasal congestion (finding)."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "cough consider mpox",
+   "confidence": "high",
+   "note": "Cough, used for mpox."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "started any medication",
+   "confidence": "medium",
+   "note": "Medication started = exposure to Drug or medicament (descendants cover the named examples); onset is the start date."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syphilis titer detected\" \"finding\"))",
+   "element_keys": [
+    "p87-fd394714"
+   ],
+   "quote": "Syphilis reactive",
+   "confidence": "medium",
+   "note": "Reactive syphilis test as Syphilis titer detected (finding), a child of Syphilis test finding."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syphilis titer not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative syphilis test as Syphilis titer not detected (finding)."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative HIV test as Human immunodeficiency virus not detected (finding)."
+  },
+  {
+   "rule": "Check for causes of generalised non-itchy rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\"))",
+   "element_keys": [
+    "p87-e1419590"
+   ],
+   "quote": "Was patient at risk1 of HIV in the past 6 weeks?",
+   "confidence": "medium",
+   "note": "HIV exposure (footnote 1 lists the routes); onset compared in the rules."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "If tick bite",
+   "confidence": "high",
+   "note": "Tick bite (disorder) for \"tick bite (small dark brown/black scab)\"."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "tick present",
+   "confidence": "medium",
+   "note": "\"Tick present\": no generic tick-infestation concept; hard-tick (Ixodidae) and soft-tick (Argasidae) infestation both listed."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "tick present",
+   "confidence": "medium",
+   "note": "\"Tick present\": soft-tick infestation, paired with Ixodidae."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "headache, temperature",
+   "confidence": "high",
+   "note": "Headache (common symptom)."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Temperature >= 38 °C, exactly as on the page."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "\"Body pain\" as Generalized aches and pains (finding)."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "tick bite fever likely",
+   "confidence": "medium",
+   "note": "\"Tick bite fever\" (SA: African tick bite fever and South African tick-bite fever) as their common parent Spotted fever group rickettsial disease."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "rash or lesion/s of skin",
+   "confidence": "medium",
+   "note": "Skin lesion (disorder) covers the generalised rash (Generalized rash is_a Skin lesion) and other skin lesions; \"unexplained\" not modelled."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals",
+   "confidence": "high",
+   "note": "Genital lesion."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus",
+   "confidence": "medium",
+   "note": "No precoordinated anal lesion concept; Lesion (morphology) with finding_site Anal structure."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum",
+   "confidence": "high",
+   "note": "Rectal lesion."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth",
+   "confidence": "high",
+   "note": "Mouth lesion."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes",
+   "confidence": "high",
+   "note": "Eye lesion."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "headache/backache/body pain",
+   "confidence": "high",
+   "note": "Headache (common symptom)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "headache/backache",
+   "confidence": "high",
+   "note": "Backache (common symptom)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "\"Body pain\" as Generalized aches and pains (finding)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "swollen lymph nodes",
+   "confidence": "high",
+   "note": "Swollen lymph nodes = Lymphadenopathy (disorder)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "temperature > 38.5°C",
+   "confidence": "high",
+   "note": "Strict > 38.5 °C as on the page (measurement comparisons may use >)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "fatigue",
+   "confidence": "high",
+   "note": "Fatigue (common symptom)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Sore throat (common symptom)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "nasal congestion",
+   "confidence": "high",
+   "note": "Common-symptom form not available; Nasal congestion (finding)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "cough consider mpox",
+   "confidence": "high",
+   "note": "Cough (common symptom)."
+  },
+  {
+   "rule": "Diagnose possible mpox (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "consider mpox",
+   "confidence": "high",
+   "note": "\"Consider\" -> possible. Monkeypox (disorder) is the FSN for mpox."
+  },
+  {
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p87-7bd6d699"
+   ],
+   "quote": "GENERALISED NON-ITCHY RASH",
+   "confidence": "high",
+   "note": "The page context: the rash itself."
+  },
+  {
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))) (time_ago 3 months))",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "started any medication, such as an antiseizure medication, ART, TB medication, co-trimoxazole or TB preventive treatment (TPT) in the past 3 months",
+   "confidence": "medium",
+   "note": "Onset of drug exposure within 3 months, written <= per the time-comparison convention."
+  },
+  {
+   "rule": "Diagnose possible drug rash (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") possible)",
+   "element_keys": [
+    "p87-89554e4e"
+   ],
+   "quote": "consider drug rash",
+   "confidence": "high",
+   "note": "\"Consider\" -> possible. Eruption caused by drug (disorder), as already used in VHA vocabulary."
+  },
+  {
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p87-7bd6d699"
+   ],
+   "quote": "GENERALISED NON-ITCHY RASH",
+   "confidence": "high",
+   "note": "The page context: the rash itself."
+  },
+  {
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syphilis titer detected\" \"finding\"))",
+   "element_keys": [
+    "p87-fd394714"
+   ],
+   "quote": "Syphilis reactive",
+   "confidence": "medium",
+   "note": "Reactive syphilis test as Syphilis titer detected (finding), a child of Syphilis test finding."
+  },
+  {
+   "rule": "Diagnose probable secondary syphilis (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Secondary syphilis\" \"disorder\") probable)",
+   "element_keys": [
+    "p87-43087de7"
+   ],
+   "quote": "Secondary syphilis likely",
+   "confidence": "high",
+   "note": "\"Likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p87-fb7dab3a"
+   ],
+   "quote": "Rash",
+   "confidence": "high",
+   "note": "The rash itself."
+  },
+  {
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syphilis titer not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative syphilis test as Syphilis titer not detected (finding)."
+  },
+  {
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative HIV test as Human immunodeficiency virus not detected (finding)."
+  },
+  {
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p87-e1419590"
+   ],
+   "quote": "Was patient at risk1 of HIV in the past 6 weeks?",
+   "confidence": "medium",
+   "note": "Risk of HIV = exposure to HIV (organism), as in the footnote; within 6 weeks written <=."
+  },
+  {
+   "rule": "Diagnose possible HIV seroconversion illness (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute human immunodeficiency virus infection\" \"disorder\") possible)",
+   "element_keys": [
+    "p87-fb7dab3a"
+   ],
+   "quote": "Rash may be part of HIV seroconversion illness",
+   "confidence": "medium",
+   "note": "\"May be\" -> possible. Acute human immunodeficiency virus infection (disorder) for HIV seroconversion illness."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p87-dfe1467f"
+   ],
+   "quote": "viral rash",
+   "confidence": "high",
+   "note": "The rash itself."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syphilis titer not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative syphilis test as Syphilis titer not detected (finding)."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus not detected\" \"finding\"))",
+   "element_keys": [
+    "p87-a7e06b39"
+   ],
+   "quote": "Syphilis and HIV negative",
+   "confidence": "medium",
+   "note": "Negative HIV test as Human immunodeficiency virus not detected (finding)."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p87-e1419590",
+    "p87-9c7e5806"
+   ],
+   "quote": "Was patient at risk1 of HIV in the past 6 weeks? Yes No",
+   "confidence": "medium",
+   "note": "\"No\" branch: HIV exposure answered No."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p87-e1419590",
+    "p87-9c7e5806"
+   ],
+   "quote": "Was patient at risk1 of HIV in the past 6 weeks? Yes No",
+   "confidence": "medium",
+   "note": "\"No\" branch also covers an exposure at least 6 weeks ago (>=)."
+  },
+  {
+   "rule": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Viral exanthem\" \"disorder\") probable)",
+   "element_keys": [
+    "p87-dfe1467f"
+   ],
+   "quote": "Non-specific viral rash likely",
+   "confidence": "medium",
+   "note": "\"Likely\" -> probable. Viral exanthem (disorder) for non-specific viral rash."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p87-8cdf7fc2",
+   "element_id": "p87-rb1-e01",
+   "text": "Check if the patient needs urgent attention 82.",
+   "reason_category": "cross_reference_only",
+   "reason": "Red box is a pointer to page 82 (urgent attention); no priority rule on this page."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Trigger",
+   "decision": "Generalized rash (disorder) alone; \"non-itchy\" not encoded as (no Itching).",
+   "alternatives": "(and Generalized rash (no Itching)) would only fire when itch is explicitly answered No.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Tick bite fever concept",
+   "decision": "Spotted fever group rickettsial disease, the common parent of African tick bite fever and South African tick-bite fever.",
+   "alternatives": "African tick bite fever or South African tick-bite fever alone.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Tick present",
+   "decision": "Infestation caused by Ixodidae or Argasidae (no generic tick infestation concept).",
+   "alternatives": "Record as SNOMED gap.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Syphilis/HIV results",
+   "decision": "Explicit result findings: Syphilis titer detected / not detected, Human immunodeficiency virus not detected.",
+   "alternatives": "(no ...) of the positive findings.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "HIV risk in past 6 weeks",
+   "decision": "Exposure to HIV (organism) with onset <= 6 weeks; No branch = exposure answered No or onset >= 6 weeks.",
+   "alternatives": "At increased risk of sexually transmitted infection (narrower than the footnote, no time).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Mpox rash/lesion",
+   "decision": "Skin lesion (covers the generalised rash by descent) or lesions at the five named sites; \"unexplained\" not modelled.",
+   "alternatives": "Generalized rash only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Common symptoms in check_for",
+   "decision": "Headache, backache, fatigue, sore throat and cough listed in the check_for so the health worker asks about them for this page.",
+   "alternatives": "Rely on chatbot common symptoms only.",
+   "confidence": "medium"
+  }
+ ]
+}

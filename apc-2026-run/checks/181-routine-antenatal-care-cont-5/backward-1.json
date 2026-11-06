@@ -1,0 +1,7 @@
+{
+  "page": 181,
+  "checker": "backward-1",
+  "claims": [],
+  "rules": [],
+  "summary": "The rule file is empty after comment removal and the claims file lists no conditions, so there is nothing invented, distorted or misplaced to report. An empty rule set is consistent with page 181: it is entirely advice and treatment (Advise the pregnant patient, Treat the pregnant patient, the review schedule), the red box 'Treat the HIV positive patient in labour' is a management protocol with no 'give urgent attention to … any of' criteria, and the page contains no 'X likely' or 'consider/suspect X' statement that would require a probable or possible diagnosis rule. Two management-side items are the only borderline candidates for rules and their omission is defensible under the no-manage-tasks standard (low severity): 'If proteinuria/new symptoms, refer urgently' within the gestational hypertension treatment block, and 'Give iron according to Hb' (an implied Hb measurement); the 'signs of early labour and pregnancy emergency' list is patient education, not clinician triage."
+}

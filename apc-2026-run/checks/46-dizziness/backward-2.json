@@ -1,0 +1,981 @@
+{
+ "page": 46,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to stand alone\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent dizziness conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "\"Breathing very quickly\" is mapped to Tachypnea; acceptable concept, but the page item is about breathing during the collapse, not a measured respiratory rate.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Positional vertigo\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Concept is the diagnosis itself (Positional vertigo + Sudden onset) so the rule is circular; the page criteria are sudden dizziness lasting seconds and precipitated by head movements, both dropped.",
+   "fix": "Use Dizziness + Sudden onset with a duration of seconds and a head-movement trigger, or a single trigger-finding concept if one exists.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Measure lying and standing BP for dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Measure lying and standing BP for dizziness",
+   "expr": "(measurement (snomed_concept \"Lying systolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Measure lying and standing BP for dizziness",
+   "expr": "(measurement (snomed_concept \"Lying diastolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Measure lying and standing BP for dizziness",
+   "expr": "(measurement (snomed_concept \"Standing systolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Measure lying and standing BP for dizziness",
+   "expr": "(measurement (snomed_concept \"Standing diastolic blood pressure\" \"observable entity\") mmHg)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible stroke with dizziness",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible TIA with dizziness",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about breathing \"immediately before or during the collapse\"; rule requires a Collapse finding and drops the timing link between breathing and collapse.",
+   "fix": "Keep, but note timing; or drop Collapse requirement and rely on the breathing question.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "expr": "(diagnosis (snomed_concept \"Hyperventilation\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page \"No\" to the breathing question means no fast/deep breathing. The extra (no Collapse) alternative in the OR is invented: a patient who did not collapse but is hyperventilating would satisfy it.",
+   "fix": "Remove the (no Collapse) branch; keep only (and (no Tachypnea) (no Excessively deep breathing)).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Positional vertigo\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Same as c028: tests the diagnosis concept as the evidence; \"lasting seconds\" and \"head movement trigger\" are lost.",
+   "fix": "As c028.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "expr": "(diagnosis (snomed_concept \"Positional vertigo\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Same invented (no Collapse) OR-branch as c061.",
+   "fix": "Remove the (no Collapse) branch.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))) (time_ago 1 hours))",
+   "verdict": "imprecise",
+   "reason": "Page says dizziness \"lasting hours/days\"; rule uses onset >= 1 hours, an invented threshold of 1 hour whose comparison direction (onset vs duration) is ambiguous and which overlaps \"seconds\".",
+   "fix": "Express duration as at least several hours (e.g. 2-3 hours) with VHA duration semantics checked.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "expr": "(diagnosis (snomed_concept \"Vestibular neuronitis of inner ear\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says \"asymmetric\" (one-sided) weakness or numbness; the asymmetry qualifier is dropped, so symmetric weakness/numbness also triggers.",
+   "fix": "Add a laterality/unilateral qualifier if available, else document the loss.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to stand alone\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Urgent: dizziness with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent dizziness conditions",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of dizziness not needing urgent attention",
+   "verdict": "problem",
+   "problem": "Omits Collapse-follow-up items from the page: ECG for fainting, Hb check, TSH check, substance screen. Positional vertigo and Dizziness-sudden are duplicated concepts.",
+   "severity": "low"
+  },
+  {
+   "rule": "Measure lying and standing BP for dizziness",
+   "verdict": "problem",
+   "problem": "Measures captured but the page's drop criteria (systolic >=20 or diastolic >=10) are never evaluated, so orthostatic hypotension is never diagnosed.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible stroke with dizziness",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible TIA with dizziness",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable hyperventilation with dizziness",
+   "verdict": "problem",
+   "problem": "Requires Collapse, which the page only uses as context; timing link dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable positional vertigo with dizziness",
+   "verdict": "problem",
+   "problem": "Evidence is the diagnosis concept itself; invented (no Collapse) OR-branch; seconds duration and head-movement trigger missing; nothing excludes the hours/days pattern, so it can co-fire with vestibular neuronitis.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable vestibular neuronitis with dizziness",
+   "verdict": "problem",
+   "problem": "Invented (no Collapse) OR-branch; onset >= 1 hours threshold invented and ambiguous; no exclusion of seconds-long dizziness.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: dizziness with danger signs",
+   "verdict": "ok",
+   "problem": "Priority Urgent matches red box heading; structure (dizziness AND or(...)) with severe-sudden AND (nausea/vomiting/eye/walk) is faithful. Minor: asymmetric and 'lying flat with leg swelling' qualifiers dropped.",
+   "severity": "low"
+  }
+ ],
+ "summary": "No rule exists for the page's two 'likely' diagnoses Orthostatic hypotension (with BP-drop criteria) and Anaemia (Hb <12 woman / <13 man), so the whole left branch of the flowchart is unencoded even though the BP measures exist. Positional vertigo and vestibular neuronitis rules contain an invented (no Collapse) OR-branch, positional vertigo tests its own diagnosis concept as evidence, and the 'onset >= 1 hours' threshold is invented. The red-box Urgent rule is otherwise faithful, apart from the dropped 'asymmetric' qualifier."
+}

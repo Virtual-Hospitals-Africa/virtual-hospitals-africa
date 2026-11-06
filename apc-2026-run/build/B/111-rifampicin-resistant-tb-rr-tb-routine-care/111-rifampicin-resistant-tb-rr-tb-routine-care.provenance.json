@@ -1,0 +1,510 @@
+{
+ "edition": "2026",
+ "page": 111,
+ "lisp_file": "111-rifampicin-resistant-tb-rr-tb-routine-care.lisp",
+ "conditions": [
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)",
+   "confidence": "high",
+   "note": "The page is routine care for patients with RR-TB; the red-box header names no complaint, so the trigger cites the page title. Rifampicin resistant tuberculosis (disorder), clinical_finding form (no rule diagnoses it at probable)."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Direct match; vocabulary term."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confused\" encoded as Acute confusion (vocabulary term used across VHA rules); Confusional state (disorder) considered."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "neckstiffness",
+   "confidence": "high",
+   "note": "Stiff neck (finding), vocabulary term; quote keeps the e-book spacing \"neckstiffness\"."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier, per Will's qualifier convention."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "persistent vomiting",
+   "confidence": "high",
+   "note": "Persistent vomiting (disorder) is an exact precoordinated concept."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "\"Unable to walk unaided\" = needs help or cannot walk. Encoded as the mobility vital values \"Difficulty walking\" (walks with help) OR \"Unable to walk\" (stretcher/immobile). Difficulty walking may also include patients who walk unaided with difficulty (over-fires slightly)."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "high",
+   "note": "Unable to walk (finding); one half of the or for \"unable to walk unaided\"."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+   "element_keys": [
+    "p111-23d0b6ba"
+   ],
+   "quote": "Difficulty with adherence",
+   "confidence": "medium",
+   "note": "No SNOMED \"difficulty with adherence\"; Noncompliance with treatment (finding) is the closest; \"Difficulty taking medication\" considered but implies a physical difficulty."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+   "element_keys": [
+    "p111-ccf478a4"
+   ],
+   "quote": "Patient requests admission",
+   "confidence": "low",
+   "note": "No SNOMED concept for a patient request for admission; \"Patient requests a hospital referral\" (situation) is the nearest: the red box action is referral to hospital for admission. Clinician to confirm."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest",
+   "confidence": "high",
+   "note": "Dyspnea at rest (finding)."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest or while talking",
+   "confidence": "medium",
+   "note": "\"Breathless while talking\" encoded as Unable to complete a sentence in one breath (finding, vocabulary term); no \"dyspnea on talking\" concept."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "prominent use of breathing muscles",
+   "confidence": "high",
+   "note": "Accessory respiratory muscles used (finding); \"prominent\" not expressed."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "coughs up ≥ 1 tablespoon fresh blood",
+   "confidence": "medium",
+   "note": "Hemoptysis (finding). The volume (≥ 1 tablespoon) and \"fresh\" cannot be expressed, so this fires for any haemoptysis (more often than the page intends)."
+  },
+  {
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "new weakness of arm/leg",
+   "confidence": "high",
+   "note": "Muscle weakness of limb with New qualifier (covers arm or leg)."
+  },
+  {
+   "rule": "Measure BMI at RR-TB routine visit",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)",
+   "confidence": "high",
+   "note": "The page is routine care for patients with RR-TB; the red-box header names no complaint, so the trigger cites the page title. Rifampicin resistant tuberculosis (disorder), clinical_finding form (no rule diagnoses it at probable)."
+  },
+  {
+   "rule": "Measure BMI at RR-TB routine visit",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+   "element_keys": [
+    "p111-e8247b38"
+   ],
+   "quote": "Weight and BMI",
+   "confidence": "high",
+   "note": "Page row \"Weight and BMI, Every visit\". Measured so that the red-box BMI < 18 criterion is checked for."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)",
+   "confidence": "high",
+   "note": "The page is routine care for patients with RR-TB; the red-box header names no complaint, so the trigger cites the page title. Rifampicin resistant tuberculosis (disorder), clinical_finding form (no rule diagnoses it at probable)."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p111-844e8de3"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital, >= 30 bpm as written."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Direct match; vocabulary term."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confused\" encoded as Acute confusion (vocabulary term used across VHA rules); Confusional state (disorder) considered."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "neckstiffness",
+   "confidence": "high",
+   "note": "Stiff neck (finding), vocabulary term; quote keeps the e-book spacing \"neckstiffness\"."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "severe headache",
+   "confidence": "high",
+   "note": "Headache with Severe qualifier, per Will's qualifier convention."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "persistent vomiting",
+   "confidence": "high",
+   "note": "Persistent vomiting (disorder) is an exact precoordinated concept."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "\"Unable to walk unaided\" = needs help or cannot walk. Encoded as the mobility vital values \"Difficulty walking\" (walks with help) OR \"Unable to walk\" (stretcher/immobile). Difficulty walking may also include patients who walk unaided with difficulty (over-fires slightly)."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "high",
+   "note": "Unable to walk (finding); one half of the or for \"unable to walk unaided\"."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+   "element_keys": [
+    "p111-23d0b6ba"
+   ],
+   "quote": "Difficulty with adherence",
+   "confidence": "medium",
+   "note": "No SNOMED \"difficulty with adherence\"; Noncompliance with treatment (finding) is the closest; \"Difficulty taking medication\" considered but implies a physical difficulty."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²) 18)",
+   "element_keys": [
+    "p111-20306c48"
+   ],
+   "quote": "BMI < 18",
+   "confidence": "high",
+   "note": "Exact threshold and direction from the red box (< 18, not the 18.5 used in the Weight and BMI row). Hb < 8 is not representable and left out."
+  },
+  {
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+   "element_keys": [
+    "p111-ccf478a4"
+   ],
+   "quote": "Patient requests admission",
+   "confidence": "low",
+   "note": "No SNOMED concept for a patient request for admission; \"Patient requests a hospital referral\" (situation) is the nearest: the red box action is referral to hospital for admission. Clinician to confirm."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)",
+   "confidence": "high",
+   "note": "The page is routine care for patients with RR-TB; the red-box header names no complaint, so the trigger cites the page title. Rifampicin resistant tuberculosis (disorder), clinical_finding form (no rule diagnoses it at probable)."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital, >= 30 bpm as written."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest",
+   "confidence": "high",
+   "note": "Dyspnea at rest (finding)."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest or while talking",
+   "confidence": "medium",
+   "note": "\"Breathless while talking\" encoded as Unable to complete a sentence in one breath (finding, vocabulary term); no \"dyspnea on talking\" concept."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "prominent use of breathing muscles",
+   "confidence": "high",
+   "note": "Accessory respiratory muscles used (finding); \"prominent\" not expressed."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "As red box: Acute confusion."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "coughs up ≥ 1 tablespoon fresh blood",
+   "confidence": "medium",
+   "note": "Hemoptysis (finding). The volume (≥ 1 tablespoon) and \"fresh\" cannot be expressed, so this fires for any haemoptysis (more often than the page intends)."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck (finding)."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "persistent vomiting",
+   "confidence": "high",
+   "note": "Persistent vomiting (disorder)."
+  },
+  {
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "new weakness of arm/leg",
+   "confidence": "high",
+   "note": "Muscle weakness of limb with New qualifier (covers arm or leg)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p111-7bf9d847",
+   "element_id": "p111-rb1-e01",
+   "text": "If any of the following, discuss or refer to hospital for admission:",
+   "reason_category": "flowchart_routing",
+   "reason": "Box header: \"discuss or refer to hospital for admission\" is the action, encoded as the Urgent level of \"Urgent: RR-TB routine care with criteria for hospital admission\"; its items are cited individually."
+  },
+  {
+   "element_key": "p111-64978c08",
+   "element_id": "p111-rb1-e06",
+   "text": "Infection control challenges at home",
+   "reason_category": "no_snomed_concept",
+   "reason": "No SNOMED concept for infection control challenges at home (searched infection control, home environment, housing). Not encoded; the admission rule fires less often than the page intends."
+  },
+  {
+   "element_key": "p111-991269b0",
+   "element_id": "p111-rb1-e08",
+   "text": "Any condition that would be better managed in an inpatient setting",
+   "reason_category": "not_representable",
+   "reason": "Open-ended clinical judgement (\"any condition better managed in an inpatient setting\"); no finding can express it."
+  },
+  {
+   "element_key": "p111-4ba50538",
+   "element_id": "p111-rb1-e09",
+   "text": "Unstable social circumstances",
+   "reason_category": "no_snomed_concept",
+   "reason": "No SNOMED concept for unstable social circumstances (searched social circumstances/instability, unstable, housing); \"Social problem not due to a mental disorder\" too broad. Not encoded."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Priority level",
+   "decision": "Red box (\"discuss or refer to hospital for admission\") and the Symptoms row (\"give urgent attention and refer\") both encoded as Urgent.",
+   "alternatives": "\"Very urgent\" for the Symptoms row; the page does not escalate beyond urgent attention.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Symptoms row encoded as a second priority rule",
+   "decision": "The Symptoms row's explicit \"give urgent attention and refer\" list is triage logic on the page, so it gets its own priority evaluation.",
+   "alternatives": "Encode only the red box.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hb < 8",
+   "decision": "Not representable (no Hb observable/unit); BMI < 18 half encoded. Rule fires less often than the page intends.",
+   "alternatives": "none",
+   "confidence": "high"
+  },
+  {
+   "topic": "Patient requests admission",
+   "decision": "Patient requests a hospital referral (situation).",
+   "alternatives": "Leave as SNOMED gap.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Haemoptysis volume",
+   "decision": "Plain Hemoptysis; volume not expressible, over-fires.",
+   "alternatives": "Omit the criterion (under-fires).",
+   "confidence": "medium"
+  }
+ ]
+}

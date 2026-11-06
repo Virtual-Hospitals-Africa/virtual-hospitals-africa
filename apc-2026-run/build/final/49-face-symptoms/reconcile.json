@@ -1,0 +1,119 @@
+{
+ "page": 49,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: four tasks (red box, face pain, facial weakness, facial swelling), each with its own due_to  vs  B: one task",
+   "choice": "A",
+   "final_expr": "4 tasks: urgent (or of 6 face findings), face pain (Pain in face), facial weakness (Weakness of face muscles), facial swelling (or Swelling of face, Lip swelling, Swelling around eyes)",
+   "reason": "The page branches the non-urgent approach into Face pain / weakness / Swelling of face, and per-branch tasks mirror that tree; the extra trigger atoms in diff.json are the per-branch due_to forms.",
+   "unsettled": false
+  },
+  {
+   "role": "trigger",
+   "difference": "A: due_to includes Lip swelling and Swelling around eyes  vs  B: face pain, face swelling, face weakness/numbness only",
+   "choice": "A",
+   "final_expr": "(or ... (Lip swelling) (Swelling around eyes))",
+   "reason": "'Painless swelling of lips/eyes' sits under 'Swelling of face' on the page, so lip/eye swelling is a face symptom that should open the face-symptom tasks.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for / priority_condition / diagnosis_condition",
+   "difference": "A: (Weakness of face muscles / Numbness of face / limb weakness / limb numbness + Sudden onset)  vs  B: same + Unilateral",
+   "choice": "B",
+   "final_expr": "(… (qualifier Sudden onset) (qualifier Unilateral))",
+   "reason": "The page says 'New sudden asymmetric weakness or numbness of face … arm or leg'; Unilateral encodes 'asymmetric', which A left out.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition / diagnosis_condition / check_for",
+   "difference": "A: face-weakness arm requires (no Upper facial weakness), Upper facial weakness checked for  vs  B: forehead involvement not encoded",
+   "choice": "A",
+   "final_expr": "(and (Weakness of face muscles Sudden onset Unilateral) (no (Upper facial weakness)))",
+   "reason": "The page qualifies the face weakness with '(with no/minimal forehead involvement)', which A encodes and B lists as could-not-model; 'minimal' remains uncaptured.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for / priority_condition / diagnosis_condition",
+   "difference": "A: Difficulty talking, Visual disturbance with no qualifier  vs  B: + Sudden onset",
+   "choice": "A",
+   "final_expr": "(Difficulty talking) (Visual disturbance)",
+   "reason": "On the page 'difficulty speaking or visual disturbance' follows a semicolon after 'New sudden asymmetric weakness…', so 'sudden' is not clearly attached to them; kept without a qualifier.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: stroke/TIA limb, speech and vision arms gated by (and <face symptoms> …)  vs  B: any single item alone",
+   "choice": "A",
+   "final_expr": "(and (or <face findings>) (or limb weakness/numbness, Difficulty talking, Visual disturbance))",
+   "reason": "The bullet applies to 'the patient with face symptoms and any of', so a possible-stroke diagnosis from this page needs the face-symptom context.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for / diagnosis_condition",
+   "difference": "A: Stabbing pain (Recurrent, Severe)  vs  B: Stabbing pain at Face structure (Recurrent, Severe)",
+   "choice": "B",
+   "final_expr": "(Stabbing pain (finding_site Face structure) (qualifier Recurrent) (qualifier Severe))",
+   "reason": "The stabbing pain box sits under 'Pain on one side of face', so the face finding site is the page's own context.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for / diagnosis_condition",
+   "difference": "A: sinusitis = and of Pain in face, Tenderness, Headache, (Thick nasal discharge or Posterior rhinorrhea), Recent common cold  vs  B: Pain in face and Tenderness and any of Headache, Nasal discharge, Posterior rhinorrhea, Common cold",
+   "choice": "A",
+   "final_expr": "(and Pain in face, Tenderness of face, Headache, (or (Nasal discharge Thick) (Posterior rhinorrhea)), (Common cold Recent))",
+   "reason": "The page box lists the features as one description with no 'any of', and A keeps the page's 'Thick' and 'recent' words; whether all are required is not settled by the page.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Pain in face and Headache checked for in the facial-swelling task  vs  B: in the single task",
+   "choice": "A",
+   "final_expr": "(Pain in face) (Headache) in 'Check for causes of facial swelling'",
+   "reason": "These are the mumps branch's 'Painful swelling … with fever, headache' and must be asked in the swelling task (A's structure).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for / diagnosis_condition",
+   "difference": "A: painless = (Lip swelling Painless) or (Swelling around eyes Painless)  vs  B: (Lip swelling and no Pain at lip) or (Swelling of eyelid and no Pain at eyelid)",
+   "choice": "A",
+   "final_expr": "(or (Lip swelling (qualifier Painless)) (Swelling around eyes (qualifier Painless)))",
+   "reason": "The page says 'Painless swelling of lips/eyes'; the Painless qualifier is closer to those words, 'swelling of eyes' is not limited to the eyelid (B's eyelid form overlaps orbital cellulitis), and A's form needs no checker exceptions.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for / diagnosis_condition",
+   "difference": "A: body pain = Generalized aches and pains or Muscle pain  vs  B: Generalized aches and pains",
+   "choice": "B",
+   "final_expr": "(Generalized aches and pains)",
+   "reason": "'Body pain' maps to generalised aches and pains; muscle pain is an addition the page does not name.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: Bell's palsy weakness = Weakness of face muscles (Sudden onset)  vs  B: + Unilateral",
+   "choice": "B",
+   "final_expr": "(Weakness of face muscles (qualifier Sudden onset) (qualifier Unilateral))",
+   "reason": "The page says 'Sudden progressive weakness of one side of face'.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: rule 'Diagnose probable mumps'  vs  B: 'Diagnose probable mumps from painful face swelling'",
+   "choice": "B",
+   "final_expr": "Diagnose probable mumps from painful face swelling",
+   "reason": "Rule descriptions must be unique across the book; B's is topic-specific to this page's branch.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "Mumps evidence: both require facial swelling, pain in face, fever, headache and body pain",
+   "choice": "both",
+   "final_expr": "(and Swelling of face, Pain in face, (active_condition Fever), Headache, Generalized aches and pains)",
+   "reason": "Both builds agree; the page lists 'with fever, headache, body pain' without 'any of', so whether all are required is not settled.",
+   "unsettled": true
+  }
+ ],
+ "notes": "Both builds passed. Final build starts from A (four branch tasks, forehead-involvement exclusion, Painless qualifier, sinusitis qualifiers) and adopts B's Unilateral qualifiers for 'asymmetric'/'one side of face', the face finding site on stabbing pain, 'body pain' as generalised aches only, and B's mumps rule description. Provenance for changed conditions was taken from B's citations. Orbital cellulitis, facial cellulitis, kidney disease, anaphylaxis, trigeminal and post-herpetic neuralgia logic was identical in both builds. Because the facial-swelling, face-pain and weakness checks live in separate tasks, Upper facial weakness and Sudden/Unilateral face weakness are asked in the urgent task."
+}

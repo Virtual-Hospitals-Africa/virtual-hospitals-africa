@@ -1,0 +1,298 @@
+{
+ "page": 34,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p34-49e51b48",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for self-harm or suicide risk :: task with (or Suicide attempt | Intentionally harming self | Suicidal thoughts | Thoughts of self harm) and check_for list",
+    "Urgent: attempted/considered self-harm or suicide :: system_priority_evaluation Urgent"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-c8892e2e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "attempt arm of urgent priority is encoded, but attempt is not in the high-risk diagnosis"
+   ],
+   "problem": "Attempted self-harm/suicide leads straight to the urgent actions; priority rule covers it via Suicide attempt / Intentionally harming self. Not part of the high-risk probable diagnosis, which is acceptable as the page's attempt branch has no named diagnosis. 'Thoughts of self harm' (any time) also triggers Urgent, which the page does not justify: page makes urgent only attempt or HIGH risk.",
+   "evidence": [
+    "Urgent priority :: (clinical_finding Suicide attempt) (clinical_finding Intentionally harming self) (clinical_finding Thoughts of self harm)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a1c34aac",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Current qualifier used for thoughts and planning; 'thoughts or plans' split into two findings.",
+   "evidence": [
+    "High risk :: (clinical_finding Suicidal thoughts (qualifier Current)) ; (clinical_finding Planning suicide (qualifier Current))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-686b6ad1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Past-year act of self-harm/suicide is encoded as History of attempted suicide / History of deliberate self harm; no 'performed act of self-harm' event finding within the past year (e.g. Intentionally harming self onset)"
+   ],
+   "problem": "Thoughts/plans in past month and acts in past year are encoded with onset thresholds (1 months, 1 years), correct windows. Planning suicide, Suicidal thoughts and Thoughts of self harm in 1 month ok. 'Performed act in past year' uses history situations; the acute event findings are not time-windowed.",
+   "evidence": [
+    "High risk :: (<= (onset (clinical_finding Thoughts of self harm)) (time_ago 1 months)) ... (<= (onset (clinical_finding History of attempted suicide)) (time_ago 1 years))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-f10a0406",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'violent' is mapped to Aggressive behavior (acceptable) but is not distinct",
+    "uncommunicative mapped to 'Does not communicate' (acceptable)"
+   ],
+   "problem": "Four parts encoded: agitated, aggressive/violent, distressed, uncommunicative, combined with or and anded with the past-month/year history. Violent vs aggressive is a loose mapping.",
+   "evidence": [
+    "High risk :: (or Feeling agitated | Aggressive behavior | Distress | Does not communicate)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-23f4567b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "High risk probable diagnosis exists with the correct and/or structure.",
+   "evidence": [
+    "Diagnose probable high risk of self-harm or suicide :: (or (clinical_finding Suicidal thoughts (qualifier Current)) (clinical_finding Planning suicide (qualifier Current)) (and (or onset<=time_ago 1 months ...) (or Feeling agitated|Aggressive behavior|Distress|Does not communicate)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-c4512abb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Low risk is encoded as absence of attempts/current thoughts/plans/agitation, but omits the page's 'No' branch condition that past-month/year history be absent-or-calm; as built, a patient with recent thoughts but not agitated is low risk, which matches the page; a patient with no data is also low risk"
+   ],
+   "problem": "Low risk rule is a conjunction of 'no' on eight findings. Page low risk = no current thoughts AND (no recent history OR not agitated). Rule additionally excludes agitation even when no history, so a calm-history-free agitated patient is neither high nor low risk (page: No on history -> low). Minor divergence. Also absence of data makes 'no' true, risking low-risk on empty record.",
+   "evidence": [
+    "Diagnose probable low risk :: (and (no ...Suicide attempt) ... (no Does not communicate))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-cc8909ef",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Continuation of low risk header, covered by same diagnosis.",
+   "evidence": [
+    "At low risk for suicide diagnosis rule"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p34-d8a125bd",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "Yes branch label",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-567118dc",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-00d4183c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-873e5e67",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-378ad823",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-5ba364c6",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-e36c7926",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-410d5ec8",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a9ec5ec6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a4579f5f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-31eae5b8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-6e0338da",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-a50d9d59",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-e795e94f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p34-cdf216aa",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p34-298091df",
+  "p34-41e85c33",
+  "p34-255673ec",
+  "p34-0bd18a87",
+  "p34-2d411090",
+  "p34-e7727f33",
+  "p34-966513e1",
+  "p34-c605690b",
+  "p34-6631e727",
+  "p34-64bde5fe",
+  "p34-6ea82761"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "problem": "Triggers on any 'Thoughts of self harm' finding regardless of timing or current status; the page makes Urgent only for attempt or high risk. Also current thoughts/plans reach Urgent only through the high-risk diagnosis, relying on a derived active_condition.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Task check_for",
+   "problem": "Contains both qualified and unqualified Planning suicide, and Suicidal thoughts with and without Current inside the task trigger; duplicate/overlapping items. Thoughts of self harm in the trigger is not in check_for, and Suicide attempt/Intentionally harming self are not in check_for.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable low risk",
+   "problem": "Defined by absence of eight findings; empty record yields low risk. Excludes agitation even when history absent, diverging from page branch (no history -> low risk).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable high risk",
+   "problem": "Past-year acts are mapped to history 'situation' concepts rather than acute event findings; attempted self-harm itself does not produce high risk (only Urgent).",
+   "severity": "low"
+  }
+ ],
+ "summary": "The core page logic (current thoughts/plans, recent history combined with agitation, low risk) is encoded in a high-risk and a low-risk probable diagnosis plus an Urgent priority. Most consequential problems: the Urgent priority fires on any Thoughts of self harm (not justified by the page) and the low-risk rule uses absence of findings, diverging from the page's branch and succeeding on empty data. Management steps and flowchart labels are out of scope."
+}

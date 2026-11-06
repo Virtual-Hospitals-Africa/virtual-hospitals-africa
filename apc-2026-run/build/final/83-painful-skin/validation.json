@@ -1,0 +1,37 @@
+{
+ "ok": true,
+ "summary": {
+  "parse": 0,
+  "snomed": 0,
+  "database": 0,
+  "provenance": 0,
+  "quotes": 0,
+  "keys": 0,
+  "coverage": 0,
+  "always_true": 0,
+  "will": 0,
+  "files": 0
+ },
+ "problems": {
+  "parse": [],
+  "snomed": [],
+  "database": [],
+  "provenance": [],
+  "quotes": [],
+  "keys": [],
+  "coverage": [],
+  "always_true": [],
+  "will": [],
+  "files": []
+ },
+ "warnings": [],
+ "counts": {
+  "task": 1,
+  "system_diagnosis_rule": 5
+ },
+ "n_conditions": 34,
+ "n_elements": 1,
+ "n_outside": 28,
+ "n_cited": 11,
+ "n_not_encoded": 1
+}

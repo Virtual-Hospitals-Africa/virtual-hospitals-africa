@@ -1,0 +1,258 @@
+{
+ "edition": "2026",
+ "page": 60,
+ "lisp_file": "60-constipation.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent constipation signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-3ea295c1"
+   ],
+   "quote": "constipation",
+   "confidence": "high",
+   "note": "Constipation is a recorded common symptom; the red box applies to the patient with constipation."
+  },
+  {
+   "rule": "Check for urgent constipation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "No stools or flatus/wind",
+   "confidence": "medium",
+   "note": "No precoordinated 'no stools or flatus' concept; 'Unable to break wind' records absent flatus; the 24-hour window is applied in the priority rule via onset."
+  },
+  {
+   "rule": "Check for urgent constipation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent constipation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "distension",
+   "confidence": "high",
+   "note": "Direct match; term already in VHA vocabulary."
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "If > 65 years, bed-bound/receiving palliative care, or overflow diarrhoea (prolonged constipation",
+   "confidence": "medium",
+   "note": "Page section is about the patient with constipation; Constipation is the recorded common symptom."
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "bed-bound",
+   "confidence": "high",
+   "note": "'Bed-ridden' FSN is the closest; synonym bed-bound."
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "receiving palliative care",
+   "confidence": "low",
+   "note": "No 'receiving palliative care' finding; 'Seen by palliative care service' is the nearest finding. Alternatives: Under care of palliative care physician."
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spurious diarrhea - overflow\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "overflow diarrhoea",
+   "confidence": "high",
+   "note": "SNOMED's overflow diarrhoea finding."
+  },
+  {
+   "rule": "Check for faecal impaction in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "solid immobile bulk of stool in rectum",
+   "confidence": "medium",
+   "note": "No concept for a rectal faecal mass; Hard stool with finding site Rectum structure expresses solid stool in the rectum. Alternative: Feces in rectum (does not say solid/immobile)."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "prolonged constipation",
+   "confidence": "medium",
+   "note": "Page section is the patient with constipation; constipation kept as context for the impaction rule."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "bed-bound",
+   "confidence": "high",
+   "note": "Gate for the rectal check; '> 65 years' cannot be expressed so it is left out (rule fires less often)."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "receiving palliative care",
+   "confidence": "low",
+   "note": "See check_for note."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spurious diarrhea - overflow\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "overflow diarrhoea",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "solid immobile bulk of stool in rectum",
+   "confidence": "medium",
+   "note": "'If present, impaction likely'."
+  },
+  {
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "impaction likely",
+   "confidence": "high",
+   "note": "Page says impaction likely -> probable. Fecal impaction is in VHA vocabulary."
+  },
+  {
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours and abdominal pain/distension",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "No stools",
+   "confidence": "medium",
+   "note": "'No stools in the past 24 hours' encoded as constipation with onset at least 24 hours ago (>= per the brief)."
+  },
+  {
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours and abdominal pain/distension",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "flatus/wind in the past 24 hours",
+   "confidence": "medium",
+   "note": "No flatus for 24 hours = Unable to break wind with onset at least 24 hours ago. 'No stools or flatus' read as neither stools nor flatus (AND)."
+  },
+  {
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours and abdominal pain/distension",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "'with abdominal pain/distension' -> or of pain and distension."
+  },
+  {
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours and abdominal pain/distension",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "distension",
+   "confidence": "high",
+   "note": "As above."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p60-4b9a5451",
+   "element_id": "p60-rb1-e03",
+   "text": "Refer same day.",
+   "reason_category": "management_step",
+   "reason": "Referral instruction; no management or referral steps in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "No stools or flatus in the past 24 hours",
+   "decision": "AND of (onset Constipation >= 24 hours ago) and (onset Unable to break wind >= 24 hours ago)",
+   "alternatives": "Obstipation (disorder) as a single concept; reading 'or' as either one alone",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Impaction gate",
+   "decision": "Kept bed-bound/palliative care/overflow diarrhoea as a required gate with the rectal finding; dropped '> 65 years' (not representable), so the rule fires less often than the page intends",
+   "alternatives": "Diagnose on the rectal finding alone (fires more often)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Colorectal cancer section",
+   "decision": "Not encoded: the page asks to assess risk and 'discuss/refer' but never says 'likely' or 'consider'; age > 50 is not representable and constipation itself is one of the listed symptoms, so a possible rule would fire for every patient",
+   "alternatives": "A possible colorectal cancer rule on any listed symptom",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaemia likely",
+   "decision": "Not encoded: the only evidence is Hb < 12/13, which has no observable or unit in the language",
+   "alternatives": "none without a proxy",
+   "confidence": "high"
+  },
+  {
+   "topic": "Shock wording",
+   "decision": "Page has no Shock/SBP criterion; nothing to decide",
+   "alternatives": "-",
+   "confidence": "high"
+  }
+ ]
+}

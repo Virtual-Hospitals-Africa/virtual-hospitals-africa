@@ -1,0 +1,543 @@
+{
+ "edition": "2026",
+ "page": 122,
+ "lisp_file": "122-hiv-post-exposure-prophylaxis-pep.lisp",
+ "conditions": [
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Body fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-d3c61078"
+   ],
+   "quote": "exposed to infectious fluid",
+   "confidence": "medium",
+   "note": "Presenting complaint \"exposed to infectious fluid\" as exposure to Body fluid (substance); descendants (blood, CSF, etc.) should match. Not a recorded common symptom or warning sign."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p122-d3c61078",
+    "p122-f91d1f4a"
+   ],
+   "quote": "Human bite",
+   "confidence": "medium",
+   "note": "Second trigger so the bite branch of the red box can open the check; a human bite is not a fluid exposure in SNOMED. Cites the header (complaint) and the bite bullet, since the header names only the fluid exposure."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "blood",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "pleural",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "pericardial",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "peritoneal",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "amniotic",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "synovial",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "cerebrospinal fluid",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "vaginal secretions",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "semen",
+   "confidence": "medium",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it. Semen has no \"Semen\" substance concept; \"Seminal fluid\" is the exact SNOMED substance."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "breast milk",
+   "confidence": "high",
+   "note": "Red-box fluid as exposure finding (gold page 20 pattern), checked for so the priority rule can consume it."
+  },
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p122-f91d1f4a"
+   ],
+   "quote": "severe enough to cause bleeding",
+   "confidence": "medium",
+   "note": "\"Severe enough to cause bleeding\" read as the bite having caused bleeding; generic Bleeding finding (no bite-specific concept). Paired with Human bite - wound by and in the priority rule."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "blood",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "pleural",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "pericardial",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "peritoneal",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "amniotic",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "synovial",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "cerebrospinal fluid",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "vaginal secretions",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "semen",
+   "confidence": "medium",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent. Semen has no \"Semen\" substance concept; \"Seminal fluid\" is the exact SNOMED substance."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "element_keys": [
+    "p122-ece680e3"
+   ],
+   "quote": "breast milk",
+   "confidence": "high",
+   "note": "One of the red box \"either of\" items; any one makes the patient Urgent."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p122-f91d1f4a"
+   ],
+   "quote": "Human bite",
+   "confidence": "medium",
+   "note": "Human bite half of \"Human bite severe enough to cause bleeding\"; paired with Bleeding by and."
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p122-f91d1f4a"
+   ],
+   "quote": "severe enough to cause bleeding",
+   "confidence": "medium",
+   "note": "\"Severe enough to cause bleeding\" read as the bite having caused bleeding; generic Bleeding finding (no bite-specific concept). Paired with Human bite - wound by and in the priority rule."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p122-f4e69d03",
+   "element_id": "p122-rb1-e04",
+   "text": "Yes: was there sexual contact, sharps injury, splash to eye/open wound/mouth/nose?",
+   "reason_category": "flowchart_routing",
+   "reason": "Route question (sexual contact/sharps/splash) only decides whether to enter the PEP steps (management); does not change urgency, so not encoded."
+  },
+  {
+   "element_key": "p122-a1c52d85",
+   "element_id": "p122-rb1-e05",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "No branch leads to reassurance/hepatitis B only advice (management)."
+  },
+  {
+   "element_key": "p122-4f2c9b15",
+   "element_id": "p122-rb1-e06",
+   "text": "Yes: STEP 1. Give exposed patient immediate attention:",
+   "reason_category": "management_step",
+   "reason": "First aid steps header."
+  },
+  {
+   "element_key": "p122-2c009c2b",
+   "element_id": "p122-rb1-e07",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "No branch leads to reassurance/hepatitis B only advice (management)."
+  },
+  {
+   "element_key": "p122-442d3cb9",
+   "element_id": "p122-rb1-e08",
+   "text": "If broken skin, clean area immediately with soap and water.",
+   "reason_category": "management_step",
+   "reason": "Wound cleaning."
+  },
+  {
+   "element_key": "p122-7adc89b5",
+   "element_id": "p122-rb1-e09",
+   "text": "If splash to eye, mouth or nose, immediately rinse mouth/nose or irrigate eye thoroughly with sterile water.",
+   "reason_category": "management_step",
+   "reason": "Rinse/irrigate."
+  },
+  {
+   "element_key": "p122-f2b3f849",
+   "element_id": "p122-rb1-e10",
+   "text": "If human bite severe enough to cause bleeding, prevent hepatitis B only. Risk of HIV transmission is negligible and there is no need for HIV PEP.",
+   "reason_category": "management_step",
+   "reason": "Hepatitis B prevention only for bite; no PEP."
+  },
+  {
+   "element_key": "p122-50cf76d4",
+   "element_id": "p122-rb1-e11",
+   "text": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "reason_category": "management_step",
+   "reason": "Decision to give PEP within 72 hours is treatment, out of scope (no manage tasks)."
+  },
+  {
+   "element_key": "p122-1552264b",
+   "element_id": "p122-rb1-e12",
+   "text": "Patient known HIV positive",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV status branch decides PEP vs routine HIV care (management only)."
+  },
+  {
+   "element_key": "p122-dcb6ef42",
+   "element_id": "p122-rb1-e13",
+   "text": "Patient HIV negative or unknown: obtain consent and do HIV rapid test 124.",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV status branch / HIV rapid test decides PEP (management only)."
+  },
+  {
+   "element_key": "p122-9d8e81dc",
+   "element_id": "p122-rb1-e14",
+   "text": "Positive",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV test result branch to management."
+  },
+  {
+   "element_key": "p122-b30bfa32",
+   "element_id": "p122-rb1-e15",
+   "text": "Negative",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV test result branch to management."
+  },
+  {
+   "element_key": "p122-44a15641",
+   "element_id": "p122-rb1-e16",
+   "text": "Results inconclusive",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV test result branch to management."
+  },
+  {
+   "element_key": "p122-df97ddef",
+   "element_id": "p122-rb1-e17",
+   "text": "Patient refuses HIV rapid test",
+   "reason_category": "flowchart_routing",
+   "reason": "HIV test refusal branch to management."
+  },
+  {
+   "element_key": "p122-6786a848",
+   "element_id": "p122-rb1-e18",
+   "text": "For all other exposures, reassure that HIV and hepatitis transmission is unlikely, avoid giving PEP.",
+   "reason_category": "management_step",
+   "reason": "Reassure, avoid PEP."
+  },
+  {
+   "element_key": "p122-2159e4f1",
+   "element_id": "p122-rb1-e19",
+   "text": "Avoid giving HIV PEP, give instead routine HIV care 126.",
+   "reason_category": "management_step",
+   "reason": "Routine HIV care instead of PEP."
+  },
+  {
+   "element_key": "p122-aee433ff",
+   "element_id": "p122-rb1-e20",
+   "text": "Give HIV PEP1 only if ≤ 72 hours since exposure (ideally within 1 hour) for 28 days:",
+   "reason_category": "management_step",
+   "reason": "PEP timing and duration."
+  },
+  {
+   "element_key": "p122-4124454c",
+   "element_id": "p122-rb1-e21",
+   "text": "GiveTDF 300mg + 3TC 300mg + DTG 50mg once daily for 28 days as a fixed combination tablet (TLD). If kidney disease, give instead AZT 300mg + 3TC 150mg 12 hourly",
+   "reason_category": "management_step",
+   "reason": "Medicines and doses."
+  },
+  {
+   "element_key": "p122-e8dacaa9",
+   "element_id": "p122-rb1-e22",
+   "text": "Check for medication interactions and adjust doses if needed 133, especially TB, antiseizure medication, contraceptives and other common medications like: calci",
+   "reason_category": "management_step",
+   "reason": "Medication interactions."
+  },
+  {
+   "element_key": "p122-9de20e54",
+   "element_id": "p122-rb1-e23",
+   "text": "If source is failing 2nd line ART, discuss PEP with HIV hotline 200.",
+   "reason_category": "management_step",
+   "reason": "Discuss with hotline."
+  },
+  {
+   "element_key": "p122-d87a3a75",
+   "element_id": "p122-rb1-e24",
+   "text": "If unsure, discuss with HIV hotline 200 or specialist.",
+   "reason_category": "management_step",
+   "reason": "Discuss with hotline."
+  },
+  {
+   "element_key": "p122-379f19bb",
+   "element_id": "p122-rb1-e25",
+   "text": "STEP 3. Take blood from exposed patient: Do HIV ELISA, unless known HIV positive. If giving TDF, do creatinine (eGFR). If giving AZT, do FBC.",
+   "reason_category": "management_step",
+   "reason": "Investigations on exposed patient; lab tests not representable as measure tasks."
+  },
+  {
+   "element_key": "p122-e6f979b4",
+   "element_id": "p122-rb1-e26",
+   "text": "Send blood for HBsAb titre (unless documented HBsAb titre ≥ 10).",
+   "reason_category": "management_step",
+   "reason": "HBsAb titre investigation."
+  },
+  {
+   "element_key": "p122-4e294967",
+   "element_id": "p122-rb1-e27",
+   "text": "If source hepatitis C positive/unknown, do hepatitis C antibody. If source RPR positive/unknown, test for syphilis 66.",
+   "reason_category": "management_step",
+   "reason": "Source-dependent investigations."
+  },
+  {
+   "element_key": "p122-6c867d6b",
+   "element_id": "p122-rb1-e28",
+   "text": "STEP 4. Take blood from source if possible and if source consents:",
+   "reason_category": "management_step",
+   "reason": "Testing the source person."
+  },
+  {
+   "element_key": "p122-5732d81b",
+   "element_id": "p122-rb1-e29",
+   "text": "Do rapid HIV test and send blood for HIV ELISA, HBsAg and hepatitis C antibody. If human bite, only do HBsAg. Also test for syphilis 66.",
+   "reason_category": "management_step",
+   "reason": "Tests on source."
+  },
+  {
+   "element_key": "p122-cdff65fd",
+   "element_id": "p122-rb1-e30",
+   "text": "If source HIV rapid negative, no need to continue PEP unless signs of acute HIV infection (history of flu-like symptoms - fever, sore throat, headache). If unsu",
+   "reason_category": "management_step",
+   "reason": "Decision to continue/stop PEP based on source result."
+  },
+  {
+   "element_key": "p122-b1ddc7c9",
+   "element_id": "p122-rb1-e31",
+   "text": "STEP 5. Give hepatitis B PEP if needed:",
+   "reason_category": "management_step",
+   "reason": "Hepatitis B PEP header."
+  },
+  {
+   "element_key": "p122-4d182c9e",
+   "element_id": "p122-rb1-e32",
+   "text": "If exposed patient unvaccinated, vaccinations incomplete or HBsAb titre < 10, give 1st dose of hepatitis B vaccine 1mL IM within 7 days if sharps injury or with",
+   "reason_category": "management_step",
+   "reason": "Hepatitis B vaccine."
+  },
+  {
+   "element_key": "p122-7b0245c2",
+   "element_id": "p122-rb1-e33",
+   "text": "Also give hepatitis B immunoglobulin (HBIG)3 500IU IM as soon as possible, within 7 days of exposure.",
+   "reason_category": "management_step",
+   "reason": "HBIG."
+  },
+  {
+   "element_key": "p122-8c9424fe",
+   "element_id": "p122-rb1-e34",
+   "text": "STEP 6. Continue to assess and manage the patient:",
+   "reason_category": "management_step",
+   "reason": "Follow-up header."
+  },
+  {
+   "element_key": "p122-71be4d95",
+   "element_id": "p122-rb1-e35",
+   "text": "If sexual assault 32. If emergency contraception needed 170. Record correct contact details in case of abnormal results. Review patient and blood results within",
+   "reason_category": "management_step",
+   "reason": "Follow-up and cross references to pages 32, 170, 123."
+  },
+  {
+   "element_key": "p122-d9586564",
+   "element_id": "p122-rb1-e36",
+   "text": "AZT – zidovudine; DTG – dolutegravir; FTC – emtricitabine; TDF – tenofovir; 3TC – lamivudine; HBsAg – Hepatitis B surface antigen; HBsAbs – Hepatitis B surface ",
+   "reason_category": "figure_or_note",
+   "reason": "Abbreviation legend."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Urgency",
+   "decision": "Urgent when any listed infectious-fluid exposure or a human bite with bleeding is recorded; the route question (sexual/sharps/splash) is not required.",
+   "alternatives": "Require the route question as well (and), which would make urgency depend on a management routing question; the header gives urgent attention to every patient exposed to infectious fluid.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Trigger",
+   "decision": "Task triggered by exposure to Body fluid (substance) or Human bite - wound.",
+   "alternatives": "\"Exposure to blood and/or body fluid\" (event) as a clinical_finding; rejected to follow the gold exposure pattern.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Human bite severe enough to cause bleeding",
+   "decision": "and of Human bite - wound and Bleeding.",
+   "alternatives": "Human bite alone (over-fires).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Blood-stained fluid/tissue",
+   "decision": "Not encoded: no SNOMED substance; Serosanguinous fluid considered but is narrower/different.",
+   "alternatives": "Serosanguinous fluid (substance).",
+   "confidence": "low"
+  }
+ ]
+}

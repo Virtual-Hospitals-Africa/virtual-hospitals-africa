@@ -1,0 +1,258 @@
+{
+  "page": 61,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p61-6afff593",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the presenting complaint and the 'any of' structure of the Urgent rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Structured as (and <presenting complaint> (or ...)) at Urgent, as the house standard asks. 'Anal symptoms' is anchored to SNOMED 'Anal finding', which is not a recorded common symptom; the briefing accepts this for complaints that are not common symptoms. Note that 'Anal finding' is a narrow hierarchy in SNOMED (anal reflex/tone/patency, Anal pain, Disorder of anus), see rule-level problems.",
+      "evidence": [
+        "Urgent: anal symptoms with extremely painful lump or unable to pass stool :: (system_priority_evaluation ... adult Urgent (and (clinical_finding (snomed_concept \"Anal finding\" \"finding\")) (or ...)))",
+        "Check for urgent anal symptom conditions :: (task ... adult (clinical_finding (snomed_concept \"Anal finding\" \"finding\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-91253d54",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: a lump on the anus, and that it is extremely painful.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present: 'Perianal lump' (300570005, the only anal-lump finding in SNOMED; no 'painful anal lump' precoordination exists) and-ed with 'Anal pain' qualified Severe, inside the Urgent 'or'. Both are in check_for. 'Perianal lump' is a child of 'Perineal lump', not of 'Anal finding', but the and-ed severe 'Anal pain' is a child of 'Anal finding', so the priority rule's outer (and Anal finding ...) is still satisfied by this branch.",
+      "evidence": [
+        "Urgent: anal symptoms with extremely painful lump or unable to pass stool :: (and (clinical_finding (snomed_concept \"Perianal lump\" \"finding\")) (clinical_finding (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))",
+        "Check for urgent anal symptom conditions :: (clinical_finding (snomed_concept \"Perianal lump\" \"finding\")) ; (clinical_finding (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-19415dc4",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion: unable to pass stool, attributed to the anal symptoms.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Does not defecate' (300377009, under 'Finding related to ability to defecate') is the closest concept; searches for 'unable to pass stool' / 'unable to defecate' return nothing closer. The causal clause 'because of anal symptoms' is approximated by the outer (and Anal finding ...), which is the best the language can do. Because 'Does not defecate' is not under 'Anal finding', this branch fires only when an anal finding is recorded separately, which matches the page's intent.",
+      "evidence": [
+        "Urgent: anal symptoms with extremely painful lump or unable to pass stool :: (and (clinical_finding (snomed_concept \"Anal finding\" \"finding\")) (or ... (clinical_finding (snomed_concept \"Does not defecate\" \"finding\"))))",
+        "Check for urgent anal symptom conditions :: (clinical_finding (snomed_concept \"Does not defecate\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-9de73694",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Manage pain and refer same day' is a management heading; 'refer same day' is what the Urgent priority level expresses, and that is encoded.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-84668eed",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Paracetamol dosing; manage tasks are out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-379d759e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Morphine dosing and titration. The 'Stop if BP drops < 90/60' threshold is a drug-stopping instruction inside the management step, not a triage criterion, so it does not belong in the priority rule.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-0da38d79",
+      "scope": "borderline",
+      "scope_reason": "The paragraph mixes management and cross-references with one diagnostic conclusion: 'If painless bleeding, passing mucus or ... tenesmus, treat for sexually transmitted proctitis'. The page says 'treat for', not 'X likely', so encoding it as a probable diagnosis is a judgment call; the house standard would encode it, and probable is defensible since treatment follows directly.",
+      "verdict": "partial",
+      "parts_missing": [
+        "The anal-sex context: on the page the proctitis sentence sits inside the bullet 'If patient has anal sex, ...', and the APC intends the STI-proctitis treatment for patients who have anal sex. The rule has no such condition; SNOMED has (clinical_finding (snomed_concept \"Anal penetration\" \"finding\")) which could carry it."
+      ],
+      "problem": "The three criteria are correctly or-ed and all three are in check_for ('Painless rectal bleeding', 'Mucus in stool', 'Tenesmus of anus and/or rectum' are exact fits). 'Infective proctitis' is broader than 'sexually transmitted proctitis' (its children include candidal and tuberculous proctitis as well as chlamydial and gonococcal), but SNOMED has no 'sexually transmitted proctitis' concept, so it is the closest parent. The 'ask about genital symptoms and treat partner -> 62', the antibiotic doses, the penicillin-allergy substitution and 'If diarrhoea -> 58' are management/cross-reference and rightly not encoded. Whether the anal-sex precondition is required is arguable (a clinician may read the second sentence as applying to all anal-symptom patients), hence partial at medium confidence rather than error.",
+      "evidence": [
+        "Diagnose probable sexually transmitted proctitis from anal symptoms :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Infective proctitis\" \"disorder\") probable) adult (and (clinical_finding (snomed_concept \"Anal finding\" \"finding\")) (or (clinical_finding (snomed_concept \"Painless rectal bleeding\" \"finding\")) (clinical_finding (snomed_concept \"Mucus in stool\" \"finding\")) (clinical_finding (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\")))))",
+        "Check for urgent anal symptom conditions :: (clinical_finding (snomed_concept \"Painless rectal bleeding\" \"finding\")) ; (clinical_finding (snomed_concept \"Mucus in stool\" \"finding\")) ; (clinical_finding (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-cc98a7aa",
+      "scope": "borderline",
+      "scope_reason": "Fragmented text block holding the 'Lump/pile' branch label (routing only) and the flowchart decision 'Suspected worms: Is worm flat and white with worm segments (blunt ended)?' whose Yes branch concludes 'Tapeworm likely'. The decision criterion (worm morphology) has no SNOMED finding, so the discriminator itself is not representable; but the decision is the only route to an 'X likely' conclusion that the rules do not have.",
+      "verdict": "missing",
+      "parts_missing": [
+        "The Yes branch (flat, white, segmented worm -> tapeworm) is not encoded in any rule; only the No branch (pinworm) is.",
+        "'Lump/pile' branch label: routing to management only, nothing to encode."
+      ],
+      "problem": "The worm question's No branch is captured by the pinworm rule (Worms in stool + pruritus ani at night), but nothing captures the Yes branch. Worm morphology cannot be expressed in SNOMED (searches for 'segmented worm', 'proglottid' give only organism concepts), so an exact encoding is impossible, but a probable tapeworm rule anchored on 'Worms in stool' (which is already in check_for) would carry the conclusion; see p61-f783de97.",
+      "evidence": [
+        "Diagnose probable pinworm from anal itch at night :: (and (clinical_finding (snomed_concept \"Worms in stool\" \"finding\")) (clinical_finding (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-f783de97",
+      "scope": "in_scope",
+      "scope_reason": "'Tapeworm likely' is an 'X likely' conclusion; the house standard says every such conclusion becomes a probable diagnosis rule.",
+      "verdict": "missing",
+      "parts_missing": [
+        "No diagnosis rule for tapeworm at any certainty."
+      ],
+      "problem": "No rule diagnoses tapeworm. SNOMED has (snomed_concept \"Infection caused by Taenia\" \"disorder\") (76172008, synonym taeniasis) and the broader (snomed_concept \"Cestode infection\" \"disorder\") (86133004). The page's discriminator (flat, white, blunt-ended segments) is not representable, so the honest encoding is a rule on 'Worms in stool' alone (possible, or probable if the builders accept that the morphology question is answered by the nurse before recording), and a remaining-questions note. As written, a nurse who records 'Worms in stool' without night-time anal itch gets no diagnosis at all, and 'Worms in stool' is consumed only by the pinworm rule.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-e1b77ac5",
+      "scope": "in_scope",
+      "scope_reason": "'If worm is thin and white, with anal itch worse at night, pinworm likely' is an 'X likely' conclusion with criteria; the rest of the block (doses, 'if other worm or unsure' treatment) is management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as probable 'Enterobiasis' (synonyms pinworm/threadworm, the right concept) from 'Worms in stool' and 'Pruritus ani' qualified 'Night time' (synonyms 'Nocturnal', 'At night', so the qualifier reads as 'worse at night' as well as the language allows). The 'thin and white' worm morphology is not representable in SNOMED and its absence is acceptable; the conjunction matches the page since the page reaches this box only after a worm is suspected. Mebendazole/albendazole doses and the 'other worm or unsure' arm are management and correctly not encoded.",
+      "evidence": [
+        "Diagnose probable pinworm from anal itch at night :: (system_diagnosis_rule ... (diagnosis (snomed_concept \"Enterobiasis\" \"disorder\") probable) adult (and (clinical_finding (snomed_concept \"Worms in stool\" \"finding\")) (clinical_finding (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))))",
+        "Check for urgent anal symptom conditions :: (clinical_finding (snomed_concept \"Worms in stool\" \"finding\")) ; (clinical_finding (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-eb431519",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Check Hb. If Hb < 12 (woman) or < 13 (man), anaemia likely -> 44' is an 'X likely' conclusion, but haemoglobin has no unit in the language (units are % bpm °C cm kg mmol/L mmHg mm), so neither a measure task nor the sex-specific thresholds can be written; the brief lists Hb criteria as not_representable. The household treatment and hygiene advice are management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-10599adc",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Lump/pile management: treat constipation -> 60, avoid straining, 'If pile cannot be reduced or is thrombosed, refer'. The referral criterion is a management decision in the non-urgent flow with no priority level or diagnosis on the page; SNOMED has 'Thrombosed hemorrhoids' if the team ever wants a check_for for it, but the test would reject it as unused.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-5765820f",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Referral criteria for warts and cross-references to genital ulcer (65) and genital warts (68); no diagnosis or priority level stated on this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-f19fb3d2",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Refer if: abdominal tenderness/pain, abdominal mass, vomiting, larva migrans' is a referral list in the worms management block, not a triage level or an 'X likely'. If the team decides referral lists should be priority rules this becomes a miss; the house standard as written does not ask for it.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p61-0f092d4c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Lactulose for constipation in the crack/s branch.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-7acda35e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Red/raw skin advice and topical treatment; 'If diarrhoea -> 58' is a cross-reference.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-6a3dbf98",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Crack/s' is an examination branch label that routes to management only; the page states no 'X likely' for it (SNOMED 'Anal fissure' exists but nothing on the page would consume it).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-50afc687",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Red/raw skin' branch label, routes to management only.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p61-34a74f56",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'Ulcer/s or perianal wart/s' branch label, routes to referral criteria and cross-references only.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p61-e6c4c97f",
+    "p61-8c8eb05d",
+    "p61-5930caa9",
+    "p61-6b089871",
+    "p61-eb4a6745",
+    "p61-f82a9c0f",
+    "p61-21fd5a62",
+    "p61-e62d650c"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "(missing) probable tapeworm rule",
+      "problem": "The 'Suspected worms' flowchart has two conclusions, 'Tapeworm likely' (Yes) and 'pinworm likely' (No); only the No branch is encoded. 'Worms in stool' is in check_for but is consumed only by the pinworm rule, so a worm without night-time itch produces no diagnosis. SNOMED offers 'Infection caused by Taenia' (disorder) or 'Cestode infection' (disorder).",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+      "problem": "The page places the proctitis criteria inside the 'If patient has anal sex' bullet; the rule drops that context and fires on any anal-symptom patient with painless bleeding, mucus or tenesmus. 'Anal penetration' (finding) exists in SNOMED to carry it. Also 'treat for' is encoded as a probable diagnosis, which is a defensible reading but should be recorded as a decision.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent anal symptom conditions",
+      "problem": "The trigger 'Anal finding' is a narrow SNOMED hierarchy (anal reflex, tone, patency, 'Anal pain', 'Disorder of anus'). Five of the eight check_for items ('Perianal lump', 'Does not defecate', 'Painless rectal bleeding', 'Mucus in stool', 'Tenesmus', 'Worms in stool') are not descendants of it, so the task and every rule anchored on it depend on the nurse separately recording 'Anal finding' (or Anal pain / a disorder of anus). This is the briefing's accepted pattern for complaints that are not common symptoms, but it should be in the remaining-questions file.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+      "problem": "No defect found: trigger present, two branches match the two red-box criteria, criteria not merged across boxes, level Urgent matches 'refer same day'.",
+      "severity": "low"
+    },
+    {
+      "rule": "(not representable) anaemia likely from Hb thresholds",
+      "problem": "'If Hb < 12 (woman) or < 13 (man), anaemia likely' cannot be written because haemoglobin has no unit in the language; should be listed under 'Could not model'.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is fully and correctly encoded: Urgent on (Anal finding and (Perianal lump with severe Anal pain, or Does not defecate)), with every criterion in check_for. The most consequential miss is the 'Tapeworm likely' conclusion of the worms flowchart, which has no rule at all while its sibling pinworm branch does; the second is that the sexually-transmitted-proctitis rule drops the page's anal-sex context and reads 'treat for' as probable. The Hb-based 'anaemia likely' is not representable, and the remaining outside content is management, referral lists and routing."
+}

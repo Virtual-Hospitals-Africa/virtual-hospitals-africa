@@ -1,0 +1,348 @@
+{
+ "page": 176,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page's '(closed cervix and small uterus)' describes an empty, non-enlarged uterus after TOP; SNOMED 'Small uterus' means an abnormally small (hypoplastic) uterus and will rarely be recorded post-TOP, so the AND it sits in may never fire.",
+   "fix": "Replace with (no (clinical_finding (snomed_concept \"Enlarged uterus\" \"finding\"))), which is already checked for, or drop it and keep adnexal mass + closed os.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for complications after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only 'products of conception visible' alongside an open cervical os; 'in vagina' is a reasonable but added location (the os location in c011 is the closer reading).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page's '(closed cervix and small uterus)' describes an empty, non-enlarged uterus after TOP; SNOMED 'Small uterus' means an abnormally small (hypoplastic) uterus and will rarely be recorded post-TOP, so the AND it sits in may never fire.",
+   "fix": "Replace with (no (clinical_finding (snomed_concept \"Enlarged uterus\" \"finding\"))), which is already checked for, or drop it and keep adnexal mass + closed os.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "expr": "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same as c012: 'in vagina' location is an extrapolation of 'products of conception visible'.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "expr": "(diagnosis (snomed_concept \"Incomplete induced termination of pregnancy\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page's '(closed cervix and small uterus)' describes an empty, non-enlarged uterus after TOP; SNOMED 'Small uterus' means an abnormally small (hypoplastic) uterus and will rarely be recorded post-TOP, so the AND it sits in may never fire.",
+   "fix": "Replace with (no (clinical_finding (snomed_concept \"Enlarged uterus\" \"finding\"))), which is already checked for, or drop it and keep adnexal mass + closed os.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "verdict": "ok",
+   "problem": "Trigger (TOP within 14 days) and check_for list match the review box and the follow-up question. Hb is not checked for even though Hb < 6 is a red-box criterion (see priority rule). Uses the disorder concept 'Induced termination of pregnancy'; a procedure concept of the same name also exists, so confirm which one VHA records.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "verdict": "problem",
+   "problem": "'Ectopic pregnancy likely' is correctly probable and anchored on adnexal mass, but the required 'Small uterus' (an abnormally small uterus) does not mean what the page means (an empty, non-enlarged uterus), so the rule is unlikely to fire.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "verdict": "ok",
+   "problem": "Structure enlarged uterus OR (open os AND (bleeding OR POC)) matches 'Yes to either'. The page reaches it only on the 'No' branch (no red-box signs), but an independent probable rule is acceptable.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "verdict": "problem",
+   "problem": "'Hb < 6' from the red-box question is missing, so severe anaemia after TOP does not trigger Urgent. The adnexal-mass AND inherits the 'Small uterus' problem, so an adnexal mass alone will not trigger Urgent. The house standard says to reference (active_condition Ectopic pregnancy) instead of inlining the subset. Urgent is justified by 'Manage urgently'/'Refer urgently'. 'Pulse, function' is acceptable as the pulse observable.",
+   "severity": "high"
+  }
+ ],
+ "summary": "The urgent priority rule drops the red-box criterion 'Hb < 6', so severe post-TOP anaemia is missed. The adnexal-mass/ectopic logic requires SNOMED 'Small uterus' (an abnormally small uterus), which does not match the page's meaning of a non-enlarged, empty uterus. That can silence both the ectopic diagnosis and its urgent trigger, and the priority rule inlines the subset instead of referencing (active_condition Ectopic pregnancy). Everything else, including the vitals thresholds and the incomplete-TOP and/or structure, is faithful."
+}

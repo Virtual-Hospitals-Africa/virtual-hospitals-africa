@@ -1,0 +1,221 @@
+{
+ "page": 73,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p73-21042048",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Header; trigger is carried by the Bleeding from vagina conjunct.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-16a7fd6c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (and (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\")) (or (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) ...))",
+    "task :: (check_for (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-3beb8da5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-04e86008",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Structure matches (pallor AND any of pulse>=100, RR>=30, dizziness, weakness, chest pain). Minor: facial-only pallor concept; respiratory rate unit bpm may be a unit mismatch (breaths/min).",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (and (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\")) (or (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding Dizziness) (clinical_finding Asthenia) (clinical_finding Chest pain)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-98907d97",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Delivery mapped to Postpartum state with no recency qualifier while the other two have 'Recent'; acceptable since postpartum is inherently recent. Qualifier on a disorder finding is a stylistic choice.",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))",
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-37cf32fe",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Hb has no unit in the language, so the criterion cannot be encoded; correctly absent. Should be flagged in notes.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-2595c48c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+    "system_priority_evaluation \"Urgent: abnormal vaginal bleeding with danger signs\" :: (clinical_finding (snomed_concept \"Victim of rape\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-2015f372",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-72251281",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "IV fluid management; no manage tasks by design.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p73-34ca81b5",
+   "scope": "borderline",
+   "scope_reason": "Referral triage (outside red box, flowchart); house standard encodes red box and probable/possible diagnoses, and management is out of scope, but these are triage thresholds.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Refer within 2 weeks if new bleeding >1 year after final period (age>40); approach steps."
+   ],
+   "problem": "Not encoded in rules.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-0c390427",
+   "scope": "borderline",
+   "scope_reason": "Referral triage (outside red box, flowchart); house standard encodes red box and probable/possible diagnoses, and management is out of scope, but these are triage thresholds.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Heavy periods: bruising/bleeding gums -> refer next day; Hb<12 anaemia; COC."
+   ],
+   "problem": "Not encoded in rules.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-5901ed40",
+   "scope": "borderline",
+   "scope_reason": "Referral triage (outside red box, flowchart); house standard encodes red box and probable/possible diagnoses, and management is out of scope, but these are triage thresholds.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Refer same week if abdominal mass; sexual abuse suspected; foreign body; IUD bleeding."
+   ],
+   "problem": "Not encoded in rules.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-a08fd98d",
+   "scope": "borderline",
+   "scope_reason": "Referral triage (outside red box, flowchart); house standard encodes red box and probable/possible diagnoses, and management is out of scope, but these are triage thresholds.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Irregular periods: pulse>=100 etc -> check TSH, refer."
+   ],
+   "problem": "Not encoded in rules.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p73-b18b2bd0",
+   "scope": "borderline",
+   "scope_reason": "Referral triage (outside red box, flowchart); house standard encodes red box and probable/possible diagnoses, and management is out of scope, but these are triage thresholds.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Refer within 2 weeks if pelvic pain / bleeding persists."
+   ],
+   "problem": "Not encoded in rules.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p73-ab10e222",
+  "p73-490131a0",
+  "p73-63d7f9ca",
+  "p73-a24e1d8d",
+  "p73-39e59a10",
+  "p73-aa448ecb",
+  "p73-fca0fbdf",
+  "p73-93bb98e8",
+  "p73-31083fcd",
+  "p73-4be72786",
+  "p73-46cb572d",
+  "p73-1e1aa7cc",
+  "p73-b6ff1b5c",
+  "p73-80f2be0a",
+  "p73-4889e29c",
+  "p73-687a8dea",
+  "p73-a282dcd0",
+  "p73-b5da4d5b",
+  "p73-b4845c38",
+  "p73-61f8d432"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "system_priority_evaluation Urgent",
+   "problem": "Hb < 6 omitted from the urgent criteria; not representable (no unit) but nothing records this. Acceptable per brief.",
+   "severity": "low"
+  },
+  {
+   "rule": "task check_for",
+   "problem": "check_for lists pregnancy/postpartum/shock/pallor/dizziness/asthenia/chest pain/assault, but omits the measurements the rule uses (systolic BP < 80, pulse >= 100, respiratory rate >= 30), so check list and priority rule disagree.",
+   "severity": "medium"
+  },
+  {
+   "rule": "task check_for",
+   "problem": "Footnote 1 defines shock as SBP<80, pulse>=100, RR>30 (strict), confusion/restlessness, weakness; shock is encoded as a bare finding with no criteria; RR > 30 vs >= 30 differs between box (>=30) and footnote (>30); rule follows box.",
+   "severity": "low"
+  },
+  {
+   "rule": "system_priority_evaluation Urgent",
+   "problem": "Flowchart section (non-urgent approach) has refer-within-2-weeks / next-day referrals (e.g. new bleeding >1 year after final period, bleeding easy bruising, mass in abdomen same week, TSH criteria with pulse >=100) that carry triage logic; no lower-priority evaluations encoded. Likely intended page scope is the red box only, but these are a miss against the house standard of priority evaluations.",
+   "severity": "medium"
+  },
+  {
+   "rule": "file",
+   "problem": "No probable/possible diagnosis rules; page has 'treat for likely anaemia' (needs Hb, not representable) so none expected.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box urgent criteria are encoded faithfully (pregnancy, recent delivery/miscarriage/termination, shock/SBP<80, pallor with tachycardia/tachypnoea/dizziness/weakness/chest pain, sexual assault/rape) with correct structure; Hb<6 is correctly absent as not representable. Main problems are that check_for omits the measurement criteria the priority rule uses, and the non-urgent referral triage (outside the box, e.g. refer within 2 weeks, next day, same week) is not encoded at all."
+}

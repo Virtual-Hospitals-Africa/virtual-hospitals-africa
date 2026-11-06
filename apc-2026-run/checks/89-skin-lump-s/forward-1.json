@@ -1,0 +1,501 @@
+{
+ "page": 89,
+ "checker": "forward-1",
+ "elements": [
+  {
+   "element_key": "p89-8bdefab1",
+   "scope": "in_scope",
+   "scope_reason": "header: the trigger ('patient with a mole') and the referral priority",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Mole = Melanocytic nevus is a fair reading; structure (and nevus (or ...)) follows the house pattern. The page says 'refer same week', not 'give urgent attention'; Urgent is the house default for a red box, so accepted, but it is the strongest level the page could justify.",
+   "evidence": [
+    "Urgent: mole needing same-week referral (skin lump/s) :: (and (clinical_finding (snomed_concept \"Melanocytic nevus\" \"disorder\")) (or ...))",
+    "Check for mole features needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Melanocytic nevus\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-84363ac6",
+   "scope": "in_scope",
+   "scope_reason": "criterion: irregular in shape (part 1) / irregular in colour (part 2)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both parts encoded with the lesion-specific SNOMED siblings; both checked for and used in the priority rule.",
+   "evidence": [
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-8b824d7b",
+   "scope": "in_scope",
+   "scope_reason": "criterion: changed in size (part 1) / shape (part 2) / colour (part 3)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Shape and colour have exact concepts. Size has none in SNOMED (searched 'lesion size', 'enlarging'); the generic 'Change in skin lesion' covers it and is not wrong, only broader than the page. Acceptable.",
+   "evidence": [
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Change in skin lesion\" \"finding\"))",
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-8ff0a187",
+   "scope": "in_scope",
+   "scope_reason": "criterion: the 'ugly duckling' sign, a red-box referral trigger",
+   "verdict": "missing",
+   "parts_missing": [
+    "Differs from surrounding moles"
+   ],
+   "problem": "Not encoded anywhere: no check_for item and no branch in the priority rule. I found no precoordinated SNOMED concept for it either (searched 'pigmented skin lesion' siblings, 'ugly duckling'), so this may end up not_representable, but the rules give no sign the builder considered it. Nearest stand-in if one is wanted: 'Pigmented skin lesion of uncertain nature' (disorder), with a remaining-questions note.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-e69abb09",
+   "scope": "in_scope",
+   "scope_reason": "threshold: mole width > 6 mm",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Measure task triggered by the mole, unit mm, comparison > 6 in the priority rule. Correct.",
+   "evidence": [
+    "Measure width of mole (skin lump/s) :: (measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm)",
+    "Urgent: mole needing same-week referral (skin lump/s) :: (> (measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm) 6)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-2bb54cda",
+   "scope": "in_scope",
+   "scope_reason": "criterion: the mole bleeds easily",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Wrong concept. 'Bleeds easily' (finding) is a child of 'Finding of tendency to bleed', i.e. a systemic bleeding tendency of the patient, not bleeding from the mole. A patient with a bruising tendency and an innocent mole would trip the same-week referral. SNOMED has no exact 'bleeding of pigmented skin lesion'; the lesion-anchored sibling 'Oozing of pigmented skin lesion' (disorder) is closer in meaning to what the page is screening for, or a bleeding finding with a finding_site on the lesion.",
+   "evidence": [
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Bleeds easily\" \"finding\"))",
+    "Check for mole features needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Bleeds easily\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-72e93bf3",
+   "scope": "in_scope",
+   "scope_reason": "criterion: the mole itches",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: mole needing same-week referral (skin lump/s) :: (clinical_finding (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-bee317dd",
+   "scope": "in_scope",
+   "scope_reason": "criteria + 'boil/abscess likely' conclusion (painful / firm / red / warm / softens in the centre / discharges pus)",
+   "verdict": "partial",
+   "parts_missing": [
+    "'softens in the centre' is only approximated by Fluctuant (acceptable)",
+    "'pus' is recorded as generic Skin discharge (acceptable)"
+   ],
+   "problem": "All six descriptors are present and the diagnoses (Furuncle, Abscess of skin and/or subcutaneous tissue) are right, with two probable rules for 'boil/abscess'. The logic is an AND of all six, including Skin discharge: a painful, firm, red, warm, fluctuant lump that has not yet discharged never matches, although the page's 'softens in the centre to discharge pus' describes the natural course rather than a sixth required sign. The cross-reference to page 83 is out of scope.",
+   "evidence": [
+    "Diagnose probable boil (skin lump/s) :: (and (clinical_finding (snomed_concept \"Pain of skin\" \"finding\")) (clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Redness of skin over lesion\" \"finding\")) (clinical_finding (snomed_concept \"Temperature of skin over lesion warm\" \"finding\")) (clinical_finding (snomed_concept \"Fluctuant\" \"finding\")) (clinical_finding (snomed_concept \"Skin discharge\" \"finding\")))",
+    "Diagnose probable skin abscess (skin lump/s) :: same evidence, diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-46fd9cf2",
+   "scope": "in_scope",
+   "scope_reason": "criterion: round (part 1), raised (part 2) papules",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable warts (skin lump/s) :: (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-2ce347b3",
+   "scope": "in_scope",
+   "scope_reason": "criterion: papules with rough surfaces",
+   "verdict": "partial",
+   "parts_missing": [
+    "rough surface of the papule itself"
+   ],
+   "problem": "'Rough skin' (finding, under Abnormal keratinization) is a general skin-texture finding, not the surface of the lump. SNOMED has the qualifier value 'Verrucous', which is exactly 'warty-surfaced' and could sit on the same Papule of skin finding. Low consequence.",
+   "evidence": [
+    "Diagnose probable warts (skin lump/s) :: (clinical_finding (snomed_concept \"Rough skin\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-0e1e754f",
+   "scope": "in_scope",
+   "scope_reason": "'Warts likely' conclusion; the bullets (sites, plantar wart appearance) are descriptive, not criteria",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Probable Warts rule present. Diagnosis concept is the HPV parent concept; 'Verruca vulgaris' (disorder) also exists but the parent is fine for a general page.",
+   "evidence": [
+    "Diagnose probable warts (skin lump/s) :: (diagnosis (snomed_concept \"Viral wart of skin and/or mucous membrane caused by human papillomavirus\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-2f698b4b",
+   "scope": "in_scope",
+   "scope_reason": "criterion: small (part 1), skin-coloured (part 2) bumps",
+   "verdict": "partial",
+   "parts_missing": [
+    "skin-coloured"
+   ],
+   "problem": "Small papule encoded. Skin-coloured is absent; I found no SNOMED colour qualifier for it (searched 'flesh', 'skin colored'), so this may be not_representable, but it should be recorded as a gap.",
+   "evidence": [
+    "Diagnose probable molluscum contagiosum (skin lump/s) :: (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-6429b0b0",
+   "scope": "in_scope",
+   "scope_reason": "criterion: pearly bumps",
+   "verdict": "partial",
+   "parts_missing": [
+    "pearly"
+   ],
+   "problem": "Not encoded; no SNOMED qualifier found ('pearl' only returns Pearly penile papules). Probably not_representable; low consequence.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-a707fdd9",
+   "scope": "in_scope",
+   "scope_reason": "criterion: central dimples (part 1); 'does not involve' palms/soles (part 2, judged with p89-002c7c4c)",
+   "verdict": "partial",
+   "parts_missing": [
+    "central dimple of the papule (umbilication) is approximated by a generic skin dimpling finding"
+   ],
+   "problem": "'Skin dimple' (finding, under Skin finding) means dimpling of the skin surface (e.g. breast), not an umbilicated papule; SNOMED has no umbilicated-papule concept, so it is a tolerable stand-in but a nurse recording 'skin dimple' for other reasons plus any small papule gets probable molluscum.",
+   "evidence": [
+    "Diagnose probable molluscum contagiosum (skin lump/s) :: (clinical_finding (snomed_concept \"Skin dimple\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-002c7c4c",
+   "scope": "in_scope",
+   "scope_reason": "criterion: does not involve palms/soles",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as negative evidence on palm and sole papules, both checked for; a reasonable reading of a distinguishing feature.",
+   "evidence": [
+    "Diagnose probable molluscum contagiosum (skin lump/s) :: (no (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Palm (region) structure\" \"body structure\"))))",
+    "Diagnose probable molluscum contagiosum (skin lump/s) :: (no (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-1c5d89bf",
+   "scope": "in_scope",
+   "scope_reason": "'Molluscum contagiosum likely' conclusion; the rest of the block is management and referral criteria (management_step)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable molluscum contagiosum (skin lump/s) :: (diagnosis (snomed_concept \"Infection of skin caused by Molluscum contagiosum\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-b3c4f406",
+   "scope": "in_scope",
+   "scope_reason": "criterion: painless (part 1), purple (part 2) or brown (part 3) lumps",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "AND of painless with OR of purple/brown matches the page's slash.",
+   "evidence": [
+    "Diagnose probable Kaposi's sarcoma (skin lump/s) :: (and (clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-fd1c37a0",
+   "scope": "in_scope",
+   "scope_reason": "criterion: lumps on skin (the finding the qualifiers attach to)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable Kaposi's sarcoma (skin lump/s) :: (clinical_finding (snomed_concept \"Mass of skin\" \"finding\") ...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-dd95a789",
+   "scope": "in_scope",
+   "scope_reason": "'Kaposi's sarcoma likely' conclusion (the word 'likely' is in p89-f0f70fcd)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable Kaposi's sarcoma (skin lump/s) :: (diagnosis (snomed_concept \"Kaposi's sarcoma\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-23225713",
+   "scope": "in_scope",
+   "scope_reason": "flowchart parent criterion: smooth (part 1), well defined (part 2), beneath skin (part 3)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as a subcutaneous mass with both qualifiers and required by both child rules, which preserves the page's branching.",
+   "evidence": [
+    "Diagnose probable epidermoid cyst (skin lump/s) :: (clinical_finding (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+    "Diagnose probable lipoma (skin lump/s) :: same finding"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-e67ecd4d",
+   "scope": "in_scope",
+   "scope_reason": "criterion: round (part 1), firm (part 2) lump; 'may have' is optional",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable epidermoid cyst (skin lump/s) :: (clinical_finding (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-af3a3a87",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: 'May have central hole and discharge white substance' is an optional descriptor, not a criterion",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-6e9c5d9d",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: continuation of the optional 'may have ... white substance' descriptor",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-132e61fc",
+   "scope": "in_scope",
+   "scope_reason": "'Epidermoid cyst likely' conclusion; 'usually found on face and trunk' is descriptive",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable epidermoid cyst (skin lump/s) :: (diagnosis (snomed_concept \"Epidermoid cyst of skin\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-37e2716c",
+   "scope": "in_scope",
+   "scope_reason": "criterion: soft (part 1), doughy (part 2) lump",
+   "verdict": "partial",
+   "parts_missing": [
+    "doughy"
+   ],
+   "problem": "Soft encoded. Doughy has no SNOMED qualifier (searched); probably not_representable. Low consequence.",
+   "evidence": [
+    "Diagnose probable lipoma (skin lump/s) :: (clinical_finding (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-c06b8b64",
+   "scope": "in_scope",
+   "scope_reason": "criterion: painless (part 1), moves easily (part 2)",
+   "verdict": "partial",
+   "parts_missing": [
+    "moves easily / mobile"
+   ],
+   "problem": "Painless encoded. Mobility is absent; I found no general 'mobile' qualifier value (only site-specific findings), so possibly not_representable, but it is the feature that most distinguishes a lipoma from a cyst on this page and the gap should be recorded.",
+   "evidence": [
+    "Diagnose probable lipoma (skin lump/s) :: (qualifier (snomed_concept \"Painless\" \"qualifier value\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-05379956",
+   "scope": "in_scope",
+   "scope_reason": "'Lipoma likely' conclusion; site is descriptive",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable lipoma (skin lump/s) :: (diagnosis (snomed_concept \"Lipoma\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-a8f999bb",
+   "scope": "in_scope",
+   "scope_reason": "criteria: red papules (part 1), pustules (part 2), nodules (part 3)",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Each part has the right concept, but the rule is an OR of the four morphologies, so any single one yields probable acne. 'Skin nodule' (disorder) is a SNOMED descendant of 'Mass of skin' (finding), the page's own presenting complaint: any skin nodule at all, including the painless purple nodule of the Kaposi branch or a boil, also fires probable Acne. The page lists the morphologies together ('Red papules, pustules, nodules and blackheads'); an any2 (or dropping bare Skin nodule) would be closer.",
+   "evidence": [
+    "Diagnose probable acne (skin lump/s) :: (or (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Pustule\" \"disorder\")) (clinical_finding (snomed_concept \"Skin nodule\" \"disorder\")) (clinical_finding (snomed_concept \"Comedone\" \"disorder\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-6ae5ca79",
+   "scope": "in_scope",
+   "scope_reason": "criterion: blackheads (part 1); 'usually on face / may involve chest, back, upper arms' is descriptive",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Comedone is the right concept (blackhead is its synonym). Same OR-logic concern as p89-a8f999bb.",
+   "evidence": [
+    "Diagnose probable acne (skin lump/s) :: (clinical_finding (snomed_concept \"Comedone\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-e6077bcf",
+   "scope": "in_scope",
+   "scope_reason": "'Acne likely' conclusion; the bullets are management (isoniazid question, washing, tretinoin)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable acne (skin lump/s) :: (diagnosis (snomed_concept \"Acne\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-c47fe137",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: cyst management branches (not infected / fluctuant: I&D / infected: antibiotics); the 'infected (skin red, warm, painful)' condition gates treatment, not triage or diagnosis",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-c313192f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: lipoma 'Refer if' criteria (> 3 cm, pain) are a referral list outside the red box; no manage tasks by design",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-b229f21e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: lipoma 'Refer if' continuation (discomfort, getting bigger, firm or deep)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-c10b2a31",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: lipoma 'Refer if' continuation (deep, new lump)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-d3eb4b13",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: lipoma 'Refer if' continuation (persists > 1 month, intolerable)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-7ff28e58",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: 'If extensive warts or plantar wart in diabetic, refer' is a referral criterion outside the red box",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-dd2931b0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: 'If diagnosis uncertain, discuss/refer'",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p89-08f5bffe",
+  "p89-f23d53cb",
+  "p89-73bae610",
+  "p89-2ec0a6a3",
+  "p89-b7493736",
+  "p89-c5eaca59",
+  "p89-99400e23",
+  "p89-8d3e9c90",
+  "p89-1b5a3fb2",
+  "p89-f0f70fcd",
+  "p89-693fdd95",
+  "p89-2f9d0d94",
+  "p89-9b7b1a43",
+  "p89-40a0fea9",
+  "p89-5e460721",
+  "p89-6dd1b3bf",
+  "p89-4015fab0",
+  "p89-705606c6",
+  "p89-fce9bd45",
+  "p89-12795619",
+  "p89-d40fc608"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "problem": "OR of four single morphologies where the page lists them together. 'Skin nodule' is_a 'Mass of skin', the page's presenting complaint, so almost any lump recorded as a nodule (Kaposi's lesion, boil, cyst) also becomes probable acne. Consider any2, or drop the bare Skin nodule branch.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "problem": "'Bleeds easily' is a systemic tendency-to-bleed finding, not bleeding from the mole; and 'Differs from surrounding moles' has no branch at all. Two of the six red-box items are therefore wrong or absent.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable boil (skin lump/s) / Diagnose probable skin abscess (skin lump/s)",
+   "problem": "AND of six findings including Skin discharge; a boil that has not yet pointed and discharged does not match, though the page's 'softens in the centre to discharge pus' describes the course. Fluctuant alone (with pain, firm, red, warm) would be the page's intent before discharge.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "problem": "'Skin dimple' is a generic skin-surface dimpling finding standing in for umbilicated papules; with 'small papule' it is a loose signature. No better concept exists, so this is a note for the remaining-questions file rather than a fix.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "problem": "Priority level Urgent for a page that says 'refer same week'. Consistent with the house rule that a red box becomes Urgent, but the page does not say 'urgent attention'; worth a clinician's confirmation.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "problem": "'Moves easily' and 'doughy' are not encoded, so lipoma and epidermoid cyst are separated only by Soft+Painless vs Round+Firm. Probably not_representable (no mobile/doughy qualifier found) but should be recorded as a gap.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The acne rule is an OR of single morphologies and 'Skin nodule' is a SNOMED child of 'Mass of skin' (the page's presenting complaint), so most lumps on this page also come out as probable acne. In the red box, 'Bleeds easily' is a systemic bleeding-tendency concept rather than bleeding from the mole, and 'Differs from surrounding moles' is not encoded at all; the other four mole criteria and the > 6 mm measurement are correct. The boil/abscess rules require all six descriptors including discharge, and several textural descriptors (pearly, skin-coloured, doughy, moves easily) are absent with no SNOMED equivalent."
+}

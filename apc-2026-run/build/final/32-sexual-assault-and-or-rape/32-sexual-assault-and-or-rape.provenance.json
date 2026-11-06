@@ -1,0 +1,356 @@
+{
+ "edition": "2026",
+ "page": 32,
+ "lisp_file": "32-sexual-assault-and-or-rape.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted",
+   "confidence": "high",
+   "note": "Header complaint; Sexual assault (event) also covers its descendants incl. Rape."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "raped",
+   "confidence": "high",
+   "note": "Header complaint 'and/or raped'; Rape is a descendant of Sexual assault (event) but listed explicitly to mirror 'and/or'."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if woman",
+   "confidence": "medium",
+   "note": "No sex predicate in the language; patient sex expressed as the Female (finding) concept, which must be recorded for the rule to fire."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if man",
+   "confidence": "medium",
+   "note": "No sex predicate in the language; patient sex expressed as the Male (finding) concept."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy (finding), clinical_finding form."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention",
+   "confidence": "medium",
+   "note": "Traumatic injury (disorder), as in the warning-sign anchors; 'needing attention' (the page-30 threshold) has no qualifier, so any recorded injury counts (fires more often)."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": "Suicidal thoughts (finding)."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "plans",
+   "confidence": "high",
+   "note": "Planning suicide (finding), a child of Suicidal thoughts; listed for 'thoughts/plans'."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose",
+   "confidence": "high",
+   "note": "Overdose (disorder), exact page word; it is a descendant of Poisoning, a Very urgent warning sign, which will fire separately."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm",
+   "confidence": "high",
+   "note": "Intentionally harming self (event), as in VHA vocabulary; alternative Self-injurious behavior (finding)."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted",
+   "confidence": "high",
+   "note": "Header complaint; Sexual assault (event) also covers its descendants incl. Rape."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "raped",
+   "confidence": "high",
+   "note": "Header complaint 'and/or raped'; Rape is a descendant of Sexual assault (event) but listed explicitly to mirror 'and/or'."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if woman",
+   "confidence": "medium",
+   "note": "No sex predicate in the language; patient sex expressed as the Female (finding) concept, which must be recorded for the rule to fire."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "within last 5 days",
+   "confidence": "medium",
+   "note": "'within last 5 days' encoded as (<= (onset assault/rape) (time_ago 5 days)) per the brief's <=/>= convention. Assumes onset of the event record is the time of the assault, not the time of recording (see questions). Onset written for both Sexual assault and Rape in case onset matching does not follow descendants."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "within last 5 days",
+   "confidence": "medium",
+   "note": "'within last 5 days' encoded as (<= (onset assault/rape) (time_ago 5 days)) per the brief's <=/>= convention. Assumes onset of the event record is the time of the assault, not the time of recording (see questions). Onset written for both Sexual assault and Rape in case onset matching does not follow descendants."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "if man",
+   "confidence": "medium",
+   "note": "No sex predicate in the language; patient sex expressed as the Male (finding) concept."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "last 3 days",
+   "confidence": "medium",
+   "note": "'within last 3 days' encoded as (<= (onset assault/rape) (time_ago 3 days)) per the brief's <=/>= convention. Assumes onset of the event record is the time of the assault, not the time of recording (see questions). Onset written for both Sexual assault and Rape in case onset matching does not follow descendants."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "last 3 days",
+   "confidence": "medium",
+   "note": "'within last 3 days' encoded as (<= (onset assault/rape) (time_ago 3 days)) per the brief's <=/>= convention. Assumes onset of the event record is the time of the assault, not the time of recording (see questions). Onset written for both Sexual assault and Rape in case onset matching does not follow descendants."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy (finding), clinical_finding form."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention",
+   "confidence": "medium",
+   "note": "Traumatic injury (disorder), as in the warning-sign anchors; 'needing attention' (the page-30 threshold) has no qualifier, so any recorded injury counts (fires more often)."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": "Suicidal thoughts (finding)."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "plans",
+   "confidence": "high",
+   "note": "Planning suicide (finding), a child of Suicidal thoughts; listed for 'thoughts/plans'."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose",
+   "confidence": "high",
+   "note": "Overdose (disorder), exact page word; it is a descendant of Poisoning, a Very urgent warning sign, which will fire separately."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm",
+   "confidence": "high",
+   "note": "Intentionally harming self (event), as in VHA vocabulary; alternative Self-injurious behavior (finding)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p32-4025182b",
+   "element_id": "p32-rb1-e06",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list; no triage logic of its own."
+  },
+  {
+   "element_key": "p32-44367ff7",
+   "element_id": "p32-rb1-e07",
+   "text": "If severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, or use of a foreign object, manage and refer urg",
+   "reason_category": "management_step",
+   "reason": "Criteria for 'manage and refer urgently to next level of care' (severe bleeding, multiple injuries, etc.) are a referral decision; referral steps are out of scope for this pass. Not added to the Urgent rule since the page lists them under Manage, not under the urgent-attention criteria."
+  },
+  {
+   "element_key": "p32-88cbb9cd",
+   "element_id": "p32-rb1-e08",
+   "text": "If BP < 90/60, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluids for BP < 90/60: medicine/dose."
+  },
+  {
+   "element_key": "p32-1a56fe79",
+   "element_id": "p32-rb1-e09",
+   "text": "If oxygen saturation < 95% or difficulty breathing, give face mask oxygen: 1-4L/min via nasal prongs or 6-10L/min via facemask (up to 10-15L/min via non-rebreat",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy: management."
+  },
+  {
+   "element_key": "p32-95b9d9a9",
+   "element_id": "p32-rb1-e10",
+   "text": "Prevent HIV and hepatitis B. If exposure to blood, blood-stained fluid, vaginal fluid/semen, or unsure: give PEP as soon as possible 122.",
+   "reason_category": "management_step",
+   "reason": "HIV/hepatitis B PEP: medicine."
+  },
+  {
+   "element_key": "p32-2dcdca69",
+   "element_id": "p32-rb1-e11",
+   "text": "Prevent STIs. If genital symptoms 62. If no genital symptoms, give single dose each of ceftriaxone 250mg IM1, azithromycin 1g and metronidazole2 2g orally. If p",
+   "reason_category": "management_step",
+   "reason": "STI prophylaxis medicines and doses."
+  },
+  {
+   "element_key": "p32-cd35a65a",
+   "element_id": "p32-rb1-e12",
+   "text": "If rape in woman of child bearing age, pregnancy test negative, not on reliable contraception and ≤ 5 days since rape, give emergency contraception 170.",
+   "reason_category": "management_step",
+   "reason": "Emergency contraception: medicine."
+  },
+  {
+   "element_key": "p32-bc3bcf9d",
+   "element_id": "p32-rb1-e13",
+   "text": "Discuss with Thuthuzela Care Centre/other dedicated centre for urgent referral and forensic examination.",
+   "reason_category": "management_step",
+   "reason": "Referral and forensic examination: referral step."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Woman/man time windows",
+   "decision": "Female/Male (finding) concepts in check_for, each and-ed with an onset comparison (5 days / 3 days).",
+   "alternatives": "A single 5-day window for everyone (fires more often for men); dropping the time criterion.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Manage-and-refer criteria",
+   "decision": "Severe bleeding, multiple injuries, severe abdominal pain, difficulty breathing, strangled/choked, foreign object treated as management (referral) and not encoded.",
+   "alternatives": "Adding them to the Urgent rule or an Emergency rule; the page does not list them as urgent-attention criteria.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "'Suspect sexual assault / rape' definitions",
+   "decision": "No possible diagnosis rules: the page's 'suspect' lines define the event (forced act, penetration without consent); the only evidence is the patient's account, i.e. the event concept itself, so a rule would be circular.",
+   "alternatives": "possible diagnosis of Sexual assault/Rape (event) from the same event finding.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the red box says ('Give urgent attention').",
+   "alternatives": "None; overdose additionally fires the Very urgent Poisoning warning sign.",
+   "confidence": "high"
+  }
+ ]
+}

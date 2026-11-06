@@ -1,0 +1,19 @@
+{"page": 98, "base": "B",
+ "decisions": [
+  {"role": "check_for", "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "choice": "B", "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "reason": "The page's GAD criterion is 'excessive worry causes impaired function/distress', so distress is a criterion the health worker must ask about; impaired function has no SNOMED concept.", "unsettled": true},
+  {"role": "diagnosis_condition", "difference": "A: GAD rule without impairment criterion  vs  B: GAD rule requires (finding ... \"Distress\")",
+   "choice": "B", "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "reason": "The page makes 'impaired function/distress' a requirement for GAD likely; B encodes the half SNOMED can express, A drops the requirement entirely, so B is closer to the page's words but misses impaired function without distress.", "unsettled": true},
+  {"role": "check_for", "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "choice": "B", "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "reason": "The page lists 'constantly on guard/easily startled'; 'easily startled' is a named sign that A did not ask about.", "unsettled": false},
+  {"role": "diagnosis_condition", "difference": "A: (Hypervigilant behavior) as the on-guard/startled group  vs  B: (or Hypervigilant behavior, Predisposed to startle)",
+   "choice": "B", "final_expr": "(or (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\")) (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\")))",
+   "reason": "The page's slash group 'constantly on guard/easily startled' counts either sign once, which B's or-group encodes; the concept's fit is kept as a clinician question.", "unsettled": false},
+  {"role": "trigger", "difference": "A: one task with the 3 triggers  vs  B: two tasks, each with the same 3 triggers (Depressed mood, Stress, Anxiety)",
+   "choice": "B", "final_expr": "(or Depressed mood, Stress, Anxiety) on both tasks",
+   "reason": "Same trigger concepts; B separates the red-box task ('Give urgent attention…') from the Assess-table task, mirroring the page's layout, so the extra trigger copies are structural, not new criteria.", "unsettled": false}
+ ],
+ "notes": "Both builds passed and agree on 57 of 65 conditions. Final build is builder B unchanged. The only substantive differences are B's Distress (GAD 'impaired function/distress') and Predisposed to startle (PTSD 'easily startled'); the trigger difference is B's split into two tasks. Remaining questions merged from both builders, with A's 'Excessive qualifier' note added."}

@@ -1,0 +1,1856 @@
+[
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p78-039cfbc5",
+  "text": "Give urgent attention to the patient with back pain and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Priority rule is present, anchored on Backache, Urgent, with one or-branch per bullet. Per-bullet defects are recorded on the bullets.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "figure_or_note: header; its trigger (back pain) is encoded as the Backache gate of the priority rule",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Header maps to an Urgent system_priority_evaluation anchored on Backache with an (or ...) of red-box items, as the house standard prescribes.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p78-011e92d7",
+  "text": "If leucocytes/nitrites and any of: vomiting, sepsis1, diabetes, male, pregnant or post menopause: complicated pyelonephritis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'complicated' is lost: the diagnosis concept is plain 'Acute pyelonephritis', identical to the uncomplicated rule's concept, so the two 'likely' outcomes the page distinguishes collapse into one diagnosis (SNOMED has no 'complicated pyelonephritis' concept; a note or a distinguishing choice such as 'Sepsis'-level evidence was still needed)"
+    ],
+    "problem": "Logic is otherwise right: flank pain AND (leukocytes OR nitrite) AND any of vomiting / sepsis (expanded from footnote 1 as SBP < 80, pulse >= 100, RR > 30, confusion) / known diabetes / male / pregnant / postmenopausal. The priority rule inlines the same criteria rather than referencing the ambiguous active_condition, which is the right call given the shared concept.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "complicated vs uncomplicated is not distinguishable: both diagnosis rules produce the same concept Acute pyelonephritis; the complicated rule is not excluded from the uncomplicated one",
+     "'sepsis' is expanded correctly (SBP<80, pulse>=100, RR>30, confusion) but concept/unit names (Pulse, function; bpm for RR) unverified"
+    ],
+    "problem": "Logic and thresholds match the page, but 'complicated pyelonephritis likely' is a separate page conclusion and is only represented as a duplicate probable Acute pyelonephritis; the uncomplicated rule also fires for every complicated case.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "a diagnosis distinguishable from uncomplicated pyelonephritis"
+    ],
+    "problem": "The logic is right: flank pain AND (leucocytes OR nitrites) AND any of vomiting, sepsis (expanded from the footnote: SBP<80, pulse>=100, RR>30, confusion), diabetes, male, pregnant or postmenopausal. It is also correctly inlined into the Urgent rule. But the diagnosis is the same 'Acute pyelonephritis' probable as the uncomplicated rule, so the 'complicated' conclusion is not distinguishable in the output. The rule is also not anchored on Backache.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p78-0cdbb4ab",
+  "text": "Recent injury and x-ray unavailable or abnormal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'recent': no onset constraint on the injury (the page does not quantify 'recent', so an onset window would be a judgment call, but nothing marks recency at all)",
+     "'x-ray unavailable or abnormal': 'unavailable' is not representable, but 'abnormal' is (SNOMED 'Plain X-ray of spine abnormal' finding exists) and is neither checked for nor used"
+    ],
+    "problem": "Encoded as any 'Traumatic injury' -> Urgent. This is broader than the page (an injury with a normal x-ray is not an urgent criterion). Defensible as a conservative approximation where x-ray is usually unavailable, but the x-ray-abnormal part was expressible and is absent.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'recent'",
+     "'x-ray unavailable or abnormal' (x-ray result not representable)"
+    ],
+    "problem": "Encoded as any Traumatic injury triggering Urgent, with no recency and no x-ray condition; over-triggers for old injury.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'recent' (no time constraint or qualifier on the injury)",
+     "'x-ray unavailable or abnormal' (not encoded; arguably not representable)"
+    ],
+    "problem": "Any recorded Traumatic injury, however old and whatever the x-ray showed, makes the patient Urgent. The page limits this to recent injury where an x-ray is unavailable or abnormal.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p78-66beb9a8",
+  "text": "1Sepsis is any of: SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion. 2Do not mix Ringer's lactate and IV ceftriaxone. 3Avoid if peptic ulcer, asthma, hypertension, heart failure, kidney disease, pregnant. If patient also taking aspirin, advise to wait at least 30 minutes after taking aspirin ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Sepsis = any of SBP < 80, pulse >= 100, RR > 30, confusion: all four encoded with the right comparator, threshold and unit in both the diagnosis rule and the priority rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Footnote 1 (the sepsis definition) is correctly expanded inline: SBP < 80 mmHg, pulse >= 100 bpm, RR > 30, Acute confusion. Footnotes 2 and 3 are management.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p78-3be01c6f",
+  "text": "Approach to patient with back pain not needing urgent attention • If flank pain with leucocytes/nitrites on urine dipstick, uncomplicated pyelonephritis likely: send urine for microscopy, culture, sensitivity. Give ciprofloxacin 500mg 12 hourly for 7 days and paracetamol 500mg-1g 4-6 hourly (up to 4",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "mpox: 'lesion/s of ... anus' is not encoded ('Lesion of rectum' does not cover the anus; SNOMED 'Disorder of anus' (disorder) exists as a usable approximation)",
+     "uncomplicated pyelonephritis: the rule does not exclude the complicating factors (vomiting, sepsis, diabetes, male, pregnant, postmenopause) that the page uses to route the patient to the red box, so it fires on complicated cases too; and it diagnoses the same concept as the complicated rule, so 'uncomplicated' is lost"
+    ],
+    "problem": "Uncomplicated pyelonephritis: flank pain AND (leukocytes OR nitrite) -> probable Acute pyelonephritis, matching the page's positive criteria. Mpox: possible Monkeypox from (rash or skin/genital/rectal/oral/eye lesion) AND >= 1 of headache / backache / body pain / lymphadenopathy / temp > 38.5 / fatigue / sore throat / nasal congestion / cough: all nine second-group items present, threshold and unit right. TB: possible Tuberculosis from Backache AND any of cough / weight loss / night sweats / fever, with fever as active_condition per the house convention; correct.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "mpox: 'unexplained' not captured; sound otherwise",
+     "uncomplicated pyelonephritis not guarded against complicated case"
+    ],
+    "problem": "Three conclusions: uncomplicated pyelonephritis (encoded), mpox consider (encoded as possible with correct or-lists and >38.5 C), TB question (encoded as possible TB). Minor: TB rule uses active_condition Fever while mechanical rule uses clinical_finding Fever; check_for in task 3 lacks Fever, and Headache/Lymphadenopathy/Fatigue/Sore throat/Nasal congestion/Temperature used by the mpox rule are not in any check_for (mpox rule uses findings no task asks for).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "uncomplicated pyelonephritis: exclusion of the complicated features (it fires in complicated cases too)",
+     "mpox: 'unexplained' qualifier on the rash or lesion",
+     "mpox: lesion of the anus (only rectum is encoded)"
+    ],
+    "problem": "Three parts. (1) Uncomplicated pyelonephritis: flank pain AND (leucocytes OR nitrites) gives probable Acute pyelonephritis. That logic is right, but the rule has no exclusion of the complicated criteria, so it always co-fires with the complicated rule and produces the identical concept. (2) Mpox: the possible rule is broadly right (lesions AND >=1 of headache/backache/aches, lymphadenopathy, temp >38.5 °C, fatigue, sore throat/nasal congestion/cough), but 'unexplained' and the anus are lost. Backache in the symptom list makes the second clause always true on this page, which is faithful to the page. (3) The TB screening question (cough, weight loss, night sweats, fever) is correctly encoded as the possible TB rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p78-6d6f7cfc",
+  "text": "No Any of: > 50 years, pain progressive or for > 6 weeks, previous cancer or back surgery, osteoporosis, oral steroid use, HIV, IV drug use or deformity?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'> 50 years': not representable (the grammar has no numeric age; only adult / older child / younger child), so the mechanical rule cannot exclude older patients; this should be recorded as a known gap"
+    ],
+    "problem": "The other nine parts are all negated in the mechanical rule: progressive pain, pain for > 6 weeks (as onset within the last 6 weeks, correct under the briefing's time_ago convention), previous cancer (History of malignant neoplasm), back surgery (History of spinal surgery), osteoporosis, steroid use (route not specified; 'Use of steroids' is acceptable), HIV, IV drug use, deformity (Deformity of spine). All nine findings are checked for in the third task.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "> 50 years",
+     "pain for > 6 weeks (not in task 3 check_for; only appears, in reverse, in mechanical rule)"
+    ],
+    "problem": "Red-flag list encoded as check_for in task 3 only; no rule consumes most of them except the mechanical rule's no-list, and no rule encodes the doctor x-ray/refer branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "> 50 years (age in years is not representable; the rule just omits it)"
+    ],
+    "problem": "This decision node is used only negated, as the gate to mechanical back pain. It is correctly encoded: no progressive pain, onset within 6 weeks, no previous cancer, no back surgery, no osteoporosis, no steroid use (oral generalised to any), no HIV, no IV drug use, no deformity. Age > 50 is dropped, so patients over 50 can be labelled mechanical back pain. Its Yes branch (doctor x-ray) is routing and correctly produces no diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p78-e0a40c28",
+  "text": "No Any of: < 40 years, sleep disturbed by pain, pain better with exercise, does not get better with rest, morning stiffness lasting > 30 minutes? Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'< 40 years': not representable (no numeric age in the grammar)",
+     "'pain better with exercise': not encoded, although SNOMED 'Exercise relieves symptom' (finding) exists",
+     "'does not get better with rest': not encoded; no close SNOMED concept found, so arguably not_representable, but it is not noted anywhere in the rules",
+     "'morning stiffness lasting > 30 minutes': 'Stiff back' + 'Morning' qualifier captures morning stiffness but not the > 30 minute duration (likely not representable; acceptable approximation)"
+    ],
+    "problem": "Only two of the five features (sleep disturbed by pain as 'Sleep pattern disturbance', morning stiffness as 'Stiff back'+'Morning') are checked for, and they are used only as negations in the mechanical rule. The 'Yes' branch, 'Inflammatory back pain likely', has no rule at all (see p78-078a3526). 'Sleep pattern disturbance' is also broader than 'sleep disturbed by pain'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "< 40 years",
+     "sleep disturbed by pain (in check_for/mechanical only)",
+     "pain better with exercise",
+     "does not get better with rest",
+     "morning stiffness lasting > 30 minutes (duration missing)"
+    ],
+    "problem": "Yes branch leads to 'Inflammatory back pain likely' and there is no inflammatory back pain diagnosis rule. Sleep disturbance and morning stiffness appear only as a negated condition of the mechanical rule; exercise/rest/age criteria are absent.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "< 40 years (not representable; omitted)",
+     "pain better with exercise (missing)",
+     "pain does not get better with rest (missing)",
+     "morning stiffness duration > 30 minutes (only 'Stiff back' + Morning)",
+     "the Yes branch to inflammatory back pain (missing; see p78-078a3526)"
+    ],
+    "problem": "Only two of the five inflammatory features are negated in the mechanical rule: Sleep pattern disturbance (broader than 'sleep disturbed by pain') and morning stiff back. 'Better with exercise' and 'not better with rest' are neither checked for nor used, so the mechanical rule fires for patients with inflammatory features. No rule handles the Yes or Unsure branches.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p78-078a3526",
+  "text": "Inflammatory back pain likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "whole rule: no system_diagnosis_rule for inflammatory back pain exists"
+    ],
+    "problem": "No probable rule for inflammatory back pain. SNOMED has no literal 'Inflammatory back pain', but 'Axial spondyloarthritis' (disorder), 'Spondyloarthritis' (disorder) or 'Arthritis of spine' (disorder) are usable; evidence would be Backache AND none of the TB/red-flag items AND any of the inflammatory features (sleep disturbance, morning stiffness, exercise relieves symptom). The flowchart's 'Yes' branch is simply lost.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'Inflammatory back pain likely' has no probable diagnosis rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable inflammatory back pain rule (closest SNOMED: Axial spondyloarthritis; 'inflammatory back pain' has no concept)"
+    ],
+    "problem": "'Inflammatory back pain likely' has no diagnosis rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p78-db095b14",
+  "text": "Check for TB",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Check for TB' is the 'Yes' outcome of the TB screening question; the house standard treats 'check for / consider X' as a possible diagnosis.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "cross_reference_only: Check for TB (p102); TB possible rule covers the trigger",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The Yes branch, 'Check for TB', becomes a possible TB diagnosis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p78-7ee13543",
+  "text": "Unsure No Mechanical back pain likely • If BMI ≥ 25 156. • If low mood, stress or anxiety 98. • Reassure patient that back pain is very common, and usually gets better on its own. Explain that pain does not always mean a disease or cancer, and tests cannot always show the reason for the pain and oft",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "the rule cannot exclude '> 50 years' or '< 40 years' (not representable) and does not exclude 'pain better with exercise' or 'does not get better with rest' (see p78-e0a40c28), so it reaches 'mechanical' for some patients the page routes elsewhere",
+     "the page reaches this box only for patients not needing urgent attention, but the rule does not exclude the red-box features (e.g. urinary retention, saddle numbness, pulsatile mass); it can fire alongside the Urgent evaluation"
+    ],
+    "problem": "Rule exists as probable 'Mechanical low back pain' = Backache AND no TB features AND none of the e04 red flags AND none of the encoded e06 inflammatory features, which follows the three 'No' branches. Two defects beyond the missing parts: (1) fever is negated as (no (clinical_finding Fever)) while the house convention (and the TB rule in this same file) records fever as (active_condition Fever), so the negation may not match the recorded form; (2) the 'Unsure' branch (inflammatory features unsure -> ibuprofen and refer) is routing/management and is reasonably not encoded. The 'Mechanical low back pain' concept narrows 'mechanical back pain' to the lumbar region; acceptable, closest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "age conditions (<40 / >50 years) from both question nodes",
+     "'pain better with exercise' and 'does not get better with rest' negations"
+    ],
+    "problem": "Mechanical rule encodes the first node's items and the second node's sleep and morning stiffness only. The onset comparison looks reversed: (<= onset (time_ago 6 weeks)) means onset at least 6 weeks ago, whereas mechanical pain requires pain NOT for > 6 weeks (should be >=). Morning stiffness is not restricted to > 30 minutes. Fever/cough etc. correct.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "exclusion of age >50 and age <40 (not representable)",
+     "exclusion of 'better with exercise' and 'not better with rest'",
+     "exclusion of red-box/urgent findings (the page reaches this only for 'back pain not needing urgent attention')"
+    ],
+    "problem": "'Mechanical back pain likely' is encoded as probable Mechanical low back pain. Its gating is incomplete, and it negates Fever as (clinical_finding Fever), whereas Fever is recorded as (active_condition Fever), as in this file's own TB rule. The fever negation may therefore never match. The management bullets are out of scope; the referral on bladder/bowel/numbness is covered by the Urgent rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for urgent back pain conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Bladder or bowel disturbance (retention or incontinence)'; only urinary retention is encoded, bowel (faecal) retention is dropped.",
+    "fix": "Add a faecal retention/constipation concept (e.g. Constipation) alongside Retention of urine.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c009",
+  "text": "Check for urgent back pain conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page criterion is 'Recent injury AND x-ray unavailable or abnormal'; bare Traumatic injury drops 'recent' and the x-ray condition, so any old injury triggers urgent attention.",
+    "fix": "(clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))); the x-ray clause could use (snomed_concept \"Plain X-ray of spine abnormal\" \"finding\") though 'x-ray unavailable' has no concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"Recent injury and x-ray unavailable or abnormal\"; rule fires on any traumatic injury, dropping recency and the x-ray condition.",
+    "fix": "Add recency qualifier and x-ray unavailable/abnormal condition, or document the limit",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page item is 'Recent injury AND x-ray unavailable or abnormal'; encoding is any Traumatic injury with no recency and no x-ray condition, so every back-pain patient with any past injury becomes Urgent.",
+    "fix": "Add a Recent qualifier (or onset time_ago window) and an x-ray unavailable/abnormal condition, or document the simplification.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c029",
+  "text": "Check for causes of back pain not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'rash' encoded as a morphologic-abnormality concept (Eruption) inside clinical_finding; a finding/disorder concept fits better, and the page's 'unexplained' qualifier is dropped.",
+    "fix": "Use (snomed_concept \"Eruption of skin\" \"disorder\").",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c032",
+  "text": "Check for causes of back pain not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page lists 'anus/rectum'; Lesion of rectum omits the anus. No 'Lesion of anus' disorder exists; only (snomed_concept \"Disorder of anus\" \"disorder\") is available as a broad add-on.",
+    "fix": "add (clinical_finding (snomed_concept \"Disorder of anus\" \"disorder\")) alongside Lesion of rectum",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page lists anus/rectum; only Lesion of rectum encoded, anus lesion missing.",
+    "fix": "Add a lesion of anus concept (verify with exists)",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'anus/rectum'; only rectum lesion encoded, anal lesions not covered.",
+    "fix": "Add an anal lesion concept (or a perianal/anorectal lesion concept) to the or.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c042",
+  "text": "Check for causes of back pain not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'oral steroid use'; Use of steroids is broader (includes inhaled/topical). No closer finding-category concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says oral steroid use; \"Use of steroids\" is route-agnostic and broader.",
+    "fix": "Use an oral corticosteroid concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'oral steroid use'; 'Use of steroids' drops the oral route (would include inhaled/topical).",
+    "fix": "Consider (snomed_concept \"Oral steroids last used\" \"finding\") or a Route qualifier.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c046",
+  "text": "Check for causes of back pain not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'sleep disturbed by pain'; Sleep pattern disturbance is any sleep disturbance and loses the pain link. No closer concept found (only 'Pain onset during sleep').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says sleep disturbed by pain; Sleep pattern disturbance drops the pain cause.",
+    "fix": "Accept as nearest or add pain qualifier",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'sleep disturbed by pain'; 'Sleep pattern disturbance' is broader (any cause, e.g. insomnia from anxiety), so it would wrongly block mechanical back pain.",
+    "fix": "Add a due-to-pain qualifier or a closer concept (e.g. Wakes up during night with pain attribution).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c047",
+  "text": "Check for causes of back pain not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minutes duration is dropped. 'Morning stiffness - joint' exists but is joint-specific.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says morning stiffness lasting > 30 minutes; the duration threshold is dropped.",
+    "fix": "Add duration > 30 minutes",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minute duration is dropped, so brief morning stiffness counts.",
+    "fix": "Add a duration qualifier/measurement > 30 minutes or note it.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c052",
+  "text": "Diagnose probable pancreatitis in back pain :: (diagnosis (snomed_concept \"Acute pancreatitis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'pancreatitis likely'; Acute pancreatitis is narrower. Clinically defensible given 'sudden onset', and (snomed_concept \"Pancreatitis\" \"disorder\") exists if the builder wants the page's word.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c065",
+  "text": "Diagnose probable complicated pyelonephritis in back pain :: (diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'complicated pyelonephritis'; no such SNOMED concept exists, so Acute pyelonephritis is the best available. The complicated/uncomplicated distinction is carried only by the rule name.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'complicated pyelonephritis likely'; encoded as plain Acute pyelonephritis, the same concept as the uncomplicated rule, so downstream logic cannot tell complicated (urgent, IV ceftriaxone) from uncomplicated (oral ciprofloxacin).",
+    "fix": "No 'complicated pyelonephritis' concept exists; add a qualifier (e.g. Complicated/Severe) or document the limitation.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c076",
+  "text": "Diagnose probable uncomplicated pyelonephritis in back pain :: (diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'uncomplicated pyelonephritis'; same concept as the complicated rule and the rule has no exclusion of the complicating factors, so it also fires in the complicated case.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Uncomplicated pyelonephritis on the page applies only when none of the complicating features are present (it sits in the not-urgent section); the rule fires on flank pain plus leucocytes/nitrites alone and so co-fires with the complicated rule.",
+    "fix": "Add (no ...) for vomiting, sepsis criteria, confusion, diabetes, male, pregnant, postmenopausal",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'uncomplicated pyelonephritis likely'; same concept as the complicated rule and the rule does not exclude complicating features, so complicated cases also fire this.",
+    "fix": "Add (no …) for the complicating features or a distinguishing qualifier.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c077",
+  "text": "Diagnose possible mpox in back pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'rash' encoded as a morphologic-abnormality concept (Eruption) inside clinical_finding; a finding/disorder concept fits better, and the page's 'unexplained' qualifier is dropped.",
+    "fix": "Use (snomed_concept \"Eruption of skin\" \"disorder\").",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c080",
+  "text": "Diagnose possible mpox in back pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page lists 'anus/rectum'; Lesion of rectum omits the anus. No 'Lesion of anus' disorder exists; only (snomed_concept \"Disorder of anus\" \"disorder\") is available as a broad add-on.",
+    "fix": "add (clinical_finding (snomed_concept \"Disorder of anus\" \"disorder\")) alongside Lesion of rectum",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Anus lesion not encoded alongside rectum.",
+    "fix": "Add lesion of anus",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'anus/rectum'; only rectum lesion encoded, anal lesions not covered.",
+    "fix": "Add an anal lesion concept (or a perianal/anorectal lesion concept) to the or.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c103",
+  "text": "Diagnose probable mechanical back pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Fever is recorded as (active_condition Fever) per the house standard (the TB rule in this file uses that form); (no (clinical_finding Fever)) may never match the recorded form.",
+    "fix": "(not (active_condition (snomed_concept \"Fever\" \"finding\")))",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Fever is encoded as a finding here but as active_condition in the TB rule (c097); inconsistent, and the TB rule absent of the \"No\" qualifier.",
+    "fix": "Use the same encoding in both rules",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Fever is tested as (no (clinical_finding Fever)) while the TB rule uses (active_condition Fever), the house's recorded form; the negation may not match how fever is recorded.",
+    "fix": "Keep the forms consistent with how fever is recorded (house standard: active_condition Fever).",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c105",
+  "text": "Diagnose probable mechanical back pain :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))) (time_ago 6 weeks))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Comparison direction wrong for a \"No\" branch: page says mechanical needs pain NOT for > 6 weeks, so onset must be within the last 6 weeks. onset <= time_ago 6 weeks means onset 6 weeks ago or earlier, i.e. pain lasting 6+ weeks, the opposite.",
+    "fix": "Use (> (onset ...) (time_ago 6 weeks))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c109",
+  "text": "Diagnose probable mechanical back pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'oral steroid use'; Use of steroids is broader (includes inhaled/topical). No closer finding-category concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says oral steroid use; concept is broader (any route).",
+    "fix": "As c042",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'oral steroid use'; 'Use of steroids' drops the oral route (would include inhaled/topical).",
+    "fix": "Consider (snomed_concept \"Oral steroids last used\" \"finding\") or a Route qualifier.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c113",
+  "text": "Diagnose probable mechanical back pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'sleep disturbed by pain'; Sleep pattern disturbance is any sleep disturbance and loses the pain link. No closer concept found (only 'Pain onset during sleep').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Sleep disturbance not tied to pain.",
+    "fix": "As c046",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'sleep disturbed by pain'; 'Sleep pattern disturbance' is broader (any cause, e.g. insomnia from anxiety), so it would wrongly block mechanical back pain.",
+    "fix": "Add a due-to-pain qualifier or a closer concept (e.g. Wakes up during night with pain attribution).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c114",
+  "text": "Diagnose probable mechanical back pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minutes duration is dropped. 'Morning stiffness - joint' exists but is joint-specific.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Duration > 30 minutes dropped from morning stiffness.",
+    "fix": "As c047",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'morning stiffness lasting > 30 minutes'; the > 30 minute duration is dropped, so brief morning stiffness counts.",
+    "fix": "Add a duration qualifier/measurement > 30 minutes or note it.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c115",
+  "text": "Diagnose probable mechanical back pain :: (diagnosis (snomed_concept \"Mechanical low back pain\" \"finding\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Mechanical back pain'; Mechanical low back pain is narrower (child of Low back pain). 'Mechanical back pain' does not exist in SNOMED, so no better concept.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Mechanical back pain' (any level); 'Mechanical low back pain' is narrower (lumbar only). No exact concept exists.",
+    "fix": "Accept as nearest concept or use Mechanical pain with finding site back.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c117",
+  "text": "Urgent: back pain with red box features :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Bladder or bowel disturbance (retention or incontinence)'; only urinary retention is encoded, bowel (faecal) retention is dropped.",
+    "fix": "Add a faecal retention/constipation concept (e.g. Constipation) alongside Retention of urine.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c124",
+  "text": "Urgent: back pain with red box features :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page criterion is 'Recent injury AND x-ray unavailable or abnormal'; bare Traumatic injury drops 'recent' and the x-ray condition, so any old injury triggers urgent attention.",
+    "fix": "(clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))); the x-ray clause could use (snomed_concept \"Plain X-ray of spine abnormal\" \"finding\") though 'x-ray unavailable' has no concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c009: recency and x-ray unavailable/abnormal condition dropped.",
+    "fix": "As c009",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page item is 'Recent injury AND x-ray unavailable or abnormal'; encoding is any Traumatic injury with no recency and no x-ray condition, so every back-pain patient with any past injury becomes Urgent.",
+    "fix": "Add a Recent qualifier (or onset time_ago window) and an x-ray unavailable/abnormal condition, or document the simplification.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c125",
+  "text": "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Acute pancreatitis\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"pancreatitis likely\" which is a diagnosis; encoded as active_condition on the diagnosis. Acceptable if VHA feeds probable diagnoses to active_condition, otherwise the trigger never fires.",
+    "fix": "Confirm with VHA semantics or inline the pancreatitis findings",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c138",
+  "text": "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Diagnosis fed as active_condition; same dependency caveat as c125.",
+    "fix": "As c125",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c139",
+  "text": "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Diagnosis fed as active_condition; same dependency caveat as c125.",
+    "fix": "As c125",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) Diagnose probable inflammatory back pain",
+  "text": "The flowchart's 'Yes' branch of the inflammatory-features question ('Inflammatory back pain likely') has no diagnosis rule. The house standard requires every 'X likely' to be a probable rule; the two inflammatory features that are checked for are only ever used as negations. A usable SNOMED concept exists (Axial spondyloarthritis / Spondyloarthritis / Arthritis of spine), and 'Exercise relieves symptom' is available for 'pain better with exercise'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated pyelonephritis in back pain / Diagnose probable uncomplicated pyelonephritis in back pain",
+  "text": "Both rules diagnose the identical concept 'Acute pyelonephritis' probable, and the uncomplicated rule's evidence is a strict subset of the complicated rule's, so every complicated case also satisfies the uncomplicated rule and the system cannot tell the page's two outcomes apart. The uncomplicated rule should at least carry (no ...) for the complicating factors, and the shared concept should be recorded as a SNOMED gap.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "Fever is negated as (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))) whereas the house convention and the TB rule in the same file use (active_condition (snomed_concept \"Fever\" \"finding\")). If fever is recorded as an active condition the negation may not see it, so a febrile patient can be diagnosed with mechanical back pain while also being flagged as possible TB.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "Age criteria ('> 50 years' and '< 40 years') are not representable in the grammar, so two of the page's branch conditions are silently absent from the rule. This is a language limitation but it is not flagged anywhere in the file and the rule fires for patients the page would route to a doctor.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: back pain with red box features",
+  "text": "'Recent injury and x-ray unavailable or abnormal' is reduced to any 'Traumatic injury'. 'Plain X-ray of spine abnormal' (finding) exists in SNOMED and could have been checked for; as written, a patient with an old or x-rayed-normal injury is made Urgent.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in back pain",
+  "text": "'anus' is missing from the lesion sites (page: skin/genitals/anus/rectum/mouth/eyes). 'Lesion of rectum' does not subsume anal lesions; 'Disorder of anus' (disorder) is available.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable mechanical back pain / Diagnose probable uncomplicated pyelonephritis in back pain",
+  "text": "Neither 'not needing urgent attention' rule excludes the red-box features, so a patient with, for example, saddle numbness or a pulsatile mass can be labelled probable mechanical back pain at the same time as being made Urgent. The page's layout makes the non-urgent path conditional on the red box being clear.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "Onset comparison direction appears reversed ((<= onset (time_ago 6 weeks)) = pain older than 6 weeks); age (<40, >50), exercise and rest criteria and >30 min stiffness duration missing, so it fires for patients the page sends to inflammatory or x-ray branches.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(none)",
+  "text": "No 'Inflammatory back pain likely' probable diagnosis; flowchart branch lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated/uncomplicated pyelonephritis",
+  "text": "Both rules give Acute pyelonephritis probable; the uncomplicated rule is not exclusive of complicated, so the distinction is lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent priority / Traumatic injury",
+  "text": "Injury without recent/x-ray qualifiers triggers Urgent for any trauma history.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox",
+  "text": "Uses Headache, Lymphadenopathy, Generalized aches, Fatigue, Sore throat, Nasal congestion, body temperature that no task's check_for asks; page lists them as mpox discriminators.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible TB / mechanical",
+  "text": "Fever encoded as active_condition in TB rule but clinical_finding in mechanical rule, and Fever is absent from any check_for.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of back pain not needing urgent attention",
+  "text": "check_for items (e.g. Lesion of eye, Skin lesion) are used by mpox rule, but Progressive backache and several history items are consumed only inside negations; no rule uses them to route to x-ray/doctor.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "The rule is under-gated. It omits age >50 and <40 (not representable), 'better with exercise' and 'not better with rest', and every red-box feature. Patients over 50, patients with inflammatory features and patients with cauda equina signs can all be labelled probable mechanical back pain. Its Fever negation uses (clinical_finding Fever), while Fever is recorded as (active_condition Fever), so that exclusion may never match.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "The 'Inflammatory back pain likely' flowchart conclusion has no rule. The Yes branch of the second decision node is lost.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis in back pain / Diagnose probable complicated pyelonephritis in back pain",
+  "text": "Both rules output the same 'Acute pyelonephritis' probable. The uncomplicated rule has no exclusion of the complicated features, so the two always co-fire and cannot be told apart. Neither rule is anchored on Backache.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: back pain with red box features",
+  "text": "'Recent injury and x-ray unavailable or abnormal' became any Traumatic injury, with no recency. This over-triggers Urgent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of back pain not needing urgent attention",
+  "text": "The check list lacks the inflammatory features 'pain better with exercise' and 'not better with rest', so they can never be recorded.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of back pain not needing urgent attention",
+  "text": "Does not check for the remaining 'No' branch discriminators the page uses to reach 'Mechanical back pain likely': age > 50, age < 40, pain better with exercise, does not get better with rest. Age may be routine, but the two exercise/rest findings are not checked anywhere.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis in back pain",
+  "text": "Page places uncomplicated pyelonephritis in the 'not needing urgent attention' box, i.e. flank pain + leucocytes/nitrites WITHOUT vomiting, sepsis, diabetes, male, pregnant or post menopause. The rule has no (no ...) exclusions, so it is a strict superset of the complicated rule and fires in every complicated case too. Same diagnosis concept as the complicated rule, so the practical effect is a duplicate probable diagnosis, but the structure is not faithful.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "The page reaches 'Mechanical back pain likely' only after 'No' to BOTH question lists. The rule omits '> 50 years' from the first list and '< 40 years', 'pain better with exercise' and 'does not get better with rest' from the second, so it fires for e.g. a 60-year-old or a patient whose pain improves with exercise, whom the page sends to x-ray or to 'Inflammatory back pain likely'. Also, the page's 'Inflammatory back pain likely' (Yes/Unsure to the second list) has no probable diagnosis rule at all, and the x-ray branch (Yes to the first list) is not represented.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: back pain with red box features",
+  "text": "Urgent is justified by the 'Give urgent attention' heading and the and/or structure follows the box. But 'Recent injury and x-ray unavailable or abnormal' is reduced to bare Traumatic injury, so any injury, however old and whatever the x-ray shows, makes the patient Urgent.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of back pain not needing urgent attention",
+  "text": "Omits the age items (> 50, < 40), pain better with exercise and not better with rest, which the page uses to distinguish mechanical from inflammatory back pain.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable uncomplicated pyelonephritis in back pain",
+  "text": "No exclusion of the complicating features; fires together with the complicated rule whenever that does, contradicting the page's split.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "Onset comparison reversed (requires pain over 6 weeks instead of under); age criteria (> 50 and < 40), pain better with exercise and not better with rest are missing; morning stiffness duration dropped.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: back pain with red box features",
+  "text": "Pancreatitis, kidney stone and AAA enter via active_condition on diagnoses (dependency on VHA semantics); injury lacks recent/x-ray condition. Priority Urgent is justified by 'Give urgent attention'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) inflammatory back pain probable",
+  "text": "The page has 'Inflammatory back pain likely' (and the Unsure path) but no diagnosis rule exists for it; it needs a probable diagnosis rule from the age < 40/sleep/exercise/rest/morning stiffness branch.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent back pain conditions",
+  "text": "Recent injury is encoded as any Traumatic injury, without recency or the x-ray unavailable/abnormal condition. Bowel retention is missing. Otherwise it covers the red box.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of back pain not needing urgent attention",
+  "text": "The algorithm's discriminators 'pain better with exercise' and 'does not get better with rest' are never checked, and neither is age (> 50 / < 40). Sleep and morning-stiffness items lose their qualifiers ('by pain', '> 30 minutes'). 'Unexplained' is dropped from rash.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated pyelonephritis in back pain",
+  "text": "Its logic is faithful (flank pain AND leucocytes/nitrites AND any of vomiting, the sepsis criteria from the footnote, diabetes, male, pregnant, post menopause). But the diagnosis concept is identical to the uncomplicated rule, so 'complicated' is lost and the priority rule has to inline the criteria instead of using active_condition.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis in back pain",
+  "text": "It doesn't exclude the complicating features, so it fires in complicated cases too. It uses the same concept as the complicated rule.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable mechanical back pain",
+  "text": "Page: mechanical back pain is likely only when the answer is No to the second question AND No to the third. The rule omits the negation of '> 50 years' from the second question. From the third question it omits '< 40 years', 'pain better with exercise' and 'does not get better with rest'. So a 65-year-old, or a patient whose pain improves with exercise and not with rest (inflammatory features), is labelled mechanical. It also does not exclude red-box/urgent features. The sleep and stiffness negations are broader than the page.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: back pain with red box features",
+  "text": "Urgent matches the red-box heading, and the and/or structure is right. But the 'Recent injury and x-ray unavailable or abnormal' item became any Traumatic injury, and bowel retention is missing. Complicated pyelonephritis is inlined rather than referenced as active_condition (acceptable given the shared concept).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) Inflammatory back pain likely",
+  "text": "The page says 'Inflammatory back pain likely' (Yes to: < 40 years, sleep disturbed by pain, better with exercise, not better with rest, morning stiffness > 30 min). No probable diagnosis rule exists for it, against the house standard that every 'X likely' gets a probable rule.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: dipstick task triggered by (Flank pain) alone  vs  B: (and Backache Flank pain)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and (clinical_finding Backache) (clinical_finding Flank pain))",
+    "reason": "The red box is for \"the patient with back pain and any of\", and \"If flank pain, check urine dipstick\" sits inside it.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: no non-urgent task  vs  B: task \"Check for causes of back pain not needing urgent attention\" triggered by Backache",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding Backache)",
+    "reason": "The page has a separate \"Approach to patient with back pain not needing urgent attention\" box whose questions need checking for.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: complaint (or Backache Flank pain)  vs  B: Backache",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding Backache)",
+    "reason": "The header says \"the patient with back pain and any of\"; flank pain is one of the listed items, not an alternative complaint.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for / priority_condition / diagnosis_condition",
+  "text": "A: Male in check_for, Urgent rule and pyelonephritis criteria  vs  B: omitted (\"no sex criterion\")",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Male\" \"finding\"))",
+    "reason": "The page lists \"male\" among the complicating factors and the concept exists; whether VHA records sex this way is a question for the clinician.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: TB/mpox items placed in the urgent task, Finding of vomiting duplicated in dipstick task  vs  B: in a separate non-urgent task",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "These items are in the box \"not needing urgent attention\", so B's grouping matches the page; the duplicate vomiting check adds nothing.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Lesion of genitalia, Lesion of rectum, Oral lesion, Lesion of eye  vs  B: only Eruption and Skin lesion",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding Lesion of genitalia / Lesion of rectum / Oral lesion / Lesion of eye)",
+    "reason": "The page says \"rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes\"; the concepts exist.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Lymphadenopathy, Nasal congestion, Generalized acute body pains checked for  vs  B: mpox symptoms not checked for",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "Mpox is a possible diagnosis whose entry is the rash/lesion; A's checklist was a partial subset of the listed symptoms (no headache, fatigue, sore throat, temperature), so neither checks the symptom list.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Generalized acute body pains  vs  B: Generalized aches and pains (A narrower)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+    "reason": "The page says \"body pain\" with no acuity; the broader concept is closer.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for / diagnosis_condition",
+  "text": "A: Inguinal pain  vs  B: Radiating pain with finding site Inguinal region structure",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Radiating pain\" \"finding\") (finding_site (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+    "reason": "The page says pain \"radiating to groin\", not groin pain; the body structure resolves.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for / diagnosis_condition / diagnosis",
+  "text": "A: no mechanical back pain rule and no Q2/Q3 check_for items  vs  B: Q2/Q3 items checked for and probable Mechanical low back pain when all Q1-Q3 items are No and onset within 6 weeks",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Mechanical low back pain\" \"finding\") probable)",
+    "reason": "The page states \"Mechanical back pain likely\" on the all-No path and most of the evidence can be expressed, but age, better with exercise and not better with rest cannot, so the rule fires more often than the page intends.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis / diagnosis_condition",
+  "text": "A: one pyelonephritis rule (flank pain + leucocytes/nitrites)  vs  B: separate complicated (with vomiting/sepsis/diabetes/pregnant/post menopause) and uncomplicated rules",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable) x2",
+    "reason": "The page states \"complicated pyelonephritis likely\" and \"uncomplicated pyelonephritis likely\" separately; both rules keep each statement traceable (same concept, so the overlap is harmless).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Backache in the pancreatitis and AAA probable rules  vs  B: without",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Backache\" \"finding\"))",
+    "reason": "The red box gives these as \"likely\" for \"the patient with back pain\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Same concept, different form: A Backache vs B (<= (onset Backache) (time_ago 6 weeks)) and (no Backache Progressive)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "These come only from B's mechanical rule (the Q2 \"No\" side of \"pain progressive or for > 6 weeks\").",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+  "text": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\")))",
+  "detail": [
+   {
+    "reason": "Used as (no ...) in \"Diagnose probable mechanical back pain\" (Q2 = No). The checker does not match a qualified finding inside (no ...), because the no form inserts the \"No\" value before the qualifier. Faithful encoding kept."
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+  "text": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\")))",
+  "detail": [
+   {
+    "reason": "Used as (no ...) in \"Diagnose probable mechanical back pain\" (Q3 = No) and checked for in \"Check for causes of back pain not needing urgent attention\". The checker does not match a qualified finding inside (no ...). Faithful encoding kept."
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "slug": "78-back-pain",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "reason": "Used as (no ...) in \"Diagnose probable mechanical back pain\" (Q3 = No) and checked for in \"Check for causes of back pain not needing urgent attention\". The checker does not match a qualified finding inside (no ...). Faithful encoding kept."
+   }
+  ]
+ }
+]

@@ -1,0 +1,917 @@
+{
+ "page": 26,
+ "lisp_file": "26-palpitations.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syncope\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "Faint"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "loss of consciousness"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "Dizziness"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "light-headedness"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-850303bb"
+   ],
+   "quote": "Confusion"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p26-1746eb86"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "Pulse irregular"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thigh pain\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thigh structure\" \"body structure\")))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "Difficulty breathing worse on lying flat"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "leg swelling"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of palpitations",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-6438e9f2"
+   ],
+   "quote": "palpitations not needing urgent attention"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "thirst"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "decreased urine output"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "Difficulty breathing worse on lying flat"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "leg swelling"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "heart failure likely"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "consider stroke"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "TIA"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "thirst"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "decreased urine output"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dehydration likely"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p26-ae623d86",
+    "p26-0b237fcc"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Disorder of thyroid gland\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "consider thyroid"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p26-ae623d86",
+    "p26-0b237fcc"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Electrolyte imbalance\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "electrolyte abnormalities"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syncope\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "Faint"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "loss of consciousness"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "Dizziness"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "light-headedness"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-850303bb"
+   ],
+   "quote": "Confusion"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p26-1746eb86"
+   ],
+   "quote": "Chest pain"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "< 90/60"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "< 90/60"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "Pulse irregular"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 150)",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "> 150"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "< 50"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "Fingerprick glucose < 3"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "< 4 if diabetes"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thigh pain\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thigh structure\" \"body structure\")))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "Difficulty breathing"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "oxygen saturation < 94%"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "heart failure likely"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance"
+  }
+ ]
+}

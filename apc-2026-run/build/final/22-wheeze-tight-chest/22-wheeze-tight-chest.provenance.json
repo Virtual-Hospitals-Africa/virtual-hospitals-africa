@@ -1,0 +1,1049 @@
+{
+ "edition": "2026",
+ "page": 22,
+ "lisp_file": "22-wheeze-tight-chest.lisp",
+ "conditions": [
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; Wheezing and Tight chest are separate SNOMED findings, joined with or."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; Wheezing and Tight chest are separate SNOMED findings, joined with or."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to speak\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "unable to talk",
+   "confidence": "high",
+   "note": "Red-box life-threatening criterion."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Red-box life-threatening criterion."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "confused",
+   "confidence": "high",
+   "note": "Red-box life-threatening criterion; warning-sign concept."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "unable to talk in full sentences",
+   "confidence": "high",
+   "note": "Red-box severe criterion."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "Red-box severe criterion."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Evidence of probable heart failure, so checked here."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "Evidence of probable heart failure, so checked here."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "sudden wheeze/tight chest",
+   "confidence": "medium",
+   "note": "\"Sudden\" expressed with the Sudden onset qualifier, as in the gold standard."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "sudden wheeze/tight chest",
+   "confidence": "medium",
+   "note": "\"Sudden\" expressed with the Sudden onset qualifier, as in the gold standard."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": "Page-specific generalised itch."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "itch/rash",
+   "confidence": "medium",
+   "note": "\"generalised itch/rash\": Generalized rash (disorder) chosen over Eruption to keep \"generalised\"."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site, as in the gold standard."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site, as in the gold standard."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "medication",
+   "confidence": "medium",
+   "note": "Exposure to possible allergen, footnote 1: medication. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1: food. General Food substance; descendants match. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite/sting."
+  },
+  {
+   "rule": "Check for wheeze/tight chest severity and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite/sting."
+  },
+  {
+   "rule": "Check for wheeze in tight chest",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "tight chest",
+   "confidence": "medium",
+   "note": "Tight chest (from the header complaint) triggers a wheeze check, so a silent chest (tight chest but no wheeze) can be recorded with wheeze marked No."
+  },
+  {
+   "rule": "Check for wheeze in tight chest",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "tight chest but no wheeze",
+   "confidence": "medium",
+   "note": "Checked so the (no Wheezing) branch of the silent-chest criterion can be recorded."
+  },
+  {
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; Wheezing and Tight chest are separate SNOMED findings, joined with or."
+  },
+  {
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; Wheezing and Tight chest are separate SNOMED findings, joined with or."
+  },
+  {
+   "rule": "Measure PEFR in wheeze/tight chest",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %)",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "PEFR is expressed as a percentage of the predicted normal value",
+   "confidence": "high",
+   "note": "PEFR as % of predicted (footnote 2) -> Recorded/predicted PEFR ratio in %; not a routine vital so a measure task."
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "first episode of wheeze/tight chest",
+   "confidence": "medium",
+   "note": "Page context: the bullet is about a patient with wheeze/tight chest; complaint added as a conjunct to keep the rule on this page."
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "first episode of wheeze/tight chest",
+   "confidence": "medium",
+   "note": "Page context: the bullet is about a patient with wheeze/tight chest; complaint added as a conjunct to keep the rule on this page."
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea = breathlessness worse lying flat."
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "Leg swelling symptom, as in VHA vocabulary."
+  },
+  {
+   "rule": "Diagnose probable heart failure from wheeze/tight chest",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "sudden wheeze/tight chest",
+   "confidence": "medium",
+   "note": "\"Sudden\" expressed with the Sudden onset qualifier, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "sudden wheeze/tight chest",
+   "confidence": "medium",
+   "note": "\"Sudden\" expressed with the Sudden onset qualifier, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "generalised itch",
+   "confidence": "high",
+   "note": "Page-specific generalised itch."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "itch/rash",
+   "confidence": "medium",
+   "note": "\"generalised itch/rash\": Generalized rash (disorder) chosen over Eruption to keep \"generalised\"."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site, as in the gold standard."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "medication",
+   "confidence": "medium",
+   "note": "Exposure to possible allergen, footnote 1: medication. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "food",
+   "confidence": "medium",
+   "note": "Footnote 1: food. General Food substance; descendants match. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite/sting."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p22-096a62b5"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite/sting."
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p22-6530e896"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "medium",
+   "note": "\"check for anaphylaxis\" read as suspect -> possible; it triggers the anaphylaxis check on page 28."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Complaint conjunct: the severity question is asked of the patient with wheeze/tight chest."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Complaint conjunct: the severity question is asked of the patient with wheeze/tight chest."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p22-26faadae",
+    "p22-645fa848"
+   ],
+   "quote": "Assess severity of episode: Any of: pulse < 50",
+   "confidence": "high",
+   "note": "Pulse, function in bpm."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to speak\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "unable to talk",
+   "confidence": "high",
+   "note": "\"Unable to talk\" does not exist; Unable to speak is the exact concept."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "silent chest (tight chest",
+   "confidence": "medium",
+   "note": "Silent chest = tight chest and no wheeze."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "tight chest but no wheeze",
+   "confidence": "medium",
+   "note": "Silent chest has no SNOMED concept; encoded as page defines it: tight chest and wheeze recorded absent."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %) 33)",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "PEFR2 <33% of predicted",
+   "confidence": "high",
+   "note": "% predicted PEFR < 33."
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Emergency: life-threatening wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p22-645fa848",
+    "p22-7d943aa7"
+   ],
+   "quote": "confused? Yes: Life threatening",
+   "confidence": "high",
+   "note": "Acute confusion (warning sign form). \"Life threatening\" is the page's explicit escalation -> Emergency."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Complaint conjunct."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "wheeze/tight chest",
+   "confidence": "high",
+   "note": "Complaint conjunct."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 90)",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "oxygen saturation < 90%",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "respiratory rate > 30",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "pulse > 120",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "unable to talk in full sentences",
+   "confidence": "high",
+   "note": "Unable to complete a sentence in one breath."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %) 60)",
+   "element_keys": [
+    "p22-29306d7e"
+   ],
+   "quote": "PEFR2 <60% of predicted",
+   "confidence": "high",
+   "note": "% predicted PEFR < 60."
+  },
+  {
+   "rule": "Urgent: severe wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p22-29306d7e",
+    "p22-9f9768ec"
+   ],
+   "quote": "agitated? Yes: Severe",
+   "confidence": "high",
+   "note": "Feeling agitated (VHA vocabulary). Severe tier kept at Urgent (no explicit escalation beyond the header)."
+  },
+  {
+   "rule": "Urgent: wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "Give urgent attention to the patient with wheeze/tight chest",
+   "confidence": "high",
+   "note": "Header applies urgent attention to every patient with the complaint."
+  },
+  {
+   "rule": "Urgent: wheeze/tight chest",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p22-0687a589"
+   ],
+   "quote": "Give urgent attention to the patient with wheeze/tight chest",
+   "confidence": "high",
+   "note": "Header applies urgent attention to every patient with the complaint."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p22-b24de267",
+   "element_id": "p22-rb1-e04",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "\"No\" arrow from the life-threatening question to the severe question; priority levels make the routing implicit (Emergency outranks Urgent)."
+  },
+  {
+   "element_key": "p22-d91f8ab4",
+   "element_id": "p22-rb1-e07",
+   "text": "Give 40% face mask oxygen (if known COPD, give 24-28% face mask oxygen), keep saturation 93-95% while preparing nebuliser and between nebulisations.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-eb56bb93",
+   "element_id": "p22-rb1-e08",
+   "text": "No: Mild or moderate",
+   "reason_category": "flowchart_routing",
+   "reason": "Mild/moderate branch leads only to management; these patients are covered by the base Urgent rule from the header."
+  },
+  {
+   "element_key": "p22-32e56020",
+   "element_id": "p22-rb1-e10",
+   "text": "Give inhaled salbutamol via spacer 400-1000mcg if required, or nebulise 1mL salbutamol 0.5% solution in 3mL sodium chloride 0.9%, with oxygen at flow rate of 8L",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-fb94d2ad",
+   "element_id": "p22-rb1-e11",
+   "text": "Refer urgently. While awaiting transport:",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-d6b0431d",
+   "element_id": "p22-rb1-e12",
+   "text": "If known asthma or COPD, give prednisone 40mg orally.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-1a1067fa",
+   "element_id": "p22-rb1-e13",
+   "text": "Nebulise 2mL (10mg) salbutamol 0.5% solution and 2mL (0.5mg) ipratropium bromide solution with oxygen at flow rate of 8L/minute.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-8bf6058f",
+   "element_id": "p22-rb1-e14",
+   "text": "Monitor response regularly. If no better, repeat salbutamol every 20 minutes during first hour.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-c298c653",
+   "element_id": "p22-rb1-e15",
+   "text": "Assess after 1 hour of treatment:",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-a33ef092",
+   "element_id": "p22-rb1-e16",
+   "text": "Check respiratory rate and PEFR2. Can patient talk normally?",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-eba53ac1",
+   "element_id": "p22-rb1-e17",
+   "text": "Give single dose hydrocortisone 100mg IM/slow IV.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-1d0b286a",
+   "element_id": "p22-rb1-e18",
+   "text": "Improving or no change:",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-fce9d6ca",
+   "element_id": "p22-rb1-e19",
+   "text": "Worsening despite treatment: Unable to talk normally or",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-e00428a9",
+   "element_id": "p22-rb1-e20",
+   "text": "If no better, repeat nebulisations every 20 minutes as needed for up to 4 doses in 2 hours. If no longer life threatening, manage as severe:",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-695e29a3",
+   "element_id": "p22-rb1-e21",
+   "text": "Able to talk normally and respiratory rate < 20 or",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-b5b6b0d1",
+   "element_id": "p22-rb1-e22",
+   "text": "PEFR2 improved by > 20%",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-b1cc0ebe",
+   "element_id": "p22-rb1-e23",
+   "text": "respiratory rate ≥ 20 or PEFR2 not improved",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-0ed232a2",
+   "element_id": "p22-rb1-e24",
+   "text": "Wheeze/tight chest resolved",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-2cdd340a",
+   "element_id": "p22-rb1-e25",
+   "text": "Wheeze/tight chest still present",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-c46cc749",
+   "element_id": "p22-rb1-e26",
+   "text": "Give 40% face mask oxygen (if known COPD, give 24-28% face mask oxygen), keep saturation 93-95% while preparing nebuliser and between nebulisations.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-e93a86b7",
+   "element_id": "p22-rb1-e27",
+   "text": "Repeat salbutamol every 2-4 hours as needed.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-64f6bc39",
+   "element_id": "p22-rb1-e28",
+   "text": "Refer urgently. While awaiting transport:",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-638a993f",
+   "element_id": "p22-rb1-e29",
+   "text": "Is wheeze/tight chest still present after 3 hours of treatment?",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-b6f496ea",
+   "element_id": "p22-rb1-e30",
+   "text": "Nebulise 1mL salbutamol 0.5% solution in 3mL sodium chloride 0.9% with oxygen at flow rate of 8L/minute, every 20 minutes or give instead inhaled salbutamol via",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-9400580c",
+   "element_id": "p22-rb1-e31",
+   "text": "If not already given, give single dose prednisone 40mg orally. If unable to take oral medication, give single dose hydrocortisone 100mg IM/slow IV.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-c38af526",
+   "element_id": "p22-rb1-e32",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No answers to the 3-hour reassessment question (not modelled)."
+  },
+  {
+   "element_key": "p22-dc2e280a",
+   "element_id": "p22-rb1-e33",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No answers to the 3-hour reassessment question (not modelled)."
+  },
+  {
+   "element_key": "p22-a89bec76",
+   "element_id": "p22-rb1-e34",
+   "text": "Assess response",
+   "reason_category": "not_representable",
+   "reason": "Reassessment after 1 h / 3 h of treatment: depends on time since treatment and on change from baseline (PEFR improved by > 20%), which the language cannot express; it only routes management."
+  },
+  {
+   "element_key": "p22-3ff200b9",
+   "element_id": "p22-rb1-e35",
+   "text": "Discuss before discharge if any of: presents late afternoon, previous severe attacks, recent night time/ worsening of symptoms.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-7fb7f6a8",
+   "element_id": "p22-rb1-e36",
+   "text": "Continue",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-1d0c5c84",
+   "element_id": "p22-rb1-e37",
+   "text": "If poor response, add 2mL (0.5mg) ipratropium bromide solution to 1mL salbutamol 0.5% solution and 1mL sodium chloride 0.9%, and nebulise every 20 minutes up to",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-b98242b1",
+   "element_id": "p22-rb1-e38",
+   "text": "salbutamol every 2-4 hours as needed and refer.",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-f4d2f322",
+   "element_id": "p22-rb1-e39",
+   "text": "If first episode of wheeze/tight chest, assess for asthma and COPD 138.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to asthma/COPD pages 138/140/141 for routine care after discharge."
+  },
+  {
+   "element_key": "p22-76643222",
+   "element_id": "p22-rb1-e40",
+   "text": "If still no better, repeat salbutamol nebulisations every 20 minutes until PEFR2 > 60% of predicted. Once PEFR2 > 60% of predicted, repeat every 2–4 hours as ne",
+   "reason_category": "management_step",
+   "reason": "Treatment, referral or discharge step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p22-ecb2e6f6",
+   "element_id": "p22-rb1-e41",
+   "text": "If known asthma/COPD, give routine care: if asthma 140, if COPD 141.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to asthma/COPD pages 138/140/141 for routine care after discharge."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Priority levels",
+   "decision": "Every patient with wheeze/tight chest is Urgent (header); the life-threatening tier is Emergency; the severe tier is Urgent.",
+   "alternatives": "Severe as \"Very urgent\"; life threatening as \"Very urgent\".",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Silent chest",
+   "decision": "(and Tight chest (no Wheezing)), with a separate task asking for wheeze when tight chest is recorded.",
+   "alternatives": "No SNOMED concept \"Silent chest\"; Decreased/Absent breath sounds is a different sign.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Heart failure age branch",
+   "decision": "Dropped \"patient >= 50 years with first episode\" (no age in the language); rule fires less often than the page intends.",
+   "alternatives": "Encode first episode alone (would fire far more often than intended).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaphylaxis bullet",
+   "decision": "\"check for anaphylaxis\" encoded as a possible anaphylaxis diagnosis; anaphylaxis features added to the check_for so the rule can fire.",
+   "alternatives": "Leave as a cross-reference only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Reassessment after treatment",
+   "decision": "Not modelled (management routing, time since treatment).",
+   "alternatives": "Add RR >= 20 / unable to talk normally to the severe rule, which would make RR >= 20 alone Urgent-severe before treatment.",
+   "confidence": "high"
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "check": "TASKS_LISP :: each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation",
+ "count": 15,
+ "values": [
+  {
+   "file_path": "s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp",
+   "description": "Check for urgent lump/swelling in groin conditions",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/98-low-mood-stress-or-anxiety.lisp",
+   "description": "Check for generalised anxiety disorder and PTSD features",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/39-malaria.lisp",
+   "description": "Check for exposure to a malaria area",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/39-malaria.lisp",
+   "description": "Check for urgent signs in suspected malaria",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/28-anaphylaxis.lisp",
+   "description": "Assess the patient with previous anaphylaxis for other allergy",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour.lisp",
+   "description": "Check for urgent abnormal thoughts or behaviour conditions",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Memory impairment\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour.lisp",
+   "description": "Check for urgent abnormal thoughts or behaviour conditions",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorientated\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour.lisp",
+   "description": "Check for urgent abnormal thoughts or behaviour conditions",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Language difficulty\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/36-abnormal-thoughts-or-behaviour.lisp",
+   "description": "Check for urgent abnormal thoughts or behaviour conditions",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty coping\" \"finding\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Check for self-harm or suicide risk",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Check for self-harm or suicide risk",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/51-nose-symptoms.lisp",
+   "description": "Check for causes of nose symptoms",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/51-nose-symptoms.lisp",
+   "description": "Check for causes of nose symptoms",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/51-nose-symptoms.lisp",
+   "description": "Check for causes of nose symptoms",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/63-genital-symptoms-in-a-man.lisp",
+   "description": "Check for urgent genital symptoms in a man",
+   "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Prolonged erection of penis\" \"finding\"))"
+  }
+ ]
+}

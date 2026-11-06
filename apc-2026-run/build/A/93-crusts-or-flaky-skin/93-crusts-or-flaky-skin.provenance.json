@@ -1,0 +1,405 @@
+{
+ "edition": "2026",
+ "page": 93,
+ "lisp_file": "93-crusts-or-flaky-skin.lisp",
+ "conditions": [
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\"))",
+   "element_keys": [
+    "p93-9e3a65c4"
+   ],
+   "quote": "CRUSTS",
+   "confidence": "high",
+   "note": "Page title names the complaint; 'Crust on skin' (finding) is the recorded form. Not a common symptom or warning sign."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+   "element_keys": [
+    "p93-9e3a65c4"
+   ],
+   "quote": "FLAKY SKIN",
+   "confidence": "medium",
+   "note": "'Flaky skin' has no SNOMED concept; 'Scaly skin' (finding) is the nearest. 'Peeling of skin' considered and rejected: the three flaky-skin descriptions all say scaly/scale."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\") (qualifier (snomed_concept \"Yellow color\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-19439102"
+   ],
+   "quote": "yellow crusts",
+   "confidence": "medium",
+   "note": "Yellow crusts as Crust on skin + Yellow color qualifier; a qualified crust record is needed to fire."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p93-19439102"
+   ],
+   "quote": "Blisters",
+   "confidence": "medium",
+   "note": "Blister of skin (disorder), VHA vocabulary. Blisters may already have dried, so it is an alternative to the yellow-crust qualifier, combined with a crust."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p93-74fa3ad8"
+   ],
+   "quote": "Red/pink",
+   "confidence": "medium",
+   "note": "'Red/pink' patches as Erythema (finding); colour qualifiers on Scaly skin considered."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Greasy skin\" \"finding\"))",
+   "element_keys": [
+    "p93-74fa3ad8"
+   ],
+   "quote": "greasy scales",
+   "confidence": "medium",
+   "note": "No concept for greasy scale; Greasy skin (finding) is the nearest. 'fine' scale not encoded separately."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin plaque\" \"disorder\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-0553e35b"
+   ],
+   "quote": "Well-defined, raised plaques",
+   "confidence": "high",
+   "note": "Skin plaque (disorder) with Well defined and Raised qualifiers."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Silver color\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-25c421b8"
+   ],
+   "quote": "covered with silvery scale",
+   "confidence": "medium",
+   "note": "Silvery scale as Scaly skin + Silver color qualifier."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p93-af2c7bbf"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "'Dry skin' (finding) does not exist; Xeroderma (disorder, FSN of dry skin) used."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "element_keys": [
+    "p93-af2c7bbf"
+   ],
+   "quote": "itchy skin",
+   "confidence": "high",
+   "note": "Itching of skin (finding), VHA vocabulary."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of wrist region\" \"body structure\")))",
+   "element_keys": [
+    "p93-af2c7bbf",
+    "p93-cbcabda8"
+   ],
+   "quote": "scaly, itchy skin on wrists",
+   "confidence": "medium",
+   "note": "Scaly skin with finding_site; 'Skin structure of wrist' does not exist, wrist region used. Site on the scaly finding."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of ankle\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8"
+   ],
+   "quote": "ankles",
+   "confidence": "high",
+   "note": "Scaly skin with finding_site Skin structure of ankle."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of antecubital fossa\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8"
+   ],
+   "quote": "inside elbows",
+   "confidence": "high",
+   "note": "'Inside elbows' = antecubital fossa skin."
+  },
+  {
+   "rule": "Check for causes of crusts or flaky skin",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of popliteal fossa\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8",
+    "p93-96096f09"
+   ],
+   "quote": "behind knees",
+   "confidence": "high",
+   "note": "'Behind knees' = popliteal fossa skin."
+  },
+  {
+   "rule": "Diagnose probable impetigo (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\") (qualifier (snomed_concept \"Yellow color\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-19439102"
+   ],
+   "quote": "yellow crusts",
+   "confidence": "medium",
+   "note": "Yellow crusts as Crust on skin + Yellow color qualifier; a qualified crust record is needed to fire."
+  },
+  {
+   "rule": "Diagnose probable impetigo (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\"))",
+   "element_keys": [
+    "p93-19439102"
+   ],
+   "quote": "crusts",
+   "confidence": "high",
+   "note": "Crusts branch: crust plus blister, alternative to yellow crust."
+  },
+  {
+   "rule": "Diagnose probable impetigo (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p93-19439102"
+   ],
+   "quote": "Blisters",
+   "confidence": "medium",
+   "note": "Blister of skin (disorder), VHA vocabulary. Blisters may already have dried, so it is an alternative to the yellow-crust qualifier, combined with a crust."
+  },
+  {
+   "rule": "Diagnose probable impetigo (crusts or flaky skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Impetigo\" \"disorder\") probable)",
+   "element_keys": [
+    "p93-1a0d9379"
+   ],
+   "quote": "Impetigo likely",
+   "confidence": "high",
+   "note": "'X likely' on the page -> probable diagnosis."
+  },
+  {
+   "rule": "Diagnose probable seborrhoeic dermatitis (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+   "element_keys": [
+    "p93-74fa3ad8"
+   ],
+   "quote": "scaly patches",
+   "confidence": "high",
+   "note": "Flaky-skin branch: scaly patches."
+  },
+  {
+   "rule": "Diagnose probable seborrhoeic dermatitis (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p93-74fa3ad8"
+   ],
+   "quote": "Red/pink",
+   "confidence": "medium",
+   "note": "'Red/pink' patches as Erythema (finding); colour qualifiers on Scaly skin considered."
+  },
+  {
+   "rule": "Diagnose probable seborrhoeic dermatitis (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Greasy skin\" \"finding\"))",
+   "element_keys": [
+    "p93-74fa3ad8"
+   ],
+   "quote": "greasy scales",
+   "confidence": "medium",
+   "note": "No concept for greasy scale; Greasy skin (finding) is the nearest. 'fine' scale not encoded separately."
+  },
+  {
+   "rule": "Diagnose probable seborrhoeic dermatitis (crusts or flaky skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Seborrheic dermatitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p93-04273af0"
+   ],
+   "quote": "Seborrhoeic dermatitis likely",
+   "confidence": "high",
+   "note": "'X likely' on the page -> probable diagnosis."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin plaque\" \"disorder\") (qualifier (snomed_concept \"Well defined\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-0553e35b"
+   ],
+   "quote": "Well-defined, raised plaques",
+   "confidence": "high",
+   "note": "Skin plaque (disorder) with Well defined and Raised qualifiers."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Silver color\" \"qualifier value\")))",
+   "element_keys": [
+    "p93-25c421b8"
+   ],
+   "quote": "covered with silvery scale",
+   "confidence": "medium",
+   "note": "Silvery scale as Scaly skin + Silver color qualifier."
+  },
+  {
+   "rule": "Diagnose probable psoriasis (crusts or flaky skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Psoriasis\" \"disorder\") probable)",
+   "element_keys": [
+    "p93-b86b1dca"
+   ],
+   "quote": "Psoriasis likely",
+   "confidence": "high",
+   "note": "'X likely' on the page -> probable diagnosis."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of wrist region\" \"body structure\")))",
+   "element_keys": [
+    "p93-af2c7bbf",
+    "p93-cbcabda8"
+   ],
+   "quote": "scaly, itchy skin on wrists",
+   "confidence": "medium",
+   "note": "Scaly skin with finding_site; 'Skin structure of wrist' does not exist, wrist region used. Site on the scaly finding."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of ankle\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8"
+   ],
+   "quote": "ankles",
+   "confidence": "high",
+   "note": "Scaly skin with finding_site Skin structure of ankle."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of antecubital fossa\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8"
+   ],
+   "quote": "inside elbows",
+   "confidence": "high",
+   "note": "'Inside elbows' = antecubital fossa skin."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of popliteal fossa\" \"body structure\")))",
+   "element_keys": [
+    "p93-cbcabda8",
+    "p93-96096f09"
+   ],
+   "quote": "behind knees",
+   "confidence": "high",
+   "note": "'Behind knees' = popliteal fossa skin."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p93-af2c7bbf"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "'Dry skin' (finding) does not exist; Xeroderma (disorder, FSN of dry skin) used."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "element_keys": [
+    "p93-af2c7bbf"
+   ],
+   "quote": "itchy skin",
+   "confidence": "high",
+   "note": "Itching of skin (finding), VHA vocabulary."
+  },
+  {
+   "rule": "Diagnose probable eczema (crusts or flaky skin)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+   "element_keys": [
+    "p93-446c9aa4"
+   ],
+   "quote": "Eczema likely",
+   "confidence": "high",
+   "note": "'X likely' on the page -> probable diagnosis."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p93-d59266a1",
+   "element_id": "p93-rb1-e01",
+   "text": "Check if the patient needs urgent attention 82.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer-only red box; urgent-attention triage is encoded on page 82."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Hedged descriptors",
+   "decision": "Locations given with 'often'/'usually' and features given with 'may' (insect bites, scabies, skin trauma; pitted nails) are not criteria and are not checked for.",
+   "alternatives": "Add them as or-alternatives or required sites; rejected as inventing logic.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Eczema sites",
+   "decision": "The eczema sites are stated without hedge, so a site-specific scaly finding is required.",
+   "alternatives": "Treat sites as descriptive like the other columns (rule fires more often).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Impetigo evidence",
+   "decision": "Yellow crust, or crust with blister of skin.",
+   "alternatives": "Require both blister and yellow crust (fires less often), or any crust (fires more often).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Flaky skin concept",
+   "decision": "Scaly skin (finding) represents flaky skin in the trigger and in seborrhoeic dermatitis.",
+   "alternatives": "Peeling of skin (finding).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Red box",
+   "decision": "Pointer only; no priority evaluation on this page.",
+   "alternatives": "None (decided for all pages).",
+   "confidence": "high"
+  }
+ ]
+}

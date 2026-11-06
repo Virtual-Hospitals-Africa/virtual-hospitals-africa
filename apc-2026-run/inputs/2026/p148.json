@@ -1,0 +1,670 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 148,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    173.2,
+    806.3,
+    310.6
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p148-rb1-e01",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "bbox": [
+    223.6,
+    178.2,
+    618.2,
+    189.4
+   ],
+   "key": "p148-ce322ade"
+  },
+  {
+   "id": "p148-rb1-e02",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Sudden onset of: severe headache, weakness on 1 or both sides, seizure/s, visual disturbances, dizziness, difficulty speaking or swallowing, stroke likely 152",
+   "bbox": [
+    120.6,
+    188.4,
+    721.2,
+    199.4
+   ],
+   "key": "p148-d9dbc9ba"
+  },
+  {
+   "id": "p148-rb1-e03",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Hypertensive emergency likely if SBP ≥ 180 and/or DBP ≥ 130 and any of:",
+   "bbox": [
+    52.4,
+    203.6,
+    334.1,
+    214.6
+   ],
+   "key": "p148-6241788d"
+  },
+  {
+   "id": "p148-rb1-e04",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Hypertensive urgency likely if SBP ≥ 180 and/or DBP ≥ 110 and any of:",
+   "bbox": [
+    446.5,
+    203.6,
+    716.2,
+    214.6
+   ],
+   "key": "p148-120c8298"
+  },
+  {
+   "id": "p148-rb1-e05",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe headache",
+   "bbox": [
+    52.4,
+    213.8,
+    125.0,
+    224.6
+   ],
+   "key": "p148-43160d1f"
+  },
+  {
+   "id": "p148-rb1-e06",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe headache",
+   "bbox": [
+    446.5,
+    213.8,
+    519.1,
+    224.6
+   ],
+   "key": "p148-1380671b"
+  },
+  {
+   "id": "p148-rb1-e07",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Known kidney failure (eGFR < 15)",
+   "bbox": [
+    52.4,
+    223.8,
+    186.8,
+    234.6
+   ],
+   "key": "p148-60d92e41"
+  },
+  {
+   "id": "p148-rb1-e08",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Known kidney impairment (eGFR < 60)",
+   "bbox": [
+    446.5,
+    223.8,
+    601.8,
+    234.6
+   ],
+   "key": "p148-d9f89b72"
+  },
+  {
+   "id": "p148-rb1-e09",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty breathing worse on lying flat or leg swelling, heart failure likely",
+   "bbox": [
+    446.5,
+    233.5,
+    734.6,
+    244.6
+   ],
+   "key": "p148-67f6b099"
+  },
+  {
+   "id": "p148-rb1-e10",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Chest pain/unstable angina 24",
+   "bbox": [
+    52.4,
+    233.8,
+    184.9,
+    244.6
+   ],
+   "key": "p148-0fb3f9e8"
+  },
+  {
+   "id": "p148-rb1-e11",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with systolic BP ≥ 180 and/or diastolic BP ≥ 110 and symptoms:",
+   "section_y": 178.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Shortness of breath/severe heart failure",
+   "bbox": [
+    52.4,
+    243.8,
+    209.4,
+    254.6
+   ],
+   "key": "p148-2a9b788b"
+  },
+  {
+   "id": "p148-rb1-e12",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer same day:",
+   "section_y": 253.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer same day:",
+   "bbox": [
+    446.5,
+    253.6,
+    555.9,
+    264.6
+   ],
+   "key": "p148-d70de91e"
+  },
+  {
+   "id": "p148-rb1-e13",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 263.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    52.4,
+    263.6,
+    158.2,
+    274.6
+   ],
+   "key": "p148-b65e46de"
+  },
+  {
+   "id": "p148-rb1-e14",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer same day:",
+   "section_y": 253.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If normal kidney function and no heart failure, give amlodipine 5mg or enalapril 10mg followed by hydrochlorothiazide (HCTZ) 12.5mg to lower BP slowly.",
+   "bbox": [
+    446.5,
+    263.8,
+    756.8,
+    284.6
+   ],
+   "key": "p148-82b83731"
+  },
+  {
+   "id": "p148-rb1-e15",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 263.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give amlodipine 10mg.",
+   "bbox": [
+    52.4,
+    273.8,
+    155.4,
+    284.6
+   ],
+   "key": "p148-4e17b747"
+  },
+  {
+   "id": "p148-rb1-e16",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 263.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If shortness of breath/severe heart failure, also give single dose furosemide 40mg IV and face mask oxygen at 6-8 L/minute.",
+   "bbox": [
+    52.4,
+    283.8,
+    386.1,
+    304.6
+   ],
+   "key": "p148-4d1a2f2c"
+  },
+  {
+   "id": "p148-rb1-e17",
+   "page": 148,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer same day:",
+   "section_y": 253.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If eGFR < 60 or heart failure likely, give instead amlodipine 5mg followed by furosemide 40mg orally or hydrochlorothiazide (HCTZ) 12.5mg",
+   "bbox": [
+    446.5,
+    283.8,
+    749.1,
+    304.6
+   ],
+   "key": "p148-db03536d"
+  },
+  {
+   "id": "p148-out-e01",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "HYPERTENSION: DIAGNOSIS",
+   "bbox": [
+    305.2,
+    48.5,
+    536.6,
+    70.8
+   ],
+   "key": "p148-87102fc6"
+  },
+  {
+   "id": "p148-out-e02",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check blood pressure (BP) • Position patient: ask patient to remove tight clothing covering upper arm. Sit with back against chair, both feet flat on floor and arm supported at heart level. Patient to avoid talking during reading. • Position cuff correctly and ensure appropriate size. If obese (mid-upper arm circumference ≥ 33cm), use a large BP cuff. • Measure and record systolic BP (SBP) and diastolic BP (DBP). Take at least two readings 1-2 minutes apart. - If first time BP measurement, or readings differ by > 5mmHg, or if BP ≥ 180/110, take a third reading. Use average of last 2 readings to interpret BP measurement. • If taking BP manually, SBP is the first appearance of sound. DBP is the disappearance of sound. • If patient is pregnant, interpret reading 177.",
+   "bbox": [
+    48.2,
+    88.4,
+    778.2,
+    159.5
+   ],
+   "key": "p148-a9717d5d"
+  },
+  {
+   "id": "p148-out-e03",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1CVD risk factors include smoking, diabetes, BMI ≥ 25, waist circumference ≥ 80cm if woman or ≥ 94cm if man, or waist-hip ratio ≥ 0.85 if woman or ≥ 0.90 if man.",
+   "bbox": [
+    34.0,
+    543.3,
+    526.0,
+    551.8
+   ],
+   "key": "p148-553d87e1"
+  },
+  {
+   "id": "p148-out-e04",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to interpreting a BP in a patient not needing urgent attention. If systolic BP and diastolic BP fall into 2 different categories, use the higher blood pressure reading to classify further.",
+   "bbox": [
+    209.2,
+    324.0,
+    632.7,
+    345.2
+   ],
+   "key": "p148-d1ae7742"
+  },
+  {
+   "id": "p148-out-e05",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP < 140/90 BP ≥ 180/110",
+   "bbox": [
+    60.0,
+    358.8,
+    701.9,
+    369.0
+   ],
+   "key": "p148-815550ab"
+  },
+  {
+   "id": "p148-out-e06",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If overweight, check that correct size cuff is being used. • Repeat BP readings after patient has rested for 1 hour. • Take at least 3 BP readings.",
+   "bbox": [
+    566.9,
+    382.9,
+    775.2,
+    413.1
+   ],
+   "key": "p148-3f289d7a"
+  },
+  {
+   "id": "p148-out-e07",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP confirmed ≥ 180/110",
+   "bbox": [
+    633.0,
+    426.9,
+    722.0,
+    437.1
+   ],
+   "key": "p148-159b3cb4"
+  },
+  {
+   "id": "p148-out-e08",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Diagnose severe hypertension Check to see if patient needs urgent attention above.",
+   "bbox": [
+    580.0,
+    450.1,
+    774.9,
+    471.1
+   ],
+   "key": "p148-10d853cb"
+  },
+  {
+   "id": "p148-out-e09",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Repeat BP on 2 further occasions at least 2 days apart (within 2 weeks if BP ≥ 160/100). • Avoid diagnosing hypertension on one reading alone.",
+   "bbox": [
+    172.9,
+    382.9,
+    494.6,
+    403.1
+   ],
+   "key": "p148-f8d286bc"
+  },
+  {
+   "id": "p148-out-e10",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP < 140/90 BP 160/100 - 179/109",
+   "bbox": [
+    214.5,
+    416.9,
+    526.7,
+    427.1
+   ],
+   "key": "p148-c75760eb"
+  },
+  {
+   "id": "p148-out-e11",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Diagnose moderate",
+   "bbox": [
+    449.9,
+    439.9,
+    527.1,
+    450.9
+   ],
+   "key": "p148-1a771248"
+  },
+  {
+   "id": "p148-out-e12",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "hypertension Diagnose mild",
+   "bbox": [
+    358.3,
+    439.9,
+    515.9,
+    460.9
+   ],
+   "key": "p148-99f1bdc6"
+  },
+  {
+   "id": "p148-out-e13",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "hypertension",
+   "bbox": [
+    359.0,
+    449.9,
+    413.9,
+    460.9
+   ],
+   "key": "p148-68dc880e"
+  },
+  {
+   "id": "p148-out-e14",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Give routine hypertension care 149. • If < 30 years, refer to exclude secondary cause of hypertension. • If > 65 years and no co-morbid disease, start treatment only when BP > 160/90.",
+   "bbox": [
+    399.7,
+    484.4,
+    695.1,
+    515.2
+   ],
+   "key": "p148-25988647"
+  },
+  {
+   "id": "p148-out-e15",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Assess CVD risk 142. • Decide on frequency of follow-up:",
+   "bbox": [
+    113.4,
+    440.3,
+    244.3,
+    461.1
+   ],
+   "key": "p148-43904538"
+  },
+  {
+   "id": "p148-out-e16",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• BP < 120/80 and • CVD risk < 10% and • No CVD risk factors1",
+   "bbox": [
+    62.4,
+    474.9,
+    141.4,
+    505.1
+   ],
+   "key": "p148-7b040699"
+  },
+  {
+   "id": "p148-out-e17",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check BP after 5 years.",
+   "bbox": [
+    62.7,
+    519.0,
+    144.2,
+    529.2
+   ],
+   "key": "p148-86008c28"
+  },
+  {
+   "id": "p148-out-e18",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• BP 120/80 – 139/89 or • CVD risk ≥ 10% or • Any CVD risk factors1",
+   "bbox": [
+    212.6,
+    474.9,
+    298.8,
+    505.1
+   ],
+   "key": "p148-647c21de"
+  },
+  {
+   "id": "p148-out-e19",
+   "page": 148,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check BP after 1 year.",
+   "bbox": [
+    219.1,
+    519.0,
+    296.9,
+    529.2
+   ],
+   "key": "p148-fe7da3c5"
+  }
+ ]
+}

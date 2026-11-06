@@ -1,0 +1,211 @@
+{
+ "page": 54,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p54-d516b4e7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: gum/teeth symptoms with danger signs :: (or (clinical_finding (snomed_concept \"Tooth finding\" \"finding\")) (clinical_finding (snomed_concept \"Gingivae finding\" \"finding\"))) as trigger, Urgent level"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-5176d624",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: gum/teeth symptoms with danger signs :: (and (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") \u00b0C) 38) (or Facial swelling | Swelling@Jaw region structure | Swelling@Tooth, gum, and/or supporting structure))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-344aa684",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Unable to eat\" \"finding\")) / \"Unable to drink\" as separate or branches"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-643f0c3e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Wakes patient at night' encoded as Toothache with qualifier Night time (slightly looser than waking from sleep); 'felt without touching' as Spontaneous qualifier. Acceptable.",
+   "evidence": [
+    "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\"))) and ... \"Night time\""
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-c8879178",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-9c6fb10b",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-dcca49c9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for urgent and likely gum/teeth conditions :: trigger (or Tooth finding Gingivae finding); check_for includes Toothache and gum findings"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-c5bb22f4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Optional 'may have tooth pain with hot/cold' not encoded, correct as it is a 'may'. 'Holes, pits' as Cavity@Tooth structure; 'missing teeth' as Tooth absent (could include historical extraction, minor).",
+   "evidence": [
+    "Diagnose probable dental caries (gum/teeth symptoms) :: (or Staining of tooth | Cavity@Tooth structure | Tooth absent)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-87167443",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable gum problem (gum/teeth symptoms) :: (or Gingival erythema | Bleeding gums | Gingival enlargement)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-50b5e5b0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable dental abscess (gum/teeth symptoms) :: (and Toothache Pus@Oral cavity structure Swelling@Tooth, gum, and/or supporting structure)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-7f0f7151",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable dental abscess :: (clinical_finding Swelling finding_site Tooth, gum, and/or supporting structure)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-2c4393c6",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "Optional 'may have' symptom; not required.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p54-9b793f47",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable gum problem (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Gingival disease\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-f3dc6e99",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Referral-to-dentist criteria (temperature, mobile teeth, HIV/diabetes etc.) are management/referral.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p54-0ec14f4e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable dental caries (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Dental caries\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p54-e16ade11",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Drug, referral and same-day criteria (>65, HIV, diabetes) are management, out of scope.",
+   "evidence": [
+    "Diagnose probable dental abscess (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Dental abscess\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p54-e67aa779",
+  "p54-39d419a6",
+  "p54-e7eaae9a",
+  "p54-80b5d23b",
+  "p54-21ff7229"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "problem": "check_for lists Toothache twice (qualified and unqualified) and Staining of tooth etc. as a flat list; unqualified Toothache is the only check item used by the abscess rule, fine. Minor redundancy only.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable dental caries",
+   "problem": "'Tooth absent' alone triggers probable caries; page says 'missing teeth' in the same list, so faithful, but may over-trigger for old extractions.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable gum problem",
+   "problem": "Concept Gingival disease is broader than page's 'gum problem'; acceptable. Page's 'swollen gums' and drug-induced overgrowth are not separate rules (management).",
+   "severity": "low"
+  }
+ ],
+ "summary": "No errors or missing logic found: all three urgent criteria, the three 'likely' diagnoses and their triggers are encoded with SNOMED concepts that exist and fit. Only minor concerns: 'Tooth absent' may over-trigger caries and 'wakes at night' is approximated by a Night time qualifier."
+}

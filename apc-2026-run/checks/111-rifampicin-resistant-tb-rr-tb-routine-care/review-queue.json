@@ -1,0 +1,1691 @@
+[
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p111-7bf9d847",
+  "text": "If any of the following, discuss or refer to hospital for admission:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as an Urgent priority evaluation anchored on RR-TB with the box items in an (or ...), which matches the house pattern. Urgent is the right level: the page says discuss/refer for admission, not emergency.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "figure_or_note",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Urgent is a reasonable level for 'discuss or refer to hospital for admission'; page does not escalate further. Structured as (and RR-TB (or ...)) per house standard.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-844e8de3",
+  "text": "Respiratory rate ≥ 30",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Respiratory rate >= 30 in bpm, correct comparator and threshold. Respiratory rate is a routine vital so no measure task is needed.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "not in the check_for list of the admission task"
+    ],
+    "problem": "RR >= 30 is encoded in both priority rules, but the check task does not list respiratory rate.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-35bd3688",
+  "text": "Drowsy/confused/neckstiffness/severe headache/persistent vomiting",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Five parts, all present in both check_for and the admission priority rule. 'Drowsy' = Drowsy (finding). 'Confused' = Acute confusion (finding): SNOMED has no plain 'Confusion' finding (closest alternatives are Clouded consciousness and Disorientated), so Acute confusion is an acceptable choice. 'Neck stiffness' = Stiff neck. 'Severe headache' = Headache + Severe (severity modifier) qualifier. 'Persistent vomiting' = Persistent vomiting (disorder).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'confused' encoded only as Acute confusion (page says confused, not acute)"
+    ],
+    "problem": "Drowsy, stiff neck, severe headache, persistent vomiting all encoded. Confusion is narrowed to 'Acute confusion', and 'Persistent vomiting' uses a 'disorder' semantic tag; both are acceptable but should be confirmed against SNOMED. Minor.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Five parts (drowsy, confused, neck stiffness, severe headache, persistent vomiting) all present. Minor: 'Acute confusion' is narrower than page's plain 'confused' ('Confusional state' disorder also exists); 'Severe headache' via Headache + Severe qualifier is acceptable since no precoordinated concept exists.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p111-a139211e",
+  "text": "Unable to walk unaided",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "'Unable to walk unaided' means the patient needs help or an aid to walk. It is encoded as (or 'Difficulty walking' 'Unable to walk'). 'Difficulty walking' is much broader than the page (any difficulty walking makes an RR-TB patient Urgent for admission), and 'Unable to walk' is narrower. SNOMED has exact matches: 'Needs help with walking' (finding) and 'Dependent for walking' (finding), both children of 'Finding related to ability to walk'. Either should replace 'Difficulty walking'; 'Unable to walk' can stay as a stricter sibling.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Page says 'Unable to walk unaided'. Rules add 'Difficulty walking' as an Urgent trigger as well as 'Unable to walk'. 'Difficulty walking' is broader than the page and will fire Urgent for any gait difficulty. 'Unable to walk' also does not capture 'unaided' (needs help to walk).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "'Unable to walk' is right, but 'Difficulty walking' was added as an alternative trigger. Difficulty walking is much broader than 'unable to walk unaided' (any gait difficulty), so a patient who walks unaided with mild difficulty would be flagged Urgent for admission. The page's criterion (cannot walk without help) is not the same as difficulty walking.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-23d0b6ba",
+  "text": "Difficulty with adherence",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Difficulty with adherence' = Noncompliance with treatment (finding). The more specific child 'Noncompliance with medication regimen' exists, but descendants match in due_to so the parent is the right general choice.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Noncompliance with treatment' is a reasonable but not exact match for 'difficulty with adherence'"
+    ],
+    "problem": "Encoded as Noncompliance with treatment; the page means difficulty, not outright noncompliance. Borderline concept fit; check for a closer SNOMED concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as 'Noncompliance with treatment' (a reasonable fit; 'Difficulty taking medication' finding also exists and is closer to the wording, but noncompliance captures the intent).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p111-64978c08",
+  "text": "Infection control challenges at home",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Infection control challenges at home"
+    ],
+    "problem": "Not in the check_for and not in the admission priority rule. 'Inadequate infection control measures' (finding) is a close enough concept to encode it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "not_representable",
+    "parts_missing": [],
+    "problem": "Infection control challenges at home: no SNOMED finding in the rules; reasonable omission but not documented in the rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Infection control challenges at home"
+    ],
+    "problem": "Not encoded and no comment-free trace in the rules.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-20306c48",
+  "text": "Hb < 8 or BMI < 18",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "BMI < 18 is encoded with the right comparator, unit and threshold (18, as in the red box, not the 18.5 used in the nutrition row), and a measure task for BMI backs it. Hb < 8 is absent, which is expected because it cannot be expressed.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Hb < 8 (no unit in language, not_representable)"
+    ],
+    "problem": "BMI < 18 is encoded (kg/m²). Hb < 8 cannot be expressed and is omitted. Note the rule makes BMI an OR criterion, which matches the page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "BMI < 18 encoded with the box's threshold (not the table's 18.5) and a measure task for BMI exists. Hb < 8 correctly omitted as not_representable.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p111-4ba50538",
+  "text": "Unstable social circumstances",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Unstable social circumstances"
+    ],
+    "problem": "Not encoded anywhere. If encoded, 'Social problem not due to a mental disorder' (finding) is the natural general concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Social circumstance; could arguably be a SNOMED finding, so borderline.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Unstable social circumstances"
+    ],
+    "problem": "Not encoded.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p111-ccf478a4",
+  "text": "Patient requests admission",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Patient requests admission' = 'Patient requests a hospital referral' (situation). SNOMED has no 'requests admission' concept ('Listed for admission to hospital' means something else), so this is the closest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "concept is 'Patient requests a hospital referral' not 'requests admission'"
+    ],
+    "problem": "Close fit, but referral and admission differ slightly. Appears in the admission rule and check list only, not in rule 2 (correct).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [],
+    "problem": "Encoded as 'Patient requests a hospital referral' (situation, child of 'Subject requests referral'). A request for referral is not the same as a request for admission; no admission-request concept was found, so this is the nearest fit but semantically looser than the page.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-b997cfca",
+  "text": "RIFAMPICIN-RESISTANT TB (RR-TB): ROUTINE CARE",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-5cf11dcf",
+  "text": "Assess the patient with RR-TB At diagnosis, notify1. Also register the patient in the RR-TB register (EDRWeb) once treatment started. Update register at every visit and upon discharge from care.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-9328f89b",
+  "text": "Assess When to assess Note",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p111-fdc6d6b7",
+  "text": "Symptoms Every visit • If respiratory rate ≥ 30, breathless at rest or while talking, prominent use of breathing muscles, drowsy/confused, coughs up ≥ 1 tablespoon fresh blood, neck stiffness, persistent vomiting or new weakness of arm/leg, give urgent attention and refer. If persistent episodes of ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All ten triage parts are in the second priority rule and in the check_for: RR >= 30; breathless at rest = Dyspnea at rest; breathless while talking = 'Unable to complete a sentence in one breath' (a reasonable proxy); prominent use of breathing muscles = Accessory respiratory muscles used; drowsy; confused = Acute confusion; coughs up fresh blood = Hemoptysis (the '>= 1 tablespoon' volume cannot be expressed, so plain Hemoptysis will trigger on smaller volumes, which is the safe direction); neck stiffness = Stiff neck; persistent vomiting; new weakness of arm/leg = Muscle weakness of limb + New qualifier. Urgent matches 'give urgent attention and refer'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "haemoptysis threshold >= 1 tablespoon fresh blood is lost: any haemoptysis triggers Urgent",
+     "'breathless at rest or while talking' -> unable to complete sentence, ok",
+     "'persistent episodes of coughing blood -> consider surgical review' is not encoded"
+    ],
+    "problem": "Symptoms box 'give urgent attention and refer': RR>=30, dyspnoea at rest, accessory muscle use, drowsy/confused, haemoptysis, neck stiffness, persistent vomiting, new limb weakness are all in the second Urgent rule. Haemoptysis is over-broad, and 'new weakness of arm/leg' uses limb muscle weakness with New qualifier (ok).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'coughs up >= 1 tablespoon fresh blood' quantity threshold lost: plain 'Hemoptysis' triggers Urgent for any streak of blood (no closer SNOMED concept found, so this may need a qualifier or a note)"
+    ],
+    "problem": "All other parts present and correct: RR >= 30, Dyspnea at rest, Unable to complete a sentence in one breath (for breathless while talking), Accessory respiratory muscles used, Drowsy, Acute confusion, Stiff neck, Persistent vomiting, Muscle weakness of limb + New. 'Muscle weakness of limb' with 'New' is acceptable for 'new weakness of arm/leg'. Urgent level matches 'give urgent attention and refer'. 'Persistent episodes of coughing blood → consider surgical review' is management.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-70d29801",
+  "text": "Adherence Every visit Ask about factors that may influence adherence and give adherence support 195. If returning after loss to follow-up, request extended phenotypic DST on latest positive culture and present to PCAC/NCAC 200 to advise on regimen.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-8334c736",
+  "text": "Side effects Every visit • Ask about side effects of treatment 118. Manage promptly as side effects are common cause of treatment interruption. • If intolerance to any medication, present to PCAC/NCAC 200 for medication substitution. • Report adverse events on EDRWeb and to SAHPRA via EDRWeb.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-875f51f0",
+  "text": "TB contacts At diagnosis • Ask if patient is a TB contact2 of index patient with RR-TB. If yes, check index patient's DST results to help decide patient's RR-TB treatment regimen. • Advise that all TB contacts2 of newly diagnosed RR-TB patient have symptom screen and TB NAAT. If TB NAAT negative, as",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-9b90f505",
+  "text": "Family planning Every visit • Check for pregnancy if patient is a woman of child-bearing potential. If not pregnant, advise to avoid pregnancy during treatment and assess patient's contraceptive needs 170. If pregnant, give routine antenatal care 175 and start RR-TB treatment. • If on injectable con",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-eb6dc1c5",
+  "text": "Mental health Every visit If stress, anxiety or low mood, assess and manage further 98.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: stress/anxiety/low mood -> page 98.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: stress/anxiety/low mood → p98.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-c58c85b2",
+  "text": "Alcohol/drug use At diagnosis, if poor adherence In the past year, has patient: drunk ≥ 4 drinks3/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: the alcohol/drug screening questions (>= 4 drinks/session etc.) conclude with 'if yes to any -> 165', which is that page's logic, not this one's.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: screening questions routed to p165.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p111-dd2f469f",
+  "text": "Palliative care If deteriorating If the patient has any of: in bed or chair for 50% or more of the day, dependent on others for most care, has had 2 or more unplanned hospital admissions in past 6 months, unintentional weight loss over the past 3-6 months or the patient/family requests palliative ca",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: the palliative-care criteria route to page 191, which carries that logic.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "palliative care criteria"
+    ],
+    "problem": "Not encoded; acceptable if treated as cross_reference_only.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-e8247b38",
+  "text": "Weight and BMI4 Every visit If BMI < 18.5, refer for nutritional support. Expect weight gain on treatment and adjust treatment doses. If losing weight on treatment, discuss with specialist/refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step: 'If BMI < 18.5, refer for nutritional support' and dose adjustment are management, not triage or diagnosis. The 'every visit' BMI measurement itself is covered by the measure task.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "BMI < 18.5 refer for nutritional support (management, out of scope); every-visit BMI measure is encoded"
+    ],
+    "problem": "Measure task exists. 18.5 threshold is a management step.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "management_step: BMI < 18.5 → nutritional support referral; losing weight → discuss/refer. BMI measurement itself is captured by the measure task.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p111-4ac11d99",
+  "text": "BP At diagnosis If known hypertension 149. If not, check BP: if ≥ 140/90 148.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: known hypertension -> 149; BP >= 140/90 -> 148. BP is a routine vital and the hypertension logic lives on those pages.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "BP >= 140/90 (without known hypertension) → possible hypertension / BP measure task"
+    ],
+    "problem": "No BP measurement or rule.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-e832b97b",
+  "text": "HIV At diagnosis and after 3 months of RR-TB treatment if previous test negative",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-9077d0f2",
+  "text": "• Test for HIV 124. If positive, give HIV routine care 126. • Avoid giving the following medications together: zidovudine with linezolid; efavirenz with bedaquiline or pretomanid; tenofovir with amikacin.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-c3a9c53f",
+  "text": "RR-TB refers to TB that is resistant to rifampicin, with or without resistance to other TB medications. If patient has INH-resistant TB 107. If RR-TB care not available, refer to closest DR-TB treatment initiation site.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "cross_reference_only: 'If patient has INH-resistant TB -> 107' routes to another page; 'if RR-TB care not available, refer to DR-TB site' is a management step.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p111-93332c67",
+  "text": "1Complete notifiable medical conditions (NMC) case notification form and send to NMCsurveillanceReport@nicd.ac.za or notify electronically: www.nicd.ac.za/nmc-overview/notification-process. 2A TB contact refers to any person who shared an enclosed space (at school, socially, or in a household settin",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Broader than the page: 'Unable to walk unaided' is an inability to walk without help, but any degree of difficulty walking would satisfy this and trigger admission.",
+    "fix": "No precoordinated 'unable to walk unaided' concept found (searched 'walk unaided', 'walking aid', 'Does not walk'); keep only (snomed_concept \"Unable to walk\" \"finding\") or note the gap in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Unable to walk unaided'; 'Difficulty walking' is broader (milder) and duplicates 'Unable to walk' as a separate OR branch.",
+    "fix": "Drop; keep only Unable to walk.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Difficulty walking\" is broader than 'unable to walk unaided' (includes mild difficulty walking independently).",
+    "fix": "Replace with (clinical_finding (snomed_concept \"Dependent for walking\" \"finding\")) and drop the duplicate walking concept.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c008",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Narrower than the page: a patient who can walk only with a stick or a helper is 'unable to walk unaided' on the page but not 'Unable to walk'. Closest available concept, no exact match exists.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Unaided' qualifier dropped; patient who walks with an aid would match wrongly or be ambiguous.",
+    "fix": "Accept as closest concept or add aid qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Unable to walk\" is narrower than 'unable to walk unaided' (misses patients who walk only with help/aid).",
+    "fix": "Replace with (clinical_finding (snomed_concept \"Dependent for walking\" \"finding\")).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c009",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Difficulty with adherence' (struggling), concept means non-compliance; narrower/judgmental.",
+    "fix": "No closer concept found; accept with note.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Difficulty with adherence'; \"Noncompliance with treatment\" asserts actual non-adherence, a different (stronger) finding.",
+    "fix": "Use (clinical_finding (snomed_concept \"Difficulty complying with treatment\" \"finding\")) (exists).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c010",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Patient requests admission'; a hospital referral is not the same as a request to be admitted. Nearest concept found (no 'requests admission' concept exists).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Patient requests admission'; concept is a request for hospital referral, not admission. No closer SNOMED concept found; acceptable approximation.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c012",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Narrower than the page: 'breathless while talking' does not require being unable to finish a sentence. No 'dyspnea on talking' concept found; acceptable proxy but a stricter one.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'breathless at rest or while talking'; sentence-completion is a stricter proxy.",
+    "fix": "Use a dyspnea on talking concept if one exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c014",
+  "text": "Check for RR-TB admission and urgent referral criteria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Broader than the page: the page requires 'coughs up >= 1 tablespoon fresh blood'; unqualified Hemoptysis (blood-streaked sputum included) would trigger urgent referral. No quantified SNOMED concept found ('Massive hemoptysis' does not exist).",
+    "fix": "Keep Hemoptysis but note the dropped quantity in remaining questions, or add a qualifier if the grammar allows one.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires 'coughs up >= 1 tablespoon fresh blood'; volume threshold dropped, any hemoptysis triggers urgent.",
+    "fix": "Add qualifier/note or flag as accepted simplification.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page threshold is 'coughs up ≥ 1 tablespoon fresh blood'; plain Hemoptysis makes any blood-streaked sputum urgent.",
+    "fix": "Add a quantity/severity qualifier if available, or note the ≥ 1 tablespoon threshold in the rule; no closer SNOMED concept found.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c017",
+  "text": "Measure BMI at RR-TB routine visit :: (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Page row 'Weight and BMI / Every visit' and red box 'BMI < 18' both support measuring BMI.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "BMI is supported ('Weight and BMI — every visit'), but unit kg/m² is not in the house unit list (% bpm °C cm kg mmol/L mmHg mm); grammar may reject it.",
+    "fix": "Confirm kg/m² is in UNITS_ARRAY; otherwise derive BMI from weight (kg) and height (cm).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Urgent: RR-TB routine care with criteria for hospital admission :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Broader than 'Unable to walk unaided': any difficulty walking would make the patient Urgent for admission (same issue as c007).",
+    "fix": "Drop in favour of Unable to walk, or document the gap.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Unable to walk unaided'; 'Difficulty walking' is broader (milder) and duplicates 'Unable to walk' as a separate OR branch.",
+    "fix": "Drop; keep only Unable to walk.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Difficulty walking\" is broader than 'unable to walk unaided' (includes mild difficulty walking independently).",
+    "fix": "Replace with (clinical_finding (snomed_concept \"Dependent for walking\" \"finding\")) and drop the duplicate walking concept.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c026",
+  "text": "Urgent: RR-TB routine care with criteria for hospital admission :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Narrower than 'Unable to walk unaided' (same issue as c008); nearest concept available.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Unaided' qualifier dropped; patient who walks with an aid would match wrongly or be ambiguous.",
+    "fix": "Accept as closest concept or add aid qualifier if grammar allows.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Unable to walk\" is narrower than 'unable to walk unaided' (misses patients who walk only with help/aid).",
+    "fix": "Replace with (clinical_finding (snomed_concept \"Dependent for walking\" \"finding\")).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c027",
+  "text": "Urgent: RR-TB routine care with criteria for hospital admission :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Difficulty with adherence' (struggling), concept means non-compliance; narrower/judgmental.",
+    "fix": "No closer concept found; accept with note.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Difficulty with adherence'; \"Noncompliance with treatment\" asserts actual non-adherence, a different (stronger) finding.",
+    "fix": "Use (clinical_finding (snomed_concept \"Difficulty complying with treatment\" \"finding\")) (exists).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c029",
+  "text": "Urgent: RR-TB routine care with criteria for hospital admission :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Referral is not admission (same issue as c010); nearest concept available.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'Patient requests admission'; concept is a request for hospital referral, not admission. No closer SNOMED concept found; acceptable approximation.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c033",
+  "text": "Urgent: RR-TB with urgent symptoms at routine visit :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Narrower than 'breathless while talking' (same issue as c012).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'breathless at rest or while talking'; sentence-completion is a stricter proxy.",
+    "fix": "Use a dyspnea on talking concept if one exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c037",
+  "text": "Urgent: RR-TB with urgent symptoms at routine visit :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Quantity dropped: page requires >= 1 tablespoon fresh blood; any hemoptysis fires Urgent (same issue as c014).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page requires 'coughs up >= 1 tablespoon fresh blood'; volume threshold dropped, any hemoptysis triggers urgent.",
+    "fix": "Add qualifier/note or flag as accepted simplification.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page threshold is 'coughs up ≥ 1 tablespoon fresh blood'; plain Hemoptysis makes any blood-streaked sputum urgent.",
+    "fix": "Add a quantity/severity qualifier if available, or note the ≥ 1 tablespoon threshold in the rule; no closer SNOMED concept found.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "Two of the ten red-box admission criteria are absent from both the check_for and the priority rule: 'Infection control challenges at home' (encodable as 'Inadequate infection control measures', finding) and 'Unstable social circumstances' (encodable as 'Social problem not due to a mental disorder', finding). Only 'Hb < 8' (no unit) and 'any condition better managed inpatient' (judgement) are legitimately unrepresentable.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "'Unable to walk unaided' is encoded as 'Difficulty walking' OR 'Unable to walk'. 'Difficulty walking' is broader than the page and will mark any RR-TB patient with mild gait difficulty Urgent for admission; SNOMED has the exact finding 'Needs help with walking' (and 'Dependent for walking').",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria; both priority evaluations",
+  "text": "All rules are anchored on (clinical_finding (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\")). The page is routine care for a patient already diagnosed with RR-TB; the house standard records a known condition as (active_condition X) in a due_to (with a Known present clinical_finding form in the check_for). If the system records the RR-TB diagnosis as an active condition rather than a clinical finding, none of these rules will fire.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission; Urgent: RR-TB with urgent symptoms at routine visit",
+  "text": "The two priority rules overlap (RR >= 30, Drowsy, Acute confusion, Stiff neck, Persistent vomiting appear in both at the same level). Not wrong, since the page has two lists with the same Urgent conclusion, but the duplication is redundant and the split by source is the only thing that distinguishes them.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB with urgent symptoms at routine visit",
+  "text": "'Coughs up >= 1 tablespoon fresh blood' is encoded as plain Hemoptysis; the volume threshold cannot be expressed. This over-triggers on streaky haemoptysis, which errs toward safety, but should be noted as an approximation.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "Page says 'discuss or refer to hospital for admission', a weaker action than 'give urgent attention and refer'. Assigning Urgent to the whole admission box (e.g. adherence difficulty, patient request) is not justified by the page; likely a lower priority. Also the two Urgent rules overlap heavily and RR >= 30 appears in both.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "'Difficulty walking' fires Urgent but the page says 'unable to walk unaided'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB with urgent symptoms at routine visit",
+  "text": "Hemoptysis fires on any amount; page needs >= 1 tablespoon of fresh blood. Not representable as quantity, so should be flagged.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria",
+  "text": "check_for merges admission-box items with the symptom-table items, and omits respiratory rate and BMI that the priority rules use. Rule 2 items (dyspnea, hemoptysis) mix two boxes' criteria in one task.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "all",
+  "text": "Hb < 8, infection control challenges, unstable social circumstances and inpatient-better-managed are absent with no marker; Hb at least is not representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "'Difficulty walking' added as an alternative to 'Unable to walk' broadens 'unable to walk unaided' and will over-trigger an Urgent admission priority.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB with urgent symptoms at routine visit",
+  "text": "'Hemoptysis' without the '>= 1 tablespoon fresh blood' quantity over-triggers Urgent on any blood-streaked sputum.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "Two red-box social criteria (unstable social circumstances, infection control challenges at home) are dropped silently; at least 'Social problem not due to a mental disorder' exists as a candidate.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria",
+  "text": "check_for merges red-box items and Symptoms-row items into one task (acceptable since both are used by the two priority rules); every check_for item is used by a priority rule. Respiratory rate and BMI are not in check_for (RR is a routine vital; BMI has a measure task) — consistent.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "'Patient requests a hospital referral' stands in for 'patient requests admission' — referral request is looser than admission request.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria",
+  "text": "Type and trigger are right and every listed finding is consumed by a priority rule, but the red box is not fully covered: 'Hb < 8' has no measure task (and no hemoglobin measurement anywhere in the file), and 'Infection control challenges at home', 'Unstable social circumstances' and 'Any condition that would be better managed in an inpatient setting' are not represented or documented as unmodellable. The walking pair (Difficulty walking + Unable to walk) brackets 'unable to walk unaided' rather than matching it.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "Urgent level and (and RR-TB (or ...)) structure match the red box heading 'If any of the following, discuss or refer to hospital for admission', but the numeric red-box criterion 'Hb < 8' is silently dropped from the or-list (the page pairs it with BMI < 18 on one line). The grammar's unit list has no g/dL, so if it cannot be expressed this must be recorded as a gap rather than omitted. Three social/non-clinical criteria (infection control at home, unstable social circumstances, better managed inpatient) are also absent. 'Difficulty walking' over-triggers and 'Patient requests a hospital referral' is a proxy for 'requests admission'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria",
+  "text": "Mixes admission-box items and urgent-symptom items in one checklist; omits Hb < 8 and BMI/RR measurements (acceptable as measures) but also omits box items Infection control challenges, Unstable social circumstances, Any condition better managed inpatient (not codable).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "Box heading is 'discuss or refer to hospital for admission', not urgent; Urgent priority is not justified by the heading for adherence difficulty, BMI<18, patient request. Hb < 8 from the box is not encoded. 'Difficulty walking' redundant/broader than 'Unable to walk unaided'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: RR-TB routine care with criteria for hospital admission",
+  "text": "The red box's 'Hb < 8' is dropped (only 'BMI < 18' of that item is encoded), and 'Infection control challenges at home', 'Unstable social circumstances' and 'Any condition that would be better managed in an inpatient setting' are also missing. Walking and adherence concepts are imprecise (see claims). Urgent level and the (and RR-TB (or …)) shape match the house standard.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for RR-TB admission and urgent referral criteria",
+  "text": "Like the priority rule, it omits Hb < 8 and the social/infection-control/inpatient-condition items. It also mixes in the 'Symptoms' table's urgent signs, which is acceptable since rule 4 consumes them. It uses two overlapping walking concepts where one closer concept exists.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Measure BMI at RR-TB routine visit",
+  "text": "Supported by 'Weight and BMI — every visit' and needed for BMI < 18, but the unit kg/m² is not in the briefing's unit list. Check that it compiles.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (finding … \"Noncompliance with medication regimen\")  vs  B: (finding … \"Noncompliance with treatment\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+    "reason": "The red box says only \"Difficulty with adherence\" without limiting it to medicines, so the broader treatment concept is closer to the page's words; A's concept is a descendant and still matches.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (none)  vs  B: (finding … \"Difficulty walking\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+    "reason": "\"Unable to walk unaided\" includes patients who can walk only with help, which is what \"Difficulty walking\" means in VHA's adult mobility vital; \"Unable to walk\" alone would miss them.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for + priority_condition",
+  "text": "A: (not encoded, SNOMED gap)  vs  B: (finding … \"Patient requests a hospital referral\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+    "reason": "The box's action is \"refer to hospital for admission\", so a patient's request for hospital referral is the nearest concept to \"Patient requests admission\"; there is no exact concept, so a clinician should confirm.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 111,
+  "slug": "111-rifampicin-resistant-tb-rr-tb-routine-care",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for + priority_condition",
+  "text": "A: (none)  vs  B: (finding … \"Unable to complete a sentence in one breath\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+    "reason": "The Symptoms row says \"breathless at rest or while talking\"; A left out the \"while talking\" half, and B's vocabulary concept expresses it.",
+    "unsettled": false
+   }
+  ]
+ }
+]

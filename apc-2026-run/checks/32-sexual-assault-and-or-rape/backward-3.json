@@ -1,0 +1,237 @@
+{
+ "page": 32,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "\"Traumatic injury\" covers any injury; the page limits this to injuries needing attention (p.30), so minor bruises/abrasions would make every assault Urgent.",
+   "fix": "Add a severity/qualifier (e.g. (qualifier (snomed_concept \"Severe\" \"qualifier value\"))) or accept as a nurse-judgement proxy; no closer SNOMED concept for 'needing attention' found.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'overdose' in a self-harm list; generic \"Overdose\" (disorder) also matches accidental overdose, which is acceptable for an urgency flag.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+   "verdict": "faithful",
+   "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))",
+   "verdict": "faithful",
+   "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+   "verdict": "faithful",
+   "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))",
+   "verdict": "faithful",
+   "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "\"Traumatic injury\" covers any injury; the page limits this to injuries needing attention (p.30), so minor bruises/abrasions would make every assault Urgent.",
+   "fix": "Add a severity/qualifier (e.g. (qualifier (snomed_concept \"Severe\" \"qualifier value\"))) or accept as a nurse-judgement proxy; no closer SNOMED concept for 'needing attention' found.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'overdose' in a self-harm list; generic \"Overdose\" (disorder) also matches accidental overdose, which is acceptable for an urgency flag.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "verdict": "ok",
+   "problem": "Correct type and trigger (sexual assault OR rape); check_for lists exactly the four red-box criteria plus sex to evaluate the 5-day/3-day window. 'Injuries needing attention' is encoded as any traumatic injury (see c006).",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent features",
+   "verdict": "problem",
+   "problem": "Urgent level is justified by 'Give urgent attention' and the or-structure (sex-specific time window | pregnant | injury | suicidal/overdose/self harm) matches the page. But (1) 'Traumatic injury' is broader than 'injuries needing attention', so almost any assault with a minor injury triggers Urgent; (2) the time window depends on the assault/rape finding's onset \u2014 the briefing says onset is captured when the finding is recorded, so unless the nurse back-dates onset to the assault date, the 5/3-day clause will always be true at presentation and every assault becomes Urgent.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "All 24 claims cite the right red-box text and use existing SNOMED concepts; the priority rule's structure, sex-specific 5/3-day windows and Urgent level match the page. The most consequential issue is that the time window relies on the assault finding's onset, which defaults to recording time, so it will likely fire for every presentation; secondarily, 'Traumatic injury' over-captures 'injuries needing attention'. No diagnosis rules are present for the page's 'Suspect sexual assault/rape' definitions, which is defensible since these are events rather than diagnoses."
+}

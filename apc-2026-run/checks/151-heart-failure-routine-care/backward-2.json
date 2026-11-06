@@ -1,0 +1,24 @@
+{"page":151,"checker":"backward-2",
+"claims":[
+{"claim_id":"c001","rule":"Check for urgent heart failure conditions","expr":"trigger Heart failure","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c002","rule":"Check for urgent heart failure conditions","expr":"Chest pain","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c003","rule":"Check for urgent heart failure conditions","expr":"Heart failure + Worsening(Rapid)","verdict":"imprecise","reason":"Page says rapid worsening of symptoms; encoded as heart failure with nested qualifiers, the nesting (Rapid inside Worsening) is odd and 'symptoms' is dropped.","fix":"Use a single worsening qualifier with rapid as sibling, or a symptom-worsening concept","confidence":"medium"},
+{"claim_id":"c004","rule":"Check for urgent heart failure conditions","expr":"Difficulty breathing","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c005","rule":"Check for urgent heart failure conditions","expr":"Wheezing + New","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c006","rule":"Measure weight in heart failure routine care","expr":"trigger Heart failure","verdict":"faithful","reason":"","fix":"","confidence":"medium"},
+{"claim_id":"c007","rule":"Measure weight in heart failure routine care","expr":"Body weight kg","verdict":"faithful","reason":"Page: Weight, every visit; purpose is fluid balance comparison (not encoded, and the frequency is not expressible).","fix":"","confidence":"medium"},
+{"claim_id":"c008","rule":"Urgent: heart failure with urgent signs","expr":"Heart failure","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c009","rule":"Urgent: heart failure with urgent signs","expr":"Chest pain","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c010","rule":"Urgent: heart failure with urgent signs","expr":"Heart failure + Worsening(Rapid)","verdict":"imprecise","reason":"Same as c003: nested qualifier, symptoms dropped; also redundant with the heart failure conjunct.","fix":"","confidence":"medium"},
+{"claim_id":"c011","rule":"Urgent: heart failure with urgent signs","expr":"RR >= 30","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c012","rule":"Urgent: heart failure with urgent signs","expr":"Difficulty breathing","verdict":"faithful","reason":"","fix":"","confidence":"high"},
+{"claim_id":"c013","rule":"Urgent: heart failure with urgent signs","expr":"SBP < 90","verdict":"faithful","reason":"BP < 90/60 read as either component low; reasonable, though page does not state and/or.","fix":"","confidence":"medium"},
+{"claim_id":"c014","rule":"Urgent: heart failure with urgent signs","expr":"DBP < 60","verdict":"faithful","reason":"As c013; ambiguity noted.","fix":"","confidence":"medium"},
+{"claim_id":"c015","rule":"Urgent: heart failure with urgent signs","expr":"Wheezing + New","verdict":"faithful","reason":"","fix":"","confidence":"high"}
+],
+"rules":[
+{"rule":"Check for urgent heart failure conditions","verdict":"problem","problem":"Check task lists red-box criteria but omits RR >= 30 and BP < 90/60 (measurable, only in the priority rule); acceptable, but task duplicates the priority rule. Management steps (oxygen if sat <94%, furosemide, ISDN, enalapril if BP>=180/130) are not encoded at all.","severity":"low"},
+{"rule":"Measure weight in heart failure routine care","verdict":"ok","problem":"","severity":"low"},
+{"rule":"Urgent: heart failure with urgent signs","verdict":"ok","problem":"Structure (HF and any-of) matches the box; Urgent priority justified by 'Give urgent attention' and 'Manage and refer urgently'. Redundant HF-worsening disjunct is harmless.","severity":"low"}
+],
+"summary":"All conditions are supported by the red box; the main imprecision is the nested Worsening/Rapid qualifier on heart failure for 'rapid worsening of symptoms'. BP < 90/60 split into SBP or DBP is an unstated but reasonable reading. The rest of the page (assessment table, treatment steps, other refer-same-day triggers) is not encoded, and the urgent management steps are absent."}

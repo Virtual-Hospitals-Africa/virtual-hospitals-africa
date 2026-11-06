@@ -1,0 +1,476 @@
+{
+  "page": 145,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p145-6e70ecd4",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the trigger (patient with diabetes) and the 'any of' structure of the Urgent priority.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Structure (and <diabetes> (or ...)) matches the house standard. Note the trigger is written as (clinical_finding \"Diabetes mellitus\") rather than (active_condition ...), which the briefing names as the due_to form for a known chronic condition; see rule_level_problems.",
+      "evidence": [
+        "Urgent: diabetes with danger signs :: (and (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\")) (or ...))",
+        "Check for urgent diabetes conditions :: (task ... (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-7132e5e1",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion; the arrow to page 24 is routing only.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-adb2a697",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: confusion; unusual behaviour.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Acute confusion' narrows the page's 'confusion' to acute, which fits an urgent-attention list. 'Abnormal behavior' is a fair general match for 'unusual behaviour' (no closer SNOMED concept found).",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) ; (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) ; (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-52324c85",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Sweating\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Sweating\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-0608cd10",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: nausea; vomiting.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both are recorded common symptoms (Nausea, Finding of vomiting), so the rule anchors correctly.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Nausea\" \"finding\")) ; (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Nausea\" \"finding\")) ; (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-bf64ad64",
+      "scope": "in_scope",
+      "scope_reason": "Red-box threshold criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Right concept, unit, direction and number. Temperature is a routine vital so no measure/check_for entry is required.",
+      "evidence": [
+        "Urgent: diabetes with danger signs :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-b057bf1b",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion; the arrow to page 20 is routing only.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-9c62f7c4",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: weakness; dizziness.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Asthenia' (generalised weakness) is an acceptable reading of the page's unqualified 'weakness'; 'Weakness present' (finding) is an alternative. Dizziness is a recorded common symptom.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) ; (clinical_finding (snomed_concept \"Dizziness\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) ; (clinical_finding (snomed_concept \"Dizziness\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-4e094283",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-64addeac",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-b8c80000",
+      "scope": "in_scope",
+      "scope_reason": "Red-box compound criterion with five parts: dehydration; dry mouth; poor skin turgor; BP < 90/60; pulse >= 100.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All five parts are present as independent Urgent triggers. BP < 90/60 is encoded as systolic < 90 OR diastolic < 60, which matches the gold standard's treatment of the same phrase. Two reservations: (1) pulse uses (snomed_concept \"Pulse, function\" \"observable entity\") rather than \"Heart rate\"; whichever the system records for the routine pulse vital is the one that will fire, and I cannot verify which from the inputs allowed. (2) The page presents dry mouth / poor skin turgor / BP / pulse as signs of dehydration; the rule treats each alone (e.g. pulse >= 100 by itself) as Urgent, which is the broadest reading of 'any of'. Not wrong, but worth a clinician's eye.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Dehydration\" \"disorder\")) ; (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) ; (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Dehydration\" \"disorder\")) ; (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) ; (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\")) ; (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90) ; (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60) ; (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-6fb0bf73",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: decreased consciousness; drowsiness.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ; (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ; (clinical_finding (snomed_concept \"Drowsy\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-c97d0963",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "SNOMED lists 'Shaking' as a synonym of Tremor (26079004); correct concept.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Tremor\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Tremor\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-f9bc01c9",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Kussmaul's respiration is the clinical term for rapid deep breathing in this (ketoacidosis) context. 'Excessively deep breathing' (finding) exists as a lay-level alternative but is not closer.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Kussmaul's respiration\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-563b6113",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: thirst; hunger.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Excessive thirst' is the right finding. 'Hungry' (55350005, a child of Finding of appetite) is a plain state; 'Increased appetite' (finding) or 'Excessive eating' (polyphagia) arguably express the symptom better, but 'Hungry' is not wrong.",
+      "evidence": [
+        "Check for urgent diabetes conditions :: (clinical_finding (snomed_concept \"Excessive thirst\" \"finding\")) ; (clinical_finding (snomed_concept \"Hungry\" \"finding\"))",
+        "Urgent: diabetes with danger signs :: (clinical_finding (snomed_concept \"Excessive thirst\" \"finding\")) ; (clinical_finding (snomed_concept \"Hungry\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-8da6d34b",
+      "scope": "borderline",
+      "scope_reason": "An instruction to measure random fingerprick glucose. The house standard says glucose is a routine vital that needs no measure task, so there is nothing to encode beyond the comparisons that follow.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "No measure task, consistent with the briefing. The glucose comparisons that this header introduces are judged under the three lines below.",
+      "evidence": [
+        "Urgent: diabetes with low or high fingerprick glucose :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-9fd55114",
+      "scope": "in_scope",
+      "scope_reason": "Red-box threshold criterion routing to page 19 (hypoglycaemia); the routing itself is out of scope, the threshold is in scope.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Threshold, unit and direction are right, and 'with/without symptoms' is honoured by not conditioning on symptoms. Reservation: the observable is 'Blood glucose status' (405176005, a 'General clinical state' observable with no children) rather than 'Blood glucose concentration' (observable entity); if the system records the routine glucose vital under a different observable, this comparison never fires. Same concern applies to the two >= 11.1 comparisons.",
+      "evidence": [
+        "Urgent: diabetes with low or high fingerprick glucose :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-a4f7ec0f",
+      "scope": "in_scope",
+      "scope_reason": "Red-box threshold criterion with a condition (glucose >= 11.1 AND symptoms) routing to page 19.",
+      "verdict": "partial",
+      "parts_missing": [
+        "The branch 'glucose >= 11.1 with symptoms -> urgent (page 19)' has no clause of its own. The priority rule only fires on >= 11.1 when Ketonuria is also present."
+      ],
+      "problem": "If 'symptoms' means the red-box list above, a symptomatic patient is already Urgent via 'Urgent: diabetes with danger signs' regardless of glucose, so the clinical outcome is covered indirectly. But the page's explicit branch is not encoded, nothing in the file records that reading, and if 'symptoms' is meant more broadly (classic hyperglycaemia symptoms such as polyuria, which is not in the red box) a patient with glucose >= 11.1 and such symptoms but no ketones is not escalated.",
+      "evidence": [
+        "Urgent: diabetes with low or high fingerprick glucose :: (or (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4) (and (>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1) (clinical_finding (snomed_concept \"Ketonuria\" \"finding\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-d94dcc12",
+      "scope": "in_scope",
+      "scope_reason": "Three parts: (a) glucose >= 11.1 without symptoms -> check urine ketones (a check instruction); (b) ketones present -> urgent (page 19); (c) no ketones -> routine care (flowchart routing, out of scope).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "(a) is a dedicated check_for task for Ketonuria triggered by diabetes AND glucose >= 11.1; (b) is the (and >= 11.1 Ketonuria) clause of the Urgent rule. The 'without symptoms' condition on (a) is not applied, so the ketone check is also asked of symptomatic patients; this over-checks rather than misses, so I do not count it as an error. (c) is routing. Ketonuria is a sensible concept; 'Urine ketone test = +' etc. exist but are grades, not the general finding.",
+      "evidence": [
+        "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1 :: (and (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\")) (>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)) (check_for (clinical_finding (snomed_concept \"Ketonuria\" \"finding\")))",
+        "Urgent: diabetes with low or high fingerprick glucose :: (and (>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1) (clinical_finding (snomed_concept \"Ketonuria\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-76558c40",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Ask about chest pain / leg pain and go to pages 24 / 80; the logic lives on those pages. Chest pain is already in this page's check_for.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-08132150",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "TB screening criteria (cough, weight loss, night sweats, fever) route to page 102; TB contact to page 100. Routine screening, no diagnosis on this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-9f8a6694",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-f133e4cb",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-20bd642d",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Substance-use screening question routes to page 165.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-119863da",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Palliative-care eligibility criteria route to page 191.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-015a8fdd",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "BP >= 140/90 without known hypertension routes to page 148, where the hypertension logic belongs. Representable, but not this page's triage logic.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-4c6adb65",
+      "scope": "borderline",
+      "scope_reason": "The page tells the health worker to measure weight (every visit), BMI, WC and WHR (at diagnosis, yearly). Weight and WC have units in the language (kg, cm) and are not routine vitals, so a measure task is the house pattern; BMI and WHR have no unit; the targets and 'manage the overweight patient -> 156' are management.",
+      "verdict": "partial",
+      "parts_missing": [
+        "Weight (kg) every visit: no measure task.",
+        "BMI and WHR: not representable (no unit); the BMI >= 25 and WC/WHR sex-specific targets are management routing."
+      ],
+      "problem": "Only waist circumference is measured. The measure task is not conditioned on diagnosis/yearly timing, but the language has no scheduling, so that is fine.",
+      "evidence": [
+        "Measure waist circumference in routine diabetes care :: (measure (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-c205dd95",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Eye screening and referral for cataract/retinopathy is routine monitoring and referral, not triage.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-57d30f0f",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Foot screen items route to page 81.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-6d403d0e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Contraceptive needs (page 170) and referral if pregnant.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-5d1fc8dc",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Fasting > 8 / 2-hour post-prandial > 10 -> step up treatment (page 147). A treatment-adjustment threshold, not triage.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p145-ad1acddd",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "HbA1c targets and adherence routing (pages 147, 195) are treatment management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-a4479303",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Proteinuria / ACR thresholds lead to starting enalapril (page 147). ACR has no unit in the language either.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-ea6db2cb",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "eGFR has no unit in the language; the eGFR < 60 / < 30 actions (discuss, stop metformin, refer same day) are also management.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p145-fd9cb31c",
+      "scope": "borderline",
+      "scope_reason": "Potassium > 5.5 -> discuss/refer to doctor same day. Potassium in mmol/L is representable and 'same day' carries urgency, but it is a lab-result management step tied to enalapril, not red-box triage; the house standard's priority evaluations come from the red box.",
+      "verdict": "missing",
+      "parts_missing": [
+        "No rule references serum potassium."
+      ],
+      "problem": "I would not require this to be encoded, but a reconciler may decide a same-day referral threshold deserves a rule. Flagged for a decision rather than as a defect.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p145-e2b497d1",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Fasting lipids at diagnosis, CVD risk (page 142), and discuss/refer thresholds are lab-based management.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p145-d9427373",
+    "p145-9f13ca82",
+    "p145-5099b69b",
+    "p145-00d2a881",
+    "p145-27916db7",
+    "p145-318b4584",
+    "p145-6df89a82",
+    "p145-3375b06b"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: diabetes with low or high fingerprick glucose",
+      "problem": "The page's middle branch, 'fingerprick glucose >= 11.1 with symptoms -> 19', has no clause. The rule escalates >= 11.1 only when Ketonuria is present. The outcome is covered indirectly only if 'symptoms' means the red-box list (in which case rule 1 already fires); nothing in the file states that reading, and a symptomatic hyperglycaemic patient without ketones is otherwise not escalated.",
+      "severity": "medium"
+    },
+    {
+      "rule": "All rules (due_to trigger)",
+      "problem": "Every due_to anchors on (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\")). The briefing says a known chronic condition in a due_to is (active_condition ...), with the clinical_finding + 'Known present' qualifier form in a check_for. If the system records a patient's diabetes as an active condition, these rules may never fire for the very patients the page is about. Could not verify which form the system matches from the permitted inputs.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: diabetes with danger signs; Urgent: diabetes with low or high fingerprick glucose; Check urine dipstick for ketones",
+      "problem": "Observable choices for routine vitals: pulse is (snomed_concept \"Pulse, function\" \"observable entity\") rather than \"Heart rate\", and glucose is \"Blood glucose status\" (a 'General clinical state' observable, no children) rather than \"Blood glucose concentration\". If the routine vitals are recorded under different observables, the pulse >= 100, glucose < 4 and glucose >= 11.1 comparisons never match. Needs checking against what the system records.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+      "problem": "The page asks for the ketone dipstick only when glucose >= 11.1 is WITHOUT symptoms; the task fires for all >= 11.1. Over-checks rather than misses; symptomatic patients are already Urgent.",
+      "severity": "low"
+    },
+    {
+      "rule": "Measure waist circumference in routine diabetes care",
+      "problem": "The page also asks for weight every visit; kg is an available unit and weight is not in the briefing's routine-vitals list, yet no measure task exists. BMI and WHR are not representable.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: diabetes with danger signs",
+      "problem": "The page groups dry mouth, poor skin turgor, BP < 90/60 and pulse >= 100 under 'Dehydration'; the rule makes each one an independent Urgent trigger, so a diabetic with pulse 100 and nothing else is Urgent. This is the broadest defensible reading of 'any of' and matches how the gold standard treats BP < 90/60, but a clinician should confirm it.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent diabetes conditions",
+      "problem": "No defect: every one of the 20 check_for findings is consumed by the danger-signs priority rule, and Ketonuria by the glucose rule; temperature, BP and pulse are routine vitals and correctly omitted from check_for. Concept choices with closer alternatives (Hungry vs Increased appetite; Asthenia vs Weakness present) are judgement calls, not errors.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded almost completely: all 15 danger-sign criteria (23 parts) have the right concepts, thresholds and directions, and the ketone check and ketones-present escalation are correct. The one substantive gap is the page's 'glucose >= 11.1 with symptoms -> page 19' branch, which has no clause of its own and is covered only by an unstated assumption that 'symptoms' equals the red-box list. Two anchoring risks could stop the rules firing at all: the diabetes trigger is a clinical_finding rather than the active_condition form the briefing prescribes, and the pulse and glucose observables ('Pulse, function', 'Blood glucose status') may not be the ones the system records for routine vitals. The routine-care table is management and cross-references, judged out of scope, except that a weight measure task is missing alongside the waist-circumference one."
+}

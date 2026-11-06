@@ -1,0 +1,165 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/154-peripheral-vascular-disease-pvd",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/154-peripheral-vascular-disease-pvd",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute limb ischaemia in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable critical limb ischaemia in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: peripheral vascular disease with limb ischaemia or ruptured aortic aneurysm"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent peripheral vascular disease conditions"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable acute limb ischaemia in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable critical limb ischaemia in peripheral vascular disease"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent peripheral vascular disease conditions"
+  }
+ ],
+ "conditions_A": 38,
+ "conditions_B": 38,
+ "conditions_in_both": 36,
+ "agreement": 0.947,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of lower extremity\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Ruptured abdominal aortic aneurysm\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of lower extremity\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Acute lower limb ischemia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Critical lower limb ischemia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Ruptured abdominal aortic aneurysm\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

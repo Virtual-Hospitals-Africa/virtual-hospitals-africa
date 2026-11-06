@@ -1,0 +1,79 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/20-seizures-fits",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/20-seizures-fits",
+ "rules_A": [
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Emergency: unconscious and fitting (seizures/fits)"
+  },
+  {
+   "atom": "task",
+   "description": "Check for unconsciousness in the fitting patient"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: unconscious and fitting"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent seizure/fit conditions"
+  }
+ ],
+ "conditions_A": 4,
+ "conditions_B": 4,
+ "conditions_in_both": 4,
+ "agreement": 1.0,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

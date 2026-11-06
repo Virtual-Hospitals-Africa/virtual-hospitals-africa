@@ -1,0 +1,296 @@
+{
+ "page": 15,
+ "lisp_file": "15-collapse-following-vaccination.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for collapse following vaccination features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p15-f73f4e66"
+   ],
+   "quote": "COLLAPSE"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "element_keys": [
+    "p15-f73f4e66"
+   ],
+   "quote": "VACCINATION"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "wheeze"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "stridor"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "swelling"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for collapse following vaccination features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p15-668d2784"
+   ],
+   "quote": "Sudden collapse"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "at the time of vaccination"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "No other signs or symptoms present."
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "No other signs or symptoms present."
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "No other signs or symptoms present."
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "No other signs or symptoms present."
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p15-d247855b"
+   ],
+   "quote": "No other signs or symptoms present."
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(<= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "Pulse > 120"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable fainting episode following vaccination",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Syncope\" \"finding\") probable)",
+   "element_keys": [
+    "p15-833b98d5"
+   ],
+   "quote": "Fainting episode"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p15-7cdfec6e"
+   ],
+   "quote": "Delayed collapse"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "after vaccination"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "Pulse > 120"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "wheeze"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "stridor"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "swelling"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p15-76eb1509"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable anaphylaxis after collapse following vaccination",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+   "element_keys": [
+    "p15-9f025f7d"
+   ],
+   "quote": "Treat as anaphylaxis"
+  }
+ ]
+}

@@ -1,0 +1,114 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/61-anal-symptoms",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/61-anal-symptoms",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pinworm (anal symptoms)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable sexually transmitted proctitis (anal symptoms)"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: anal symptoms with very painful lump or unable to pass stool"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent anal symptoms and their causes"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable pinworm from anal itch at night"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable sexually transmitted proctitis from anal symptoms"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: anal symptoms with painful lump or unable to pass stool"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent anal symptom conditions"
+  }
+ ],
+ "conditions_A": 21,
+ "conditions_B": 21,
+ "conditions_in_both": 21,
+ "agreement": 1.0,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not defecate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perianal lump\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal finding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painless rectal bleeding\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus ani\" \"disorder\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worms in stool\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"Enterobiasis\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Infective proctitis\" \"disorder\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

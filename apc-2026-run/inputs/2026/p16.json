@@ -1,0 +1,868 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 16,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    530.0
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p16-rb1-e01",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the emergency patient",
+   "bbox": [
+    326.5,
+    91.6,
+    515.7,
+    102.7
+   ],
+   "key": "p16-e6d6ad20"
+  },
+  {
+   "id": "p16-rb1-e02",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Does the patient respond to voice or physical stimulation?",
+   "bbox": [
+    310.1,
+    108.8,
+    532.1,
+    119.6
+   ],
+   "key": "p16-e64d521e"
+  },
+  {
+   "id": "p16-rb1-e03",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    69.1,
+    128.8,
+    81.5,
+    139.6
+   ],
+   "key": "p16-d616c4fb"
+  },
+  {
+   "id": "p16-rb1-e04",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    444.9,
+    128.8,
+    455.9,
+    139.6
+   ],
+   "key": "p16-36bad2ae"
+  },
+  {
+   "id": "p16-rb1-e05",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Call for help and an automated external defibrillator (AED) or defibrillator.",
+   "bbox": [
+    300.3,
+    148.8,
+    588.2,
+    159.6
+   ],
+   "key": "p16-ae4745ed"
+  },
+  {
+   "id": "p16-rb1-e06",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Feel for carotid pulse for maximum of 10 seconds.",
+   "bbox": [
+    300.3,
+    158.8,
+    497.4,
+    169.6
+   ],
+   "key": "p16-9bbf196a"
+  },
+  {
+   "id": "p16-rb1-e07",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Pulse felt",
+   "bbox": [
+    371.8,
+    178.8,
+    406.5,
+    189.6
+   ],
+   "key": "p16-6df785a7"
+  },
+  {
+   "id": "p16-rb1-e08",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No pulse felt or unsure",
+   "bbox": [
+    690.1,
+    178.8,
+    776.7,
+    189.6
+   ],
+   "key": "p16-e4810de1"
+  },
+  {
+   "id": "p16-rb1-e09",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Check breathing",
+   "bbox": [
+    357.6,
+    198.8,
+    420.7,
+    209.6
+   ],
+   "key": "p16-ae42520c"
+  },
+  {
+   "id": "p16-rb1-e10",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Start CPR1 17.",
+   "bbox": [
+    703.7,
+    199.0,
+    763.1,
+    209.8
+   ],
+   "key": "p16-3f32bc88"
+  },
+  {
+   "id": "p16-rb1-e11",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Breathing well",
+   "bbox": [
+    139.7,
+    218.8,
+    194.7,
+    229.7
+   ],
+   "key": "p16-bd6b1724"
+  },
+  {
+   "id": "p16-rb1-e12",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Gasping or not breathing",
+   "bbox": [
+    402.0,
+    218.8,
+    500.4,
+    229.7
+   ],
+   "key": "p16-a611c553"
+  },
+  {
+   "id": "p16-rb1-e13",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Check airway clear.",
+   "bbox": [
+    269.4,
+    228.8,
+    349.4,
+    239.7
+   ],
+   "key": "p16-f127b98c"
+  },
+  {
+   "id": "p16-rb1-e14",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give 1 breath with bag-valve-mask attached to 100% oxygen at 10-15L/min, every 6 seconds.",
+   "bbox": [
+    269.4,
+    238.8,
+    629.7,
+    249.7
+   ],
+   "key": "p16-e46a531b"
+  },
+  {
+   "id": "p16-rb1-e15",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the emergency patient",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Recheck pulse every 2 minutes. If no pulse, start CPR1 17.",
+   "bbox": [
+    269.4,
+    248.8,
+    498.8,
+    259.7
+   ],
+   "key": "p16-ebc35bd7"
+  },
+  {
+   "id": "p16-rb1-e16",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "bbox": [
+    269.3,
+    268.5,
+    572.9,
+    279.7
+   ],
+   "key": "p16-4576d78c"
+  },
+  {
+   "id": "p16-rb1-e17",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Airway",
+   "bbox": [
+    101.0,
+    288.5,
+    129.0,
+    299.7
+   ],
+   "key": "p16-e7993491"
+  },
+  {
+   "id": "p16-rb1-e18",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Breathing",
+   "bbox": [
+    243.2,
+    288.5,
+    283.0,
+    299.7
+   ],
+   "key": "p16-d0b963e0"
+  },
+  {
+   "id": "p16-rb1-e19",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Circulation",
+   "bbox": [
+    409.8,
+    288.5,
+    453.7,
+    299.7
+   ],
+   "key": "p16-bc879aba"
+  },
+  {
+   "id": "p16-rb1-e20",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Level of consciousness",
+   "section_y": 288.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Level of consciousness",
+   "bbox": [
+    611.7,
+    288.5,
+    701.7,
+    299.7
+   ],
+   "key": "p16-a63d8add"
+  },
+  {
+   "id": "p16-rb1-e21",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": null,
+   "text": "If airway obstructed (snoring, gurgling, noisy breathing), open with head-tilt and chin- lift. If neck injury suspected, use jaw-thrust2 instead, keeping neck stable.",
+   "bbox": [
+    56.0,
+    298.9,
+    175.6,
+    359.7
+   ],
+   "key": "p16-513d7bb4"
+  },
+  {
+   "id": "p16-rb1-e22",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If difficulty breathing or oxygen saturation < 94%, give face mask oxygen to maintain saturation ≥ 94%.",
+   "bbox": [
+    189.3,
+    298.9,
+    335.1,
+    329.7
+   ],
+   "key": "p16-4b218729"
+  },
+  {
+   "id": "p16-rb1-e23",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Establish IV access.",
+   "bbox": [
+    352.3,
+    298.9,
+    429.6,
+    309.7
+   ],
+   "key": "p16-823ae302"
+  },
+  {
+   "id": "p16-rb1-e24",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Assess Glasgow Coma Score (GCS):",
+   "bbox": [
+    530.1,
+    298.9,
+    667.8,
+    309.7
+   ],
+   "key": "p16-d16c45d4"
+  },
+  {
+   "id": "p16-rb1-e25",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If pulse < 50 and unstable (BP < 90/60, decreased consciousness, chest pain or acute heart failure3): give atropine 0.5mg IV. Repeat every 3 minutes, up to a total of 3mg.",
+   "bbox": [
+    352.3,
+    308.9,
+    510.6,
+    359.7
+   ],
+   "key": "p16-3f586123"
+  },
+  {
+   "id": "p16-rb1-e26",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Best motor response",
+   "section_y": 318.1,
+   "indent": 0,
+   "parent": null,
+   "text": "Best motor response 6 Obeys commands 5 Localises to pain 4 Withdraws from pain 3 Abnormal flexion to pain 2 Extends to pain 1 None",
+   "bbox": [
+    533.2,
+    318.1,
+    622.8,
+    403.5
+   ],
+   "key": "p16-8fcfa861"
+  },
+  {
+   "id": "p16-rb1-e27",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Best motor response",
+   "section_y": 318.1,
+   "indent": 0,
+   "parent": null,
+   "text": "Best verbal response 5 Orientated 4 Confused 3 Inappropriate words 2 Incomprehensible sounds 1 None",
+   "bbox": [
+    629.6,
+    318.1,
+    711.0,
+    402.6
+   ],
+   "key": "p16-0e9b2dc5"
+  },
+  {
+   "id": "p16-rb1-e28",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Best verbal response",
+   "section_y": 318.1,
+   "indent": 0,
+   "parent": null,
+   "text": "Eye opening 4 Spontaneous 3 To voice 2 To pain 1 None",
+   "bbox": [
+    717.5,
+    318.1,
+    778.6,
+    371.8
+   ],
+   "key": "p16-7bf202c1"
+  },
+  {
+   "id": "p16-rb1-e29",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If respiratory rate < 9 or blue lips/ tongue, connect bag-valve-mask to oxygen and slowly deliver each breath with the patient.",
+   "bbox": [
+    189.3,
+    328.9,
+    323.4,
+    369.7
+   ],
+   "key": "p16-6153a2f5"
+  },
+  {
+   "id": "p16-rb1-e30",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": null,
+   "text": "Remove foreign bodies from mouth and suction fluids.",
+   "bbox": [
+    56.0,
+    358.9,
+    172.3,
+    379.7
+   ],
+   "key": "p16-815c532b"
+  },
+  {
+   "id": "p16-rb1-e31",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock3/SBP < 80, pulse ≥ 100 or heavy bleeding, give sodium chloride 0.9% 1L IV rapidly, repeat until SBP > 80. If known heart problem or severe infection suspected, give instead sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    352.3,
+    358.9,
+    512.8,
+    439.7
+   ],
+   "key": "p16-5b2bde21"
+  },
+  {
+   "id": "p16-rb1-e32",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Intubate if using bag-valve-mask and still difficulty breathing, oxygen saturation < 94% or blue lips/tongue.",
+   "bbox": [
+    189.3,
+    368.9,
+    333.9,
+    399.7
+   ],
+   "key": "p16-1a47f839"
+  },
+  {
+   "id": "p16-rb1-e33",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": null,
+   "text": "If unconscious, insert oropharyngeal airway. If patient resists, gags or vomits, use lubricated nasopharyngeal airway instead.",
+   "bbox": [
+    56.0,
+    378.9,
+    156.2,
+    439.7
+   ],
+   "key": "p16-529267e8"
+  },
+  {
+   "id": "p16-rb1-e34",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If sudden breathlessness, more resonant/decreased breath sounds/ pain on 1 side, deviated trachea, tension pneumothorax likely:",
+   "bbox": [
+    189.3,
+    398.9,
+    328.4,
+    439.7
+   ],
+   "key": "p16-6ef6c3cf"
+  },
+  {
+   "id": "p16-rb1-e35",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Best motor response",
+   "section_y": 318.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Add scores to give a single score out of 15:",
+   "bbox": [
+    530.1,
+    414.3,
+    697.5,
+    425.2
+   ],
+   "key": "p16-66c9323e"
+  },
+  {
+   "id": "p16-rb1-e36",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Best motor response",
+   "section_y": 318.1,
+   "indent": 2,
+   "parent": "p16-rb1-e35",
+   "text": "If GCS ≤ 8, intubate patient.",
+   "bbox": [
+    535.8,
+    424.3,
+    645.4,
+    435.2
+   ],
+   "key": "p16-73bb82a1"
+  },
+  {
+   "id": "p16-rb1-e37",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": null,
+   "text": "Intubate if unable to maintain airway with oro- or nasopharyngeal airway.",
+   "bbox": [
+    56.0,
+    438.9,
+    171.9,
+    469.7
+   ],
+   "key": "p16-9f39e768"
+  },
+  {
+   "id": "p16-rb1-e38",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": "p16-rb1-e34",
+   "text": "Insert large bore cannula above the 6th rib, anterior axillary line.",
+   "bbox": [
+    194.9,
+    438.9,
+    337.3,
+    459.7
+   ],
+   "key": "p16-337bdcde"
+  },
+  {
+   "id": "p16-rb1-e39",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Stop bleeding: apply pressure and elevate limb. If bleeding still severe, apply tourniquet above injury.",
+   "bbox": [
+    352.3,
+    438.9,
+    495.7,
+    469.7
+   ],
+   "key": "p16-e8e7558a"
+  },
+  {
+   "id": "p16-rb1-e40",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Assess and manage airway, breathing, circulation and level of consciousness",
+   "section_y": 268.5,
+   "indent": 2,
+   "parent": "p16-rb1-e34",
+   "text": "Arrange urgent chest tube.",
+   "bbox": [
+    194.9,
+    458.9,
+    300.2,
+    469.7
+   ],
+   "key": "p16-c9b1aed7"
+  },
+  {
+   "id": "p16-rb1-e41",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage further and refer urgently:",
+   "section_y": 473.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage further and refer urgently:",
+   "bbox": [
+    51.2,
+    473.7,
+    190.9,
+    484.8
+   ],
+   "key": "p16-64633920"
+  },
+  {
+   "id": "p16-rb1-e42",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage further and refer urgently:",
+   "section_y": 473.7,
+   "indent": 1,
+   "parent": null,
+   "text": "While awaiting transport, continue to assess and manage airway, breathing, circulation and level of consciousness.",
+   "bbox": [
+    51.2,
+    484.0,
+    494.9,
+    494.8
+   ],
+   "key": "p16-2196ee62"
+  },
+  {
+   "id": "p16-rb1-e43",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage further and refer urgently:",
+   "section_y": 473.7,
+   "indent": 1,
+   "parent": null,
+   "text": "If decreased consciousness or vomiting, place in left lateral lying (recovery) position.",
+   "bbox": [
+    51.2,
+    494.0,
+    377.6,
+    504.8
+   ],
+   "key": "p16-5df3d162"
+  },
+  {
+   "id": "p16-rb1-e44",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage further and refer urgently:",
+   "section_y": 473.7,
+   "indent": 1,
+   "parent": null,
+   "text": "If decreased consciousness 18, if injured 30, if seizures/just had a seizure 20, if burns 31, if bite/sting 29, if fever 38, if rash 82, if anaphylaxis 28.",
+   "bbox": [
+    51.2,
+    504.0,
+    640.2,
+    514.8
+   ],
+   "key": "p16-7585bb89"
+  },
+  {
+   "id": "p16-rb1-e45",
+   "page": 16,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage further and refer urgently:",
+   "section_y": 473.7,
+   "indent": 1,
+   "parent": null,
+   "text": "If other symptom, manage as on symptom page.",
+   "bbox": [
+    51.2,
+    514.0,
+    244.0,
+    524.8
+   ],
+   "key": "p16-a1d295e8"
+  },
+  {
+   "id": "p16-out-e01",
+   "page": 16,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "THE EMERGENCY PATIENT",
+   "bbox": [
+    314.2,
+    48.7,
+    527.7,
+    71.0
+   ],
+   "key": "p16-eae84789"
+  },
+  {
+   "id": "p16-out-e02",
+   "page": 16,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If the patient has a life-limiting illness, consider whether or not to proceed. If CPR not needed in the palliative care patient, address the dying patient's needs 193. 2Lift chin forward with fingers under bony tips of jaw. 3Leg swelling, difficulty breathing which worsens on lying down/with effort. 3If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.",
+   "bbox": [
+    34.0,
+    534.8,
+    775.2,
+    551.8
+   ],
+   "key": "p16-c57722be"
+  }
+ ]
+}

@@ -1,0 +1,1071 @@
+{
+ "check": "rules_without_corresponding_check_for",
+ "count": 213,
+ "values": [
+  {
+   "file_path": "s_expression/rules/apc-adult/55-breast-symptoms.lisp",
+   "description": "Diagnose probable breast engorgement",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/55-breast-symptoms.lisp",
+   "description": "Diagnose probable blocked milk duct",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/55-breast-symptoms.lisp",
+   "description": "Diagnose probable mastalgia",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Maternal breastfeeding\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty drinking\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/59-cholera.lisp",
+   "description": "Diagnose probable some dehydration in cholera",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sunken eyes\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/78-back-pain.lisp",
+   "description": "Diagnose probable mechanical back pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable bacterial tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable bacterial tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable viral tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable viral tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable viral tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of tonsil\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/53-throat-symptoms.lisp",
+   "description": "Diagnose probable viral tonsillopharyngitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exudate on tonsils\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp",
+   "description": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp",
+   "description": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp",
+   "description": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/42-lump-swelling-in-neck-axilla-or-groin.lisp",
+   "description": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abscess\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/89-skin-lump-s.lisp",
+   "description": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/89-skin-lump-s.lisp",
+   "description": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary catheter in situ\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable complicated UTI (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable complicated UTI (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable complicated UTI (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of prostate\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/69-urinary-symptoms.lisp",
+   "description": "Diagnose probable male urethritis syndrome (urinary symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp",
+   "description": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp",
+   "description": "Diagnose probable acute viral infection (short cough, no crackles)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp",
+   "description": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory crackles\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp",
+   "description": "Diagnose probable acute bronchitis (short cough, recent cold)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bronchial breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/23-cough-or-difficulty-breathing.lisp",
+   "description": "Diagnose probable post-infectious cough",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable chickenpox in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable measles in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable tick bite fever in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable herpes simplex in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/40-mpox-diagnosis-and-management.lisp",
+   "description": "Diagnose probable shingles in suspected mpox",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/57-nausea-vomiting.lisp",
+   "description": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+   "didnt_check_for": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/57-nausea-vomiting.lisp",
+   "description": "Diagnose probable GORD in nausea/vomiting with dyspepsia",
+   "didnt_check_for": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Varicose veins of lower extremity\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+   "description": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/45-collapse-falls.lisp",
+   "description": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "didnt_check_for": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/45-collapse-falls.lisp",
+   "description": "Diagnose probable hyperventilation after collapse/falls",
+   "didnt_check_for": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/45-collapse-falls.lisp",
+   "description": "Diagnose probable common faint after collapse/falls",
+   "didnt_check_for": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/45-collapse-falls.lisp",
+   "description": "Diagnose probable common faint after collapse/falls",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/45-collapse-falls.lisp",
+   "description": "Diagnose probable common faint after collapse/falls",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable dry skin in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable dry skin in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable dry skin in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable medication side-effect in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable medication side-effect in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable medication side-effect in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable medication side-effect in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable jaundice in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable jaundice in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable jaundice in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable jaundice in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/86-itch-with-no-rash.lisp",
+   "description": "Diagnose probable jaundice in itch with no rash",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urticaria\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being warm\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sensation of being cold\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased hearing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eye region structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hand structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Low blood pressure\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory distress\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lip structure\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/14-observation-post-vaccination.lisp",
+   "description": "Diagnose probable pseudoallergic rash after vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generally unwell\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/58-diarrhoea.lisp",
+   "description": "Diagnose probable cholera in diarrhoea",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/58-diarrhoea.lisp",
+   "description": "Diagnose probable gastroenteritis in diarrhoea",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/58-diarrhoea.lisp",
+   "description": "Diagnose probable gastroenteritis in diarrhoea",
+   "didnt_check_for": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/77-joint-symptoms.lisp",
+   "description": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/77-joint-symptoms.lisp",
+   "description": "Diagnose probable acute gout (joint symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/77-joint-symptoms.lisp",
+   "description": "Diagnose probable acute gout (joint symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/77-joint-symptoms.lisp",
+   "description": "Diagnose probable acute gout (joint symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/77-joint-symptoms.lisp",
+   "description": "Diagnose probable acute gout (joint symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp",
+   "description": "Diagnose probable low risk of self-harm or suicide",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/80-leg-symptoms.lisp",
+   "description": "Diagnose probable sciatic nerve irritation (leg symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/80-leg-symptoms.lisp",
+   "description": "Diagnose probable peripheral vascular disease (leg symptoms)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/15-collapse-following-vaccination.lisp",
+   "description": "Diagnose probable fainting episode following vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/15-collapse-following-vaccination.lisp",
+   "description": "Diagnose probable fainting episode following vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/15-collapse-following-vaccination.lisp",
+   "description": "Diagnose probable fainting episode following vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/15-collapse-following-vaccination.lisp",
+   "description": "Diagnose probable fainting episode following vaccination",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable positional vertigo with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable positional vertigo with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable positional vertigo with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable positional vertigo with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable positional vertigo with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable vestibular neuronitis with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable vestibular neuronitis with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable vestibular neuronitis with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable vestibular neuronitis with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing loss\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/46-dizziness.lisp",
+   "description": "Diagnose probable vestibular neuronitis with dizziness",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/51-nose-symptoms.lisp",
+   "description": "Diagnose probable common cold from nose symptoms",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chill\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable LAP syndrome (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable LAP syndrome (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable LAP syndrome (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable LAP syndrome (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable cervicitis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scratch marks\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vulval structure\" \"body structure\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable bacterial vaginosis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inflammation of vulva\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually active\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lower abdominal pain\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/64-abnormal-vaginal-discharge.lisp",
+   "description": "Diagnose probable vaginal candidiasis (vaginal discharge)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable acute coronary syndrome in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable acute coronary syndrome in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable acute coronary syndrome in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable acute coronary syndrome in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable stable angina in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable stable angina in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable stable angina in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/24-chest-pain.lisp",
+   "description": "Diagnose probable stable angina in chest pain",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/56-abdominal-pain.lisp",
+   "description": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "didnt_check_for": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/56-abdominal-pain.lisp",
+   "description": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "didnt_check_for": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/38-fever.lisp",
+   "description": "Diagnose probable acute viral infection from fever page",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/38-fever.lisp",
+   "description": "Diagnose probable acute viral infection from fever page",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/38-fever.lisp",
+   "description": "Diagnose probable acute viral infection from fever page",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/48-eye-vision-symptoms.lisp",
+   "description": "Diagnose probable viral conjunctivitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/48-eye-vision-symptoms.lisp",
+   "description": "Diagnose probable bacterial conjunctivitis",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/87-generalised-non-itchy-rash.lisp",
+   "description": "Diagnose probable non-specific viral rash (generalised rash page)",
+   "didnt_check_for": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Human immunodeficiency virus\" \"organism\")))"
+  },
+  {
+   "file_path": "s_expression/rules/apc-adult/177-routine-antenatal-care.lisp",
+   "description": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "didnt_check_for": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\")))"
+  }
+ ]
+}

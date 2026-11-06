@@ -1,0 +1,630 @@
+{
+ "page": 30,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p30-b6989ba1",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "parts_missing": [],
+   "problem": "Red-box header; its sub-boxes become the four Urgent priority rules.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-ce23af0d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "ABC/LOC assessment with cross-reference to p16.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-68e8cc63",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-bc106fd7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Bruising and blood in urine' encoded with 'and' as the page says. Generic Contusion (no site) is acceptable.",
+   "evidence": [
+    "Urgent: injured patient with bruising and blood in urine :: (and (clinical_finding (snomed_concept \"Contusion\" \"disorder\")) (clinical_finding (snomed_concept \"Blood in urine\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-a5b8133c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Second half of the 'Bruising and blood in urine' header; same rule.",
+   "evidence": [
+    "Urgent: injured patient with bruising and blood in urine :: (clinical_finding (snomed_concept \"Blood in urine\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-48319e9a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with wound danger signs :: (and (clinical_finding (snomed_concept \"Wound\" \"disorder\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-fb37659c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (and (clinical_finding (snomed_concept \"Fracture of bone\" \"disorder\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-ba2041e7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (and (clinical_finding (snomed_concept \"Injury of head\" \"disorder\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-98c4c44c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "pale (pallor) below injury"
+   ],
+   "problem": "Cold, numb and no pulse are encoded (plus Limb ischemia as umbrella); 'pale' has no item. 'Below injury' is lost (Numbness of limbs is generic), acceptable approximation.",
+   "evidence": [
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Limb ischemia\" \"disorder\"))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Cold extremity\" \"finding\"))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\"))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Peripheral pulse absent\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-c2bda812",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "pale (pallor) below fracture"
+   ],
+   "problem": "Cold, numb, no pulse, Limb ischemia encoded; 'pale' missing.",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Limb ischemia\" \"disorder\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Cold extremity\" \"finding\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-d5c18a95",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-61d6d55c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Loss of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-19b3a003",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Four parts (blood/clear fluid x nose/ear) all encoded.",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Bleeding from nose\" \"finding\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Bleeding from ear\" \"disorder\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Ear discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-1034b45d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-3b7b2d6a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "IV fluids for bruising+haematuria; urine-output target is a management goal.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-9f0f61fd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Pulsatile\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-de358950",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "muscle tightness in limb (compartment-syndrome sign)"
+   ],
+   "problem": "Increasing pain (Pain in limb + Increasing) and numbness encoded; 'muscle tightness' has no item. Compartment syndrome (disorder) or a limb muscle tightness finding could carry it.",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Pain in limb\" \"finding\") (qualifier (snomed_concept \"Increasing\" \"qualifier value\")))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-590334c4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Open fracture is encoded as clinical_finding of the morphologic abnormality 'Fracture, open' (52329006). A precoordinated disorder '(snomed_concept \"Open fracture\" \"disorder\")' (397181002) exists and is a Fracture of bone descendant; a morphology concept as a clinical finding will not match what a clinician records.",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Fracture, open\" \"morphologic abnormality\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-7e64a507",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-2114fdf4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Anisocoria\" \"disorder\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Sluggish pupil movement\" \"finding\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"No pupillary reaction to light\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-46c9a813",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Head and chest use finding_site on Penetrating wound (no precoordinated concept); neck and abdomen precoordinated. Body sites exist in the release.",
+   "evidence": [
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Penetrating wound\" \"disorder\") (finding_site (snomed_concept \"Head structure\" \"body structure\")))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Penetrating wound of neck\" \"disorder\"))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Penetrating wound\" \"disorder\") (finding_site (snomed_concept \"Thoracic structure\" \"body structure\")))",
+    "Urgent: injured patient with wound danger signs :: (clinical_finding (snomed_concept \"Penetrating wound of abdomen\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-2168264e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'> 2 rib fractures' enumerated as 3,4,5,6,7 and 8-or-more ribs, correctly excluding 2 (Fracture of multiple ribs would include 2).",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Fracture of three ribs\" \"disorder\")) ... (clinical_finding (snomed_concept \"Fracture of eight OR more ribs\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-61db222e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Amnesia\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-7cc8524d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Suspected' not qualified, but femur/pelvis/spine fractures all encoded.",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Fracture of femur\" \"disorder\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Fracture of pelvis\" \"disorder\"))",
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Fracture of vertebral column\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-d441c5db",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with fracture danger signs :: (clinical_finding (snomed_concept \"Deformity\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-015c87b7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Fracture of skull\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-da9e570d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Numbness of limbs\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-ff9f21fd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Ecchymosis of periorbital region\" \"disorder\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Ecchymosis of postauricular region\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-0a066fd7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "threshold '≥ 2 times'"
+   ],
+   "problem": "Encoded as plain 'Finding of vomiting', so a single vomit after head injury triggers Urgent (over-triage). No count in the language; 'Persistent vomiting' (disorder) or a qualifier such as Recurrent would be closer, or log it as not representable.",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-054dcaa4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Fluid resuscitation. The shock definition it points to (footnote 1) is judged on p30-out-e09.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-c399cf16",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Morphine dosing; 'avoid if severe head injury' is a drug contraindication.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-0a524cc7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'≥ 1 other injury' with head injury approximated as Multiple injuries; reasonable.",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Multiple injuries\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-887593ad",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Hematotympanum\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-b0b28169",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Intoxication\" \"disorder\"))",
+    "Urgent: injured patient with head injury danger signs :: (clinical_finding (snomed_concept \"Alcohol intoxication\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-574433b2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-254a2e4e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Conditional spinal immobilisation; criteria (GCS<15, neck/spine tenderness) only gate a management action.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-5aa5fe0d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-c6de74a8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-a53ee2d8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-b6e36eb0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-e1901b42",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-af0dd304",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-fd5f4160",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "Seizures -> p20.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-04de7f0b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Urgent referral and 15-minute observations.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-cf8be550",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Suturing and tetanus toxoid.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-563381a4",
+   "scope": "borderline",
+   "scope_reason": "Re-assessment trigger while awaiting transport (BP < 90/60, pulse > 100 or < 50, RR > 20 or < 9, SpO2 < 94%, drop in GCS). It reads as management (reassess ABC), but it is also an escalation criterion: the briefing names 'BP < 90/60 with altered consciousness' as an Emergency example.",
+   "verdict": "missing",
+   "parts_missing": [
+    "BP < 90/60",
+    "pulse > 100",
+    "pulse < 50",
+    "RR > 20",
+    "RR < 9",
+    "SpO2 < 94%",
+    "drop in GCS"
+   ],
+   "problem": "No rule encodes these vital-sign thresholds (no escalation above Urgent for an injured patient with deteriorating vitals). Only the shock footnote's different thresholds (SBP<80, pulse>=100, RR>30) appear.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p30-06e0a102",
+   "scope": "borderline",
+   "scope_reason": "Same-day referral criteria for an injured patient not needing urgent attention (pregnant, bleeding disorder, anticoagulant, high-speed collision, ejected/hit by vehicle, fall > 3 m) are triage logic but sit below the red box; the briefing only mandates the red box as Urgent.",
+   "verdict": "missing",
+   "parts_missing": [
+    "pregnant",
+    "known bleeding disorder",
+    "on anticoagulant",
+    "high-speed collision",
+    "ejected from/hit by vehicle",
+    "fall > 3 metres"
+   ],
+   "problem": "No priority rule (e.g. a lower level such as Priority/same-day) captures these mechanism and risk-factor criteria.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p30-661aaf0e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'If mild headache, dizziness or mental fogginess, concussion likely' -> probable Concussion with head-injury trigger and 'or'. Dizziness is not in any check_for (fine only if it counts as a common symptom).",
+   "evidence": [
+    "Diagnose probable concussion after head injury :: (and (clinical_finding (snomed_concept \"Injury of head\" \"disorder\")) (or (clinical_finding (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Mild\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p30-93a633d2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Footnote 1 'If SBP < 80, pulse ≥ 100, RR > 30, confusion/restlessness, weakness, shock likely' -> probable Shock with matching thresholds, units and >= vs >. Read as 'any of', as written. Footnotes 2-5 are dosing/management.",
+   "evidence": [
+    "Diagnose probable shock in the injured patient :: (or (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p30-4a1548a1",
+  "p30-234232d0",
+  "p30-7bba7e17",
+  "p30-401805c4",
+  "p30-737f0436",
+  "p30-e10396a7"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "problem": "Open fracture uses the morphologic abnormality 'Fracture, open' as a clinical_finding; the disorder 'Open fracture' (397181002) exists and should be used (same item in the fracture check_for).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: injured patient with head injury danger signs",
+   "problem": "'Vomiting ≥ 2 times' reduced to any vomiting, so a single vomit makes a head-injured patient Urgent; the threshold is not recorded as a known limitation.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: injured patient with fracture danger signs",
+   "problem": "'Muscle tightness' (compartment syndrome warning) is dropped from the 'Increasing pain, muscle tightness, numbness in limb' bullet.",
+   "severity": "medium"
+  },
+  {
+   "rule": "(none)",
+   "problem": "Bottom-of-red-box vital-sign deterioration thresholds (BP < 90/60, pulse > 100/< 50, RR > 20/< 9, SpO2 < 94%, GCS drop) have no rule; nothing escalates a deteriorating injured patient above Urgent.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: injured patient with wound danger signs; Urgent: injured patient with fracture danger signs",
+   "problem": "'Pale' from 'Poor perfusion (cold, pale, numb, no pulse)' is missing in both wound and fracture lists; 'below injury/fracture' localisation is lost (generic limb findings).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable concussion after head injury",
+   "problem": "Dizziness is evidence in a probable rule but no check_for includes it; passes constraint 4 only if Dizziness counts as a common symptom.",
+   "severity": "low"
+  },
+  {
+   "rule": "(none)",
+   "problem": "Same-day referral risk factors/mechanism (pregnant, bleeding disorder, anticoagulant, high-speed collision, ejected/hit by vehicle, fall > 3 m) are not encoded at any priority level.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Red-box criteria are largely captured faithfully in four Urgent priority rules plus probable shock and concussion rules, with careful touches (> 2 ribs enumerated from three upward, finding_site for head/chest penetrating wounds). The most consequential defects: open fracture encoded with a morphologic-abnormality concept instead of the 'Open fracture' disorder, 'vomiting ≥ 2 times' collapsed to any vomiting, 'muscle tightness' and 'pale' dropped, and the vital-sign deterioration thresholds at the foot of the red box not encoded."
+}

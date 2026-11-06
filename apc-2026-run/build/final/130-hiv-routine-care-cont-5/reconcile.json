@@ -1,0 +1,55 @@
+{
+ "page": 130,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "both",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page says only \"confused\", with no \"acute\". Clouded consciousness (synonym \"confused\", VHA's ACVPU form) and Acute confusion (VHA's \"Confusion\" warning-sign anchor) are both readings of that word, so the danger sign fires whichever form records it.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "reason": "\"Unable to walk unaided\" includes patients who can walk only with help, which Unable to walk alone misses (A's own note says so); Dependent for walking covers \"unaided\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "Needed as checked-for evidence for the signs-of-meningitis priority rule kept below (\"severe headache with neck stiffness/vomiting\").",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\")) (red-box Urgent rule)",
+   "choice": "both",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "Same as the check_for decision: \"Drowsy/confused\" is not restricted to acute confusion, and both concepts are how the app records confusion.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\")) (red-box Urgent rule)",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "reason": "\"Unable to walk unaided\" covers needing help to walk, not only being unable to walk.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A only: rule 'Urgent: HIV with signs of meningitis before starting ART' = HIV and (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) and (Stiff neck or Finding of vomiting); B didn't encode this node",
+   "choice": "A",
+   "final_expr": "(and HIV (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (or (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\")) (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))))",
+   "reason": "The page says \"signs of meningitis (severe headache with neck stiffness/vomiting)\" → \"If signs of meningitis, refer urgently\", which is triage, not management. But the node is reached only through CD4/CrAg branches that can't be expressed, so ungated it fires more often than the path does.",
+   "unsettled": true
+  }
+ ],
+ "notes": "Base A, the more complete build: it encodes the signs-of-meningitis node and gives the rules page-specific names. From B it adds Dependent for walking (\"unaided\") and Clouded consciousness (\"confused\") to both red-box rules. The rule descriptions differ only in wording; A's are kept. The priority_condition entries in diff.json that are only in A (HIV, Stiff neck, Headache, Vomiting) all come from A's extra meningitis rule, so they form one decision. The remaining questions from both builders are merged."
+}

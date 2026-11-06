@@ -1,0 +1,123 @@
+{
+ "page_2026": 34,
+ "page_2023": 83,
+ "will_file": "83-self-harm-or-suicide.lisp",
+ "redbox_status_2023": [
+  "changed"
+ ],
+ "groups": {
+  "trigger": {
+   "both": [],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide\" \"event\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide\" \"event\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+     "relation": "2023 narrower"
+    }
+   ]
+  },
+  "check_for": {
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))"
+   ],
+   "only_2023": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"High suicide risk\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))"
+   ],
+   "only_2026": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+     "relation": "2023 narrower"
+    },
+    {
+     "will_2023": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+     "build_2026": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+     "relation": "2026 narrower"
+    }
+   ]
+  },
+  "priority_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(active_condition (snomed_concept \"High suicide risk\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis_condition": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))) (time_ago 1 years))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))) (time_ago 1 years))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))) (time_ago 1 months))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": []
+  },
+  "diagnosis": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [
+    "(diagnosis (snomed_concept \"At low risk for suicide\" \"finding\") probable)",
+    "(diagnosis (snomed_concept \"High suicide risk\" \"finding\") probable)"
+   ],
+   "is_a_related": []
+  },
+  "measured": {
+   "both": [],
+   "only_2023": [],
+   "only_2026": [],
+   "is_a_related": []
+  }
+ },
+ "counts": {
+  "will_2023": 10,
+  "build_2026": 38,
+  "exact": 2,
+  "related": 3
+ }
+}

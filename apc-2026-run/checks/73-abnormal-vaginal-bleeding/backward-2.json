@@ -1,0 +1,264 @@
+{
+ "page": 73,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Postpartum state is open-ended; page says recent delivery.",
+   "fix": "Keep, but note timing window is lost; no closer concept confirmed.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Pallor' with no site; 'of skin of face' narrows it.",
+   "fix": "Use a generic pallor concept if one exists; otherwise accept.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says weakness (and footnote weakness); Asthenia is generalised weakness, acceptable but 'Muscle weakness' is not intended.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Postpartum state is open-ended; page says recent delivery.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Pallor' with no site; 'of skin of face' narrows it.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "As c009.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "verdict": "problem",
+   "problem": "Omits Hb < 6 criterion from the red box, and omits the measurement-based danger signs (SBP < 80, pulse >= 100, RR >= 30), so the task does not prompt for them.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "verdict": "problem",
+   "problem": "Missing the red-box criterion 'Hb < 6' (page element p73-37cf32fe), an Urgent trigger. Otherwise and/or structure matches the page (bleeding AND any of the listed; pallor AND any of pulse/RR/dizziness/weakness/chest pain). Priority Urgent is justified by the box heading.",
+   "severity": "high"
+  }
+ ],
+ "summary": "The most consequential problem is that the red box criterion 'Hb < 6' is not encoded in either rule, so a patient with vaginal bleeding and Hb < 6 would not be flagged Urgent. All 27 encoded conditions are supported by the page and sit in the right role; the few imprecise ones are pallor (narrowed to face), postpartum state (no recent window) and asthenia for weakness. Management step (IV saline) and the outside-box approach are not encoded, which is acceptable for coverage of the red box."
+}

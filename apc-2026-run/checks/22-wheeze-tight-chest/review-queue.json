@@ -1,0 +1,1542 @@
+[
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p22-0687a589",
+  "text": "Give urgent attention to the patient with wheeze/tight chest:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header: every wheeze/tight chest patient gets urgent attention, which is the trigger for the baseline Urgent priority.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "figure_or_note",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header applies to every patient with wheeze/tight chest; encoded as a catch-all Urgent rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p22-26faadae",
+  "text": "Assess severity of episode:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Label introducing the severity question; the criteria are in p22-645fa848.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Node label; its content is p22-645fa848.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p22-eb56bb93",
+  "text": "No: Mild or moderate",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'No: Mild or moderate' is the residual class after both severity questions are answered No. The language has no severity grading to record, and the page still gives this patient urgent attention, so the baseline Urgent rule is the only expressible encoding.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Mild/moderate falls to the catch-all Urgent rule, consistent with the header.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p22-9f9768ec",
+  "text": "Yes: Severe",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as Urgent, which matches 'Refer urgently'. Note it is the same level as the baseline rule, so it adds documentation rather than a distinct triage outcome.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Severe -> Urgent priority.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "Severe tier is indistinguishable from mild/moderate: both resolve to Urgent, so the severe rule changes nothing (no 'Very urgent', no severe-asthma/exacerbation diagnosis to carry the classification)."
+    ],
+    "problem": "Severe classification: the page distinguishes severe (refer urgently) from mild/moderate (treat locally); whether that warrants a higher priority than the header's Urgent is a judgement call.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p22-a33ef092",
+  "text": "Check respiratory rate and PEFR2. Can patient talk normally?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The measure task covers PEFR; respiratory rate is routine. The timing relative to treatment cannot be stated in the language.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Post-treatment reassessment; the PEFR measurement itself is covered by the 'Measure PEFR in wheeze/tight chest' task.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p22-f4d2f322",
+  "text": "If first episode of wheeze/tight chest, assess for asthma and COPD 138.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible Asthma on first-episode wheeze/tight chest",
+     "possible COPD on first-episode wheeze/tight chest"
+    ],
+    "problem": "No possible asthma / COPD rule and no check_for of first-episode wheeze. Low consequence: the referenced page 138 presumably carries the diagnostic logic.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "cross_reference_only",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible Asthma / possible Chronic obstructive pulmonary disease from wheeze/tight chest with 'First episode' qualifier"
+    ],
+    "problem": "Not encoded; both concepts and the 'First episode' qualifier exist in SNOMED.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p22-6530e896",
+  "text": "• If sudden wheeze/tight chest and any of: generalised itch/rash, face/tongue swelling, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28. • If difficulty breathing worse on lying flat and leg swelling or patient ≥ 50 years with firs",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Heart failure branch 2: patient ≥ 50 years with first episode of wheeze/tight chest. Numeric age is not in the grammar (only adult / older child / younger child), so the conjunction cannot be expressed; the branch is dropped without a trace in the rule description.",
+     "Allergen exposure 'within the past few hours' (footnote) is not time-bounded."
+    ],
+    "problem": "Line 1 is encoded well: a possible Anaphylaxis rule (the right type for 'check for X'), gated on sudden-onset wheeze/tight chest, with every listed sign, BP < 90/60 as SBP < 90 or DBP < 60 (the gold-standard convention), and exposure to medication, food, insect bite and insect sting. Line 2 branch 1 is correct: probable Heart failure requires wheeze/tight chest AND Orthopnea AND Leg swelling symptom, matching the page's 'and'. Line 2 branch 2 is not representable and is missing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Heart failure likely: 'patient >= 50 years with first episode of wheeze/tight chest' (second OR branch) is not encoded; no age criterion and no first-episode criterion anywhere in the heart failure rule or check_for"
+    ],
+    "problem": "Anaphylaxis bullet fully encoded (sudden wheeze/tight chest AND any of itch/rash, face/tongue swelling, SBP<90, DBP<60, dizziness, collapse, abdominal pain, vomiting, drug/food exposure, insect bite/sting) as a possible diagnosis. Heart failure rule encodes only orthopnea AND leg swelling; the page's 'or' branch (age >= 50 and first episode) is lost.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Heart failure branch 2: 'patient >= 50 years with first episode of wheeze/tight chest' is not encoded at all. Age >= 50 has no representation in the language (not_representable), but 'first episode' is (qualifier 'First episode' (qualifier value) exists) and the branch is silently dropped rather than approximated or noted.",
+     "Anaphylaxis: footnote-1 timing ('within the past few hours') on allergen exposure not encoded."
+    ],
+    "problem": "Part 1 (sudden wheeze/tight chest + any of itch/rash, face/tongue swelling, BP<90/60, dizziness/collapse, abdominal pain, vomiting, allergen exposure -> check for anaphylaxis) is correctly encoded as a possible Anaphylaxis rule with all 11 items, BP split as in the gold standard. Part 2 (orthopnoea AND leg swelling -> heart failure likely) is correctly a probable rule with Orthopnea + Leg swelling symptom checked for; the OR'd age/first-episode branch is missing.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p22-096a62b5",
+  "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2Peak expiratory flow rate: PEFR is expressed as a percentage of the predicted normal value for the patients age and height 139.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' time window on the allergen exposure"
+    ],
+    "problem": "The allergen list is encoded (Drug or medicament, Food, Insect bite - wound, Insect sting); the time window is not. PEFR is correctly encoded as a ratio in %.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'within the past few hours' timing on allergen exposure (could be expressed with (< (onset ...) (time_ago N hours)) in the due_to)"
+    ],
+    "problem": "Allergen types (drug, food, insect bite, insect sting) and PEFR as % predicted are encoded correctly; only the time window is missing.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c007",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Feeling agitated' is the only plain 'agitated' finding concept; acceptable.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Agitated' in a severity assessment is an observed sign; 'Feeling agitated' is a self-reported feeling. Psychomotor agitation is closer.",
+    "fix": "(snomed_concept \"Psychomotor agitation\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c008",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Orthopnea is difficulty breathing worse on lying flat; acceptable but 'difficulty breathing' is dyspnoea-specific; fine",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c013",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'generalised itch/rash': 'Generalized rash' is a fair reading; the gold uses 'Eruption' (morphologic abnormality), either is acceptable.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'generalised itch/rash'; rash is encoded as 'Generalized rash' disorder (generalised qualifier on rash only inferred from 'generalised itch/rash'), concept typed disorder",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c014",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generic 'Swelling' with a Face structure finding site; a precoordinated concept exists, and the finding-site form may not resolve in VHA (body-site concepts aren't covered by VHA's test).",
+    "fix": "Use (snomed_concept \"Facial swelling\" \"finding\") in both the check_for and the anaphylaxis rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Generic 'Swelling' with a Tongue structure finding site; a precoordinated concept exists.",
+    "fix": "Use (snomed_concept \"Tongue swelling\" \"finding\") in both the check_for and the anaphylaxis rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Exposure to possible allergen' with footnote 'medication, food or insect bite/sting within the past few hours': the timing window is dropped and concept is generic exposure",
+    "fix": "Add recency (within past few hours) if expressible",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits allergen exposure to 'within the past few hours'; that timing window is dropped, and the footnote's list is only examples of 'possible allergen'.",
+    "fix": "Add a recent/within-hours qualifier, or note the timing in remaining-questions.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c021",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Exposure to possible allergen' with footnote 'medication, food or insect bite/sting within the past few hours': the timing window is dropped and concept is generic exposure",
+    "fix": "Add recency (within past few hours) if expressible",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "Add a recent qualifier, or note the gap.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c022",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page means exposure to an insect bite/sting as allergen within the past few hours; 'Insect bite - wound'/'Insect sting' are disorder concepts without the recency window",
+    "fix": "Add recency or use exposure to insect bite concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c023",
+  "text": "Check for wheeze/tight chest severity and causes :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page means exposure to an insect bite/sting as allergen within the past few hours; 'Insect bite - wound'/'Insect sting' are disorder concepts without the recency window",
+    "fix": "Add recency or use exposure to insect bite concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c025",
+  "text": "Check for wheeze in tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "The 'check for wheeze' task is derived from 'silent chest (tight chest but no wheeze)', which is a severity criterion, not an instruction to check for wheeze; task is a fair assessment prompt",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c028",
+  "text": "Measure PEFR in wheeze/tight chest :: (measurement (snomed_concept \"Recorded/predicted peak expiratory flow rate ratio\" \"observable entity\") %)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Footnote 2 and the red box's repeated PEFR thresholds support a measure task; concept is the recorded/predicted ratio in %, exactly the page's unit.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page footnote defines PEFR as percent of predicted; the measure task is justified, but the quote is a definition, not an instruction to measure; acceptable",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c029",
+  "text": "Diagnose probable heart failure from wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Condition (wheeze present) is the page context for the orthopnea+leg swelling branch, so it is right; but the cited quote 'first episode of wheeze/tight chest' belongs to the other branch, which the rule does not encode (see rules).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Quote 'first episode of wheeze/tight chest' belongs to the age>=50 branch of heart failure, not the orthopnea+leg swelling branch; the rule uses it as plain wheeze trigger, and the age>=50 branch is dropped",
+    "fix": "Add (or (and orthopnea leg-swelling) (and age>=50 first-episode wheeze/tight chest)); keep wheeze/tight chest as trigger only",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Plain wheezing is fine as context, but the cited quote 'first episode of wheeze/tight chest' belongs to the second heart-failure branch, which the rule leaves out. The condition doesn't encode 'first episode'.",
+    "fix": "Add the branch (and (age >= 50) wheeze/tight chest with (qualifier (snomed_concept \"First episode\" \"qualifier value\"))).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c030",
+  "text": "Diagnose probable heart failure from wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Same as c029.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Quote 'first episode of wheeze/tight chest' belongs to the age>=50 branch of heart failure, not the orthopnea+leg swelling branch; the rule uses it as plain wheeze trigger, and the age>=50 branch is dropped",
+    "fix": "Add (or (and orthopnea leg-swelling) (and age>=50 first-episode wheeze/tight chest)); keep wheeze/tight chest as trigger only",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "As c029: the cited 'first episode' wording isn't encoded; the tight chest here is unqualified.",
+    "fix": "As c029.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c031",
+  "text": "Diagnose probable heart failure from wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'difficulty breathing worse on lying flat' and 'leg swelling' are joined by 'and' as one alternative of an OR with the age>=50 first-episode branch; rule has only this branch",
+    "fix": "Add the age>=50 first-episode alternative",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c032",
+  "text": "Diagnose probable heart failure from wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'difficulty breathing worse on lying flat' and 'leg swelling' are joined by 'and' as one alternative of an OR with the age>=50 first-episode branch; rule has only this branch",
+    "fix": "Add the age>=50 first-episode alternative",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c037",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c013: 'generalised' applies to itch/rash by inference",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c038",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c014: a closer precoordinated concept exists.",
+    "fix": "(snomed_concept \"Facial swelling\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c039",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c015: a closer precoordinated concept exists.",
+    "fix": "(snomed_concept \"Tongue swelling\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c040",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "BP < 90/60 split into systolic < 90 or diastolic < 60, the gold page 20 pattern.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'BP < 90/60' is encoded as systolic<90 OR diastolic<60; ambiguous but reasonable",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "As c040.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'BP < 90/60' is encoded as systolic<90 OR diastolic<60; ambiguous but reasonable",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c046",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Exposure to possible allergen' with footnote 'medication, food or insect bite/sting within the past few hours': the timing window is dropped and concept is generic exposure",
+    "fix": "Add recency (within past few hours) if expressible",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped, so any past drug exposure would count as anaphylaxis evidence.",
+    "fix": "Add a recent qualifier, or note the gap.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c047",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Exposure to possible allergen' with footnote 'medication, food or insect bite/sting within the past few hours': the timing window is dropped and concept is generic exposure",
+    "fix": "Add recency (within past few hours) if expressible",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c048",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page means exposure to an insect bite/sting as allergen within the past few hours; 'Insect bite - wound'/'Insect sting' are disorder concepts without the recency window",
+    "fix": "Add recency or use exposure to insect bite concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c049",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Footnote 1 limits the exposure to 'within the past few hours'; the timing window is dropped (unquantified on the page; the gold page 20 drops it too, so low weight).",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page means exposure to an insect bite/sting as allergen within the past few hours; 'Insect bite - wound'/'Insect sting' are disorder concepts without the recency window",
+    "fix": "Add recency or use exposure to insect bite concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Within the past few hours' timing window dropped.",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Diagnose possible anaphylaxis from sudden wheeze/tight chest :: (diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'check for anaphylaxis' (a possible), fine as possible, but rule fires from wheeze plus any single feature; page says 'sudden wheeze/tight chest and any of', which matches. Minor: 'possible' relies on 'check for' wording rather than 'consider/suspect'",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c062",
+  "text": "Urgent: severe wheeze/tight chest :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 90)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Hemoglobin saturation with oxygen' is the house vital anchor for SpO2.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page 'oxygen saturation' is pulse-oximeter SpO2; 'Hemoglobin saturation with oxygen' is a lab/generic concept; 'Peripheral oxygen saturation' exists",
+    "fix": "(snomed_concept \"Peripheral oxygen saturation\" \"observable entity\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c067",
+  "text": "Urgent: severe wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "As c007: an observed sign, not a feeling.",
+    "fix": "(snomed_concept \"Psychomotor agitation\" \"finding\")",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c068",
+  "text": "Urgent: wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "The red-box heading covers every wheeze/tight chest patient, so a base Urgent for the complaint is justified.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Quote is the red-box heading: it supports the generic Urgent level for any wheeze/tight chest, which is fair, but the box heading is the only support",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c069",
+  "text": "Urgent: wheeze/tight chest :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "As c068.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Quote is the red-box heading: it supports the generic Urgent level for any wheeze/tight chest, which is fair, but the box heading is the only support",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable heart failure from wheeze/tight chest",
+  "text": "The page gives two independent routes to 'heart failure likely'; only the orthopnoea-and-leg-swelling route is encoded. The second route (age ≥ 50 with a first episode of wheeze/tight chest) cannot be written because the grammar has no numeric age, but nothing in the file records that this branch was dropped, and a patient over 50 with first-episode wheeze and no leg swelling will get no heart failure prompt at all. 'First episode' exists as a SNOMED qualifier value, so the only blocker is age.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: life-threatening wheeze/tight chest; Urgent: severe wheeze/tight chest",
+  "text": "Pulse is compared on 'Pulse, function' (8499008) and saturation on 'Hemoglobin saturation with oxygen' (103228002). SNOMED also has 'Heart rate' (364075005) and 'Peripheral oxygen saturation' (431314004), which are the usual observables for a pulse and a pulse-oximeter reading. Whether these clauses ever fire depends on which concept the vitals system records; I could not verify that from the permitted inputs. If the system records the other concept, pulse < 50, pulse > 120 and SpO2 < 90% are silently dead.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: life-threatening wheeze/tight chest",
+  "text": "The page labels this branch 'Life threatening' and its management 'Refer urgently', the same words as the Severe branch; it never says 'emergency'. Emergency is a reasonable reading of the escalation above Severe but is a judgment the house standard asks to be explicit about.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule)",
+  "text": "'If first episode of wheeze/tight chest, assess for asthma and COPD' has no possible Asthma / COPD rule, although 'First episode' (qualifier value) and 'Asthma' (disorder) exist. Low consequence given the cross-reference to the asthma/COPD page.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule)",
+  "text": "The one-hour reassessment branch (talk normally, RR < 20 vs ≥ 20, PEFR improved by > 20%, worsening → manage as severe) is not modelled. This is a language limit (no treatment state, no change-over-time), and the worsening branch would not raise priority above the existing Urgent, so no triage outcome is lost; worth recording as could-not-model.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+  "text": "Allergen exposure is not bounded to 'within the past few hours'; an old recorded exposure could satisfy the rule. Minor, as the rule is a possible pre-screen and the gold standard page 20 takes the same approach.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable heart failure from wheeze/tight chest",
+  "text": "Page says '(orthopnea AND leg swelling) OR (age >= 50 with first episode)'. Rule has only the first branch, so older first-episode patients never get heart failure likely. The first-episode part may be hard to express, but age >= 50 with a first-episode proxy could be a second rule or flagged as not representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for wheeze/tight chest severity and causes (check_for)",
+  "text": "check_for lacks any age >= 50 / first-episode item needed for heart failure; BP < 90/60, pulse, RR, SpO2 and PEFR are covered only by measurement criteria in rules, not check_for (acceptable).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: severe wheeze/tight chest vs Urgent: wheeze/tight chest",
+  "text": "Both are Urgent, so the severe rule is redundant with the catch-all urgent rule; severity distinction (mild/moderate vs severe) is not represented. Page does head the whole box 'give urgent attention', so Urgent for all is defensible.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: life-threatening wheeze/tight chest",
+  "text": "Silent chest encoded as Tight chest AND NOT Wheezing under an outer wheeze-or-tight-chest requirement: logically correct. No problem found; noted as checked.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable heart failure from wheeze/tight chest",
+  "text": "Page logic is (orthopnoea AND leg swelling) OR (age >= 50 AND first episode of wheeze/tight chest). Only the first branch is encoded; the second is dropped without approximation. Age >= 50 is not representable, but this should be recorded as a known gap; the rule as written under-diagnoses heart failure in older first-episode patients.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: severe wheeze/tight chest",
+  "text": "Redundant with 'Urgent: wheeze/tight chest' (same priority, superset trigger), so the page's severe vs mild/moderate split has no effect on output. Either the severe tier needs a distinct level (e.g. 'Very urgent', since the page refers severe cases urgently) or a carrying diagnosis; otherwise the rule is dead weight.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "'If first episode of wheeze/tight chest, assess for asthma and COPD' has no possible-diagnosis rule.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for wheeze/tight chest severity and causes / Urgent: severe wheeze/tight chest",
+  "text": "'Feeling agitated' is a subjective emotional-state finding; the page's 'agitated' is an observed sign ('Psychomotor agitation'). 'Unable to speak' is a language-ability finding rather than breathlessness. Both resolve and the test passes; meaning is approximate.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible anaphylaxis from sudden wheeze/tight chest",
+  "text": "Allergen exposure lacks the footnote's 'within the past few hours' window, so any recorded drug/food exposure or insect bite (a common symptom) with sudden wheeze fires the rule. Acceptable for a broad possible pre-screen.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Emergency: life-threatening wheeze/tight chest",
+  "text": "Silent chest is encoded as Tight chest AND (no Wheezing); this fires only if wheeze absence is recorded (the separate 'Check for wheeze in tight chest' task supports this). Fine, but note dependency.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for wheeze/tight chest severity and causes",
+  "text": "Type, trigger and check list are right (every red-box non-vital item, the anaphylaxis list and the heart-failure discriminators are present and all are consumed). Missing: a first-episode form of the complaint, e.g. (clinical_finding (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\"))) and the same for Tight chest, which the page's second heart-failure route ('patient >= 50 years with first episode of wheeze/tight chest') and the 'If first episode ... assess for asthma and COPD' step both need. Exposure timing ('within the past few hours') is dropped, as on the gold page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable heart failure from wheeze/tight chest",
+  "text": "The page gives two routes to 'heart failure likely': (difficulty breathing worse on lying flat AND leg swelling) OR (patient >= 50 years with first episode of wheeze/tight chest). The rule encodes only the first; the second is silently dropped, so an older patient with a first episode and no orthopnea/oedema never gets the probable diagnosis. The grammar has no patient-age comparison (only age groups), so the branch cannot be encoded exactly; it should at least be recorded as 'could not model', and an approximation considered (a probable or possible branch on the First-episode-qualified complaint, with the age left to the clinician). 'probable' for 'likely' and the and-structure of the first branch are right.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: severe wheeze/tight chest",
+  "text": "All six criteria and thresholds match 'Yes: Severe'. But the level is Urgent, identical to the base 'Urgent: wheeze/tight chest' rule, so this rule never changes the outcome. Either it is intentionally documentary, or the page's 'Refer urgently' for severe was meant to escalate above the mild/moderate case (which the page treats and reassesses for 3 hours before referring); the briefing reserves 'Very urgent' for explicit escalation, so this is a judgement call to record, not a defect.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for wheeze/tight chest severity and causes",
+  "text": "Mixes severity features, heart failure features and anaphylaxis features in one check_for list; acceptable but the 'sudden' qualifier items duplicate plain wheeze trigger. Missing age>=50 first-episode check.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable heart fail",
+  "text": "Page's heart failure 'likely' has two alternatives: (orthopnea and leg swelling) OR (age>=50 with first episode); rule encodes only the first, and requires wheeze/tight chest as extra condition",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: severe wheeze/tight chest",
+  "text": "Severe criteria: SpO2 concept is generic hemoglobin saturation; otherwise faithful. Note page severe is gated on the life-threatening criteria being absent; priority ordering is left to evaluation",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for wheeze/tight chest severity and causes",
+  "text": "There's no check_for for 'first episode of wheeze/tight chest', so the heart-failure branch for patients ≥ 50 with a first episode can't be captured. Face and tongue swelling use the generic Swelling concept plus a finding site; Facial swelling and Tongue swelling exist. The allergen timing window is dropped. Known asthma/COPD and first episode (the 'assess for asthma and COPD' arm) aren't checked either.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable heart failure from wheeze/tight chest",
+  "text": "The page says 'orthopnoea and leg swelling OR patient ≥ 50 years with first episode of wheeze/tight chest → heart failure likely'. Only the first branch is encoded. A first episode in a patient aged 50 or over never produces probable heart failure. Probable is right for 'likely'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "slug": "22-wheeze-tight-chest",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: severe wheeze/tight chest",
+  "text": "Its level (Urgent) is the same as the blanket rule 'Urgent: wheeze/tight chest', so it adds nothing to triage. The page refers severe patients urgently, which arguably calls for a higher level ('Very urgent') or for consolidating the two rules. This is a judgment call; the page doesn't name a level.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ }
+]

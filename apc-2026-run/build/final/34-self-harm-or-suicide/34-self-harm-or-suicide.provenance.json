@@ -1,0 +1,564 @@
+{
+ "edition": "2026",
+ "page": 34,
+ "lisp_file": "34-self-harm-or-suicide.lisp",
+ "conditions": [
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "attempted/considered self-harm or suicide",
+   "confidence": "high",
+   "note": "Attempted suicide: 'Suicide attempt' event."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "attempted/considered self-harm or suicide",
+   "confidence": "medium",
+   "note": "Attempted self-harm: 'Intentionally harming self' event (deliberate self-harm); 'Self-injurious behavior' finding was the alternative."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "attempted/considered self-harm or suicide",
+   "confidence": "high",
+   "note": "Presenting complaint from the box header; attempted -> Suicide attempt / Intentionally harming self (event); considered -> Suicidal thoughts / Thoughts of self harm. Not a recorded common symptom or warning sign. Taken from build B: names the page's \"suicide\" thoughts/plans explicitly; also covered as a descendant of Thoughts of self harm."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "considered self-harm or suicide",
+   "confidence": "high",
+   "note": "'Thoughts of self harm' is the parent of 'Suicidal thoughts' and 'Thoughts of deliberate self harm'; descendants (incl. Planning suicide) match in due_to."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-a1c34aac"
+   ],
+   "quote": "current thoughts or plans to attempt suicide",
+   "confidence": "high",
+   "note": "'Suicidal thoughts' with qualifier 'Current', to separate Q2 (current) from Q3 (past month)."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-a1c34aac"
+   ],
+   "quote": "current thoughts or plans to attempt suicide",
+   "confidence": "high",
+   "note": "'Planning suicide' with qualifier 'Current'."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "thoughts/plans of self-harm or suicide in past month",
+   "confidence": "medium",
+   "note": "Unqualified planning suicide, checked so that its onset can be compared with the past month in the high-risk rule. Taken from build B: names the page's \"suicide\" thoughts/plans explicitly; also covered as a descendant of Thoughts of self harm."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "performed act of self-harm or suicide in past year",
+   "confidence": "medium",
+   "note": "Past suicide act as 'History of attempted suicide' situation, so it does not match Q1 (attempt now). 'Previous known suicide attempt' event is a child of 'Suicide attempt' and would also fire Q1."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "performed act of self-harm or suicide in past year",
+   "confidence": "medium",
+   "note": "Past self-harm act as 'History of deliberate self harm' situation."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "'Feeling agitated' (finding, vocabulary term)."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "violent",
+   "confidence": "medium",
+   "note": "'Violent behavior' does not exist; 'Aggressive behavior' is the VHA warning sign described as 'Violent or agressive behavior'."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "distressed",
+   "confidence": "medium",
+   "note": "'Distress' finding; 'Mental distress' was the alternative."
+  },
+  {
+   "rule": "Check for self-harm or suicide risk",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "uncommunicative",
+   "confidence": "medium",
+   "note": "'Does not communicate' finding; no concept named 'uncommunicative'."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-a1c34aac"
+   ],
+   "quote": "current thoughts or plans to attempt suicide",
+   "confidence": "high",
+   "note": "Q2 = Yes -> High risk."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-a1c34aac"
+   ],
+   "quote": "current thoughts or plans to attempt suicide",
+   "confidence": "high",
+   "note": "Q2 = Yes -> High risk."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))) (time_ago 1 months))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "had thoughts/plans of self-harm or suicide in past month",
+   "confidence": "medium",
+   "note": "Onset of 'Thoughts of self harm' (covers suicidal and self-harm thoughts and plans as descendants) within 1 month; '<=' per the brief's time convention."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "thoughts/plans of self-harm or suicide in past month",
+   "confidence": "medium",
+   "note": "Past month as onset within 1 month; brief convention: 'within' -> <=. Taken from build B: names the page's \"suicide\" thoughts/plans explicitly; also covered as a descendant of Thoughts of self harm."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "thoughts/plans of self-harm or suicide in past month",
+   "confidence": "medium",
+   "note": "Past month as onset within 1 month; brief convention: 'within' -> <=. Taken from build B: names the page's \"suicide\" thoughts/plans explicitly; also covered as a descendant of Thoughts of self harm."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))) (time_ago 1 years))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "performed act of self-harm or suicide in past year",
+   "confidence": "low",
+   "note": "Onset of the history situation within 1 year; assumes onset is recorded as the date of the act."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))) (time_ago 1 years))",
+   "element_keys": [
+    "p34-686b6ad1"
+   ],
+   "quote": "performed act of self-harm or suicide in past year",
+   "confidence": "low",
+   "note": "Onset of the history situation within 1 year; assumes onset is recorded as the date of the act."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "Q3 = Yes and Q4 = Yes -> High risk. 'Feeling agitated' (finding, vocabulary term)."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "violent",
+   "confidence": "medium",
+   "note": "Q3 = Yes and Q4 = Yes -> High risk. 'Violent behavior' does not exist; 'Aggressive behavior' is the VHA warning sign described as 'Violent or agressive behavior'."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "distressed",
+   "confidence": "medium",
+   "note": "Q3 = Yes and Q4 = Yes -> High risk. 'Distress' finding; 'Mental distress' was the alternative."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+   "element_keys": [
+    "p34-f10a0406"
+   ],
+   "quote": "uncommunicative",
+   "confidence": "medium",
+   "note": "Q3 = Yes and Q4 = Yes -> High risk. 'Does not communicate' finding; no concept named 'uncommunicative'."
+  },
+  {
+   "rule": "Diagnose probable high risk of self-harm or suicide",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"High suicide risk\" \"finding\") probable)",
+   "element_keys": [
+    "p34-23f4567b"
+   ],
+   "quote": "High risk of self-harm or suicide",
+   "confidence": "medium",
+   "note": "'High suicide risk' finding (vocabulary term); no single concept for 'self-harm or suicide' risk."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-c8892e2e",
+    "p34-00d4183c"
+   ],
+   "quote": "Has patient attempted self-harm or suicide? No",
+   "confidence": "high",
+   "note": "Q1 = No (suicide attempt)."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-c8892e2e",
+    "p34-00d4183c"
+   ],
+   "quote": "Has patient attempted self-harm or suicide? No",
+   "confidence": "high",
+   "note": "Q1 = No (self-harm)."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "element_keys": [
+    "p34-a1c34aac",
+    "p34-873e5e67"
+   ],
+   "quote": "Does patient have current thoughts or plans to attempt suicide? No",
+   "confidence": "high",
+   "note": "Q2 = No (thoughts)."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "element_keys": [
+    "p34-a1c34aac",
+    "p34-873e5e67"
+   ],
+   "quote": "Does patient have current thoughts or plans to attempt suicide? No",
+   "confidence": "high",
+   "note": "Q2 = No (plans)."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-f10a0406",
+    "p34-410d5ec8"
+   ],
+   "quote": "Is patient agitated, violent, distressed or uncommunicative? No",
+   "confidence": "high",
+   "note": "Q4 = No: explicit no record for 'agitated'."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-f10a0406",
+    "p34-410d5ec8"
+   ],
+   "quote": "Is patient agitated, violent, distressed or uncommunicative? No",
+   "confidence": "high",
+   "note": "Q4 = No: explicit no record for 'violent'."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-f10a0406",
+    "p34-410d5ec8"
+   ],
+   "quote": "Is patient agitated, violent, distressed or uncommunicative? No",
+   "confidence": "high",
+   "note": "Q4 = No: explicit no record for 'distressed'."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p34-f10a0406",
+    "p34-410d5ec8"
+   ],
+   "quote": "Is patient agitated, violent, distressed or uncommunicative? No",
+   "confidence": "high",
+   "note": "Q4 = No: explicit no record for 'uncommunicative'."
+  },
+  {
+   "rule": "Diagnose probable low risk of self-harm or suicide",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"At low risk for suicide\" \"finding\") probable)",
+   "element_keys": [
+    "p34-c4512abb",
+    "p34-cc8909ef"
+   ],
+   "quote": "Low risk of self-harm or suicide",
+   "confidence": "medium",
+   "note": "'At low risk for suicide' finding; only the Q3 = Yes -> Q4 = No path is modelled."
+  },
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "attempted/considered self-harm or suicide",
+   "confidence": "high",
+   "note": "Header: urgent attention to every patient who attempted suicide."
+  },
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "attempted/considered self-harm or suicide",
+   "confidence": "medium",
+   "note": "Header: attempted self-harm."
+  },
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))",
+   "element_keys": [
+    "p34-49e51b48"
+   ],
+   "quote": "considered self-harm or suicide",
+   "confidence": "high",
+   "note": "Header: considered self-harm or suicide."
+  },
+  {
+   "rule": "Urgent: attempted/considered self-harm or suicide",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"High suicide risk\" \"finding\"))",
+   "element_keys": [
+    "p34-23f4567b"
+   ],
+   "quote": "High risk of self-harm or suicide",
+   "confidence": "high",
+   "note": "High risk leads to 'Refer urgently'; included so the probable high-risk diagnosis also raises priority."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p34-d8a125bd",
+   "element_id": "p34-rb1-e03",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Q1 Yes branch; routes straight to the ABC/overdose and management boxes, not to the \"High risk\" box. Attempt itself is Urgent through the header priority rule; not diagnosed as high risk."
+  },
+  {
+   "element_key": "p34-a9ec5ec6",
+   "element_id": "p34-rb1-e05",
+   "text": "First assess and manage airway, breathing, circulation and level of consciousness 18.",
+   "reason_category": "management_step",
+   "reason": "ABC assessment and management; cross-reference to page 18."
+  },
+  {
+   "element_key": "p34-567118dc",
+   "element_id": "p34-rb1-e07",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Q2 Yes branch; encoded as the Current-thoughts branch of the high-risk rule."
+  },
+  {
+   "element_key": "p34-a4579f5f",
+   "element_id": "p34-rb1-e09",
+   "text": "If overdose or exposure to harmful substance 27.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to page 27 (poisoning); Poisoning is a VHA warning sign handled there."
+  },
+  {
+   "element_key": "p34-31eae5b8",
+   "element_id": "p34-rb1-e11",
+   "text": "If exposed to carbon monoxide (exhaust fumes), give 100% face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen for carbon monoxide exposure."
+  },
+  {
+   "element_key": "p34-378ad823",
+   "element_id": "p34-rb1-e12",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Q3 Yes branch; encoded as the and-branch of the high-risk rule."
+  },
+  {
+   "element_key": "p34-e36c7926",
+   "element_id": "p34-rb1-e13",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Q3 No branch to low risk; not expressible (no time-limited negative), see Could not model."
+  },
+  {
+   "element_key": "p34-5ba364c6",
+   "element_id": "p34-rb1-e15",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Q4 Yes branch to high risk; encoded in the high-risk rule."
+  },
+  {
+   "element_key": "p34-6e0338da",
+   "element_id": "p34-rb1-e20",
+   "text": "Avoid leaving patient alone. Remove any possible means of self-harm (firearms, knives, pills).",
+   "reason_category": "management_step",
+   "reason": "Safety measures."
+  },
+  {
+   "element_key": "p34-a50d9d59",
+   "element_id": "p34-rb1-e21",
+   "text": "If patient aggressive/violent, assess patient with other staff, use security personnel or police to ensure staff safety. Sedate only if necessary 35.",
+   "reason_category": "management_step",
+   "reason": "Staff safety and sedation."
+  },
+  {
+   "element_key": "p34-cdf216aa",
+   "element_id": "p34-rb1-e22",
+   "text": "Manage below.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routes low-risk patients to the assess/advise sections below (routine care, not modelled)."
+  },
+  {
+   "element_key": "p34-e795e94f",
+   "element_id": "p34-rb1-e23",
+   "text": "Refer urgently. While awaiting transport, monitor closely. If patient refuses admission, consider involuntary admission 158.",
+   "reason_category": "management_step",
+   "reason": "Urgent referral / involuntary admission."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "reason": "The positive Current-qualified form is in the check_for; the gate does not match the (no ...) form of a qualified finding to it. Dropping the qualifier would change the page's 'current' meaning."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+   "reason": "The positive Current-qualified form is in the check_for; the gate does not match the (no ...) form of a qualified finding to it. Dropping the qualifier would change the page's 'current' meaning."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Priority level",
+   "decision": "Urgent for any patient who attempted/considered self-harm or suicide, as the box header says; no escalation to Very urgent/Emergency.",
+   "alternatives": "Very urgent for high risk (page only says 'Refer urgently').",
+   "confidence": "high"
+  },
+  {
+   "topic": "Past acts vs current attempt",
+   "decision": "Current attempt = 'Suicide attempt'/'Intentionally harming self' events; past-year acts = 'History of attempted suicide'/'History of deliberate self harm' situations with onset within 1 year.",
+   "alternatives": "'Previous known suicide attempt' event, rejected because it descends from 'Suicide attempt' and would fire Q1.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Low risk rule",
+   "decision": "Probable 'At low risk for suicide' only when Q1, Q2 and all four Q4 findings are explicitly recorded as No.",
+   "alternatives": "Omitting the low-risk rule; modelling the Q3 = No path (not expressible).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Current vs past-month thoughts",
+   "decision": "Q2 uses the 'Current' qualifier; Q3 uses onset within 1 month of the unqualified 'Thoughts of self harm', 'Suicidal thoughts' and 'Planning suicide' (the last two explicit, as in build B).",
+   "alternatives": "A single unqualified form for both (would make every considered patient high risk).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Q1 = Yes and high risk",
+   "decision": "Attempted self-harm/suicide is Urgent (header) but not diagnosed as 'High suicide risk': on the page the Yes branch joins the management box without passing through the 'High risk' box.",
+   "alternatives": "Build A's reading: Q1 = Yes shares the high-risk management box, so diagnose high risk.",
+   "confidence": "low"
+  }
+ ]
+}

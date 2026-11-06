@@ -1,0 +1,1395 @@
+{
+ "edition": "2026",
+ "page": 90,
+ "lisp_file": "90-skin-ulcer-or-non-healing-wound-diagnosis.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "skin ulcer",
+   "confidence": "high",
+   "note": "Presenting complaint (header)."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "non-healing wound",
+   "confidence": "high",
+   "note": "Presenting complaint (header); \"Wound, non-healed\" (morphologic abnormality)."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infected ulcer of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "Infection (surrounding skin red/warm/swollen)",
+   "confidence": "medium",
+   "note": "Infection of the ulcer itself; the parenthesis is read as how to recognise it, not as separate criteria."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Local infection of wound\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "Infection (surrounding skin red/warm/swollen)",
+   "confidence": "medium",
+   "note": "Infection of a non-healing wound (wound, not ulcer, counterpart of \"Infected ulcer of skin\")."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "confused",
+   "confidence": "high",
+   "note": "Acute confusion: a warning sign and existing vocabulary term."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "blisters",
+   "confidence": "high",
+   "note": "Vocabulary term."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Subcutaneous crepitus\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "crepitus",
+   "confidence": "high",
+   "note": "Footnote defines crepitus as under the skin -> Subcutaneous crepitus."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "severe pain",
+   "confidence": "high",
+   "note": "Vocabulary term."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "Muscle pain in legs or buttocks on exercise",
+   "confidence": "high",
+   "note": "Intermittent claudication = muscle pain in legs/buttocks on exercise."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by rest\" \"finding\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "pain at rest",
+   "confidence": "medium",
+   "note": "\"Pain provoked by rest\" (synonym \"rest pain\"); alternative \"Pain in lower limb\" + At rest qualifier."
+  },
+  {
+   "rule": "Check for urgent skin ulcer or non-healing wound conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "gangrene",
+   "confidence": "high",
+   "note": "General gangrene concept (descendants match)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "skin ulcer",
+   "confidence": "high",
+   "note": "Presenting complaint (header)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "non-healing wound",
+   "confidence": "high",
+   "note": "Presenting complaint (header); \"Wound, non-healed\" (morphologic abnormality)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "bedridden",
+   "confidence": "high",
+   "note": "Bed-ridden (finding)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\"))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "in wheelchair",
+   "confidence": "high",
+   "note": "\"Dependence on wheelchair\" (finding) for \"in wheelchair\" (from builder B; closer than \"Confined to chair\")."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "lower leg",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site lower leg (no precoordinated \"ulcer of lower leg\" FSN found)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "foot",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site foot."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "medium",
+   "note": "Reduced foot pulse = Weak arterial pulse with finding_site foot (no precoordinated \"reduced foot pulse\")."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\"))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "high",
+   "note": "Foot pulse absent (finding)."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "darkening of skin around ulcer",
+   "confidence": "medium",
+   "note": "Hyperpigmentation of skin; \"around ulcer\" not expressible as a site."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Varicose veins of lower extremity\" \"disorder\"))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "varicose veins",
+   "confidence": "high",
+   "note": "Varicose veins of lower extremity: the question is about the leg."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "chronic swelling of the leg",
+   "confidence": "high",
+   "note": "Swelling of lower limb + Chronic qualifier."
+  },
+  {
+   "rule": "Check for the cause of a skin ulcer or non-healing wound",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-6118229c"
+   ],
+   "quote": "known with diabetes",
+   "confidence": "high",
+   "note": "Known present qualifier, per Will's briefing."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "skin ulcer",
+   "confidence": "high",
+   "note": "Red box context: \"the patient with a skin ulcer or non-healing wound\" (from builder B)."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "non-healing wound",
+   "confidence": "high",
+   "note": "Red box context: \"the patient with a skin ulcer or non-healing wound\"; \"Wound, non-healed\" (morphologic abnormality), as in VHA vocabulary."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "Muscle pain in legs or buttocks on exercise",
+   "confidence": "high",
+   "note": "Intermittent claudication = muscle pain in legs/buttocks on exercise."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain provoked by rest\" \"finding\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "pain at rest",
+   "confidence": "medium",
+   "note": "\"Pain provoked by rest\" (synonym \"rest pain\"); alternative \"Pain in lower limb\" + At rest qualifier."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "gangrene",
+   "confidence": "high",
+   "note": "General gangrene concept (descendants match)."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Critical lower limb ischemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "critical limb ischaemia likely",
+   "confidence": "high",
+   "note": "\"likely\" in the red box -> probable; referenced from the urgent rule via active_condition."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "bedridden",
+   "confidence": "high",
+   "note": "Bed-ridden (finding)."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\"))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "in wheelchair",
+   "confidence": "high",
+   "note": "\"Dependence on wheelchair\" (finding) for \"in wheelchair\" (from builder B; closer than \"Confined to chair\")."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text."
+  },
+  {
+   "rule": "Diagnose probable pressure ulcer (APC 2026 page 90)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pressure injury\" \"disorder\") probable)",
+   "element_keys": [
+    "p90-fcdc63ed"
+   ],
+   "quote": "Pressure ulcer likely",
+   "confidence": "high",
+   "note": "SNOMED \"Pressure injury\" (disorder) is the current FSN for pressure ulcer."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "bedridden",
+   "confidence": "high",
+   "note": "Bed-ridden (finding). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "in wheelchair",
+   "confidence": "high",
+   "note": "\"Dependence on wheelchair\" (finding) for \"in wheelchair\" (from builder B; closer than \"Confined to chair\"). Encoded as (no X) for the flowchart Q1 No branch."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "lower leg",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site lower leg (no precoordinated \"ulcer of lower leg\" FSN found)."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "foot",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site foot."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\"))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "muscle pain in legs/buttocks on exercise",
+   "confidence": "high",
+   "note": "Intermittent claudication = muscle pain on exercise."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "medium",
+   "note": "Reduced foot pulse = Weak arterial pulse with finding_site foot (no precoordinated \"reduced foot pulse\")."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\"))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "high",
+   "note": "Foot pulse absent (finding)."
+  },
+  {
+   "rule": "Diagnose probable arterial (ischaemic) ulcer (APC 2026 page 90)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Ischemic ulcer of lower limb\" \"disorder\") probable)",
+   "element_keys": [
+    "p90-b1a87024",
+    "p90-f3e2fa86"
+   ],
+   "quote": "Arterial (ischaemic) ulcer likely",
+   "confidence": "high",
+   "note": "\"Ischemic ulcer of lower limb\" (is-a \"Ischemic ulcer\"); the branch is limited to lower leg/foot ulcers (from builder B)."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "bedridden",
+   "confidence": "high",
+   "note": "Bed-ridden (finding). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "in wheelchair",
+   "confidence": "high",
+   "note": "\"Dependence on wheelchair\" (finding) for \"in wheelchair\" (from builder B; closer than \"Confined to chair\"). Encoded as (no X) for the flowchart Q1 No branch."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "lower leg",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site lower leg (no precoordinated \"ulcer of lower leg\" FSN found)."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "foot",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site foot."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "muscle pain in legs/buttocks on exercise",
+   "confidence": "high",
+   "note": "Intermittent claudication = muscle pain on exercise. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "medium",
+   "note": "Reduced foot pulse = Weak arterial pulse with finding_site foot (no precoordinated \"reduced foot pulse\"). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "high",
+   "note": "Foot pulse absent (finding). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "darkening of skin around ulcer",
+   "confidence": "medium",
+   "note": "Hyperpigmentation of skin; \"around ulcer\" not expressible as a site."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Varicose veins of lower extremity\" \"disorder\"))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "varicose veins",
+   "confidence": "high",
+   "note": "Varicose veins of lower extremity: the question is about the leg."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "chronic swelling of the leg",
+   "confidence": "high",
+   "note": "Swelling of lower limb + Chronic qualifier."
+  },
+  {
+   "rule": "Diagnose probable venous ulcer (APC 2026 page 90)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Venous ulcer of lower limb\" \"disorder\") probable)",
+   "element_keys": [
+    "p90-f3e2fa86"
+   ],
+   "quote": "Venous ulcer likely",
+   "confidence": "high",
+   "note": "Venous ulcer of lower limb: the algorithm only reaches it for lower leg/foot ulcers."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "bedridden",
+   "confidence": "high",
+   "note": "Bed-ridden (finding). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependence on wheelchair\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "in wheelchair",
+   "confidence": "high",
+   "note": "\"Dependence on wheelchair\" (finding) for \"in wheelchair\" (from builder B; closer than \"Confined to chair\"). Encoded as (no X) for the flowchart Q1 No branch."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-22244bc9"
+   ],
+   "quote": "ulcer in common pressure ulcer site (see below)",
+   "confidence": "medium",
+   "note": "Pressure sites read from the page figure (dots: occiput, upper spine, scapulae, elbows, sacrum, hips, ankles, heels); the figure has no text. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "lower leg",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site lower leg (no precoordinated \"ulcer of lower leg\" FSN found)."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")))",
+   "element_keys": [
+    "p90-736db02f"
+   ],
+   "quote": "foot",
+   "confidence": "high",
+   "note": "Skin ulcer with finding_site foot."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "muscle pain in legs/buttocks on exercise",
+   "confidence": "high",
+   "note": "Intermittent claudication = muscle pain on exercise. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "medium",
+   "note": "Reduced foot pulse = Weak arterial pulse with finding_site foot (no precoordinated \"reduced foot pulse\"). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pulse absent\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-379fe575"
+   ],
+   "quote": "reduced/absent foot pulses",
+   "confidence": "high",
+   "note": "Foot pulse absent (finding). Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "darkening of skin around ulcer",
+   "confidence": "medium",
+   "note": "Hyperpigmentation of skin; \"around ulcer\" not expressible as a site. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Varicose veins of lower extremity\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "varicose veins",
+   "confidence": "high",
+   "note": "Varicose veins of lower extremity: the question is about the leg. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\"))))",
+   "element_keys": [
+    "p90-4526065c"
+   ],
+   "quote": "chronic swelling of the leg",
+   "confidence": "high",
+   "note": "Swelling of lower limb + Chronic qualifier. Encoded as (no X) for the flowchart No branch; the rule follows the page sequence."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p90-6118229c"
+   ],
+   "quote": "known with diabetes",
+   "confidence": "high",
+   "note": "Known present qualifier, per Will's briefing."
+  },
+  {
+   "rule": "Diagnose probable diabetic ulcer (APC 2026 page 90)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Skin ulcer due to diabetes mellitus\" \"disorder\") probable)",
+   "element_keys": [
+    "p90-dbe3c4de"
+   ],
+   "quote": "Diabetic ulcer likely",
+   "confidence": "high",
+   "note": "\"Skin ulcer due to diabetes mellitus\" (disorder)."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "skin ulcer",
+   "confidence": "high",
+   "note": "Presenting complaint (header)."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "non-healing wound",
+   "confidence": "high",
+   "note": "Presenting complaint (header); \"Wound, non-healed\" (morphologic abnormality)."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infected ulcer of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "Infection (surrounding skin red/warm/swollen)",
+   "confidence": "medium",
+   "note": "Infection of the ulcer itself; the parenthesis is read as how to recognise it, not as separate criteria."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Local infection of wound\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "Infection (surrounding skin red/warm/swollen)",
+   "confidence": "medium",
+   "note": "Infection of a non-healing wound (wound, not ulcer, counterpart of \"Infected ulcer of skin\")."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": "Exactly as written; routine vital."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "pulse > 100",
+   "confidence": "high",
+   "note": "Pulse, function is the app heart-rate vital; strict > as written."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": ">= as written."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "confused",
+   "confidence": "high",
+   "note": "Acute confusion: a warning sign and existing vocabulary term."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "blisters",
+   "confidence": "high",
+   "note": "Vocabulary term."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Subcutaneous crepitus\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "crepitus",
+   "confidence": "high",
+   "note": "Footnote defines crepitus as under the skin -> Subcutaneous crepitus."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p90-d72f0020"
+   ],
+   "quote": "severe pain",
+   "confidence": "high",
+   "note": "Vocabulary term."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with critical limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "skin ulcer",
+   "confidence": "high",
+   "note": "Presenting complaint (header)."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with critical limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p90-bd234cbf"
+   ],
+   "quote": "non-healing wound",
+   "confidence": "high",
+   "note": "Presenting complaint (header); \"Wound, non-healed\" (morphologic abnormality)."
+  },
+  {
+   "rule": "Urgent: skin ulcer or non-healing wound with critical limb ischaemia",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))",
+   "element_keys": [
+    "p90-dcd5731b"
+   ],
+   "quote": "critical limb ischaemia likely",
+   "confidence": "high",
+   "note": "Probable diagnosis from the CLI rule."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p90-3796d80f",
+   "element_id": "p90-rb1-e04",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "\"Manage and refer urgently\" header: management, out of scope."
+  },
+  {
+   "element_key": "p90-8502cc39",
+   "element_id": "p90-rb1-e05",
+   "text": "If SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluid for SBP < 80: management/medicine, out of scope."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Occipital region structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of vertebral column\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of scapular region of back\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Elbow region structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Sacral region back structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Hip region structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin ulcer\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Heel structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  },
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\"))))",
+   "reason": "Gate limitation: the (no X) form of a finding with a finding_site or qualifier renders with the \"No\" value before the attribute, so positive() does not strip it; the positive X is in the check_for of \"Check for the cause of a skin ulcer or non-healing wound\". Kept for the flowchart No branch."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Flowchart No branches",
+   "decision": "Each later likely-diagnosis rule requires the earlier questions answered No, using (no X) for each finding; Q1 No = (not bedridden and not in chair) or ulcer at none of the pressure sites.",
+   "alternatives": "Independent rules without negation (simpler, but several ulcer types could be probable at once).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pressure ulcer sites",
+   "decision": "Eight sites from the figure as Skin ulcer + finding_site.",
+   "alternatives": "One unsited criterion (not expressible); different site concepts for the hip/upper-spine dots.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Infection",
+   "decision": "Infected ulcer of skin or Local infection of wound; the parenthetical signs are how to recognise infection.",
+   "alternatives": "Erythema/warm skin/swelling as criteria, or Cellulitis.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Wheelchair",
+   "decision": "Dependence on wheelchair (finding).",
+   "alternatives": "Confined to chair (builder A).",
+   "confidence": "high"
+  },
+  {
+   "topic": "Lower leg or foot ulcer",
+   "decision": "Required (Q2 = Yes) for arterial, venous and diabetic rules; trigger not repeated in probable rules.",
+   "alternatives": "",
+   "confidence": "high"
+  }
+ ]
+}

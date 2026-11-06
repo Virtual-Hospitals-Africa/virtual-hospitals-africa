@@ -1,0 +1,904 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 102,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.4,
+    142.7,
+    806.0,
+    215.1
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p102-rb1-e01",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with suspected TB and any of:",
+   "bbox": [
+    289.2,
+    147.8,
+    554.0,
+    158.9
+   ],
+   "key": "p102-8d1cf36b"
+  },
+  {
+   "id": "p102-rb1-e02",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 3,
+   "parent": null,
+   "text": "Respiratory rate ≥ 30",
+   "bbox": [
+    60.3,
+    158.2,
+    145.4,
+    169.0
+   ],
+   "key": "p102-d73eb0c6"
+  },
+  {
+   "id": "p102-rb1-e03",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Breathlessness at rest or while talking",
+   "bbox": [
+    231.1,
+    158.2,
+    380.0,
+    169.0
+   ],
+   "key": "p102-0dc99669"
+  },
+  {
+   "id": "p102-rb1-e04",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Drowsy/confused",
+   "bbox": [
+    412.0,
+    158.2,
+    484.8,
+    169.0
+   ],
+   "key": "p102-12ed0574"
+  },
+  {
+   "id": "p102-rb1-e05",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Persistent vomiting",
+   "bbox": [
+    514.3,
+    158.2,
+    596.0,
+    169.0
+   ],
+   "key": "p102-56ca0cdf"
+  },
+  {
+   "id": "p102-rb1-e06",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Unable to walk unaided",
+   "bbox": [
+    639.7,
+    158.2,
+    738.0,
+    169.0
+   ],
+   "key": "p102-3b56083a"
+  },
+  {
+   "id": "p102-rb1-e07",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 3,
+   "parent": null,
+   "text": "Pulse > 120",
+   "bbox": [
+    60.3,
+    168.2,
+    109.7,
+    179.0
+   ],
+   "key": "p102-2fbcc260"
+  },
+  {
+   "id": "p102-rb1-e08",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Prominent use of breathing muscles",
+   "bbox": [
+    231.1,
+    168.2,
+    374.6,
+    179.0
+   ],
+   "key": "p102-ada0c81e"
+  },
+  {
+   "id": "p102-rb1-e09",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Neck stiffness",
+   "bbox": [
+    412.0,
+    168.2,
+    469.9,
+    179.0
+   ],
+   "key": "p102-937da012"
+  },
+  {
+   "id": "p102-rb1-e10",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "New weakness of arm/leg",
+   "bbox": [
+    514.3,
+    168.2,
+    618.3,
+    179.0
+   ],
+   "key": "p102-010b5c09"
+  },
+  {
+   "id": "p102-rb1-e11",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe malnutrition or wasted",
+   "bbox": [
+    639.7,
+    168.2,
+    760.6,
+    179.0
+   ],
+   "key": "p102-d66060d7"
+  },
+  {
+   "id": "p102-rb1-e12",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 3,
+   "parent": null,
+   "text": "Temperature > 39°C",
+   "bbox": [
+    60.3,
+    178.2,
+    142.0,
+    189.0
+   ],
+   "key": "p102-edc01452"
+  },
+  {
+   "id": "p102-rb1-e13",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected TB and any of:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Coughs up ≥ 1 tablespoon of fresh blood",
+   "bbox": [
+    231.1,
+    178.2,
+    393.2,
+    189.0
+   ],
+   "key": "p102-ac568a06"
+  },
+  {
+   "id": "p102-rb1-e14",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 188.9,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.1,
+    188.9,
+    157.0,
+    199.9
+   ],
+   "key": "p102-a177ff83"
+  },
+  {
+   "id": "p102-rb1-e15",
+   "page": 102,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 188.9,
+   "indent": 1,
+   "parent": null,
+   "text": "If breathing difficulty, give face mask oxygen to keep saturation ≥ 92% and ceftriaxone 1g IV2/IM to treat for suspected severe pneumonia.",
+   "bbox": [
+    51.1,
+    199.0,
+    589.0,
+    209.9
+   ],
+   "key": "p102-b5f8b47b"
+  },
+  {
+   "id": "p102-out-e01",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check for TB if the patient has any TB symptoms: current cough, weight loss, drenching night sweats or fever. Also test for TB, even in the absence of symptoms, if:",
+   "bbox": [
+    51.0,
+    89.5,
+    644.5,
+    99.7
+   ],
+   "key": "p102-3b97e746"
+  },
+  {
+   "id": "p102-out-e02",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- DS-TB in last 2 years: check for TB yearly for 2 years after completing TB treatment - PLHIV: at diagnosis, at re-engagement if interrupted ART > 90 days, yearly (when viral load checked) and if",
+   "bbox": [
+    56.7,
+    100.3,
+    450.2,
+    120.5
+   ],
+   "key": "p102-c40f108f"
+  },
+  {
+   "id": "p102-out-e03",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "pregnant at first antenatal visit",
+   "bbox": [
+    62.4,
+    120.3,
+    173.9,
+    130.5
+   ],
+   "key": "p102-505d4c58"
+  },
+  {
+   "id": "p102-out-e04",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- TB contact1 - Abnormal findings on digital CXR + computer aided detection (CAD) screening",
+   "bbox": [
+    485.4,
+    100.3,
+    779.4,
+    120.5
+   ],
+   "key": "p102-688f44a4"
+  },
+  {
+   "id": "p102-out-e05",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Start the workup to diagnose TB in the patient not needing urgent attention • Determine whether the patient has been on TB treatment and interrupted treatment for > 2 months: if DS-TB 110; if INH-resistant TB or RR-TB, refer to doctor or discuss with PCAC/NCAC 200. • Send 1 sputum sample for TB NAAT: demonstrate how to give sputum sample 105. If unable to produce sputum, induce sputum 105 and refer for chest x-ray 104. Doctor to review chest x-ray. - Ensure specimen type, site and patient details clearly indicated on request form. Indicate on the request form: patient's HIV status and whether the patient had TB in past 2 years. • Test for HIV 124. • If HIV and TB symptoms and CD4 ≤ 200 or WHO stage 3 or 4 disease, also do urine LAM test: - If LAM positive, diagnose TB on urine LAM, start DS-TB treatment same day 106 and follow up TB NAAT result. If LAM negative, manage according to TB NAAT results below. • Ask the patient to return for results after 2 days and manage further according to results below. If TB NAAT unsuccessful, send repeat sputum sample for TB NAAT.",
+   "bbox": [
+    51.2,
+    227.2,
+    775.6,
+    308.3
+   ],
+   "key": "p102-2b801a97"
+  },
+  {
+   "id": "p102-out-e06",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Rifampicin resistant or both rifampicin and INH-resistant",
+   "bbox": [
+    385.2,
+    408.1,
+    488.7,
+    428.3
+   ],
+   "key": "p102-63b01687"
+  },
+  {
+   "id": "p102-out-e07",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check current DST result:",
+   "bbox": [
+    249.9,
+    384.8,
+    341.6,
+    395.0
+   ],
+   "key": "p102-cdbf5d64"
+  },
+  {
+   "id": "p102-out-e08",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Send sputum: • If rifampicin sensitive, do baseline smear and record result. • If rifampicin unsuccessful do smear, culture and DST.",
+   "bbox": [
+    102.5,
+    431.4,
+    240.1,
+    481.6
+   ],
+   "key": "p102-133dd53b"
+  },
+  {
+   "id": "p102-out-e09",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Start DS-TB treatment same day 106 and review culture and DST",
+   "bbox": [
+    107.0,
+    494.8,
+    236.1,
+    515.0
+   ],
+   "key": "p102-bf03d836"
+  },
+  {
+   "id": "p102-out-e10",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "results 104.",
+   "bbox": [
+    145.5,
+    514.1,
+    195.6,
+    525.0
+   ],
+   "key": "p102-e9d1ac25"
+  },
+  {
+   "id": "p102-out-e11",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Rifampicin sensitive or unsuccessful Rifampicin sensitive and",
+   "bbox": [
+    105.0,
+    408.1,
+    358.5,
+    418.3
+   ],
+   "key": "p102-164436b0"
+  },
+  {
+   "id": "p102-out-e12",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "INH-resistant",
+   "bbox": [
+    288.8,
+    418.1,
+    335.8,
+    428.3
+   ],
+   "key": "p102-4e9a7c2a"
+  },
+  {
+   "id": "p102-out-e13",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Diagnose INH-resistant TB:",
+   "bbox": [
+    259.6,
+    440.6,
+    365.0,
+    451.6
+   ],
+   "key": "p102-961ce2fa"
+  },
+  {
+   "id": "p102-out-e14",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Send sputum for DR-TB",
+   "bbox": [
+    269.7,
+    451.4,
+    356.8,
+    461.6
+   ],
+   "key": "p102-1ee08fdc"
+  },
+  {
+   "id": "p102-out-e15",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "reflex test.",
+   "bbox": [
+    293.7,
+    461.4,
+    330.9,
+    471.6
+   ],
+   "key": "p102-23053e52"
+  },
+  {
+   "id": "p102-out-e16",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Start INH-resistant TB treatment 107 and review reflex test results",
+   "bbox": [
+    268.4,
+    484.8,
+    358.0,
+    515.0
+   ],
+   "key": "p102-e89722ef"
+  },
+  {
+   "id": "p102-out-e17",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Send a 2nd sputum sample",
+   "bbox": [
+    386.0,
+    441.4,
+    488.5,
+    451.6
+   ],
+   "key": "p102-71ca2e73"
+  },
+  {
+   "id": "p102-out-e18",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "for DR-TB reflex test.",
+   "bbox": [
+    399.7,
+    451.4,
+    472.8,
+    461.6
+   ],
+   "key": "p102-3df70f20"
+  },
+  {
+   "id": "p102-out-e19",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TUBERCULOSIS (TB): DIAGNOSIS",
+   "bbox": [
+    288.8,
+    48.7,
+    552.4,
+    71.0
+   ],
+   "key": "p102-21b979e6"
+  },
+  {
+   "id": "p102-out-e20",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Diagnose RR-TB: • Refer or start RR-TB treatment 111. • Review reflex test results 104.",
+   "bbox": [
+    383.5,
+    474.0,
+    480.9,
+    525.0
+   ],
+   "key": "p102-7728f754"
+  },
+  {
+   "id": "p102-out-e21",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    59.1,
+    360.3,
+    71.0,
+    370.5
+   ],
+   "key": "p102-bfa056d1"
+  },
+  {
+   "id": "p102-out-e22",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MTB detected: TB NAAT positive Was the patient treated for TB in the last 2 years?",
+   "bbox": [
+    178.0,
+    325.8,
+    350.7,
+    346.8
+   ],
+   "key": "p102-758f428c"
+  },
+  {
+   "id": "p102-out-e23",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MTB detected: TB NAAT trace Was the patient treated for TB in the last 2 years?",
+   "bbox": [
+    568.4,
+    325.8,
+    741.1,
+    346.8
+   ],
+   "key": "p102-a680223d"
+  },
+  {
+   "id": "p102-out-e24",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TB symptoms and signs present and/",
+   "bbox": [
+    663.3,
+    384.7,
+    798.6,
+    394.9
+   ],
+   "key": "p102-f0862318"
+  },
+  {
+   "id": "p102-out-e25",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "or abnormal CXR suggestive TB? • Send sputum for culture and DST. • TB symptoms and signs present?",
+   "bbox": [
+    507.4,
+    384.7,
+    789.6,
+    404.9
+   ],
+   "key": "p102-614fe580"
+  },
+  {
+   "id": "p102-out-e26",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Continue routine care.",
+   "bbox": [
+    517.5,
+    441.4,
+    563.0,
+    461.6
+   ],
+   "key": "p102-863e00e0"
+  },
+  {
+   "id": "p102-out-e27",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Start DS-TB treatment",
+   "bbox": [
+    625.4,
+    474.2,
+    704.8,
+    484.4
+   ],
+   "key": "p102-ce6f3d9f"
+  },
+  {
+   "id": "p102-out-e28",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review culture and DST results 104.",
+   "bbox": [
+    553.5,
+    497.6,
+    692.5,
+    508.4
+   ],
+   "key": "p102-fda2c52a"
+  },
+  {
+   "id": "p102-out-e29",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    693.2,
+    418.0,
+    705.1,
+    428.2
+   ],
+   "key": "p102-6ef809e7"
+  },
+  {
+   "id": "p102-out-e30",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    554.4,
+    360.3,
+    566.4,
+    370.5
+   ],
+   "key": "p102-00fdd25c"
+  },
+  {
+   "id": "p102-out-e31",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Continue routine care. Send sputum for",
+   "bbox": [
+    668.6,
+    441.4,
+    802.1,
+    461.6
+   ],
+   "key": "p102-d1047051"
+  },
+  {
+   "id": "p102-out-e32",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "culture and DST.",
+   "bbox": [
+    669.4,
+    451.4,
+    729.0,
+    461.6
+   ],
+   "key": "p102-4a8cf562"
+  },
+  {
+   "id": "p102-out-e33",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes No",
+   "bbox": [
+    535.0,
+    418.0,
+    622.4,
+    428.2
+   ],
+   "key": "p102-ea16e7d5"
+  },
+  {
+   "id": "p102-out-e34",
+   "page": 102,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1A TB contact refers to any person who shared an enclosed space (at school, socially, or in a household setting), for ≥ 1 night or for frequent/extended daytime periods, with an adult/adolescent with pulmonary TB (\"index patient\"), during the 3-month period before the index patient started their TB treatment. 2Do not mix Ringer's lactate and IV ceftriaxone. If severe penicillin allergy (previous angioedema, anaphylaxis or urticaria), discuss with doctor.",
+   "bbox": [
+    34.0,
+    536.0,
+    797.3,
+    552.5
+   ],
+   "key": "p102-f6aec8cc"
+  }
+ ]
+}

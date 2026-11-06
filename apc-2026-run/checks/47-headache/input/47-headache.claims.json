@@ -1,0 +1,1426 @@
+{
+ "page": 47,
+ "lisp_file": "47-headache.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent headache conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-537e59c7"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "1 week postpartum"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vision\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-29de8394"
+   ],
+   "quote": "New vision problems"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\"))",
+   "element_keys": [
+    "p47-29de8394"
+   ],
+   "quote": "eye pain"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-24edc0aa"
+   ],
+   "quote": "Sudden severe headache"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-24edc0aa"
+   ],
+   "quote": "Sudden severe headache or dizziness"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-2bf1f17b"
+   ],
+   "quote": "getting worse"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Frequent headache\" \"finding\"))",
+   "element_keys": [
+    "p47-2bf1f17b"
+   ],
+   "quote": "more frequent"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wakes up during night\" \"finding\"))",
+   "element_keys": [
+    "p47-c873b15d"
+   ],
+   "quote": "wakes patient"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Morning headache\" \"finding\"))",
+   "element_keys": [
+    "p47-c873b15d"
+   ],
+   "quote": "worse in the morning"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "drowsy"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-6d185854"
+   ],
+   "quote": "Persistent headache"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\"))",
+   "element_keys": [
+    "p47-6d185854"
+   ],
+   "quote": "since starting ART"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p47-ec13b7ac"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p47-961a59c0"
+   ],
+   "quote": "Persistent nausea/vomiting"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-942c02e8"
+   ],
+   "quote": "first seizure"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-91f48468"
+   ],
+   "quote": "Recent head injury"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent headache conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anisocoria\" \"disorder\"))",
+   "element_keys": [
+    "p47-5e0dd336"
+   ],
+   "quote": "Unequal pupils"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Forehead structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-3a0b65bf"
+   ],
+   "quote": "pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cheek structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-3a0b65bf"
+   ],
+   "quote": "pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p47-71e24623"
+   ],
+   "quote": "tick bite"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Throbbing headache\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-eef9c1a5"
+   ],
+   "quote": "recurrent headaches that are throbbing"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p47-eef9c1a5"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Photophobia\" \"finding\"))",
+   "element_keys": [
+    "p47-17444a17"
+   ],
+   "quote": "light/noise sensitivity"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Phonophobia\" \"finding\"))",
+   "element_keys": [
+    "p47-17444a17"
+   ],
+   "quote": "light/noise sensitivity"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness sensation\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Head structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-b1c981c6"
+   ],
+   "quote": "Tightness around head"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized headache\" \"finding\"))",
+   "element_keys": [
+    "p47-b1c981c6",
+    "p47-b4e8e49e"
+   ],
+   "quote": "generalised pressure-like pain"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-d6c7fbd4",
+    "p47-729b6fd9"
+   ],
+   "quote": "Constant aching"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skeletal muscle structure of neck\" \"body structure\")))",
+   "element_keys": [
+    "p47-b3e697d4",
+    "p47-c098fa07"
+   ],
+   "quote": "tender neck muscles"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of headache not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temporal headache\" \"finding\"))",
+   "element_keys": [
+    "p47-b1c981c6"
+   ],
+   "quote": "pain over temples"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-537e59c7"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "drowsy"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable meningitis in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-537e59c7"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible stroke in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "consider stroke"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-537e59c7"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible TIA in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "TIA"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Forehead structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-3a0b65bf"
+   ],
+   "quote": "pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cheek structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-3a0b65bf"
+   ],
+   "quote": "pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable sinusitis in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Sinusitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-a386bc67"
+   ],
+   "quote": "Sinusitis likely"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-12196c85"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p47-71e24623"
+   ],
+   "quote": "tick bite"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable tick bite fever in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"African tick bite fever\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-71e24623"
+   ],
+   "quote": "tick bite fever likely"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "patient with headache"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-4509b4fe"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Recent\" \"qualifier value\"))))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Thick\" \"qualifier value\"))))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Thick\" \"qualifier value\"))))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Forehead structure\" \"body structure\"))))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Cheek structure\" \"body structure\"))))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "If none of above"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible acute viral infection in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") possible)",
+   "element_keys": [
+    "p47-725fbe7e"
+   ],
+   "quote": "treat as acute viral infection"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable migraine in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Throbbing headache\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-eef9c1a5"
+   ],
+   "quote": "recurrent headaches that are throbbing"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable migraine in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p47-eef9c1a5"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable migraine in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Photophobia\" \"finding\"))",
+   "element_keys": [
+    "p47-17444a17"
+   ],
+   "quote": "light/noise sensitivity"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable migraine in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Phonophobia\" \"finding\"))",
+   "element_keys": [
+    "p47-17444a17"
+   ],
+   "quote": "light/noise sensitivity"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable migraine in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Migraine\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-83c09572"
+   ],
+   "quote": "Migraine likely"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable tension headache in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "patient with headache"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable tension headache in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness sensation\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Head structure\" \"body structure\")))",
+   "element_keys": [
+    "p47-b1c981c6"
+   ],
+   "quote": "Tightness around head"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable tension headache in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized headache\" \"finding\"))",
+   "element_keys": [
+    "p47-b1c981c6",
+    "p47-b4e8e49e"
+   ],
+   "quote": "generalised pressure-like pain"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable tension headache in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension-type headache\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-0b74d2a4",
+    "p47-9fe1dd63"
+   ],
+   "quote": "Tension headache likely"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable muscular neck pain in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-146580d4"
+   ],
+   "quote": "patient with headache"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable muscular neck pain in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-d6c7fbd4",
+    "p47-729b6fd9"
+   ],
+   "quote": "Constant aching"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable muscular neck pain in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skeletal muscle structure of neck\" \"body structure\")))",
+   "element_keys": [
+    "p47-b3e697d4",
+    "p47-c098fa07"
+   ],
+   "quote": "tender neck muscles"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable muscular neck pain in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Myofascial neck pain\" \"finding\") probable)",
+   "element_keys": [
+    "p47-6ee7523f",
+    "p47-1d1b1934",
+    "p47-384e4f74"
+   ],
+   "quote": "Muscular neck pain likely"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable giant cell arteritis in headache",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temporal headache\" \"finding\"))",
+   "element_keys": [
+    "p47-b1c981c6"
+   ],
+   "quote": "pain over temples"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable giant cell arteritis in headache",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Giant cell arteritis\" \"disorder\") probable)",
+   "element_keys": [
+    "p47-534c194c",
+    "p47-db418138"
+   ],
+   "quote": "Giant cell arteritis likely"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p47-537e59c7"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "1 week postpartum"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "BP ≥ 140/90"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p47-5dac6f21"
+   ],
+   "quote": "BP ≥ 140/90"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p47-70cc9737"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p47-70cc9737"
+   ],
+   "quote": "BP ≥ 180/110"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face, arm or leg"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p47-0c149e18"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vision\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-29de8394"
+   ],
+   "quote": "New vision problems"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\"))",
+   "element_keys": [
+    "p47-29de8394"
+   ],
+   "quote": "eye pain"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-24edc0aa"
+   ],
+   "quote": "Sudden severe headache"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-24edc0aa"
+   ],
+   "quote": "Sudden severe headache or dizziness"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-2bf1f17b"
+   ],
+   "quote": "getting worse"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Frequent headache\" \"finding\"))",
+   "element_keys": [
+    "p47-2bf1f17b"
+   ],
+   "quote": "more frequent"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wakes up during night\" \"finding\"))",
+   "element_keys": [
+    "p47-c873b15d"
+   ],
+   "quote": "wakes patient"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Morning headache\" \"finding\"))",
+   "element_keys": [
+    "p47-c873b15d"
+   ],
+   "quote": "worse in the morning"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p47-569bae21"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Chronic persistent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-6d185854"
+   ],
+   "quote": "Persistent headache"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\"))",
+   "element_keys": [
+    "p47-6d185854"
+   ],
+   "quote": "since starting ART"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p47-ec13b7ac"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p47-961a59c0"
+   ],
+   "quote": "Persistent nausea/vomiting"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"First episode\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-942c02e8"
+   ],
+   "quote": "first seizure"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p47-91f48468"
+   ],
+   "quote": "Recent head injury"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: headache with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anisocoria\" \"disorder\"))",
+   "element_keys": [
+    "p47-5e0dd336"
+   ],
+   "quote": "Unequal pupils"
+  }
+ ]
+}

@@ -1,0 +1,742 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 122,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    119.2,
+    806.4,
+    530.4
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p122-rb1-e01",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "bbox": [
+    238.4,
+    124.2,
+    603.5,
+    135.4
+   ],
+   "key": "p122-d3c61078"
+  },
+  {
+   "id": "p122-rb1-e02",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Exposure to blood, blood-stained fluid/tissue, pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid, vaginal secretions, semen or breast milk",
+   "bbox": [
+    119.8,
+    139.0,
+    716.6,
+    149.8
+   ],
+   "key": "p122-ece680e3"
+  },
+  {
+   "id": "p122-rb1-e03",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Human bite severe enough to cause bleeding",
+   "bbox": [
+    119.8,
+    149.0,
+    299.3,
+    159.8
+   ],
+   "key": "p122-f91d1f4a"
+  },
+  {
+   "id": "p122-rb1-e04",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes: was there sexual contact, sharps injury, splash to eye/open wound/mouth/nose?",
+   "bbox": [
+    231.6,
+    169.0,
+    555.0,
+    179.8
+   ],
+   "key": "p122-f4e69d03"
+  },
+  {
+   "id": "p122-rb1-e05",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    761.3,
+    169.0,
+    772.2,
+    179.8
+   ],
+   "key": "p122-a1c52d85"
+  },
+  {
+   "id": "p122-rb1-e06",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Yes: STEP 1. Give exposed patient immediate attention:",
+   "section_y": 189.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes: STEP 1. Give exposed patient immediate attention:",
+   "bbox": [
+    256.0,
+    189.0,
+    475.4,
+    200.1
+   ],
+   "key": "p122-4f2c9b15"
+  },
+  {
+   "id": "p122-rb1-e07",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    706.0,
+    189.0,
+    717.0,
+    199.9
+   ],
+   "key": "p122-2c009c2b"
+  },
+  {
+   "id": "p122-rb1-e08",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If broken skin, clean area immediately with soap and water.",
+   "bbox": [
+    151.0,
+    199.3,
+    382.1,
+    210.1
+   ],
+   "key": "p122-442d3cb9"
+  },
+  {
+   "id": "p122-rb1-e09",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If splash to eye, mouth or nose, immediately rinse mouth/nose or irrigate eye thoroughly with sterile water.",
+   "bbox": [
+    151.0,
+    209.3,
+    564.9,
+    220.1
+   ],
+   "key": "p122-7adc89b5"
+  },
+  {
+   "id": "p122-rb1-e10",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If human bite severe enough to cause bleeding, prevent hepatitis B only. Risk of HIV transmission is negligible and there is no need for HIV PEP.",
+   "bbox": [
+    693.8,
+    209.1,
+    783.7,
+    279.9
+   ],
+   "key": "p122-f2b3f849"
+  },
+  {
+   "id": "p122-rb1-e11",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "bbox": [
+    165.8,
+    228.7,
+    565.5,
+    239.9
+   ],
+   "key": "p122-50cf76d4"
+  },
+  {
+   "id": "p122-rb1-e12",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient known HIV positive",
+   "bbox": [
+    64.5,
+    249.1,
+    121.7,
+    269.9
+   ],
+   "key": "p122-1552264b"
+  },
+  {
+   "id": "p122-rb1-e13",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient HIV negative or unknown: obtain consent and do HIV rapid test 124.",
+   "bbox": [
+    261.5,
+    249.3,
+    559.2,
+    260.1
+   ],
+   "key": "p122-dcb6ef42"
+  },
+  {
+   "id": "p122-rb1-e14",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Positive",
+   "bbox": [
+    177.8,
+    269.3,
+    207.4,
+    280.1
+   ],
+   "key": "p122-9d8e81dc"
+  },
+  {
+   "id": "p122-rb1-e15",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Negative",
+   "bbox": [
+    303.8,
+    269.3,
+    338.1,
+    280.1
+   ],
+   "key": "p122-b30bfa32"
+  },
+  {
+   "id": "p122-rb1-e16",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Results inconclusive",
+   "bbox": [
+    427.7,
+    269.3,
+    504.5,
+    280.1
+   ],
+   "key": "p122-44a15641"
+  },
+  {
+   "id": "p122-rb1-e17",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient refuses HIV rapid test",
+   "bbox": [
+    556.4,
+    269.3,
+    666.2,
+    280.1
+   ],
+   "key": "p122-df97ddef"
+  },
+  {
+   "id": "p122-rb1-e18",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "For all other exposures, reassure that HIV and hepatitis transmission is unlikely, avoid giving PEP.",
+   "bbox": [
+    693.8,
+    279.1,
+    784.4,
+    339.9
+   ],
+   "key": "p122-6786a848"
+  },
+  {
+   "id": "p122-rb1-e19",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Avoid giving HIV PEP, give instead routine HIV care 126.",
+   "bbox": [
+    83.6,
+    289.3,
+    214.2,
+    310.1
+   ],
+   "key": "p122-2159e4f1"
+  },
+  {
+   "id": "p122-rb1-e20",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Give HIV PEP1 only if ≤ 72 hours since exposure (ideally within 1 hour) for 28 days:",
+   "bbox": [
+    309.1,
+    289.1,
+    623.1,
+    300.1
+   ],
+   "key": "p122-aee433ff"
+  },
+  {
+   "id": "p122-rb1-e21",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 1,
+   "parent": null,
+   "text": "GiveTDF 300mg + 3TC 300mg + DTG 50mg once daily for 28 days as a fixed combination tablet (TLD). If kidney disease, give instead AZT 300mg + 3TC 150mg 12 hourly plus DTG 50mg once daily2.",
+   "bbox": [
+    258.3,
+    299.3,
+    671.7,
+    320.1
+   ],
+   "key": "p122-4124454c"
+  },
+  {
+   "id": "p122-rb1-e22",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Check for medication interactions and adjust doses if needed 133, especially TB, antiseizure medication, contraceptives and other common medications like: calcium, iron, zinc, antacids, metformin.",
+   "bbox": [
+    258.3,
+    319.3,
+    671.3,
+    340.1
+   ],
+   "key": "p122-e8dacaa9"
+  },
+  {
+   "id": "p122-rb1-e23",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 1,
+   "parent": null,
+   "text": "If source is failing 2nd line ART, discuss PEP with HIV hotline 200.",
+   "bbox": [
+    258.3,
+    339.3,
+    521.2,
+    350.1
+   ],
+   "key": "p122-9de20e54"
+  },
+  {
+   "id": "p122-rb1-e24",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient exposed to infectious fluid. Does patient have either of:",
+   "section_y": 124.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If unsure, discuss with HIV hotline 200 or specialist.",
+   "bbox": [
+    693.8,
+    339.1,
+    785.1,
+    369.9
+   ],
+   "key": "p122-d87a3a75"
+  },
+  {
+   "id": "p122-rb1-e25",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "STEP 3. Take blood from exposed patient: Do HIV ELISA, unless known HIV positive. If giving TDF, do creatinine (eGFR). If giving AZT, do FBC.",
+   "bbox": [
+    95.2,
+    359.0,
+    638.1,
+    370.1
+   ],
+   "key": "p122-379f19bb"
+  },
+  {
+   "id": "p122-rb1-e26",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Send blood for HBsAb titre (unless documented HBsAb titre ≥ 10).",
+   "bbox": [
+    295.5,
+    379.3,
+    548.3,
+    390.1
+   ],
+   "key": "p122-e6f979b4"
+  },
+  {
+   "id": "p122-rb1-e27",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "If source hepatitis C positive/unknown, do hepatitis C antibody. If source RPR positive/unknown, test for syphilis 66.",
+   "bbox": [
+    196.0,
+    389.3,
+    647.8,
+    400.1
+   ],
+   "key": "p122-4e294967"
+  },
+  {
+   "id": "p122-rb1-e28",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "STEP 4. Take blood from source if possible and if source consents:",
+   "section_y": 409.0,
+   "indent": 0,
+   "parent": null,
+   "text": "STEP 4. Take blood from source if possible and if source consents:",
+   "bbox": [
+    291.4,
+    409.0,
+    550.5,
+    420.1
+   ],
+   "key": "p122-6c867d6b"
+  },
+  {
+   "id": "p122-rb1-e29",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Do rapid HIV test and send blood for HIV ELISA, HBsAg and hepatitis C antibody. If human bite, only do HBsAg. Also test for syphilis 66.",
+   "bbox": [
+    55.3,
+    419.3,
+    569.2,
+    430.1
+   ],
+   "key": "p122-5732d81b"
+  },
+  {
+   "id": "p122-rb1-e30",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 1,
+   "parent": null,
+   "text": "If source HIV rapid negative, no need to continue PEP unless signs of acute HIV infection (history of flu-like symptoms - fever, sore throat, headache). If unsure, discuss PEP with HIV hotline 200.",
+   "bbox": [
+    55.3,
+    429.3,
+    786.6,
+    440.1
+   ],
+   "key": "p122-cdff65fd"
+  },
+  {
+   "id": "p122-rb1-e31",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "STEP 5. Give hepatitis B PEP if needed:",
+   "section_y": 449.0,
+   "indent": 0,
+   "parent": null,
+   "text": "STEP 5. Give hepatitis B PEP if needed:",
+   "bbox": [
+    344.8,
+    449.0,
+    497.1,
+    460.2
+   ],
+   "key": "p122-b1ddc7c9"
+  },
+  {
+   "id": "p122-rb1-e32",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "If exposed patient unvaccinated, vaccinations incomplete or HBsAb titre < 10, give 1st dose of hepatitis B vaccine 1mL IM within 7 days if sharps injury or within 14 days if sexual exposure.",
+   "bbox": [
+    61.8,
+    459.3,
+    782.0,
+    470.2
+   ],
+   "key": "p122-4d182c9e"
+  },
+  {
+   "id": "p122-rb1-e33",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Also give hepatitis B immunoglobulin (HBIG)3 500IU IM as soon as possible, within 7 days of exposure.",
+   "bbox": [
+    224.6,
+    469.3,
+    617.3,
+    480.2
+   ],
+   "key": "p122-7b0245c2"
+  },
+  {
+   "id": "p122-rb1-e34",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "STEP 6. Continue to assess and manage the patient:",
+   "section_y": 489.0,
+   "indent": 0,
+   "parent": null,
+   "text": "STEP 6. Continue to assess and manage the patient:",
+   "bbox": [
+    318.6,
+    489.0,
+    523.3,
+    500.2
+   ],
+   "key": "p122-8c9424fe"
+  },
+  {
+   "id": "p122-rb1-e35",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "If sexual assault 32. If emergency contraception needed 170. Record correct contact details in case of abnormal results. Review patient and blood results within 3 days 123.",
+   "bbox": [
+    81.9,
+    499.4,
+    761.9,
+    510.2
+   ],
+   "key": "p122-71be4d95"
+  },
+  {
+   "id": "p122-rb1-e36",
+   "page": 122,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure. Check HIV status:",
+   "section_y": 228.7,
+   "indent": 0,
+   "parent": null,
+   "text": "AZT – zidovudine; DTG – dolutegravir; FTC – emtricitabine; TDF – tenofovir; 3TC – lamivudine; HBsAg – Hepatitis B surface antigen; HBsAbs – Hepatitis B surface antibody",
+   "bbox": [
+    149.3,
+    515.6,
+    692.6,
+    524.8
+   ],
+   "key": "p122-d9586564"
+  },
+  {
+   "id": "p122-out-e01",
+   "page": 122,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "HIV: POST-EXPOSURE PROPHYLAXIS (PEP)",
+   "bbox": [
+    249.6,
+    48.5,
+    592.3,
+    70.8
+   ],
+   "key": "p122-dfd4f2b0"
+  },
+  {
+   "id": "p122-out-e02",
+   "page": 122,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Body fluids transmit infection through sexual exposure (rape/sexual assault or consensual sex, burst condom), occupational or non-occupational exposure (sharps injury, splash to eye, mouth, nose or",
+   "bbox": [
+    57.5,
+    89.7,
+    786.3,
+    99.9
+   ],
+   "key": "p122-975cbcf7"
+  },
+  {
+   "id": "p122-out-e03",
+   "page": 122,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "broken skin), sharing needles, contact with used condom and exposure to blood. Tears, saliva (non-bloodstained), sweat, urine and stool are considered non-infectious fluids.",
+   "bbox": [
+    104.6,
+    99.7,
+    737.3,
+    109.9
+   ],
+   "key": "p122-f2abb36e"
+  },
+  {
+   "id": "p122-out-e04",
+   "page": 122,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Advise patient on possible side effects of HIV PEP and to return promptly if they occur. Advise condom use. 2If dolutegravir not tolerated or contraindicated, give instead atazanavir 300mg + ritonavir 100mg once daily or lopinavir 400mg + ritonavir 100mg 12 hourly. 3If giving both hepatitis B vaccine and immunoglobulin, give at different sites.",
+   "bbox": [
+    35.1,
+    534.5,
+    789.7,
+    551.5
+   ],
+   "key": "p122-b9cc6423"
+  }
+ ]
+}

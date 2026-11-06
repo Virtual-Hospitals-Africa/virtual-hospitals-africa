@@ -1,0 +1,141 @@
+{
+ "page": 33,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p33-ae45ef98",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "page has no precondition that an abuse/psychological-trauma finding be recorded"
+   ],
+   "problem": "Header 'urgent attention to the traumatised/abused patient with any of' is encoded as Urgent priority, but the rule is gated behind (Victim of abuse OR Victim of psychological trauma) AND (any criterion). A patient with recent rape or suicidal intent who has no abuse finding recorded does not fire. Gate is an addition not on the page (though arguably the page-entry trigger).",
+   "evidence": [
+    "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk :: (and (or (clinical_finding Victim of abuse)(clinical_finding Victim of psychological trauma)) (or ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p33-ad385df3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "not independent of abuse gate"
+   ],
+   "problem": "Female within 5 days / Male within 3 days correctly encoded with Victim of forced sexual activity, onset <= time_ago (briefing convention: within last). Sex expressed as clinical_finding 'Female'/'Male' (workable but findings, not demographics). Rule only fires if the abuse/trauma gate is also true.",
+   "evidence": [
+    "(and (clinical_finding Female) (<= (onset (clinical_finding Victim of forced sexual activity)) (time_ago 5 days)))",
+    "(and (clinical_finding Male) (<= (onset ...) (time_ago 3 days)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p33-48769124",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'needing attention' (injury severity, page 30 triage) not captured"
+   ],
+   "problem": "Any 'Traumatic injury' triggers Urgent, whereas the page says only injuries needing attention; trivial injuries would over-trigger. Cross-reference to page 30 not expressible, so this is a coarse proxy.",
+   "evidence": [
+    "(clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p33-0b08397b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Suicidal thoughts, planning suicide, overdose and self-injurious behaviour each encoded as separate OR branches (subject to the shared abuse gate).",
+   "evidence": [
+    "(clinical_finding Suicidal thoughts)",
+    "(clinical_finding Planning suicide)",
+    "(clinical_finding Overdose)",
+    "(clinical_finding Self-injurious behavior)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p33-79aa6d72",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "unusual wounds",
+    "bruises of different ages (generic Multiple bruising used)",
+    "harassment",
+    "being ridiculed/controlled",
+    "insulted",
+    "'unwelcomed behaviour, manipulation or violation' as the trigger for possible other abuse (Abnormal behavior used instead)"
+   ],
+   "problem": "Sexual assault/rape likely: correct (forced sexual activity -> probable Victim of sexual aggression). Physical abuse likely: wrongly requires an abuse/psychological-trauma finding AND a physical sign; the page's history of physical assault alone should suffice, and unusual wounds/bruises of different ages are missing. Emotional abuse likely: same wrong gating; harassment, ridiculed/controlled, insulted missing; 'excessively withdrawn/fearful/anxious' encoded with Severe qualifier, a reasonable proxy. Other abuse 'consider' rule fires on 'Abnormal behavior', which is not what the page says.",
+   "evidence": [
+    "Diagnose probable sexual assault/rape :: (clinical_finding Victim of forced sexual activity)",
+    "Diagnose probable physical abuse :: (and (or Victim of abuse ...) (or Victim of physical assault, Scar, Multiple bruising))",
+    "Diagnose probable emotional/verbal/psychological abuse :: (and (or ...) (or Intimidation, Victim of threats, Withdrawn behavior severe, Fearful mood severe, Anxiety severe))",
+    "Diagnose possible abuse :: (clinical_finding Abnormal behavior)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p33-af319d48",
+   "scope": "borderline",
+   "scope_reason": "Mix of entry criterion and note",
+   "verdict": "partial",
+   "parts_missing": [
+    "patient discloses",
+    "examination contradicts history",
+    "abuse clear on examination"
+   ],
+   "problem": "'Suspect abuse if...' is a possible-abuse trigger. Only 'behaviour seems strange' is encoded (Abnormal behavior, a vague concept). Disclosure is presumably the Victim of abuse finding that also opens the task. Borderline because the other prongs are not clearly representable.",
+   "evidence": [
+    "Diagnose possible abuse :: (clinical_finding Abnormal behavior)"
+   ],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p33-3f8d026d",
+  "p33-e38d14e3",
+  "p33-8c8235f3",
+  "p33-fbbfe68c",
+  "p33-0a8c7096",
+  "p33-d8c4df5f",
+  "p33-d368ee91",
+  "p33-fdf49565",
+  "p33-2d774dd4",
+  "p33-d596424b",
+  "p33-db900727",
+  "p33-3c6077d3",
+  "p33-4c9cd5eb",
+  "p33-551f2ad1"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "problem": "Abuse/psychological-trauma finding is a mandatory precondition for all urgent criteria; page does not require it. Rape, injuries or suicide risk without that finding will not be flagged Urgent.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable physical abuse / emotional abuse",
+   "problem": "Both require Victim of abuse or Victim of psychological trauma AND a sign; page says history/sign alone makes abuse likely. This makes the diagnosis circular (abuse finding needed to diagnose abuse).",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose possible abuse",
+   "problem": "Driven by 'Abnormal behavior' alone; does not reflect 'other unwelcomed behaviour, manipulation or violation'. The task trigger also includes diagnosis possible Victim of abuse, which creates a loop with this rule.",
+   "severity": "medium"
+  },
+  {
+   "rule": "task Check for traumatised/abused patient",
+   "problem": "check_for lists Female and Male, which are used only in the priority rule; fine. But 'Anxiety'/'Withdrawn'/'Fearful' with Severe qualifier is not on the page ('excessively' is), and 'Scar' is generic, not old/new or unusual. Page 'difficulty sleeping', 'genital symptoms' and 'ask about injuries' items are not in check_for.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The urgent-priority rule and both 'likely' abuse rules are gated behind a Victim of abuse / psychological trauma finding that the page does not require, so rape, injury or suicide risk alone, or physical/emotional abuse history alone, will not fire. Injuries 'needing attention' is coarsened to any traumatic injury, and several abuse indicators (unusual wounds, bruises of different ages, harassment, insulted, ridiculed/controlled) are missing; 'possible abuse' is keyed to a vague Abnormal behavior concept."
+}

@@ -1,0 +1,598 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 28,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    329.0
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p28-rb1-e01",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with possible anaphylaxis:",
+   "bbox": [
+    296.0,
+    91.6,
+    545.9,
+    102.7
+   ],
+   "key": "p28-8fd7fcd8"
+  },
+  {
+   "id": "p28-rb1-e02",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "In the few hours before symptoms started, was patient exposed to any medication, food1 or insect bite/sting which has caused anaphylaxis before?",
+   "bbox": [
+    141.0,
+    106.3,
+    700.9,
+    117.2
+   ],
+   "key": "p28-b949a38d"
+  },
+  {
+   "id": "p28-rb1-e03",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    75.5,
+    126.4,
+    87.9,
+    137.2
+   ],
+   "key": "p28-4f99695e"
+  },
+  {
+   "id": "p28-rb1-e04",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    449.8,
+    126.4,
+    460.8,
+    137.2
+   ],
+   "key": "p28-0710cea4"
+  },
+  {
+   "id": "p28-rb1-e05",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "In the few hours before symptoms started, was patient exposed to any medication, food1 or insect bite/sting?",
+   "bbox": [
+    247.1,
+    146.4,
+    663.5,
+    157.2
+   ],
+   "key": "p28-46be17a2"
+  },
+  {
+   "id": "p28-rb1-e06",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    280.3,
+    166.4,
+    292.7,
+    177.2
+   ],
+   "key": "p28-070ba821"
+  },
+  {
+   "id": "p28-rb1-e07",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    627.4,
+    166.4,
+    638.3,
+    177.2
+   ],
+   "key": "p28-21cb83f7"
+  },
+  {
+   "id": "p28-rb1-e08",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Is there sudden onset of ≥ 2 of: 1) Generalised itch/rash or face/tongue swelling",
+   "bbox": [
+    134.8,
+    186.4,
+    440.1,
+    197.2
+   ],
+   "key": "p28-44b146d8"
+  },
+  {
+   "id": "p28-rb1-e09",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Is there sudden onset generalised itch/rash or face/tongue swelling and",
+   "bbox": [
+    495.9,
+    186.4,
+    771.7,
+    197.2
+   ],
+   "key": "p28-57d50a64"
+  },
+  {
+   "id": "p28-rb1-e10",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "2) Difficulty breathing 3) BP < 90/60 or dizziness/collapse 4) Abdominal pain or vomiting",
+   "bbox": [
+    118.2,
+    196.4,
+    454.9,
+    207.2
+   ],
+   "key": "p28-29084cc2"
+  },
+  {
+   "id": "p28-rb1-e11",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "any of: difficulty breathing, BP < 90/60 or dizziness/collapse?",
+   "bbox": [
+    517.4,
+    196.4,
+    748.3,
+    207.2
+   ],
+   "key": "p28-29d329b5"
+  },
+  {
+   "id": "p28-rb1-e12",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    186.2,
+    216.4,
+    198.6,
+    227.2
+   ],
+   "key": "p28-e3340eab"
+  },
+  {
+   "id": "p28-rb1-e13",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    368.3,
+    216.4,
+    379.3,
+    227.2
+   ],
+   "key": "p28-e23719ce"
+  },
+  {
+   "id": "p28-rb1-e14",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No",
+   "bbox": [
+    536.7,
+    216.4,
+    547.6,
+    227.2
+   ],
+   "key": "p28-8d56155c"
+  },
+  {
+   "id": "p28-rb1-e15",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    700.8,
+    216.4,
+    713.3,
+    227.2
+   ],
+   "key": "p28-6b9bcae7"
+  },
+  {
+   "id": "p28-rb1-e16",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Treat as anaphylaxis",
+   "bbox": [
+    122.6,
+    236.2,
+    201.2,
+    247.2
+   ],
+   "key": "p28-345b41d9"
+  },
+  {
+   "id": "p28-rb1-e17",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Anaphylaxis unlikely. Treat symptoms as on symptom pages. If unsure, discuss.",
+   "bbox": [
+    308.9,
+    236.4,
+    587.2,
+    247.2
+   ],
+   "key": "p28-16be4c10"
+  },
+  {
+   "id": "p28-rb1-e18",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with possible anaphylaxis:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Treat as anaphylaxis",
+   "bbox": [
+    667.8,
+    236.2,
+    746.3,
+    247.2
+   ],
+   "key": "p28-6fd3c1f2"
+  },
+  {
+   "id": "p28-rb1-e19",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage anaphylaxis and refer urgently:",
+   "bbox": [
+    51.0,
+    252.8,
+    205.2,
+    263.8
+   ],
+   "key": "p28-07081abb"
+  },
+  {
+   "id": "p28-rb1-e20",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Give immediately adrenaline2 0.5mL (1:1000 solution) IM into mid outer thigh. Repeat every 5 minutes if needed. If patient has a prescribed auto-injector (like EpiPen®) available, use instead.",
+   "bbox": [
+    51.0,
+    263.0,
+    783.0,
+    273.8
+   ],
+   "key": "p28-c695b35d"
+  },
+  {
+   "id": "p28-rb1-e21",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Raise legs and give face mask oxygen at 8-10L/min up to 15L/min (100%) if needed.",
+   "bbox": [
+    51.0,
+    273.0,
+    374.7,
+    283.8
+   ],
+   "key": "p28-8796ba9d"
+  },
+  {
+   "id": "p28-rb1-e22",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Give sodium chloride 0.9% 1-2 L IV rapidly if BP still < 90/60 after adrenaline. Repeat until systolic BP > 90 then continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.0,
+    283.0,
+    667.0,
+    293.8
+   ],
+   "key": "p28-366ea3c4"
+  },
+  {
+   "id": "p28-rb1-e23",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 1,
+   "parent": null,
+   "text": "If persistent wheeze or difficulty breathing despite adrenaline2, also give 1mL salbutamol 0.5% solution and 2mL ipratropium bromide solution with 1mL sodium chloride 0.9% via nebuliser every 20 minutes for 3 doses. If needed, assess and manage airway 16.",
+   "bbox": [
+    51.0,
+    293.0,
+    758.7,
+    313.8
+   ],
+   "key": "p28-d1dbc24e"
+  },
+  {
+   "id": "p28-rb1-e24",
+   "page": 28,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage anaphylaxis and refer urgently:",
+   "section_y": 252.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Give hydrocortisone 200mg IM/slow IV immediately and promethazine 50mg IM/slow IV.",
+   "bbox": [
+    51.0,
+    313.0,
+    407.6,
+    323.8
+   ],
+   "key": "p28-9d41a893"
+  },
+  {
+   "id": "p28-out-e01",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the patient with previous anaphylaxis • Advise to avoid identified trigger/s and if trigger is a medication, to always inform health worker. • Ensure patient has a plan in case of anaphylaxis: ambulance telephone number, nearest hospital and reliable transport plan. • If adrenaline2 auto-injector device (like EpiPen®) prescribed, ensure patient knows when and how to use it: - If exposed to trigger, use immediately if any of: itch/rash, face/tongue swelling, itchy/tight throat, cough, wheeze, difficulty breathing, dizziness/collapse, abdominal pain or vomiting. After use,",
+   "bbox": [
+    51.0,
+    452.1,
+    763.9,
+    503.1
+   ],
+   "key": "p28-4473d3b8"
+  },
+  {
+   "id": "p28-out-e02",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "immediately phone for ambulance. - Advise to read instructions found in packaging. • Arrange a MedicAlert® bracelet 200 and advise patient to always wear it.",
+   "bbox": [
+    51.0,
+    502.9,
+    331.1,
+    533.1
+   ],
+   "key": "p28-8c4447a0"
+  },
+  {
+   "id": "p28-out-e03",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient with previous anaphylaxis",
+   "bbox": [
+    332.3,
+    341.9,
+    509.6,
+    352.9
+   ],
+   "key": "p28-c79f4dbd"
+  },
+  {
+   "id": "p28-out-e04",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess When to assess Note",
+   "bbox": [
+    39.7,
+    357.7,
+    246.9,
+    368.7
+   ],
+   "key": "p28-4cfd0a37"
+  },
+  {
+   "id": "p28-out-e05",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Trigger At first visit Ensure a specialist has reviewed the patient with anaphylaxis to confirm trigger/s. Common triggers include medications, food1 and insect bites/stings.",
+   "bbox": [
+    39.7,
+    373.2,
+    740.7,
+    383.4
+   ],
+   "key": "p28-a21b787b"
+  },
+  {
+   "id": "p28-out-e06",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Other allergy At first visit • If recurrent cough, wheeze, tight chest or difficulty breathing, exclude asthma 138. If known asthma, give routine asthma care 140. • If patches of dry, scaly, itchy skin on wrists, ankles, inside elbows or behind knees, eczema likely 84. • If itchy, red, raised wheals that appear suddenly and usually disappear within 24 hours, urticaria likely 84. • If recurrent sneezing or itchy/runny/blocked nose most days for > 4 weeks, allergic rhinitis likely 51. • If both eyes watery and itchy, allergic conjunctivitis likely 48.",
+   "bbox": [
+    39.7,
+    387.3,
+    698.7,
+    438.3
+   ],
+   "key": "p28-f6e39748"
+  },
+  {
+   "id": "p28-out-e07",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common foods causing anaphylaxis include peanuts, tree nuts, egg, milk and fish. 2Adrenaline is also known as epinephrine.",
+   "bbox": [
+    34.0,
+    543.3,
+    416.3,
+    551.8
+   ],
+   "key": "p28-3d242b5e"
+  },
+  {
+   "id": "p28-out-e08",
+   "page": 28,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ANAPHYLAXIS",
+   "bbox": [
+    361.3,
+    48.7,
+    480.7,
+    71.0
+   ],
+   "key": "p28-4be1e91a"
+  }
+ ]
+}

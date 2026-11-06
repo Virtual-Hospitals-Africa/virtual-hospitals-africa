@@ -1,0 +1,494 @@
+{
+ "page": 61,
+ "slug": "61-anal-symptoms",
+ "validation_ok": true,
+ "builder_agreement": 1.0,
+ "elements": 27,
+ "elements_agreed": 22,
+ "claims": 21,
+ "claims_agreed": 6,
+ "queue": 49,
+ "queue_by_priority": {
+  "low": 7,
+  "high": 12,
+  "medium": 30
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p61-6afff593",
+   "id": "p61-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p61-91253d54",
+   "id": "p61-rb1-e02",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p61-19415dc4",
+   "id": "p61-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p61-9de73694",
+   "id": "p61-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-84668eed",
+   "id": "p61-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-379d759e",
+   "id": "p61-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-e6c4c97f",
+   "id": "p61-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-6a3dbf98",
+   "id": "p61-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-0f092d4c",
+   "id": "p61-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-5930caa9",
+   "id": "p61-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-6b089871",
+   "id": "p61-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-eb4a6745",
+   "id": "p61-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-cc98a7aa",
+   "id": "p61-out-e07",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "missing": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p61-10599adc",
+   "id": "p61-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-34a74f56",
+   "id": "p61-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-5765820f",
+   "id": "p61-out-e10",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-f783de97",
+   "id": "p61-out-e11",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p61-f82a9c0f",
+   "id": "p61-out-e12",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-e1b77ac5",
+   "id": "p61-out-e13",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p61-eb431519",
+   "id": "p61-out-e14",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-f19fb3d2",
+   "id": "p61-out-e15",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-0da38d79",
+   "id": "p61-out-e16",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "partial": 2,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p61-50afc687",
+   "id": "p61-out-e17",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-7acda35e",
+   "id": "p61-out-e18",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-21fd5a62",
+   "id": "p61-out-e19",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-e62d650c",
+   "id": "p61-out-e20",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p61-8c8eb05d",
+   "id": "p61-out-e21",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "wrong": 1,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "wrong": 1,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent anal symptom conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,2495 @@
+[
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-72e73d4c",
+  "text": "Give urgent attention to the patient with chest pain and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Header is encoded as the (and <chest pain> (or ...)) frame of the Urgent priority rule, matching the house pattern. The parallel check_for task is triggered by Chest pain.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "figure_or_note: box header; trigger is the chest pain condition in each rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p24-dce602bd",
+  "text": "New pain or discomfort in centre or left side of chest",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Pain in centre, pain on the left and discomfort are all present with the New qualifier. Discomfort is not split by site (no SNOMED concept for central/left chest discomfort); the sideless Chest discomfort is the reasonable choice.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "centre/left restriction for discomfort: 'Chest discomfort' + New has no side, so right-sided new discomfort triggers it"
+    ],
+    "problem": "New pain: Central chest pain and Left sided chest pain are specific; discomfort is not limited to centre/left.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "site restriction (centre or left side of chest) on the 'discomfort' part"
+    ],
+    "problem": "'New pain' is site-restricted (Central chest pain / Left sided chest pain + New), but 'New discomfort' is encoded as Chest discomfort + New with no site, so new right-sided discomfort would also trigger Urgent. Over-inclusive, low impact.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-fdde835a",
+  "text": "ECG normal/other abnormalities or unavailable or uncertain",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Normal / other abnormality / unavailable / uncertain all route the same way on the page, and the rules treat absence of the three abnormal findings as that branch, so no explicit 'ECG normal' finding is needed. Because ECG-abnormal is itself sufficient for the first disjunct, letting 'no positional findings' suffice regardless of ECG is logically equivalent to the chart.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: branch label; normal/unavailable handled implicitly by the 'no positional features' arm",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "This is the else-branch. It is encoded implicitly as the (and (no …)) alternative to an abnormal ECG, which is correct.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-eccddb18",
+  "text": "No",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: No branch of the positional question; encoded as the (and (no ...)(no ...)(no ...)) disjunct in the ACS and stable angina rules",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-62898c61",
+  "text": "Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: Yes branch of the positional question; its 'Manage and refer urgently' column is encoded by the priority rule and the tension pneumothorax / pneumonia rules",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p24-6d7d6bb9",
+  "text": "Is chest pain/discomfort any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Not relieved by rest or sublingual nitrates",
+     "Occurs more often than usual",
+     "with minimal effort (half of 'Occurs at rest or with minimal effort')"
+    ],
+    "problem": "The 'any of' box is encoded as an (or ...) in the ACS rule and as the mirrored (no ...) list in the stable angina rule, but only three of its five items appear. See the per-item verdicts.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: header of decision box, criteria judged individually",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Not relieved by rest or sublingual nitrates",
+     "Occurs more often than usual",
+     "'or with minimal effort'"
+    ],
+    "problem": "The decision node has five criteria. Only rest, worse, longer and ≥10 min are encoded.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-49c54909",
+  "text": "Manage and refer urgently:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "A header, but it carries the urgency level of the Yes branch. The priority rule gives Urgent to chest pain with any positional finding, which is what the page says. (It also fires on the ECG-abnormal path where the page never asks the question; harmless, since the whole red box is already Urgent.)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "management_step: header",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p24-515b498b",
+  "text": "Occurs at rest or with minimal effort",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "with minimal effort"
+    ],
+    "problem": "'Occurs at rest' is encoded with the exact SNOMED concept. 'With minimal effort' is not encoded anywhere; SNOMED has no precoordinated chest-pain-on-minimal-exertion finding (searched 'exertion', 'exertional', 'minimal'), so it would need a qualifier or has to be declared not representable; the file does neither.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "with minimal effort"
+    ],
+    "problem": "Only 'Chest pain at rest' encoded; 'minimal effort' (exertional threshold) has no concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'or with minimal effort'"
+    ],
+    "problem": "Only 'Chest pain at rest' is encoded, so pain on minimal effort doesn't count toward ACS.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p24-3a576c94",
+  "text": "Lasts ≥ 10 minutes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "The page's criterion is the duration of a pain episode (lasts >= 10 minutes). The language has no episode-duration construct, so the builder used the onset time of the Chest pain finding: 'onset at least 10 minutes ago' in the ACS rule and 'onset within the last 10 minutes' in the stable angina rule. The comparator directions follow the briefing's onset convention, but the semantics are wrong in practice: almost every patient presents more than 10 minutes after the pain began, so the ACS disjunct is nearly always true (making the other four characteristics and the stable-angina exclusion irrelevant) and the stable angina rule, which requires onset within the last 10 minutes, is nearly unreachable. Either this item should be left out with a not_representable note, or the stable angina rule at least should not require it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "'Lasts >= 10 minutes' is a duration. Encoded as the vague 'Prolonged' qualifier and as (>= (onset Chest pain) (time_ago 10 minutes)), which tests when pain began (within the last 10 minutes), the opposite direction and a different quantity. Stable angina rule uses (<= onset ...) and inherits the same confusion; the two rules can both be true or both false for the same onset.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Direction checked against the briefing: (>= (onset X) (time_ago N)) means the onset was at least N ago, which is right. The stable-angina complement uses <=, which overlaps at the boundary only.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p24-bc666c31",
+  "text": "Not relieved by rest or sublingual nitrates",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Not encoded in the check_for list, the ACS rule or the stable angina rule. SNOMED has no precoordinated 'chest pain not relieved by rest/nitrates' finding (searched 'relieved', 'nitrate'; only the attribute (snomed_concept \"Relieved by\" \"attribute\") and (snomed_concept \"Relieved\" \"qualifier value\") exist), so it needs a qualifier/attribute form or an explicit not-representable note; the file has neither. Consequence: a known stable-angina patient whose pain is not relieved by nitrates, with none of the other three encoded features, is labelled stable angina instead of ACS.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'Not relieved by rest or sublingual nitrates' appears in no check_for and no rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Not relieved by rest or sublingual nitrates"
+    ],
+    "problem": "Absent from the ACS evidence, from the stable-angina negations and from the check_for. A known stable-angina patient whose pain is not relieved by nitrates gets 'probable stable angina' instead of ACS.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p24-4c8f9179",
+  "text": "Occurs more often than usual",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Not encoded anywhere. SNOMED has (snomed_concept \"Frequent\" \"qualifier value\") and (snomed_concept \"Increased\" \"qualifier value\") which could qualify Chest pain, as Worsening and Prolonged already do. Same consequence as the previous item: the stable angina rule's (no ...) list omits it, so increasing-frequency pain in a known stable-angina patient is labelled stable angina rather than ACS.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'Occurs more often than usual' appears in no check_for and no rule (e.g. a Frequency-increased qualifier).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Occurs more often than usual"
+    ],
+    "problem": "Not encoded anywhere (for example, Chest pain + an increasing-frequency qualifier). Crescendo angina in a known stable-angina patient is misclassified as stable angina.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-7aed0b2e",
+  "text": "Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: Yes branch into ACS; encoded as the character (or ...) in the ACS rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-9a945014",
+  "text": "No",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: No branch into the stable angina question; encoded as the (no ...) list in the stable angina rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-a410cebc",
+  "text": "If sudden breathlessness, more resonant/decreased breath sounds/pain on one side, deviated trachea, tension pneumothorax likely:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All four page parts are present with existing concepts (sudden breathlessness; more resonant / decreased breath sounds / pain on one side as an OR group with Unilateral qualifiers; deviated trachea) and the rule is a probable diagnosis gated on the Yes branch as the page places it. The page's comma list is read as all-of (and). That is the stricter of two readings; see rule-level problems.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "unclear whether signs are all required or any-of"
+    ],
+    "problem": "Page lists sudden breathlessness, more resonant/decreased breath sounds/pain on one side, deviated trachea; rule ANDs all four groups plus positional pain gate. Plausible reading but strict; no possible-level rule for partial matches.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Read as: sudden breathlessness AND (more resonant OR decreased breath sounds OR pain on one side) AND deviated trachea, gated on the positional-pain Yes branch. That is a defensible reading of the comma list. 'Pain on one side' maps to Left sided chest pain or Right sided chest pain, without the New qualifier.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-5e84e28f",
+  "text": "No",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: No branch of the stable angina question; encoded as (no known stable angina) in the ACS rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-242dd16b",
+  "text": "Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing: Yes branch of the stable angina question; encoded as known stable angina in the stable angina rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Yes/No branch label",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p24-a3901d71",
+  "text": "Acute coronary syndrome (heart attack or unstable angina) likely. Manage and refer urgently:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Not relieved by rest or sublingual nitrates",
+     "Occurs more often than usual",
+     "with minimal effort"
+    ],
+    "problem": "The conclusion is a probable Acute coronary syndrome diagnosis (the right umbrella concept for 'heart attack or unstable angina'; SNOMED has no plain Unstable angina disorder) and 'manage and refer urgently' is an Urgent priority on the active condition, per the house pattern. The rule's structure follows the chart, but its evidence misses three of the page's character items and its >= 10 minutes disjunct is an onset proxy (see p24-3a576c94).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "not relieved by rest/nitrates",
+     "occurs more often than usual",
+     "minimal effort",
+     "'unstable angina' as separate concept"
+    ],
+    "problem": "ACS rule's 'any of' arm: onset >= 10 minutes is wrong (see e24); two criteria missing. Because of the 'no known stable angina' arm, ACS fires for any chest pain without positional features and without known stable angina, which matches the flowchart No/No path.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Not relieved by rest or sublingual nitrates",
+     "Occurs more often than usual",
+     "minimal effort"
+    ],
+    "problem": "The probable-ACS rule follows the flowchart, (ECG abnormal OR non-positional pain) AND (characteristic OR not known stable angina), but it lacks two and a half of the five characteristics. The 'Urgent' priority via active_condition ACS is right.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p24-f4f574d5",
+  "text": "Patient",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "figure_or_note: text fragment 'Patient' of the stable angina conclusion; judged under p24-cc976758",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "figure_or_note: fragment of stable angina box",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "negations of 'not relieved by rest/nitrates', 'more often than usual', 'minimal effort'"
+    ],
+    "problem": "This is a fragment of 'Patient has stable angina'. The page says 'has', not 'likely', and probable is a reasonable rendering.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p24-cc976758",
+  "text": "has stable angina.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "(no 'Not relieved by rest or sublingual nitrates')",
+     "(no 'Occurs more often than usual')",
+     "(no 'with minimal effort')"
+    ],
+    "problem": "A probable Stable angina rule exists with the right structure (ECG branch, none of the characteristics, known stable angina). It inherits the two missing characteristics, so it will label ACS presentations as stable angina, and its onset-within-10-minutes condition makes it nearly unreachable in practice.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "negation of 'not relieved by rest or sublingual nitrates'",
+     "negation of 'occurs more often than usual'",
+     "negation of 'minimal effort'"
+    ],
+    "problem": "Stable angina rule excludes only rest pain, worsening, prolonged and the onset test; two of the page's 'any of' criteria are absent so the 'No' branch is not fully reproduced.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "(no …) for not relieved by rest/nitrates",
+     "(no …) for occurs more often than usual",
+     "(no …) for minimal effort"
+    ],
+    "problem": "The rule requires known stable angina, no rest/worse/prolonged pain and onset ≤10 min. Because the negations are incomplete, crescendo or nitrate-refractory pain still reaches 'stable angina'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p24-d45caab9",
+  "text": "1Chest pain caused by ischaemic heart disease. 2Dilute 10mg morphine with 9mL of sodium chloride 0.9%. Give diluted morphine 5mL IV over 5 minutes (1mL/minute). 3ST elevation > 1mm in two or more contiguous limb leads or ST elevation > 2mm in two or more contiguous chest leads. 4Discuss use of altep",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Footnote 5 is an 'X likely' with explicit criteria: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' No probable Shock rule exists ((snomed_concept \"Shock\" \"disorder\") exists). It serves a management gate (fluids), which is why I mark it borderline rather than in_scope. Footnote 1 defines stable angina (handled by the Known present qualifier); footnote 3 defines ST elevation in mm per lead, which the language cannot express; footnotes 2, 4 and 6 are management.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "shock likely (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness)",
+     "ST elevation >1mm/>2mm lead thresholds (not_representable)"
+    ],
+    "problem": "Footnote 5 defines shock likely; no shock diagnosis rule. Footnote 1 and ST criteria not representable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Footnote 5: probable Shock if SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness"
+    ],
+    "problem": "Footnote 5 is an explicit 'shock likely' and has no probable Shock diagnosis rule. Its combining logic (all or any) is ambiguous, so it needs a clinician decision. The other footnotes are definitions or management. Footnote 3's ST-elevation mm thresholds are not representable as an ECG measurement.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for urgent chest pain signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page restricts new discomfort to the centre or left side of the chest; 'Chest discomfort' (New) has no site, so right-sided or diffuse discomfort also matches.",
+    "fix": "Accept as the closest available concept (no 'central chest discomfort' in SNOMED); note the broadening in remaining questions.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: new pain or discomfort IN CENTRE OR LEFT SIDE of chest; \"Chest discomfort\" has no location, so any new chest discomfort triggers.",
+    "fix": "Use a located discomfort concept (central / left chest discomfort) or drop this alternative",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Chest discomfort\" + New has no site; page limits it to discomfort in the centre or left side of the chest, so new discomfort anywhere fires Urgent",
+    "fix": "Add a finding_site (e.g. central/left chest) or drop it in favour of the central/left chest pain items",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c016",
+  "text": "Check for urgent chest pain signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Pallor' with no site; 'Pallor of skin of face' is narrower (face only). SNOMED has no plain 'Pallor' finding; (snomed_concept \"Pale complexion\" \"finding\") exists and is the usual general pallor concept.",
+    "fix": "(clinical_finding (snomed_concept \"Pale complexion\" \"finding\")), or keep the face concept and note it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pallor of skin of face\" is narrower than the page's plain \"Pallor\".",
+    "fix": "Use generalised \"Pallor\" if it exists (confirm with exists)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"pallor\" (general); \"Pallor of skin of face\" is narrower, though no plain Pallor finding exists in the release",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Record known cardiovascular disease risk for chest pain :: (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The page says 'known CVD risk > 20%': it reads an already-known value, it does not tell the health worker to measure or calculate the risk, so a measure task is a stretch (harmless, and it gives the priority rule a value to compare).",
+    "fix": "Keep, but record in remaining questions that the page does not ask for a measurement.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page only uses an already known CVD risk > 20% as a risk factor; a task to measure/record it is not on the page.",
+    "fix": "Remove task or note it as supporting only",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c031",
+  "text": "Check chest pain character for acute coronary syndrome :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'worse on lying down'; 'Pain aggravated by position' covers any position. No closer SNOMED concept found (only 'Neck pain aggravated by recumbency').",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Worse on lying down\" is narrower than \"Pain aggravated by position\" (any position).",
+    "fix": "Prefer a lying-down-specific concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c032",
+  "text": "Check chest pain character for acute coronary syndrome :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pain worse on palpation\" (reproducible pain) is not the same as \"Tenderness of chest wall\" (a sign), though close.",
+    "fix": "Prefer a chest wall pain on palpation concept if available",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c034",
+  "text": "Check chest pain character for acute coronary syndrome :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page criterion is 'Occurs at rest or with minimal effort'; 'Chest pain at rest' drops the 'minimal effort' half.",
+    "fix": "Add (clinical_finding (snomed_concept \"Chest pain on exertion\" \"finding\")) with a qualifier if the language allows, or note the gap; 'Chest pain on exertion' exists but is not 'minimal effort'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"occurs at rest or with minimal effort\"; the minimal-effort half is dropped",
+    "fix": "Add a minimal-exertion chest pain finding (e.g. Chest pain on exertion with a minimal qualifier) as an alternative",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c035",
+  "text": "Check chest pain character for acute coronary syndrome :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says worse OR lasts longer than usual (relative to patient baseline); \"Worsening\" qualifier is only approximate.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says pain is worse \"than usual\" (compared with the patient's usual angina); \"Worsening\" chest pain loses the comparison to baseline",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c036",
+  "text": "Check chest pain character for acute coronary syndrome :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Lasts longer than usual\" is relative to the patient baseline; \"Prolonged\" is absolute and loses the comparison.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"lasts longer than usual\"; \"Prolonged\" loses the comparison to the patient's usual episodes",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c038",
+  "text": "Check for tension pneumothorax or pneumonia in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Worse on lying down\" is narrower than \"Pain aggravated by position\" (any position).",
+    "fix": "Prefer a lying-down-specific concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c039",
+  "text": "Check for tension pneumothorax or pneumonia in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pain worse on palpation\" (reproducible pain) is not the same as \"Tenderness of chest wall\" (a sign), though close.",
+    "fix": "Prefer a chest wall pain on palpation concept if available",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Check for tension pneumothorax or pneumonia in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Sudden breathlessness\" mapped to Dyspnea + Sudden onset; fine, but the rule makes it mandatory while the page lists it as one of several features.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c047",
+  "text": "Check for tension pneumothorax or pneumonia in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Productive cough is listed in the pneumonia branch, not for tension pneumothorax; fine only as a combined task, and the task omits the temperature check pneumonia needs.",
+    "fix": "Add body temperature to the check_for list",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c052",
+  "text": "Diagnose probable acute coronary syndrome in chest pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same breadth issue as c031: 'Pain aggravated by position' is wider than 'worse on lying down'; the negation is correct for the No branch.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c055",
+  "text": "Diagnose probable acute coronary syndrome in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c034: 'Chest pain at rest' omits 'or with minimal effort' from the page criterion.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as the check task: drops \"or with minimal effort\"",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c056",
+  "text": "Diagnose probable acute coronary syndrome in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says worse OR lasts longer than usual (relative to patient baseline); \"Worsening\" qualifier is only approximate.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says pain is worse \"than usual\" (compared with the patient's usual angina); \"Worsening\" chest pain loses the comparison to baseline",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c057",
+  "text": "Diagnose probable acute coronary syndrome in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Lasts longer than usual\" is relative to the patient baseline; \"Prolonged\" is absolute and loses the comparison.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"lasts longer than usual\"; \"Prolonged\" loses the comparison to the patient's usual episodes",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c058",
+  "text": "Diagnose probable acute coronary syndrome in chest pain :: (>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says the pain 'Lasts >= 10 minutes' (episode duration). 'Onset at least 10 minutes ago' is true for almost every patient at presentation, even if the pain lasted two minutes and resolved, so this condition is much broader than the page and on its own sends nearly all non-positional chest pain to ACS.",
+    "fix": "The language has no duration primitive; keep, but flag in remaining questions and consider requiring the pain to be current (e.g. a 'Current' qualifier) alongside the onset comparison.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Lasts >= 10 minutes\" is a duration. Encoded as onset compared to time_ago 10 minutes, so direction depends on VHA semantics: onset >= time_ago may mean onset within the last 10 minutes, the opposite of lasting 10+ minutes.",
+    "fix": "Use a duration comparison, or onset <= time_ago 10 minutes",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Onset of chest pain at least 10 minutes ago is not the same as the episode lasting ≥ 10 minutes; pain that began hours ago in brief bouts would pass",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c065",
+  "text": "Diagnose probable stable angina in chest pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same breadth issue as c031: 'Pain aggravated by position' is wider than 'worse on lying down'; the negation is correct for the No branch.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c068",
+  "text": "Diagnose probable stable angina in chest pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c034: the negation only excludes rest pain, not pain with minimal effort, so a patient with pain on minimal effort can still reach the stable angina rule.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of the imprecise \"Chest pain at rest\" (drops \"or with minimal effort\")",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c069",
+  "text": "Diagnose probable stable angina in chest pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of \"Worsening\", which loses \"than usual\"",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c070",
+  "text": "Diagnose probable stable angina in chest pain :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negation of \"Prolonged\", which loses \"than usual\"",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c071",
+  "text": "Diagnose probable stable angina in chest pain :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "wrong",
+    "reason": "'Onset within the last 10 minutes' is not the page's 'does not last >= 10 minutes'. A stable angina patient whose 5-minute episode started an hour ago fails this condition (page: stable angina), while a patient 5 minutes into ongoing pain passes it. Combined with the other conditions the stable angina rule almost never fires.",
+    "fix": "Drop the onset comparison from the stable angina rule (rely on the three 'no' findings and known stable angina), and note that duration cannot be expressed.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Negation of \"lasts >= 10 min\" should be strictly shorter than 10 minutes; uses <= (boundary overlaps with ACS rule at exactly 10) and the same onset/duration direction doubt as c058.",
+    "fix": "Use < (and check direction)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Uses <= so exactly 10 minutes satisfies both this rule and ACS's >=; the page's No to \"lasts ≥ 10 minutes\" means < 10. Onset-time is also a proxy for episode duration",
+    "fix": "Use < instead of <=",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c074",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same breadth issue as c031: 'Pain aggravated by position' is wider than 'worse on lying down'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Worse on lying down\" is narrower than \"Pain aggravated by position\" (any position).",
+    "fix": "Prefer a lying-down-specific concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c075",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pain worse on palpation\" (reproducible pain) is not the same as \"Tenderness of chest wall\" (a sign), though close.",
+    "fix": "Prefer a chest wall pain on palpation concept if available",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c077",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page presents sudden breathlessness / resonance or reduced breath sounds / pain on one side / deviated trachea as a list of signs for \"tension pneumothorax likely\"; rule requires breathlessness AND one of the signs AND trachea AND pleuritic pain (stricter than page).",
+    "fix": "Treat features as alternatives",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c078",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page presents sudden breathlessness / resonance or reduced breath sounds / pain on one side / deviated trachea as a list of signs for \"tension pneumothorax likely\"; rule requires breathlessness AND one of the signs AND trachea AND pleuritic pain (stricter than page).",
+    "fix": "Treat features as alternatives",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c079",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page presents sudden breathlessness / resonance or reduced breath sounds / pain on one side / deviated trachea as a list of signs for \"tension pneumothorax likely\"; rule requires breathlessness AND one of the signs AND trachea AND pleuritic pain (stricter than page).",
+    "fix": "Treat features as alternatives",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c080",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page presents sudden breathlessness / resonance or reduced breath sounds / pain on one side / deviated trachea as a list of signs for \"tension pneumothorax likely\"; rule requires breathlessness AND one of the signs AND trachea AND pleuritic pain (stricter than page).",
+    "fix": "Treat features as alternatives",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c081",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page presents sudden breathlessness / resonance or reduced breath sounds / pain on one side / deviated trachea as a list of signs for \"tension pneumothorax likely\"; rule requires breathlessness AND one of the signs AND trachea AND pleuritic pain (stricter than page).",
+    "fix": "Treat features as alternatives",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c082",
+  "text": "Diagnose probable tension pneumothorax in chest pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page lists deviated trachea as one of several tension pneumothorax features; rule requires it (AND), making the diagnosis too strict.",
+    "fix": "Make features an \"or\" or \"any N of\"",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c101",
+  "text": "Urgent: chest pain with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: new pain or discomfort IN CENTRE OR LEFT SIDE of chest; \"Chest discomfort\" has no location, so any new chest discomfort triggers.",
+    "fix": "Use a located discomfort concept (central / left chest discomfort) or drop this alternative",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c110",
+  "text": "Urgent: chest pain with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c016: 'Pallor of skin of face' is narrower than the page's unqualified 'Pallor'; (snomed_concept \"Pale complexion\" \"finding\") exists.",
+    "fix": "(clinical_finding (snomed_concept \"Pale complexion\" \"finding\"))",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pallor of skin of face\" is narrower than the page's plain \"Pallor\".",
+    "fix": "Use generalised \"Pallor\" if it exists (confirm with exists)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c121",
+  "text": "Urgent: chest pain worse on lying down, palpation or breathing deeply :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same breadth issue as c031: 'Pain aggravated by position' is wider than 'worse on lying down'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Worse on lying down\" is narrower than \"Pain aggravated by position\" (any position).",
+    "fix": "Prefer a lying-down-specific concept if one exists",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Pain aggravated by position\" is broader than the page's \"worse on lying down\" (any position); no closer SNOMED concept found",
+    "fix": "",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c122",
+  "text": "Urgent: chest pain worse on lying down, palpation or breathing deeply :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Pain worse on palpation\" (reproducible pain) is not the same as \"Tenderness of chest wall\" (a sign), though close.",
+    "fix": "Prefer a chest wall pain on palpation concept if available",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable stable angina in chest pain",
+  "text": "Requires (<= (onset Chest pain) (time_ago 10 minutes)), i.e. the pain began within the last 10 minutes. Onset is not episode duration; patients almost never present inside 10 minutes of onset, so the stable angina rule is effectively unreachable and the matching (>= onset 10 minutes) disjunct makes the ACS rule fire for nearly every chest-pain presentation on the ECG-abnormal or no-positional path, regardless of the other four characteristics or known stable angina. The 'Lasts >= 10 minutes' item should be dropped as not representable (or at least removed from the stable angina rule) rather than approximated with onset.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain / Diagnose probable stable angina in chest pain / Check chest pain character for acute coronary syndrome",
+  "text": "Two of the five 'Is chest pain/discomfort any of' items are absent from the check_for list and from both diagnosis rules: 'Not relieved by rest or sublingual nitrates' and 'Occurs more often than usual'; 'with minimal effort' is also lost. Because the stable angina rule is the negation of the same list, a known stable-angina patient with either missing feature is diagnosed stable angina where the page says ACS. No remaining-questions note is visible to me, and SNOMED offers Chest pain + (snomed_concept \"Frequent\" \"qualifier value\") or \"Increased\" for the frequency item, and the \"Relieved by\" attribute / \"Relieved\" qualifier for the nitrate item.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension pneumothorax in chest pain",
+  "text": "The page's comma list ('sudden breathlessness, more resonant/decreased breath sounds/pain on one side, deviated trachea') is encoded as all-of: sudden dyspnoea AND a unilateral sign AND tracheal deviation. Tracheal deviation is a late sign; if the page means any-of, or sudden breathlessness plus any one sign, the rule under-fires. The reading is defensible but should be flagged for the clinician. 'Pain on one side' is encoded as plain Left/Right sided chest pain, which the red-box 'New left sided chest pain' record will also satisfy; acceptable.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: probable acute coronary syndrome in chest pain / Urgent: chest pain worse on lying down, palpation or breathing deeply",
+  "text": "Both priority rules are justified by the page ('Manage and refer urgently'). The positional one fires regardless of the ECG result, whereas the page only asks the positional question on the ECG-normal branch; harmless because the red box as a whole is Urgent and the danger-signs rule already covers chest pain with any red-box item.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain / Diagnose probable stable angina in chest pain / Diagnose probable pneumonia in chest pain",
+  "text": "The probable rules use (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) and (>= (measurement \"Body temperature\") 38) as evidence without any check_for for them in this file. Chest pain is a recorded warning sign and temperature a routine vital, so this is presumably allowed by the test, but I cannot confirm it from the inputs allowed here. Likewise the pulse measurement uses \"Pulse, function\" where SNOMED also has \"Heart rate\"; it must match the concept VHA records for the pulse vital.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "Footnote 5's 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) has no probable Shock rule. It gates a management step, so this is a judgment call, but the briefing's rule is every 'X likely' becomes a probable diagnosis.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome / stable angina",
+  "text": "Duration 'lasts >= 10 minutes' encoded as onset time_ago comparison in opposite directions in the two rules; wrong quantity and ambiguous direction.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome / stable angina; Check chest pain character",
+  "text": "Two 'any of' criteria missing entirely: not relieved by rest/nitrates, occurs more often than usual; 'minimal effort' also missing.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stable angina",
+  "text": "Can co-fire with ACS rule because ACS's any-of arm and stable angina's negations are not exact complements.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: chest pain with danger signs",
+  "text": "'New pain or discomfort in centre or left side' encoded with unrestricted 'Chest discomfort + New'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pneumonia / task list",
+  "text": "Body temperature, vitals and oxygen saturation are used in rules but no task asks for them; shock likely has no rule.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension pneumothorax",
+  "text": "All sign groups ANDed with positional pain; no possible-level rule for partial presentations.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain / Diagnose probable stable angina in chest pain",
+  "text": "These two rules are meant to be complements on the 'known stable angina' branch, but the 'Is chest pain/discomfort any of' node is missing 'not relieved by rest or sublingual nitrates', 'occurs more often than usual' and 'minimal effort'. A known stable-angina patient with crescendo or nitrate-refractory pain lasting under 10 minutes is labelled probable stable angina, with no Urgent priority, instead of ACS.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "Footnote 5 ('shock likely') has no probable Shock rule.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check chest pain character for acute coronary syndrome",
+  "text": "The check_for has no findings for the missing characteristics, so health workers are never prompted to ask about nitrate response, frequency or minimal-effort onset.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: chest pain with danger signs",
+  "text": "The pulse thresholds use the 'Pulse, function' observable. Confirm it matches the routine pulse vital; 'Heart rate' also exists. Otherwise the > 100 and < 50 criteria never fire.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension pneumothorax in chest pain",
+  "text": "Tension pneumothorax gets only the generic Urgent from the positional-pain branch. The page doesn't escalate explicitly, so this is consistent, but a clinician may want Emergency.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Record known cardiovascular disease risk for chest pain",
+  "text": "The page refers to a 'known CVD risk > 20%', it does not instruct a measurement; the measure task is an addition rather than page content. Harmless, but not on the page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check chest pain character for acute coronary syndrome",
+  "text": "Two of the page's five 'Is chest pain/discomfort any of' criteria are not checked for anywhere: 'Not relieved by rest or sublingual nitrates' and 'Occurs more often than usual'; and 'Occurs at rest or with minimal effort' is reduced to rest pain only. No SNOMED concept was found for the two missing items, but the omission should be recorded, and the diagnosis rules inherit the gap.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain",
+  "text": "Structure follows the drawn flow (ECG abnormal or non-positional pain; then any feature, or not known stable angina) and 'likely' justifies probable. But the 'Lasts >= 10 minutes' branch is encoded as onset >= 10 minutes ago, which is satisfied by almost any presenting patient, so in practice the second 'or' is nearly always true and the pain-character question is bypassed. The 'or' also lacks 'Not relieved by rest or sublingual nitrates' and 'Occurs more often than usual', and rest pain omits 'minimal effort'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable stable angina in chest pain",
+  "text": "The 'No' to 'Lasts >= 10 minutes' is encoded as onset within the last 10 minutes (c071), which is a different condition and makes the rule fire only in the first ten minutes after onset. The negated list also omits the nitrate-relief and frequency criteria, and the rest-pain negation omits 'minimal effort', so patients the page would route to ACS can satisfy this rule. 'Patient has stable angina' does justify probable. (Faithful to the page as drawn: the ECG-abnormal branch enters the pain-character box, so ST elevation plus known stable angina and no features reads as stable angina; worth a clinician question.)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Record known cardiovascular disease risk for chest pain",
+  "text": "Invented management step: page only uses a known CVD risk > 20% as a risk factor.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check chest pain character for acute coronary syndrome",
+  "text": "Omits 'Not relieved by rest or sublingual nitrates', 'Occurs more often than usual' and 'with minimal effort' from the page's feature box.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for tension pneumothorax or pneumonia in chest pain",
+  "text": "No temperature check although pneumonia needs temp >= 38C; no oxygen saturation check.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain",
+  "text": "Feature OR-group omits 'not relieved by rest/nitrates' and 'more often than usual'; 10 minute duration encoded as onset comparison with uncertain direction. Overall ECG/pleuritic/stable-angina structure matches the flowchart.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable stable angina in chest pain",
+  "text": "Absence list is incomplete (missing nitrate-relief and frequency features), so stable angina can be diagnosed alongside features the page calls ACS. Duration uses <= at a boundary and doubtful direction.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tension pneumothorax in chest pain",
+  "text": "All of breathlessness, a sign and deviated trachea are required, stricter than the page's list of features; also requires pleuritic feature which is only the flowchart branch.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: chest pain with danger signs",
+  "text": "'Chest discomfort' new lacks the centre/left location; otherwise faithful. Page also has 'shock likely' (footnote 5) which is not encoded anywhere.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute coronary syndrome in chest pain",
+  "text": "The \"Is chest pain/discomfort any of\" list leaves out two of the page's five features: \"Not relieved by rest or sublingual nitrates\" and \"Occurs more often than usual\". It also drops \"with minimal effort\". A patient known with stable angina whose pain is crescendo or not relieved by nitrates is therefore sent down the stable-angina path, not ACS. The rest of the structure matches the flowchart: (ECG abnormal OR no to positional pain) AND (any feature OR not known stable angina).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable stable angina in chest pain",
+  "text": "This mirrors the ACS gap: it doesn't exclude pain that is not relieved by rest or nitrates, or that occurs more often than usual, so it fires for presentations the page calls ACS. At exactly 10 minutes it overlaps with the ACS rule (<= vs >=). \"Patient has stable angina\" is a definite statement, so probable is acceptable.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check chest pain character for acute coronary syndrome",
+  "text": "The check_for leaves out \"not relieved by rest or sublingual nitrates\", \"occurs more often than usual\" and the minimal-effort half of \"occurs at rest\". The health worker is never asked for two of the five ACS discriminators.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "trigger",
+  "text": "A: (or Tenderness of chest wall, Chest pain on breathing)  vs  B: adds Pain aggravated by position to the pneumothorax/pneumonia task trigger",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) Tenderness of chest wall, Chest pain on breathing)",
+    "reason": "The page's question is \"worse on lying down, palpation or breathing deeply\"; B covers \"lying down\" (with a broader concept), A leaves it out.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: none  vs  B: two extra Chest pain triggers (separate tasks \"Do an ECG for chest pain (doctor to review)\" and \"Check chest pain character for acute coronary syndrome\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+    "reason": "The page has a separate step \"Do an ECG (doctor to review)\" and separate questions; B's split mirrors them, and the checked-for items are the same in both builds.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (Chest discomfort, New)  vs  B: none",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "reason": "The page says \"New pain or discomfort in centre or left side of chest\"; omitting discomfort drops a listed item, though the concept has no site and is broader.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Pale complexion  vs  B: Pallor of skin of face",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "reason": "Page says \"Pallor\", which has no concept; both are face-pallor findings in the vocabulary and B's is the one VHA's rules use most (5 uses vs 3).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Hyperresonance  vs  B: Hyperresonance (Unilateral)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "reason": "The page says \"more resonant/decreased breath sounds/pain on one side\"; \"on one side\" applies to the resonance too.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Decreased breath sounds  vs  B: Decreased breath sounds (Unilateral)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "reason": "Same reason: \"decreased breath sounds … on one side\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: none  vs  B: Pain aggravated by position",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+    "reason": "The page asks whether chest pain is \"worse on lying down\"; B is the only build that checks for it (concept is broader).",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (Chest discomfort, New) in red-box priority  vs  B: none",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "reason": "Red box lists \"New pain or discomfort in centre or left side of chest\".",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: Pale complexion  vs  B: Pallor of skin of face",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "reason": "As for check_for: \"Pallor\"; consistent concept with VHA's existing rules.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: Urgent on (active_condition Pneumonia) and (active_condition Tension pneumothorax)  vs  B: none",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "Both diagnoses sit inside the positional Yes box headed \"Manage and refer urgently\", which B's positional priority already covers; an active_condition priority on Pneumonia would also fire for pneumonia from other pages.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: none  vs  B: Urgent: chest pain AND (Pain aggravated by position OR Tenderness of chest wall OR Chest pain on breathing)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and (clinical_finding Chest pain) (or Pain aggravated by position, Tenderness of chest wall, Chest pain on breathing))",
+    "reason": "The Yes branch of \"Is chest pain worse on lying down, palpation or breathing deeply?\" leads to \"Manage and refer urgently:\" without a \"likely\" diagnosis.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Hyperresonance / Decreased breath sounds  vs  B: same with Unilateral (tension pneumothorax rule)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(Hyperresonance|Decreased breath sounds (qualifier Unilateral))",
+    "reason": "\"more resonant/decreased breath sounds/pain on one side\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: no Pain aggravated by position  vs  B: Pain aggravated by position in the positional Yes/No conditions of the ACS, stable angina and tension pneumothorax rules",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")))",
+    "reason": "The question names \"lying down\"; B represents it, A cannot.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: ACS = chest pain AND (ECG abnormal OR positional No) AND (feature OR not known stable angina)  vs  B: ACS = chest pain AND (ECG abnormal OR (positional No AND (feature OR not known stable angina)))",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(and Chest pain (or ST elevation, ST depression, LBBB, (and (no PAP) (no Tenderness) (no Pain on breathing))) (or rest, worsening, prolonged, onset>=10 min, (no known stable angina)))",
+    "reason": "The image draws \"ECG abnormal\" into the \"Is chest pain/discomfort any of\" box, not straight to ACS (A's structure); kept B's three positional negatives.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: no stable angina rule  vs  B: stable angina rule gated on each abnormal ECG finding recorded No",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(and Chest pain (or ST elevation, ST depression, LBBB, (and (no PAP) (no Tenderness) (no Pain on breathing))) (no rest) (no worsening) (no prolonged) (<= onset 10 min) (known stable angina))",
+    "reason": "Both ECG branches reach \"Is patient known with stable angina?\" via the features box, so the entry is the same as ACS's; B's ECG-No gate contradicts \"ECG abnormal\" feeding that box and excluded an unavailable ECG.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: none  vs  B: (diagnosis Stable angina probable)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable)",
+    "reason": "The page states an outcome, \"Patient has stable angina\"; encoded probable as for a \"likely\" outcome, but the patient is already known with it.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "slug": "24-chest-pain",
+  "kind": "known_issue",
+  "priority": "medium",
+  "ref": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+  "text": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+  "detail": [
+   {
+    "reason": "The page routes \"not known with stable angina\" to ACS likely. The finding is checked for in \"Check chest pain character for acute coronary syndrome\"; the checker does not match a (no X) nested inside an or of a probable rule to its check_for X. Kept as the faithful encoding."
+   }
+  ]
+ }
+]

@@ -1,0 +1,1668 @@
+{
+ "page": 49,
+ "lisp_file": "49-face-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "with no/minimal forehead involvement"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "Painful red facial swelling"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "whole eyelid swollen"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of skin of eyelid\" \"disorder\"))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "red and painful"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "red and painful"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "New swelling of face"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "blood/protein in urine"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent face symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "blood/protein in urine"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of face pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-b94b1734"
+   ],
+   "quote": "Pain on one side of face"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stabbing pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-32d3b7f6",
+    "p49-d00d187f"
+   ],
+   "quote": "Recurrent intense, superficial, stabbing pain"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of herpes zoster\" \"situation\"))",
+   "element_keys": [
+    "p49-e3398f9f"
+   ],
+   "quote": "Previous shingles"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b94b1734"
+   ],
+   "quote": "Pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p49-b94b1734",
+    "p49-22d5162f"
+   ],
+   "quote": "headache worse on bending forward"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-22d5162f",
+    "p49-b5f403c9"
+   ],
+   "quote": "Thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\"))",
+   "element_keys": [
+    "p49-22d5162f",
+    "p49-b5f403c9"
+   ],
+   "quote": "Thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of face pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-b5f403c9"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of facial weakness",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of facial weakness",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "element_keys": [
+    "p49-d78e845f",
+    "p49-3485bd66"
+   ],
+   "quote": "unable to wrinkle forehead"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of facial weakness",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to close eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-3485bd66"
+   ],
+   "quote": "close eye"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of facial swelling",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of facial swelling",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of facial swelling",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of facial swelling",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-4e042bff"
+   ],
+   "quote": "Painless swelling of lips/eyes"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for causes of facial swelling",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-4e042bff"
+   ],
+   "quote": "Painless swelling of lips/eyes"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for causes of facial swelling",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b57473e2"
+   ],
+   "quote": "Painful swelling"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for causes of facial swelling",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p49-1d68615d"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for causes of facial swelling",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p49-984b81fd"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "with no/minimal forehead involvement"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible stroke from face symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "consider stroke"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "with no/minimal forehead involvement"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible TIA from face symptoms",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "TIA"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis from face swelling",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "check for anaphylaxis"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose probable facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "Painful red facial swelling"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose probable facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "Painful red facial swelling"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose probable facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "Painful red facial swelling"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose probable facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose probable facial cellulitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cellulitis of face\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "facial cellulitis likely"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "likely facial cellulitis"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "likely facial cellulitis"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "Painful red facial swelling"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "likely facial cellulitis"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "whole eyelid swollen"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema of skin of eyelid\" \"disorder\"))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "red and painful"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "red and painful"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable orbital cellulitis from facial cellulitis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Orbital cellulitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-868b3618"
+   ],
+   "quote": "orbital cellulitis likely"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "New swelling of face"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "blood/protein in urine"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "blood/protein in urine"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable kidney disease from facial swelling",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Kidney disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "kidney disease likely"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-b94b1734"
+   ],
+   "quote": "Pain on one side of face"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stabbing pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-32d3b7f6",
+    "p49-d00d187f"
+   ],
+   "quote": "Recurrent intense, superficial, stabbing pain"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable trigeminal neuralgia",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Trigeminal neuralgia\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-2ca26b2e"
+   ],
+   "quote": "Trigeminal neuralgia likely"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-b94b1734"
+   ],
+   "quote": "Pain on one side of face"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of herpes zoster\" \"situation\"))",
+   "element_keys": [
+    "p49-e3398f9f"
+   ],
+   "quote": "Previous shingles"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable post-herpetic neuralgia of face",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Postherpetic neuralgia\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-4559fe88"
+   ],
+   "quote": "Post-herpetic neuralgia likely"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-5b53491f"
+   ],
+   "quote": "Face pain"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b94b1734"
+   ],
+   "quote": "Pain when pushing on forehead/cheeks"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p49-b94b1734",
+    "p49-22d5162f"
+   ],
+   "quote": "headache worse on bending forward"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-22d5162f",
+    "p49-b5f403c9"
+   ],
+   "quote": "Thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Posterior rhinorrhea\" \"disorder\"))",
+   "element_keys": [
+    "p49-22d5162f",
+    "p49-b5f403c9"
+   ],
+   "quote": "Thick nasal/postnasal discharge"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-b5f403c9"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose probable sinusitis from face pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Sinusitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-fd9260ad"
+   ],
+   "quote": "Sinusitis likely"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose probable Bell's palsy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-d78e845f"
+   ],
+   "quote": "Sudden progressive weakness of one side of face"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose probable Bell's palsy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\"))",
+   "element_keys": [
+    "p49-d78e845f",
+    "p49-3485bd66"
+   ],
+   "quote": "unable to wrinkle forehead"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose probable Bell's palsy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to close eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-3485bd66"
+   ],
+   "quote": "close eye"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Diagnose probable Bell's palsy",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Bell's palsy\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-df9917f7"
+   ],
+   "quote": "palsy likely"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-4e042bff"
+   ],
+   "quote": "Painless swelling of lips/eyes"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-4e042bff"
+   ],
+   "quote": "Painless swelling of lips/eyes"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Diagnose probable angioedema from face swelling",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Angioedema\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-71f5dc31"
+   ],
+   "quote": "Angioedema likely"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b57473e2"
+   ],
+   "quote": "Painful swelling of one/both sides of face"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b57473e2"
+   ],
+   "quote": "Painful swelling"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p49-1d68615d"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p49-1d68615d"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p49-984b81fd"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Diagnose probable mumps from painful face swelling",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Mumps\" \"disorder\") probable)",
+   "element_keys": [
+    "p49-453a35f7"
+   ],
+   "quote": "Mumps likely"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lip swelling\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c142",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling around eyes\" \"finding\"))",
+   "element_keys": [
+    "p49-b0fd6213"
+   ],
+   "quote": "face symptoms"
+  },
+  {
+   "claim_id": "c143",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c144",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper facial weakness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "with no/minimal forehead involvement"
+  },
+  {
+   "claim_id": "c145",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face"
+  },
+  {
+   "claim_id": "c146",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c147",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg"
+  },
+  {
+   "claim_id": "c148",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "difficulty speaking"
+  },
+  {
+   "claim_id": "c149",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p49-10a79337"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c150",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c151",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "Sudden face/tongue swelling"
+  },
+  {
+   "claim_id": "c152",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c153",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c154",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c155",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c156",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "dizziness/collapse"
+  },
+  {
+   "claim_id": "c157",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c158",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p49-96a95e1e"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c159",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c160",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c161",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c162",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p49-96a95e1e",
+    "p49-9b2a92df"
+   ],
+   "quote": "exposure to possible allergen"
+  },
+  {
+   "claim_id": "c163",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cellulitis of face\" \"disorder\"))",
+   "element_keys": [
+    "p49-b8f347fb"
+   ],
+   "quote": "facial cellulitis likely"
+  },
+  {
+   "claim_id": "c164",
+   "rule": "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Kidney disease\" \"disorder\"))",
+   "element_keys": [
+    "p49-5eec7b64"
+   ],
+   "quote": "kidney disease likely"
+  }
+ ]
+}

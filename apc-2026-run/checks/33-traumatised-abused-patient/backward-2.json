@@ -1,0 +1,477 @@
+{
+ "page": 33,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of abuse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Traumatised' is a lay term; 'Victim of psychological trauma' is a plausible but narrower reading.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Sex is a modifier of the 5-day window, not a finding to check for; page does not ask to check sex as a sign.",
+   "fix": "Drop Female from check_for (keep it in the priority rule).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Sex is a modifier of the 3-day window, not a finding to check for.",
+   "fix": "Drop Male from check_for.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Injuries needing attention', not any traumatic injury; qualifier lost.",
+   "fix": "Keep, but note the page refers to page 30 triage; consider a narrower or qualified concept.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of physical assault\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scar\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says bruises of different ages; 'Multiple bruising' drops the differing-ages element.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intimidation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of threats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Withdrawn behavior\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fearful mood\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Severe' qualifier invented for fearful; page says only 'fearful' (the 'excessively' modifies withdrawn at most).",
+   "fix": "Remove severe qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Severe' qualifier invented for anxious; page says only 'anxious'.",
+   "fix": "Remove severe qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+   "expr": "(diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+   "expr": "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of abuse\" \"finding\"))",
+   "verdict": "unsupported",
+   "reason": "Page does not require a general abuse/trauma finding before physical abuse is likely; the page title is context, not a condition. Also makes the diagnosis dependent on another finding.",
+   "fix": "Remove the abuse/trauma precondition.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "unsupported",
+   "reason": "As c024: precondition invented.",
+   "fix": "Remove.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of physical assault\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scar\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Multiple bruising\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Different ages of bruises dropped; also 'unusual wounds' has no condition anywhere.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "expr": "(diagnosis (snomed_concept \"Victim of physical abuse\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of abuse\" \"finding\"))",
+   "verdict": "unsupported",
+   "reason": "Page does not require a general abuse/trauma finding before emotional abuse is likely.",
+   "fix": "Remove the precondition.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "unsupported",
+   "reason": "As c030.",
+   "fix": "Remove.",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intimidation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of threats\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Withdrawn behavior\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fearful mood\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Severe' qualifier invented for fearful.",
+   "fix": "Remove severe qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'Severe' qualifier invented for anxious.",
+   "fix": "Remove severe qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "expr": "(diagnosis (snomed_concept \"Victim of emotional abuse\" \"finding\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of abuse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Traumatised' mapped only to psychological trauma; acceptable but loose.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 5 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 3 days))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "'Needing attention' dropped; any traumatic injury makes it urgent.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for traumatised/abused patient urgent signs and abuse type",
+   "verdict": "problem",
+   "problem": "Female and Male are listed as check_for findings (not clinical signs); severe qualifier on fearful/anxious invented; Female/Male etc. make the task a poor fit.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible abuse (traumatised/abused patient page)",
+   "verdict": "problem",
+   "problem": "Only 'behaviour seems strange' is encoded; page also says suspect abuse if patient discloses, examination contradicts history, or abuse clear on examination (no conditions for these).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable sexual assault/rape (traumatised/abused patient page)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable physical abuse (traumatised/abused patient page)",
+   "verdict": "problem",
+   "problem": "Invented AND precondition on Victim of abuse/psychological trauma, so physical abuse can never be probable from physical findings alone; 'unusual wounds' missing; no onset/age condition for bruises.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable emotional/verbal/psychological abuse (traumatised/abused patient page)",
+   "verdict": "problem",
+   "problem": "Invented abuse/trauma precondition; harassment, ridiculed/controlled and insulted missing; severe qualifier invented on fearful/anxious.",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk",
+   "verdict": "problem",
+   "problem": "Urgent box header is the context; requiring Victim of abuse/trauma finding as an AND gate is not on the page as a finding and may suppress the red box for a patient with only the listed criteria (e.g. recent rape without abuse flag). Priority Urgent itself is justified.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "The most consequential problem is the invented 'Victim of abuse or psychological trauma' precondition in the physical and emotional abuse diagnosis rules (and the Urgent rule), which the page does not state and which blocks the diagnoses and urgent priority when only the listed signs are present. Secondary: 'severe' qualifiers invented for fearful/anxious, Female/Male wrongly listed as check_for findings, and omitted page items (unusual wounds, harassment/ridiculed/insulted, disclosure/contradicting examination)."
+}

@@ -1,0 +1,1505 @@
+{
+ "page": 28,
+ "slug": "28-anaphylaxis",
+ "validation_ok": true,
+ "builder_agreement": 0.789,
+ "elements": 32,
+ "elements_agreed": 24,
+ "claims": 132,
+ "claims_agreed": 55,
+ "queue": 157,
+ "queue_by_priority": {
+  "medium": 79,
+  "low": 62,
+  "high": 16
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p28-8fd7fcd8",
+   "id": "p28-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p28-b949a38d",
+   "id": "p28-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 2,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p28-4f99695e",
+   "id": "p28-rb1-e03",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-0710cea4",
+   "id": "p28-rb1-e04",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-46be17a2",
+   "id": "p28-rb1-e05",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 2,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p28-070ba821",
+   "id": "p28-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-21cb83f7",
+   "id": "p28-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-44b146d8",
+   "id": "p28-rb1-e08",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p28-57d50a64",
+   "id": "p28-rb1-e09",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p28-29084cc2",
+   "id": "p28-rb1-e10",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p28-29d329b5",
+   "id": "p28-rb1-e11",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p28-e3340eab",
+   "id": "p28-rb1-e12",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-e23719ce",
+   "id": "p28-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-8d56155c",
+   "id": "p28-rb1-e14",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-6b9bcae7",
+   "id": "p28-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-345b41d9",
+   "id": "p28-rb1-e16",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p28-16be4c10",
+   "id": "p28-rb1-e17",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-6fd3c1f2",
+   "id": "p28-rb1-e18",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p28-07081abb",
+   "id": "p28-rb1-e19",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-c695b35d",
+   "id": "p28-rb1-e20",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-8796ba9d",
+   "id": "p28-rb1-e21",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-366ea3c4",
+   "id": "p28-rb1-e22",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-d1dbc24e",
+   "id": "p28-rb1-e23",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-9d41a893",
+   "id": "p28-rb1-e24",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-4473d3b8",
+   "id": "p28-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-8c4447a0",
+   "id": "p28-out-e02",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-c79f4dbd",
+   "id": "p28-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-4cfd0a37",
+   "id": "p28-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-a21b787b",
+   "id": "p28-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p28-f6e39748",
+   "id": "p28-out-e06",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p28-3d242b5e",
+   "id": "p28-out-e07",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "borderline": 1,
+    "out_of_scope": 1,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p28-4be1e91a",
+   "id": "p28-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "faithful": 2
+   }
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "wrong": 1,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "wrong": 1,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "unsupported": 1,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 1,
+    "unsupported": 1,
+    "faithful": 1
+   }
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "unsupported": 1
+   }
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose possible anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: anaphylaxis",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

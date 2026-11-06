@@ -1,0 +1,394 @@
+{
+ "page": 56,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p56-319abd06",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: header; trigger 'abdominal pain' is the priority rule's and-root",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-74dce981",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+    "Check for urgent abdominal pain conditions :: check_for Chest pain"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-c66839a9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Fever absent from the urgent check_for list (nausea/vomiting present); minor"
+   ],
+   "problem": "Rule matches page. Urgent priority depends on active_condition Appendicitis rather than the criteria directly; depends on the platform chaining probable diagnoses into active_condition.",
+   "evidence": [
+    "Diagnose probable appendicitis from abdominal pain :: (and RLQ pain (or Nausea Vomiting Fever))",
+    "Urgent: abdominal pain with red-box signs :: (active_condition Appendicitis)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-0f337a11",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (and (clinical_finding Pregnancy) (clinical_finding Bleeding from vagina))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-45fd1111",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'during peri-umbilical percussion' context dropped (acceptable; no concept)"
+   ],
+   "problem": "Peritonitis rule has no abdominal pain precondition: guarding alone anywhere would give probable peritonitis. Minor.",
+   "evidence": [
+    "Diagnose probable peritonitis from abdominal pain :: (or Abdominal guarding Abdominal rigidity)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-ccb3aaae",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Recent delivery' is encoded as Postpartum state with no recency qualifier"
+   ],
+   "problem": "Postpartum state is a reasonable concept for recent delivery but not time-bounded; miscarriage/termination use a 'Recent' qualifier.",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))",
+    "Urgent: abdominal pain with red-box signs :: Miscarriage + Recent",
+    "Urgent: abdominal pain with red-box signs :: Induced termination of pregnancy + Recent"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-14e3e5ca",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable cholecystitis from abdominal pain :: (and (RUQ pain Severe) (or Nausea Fever Loss of appetite))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-4db16c57",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Glucose is not in the task check_for list, so nobody is asked for it"
+   ],
+   "problem": "Priority rule uses it correctly; but the check task omits glucose, and 'Blood glucose status' is a weak concept for a glucose measurement (random vs fasting).",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-e7b2ffe5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Radiation to the back encoded as lumbar or thoracic left/right pain; acceptable approximation.",
+   "evidence": [
+    "Diagnose probable pancreatitis from abdominal pain :: (and (Upper abdominal pain Sudden onset Severe) (or radiating lumbar / thoracic L / R) (or Nausea Vomiting))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-2e2c290f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (clinical_finding (snomed_concept \"Unable to void urine\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-37c268cf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "A closer concept for 'no stool passed' (e.g. absence of bowel movement) may exist"
+   ],
+   "problem": "Direction and 24 h are right per briefing. 'Obstipation' (severe/intractable constipation) is not quite 'no stools'; 'No stools' as 'or'? Page says stools or flatus, i.e. both absent, so 'and' is right. Items are in check_for but without the onset condition.",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (and (>= (onset Obstipation) (time_ago 24 hours)) (>= (onset Unable to break wind) (time_ago 24 hours)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-2667e16f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (clinical_finding Jaundice)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-b44afad7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'check for anaphylaxis' cross-reference only; urgent priority for anaphylaxis possibility is a reading of the box (it is in the box, so acceptable)"
+   ],
+   "problem": "BP < 90/60 is split into systolic <90 OR diastolic <60, reasonable. Face/tongue swelling, itch/rash, breathing, dizziness, collapse, allergen exposure all present. Generalized rash uses a 'disorder' concept, check it is the intended one.",
+   "evidence": [
+    "Diagnose possible anaphylaxis from sudden abdominal pain :: (and (Abdominal pain Sudden onset) (or ... ))",
+    "Urgent: abdominal pain with red-box signs :: same and-block"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-b649bc60",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: abdominal pain with red-box signs :: (Abdominal mass)",
+    "Urgent: abdominal pain with red-box signs :: (Mass of pelvic structure)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-13a4f904",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable abdominal aortic aneurysm from abdominal pain :: (clinical_finding (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-2d78df7c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Infectious disease' is the generic concept for 'infection'; acceptable but vague. Urgent priority has a duplicate of this and-block.",
+   "evidence": [
+    "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge :: (and (or guarding rigidity) (>= Body temperature 38) Vaginal discharge problem)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-8922b762",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: header",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-c2d2af63",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-6d69d91b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-8dcb65f5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-bfc8fdb2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-3f3957d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'recent onset' qualifier on vomiting/diarrhoea etc.",
+    "'cramping' maps to colic (fine)"
+   ],
+   "problem": "Logic structure correct.",
+   "evidence": [
+    "Diagnose probable gastroenteritis from abdominal pain :: (and Abdominal colic (or Vomiting Diarrhea Loss of appetite Generalized aches Fever))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-cbfc3b4d",
+   "scope": "borderline",
+   "scope_reason": "cross_reference_only for urinary symptoms (->69) and ART side effects (->131); no rule or check_for for urinary symptoms/dipstick",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Urinary symptoms and dipstick leucocytes/nitrites/blood are not encoded; they route to another page, but a check item would be expected.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-22900a38",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Woman precondition (Yes branch of 'lower abdomen and woman')",
+    "abnormal vaginal discharge / pain on moving cervix branch -> LAP syndrome not encoded (flowchart routing)"
+   ],
+   "problem": "'only during periods' not expressible; fine.",
+   "evidence": [
+    "Diagnose probable dysmenorrhoea from abdominal pain :: (Abdominal colic, finding_site Lower abdomen structure, qualifier During menstruation)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-49841368",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page also covers dyspepsia diagnosis; 'worse lying down/bending forward' = Pain aggravated by position is loose.",
+   "evidence": [
+    "Diagnose probable dyspepsia from abdominal pain :: (or (Epigastric pain Postprandial) (and Epigastric pain (or Hunger pain Pain aggravated by position)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p56-07bd5aad",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'pain relieved with passing stool' item not among the any2 candidates",
+    "'If weight loss' cross-reference only"
+   ],
+   "problem": "With only three any2 candidates, a patient with relief on defecation plus one other item is missed; one criterion lost.",
+   "evidence": [
+    "Diagnose probable irritable bowel syndrome from abdominal pain :: (and (or Recurrent abdominal pain / Abdominal discomfort Recurrent) (any2 Distension (or freq feces) Mucus))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p56-137d7b78",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [
+    "Hb <12 woman / <13 man discuss/refer (not_representable)",
+    "Man waist threshold 94 cm"
+   ],
+   "problem": "Waist circumference threshold is 80 cm for women and 94 cm for men; rule applies 80 to everyone, so men with waist 80-93 cm get probable GORD wrongly. Sex-specific thresholds are lost.",
+   "evidence": [
+    "Diagnose probable GORD from dyspepsia with raised BMI and waist :: (>= BMI 25) (>= Waist circumference cm 80)"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p56-943a9732",
+  "p56-7dca2c44",
+  "p56-1b6ed7e3",
+  "p56-eac1d0ce",
+  "p56-089304d2",
+  "p56-eb7d0397",
+  "p56-aa323699",
+  "p56-d0d0b9d8",
+  "p56-cf835ebf",
+  "p56-ffe132bb",
+  "p56-c63d5e28",
+  "p56-6ee1b5a8",
+  "p56-183e43fc"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "problem": "Waist >=80 cm applied to both sexes; men need >=94 cm.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "problem": "Missing 'pain relieved with passing stool' as an any2 candidate.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "problem": "Relies on active_condition of probable diagnoses (appendicitis, peritonitis, cholecystitis, pancreatitis, AAA); no direct-trigger fallback, and glucose has no matching check_for item. Peritonitis/AAA rules have no abdominal pain precondition.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "problem": "check_for omits glucose >= 11.1, Fever, and BP; check list and priority rule disagree. Also lists Abdominal pain Sudden onset items beyond the page.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable infection ...",
+   "problem": "Duplicate and-block in the priority rule and generic 'Infectious disease' concept.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urinary symptoms / dipstick branch (page 56 non-urgent approach)",
+   "problem": "No check or rule for urinary symptoms, leucocytes/nitrites/blood, or LAP syndrome branch.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most consequential: the GORD rule uses a waist threshold of 80 cm for everyone, but the page requires 94 cm for men. The IBS rule drops the 'pain relieved with passing stool' criterion, and the glucose and urinary-symptom checks are missing from the check lists. The urgent red-box logic is otherwise well captured."
+}

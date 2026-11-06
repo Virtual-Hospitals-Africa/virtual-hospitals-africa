@@ -1,0 +1,655 @@
+{
+ "edition": "2026",
+ "page": 145,
+ "lisp_file": "145-diabetes-routine-care.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p145-6e70ecd4"
+   ],
+   "quote": "patient with diabetes",
+   "confidence": "high",
+   "note": "Presenting condition; not a recorded common symptom, so plain clinical_finding is used in trigger and priority (brief: no probable diagnosis of diabetes exists)."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p145-7132e5e1"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign; arrow to page 24 is a cross-reference."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p145-b057bf1b"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Seizure (finding), the warning-sign form."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p145-6fb0bf73"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p145-6fb0bf73"
+   ],
+   "quote": "drowsiness",
+   "confidence": "high",
+   "note": "Drowsy (finding), in vocabulary."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p145-adb2a697"
+   ],
+   "quote": "Confusion",
+   "confidence": "medium",
+   "note": "'Confusion' (finding) does not exist; Acute confusion is VHA's Confusion warning sign and in vocabulary."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p145-adb2a697"
+   ],
+   "quote": "unusual behaviour",
+   "confidence": "medium",
+   "note": "'Unusual change in behavior' is only a synonym, not an FSN; Abnormal behavior is the closest active FSN."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p145-9c62f7c4"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "'Weakness' (finding) does not exist; Asthenia (FSN, synonym weakness) used for generalised weakness. Alternative: Generalized muscle weakness."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p145-9c62f7c4"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tremor\" \"finding\"))",
+   "element_keys": [
+    "p145-c97d0963"
+   ],
+   "quote": "Shaking",
+   "confidence": "medium",
+   "note": "'Shaking' does not exist; Tremor is the suggested concept."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p145-52324c85"
+   ],
+   "quote": "Sweating",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p145-4e094283"
+   ],
+   "quote": "Palpitations",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p145-f9bc01c9"
+   ],
+   "quote": "Rapid deep breathing",
+   "confidence": "medium",
+   "note": "Rapid deep breathing in diabetes is Kussmaul breathing; alternative Deep breathing (finding) loses 'rapid'."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p145-0608cd10"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "Common symptom; 'or' split into two findings."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p145-0608cd10"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Common symptom recorded form."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p145-64addeac"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact match; also a warning sign."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p145-563b6113"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "No plain 'Thirst' finding; Increased thirst (child of Thirst finding) expresses abnormal thirst. Alternative Excessive thirst."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hungry\" \"finding\"))",
+   "element_keys": [
+    "p145-563b6113"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "No 'Hunger' finding; Hungry (finding) used."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "Dehydration",
+   "confidence": "medium",
+   "note": "Dehydration itself counts, as do each of its listed signs (see judgment call)."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = VHA's Dry mouth warning sign."
+  },
+  {
+   "rule": "Check for urgent diabetes conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Exact meaning; in vocabulary."
+  },
+  {
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p145-6e70ecd4"
+   ],
+   "quote": "patient with diabetes",
+   "confidence": "high",
+   "note": "Presenting condition; not a recorded common symptom, so plain clinical_finding is used in trigger and priority (brief: no probable diagnosis of diabetes exists)."
+  },
+  {
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p145-8da6d34b",
+    "p145-d94dcc12"
+   ],
+   "quote": "Check random fingerprick glucose: If fingerprick glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Threshold and direction as on page. 'without symptoms' not encoded: the ketone check is harmless when symptoms are present, and symptoms already make the patient urgent."
+  },
+  {
+   "rule": "Check urine dipstick for ketones in diabetes with fingerprick glucose >= 11.1",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p145-d94dcc12"
+   ],
+   "quote": "If ketones present",
+   "confidence": "high",
+   "note": "Urine dipstick ketones present = Ketonuria (finding)."
+  },
+  {
+   "rule": "Measure waist circumference in routine diabetes care",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p145-6e70ecd4"
+   ],
+   "quote": "patient with diabetes",
+   "confidence": "high",
+   "note": "Presenting condition; not a recorded common symptom, so plain clinical_finding is used in trigger and priority (brief: no probable diagnosis of diabetes exists)."
+  },
+  {
+   "rule": "Measure waist circumference in routine diabetes care",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "element_keys": [
+    "p145-00d2a881"
+   ],
+   "quote": "waist circumference (WC)",
+   "confidence": "medium",
+   "note": "Routine-care table: WC at diagnosis and yearly. Not a routine vital, so a measure task; timing (at diagnosis, yearly) not modelled."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p145-6e70ecd4"
+   ],
+   "quote": "patient with diabetes",
+   "confidence": "high",
+   "note": "Presenting condition; not a recorded common symptom, so plain clinical_finding is used in trigger and priority (brief: no probable diagnosis of diabetes exists)."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p145-7132e5e1"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign; arrow to page 24 is a cross-reference."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p145-b057bf1b"
+   ],
+   "quote": "Seizures",
+   "confidence": "high",
+   "note": "Seizure (finding), the warning-sign form."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p145-6fb0bf73"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p145-6fb0bf73"
+   ],
+   "quote": "drowsiness",
+   "confidence": "high",
+   "note": "Drowsy (finding), in vocabulary."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p145-adb2a697"
+   ],
+   "quote": "Confusion",
+   "confidence": "medium",
+   "note": "'Confusion' (finding) does not exist; Acute confusion is VHA's Confusion warning sign and in vocabulary."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal behavior\" \"finding\"))",
+   "element_keys": [
+    "p145-adb2a697"
+   ],
+   "quote": "unusual behaviour",
+   "confidence": "medium",
+   "note": "'Unusual change in behavior' is only a synonym, not an FSN; Abnormal behavior is the closest active FSN."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p145-9c62f7c4"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "'Weakness' (finding) does not exist; Asthenia (FSN, synonym weakness) used for generalised weakness. Alternative: Generalized muscle weakness."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p145-9c62f7c4"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tremor\" \"finding\"))",
+   "element_keys": [
+    "p145-c97d0963"
+   ],
+   "quote": "Shaking",
+   "confidence": "medium",
+   "note": "'Shaking' does not exist; Tremor is the suggested concept."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p145-52324c85"
+   ],
+   "quote": "Sweating",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p145-4e094283"
+   ],
+   "quote": "Palpitations",
+   "confidence": "high",
+   "note": "Exact match."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Kussmaul's respiration\" \"finding\"))",
+   "element_keys": [
+    "p145-f9bc01c9"
+   ],
+   "quote": "Rapid deep breathing",
+   "confidence": "medium",
+   "note": "Rapid deep breathing in diabetes is Kussmaul breathing; alternative Deep breathing (finding) loses 'rapid'."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p145-0608cd10"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "Common symptom; 'or' split into two findings."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p145-0608cd10"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Common symptom recorded form."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p145-64addeac"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": "Exact match; also a warning sign."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p145-563b6113"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "No plain 'Thirst' finding; Increased thirst (child of Thirst finding) expresses abnormal thirst. Alternative Excessive thirst."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hungry\" \"finding\"))",
+   "element_keys": [
+    "p145-563b6113"
+   ],
+   "quote": "hunger",
+   "confidence": "medium",
+   "note": "No 'Hunger' finding; Hungry (finding) used."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p145-bf64ad64"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital, threshold and direction as on page."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "Dehydration",
+   "confidence": "medium",
+   "note": "Dehydration itself counts, as do each of its listed signs (see judgment call)."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = VHA's Dry mouth warning sign."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Exact meaning; in vocabulary."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Urgent: diabetes with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p145-b8c80000"
+   ],
+   "quote": "pulse ≥ 100",
+   "confidence": "high",
+   "note": "Pulse, function is the vital VHA records for heart rate (bpm)."
+  },
+  {
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\"))",
+   "element_keys": [
+    "p145-6e70ecd4"
+   ],
+   "quote": "patient with diabetes",
+   "confidence": "high",
+   "note": "Presenting condition; not a recorded common symptom, so plain clinical_finding is used in trigger and priority (brief: no probable diagnosis of diabetes exists)."
+  },
+  {
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p145-9fd55114"
+   ],
+   "quote": "fingerprick glucose < 4",
+   "confidence": "high",
+   "note": "Blood glucose status is the vital VHA records for fingerprick glucose (mmol/L). 'with/without symptoms' means no further condition."
+  },
+  {
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p145-d94dcc12"
+   ],
+   "quote": "fingerprick glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Threshold and direction as on page. 'without symptoms' not encoded: the ketone check is harmless when symptoms are present, and symptoms already make the patient urgent."
+  },
+  {
+   "rule": "Urgent: diabetes with low or high fingerprick glucose",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ketonuria\" \"finding\"))",
+   "element_keys": [
+    "p145-d94dcc12"
+   ],
+   "quote": "If ketones present",
+   "confidence": "high",
+   "note": "Urine dipstick ketones present = Ketonuria (finding)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p145-a4f7ec0f",
+   "element_id": "p145-rb1-e18",
+   "text": "If fingerprick glucose ≥ 11.1 with symptoms 19.",
+   "reason_category": "out_of_scope_other",
+   "reason": "Not encoded separately: 'with symptoms' presumably means the red-box symptoms, each of which already makes the patient urgent under 'Urgent: diabetes with danger signs', so a glucose >= 11.1 AND symptoms branch would add nothing. If 'symptoms' means other hyperglycaemia symptoms (e.g. polyuria), this under-fires; see clinician question."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Dehydration criterion",
+   "decision": "Dehydration (disorder) or any one of its listed signs (dry mouth, poor skin turgor, systolic < 90 or diastolic < 60, pulse >= 100) triggers Urgent on its own.",
+   "alternatives": "Require Dehydration itself (signs as definition only), or any2 of the signs.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Glucose >= 11.1 with symptoms",
+   "decision": "Not encoded separately; treated as subsumed by the red-box symptoms rule.",
+   "alternatives": "Explicit (and glucose>=11.1 (or symptoms...)) branch duplicating the red-box list.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Glucose >= 11.1 without symptoms + ketones",
+   "decision": "Ketone check task fires on glucose >= 11.1 regardless of symptoms; Urgent if Ketonuria and glucose >= 11.1. 'without symptoms' (absence of all red-box signs) not modelled in the task trigger.",
+   "alternatives": "Add (no ...) of all red-box findings to the task trigger.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent for all red-box and glucose criteria, as the page says 'give urgent attention'; arrows to pages 19/20/24 are cross-references.",
+   "alternatives": "Emergency for glucose < 4 (page 19).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Routine care table",
+   "decision": "Only waist circumference becomes a measure task (weight, BMI, BP, glucose are vitals). Lab values (HbA1c, creatinine/eGFR, potassium, lipids, albumin/creatinine ratio) and WHR have no unit/observable; table rows are management/routing to other pages.",
+   "alternatives": "Measure tasks for HbA1c (%).",
+   "confidence": "medium"
+  }
+ ]
+}

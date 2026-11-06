@@ -1,0 +1,225 @@
+{
+  "page": 152,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p152-b3ce8fa8",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: 'Give urgent attention to the patient with a new stroke/TIA' is the priority level for the page and is what the house standard turns into an Urgent evaluation.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'new' is applied to TIA (qualifier New) but not to stroke: the priority rule fires on any recorded (clinical_finding Cerebrovascular accident) with no qualifier, so a patient whose previous stroke is recorded as a finding is triaged Urgent, which the page keeps separate under 'Assess the patient with previous stroke/TIA'."
+      ],
+      "problem": "Urgent is the right level (the page does not escalate to Emergency). The sudden-onset symptom list correctly triggers it. But the bare Cerebrovascular accident disjunct is not restricted to a new event, unlike the TIA disjunct beside it.",
+      "evidence": [
+        "Urgent: new stroke/TIA :: (system_priority_evaluation \"Urgent: new stroke/TIA\" adult Urgent (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\")) (clinical_finding (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-44a87834",
+      "scope": "borderline",
+      "scope_reason": "Two thresholds (oxygen saturation < 94%, respiratory rate >= 30) that the language can express with (measurement ... %) and (measurement ... bpm), but on this page their only consequence is a management step (give face mask oxygen), and manage tasks are out of scope by design. Reasonable people could still expect the thresholds to appear in the priority rule as red-box items.",
+      "verdict": "missing",
+      "parts_missing": [
+        "oxygen saturation < 94%",
+        "respiratory rate >= 30",
+        "give face mask oxygen (management_step, out of scope)"
+      ],
+      "problem": "Neither threshold appears anywhere in the file. Representable as (< (measurement (snomed_concept \"Peripheral oxygen saturation\" \"observable entity\") %) 94) and (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (both concepts exist). If the builders decided these are management-only, that decision should be recorded, not silent.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p152-91f92c92",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Nil by mouth until swallowing assessed is a management instruction with no criterion.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-7cb29c8d",
+      "scope": "borderline",
+      "scope_reason": "A glucose threshold (< 3, or < 4 if diabetes) is expressible in mmol/L, and glucose is a routine vital, but the page's consequence is a cross-reference to page 19 (glucose/hypoglycaemia), which owns that logic. The diabetes-specific cut-off (< 4) is page-specific logic.",
+      "verdict": "missing",
+      "parts_missing": [
+        "glucose < 3",
+        "glucose < 4 if diabetes (conjunction with (active_condition Diabetes mellitus))",
+        "route to page 19 (cross_reference_only)"
+      ],
+      "problem": "No glucose criterion of any kind in the file. Representable as (< (measurement (snomed_concept \"Blood glucose concentration\" \"observable entity\") mmol/L) 3) and (and (active_condition (snomed_concept \"Diabetes mellitus\" \"disorder\")) (< (measurement ...) 4)). Low consequence if page 19's rules catch hypoglycaemia on the same vital.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p152-69125f15",
+      "scope": "borderline",
+      "scope_reason": "Part 1 ('avoid treating BP >= 140/90') is management advice. Part 2 ('BP >= 220/120, discuss with specialist') is a threshold with an action; the threshold is representable in mmHg, the action is a management/referral step.",
+      "verdict": "missing",
+      "parts_missing": [
+        "avoid treating BP >= 140/90 (management_step, out of scope)",
+        "BP >= 220/120 -> discuss with specialist: threshold not encoded"
+      ],
+      "problem": "Neither BP threshold appears in the file. The >= 220/120 trigger is the kind of red-box vital the gold standard encodes with (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 220) / (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 120). Not a triage-level change on the page, so missing it does not alter priority.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p152-6a448a3b",
+      "scope": "out_of_scope",
+      "scope_reason": "flowchart_routing",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Lead-in line for the two referral branches; carries no criterion itself.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-e340c884",
+      "scope": "borderline",
+      "scope_reason": "The criterion 'within 3 hours of onset of symptoms' is a time-based criterion the language supports ((< (onset <finding>) (time_ago 3 hours))). The consequence, 'refer urgently for thrombolysis', is a referral (management) but also the page's only explicit escalation of urgency over the same-day branch. 'Can reach hospital' is not representable.",
+      "verdict": "missing",
+      "parts_missing": [
+        "onset within 3 hours (time criterion)",
+        "refer urgently for thrombolysis (management_step / referral)",
+        "can reach hospital within 3 hours (not_representable: depends on travel time)"
+      ],
+      "problem": "No onset-time criterion anywhere in the file; the priority rule treats a 10-minute-old stroke and a two-day-old one identically. The language can express the thrombolysis window, so the builders either should encode it (e.g. a higher priority or a separate Urgent rule with the onset comparator) or document why not.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p152-c506fb23",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Same-day referral plus a single aspirin dose with its own contraindications (long-term anticoagulant, headache/neck stiffness) and preconditions (fully conscious, can swallow). All of it belongs to a manage task, which this pass does not write. The 'cannot reach hospital within 3 hours' branch is the complement of p152-e340c884 and is judged there.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-272f6a19",
+      "scope": "in_scope",
+      "scope_reason": "The page's diagnostic logic: sudden onset of one or more listed symptoms 'suggests a stroke (or a TIA if symptoms lasted < 24 hours and resolved completely)'. 'Suggests' maps to a possible diagnosis.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'or a transient ischaemic attack': no possible TIA diagnosis rule exists; TIA appears only as a pre-recorded (clinical_finding Transient ischemic attack + New) in the check_for, i.e. the health worker is asked to assert a diagnosis as a finding rather than the rules deriving it",
+        "'if symptoms lasted < 24 hours and resolved completely': the duration part is expressible with onset/time_ago, 'resolved completely' is not representable",
+        "'especially on one side of the body': laterality/hemiparesis not captured (SNOMED has Hemiparesis, Left/Right hemiparesis). Acceptable as 'especially' is emphasis, not a criterion"
+      ],
+      "problem": "The twelve symptom parts are each encoded with a sensible concept and the Sudden onset qualifier, and the conclusion is a possible Cerebrovascular accident, which is the right certainty for 'suggests'. Concept choices checked: Weakness of face muscles / Muscle weakness of upper limb / Weakness of muscle of lower limb (weakness of face/arm/leg); Numbness of face / upper limb / lower limb; Blurring of visual image (blurred), Reduced visual acuity (decreased vision), Diplopia (double vision); Difficulty talking (speaking), Difficulty understanding verbal language (understanding); Difficulty walking; Dizziness; Impairment of balance (loss of balance; 'Unable to balance' is a closer synonym match but the general concept is defensible); Decreased coordination (loss of co-ordination). All exist with the stated categories. The miss is the TIA half of the sentence.",
+      "evidence": [
+        "Diagnose possible stroke from sudden-onset neurological symptoms :: (system_diagnosis_rule \"Diagnose possible stroke from sudden-onset neurological symptoms\" (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible) adult (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))))",
+        "Check for new stroke/TIA :: (task \"Check for new stroke/TIA\" adult (or (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\")) ... (clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\"))) (check_for (clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-a1ae4e90",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Routine BP monitoring row for previous stroke: known hypertension -> page 149, BP >= 140/90 -> page 148. The threshold belongs to the hypertension pages.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-b997f00e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Cholesterol > 7.5 or triglycerides > 10 -> check TSH and refer to doctor. A lab threshold whose consequence is an investigation/referral; cholesterol has an mmol/L unit but the house standard writes no manage tasks.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p152-abcb185d",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "HIV test at diagnosis (especially if < 50 years) -> pages 124/126.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-cd09799c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "ECG at diagnosis; if abnormal, discuss/refer.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-f44af360",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Advice block (education, family CVD risk assessment if < 55 man / < 65 woman, contraception). The age criteria only gate advice.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p152-50cc8207",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Treatment block (influenza vaccine, aspirin 150mg with contraindications and the warfarin referral, rosuvastatin/simvastatin). All criteria here gate drugs, i.e. manage tasks, which are out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p152-1683e21e",
+    "p152-3c03f964",
+    "p152-cc640699",
+    "p152-5037e443",
+    "p152-9bd8cd7e",
+    "p152-bb05c594",
+    "p152-b0382384",
+    "p152-b90b3aea"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Urgent: new stroke/TIA",
+      "problem": "The disjunct (clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\")) carries no New qualifier while the TIA disjunct does. Any recorded stroke finding, including a previous stroke recorded on the routine-care side of this page, is triaged Urgent. The page reserves urgent attention for a new stroke/TIA.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: new stroke/TIA",
+      "problem": "The thrombolysis window ('within 3 hours of onset of symptoms' -> refer urgently; otherwise refer same day) is the one time-critical distinction in the red box and is absent. The language supports (< (onset <clinical_finding>) (time_ago 3 hours)) in a due_to. Either a higher priority for the < 3 h case or at least a documented decision is expected.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+      "problem": "The page says the symptoms suggest a stroke OR a TIA. There is no possible Transient ischemic attack rule. Instead TIA is asked for in the check_for as (Transient ischemic attack + New), which makes the health worker assert a diagnosis as a finding and is the only way the TIA disjunct of the priority rule can ever be satisfied.",
+      "severity": "medium"
+    },
+    {
+      "rule": "whole file",
+      "problem": "None of the red-box vital thresholds is encoded: SpO2 < 94%, respiratory rate >= 30, glucose < 3 (< 4 if diabetes), BP >= 220/120. All four are representable with the available units (% bpm mmol/L mmHg) and the gold standard encodes BP thresholds in due_to positions. Their page consequences are management or referral steps, so the omission may be a deliberate scoping decision, but it is not visible from the file.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: new stroke/TIA",
+      "problem": "Possible test constraint 5 issue: the unqualified (clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\")) used as priority evidence appears only in the task's due_to, not in any check_for in this file, and is not a vital, warning sign or common symptom. Whether a task due_to satisfies 'checked for in the same file' for priority rules is not certain from the briefing; if it does not, the test will report PRIORITY EVALUATION ... NOT CHECKED FOR.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for new stroke/TIA",
+      "problem": "Minor: 'especially on one side of the body' is not captured (no hemiparesis/laterality concept). Acceptable because the page phrases it as emphasis, but a Hemiparesis finding (exists as disorder) would let a one-sided presentation be recorded directly.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The sudden-onset symptom list is encoded completely and with sound SNOMED concepts, and 'suggests a stroke' is correctly a possible diagnosis driving an Urgent priority. The most consequential problems are that the priority rule fires on any recorded Cerebrovascular accident (not only a new one, unlike its TIA disjunct), that the 3-hour thrombolysis window is not encoded although the language supports onset comparisons, and that there is no possible TIA diagnosis even though the page names it alongside stroke. The red-box vital thresholds (SpO2, respiratory rate, glucose, BP >= 220/120) are all absent; they gate management steps, so this may be deliberate, but it is undocumented in the file."
+}

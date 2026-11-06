@@ -1,0 +1,103 @@
+{
+ "page": 79,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (or Pain in upper limb, Muscle weakness of upper limb, Numbness of upper limb, Swelling of upper limb)  vs  B: (clinical_finding Finding of upper limb)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "reason": "The header says only \"arm or hand symptoms\" and lists no symptoms, so the general upper-limb finding is closer to the words than A's self-chosen list of four (all four are its descendants); applied to both arm tasks.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (no Pain in upper limb in check_for; it was a trigger)  vs  B: (clinical_finding Pain in upper limb)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Pain in upper limb\" \"finding\"))",
+   "reason": "\"Arm pain with chest pain\" needs arm pain checked once the trigger is the broader Finding of upper limb.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (clinical_finding Stiff limbs)  vs  B: (clinical_finding Muscle rigidity (finding_site Limb structure))",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Stiff limbs\" \"finding\"))",
+   "reason": "The page says \"stiffness\" in arms/legs; Stiff limbs is the literal concept, while muscle rigidity is a narrower clinical sign (also applied in the priority rule).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (none; x-ray not representable)  vs  B: (clinical_finding Plain X-ray of cervical spine abnormal)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Plain X-ray of cervical spine abnormal\" \"finding\"))",
+   "reason": "The page says \"x-ray unavailable/abnormal\"; the abnormal half has an exact concept, so B encodes more of the page and only \"unavailable\" stays unmodelled.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: recent neck injury AND neurological symptom  vs  B: recent neck injury AND (Plain X-ray of cervical spine abnormal OR neurological symptom)",
+   "choice": "B",
+   "final_expr": "(and (clinical_finding Injury of neck (qualifier Recent)) (or (clinical_finding Plain X-ray of cervical spine abnormal) …neuro symptoms…))",
+   "reason": "Follows \"Recent injury and x-ray unavailable/abnormal or neurological symptoms\"; without the x-ray term A's injury branch adds nothing to item 2.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Pain of wrist region / Hand pain with qualifiers Intermittent + Night time  vs  B: same pains with Intermittent only, plus a separate (clinical_finding Night pain)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Pain of wrist region\" \"finding\") (qualifier Intermittent) (qualifier Night time)) and the same for Hand pain",
+   "reason": "\"Wrist/hand pain: intermittent, worse at night\" describes the wrist/hand pain itself, so both qualifiers belong on that pain rather than on a night pain at any site (also applied in the diagnosis rule).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (clinical_finding Pain provoked by movement (finding_site Elbow region structure))  vs  B: (clinical_finding Pain of elbow region)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Pain provoked by movement\" \"finding\") (finding_site (snomed_concept \"Elbow region structure\" \"body structure\")))",
+   "reason": "The page requires \"Elbow pain with or after elbow flexion/extension\"; B's plain elbow pain drops the movement condition (also applied in the diagnosis rule).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Pain provoked by movement at Thumb structure and at Wrist region structure  vs  B: (none)",
+   "choice": "A",
+   "final_expr": "(clinical_finding Pain provoked by movement (finding_site Thumb structure)), (… Wrist region structure)",
+   "reason": "The page says \"Thumb pain: worse with thumb/wrist movement\"; B left this out as not expressible, but A's form expresses it.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (none)  vs  B: (clinical_finding Joint catching (finding_site Finger structure))",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Joint catching\" \"finding\") (finding_site (snomed_concept \"Finger structure\" \"body structure\")))",
+   "reason": "The page says \"catching/locking of finger\"; A encoded only locking, B encodes catching too.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: arm complaint gate = or of 4 upper-limb findings  vs  B: Finding of upper limb",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "reason": "Same reason as the trigger: \"arm or hand symptoms\" names no specific symptom.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: joint-problem gate = or of 4 upper-limb findings  vs  B: Finding of upper limb",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Finding of upper limb\" \"finding\"))",
+   "reason": "The joint check sits under the ARM OR HAND SYMPTOMS heading; kept consistent with the trigger.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: tenosynovitis = (thumb pain AND movement-provoked thumb/wrist pain) OR finger locking  vs  B: thumb pain OR finger catching OR finger locking",
+   "choice": "new",
+   "final_expr": "(or (and (clinical_finding Pain in thumb) (or (Pain provoked by movement @Thumb structure) (Pain provoked by movement @Wrist region structure))) (clinical_finding Joint catching @Finger structure) (clinical_finding Locking of joint @Finger structure))",
+   "reason": "A's structure keeps \"worse with thumb/wrist movement\" and B adds the \"catching\" in \"catching/locking of finger\".",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Base A (closer to the page on the elbow, thumb and carpal-tunnel wording; separate urgent vs causes tasks for the arm section). Taken from B: the broader Finding of upper limb trigger/gates, the abnormal cervical spine x-ray branch and Joint catching. The neck priority rule takes B's description ('... or recent injury'). Each of the diff's per-atom differences in the trigger/priority/diagnosis groups is covered by one decision above (e.g. the four A-only trigger atoms, repeated across the arm rules, are a single decision). Remaining questions from both builders are merged; none is resolved by the merge except B's on thumb movement, which A's encoding expresses (kept as a clinician question on the parse)."
+}

@@ -1,0 +1,810 @@
+{
+ "page": 89,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'a mole' (a skin mole); 'Melanocytic nevus' also covers non-skin nevi. Closer concept exists.",
+   "fix": "(snomed_concept \"Melanocytic nevus of skin\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says the lump is painful; 'Pain of skin' is a skin-sensation finding (sibling of hyperalgesia/stinging), not a tender lump. Parallel to the Firm form, qualify the mass instead.",
+   "fix": "(clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Tender\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'discharge pus'; 'Skin discharge' drops purulence. No precoordinated purulent skin-lesion discharge finding found, so this is the best available; note the loss.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page describes papules with rough surfaces; 'Rough skin' is a general skin-texture finding (child of Abnormal keratinization) that a patient with dry skin would satisfy. Qualify the papule instead.",
+   "fix": "(clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Verrucous\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'skin-coloured' and 'pearly' dropped; only 'Small' kept. No SNOMED qualifier value for skin-coloured or pearly was found, so acceptable, but the condition is broader than the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Skin dimple' is dimpling of the skin surface (e.g. breast), not a central umbilication of a papule. No 'Umbilicated' qualifier value exists; the closest found is the morphologic 'Dimpled structure'. Acceptable proxy only if documented.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'doughy' and 'moves easily' dropped; only Soft + Painless kept. No 'Mobile' qualifier value exists, so acceptable, but Soft+Painless alone is broader than the page's lipoma description.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for skin lump/s features",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'a mole' (a skin mole); 'Melanocytic nevus' also covers non-skin nevi. Closer concept exists.",
+   "fix": "(snomed_concept \"Melanocytic nevus of skin\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Change in skin lesion' is any change, not change in size; no size-specific pigmented-lesion concept exists. Acceptable as the broad catch-all, but the citation 'Changed in size' is narrower than the concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "SNOMED 'Bleeds easily' is a patient-level tendency-to-bleed finding (parent: Finding of tendency to bleed), not a mole that bleeds easily. Any patient with a bleeding tendency and a mole would be flagged Urgent. No precoordinated bleeding-of-pigmented-lesion concept found; the nearest lesion-specific sibling is 'Oozing of pigmented skin lesion'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Measure width of mole (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'a mole' (a skin mole); 'Melanocytic nevus' also covers non-skin nevi. Closer concept exists.",
+   "fix": "(snomed_concept \"Melanocytic nevus of skin\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Measure width of mole (skin lump/s)",
+   "expr": "(measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says the lump is painful; 'Pain of skin' is a skin-sensation finding (sibling of hyperalgesia/stinging), not a tender lump. Parallel to the Firm form, qualify the mass instead.",
+   "fix": "(clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Tender\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'discharge pus'; 'Skin discharge' drops purulence. No precoordinated purulent skin-lesion discharge finding found, so this is the best available; note the loss.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Furuncle\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says the lump is painful; 'Pain of skin' is a skin-sensation finding (sibling of hyperalgesia/stinging), not a tender lump. Parallel to the Firm form, qualify the mass instead.",
+   "fix": "(clinical_finding (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Tender\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Redness of skin over lesion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Temperature of skin over lesion warm\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin discharge\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'discharge pus'; 'Skin discharge' drops purulence. No precoordinated purulent skin-lesion discharge finding found, so this is the best available; note the loss.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Abscess of skin and/or subcutaneous tissue\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rough skin\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page describes papules with rough surfaces; 'Rough skin' is a general skin-texture finding (child of Abnormal keratinization) that a patient with dry skin would satisfy. Qualify the papule instead.",
+   "fix": "(clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Verrucous\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Viral wart of skin and/or mucous membrane caused by human papillomavirus\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'skin-coloured' and 'pearly' dropped; only 'Small' kept. No SNOMED qualifier value for skin-coloured or pearly was found, so acceptable, but the condition is broader than the page.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Skin dimple' is dimpling of the skin surface (e.g. breast), not a central umbilication of a papule. No 'Umbilicated' qualifier value exists; the closest found is the morphologic 'Dimpled structure'. Acceptable proxy only if documented.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Palm (region) structure\" \"body structure\"))))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of sole of foot\" \"body structure\"))))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Infection of skin caused by Molluscum contagiosum\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Purple color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of skin\" \"finding\") (qualifier (snomed_concept \"Brown color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Kaposi's sarcoma\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Round shape\" \"qualifier value\")) (qualifier (snomed_concept \"Firm\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Epidermoid cyst of skin\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Smooth\" \"qualifier value\")) (qualifier (snomed_concept \"Well defined\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of subcutaneous tissue\" \"finding\") (qualifier (snomed_concept \"Soft\" \"qualifier value\")) (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'doughy' and 'moves easily' dropped; only Soft + Painless kept. No 'Mobile' qualifier value exists, so acceptable, but Soft+Painless alone is broader than the page's lipoma description.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Lipoma\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pustule\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin nodule\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Comedone\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "expr": "(diagnosis (snomed_concept \"Acne\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melanocytic nevus\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'a mole' (a skin mole); 'Melanocytic nevus' also covers non-skin nevi. Closer concept exists.",
+   "fix": "(snomed_concept \"Melanocytic nevus of skin\" \"disorder\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mixed color of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Change in skin lesion' is any change, not change in size; no size-specific pigmented-lesion concept exists. Acceptable as the broad catch-all, but the citation 'Changed in size' is narrower than the concept.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing shape of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Changing color of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(> (measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm) 6)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "SNOMED 'Bleeds easily' is a patient-level tendency-to-bleed finding (parent: Finding of tendency to bleed), not a mole that bleeds easily. Any patient with a bleeding tendency and a mole would be flagged Urgent. No precoordinated bleeding-of-pigmented-lesion concept found; the nearest lesion-specific sibling is 'Oozing of pigmented skin lesion'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for skin lump/s features",
+   "verdict": "ok",
+   "problem": "Type and trigger right. Minor: the boil features use 'Pain of skin' and the wart feature uses 'Rough skin' (see claims); 'Differs from surrounding moles' is not checked for anywhere.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for mole features needing same-week referral (skin lump/s)",
+   "verdict": "problem",
+   "problem": "Red-box item 'Differs from surrounding moles' (p89-8ff0a187) is not encoded at all; every other box item is. The task also carries the 'Bleeds easily' systemic-tendency concept.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Measure width of mole (skin lump/s)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable boil (skin lump/s)",
+   "verdict": "ok",
+   "problem": "Probable is right ('boil/abscess likely'). Strict and-of-six requires both fluctuance and discharge; the page's 'softens in the centre to discharge pus' is one evolving feature, so a fluctuant boil that has not yet discharged will not match. Low.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable skin abscess (skin lump/s)",
+   "verdict": "ok",
+   "problem": "Same evidence as the boil rule, so both fire together; matches the page's 'boil/abscess'. Same strictness note as the boil rule.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable warts (skin lump/s)",
+   "verdict": "problem",
+   "problem": "'Rough skin' is a general texture finding, not a rough-surfaced papule; a patient with round raised papules and unrelated dry/rough skin gets probable warts. Qualify the papule (Verrucous) instead.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum (skin lump/s)",
+   "verdict": "ok",
+   "problem": "Structure faithful (small papule + central dimple + not palms/soles). 'Skin dimple' is a proxy for umbilication and skin-coloured/pearly are dropped; no closer SNOMED found.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable Kaposi's sarcoma (skin lump/s)",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable epidermoid cyst (skin lump/s)",
+   "verdict": "ok",
+   "problem": "'May have central hole and discharge white substance' is optional on the page and correctly omitted.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable lipoma (skin lump/s)",
+   "verdict": "ok",
+   "problem": "'doughy' and 'moves easily' dropped (no SNOMED qualifier); Soft+Painless+Smooth+Well defined still distinguishes it from the cyst branch.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable acne (skin lump/s)",
+   "verdict": "problem",
+   "problem": "Page describes a combined picture ('Red papules, pustules, nodules and blackheads, usually on face'); the rule is an or of the four, so a single skin nodule or a single pustule anywhere yields probable Acne. Use any2 (or require comedones) and consider the face site.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: mole needing same-week referral (skin lump/s)",
+   "verdict": "problem",
+   "problem": "Red-box item 'Differs from surrounding moles' is missing from the or-list. 'Bleeds easily' is a systemic bleeding-tendency concept, so bleeding tendency + any mole triggers Urgent. Level: box says 'Refer same week', not 'urgent attention'; Urgent is the lowest level the grammar offers, so it is defensible but should be documented. Structure (and mole (or items)) otherwise matches the box.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "The red-box criterion 'Differs from surrounding moles' is not encoded in either the mole check_for task or the Urgent priority rule, so one of the six same-week referral criteria is silently lost. 'Bleeds easily' encodes a patient-level bleeding tendency rather than a mole that bleeds, and 'Rough skin' / 'Pain of skin' encode general skin findings rather than properties of the lump, which widens the warts and boil rules. The acne rule's or-of-four fires probable Acne on any single pustule or skin nodule, broader than the page's combined picture; all other conditions and diagnoses trace cleanly to the page, with several qualifiers (skin-coloured, pearly, doughy, mobile, purulent) dropped for lack of SNOMED terms."
+}

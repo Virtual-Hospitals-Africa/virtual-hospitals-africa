@@ -1,0 +1,350 @@
+{
+ "page": 51,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p51-a6b50479",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Cross-reference to p30 is not encoded (fine). Minor: priority rule has no explicit nose-finding trigger, but nasal discharge implies it.",
+   "evidence": [
+    "Urgent: nose symptoms with head injury and clear watery nasal discharge :: (and (clinical_finding Injury of head) (clinical_finding Nasal discharge (qualifier Clear) (qualifier Watery)))",
+    "Check for urgent nose symptom conditions :: check_for Injury of head, Nasal discharge clear+watery"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p51-5b347fb0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Refer urgently' maps to Urgent priority; plausible and matches 'give urgent attention' header.",
+   "evidence": [
+    "Urgent: nose symptoms with head injury and clear watery nasal discharge :: system_priority_evaluation ... Urgent"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-0700b10b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose possible diphtheria from nose symptoms :: (and Sore throat, Fever (qualifier Mild), (or Pseudomembrane site Nasal / Pharyngeal))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p51-2b217b08",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "strict < 3 days"
+   ],
+   "problem": "Page says less than 3 days; briefing says within-last-3-days is '<', rule uses '<=' (includes exactly 3 days). Sore throat uses finding subject, fever uses active_condition: inconsistent subject types, may not resolve the same way.",
+   "evidence": [
+    "Diagnose probable common cold from nose symptoms :: (or (<= (onset Sore throat) (time_ago 3 days)) (<= (onset (active_condition Fever)) (time_ago 3 days)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-2e835257",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Common cold branch requires a recorded temperature (< 38); a missing measurement would block the rule even if the patient has none of the symptoms.",
+   "evidence": [
+    "common cold :: (< (measurement Body temperature \u00b0C) 38) (no Chill) (no Nausea) (no Muscle pain)",
+    "acute viral infection :: (or (>= (measurement Body temperature \u00b0C) 38) Chill Nausea Muscle pain)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-084cbdd6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable common cold from nose symptoms :: probable Common cold"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-2c2ee3d2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable acute viral infection from nose symptoms :: probable Acute viral disease"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-efc1a4e0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "headache worse on bending forward (plain Headache only)"
+   ],
+   "problem": "Diagnosis exists as probable. Antibiotic criteria (>=10 days, purulent discharge, face pain >=3 days) and same-day refer criteria are management, out of scope by design.",
+   "evidence": [
+    "Diagnose probable sinusitis from nose symptoms :: probable Sinusitis"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-e4cafebe",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'worse on bending forward' qualifier lost",
+    "'pain when pushing' encoded as tenderness (acceptable)"
+   ],
+   "problem": "All criteria ANDed; the page lists the features as one descriptive set so AND is defensible but strict, and a patient with tenderness alone gets no sinusitis. Recent common cold encoded as Common cold disorder with Recent qualifier, which is a reasonable but unverified encoding.",
+   "evidence": [
+    "Diagnose probable sinusitis from nose symptoms :: (and (or Nasal discharge Nasal congestion) (or Tenderness over frontal sinus Tenderness over maxillary sinus) Headache (Common cold qualifier Recent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-455e89f9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'most days'"
+   ],
+   "problem": "Sneezing, itchy, runny, blocked nose each encoded with Recurrent qualifier and >= 4 weeks (briefing: >= means at least that long ago, so direction right; page says > 4 weeks, >= is a trivial difference). Recurrent qualifier plus onset subject is a slightly odd compound.",
+   "evidence": [
+    "Diagnose probable allergic rhinitis from nose symptoms :: (or (>= (onset Sneezing Recurrent) (time_ago 4 weeks)) (>= (onset Itching site Nasal Recurrent) ...) (>= (onset Nasal discharge Recurrent) ...) (>= (onset Nasal congestion Recurrent) ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-f2572fed",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'most days'"
+   ],
+   "problem": "Duration > 4 weeks encoded; frequency 'most days' not.",
+   "evidence": [
+    "same allergic rhinitis rule"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-6157dac0",
+   "scope": "borderline",
+   "scope_reason": "'May have' itchy eyes, ears or throat is optional supporting features, not a criterion.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Not encoded; low consequence.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p51-d1fb393f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Rest of block (fluticasone, chlorphenamine, review, referrals, cross-references 48/82/138) is management, out of scope.",
+   "evidence": [
+    "Diagnose probable allergic rhinitis from nose symptoms :: probable Allergic rhinitis"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p51-a0cd4531",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable postnasal drip from nose symptoms :: (and Nasal discharge (or Persistent cough Clearing throat - hawking Frequent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-8ca5afc5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'and/or' correctly expressed as inclusive or.",
+   "evidence": [
+    "postnasal drip :: (or Persistent cough (Clearing throat - hawking, Frequent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-848b8619",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Clearing throat - hawking with qualifier Frequent"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-4c77f343",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Page names the diagnosis 'Upper airway cough syndrome (postnasal drip)'. 'Posterior rhinorrhea' is a postnasal-drip concept but not the cough syndrome; a closer concept for UACS should be sought.",
+   "evidence": [
+    "Diagnose probable postnasal drip from nose symptoms :: (diagnosis (snomed_concept \"Posterior rhinorrhea\" \"disorder\") probable)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p51-9ab31317",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Posterior rhinorrhea (postnasal drip)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p51-615b011b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Treat as allergic rhinitis' and throat check are management/optional.",
+   "evidence": [
+    "Diagnose probable postnasal drip from nose symptoms :: probable"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p51-31f56219",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for causes of nose symptoms :: (clinical_finding Bleeding from nose)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-d6492a8d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Continually' dropped; recurrent-bleed refer and warfarin/aspirin review are management.",
+   "evidence": [
+    "Diagnose possible allergic rhinitis from nosebleed :: (and Bleeding from nose (or Repetitive rubbing of body parts site Nasal / Itching site Nasal))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-cf1e97d9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-54784cf3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-d2589063",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p51-d955dd14",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p51-ddeb2e49",
+  "p51-c7d3c38d",
+  "p51-9d7df307",
+  "p51-372ec676",
+  "p51-5ffacbf5",
+  "p51-362546f7"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for causes of nose symptoms",
+   "problem": "check_for lacks plain Nasal discharge (only the Recurrent-qualified one), Fever without Mild qualifier, Body temperature, and plain Common cold, yet the common cold, acute viral, sinusitis and postnasal drip rules use them. Runny nose (the page's core feature) is not asked for.",
+   "severity": "high"
+  },
+  {
+   "rule": "Check for causes of nose symptoms",
+   "problem": "Pseudomembrane and Sore throat sit in a nose task but the page's diphtheria branch is not nasal-symptom dependent; also task trigger is Nose finding while rules do not require it.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable common cold / acute viral infection",
+   "problem": "Both fire together with sinusitis/allergic rhinitis with no exclusion; also common cold requires a recorded temperature measurement.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis from nose symptoms",
+   "problem": "Not gated by 4-week duration being 'most days'; Recurrent qualifier combined with onset >= 4 weeks may be redundant or fail to match stored data.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable sinusitis from nose symptoms",
+   "problem": "All four criteria ANDed including Headache and recent common cold; page does not make headache and tenderness separate mandatory items.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable postnasal drip from nose symptoms",
+   "problem": "Concept is Posterior rhinorrhea, not Upper airway cough syndrome as titled on the page.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Red-box urgent rule (head injury plus clear watery nasal discharge, Urgent) is correct. The most consequential problem is check_for mismatches: plain runny nose, unqualified fever and temperature are used by rules but never asked for. Diagnoses are all present; sinusitis loses 'worse on bending forward', common cold uses <= for 'less than 3 days', and the postnasal drip concept is not UACS."
+}

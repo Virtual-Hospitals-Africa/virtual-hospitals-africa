@@ -1,0 +1,276 @@
+{
+ "page": 73,
+ "lisp_file": "73-abnormal-vaginal-bleeding.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p73-21042048"
+   ],
+   "quote": "vaginal bleeding"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p73-16a7fd6c"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "Recent delivery"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "miscarriage"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "termination of pregnancy"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "Pallor"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "Sexual assault"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent abnormal vaginal bleeding conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "rape"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p73-21042048"
+   ],
+   "quote": "vaginal bleeding"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p73-16a7fd6c"
+   ],
+   "quote": "Pregnant"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "Recent delivery"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "miscarriage"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p73-98907d97"
+   ],
+   "quote": "termination of pregnancy"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p73-3beb8da5"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "Pallor"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "dizziness"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p73-04e86008"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "Sexual assault"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: abnormal vaginal bleeding with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+   "element_keys": [
+    "p73-2595c48c"
+   ],
+   "quote": "rape"
+  }
+ ]
+}

@@ -1,0 +1,370 @@
+{
+ "page": 64,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p64-012bc672",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header trigger encoded as the 'and' with Vaginal discharge.",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (and (clinical_finding Vaginal discharge) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-7559a267",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All three parts encoded with Recent qualifier. 'Delivery finding' is a broad concept, a closer 'recent delivery' concept may exist.",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (clinical_finding (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "... \"Induced termination of pregnancy\" \"disorder\" ... Recent",
+    "... \"Miscarriage\" \"disorder\" ... Recent"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p64-64f7d8bf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") \u00b0C) 38)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-f27f0a5a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (clinical_finding (snomed_concept \"Abdominal mass\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-acc65b7c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Three parts (pregnant, missed, overdue) all encoded as separate or-branches.",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: Pregnancy / Missed period / Menstrual period late"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-240167df",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-d1597672",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Peritonitis and its three signs each encoded as or-branches; reading 'peritonitis (guarding, ...)' as any-of is reasonable.",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: Peritonitis / Abdominal guarding / Abdominal rigidity / Rebound tenderness"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-ac797145",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: (clinical_finding (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-294e2920",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both shock and SBP < 80 encoded.",
+   "evidence": [
+    "Urgent: vaginal discharge with danger signs :: Shock disorder",
+    "(< (measurement Systolic blood pressure mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-1eb7bdd2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-2b77395b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-1d4f83d0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-6a96a2d2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-e7d1bddd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "last 3 months window"
+   ],
+   "problem": "Page asks about sexual activity in the last 3 months; rules use bare 'Sexually active' with no time qualifier. Acceptable approximation but the 3-month window is lost.",
+   "evidence": [
+    "Diagnosis rules :: (clinical_finding (snomed_concept \"Sexually active\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p64-8d9fbcbf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Sexually-active branch encoded correctly: neither -> cervicitis, LAP only -> UTI, cervical pain -> LAP.",
+   "evidence": [
+    "Cervicitis rule :: (and Sexually active (no Lower abdominal pain) (no Pain on movement of cervix))",
+    "UTI rule :: Sexually active, Lower abdominal pain, no Pain on movement of cervix",
+    "LAP rule :: Pain on movement of cervix with Sexually active"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-f089455c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "curd-like discharge"
+   ],
+   "problem": "'Curd-like discharge' is not encoded anywhere: no concept in check_for or any rule. Non-sexually-active patient with curd-like discharge but normal vulva is routed to BV (probable) instead of candidiasis.",
+   "evidence": [
+    "Candidiasis rule :: (and (no Sexually active) (or Erythema of vulva, Scratch marks vulva, Inflammation of vulva))",
+    "BV rule :: (no Sexually active) + no vulva signs"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-c434c1b6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "UTI rule / LAP rule split on Pain on movement of cervix"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-cd43913b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Non-SA branch: cervical pain -> LAP, but only when no vulva signs and no curd-like (curd-like missing).",
+   "evidence": [
+    "LAP rule :: (and Vaginal discharge Pain on movement of cervix (or Sexually active (and (no SA) (no vulva signs...))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-6d6a3af5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded with no pain on cervix and no vulva signs; correct apart from curd-like omission.",
+   "evidence": [
+    "Cervicitis rule non-SA branch :: (or (Erythema finding_site Cervix uteri structure) (Swelling finding_site Cervix uteri structure) (Cervical discharge))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-c317c87c",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-bac7bfa8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "curd-like discharge"
+   ],
+   "problem": "Cervicitis and add-on candidiasis encoded. Candidiasis SA branch uses Pruritus of vagina for 'discharge itchy' and omits curd-like discharge. Also candidiasis add-on is additive to cervicitis; both fire which matches the page.",
+   "evidence": [
+    "Cervicitis rule; Candidiasis rule SA branch"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p64-5979723c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "no curd-like discharge",
+    "exclusion when cervical pain or cervical signs present"
+   ],
+   "problem": "BV rule omits 'no curd-like discharge'. Also the page treats BV initially and only moves on to LAP/cervicitis after speculum exam; BV also fires alongside LAP and cervicitis in non-SA patients, which the page does not (it switches to 'continue BV' only if cervix normal).",
+   "evidence": [
+    "Bacterial vaginosis rule :: (and Vaginal discharge (no SA) (no Erythema of vulva) (no Scratch marks) (no Inflammation of vulva))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p64-df255f4a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "curd-like discharge"
+   ],
+   "problem": "Candidiasis encoded but see curd-like omission.",
+   "evidence": [
+    "Candidiasis rule"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-d8342898",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "LAP syndrome mapped to Female pelvic inflammatory disease; reasonable. Wording 'LAP syndrome' in the rule description.",
+   "evidence": [
+    "LAP rule :: Female pelvic inflammatory disease probable"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-ee632b2a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Cervicitis rule non-SA branch"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p64-10ac0a15",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p64-7461752d",
+  "p64-119ec544",
+  "p64-1504985b",
+  "p64-30a343a2",
+  "p64-a443e992",
+  "p64-9d311e74",
+  "p64-29560fbc",
+  "p64-3a7af9bc",
+  "p64-3d0a19e7",
+  "p64-54627d3c",
+  "p64-7ab963e6",
+  "p64-f1862c6b",
+  "p64-be849a64",
+  "p64-f7f486ac",
+  "p64-55905b99",
+  "p64-76a9c249",
+  "p64-b51a7173",
+  "p64-ccb675a0"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "All diagnosis rules",
+   "problem": "Curd-like discharge (the page's main discriminator for candidiasis in the non-sexually-active branch and an add-on trigger in the sexually active branch) is not encoded and not in check_for. A non-sexually-active patient with curd-like discharge and normal vulva gets BV probable instead of candidiasis.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable bacterial vaginosis",
+   "problem": "Fires with cervical pain or cervical redness/swelling/discharge present in non-sexually-active patients, where the page moves on to LAP or cervicitis; BV and LAP/cervicitis become co-probable. Also lacks the curd-like exclusion.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable cervicitis / candidiasis / BV / LAP",
+   "problem": "'Sexually active in the last 3 months' encoded as bare 'Sexually active' with no time window.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable LAP syndrome",
+   "problem": "Mapped to Female pelvic inflammatory disease; plausible but LAP is a syndrome. Non-SA branch lacks curd-like exclusion.",
+   "severity": "low"
+  },
+  {
+   "rule": "Task check_for",
+   "problem": "Temperature, pulse and SBP are used by the priority rule but absent from check_for (probably by design as measurements). Vulva 'Scratch marks' uses generic concept plus finding_site where 'Scratch marks on vulva' exists. Pruritus of vagina is used for 'discharge itchy', which is a different thing (itchy discharge vs vaginal itch).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible UTI",
+   "problem": "Page says 'Assess for UTI' (a cross-reference, not 'consider UTI'); a possible diagnosis is a reasonable but interpretive encoding.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The urgent priority rule covers every red-box criterion correctly with sensible SNOMED concepts and thresholds, and the sexually-active branch of the flowchart is encoded accurately. The most consequential problem is that 'curd-like discharge' is not encoded anywhere, so the non-sexually-active candidiasis vs BV split is wrong when the vulva looks normal; BV also co-fires with LAP and cervicitis where the page routes away from it."
+}

@@ -1,0 +1,246 @@
+{
+ "page": 122,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Body fluid\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "'Body fluid' includes sweat, tears (Eye fluid), urine and non-bloodstained saliva, which the page explicitly lists as non-infectious; the trigger is broader than 'infectious fluid' and is not a recorded common symptom or warning sign, so whether it is ever recorded is unclear.",
+   "fix": "Keep as broad pre-screen but note in remaining-questions; consider anchoring on (snomed_concept \"Exposure to blood and/or body fluid\" \"event\") or on the specific infectious-fluid exposures.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human bite - wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Unqualified 'Bleeding' is asked of every exposed patient; the page only means bleeding caused by the human bite (wound bleeding), not bleeding in general.",
+   "fix": "Qualify, e.g. (clinical_finding (snomed_concept \"Bleeding\" \"finding\") (finding_site \u2026bite wound site\u2026)) or note the and-pairing with the bite in the priority rule as the only intended use.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Blood\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pleural fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Pericardial fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peritoneal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Amniotic fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Synovial fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Cerebrospinal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vaginal secretion\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Seminal fluid\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Breast milk\" \"substance\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human bite - wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Same unqualified 'Bleeding' as c013; within the (and bite bleeding) it reads correctly, but any unrelated bleeding plus any bite would satisfy it.",
+   "fix": "",
+   "confidence": "low"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "verdict": "problem",
+   "problem": "The check_for list leaves out the red box's 'blood-stained fluid/tissue' (exposure to Blood does not cover blood-stained fluid or tissue). It also leaves out the page's second decision node, the exposure route (sexual contact, sharps injury, splash to eye/open wound/mouth/nose), and the 72-hour window, which together decide HIV PEP versus 'reassure, avoid PEP'. The trigger 'Exposure to Body fluid' takes in fluids the page calls non-infectious. The task type is right for a red-box pre-screen.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "verdict": "problem",
+   "problem": "Urgent is justified by 'Give urgent attention to the patient exposed to infectious fluid', and the or-of-fluids plus (and human-bite bleeding) matches 'either of'. However: 'blood-stained fluid/tissue' is missing from the or; there is no presenting-complaint/exposure wrapper (house pattern is (and <complaint> (or \u2026))); and the title says 'HIV PEP' although the page says a bleeding human bite needs hepatitis B prevention only and no HIV PEP.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Most consequential: neither rule covers the red box's 'blood-stained fluid/tissue', and the exposure-route node (sexual contact/sharps/splash) and the 72-hour window that decide HIV PEP are not encoded, so the logic stops at the first question. The 'Body fluid' trigger and the unqualified 'Bleeding' are broader than the page (it calls tears, sweat, urine and non-bloodstained saliva non-infectious, and it means bleeding from the bite). The individual fluid concepts are all faithful."
+}

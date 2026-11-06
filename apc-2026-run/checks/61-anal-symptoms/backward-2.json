@@ -1,0 +1,222 @@
+{
+ "page": 61,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "Page says 'Extremely painful lump'; 'Severe' qualifier on anal pain is a reasonable but pain is tied to the lump (perianal lump with severe pain), not free-standing anal pain.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "'Unable to pass stool because of anal symptoms' (obstructed/unable) is encoded as 'Does not defecate' which means not defecating, not inability; no mention of the 'because of anal symptoms' causation.",
+   "fix": "Use a concept meaning unable/difficulty defecating (e.g. search 'unable to defecate'/'constipation' variants) or keep with the Anal finding conjunct",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Also 'rectal' bleeding vs page 'painless bleeding'.",
+   "fix": "Remove from urgent check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task.",
+   "fix": "Remove from urgent check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Tenesmus is also glossed by the page as 'unable to pass stools despite feeling the need', which differs from the urgent 'unable to pass stool'.",
+   "fix": "Remove from urgent check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page 'Suspected worms' is an examination branch of the non-urgent approach, and worms are seen at the anus, not necessarily in stool. Not urgent.",
+   "fix": "Remove from urgent check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent anal symptom conditions",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page places this in the approach for symptoms NOT needing urgent attention, not in the red-box urgent criteria; it does not belong in an urgent check task. Itch worse at night is a pinworm feature in the non-urgent branch.",
+   "fix": "Remove from urgent check_for",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "Page condition is anal symptoms NOT needing urgent attention; the rule has no exclusion of the urgent criteria, so it would fire alongside Urgent. Also the 'Anal finding' conjunct is redundant given the or-list.",
+   "fix": "Add (not urgent criteria) or drop the Anal finding conjunct",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "Page says painless bleeding; concept is rectal bleeding, painless - acceptable, but site is rectal vs anal.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "Page defines tenesmus as 'unable to pass stools despite feeling the need'; concept 'Tenesmus of anus and/or rectum' is fine, but quote is the gloss.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "Page says 'treat for sexually transmitted proctitis', a management instruction, not 'likely'; probable is a stretch (possible would be closer). Also 'Infective proctitis' is broader than sexually transmitted proctitis.",
+   "fix": "Consider possible, or a more specific STI proctitis concept",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "expr": "",
+   "verdict": "wrong",
+   "reason": "Page condition is 'worm is thin and white' seen by the patient/examiner, not 'Worms in stool'; the worm-appearance (thin, white) is not captured and the 'flat, segmented' tapeworm branch would also match 'worms in stool'.",
+   "fix": "Use a concept for worm seen at anus / thin white worm",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "Page says 'pinworm likely' => probable is right.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "expr": "",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "As claim c003: pain belongs to the lump.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "expr": "",
+   "verdict": "imprecise",
+   "reason": "As claim c004: 'Does not defecate' vs 'unable to pass stool because of anal symptoms'.",
+   "fix": "",
+   "confidence": "medium"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent anal symptom conditions",
+   "verdict": "problem",
+   "problem": "Task named 'urgent' but check_for includes six non-urgent items (bleeding, mucus, tenesmus, worms, nocturnal itch) from the not-urgent approach; the red box has only lump+severe pain and unable to pass stool. Also the urgent items in the red-box are management ('manage pain, refer same day') with no task for that.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable sexually transmitted proctitis from anal symptoms",
+   "verdict": "problem",
+   "problem": "No exclusion of urgent presentations; 'probable' for a 'treat for' instruction is questionable; redundant Anal finding conjunct. Page does not require anal sex.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable pinworm from anal itch at night",
+   "verdict": "problem",
+   "problem": "'Worms in stool' does not match 'worm thin and white'; conjunct also matches tapeworm cases. Otherwise pinworm likely is correctly probable.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: anal symptoms with extremely painful lump or unable to pass stool",
+   "verdict": "ok",
+   "problem": "Structure (anal AND ((lump AND severe pain) OR unable to pass stool)) matches the box; minor concept imprecision on 'Does not defecate'.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The check_for task labelled urgent includes six non-urgent conditions (c005-c009 and tenesmus) taken from the not-needing-urgent-attention approach, which is misplaced content. The pinworm rule uses 'Worms in stool' for 'thin white worm', and the proctitis rule has no urgent exclusion and treats a 'treat for' instruction as probable. The urgent priority rule is faithful apart from 'Does not defecate' being weaker than 'unable to pass stool'. Also missing: 'Tapeworm likely' (probable) and 'anaemia likely' diagnoses from the page."
+}

@@ -1,0 +1,1206 @@
+[
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p59-a5bb7fa3",
+  "text": "Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'Yes' label on the some-dehydration branch; the branch condition itself is p59-dfc9ebf2.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "flowchart_routing",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as any2 of the four signs, gated by absence of every severe sign. The 'not >= 2 of (unable to drink/drinking poorly, poor turgor, sunken eyes)' gate written as any2 of negations is logically equivalent for three items, and the drink pair is correctly treated as a single item.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-ce0b7574",
+  "text": "Some dehydration likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": null,
+    "problem": "Encoded as a probable diagnosis of Moderate dehydration (the WHO/APC term 'some dehydration' maps to moderate; SNOMED has no 'some dehydration'). The rule reproduces the page's path: cholera, none of the single severe signs, fewer than two of the severe pair-signs (any2 over the negations = at most one present), and at least two of restless / thirsty / dry mouth / pulse >= 100. Concept choices Restlessness, Increased thirst, Xerostomia (synonym 'dry mouth') are apt. Two reservations are recorded under rule_level_problems: the pulse measurement concept 'Pulse, function' and the (active_condition Cholera) evidence not being checked for in this file.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Probable some-dehydration rule has wrong 'severe criteria absent' logic: it wraps three NEGATED items in any2, i.e. fires when at least 2 of (no unable/poor drinking, no poor turgor, no sunken eyes) hold, which is true with up to 1 sign present but the page requires fewer than 2 signs, and the any2 over negations is semantically fragile; should be (no (any2 present-items)). Also 'Moderate dehydration' is only an approximation of 'some dehydration'. The restless/thirsty/dry mouth/pulse>=100 part (any2 of 4) is correct.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Moderate dehydration' is a reasonable SNOMED match for WHO 'some dehydration'. However, the Urgent rule is anchored only on (active_condition Moderate dehydration) and has no cholera context, so it fires on moderate dehydration diagnosed by any page (see rule-level problems).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p59-b01cae1d",
+  "text": "Manage as severe dehydration and refer urgently:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "a probable diagnosis of Severe dehydration (disorder, exists in SNOMED) is not produced, so the condition is never recorded and later boxes (3 and 4) cannot reference it"
+    ],
+    "problem": "The 'refer urgently' half is encoded as an Urgent priority evaluation whose criteria match the page (see p59-9939a0d3 / p59-1efb182a). The 'severe dehydration' half is not: unlike 'some dehydration', no diagnosis rule records Severe dehydration. The house standard asks for a probable diagnosis where the red box names a likely diagnosis, with the priority rule referencing it, which is what the builders did for some dehydration but not here. Urgent (not Emergency) is justified by the page's wording 'refer urgently'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'Manage as severe dehydration' is not recorded as a diagnosis (possible/probable severe dehydration); only an Urgent priority"
+    ],
+    "problem": "Header of the severe-dehydration box is encoded only as a priority evaluation; no severe dehydration diagnosis, so adjacent branches (reassess, rb4) cannot reference it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Urgent priority is appropriate for 'refer urgently'. The page gives no 'likely' wording, so the absence of a Severe dehydration diagnosis rule is acceptable. The rule does use 'Clouded consciousness', which is not checked for (see rule-level problems).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-a931d756",
+  "text": "If awake, able to drink and pulse < 100, continue IV fluids, but also manage as some dehydration: give ORS 75mL/kg (or at least 2-4L) over 4 hours.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "awake (no decreased consciousness)",
+     "able to drink",
+     "pulse < 100"
+    ],
+    "problem": "Nothing in the file encodes this. Low consequence: the outcome is an ORS instruction (management) and the language cannot express 'on reassessment of a severe patient'. Recorded so the omission is deliberate rather than accidental.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "awake",
+     "able to drink",
+     "pulse < 100 -> manage as some dehydration"
+    ],
+    "problem": "Not encoded. Arguably fine, since the language cannot de-escalate an existing Urgent priority.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-cefc78f3",
+  "text": "Manage as severe dehydration and refer urgently (see adjacent).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "escalation of a some-dehydration patient on any one of: unable to drink/drinking poorly, poor skin turgor, sunken eyes, weak pulse, pulse >= 100, not passing urine, unable to walk unaided",
+     "'ongoing diarrhoea or vomiting' branch (only partly representable: ongoing-ness is a reassessment notion)"
+    ],
+    "problem": "No rule derives severe dehydration / refer-urgently from the hourly reassessment criteria. Not passing urine (SNOMED 'Anuria' finding) and unable to walk unaided (SNOMED 'Unable to walk' finding) are neither checked for nor used anywhere. Mitigation: the some-dehydration patient is already Urgent via 'Urgent: cholera with some dehydration', so the priority level does not change, but the page's instruction to refer is lost and the reassessment signs are never elicited.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Branch from the hourly reassessment to severe/urgent is not encoded; priority is only triggered by the initial criteria.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "single sign of dehydration -> Urgent: unable to drink/drinking poorly",
+     "poor skin turgor",
+     "sunken eyes",
+     "pulse >= 100",
+     "not passing urine (Anuria exists in SNOMED)",
+     "unable to walk unaided (Unable to walk exists)",
+     "ongoing diarrhoea or vomiting",
+     "weak pulse (already covered alone by the severe rule)"
+    ],
+    "problem": "No rule escalates on the reassessment criteria. The page escalates on any ONE sign here, whereas the severe rule needs >= 2 of the drink/turgor/eyes group. Not passing urine, unable to walk unaided, isolated pulse >= 100 and ongoing losses are absent from both the check list and the rules.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p59-5536a234",
+  "text": "• If patient has watery diarrhoea (with or without vomiting) and has been in cholera outbreak area in past 5 days, cholera likely. Discuss all suspected cases of cholera with doctor. • If possible, isolate patient. Health worker to wear gloves and apron while attending to patient. Disinfect surfaces",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Part 1 (watery diarrhoea, with or without vomiting, AND in cholera outbreak area in past 5 days -> cholera likely): encoded as probable Cholera on Diarrhea+Watery qualifier AND exposure to Vibrio cholerae with (<= (onset exposure) (time_ago 5 days)), which per the house time semantics means 'exposure at most 5 days ago' = within the past 5 days; direction is correct, and vomiting is rightly not required. 'Exposure to Vibrio cholerae' is a proxy for 'been in a cholera outbreak area' (a geographic/epidemiological question, not known organism contact); no closer usable form exists (SNOMED has 'Disease outbreak' event and 'Exposure to Vibrio cholerae' event, neither fits the exposure-finding form), so acceptable. Part 2 (isolate, PPE, disinfect): management_step. Part 3 (fingerprick glucose < 3, < 4 if diabetes -> page 19): cross_reference_only; page 19 owns hypoglycaemia logic; not encoded here. Part 4 (record episodes, calculate losses): management_step. Part 5 ('discuss all suspected cases with doctor'): management_step; the page gives no priority level for cholera itself and none is encoded, which is consistent.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'in cholera outbreak area' is modelled as exposure to Vibrio cholerae, which is not the same as being in an outbreak area; 'with or without vomiting' fine"
+    ],
+    "problem": "Cholera probable rule present with watery diarrhoea AND exposure within 5 days; exposure concept is an approximation. Onset comparison uses <= time_ago 5 days (briefing says < means within); low confidence on direction. Isolation/glucose/discuss/record items are management or cross-reference.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'been in cholera outbreak area' is replaced by exposure to the organism Vibrio cholerae, a different and stronger claim than being in an outbreak area (SNOMED also has 'Exposure to Vibrio cholerae' (event) and 'Disease outbreak' (event); neither captures geography exactly)",
+     "the 'past 5 days' window is probably inert: onset of an exposure finding is captured when it is recorded, so (<= (onset ...) (time_ago 5 days)) does not test when the patient was in the area",
+     "glucose < 3 / < 4 diabetic is not encoded (it routes to page 19, so this is acceptable)"
+    ],
+    "problem": "The probable cholera rule's logic (and of watery diarrhoea and exposure) is correct. The approximations in the exposure concept and the time window are the weak points. 'Diarrhea' qualified by 'Watery' is acceptable, and it is checked for in its exact qualified form.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-dfc9ebf2",
+  "text": "No: Does patient have ≥ 2 of: restless, thirsty, dry mouth, pulse ≥ 100? Yes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the any2 in the probable some-dehydration rule, gated on the first question being No. Restlessness, Increased thirst, Xerostomia, and pulse >= 100 bpm all present with the right threshold and direction. Only reservation: the pulse measurement concept (see rule_level_problems).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Same as the some-dehydration probable rule: negation logic wrong (see p59-ce0b7574). The 'No' gate (not severe) is encoded only partially.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The four parts (Restlessness, Increased thirst, Xerostomia, pulse >= 100 bpm) and the 'No' gate are all encoded. The gate relies on explicit (no ...) records of every severe sign, so if any severe sign is left unrecorded the rule may never fire, depending on how `no` is evaluated.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-2059be34",
+  "text": "Reassess hourly. Does patient have either of: • Signs of dehydration: unable to drink/drinking poorly, poor skin turgor, sunken eyes, weak pulse/pulse ≥ 100, not passing urine, unable to walk unaided • Ongoing diarrhoea or vomiting?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "unable to drink/drinking poorly (as a single-sign escalation)",
+     "poor skin turgor (single-sign)",
+     "sunken eyes (single-sign)",
+     "weak pulse (single-sign)",
+     "pulse >= 100 (single-sign)",
+     "not passing urine (not checked for, not used; SNOMED 'Anuria' finding exists)",
+     "unable to walk unaided (not checked for, not used; SNOMED 'Unable to walk' finding exists)",
+     "ongoing diarrhoea or vomiting (reassessment notion; at best borderline representable)"
+    ],
+    "problem": "None of this question is encoded. The first five signs exist in the check_for but no rule escalates a some-dehydration patient on one of them (the severe rule needs two of the pair-group or a severe single sign). The 'hourly' timing is not representable, but the criteria themselves are, as (and (active_condition Moderate dehydration) (or ...)) -> probable Severe dehydration / Urgent. Priority outcome is unchanged because some dehydration is already Urgent, so severity is medium rather than high.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "Not encoded; findings not checked, so no escalation to severe.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "unable to drink/drinking poorly (single)",
+     "poor skin turgor (single)",
+     "sunken eyes (single)",
+     "pulse >= 100 (single)",
+     "not passing urine",
+     "unable to walk unaided",
+     "ongoing diarrhoea or vomiting"
+    ],
+    "problem": "Only weak pulse escalates on its own, and that comes from the initial severe rule. The rest of this branch is lost. See p59-cefc78f3.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p59-f1bbec25",
+  "text": "No Dehydration unlikely Give oral rehydration solution",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'No: Dehydration unlikely, give ORS' is the negative branch (fewer than two of the some-dehydration signs) followed by management. The house standard does not encode negative conclusions, and the ORS is management.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No encoding of dehydration unlikely branch.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Dehydration unlikely"
+    ],
+    "problem": "Not encoded. Low importance.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c003",
+  "text": "Check for cholera (cholera page) :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page asks whether the patient 'has been in cholera outbreak area', an epidemiological question; 'exposure to Vibrio cholerae' asserts contact with the organism, which no health worker can answer directly. No SNOMED finding for presence in an outbreak area was found, so this is the nearest expressible form, but the task/question text should make clear it means 'been in a cholera outbreak area'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says been in a cholera outbreak area; rule encodes exposure to the organism, a stronger claim.",
+    "fix": "Use (snomed_concept \"Exposure to Vibrio cholerae\" \"event\") or a geographic/outbreak-area concept; confirmed exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Exposure to Vibrio cholerae' (organism exposure) is narrower than the page's geographic/epidemiological criterion 'has been in cholera outbreak area'; no closer SNOMED concept found ('Disease outbreak' is an event), so acceptable but should be flagged.",
+    "fix": "Keep, but record the proxy in remaining questions; consider an outbreak-area travel/residence concept if one is added.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for level of dehydration in cholera :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' with no acuity qualifier; 'Acute confusion' (130987000) is a child of 'Clouded consciousness' (40917007), the concept SNOMED lists under the synonym 'Confusion'. Descendants match in due_to, so the broader concept covers both, and it is the one the priority rule already uses.",
+    "fix": "(snomed_concept \"Clouded consciousness\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' without acuity; 'Acute confusion' is a child of 'Clouded consciousness', and the priority rule separately uses the broader 'Clouded consciousness', so the three rules use different concepts for one page item.",
+    "fix": "Use one concept consistently (e.g. (snomed_concept \"Clouded consciousness\" \"finding\")) in check_for, the some-dehydration exclusion and the severe priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c018",
+  "text": "Diagnose probable cholera :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: the page's criterion is having been in a cholera outbreak area, not documented exposure to the organism.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c003: outbreak-area presence is not organism exposure.",
+    "fix": "Same as c003.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Exposure to Vibrio cholerae' (organism exposure) is narrower than the page's geographic/epidemiological criterion 'has been in cholera outbreak area'; no closer SNOMED concept found ('Disease outbreak' is an event), so acceptable but should be flagged.",
+    "fix": "Keep, but record the proxy in remaining questions; consider an outbreak-area travel/residence concept if one is added.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Diagnose probable cholera :: (<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Direction is right (onset within the last 5 days) but the page means 'was in the outbreak area at any time during the past 5 days'. A patient who lives in or has been in the area for longer than 5 days has an exposure onset more than 5 days ago, so the rule would not call cholera likely for exactly the patients most at risk.",
+    "fix": "Drop the onset comparison and phrase the check_for question as 'been in a cholera outbreak area in the past 5 days', or record the 5-day window in remaining questions as not expressible.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "5-day window applies to being in outbreak area; encoded as onset of an organism-exposure finding (direction is right).",
+    "fix": "Tie to outbreak-area concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page means present in an outbreak area at any time in the past 5 days; onset of exposure <= 5 days ago excludes people who have lived in the outbreak area longer than 5 days (onset older), and the briefing allows onset only on clinical_finding/active_condition subjects, not this `finding` form.",
+    "fix": "Drop the onset constraint or express it as 'exposure within the last 5 days' (e.g. qualifier) rather than onset of exposure; confirm grammar accepts onset on a `finding`.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c021",
+  "text": "Diagnose probable some dehydration in cholera :: (active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cholera is only \"likely\" on the page; citation is the generic management line, fine as a precondition.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c024",
+  "text": "Diagnose probable some dehydration in cholera :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Excludes only 'Acute confusion', while the severe priority rule fires on any 'Clouded consciousness'; a patient recorded with clouded consciousness (not acute confusion) could be both Urgent-severe and diagnosed with some dehydration.",
+    "fix": "Exclude the same concept the priority rule uses (Clouded consciousness).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c034",
+  "text": "Diagnose probable some dehydration in cholera :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Number, direction and unit match 'pulse ≥ 100', but 'Pulse, function' (8499008, a child of 'Cardiovascular function') names a physiological function, not a rate; the rate observable is 'Heart rate' (364075005). Unless 'Pulse, function' is the concept VHA records the routine pulse vital under, this comparison will never match a recorded pulse.",
+    "fix": "(snomed_concept \"Heart rate\" \"observable entity\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page pulse >= 100 means heart rate; \"Pulse, function\" is the function not the rate.",
+    "fix": "Use (snomed_concept \"Heart rate\" \"observable entity\") confirmed exists.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c040",
+  "text": "Urgent: cholera with severe dehydration :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Clouded consciousness' is the SNOMED concept carrying the synonym 'Confusion' and the parent of 'Acute confusion', so it does mean the page's 'confused'. It is redundant beside c039 (descendants match) and, unlike c039, it is not in the check_for or the some-dehydration rule's negations.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "unsupported",
+    "reason": "Page says only \"confused\"; \"Clouded consciousness\" is an extra, differently-meant concept not on the page.",
+    "fix": "Remove; Acute confusion already covers it. Also inconsistent with the no-severe list in the some-dehydration rule and the check_for.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Duplicate encoding of 'confused' alongside Acute confusion (its own child); broader than check_for and never asked for, so it only matters if recorded elsewhere; inconsistent with the some-dehydration exclusion.",
+    "fix": "Keep one concept for 'confused' across all rules.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c047",
+  "text": "Urgent: cholera with some dehydration :: (active_condition (snomed_concept \"Moderate dehydration\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Page gives no Urgent priority for some dehydration: its box is ORS 75mL/kg over 4 hours, and urgent referral belongs to the severe box. Also fires on a probable diagnosis as active_condition.",
+    "fix": "Remove the rule, or use a non-urgent priority if one is justified.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The red box under 'Some dehydration likely' is a management box (oral ORS, outpatient pathway), not a 'give urgent attention' box; the page never says some dehydration is urgent, only severe dehydration is 'refer urgently'. Urgent priority for some dehydration is a judgement call, not page text.",
+    "fix": "Confirm with Will whether every red box maps to Urgent; otherwise drop or lower this priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable some dehydration in cholera",
+  "text": "The probable rule uses (active_condition (snomed_concept \"Cholera\" \"disorder\")) as evidence, but nothing in this file checks for Cholera in a form the test recognises. Will's briefing says explicitly that a probable rule using active_condition must still have the same file check for a recognised form; the gold standard avoids active_condition in probable rules for this reason. Expect 'PROBABLE DIAGNOSIS ... NOT CHECKED FOR' from the per-page checker.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with severe dehydration",
+  "text": "Includes (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\")), which the page does not list, the check_for task does not contain, and the some-dehydration rule's negative list omits. Two consequences: the test's 'PRIORITY EVALUATION ... NOT CHECKED FOR' constraint is likely violated, and a patient recorded with clouded consciousness can be both Urgent-severe and probable some-dehydration at once. Either add it to the check_for and the negative list, or drop it (Decreased level of consciousness already covers the page's wording).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "The hourly-reassessment escalation (p59-2059be34 -> red box 4) is absent: no rule turns a some-dehydration patient with any one sign of dehydration, not passing urine, or unable to walk unaided into severe dehydration / refer urgently, and 'Anuria' and 'Unable to walk' are never checked for. Priority level is unaffected (already Urgent) but the referral conclusion and two elicitable findings are lost.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "No probable diagnosis of Severe dehydration (disorder; SNOMED 450316000) is produced although the page's first red box is headed 'Manage as severe dehydration'. The builders produced one for some dehydration, so the two branches are encoded asymmetrically; a Severe dehydration diagnosis is also what boxes 3 and 4 would need to anchor to.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable some dehydration in cholera",
+  "text": "Pulse >= 100 is compared on (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm). 'Pulse, function' (8499008) is a physiological-function concept; the usual observable for a recorded pulse rate is 'Heart rate' (364075005, observable entity). If the system records routine pulse under 'Heart rate', this comparison never matches and the pulse >= 100 criterion silently drops out, leaving three of the four some-dehydration signs. Cannot verify from the allowed inputs which concept the system records; flagged for the reconciler to confirm against the house convention.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "Urgent for 'some dehydration' is justified only by the red-box outline convention; the page's own instruction for this box is ORS, stool specimen and hourly reassessment, with referral only on the reassessment criteria or lack of transport. Acceptable under the house rule (red box = Urgent) but worth a reconciler note.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for cholera (cholera page)",
+  "text": "due_to is (clinical_finding Diarrhea) and the check_for contains (clinical_finding Diarrhea (qualifier Watery)). If the self-referential check_for test compares on the root concept rather than the qualified form, this will be flagged as 'SELF-REFERENTIAL check_for'. Low confidence; depends on the test's matching.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera",
+  "text": "'Exposure to Vibrio cholerae' stands in for 'been in cholera outbreak area in past 5 days'. The nurse's question is geographic (outbreak area), not confirmed organism contact; no closer form exists in the exposure-finding grammar, so this is acceptable but should be recorded as a decision.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable some dehydration in cholera",
+  "text": "The rule depends on eleven (no ...) findings. If (no X) matches only an explicitly recorded negative and not an unanswered item, the rule fires only once the nurse has answered every severe-sign question negatively; the check_for task does elicit them all, so this is probably fine, but it is a runtime semantic the inputs do not settle.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with severe dehydration",
+  "text": "Uses 'Clouded consciousness' which is not in the check_for list (and not on the page); evidence in a priority rule must be checked for, so this likely fails the file's checks and is an unjustified extra criterion.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable some dehydration in cholera",
+  "text": "any2 over negated items does not express 'fewer than 2 of 3 signs'; use (no (any2 ...)).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "Page does not escalate some dehydration to Urgent (it is managed with ORS); priority level unjustified, only 'discuss suspected cholera with doctor'.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for level of dehydration in cholera",
+  "text": "check_for omits pulse >=100 (routine vital, ok) but severe diagnosis not recorded; reassessment-hourly escalation branch lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(none)",
+  "text": "The hourly-reassessment branch is lost: the page escalates to severe dehydration/refer urgently (red box 4) on ANY single sign (unable to drink, poor turgor, sunken eyes, weak pulse or pulse >= 100, not passing urine, unable to walk unaided) or on ongoing diarrhoea/vomiting. No rule or check item covers this. Not passing urine, unable to walk unaided and ongoing losses do not appear anywhere.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with severe dehydration",
+  "text": "It uses (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\")), which is not in any check_for in the file and is neither a vital nor a common symptom, so it breaks test constraint 5. 'Diagnose probable some dehydration in cholera' excludes Acute confusion but not Clouded consciousness, so a patient with Clouded consciousness recorded could be both Urgent-severe and probable some dehydration. The check list and the rules disagree.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera",
+  "text": "'Been in cholera outbreak area in past 5 days' is modelled as exposure to the organism Vibrio cholerae, with a 5-day window on the onset of that exposure finding. Onset is captured when the finding is recorded, so the window does not test travel timing and is effectively always satisfied. Being in an outbreak area is also weaker than exposure to the organism, so health workers may not record it as such.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "It is anchored only on (active_condition Moderate dehydration), with no cholera condition, so any page's moderate-dehydration diagnosis triggers this 'cholera' Urgent priority. Its description and scope disagree. Urgent itself is justified by the red box.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable some dehydration in cholera",
+  "text": "Seven (no ...) gates on severe signs mean that, if the health worker does not explicitly record absence of each sign, some dehydration may never be inferred. A design risk, not a logic error.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for level of dehydration in cholera",
+  "text": "Two gaps. (1) 'Clouded consciousness' is used as evidence by the severe-dehydration priority rule but is not checked for here (the house test requires every priority-rule evidence item to be checked for in the same file); the simplest fix is to check for 'Clouded consciousness' instead of 'Acute confusion' and use it consistently in all three rules. (2) The page's hourly reassessment after some dehydration (red box 4, 'Manage as severe dehydration and refer urgently') escalates on 'not passing urine', 'unable to walk unaided' or ongoing diarrhoea/vomiting; none of these are checked for, so that red box has no trigger in the rules.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera",
+  "text": "'cholera likely' is correctly probable and the and-structure matches the sentence, but the onset comparison on the exposure finding (c019) misreads 'in past 5 days': a patient who has been in the outbreak area continuously for more than 5 days has an exposure onset older than 5 days and fails the rule. The 5-day window on the page is 'at any time during the last 5 days', which onset-based timing cannot express.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "Priority level not clearly justified by the page. Red box 1 is headed 'Some dehydration likely' and contains clinic ORS management with hourly reassessment; it does not say 'refer' or 'urgent attention'. Referral only appears if reassessment finds signs of dehydration or ongoing losses, or if there is no reliable transport. Urgent may still be the intended triage level for a red-boxed branch, but it is an inference, not something the page states, and should be recorded as a decision.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for level of dehydration in cholera",
+  "text": "check_for omits pulse >= 100 and the page's other items used by the some-dehydration logic (restless/thirsty/dry mouth are present, pulse missing); a glucose check (<3, <4 if diabetic) and urine/walk signs are not covered.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with severe dehydration",
+  "text": "Structure and Urgent priority fit the 'refer urgently' box, but 'Clouded consciousness' is invented. Also no diagnosis for severe dehydration, and the 'reassess hourly' path to severe (pulse>=100, not passing urine, unable to walk, ongoing losses) is not encoded.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "Priority Urgent is not on the page for some dehydration; invented escalation.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for level of dehydration in cholera",
+  "text": "Asks 'Acute confusion' but the severe priority rule uses 'Clouded consciousness' too; check_for should ask the same concept the rules consume. Signs from the hourly reassessment ('not passing urine', 'unable to walk unaided', ongoing diarrhoea/vomiting) are not checked and no rule encodes the reassess-hourly → manage as severe branch.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable cholera",
+  "text": "'Cholera likely' → probable is right and the and-structure (watery diarrhoea AND outbreak area in past 5 days) is faithful, but the 5-day window is encoded as onset of exposure <= 5 days ago, which fails for residents of an outbreak area exposed > 5 days ago, and onset on a `finding` subject is outside the briefing's stated usage.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: cholera with some dehydration",
+  "text": "Page gives oral ORS and an outpatient/discharge pathway for some dehydration; nothing calls it urgent. Urgent priority rests only on the red-box styling.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Acute confusion  vs  B: Clouded consciousness (\"confused\")",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))",
+    "reason": "\"Confused\" is asked as Acute confusion (VHA's Confusion warning sign), which can be recorded absent for the Q1 = No branch; Clouded consciousness is the routine AVPU \"Confused\" vital and is kept in the positive Q1 branch (see priority_condition).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: Reduced fluid intake  vs  B: Difficulty drinking (\"drinking poorly\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Difficulty drinking\" \"finding\"))",
+    "reason": "The page pairs \"unable to drink (or drinking poorly)\" as degrees of ability to drink; Difficulty drinking is the sibling of Unable to drink under that parent, while Reduced fluid intake describes amount; the page does not settle it.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Thirst due to water deprivation  vs  B: Increased thirst (\"thirsty\")",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Increased thirst\" \"finding\"))",
+    "reason": "The page says only \"thirsty\"; Increased thirst states abnormal thirst without the cause (water deprivation) that A's concept asserts.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: Urgent priority directly on cholera + Q1 signs  vs  B: probable Severe dehydration diagnosis + Urgent on (active_condition Severe dehydration)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (active_condition Cholera) (or Drowsy, Decreased level of consciousness, Acute confusion, Clouded consciousness, Difficulty breathing, Weak arterial pulse, (any2 (or Unable to drink, Difficulty drinking) Decreased skin turgor, Sunken eyes)))",
+    "reason": "The page says \"Manage as severe dehydration and refer urgently\", not \"severe dehydration likely\", so per the scope rule there is no probable diagnosis; the red box becomes the priority evaluation directly.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: \"confused\" = Acute confusion or Clouded consciousness  vs  B: Clouded consciousness only (inside its diagnosis rule)",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) / (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "\"Confused\" can be recorded either as the Confusion warning sign or as the AVPU \"Confused\" vital; both routes satisfy the page's \"confused\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: Urgent: cholera with some dehydration on (active_condition Moderate dehydration)  vs  B: no priority for some dehydration",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(active_condition (snomed_concept \"Moderate dehydration\" \"disorder\"))",
+    "reason": "\"Some dehydration likely\" sits in a red box on the page, so it needs a priority evaluation; B left that red box without one.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: no rule  vs  B: \"Diagnose probable severe dehydration in cholera\" (13 conditions)",
+  "detail": [
+   {
+    "choice": "neither",
+    "final": "",
+    "reason": "The page never says severe dehydration \"likely\"; its logic is carried by the Urgent priority evaluation instead.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Q1 = No branch: A: (no Acute confusion)  vs  B: (no Clouded consciousness)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(no (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")))",
+    "reason": "\"No\" to \"confused\" must be recordable; Acute confusion is asked in check_for, while the AVPU vital records a level, not a \"No\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: Reduced fluid intake  vs  B: Difficulty drinking (in (no …) and Q1 groups)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(no (clinical_finding (snomed_concept \"Difficulty drinking\" \"finding\")))",
+    "reason": "Same concept choice as check_for for \"drinking poorly\".",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: Thirst due to water deprivation  vs  B: Increased thirst",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Increased thirst\" \"finding\"))",
+    "reason": "Same concept choice as check_for for \"thirsty\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: probable Moderate dehydration  vs  B: probable Dehydration (\"Some dehydration likely\")",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Moderate dehydration\" \"disorder\") probable)",
+    "reason": "No \"some dehydration\" concept exists; Moderate dehydration is what VHA already uses for its \"Some Dehydration\" warning sign, while Dehydration would also cover the severe grade the page separates; the page wording does not settle the grade.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "slug": "59-cholera",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: none  vs  B: probable Severe dehydration",
+  "detail": [
+   {
+    "choice": "neither",
+    "final": "",
+    "reason": "\"Manage as severe dehydration\" is not a \"likely\" statement.",
+    "unsettled": false
+   }
+  ]
+ }
+]

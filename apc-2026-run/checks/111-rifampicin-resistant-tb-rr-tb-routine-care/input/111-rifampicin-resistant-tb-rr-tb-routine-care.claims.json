@@ -1,0 +1,406 @@
+{
+ "page": 111,
+ "lisp_file": "111-rifampicin-resistant-tb-rr-tb-routine-care.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "Drowsy"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "neckstiffness"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "severe headache"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "persistent vomiting"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+   "element_keys": [
+    "p111-23d0b6ba"
+   ],
+   "quote": "Difficulty with adherence"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+   "element_keys": [
+    "p111-ccf478a4"
+   ],
+   "quote": "Patient requests admission"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest or while talking"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "prominent use of breathing muscles"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "coughs up ≥ 1 tablespoon fresh blood"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for RR-TB admission and urgent referral criteria",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "new weakness of arm/leg"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Measure BMI at RR-TB routine visit",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Measure BMI at RR-TB routine visit",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+   "element_keys": [
+    "p111-e8247b38"
+   ],
+   "quote": "Weight and BMI"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p111-844e8de3"
+   ],
+   "quote": "Respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "Drowsy"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "neckstiffness"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "severe headache"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-35bd3688"
+   ],
+   "quote": "persistent vomiting"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p111-a139211e"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noncompliance with treatment\" \"finding\"))",
+   "element_keys": [
+    "p111-23d0b6ba"
+   ],
+   "quote": "Difficulty with adherence"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²) 18)",
+   "element_keys": [
+    "p111-20306c48"
+   ],
+   "quote": "BMI < 18"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Urgent: RR-TB routine care with criteria for hospital admission",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient requests a hospital referral\" \"situation\"))",
+   "element_keys": [
+    "p111-ccf478a4"
+   ],
+   "quote": "Patient requests admission"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rifampicin resistant tuberculosis\" \"disorder\"))",
+   "element_keys": [
+    "p111-b997cfca"
+   ],
+   "quote": "RIFAMPICIN-RESISTANT TB (RR-TB)"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "breathless at rest or while talking"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "prominent use of breathing muscles"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "drowsy"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "coughs up ≥ 1 tablespoon fresh blood"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "persistent vomiting"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: RR-TB with urgent symptoms at routine visit",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p111-fdc6d6b7"
+   ],
+   "quote": "new weakness of arm/leg"
+  }
+ ]
+}

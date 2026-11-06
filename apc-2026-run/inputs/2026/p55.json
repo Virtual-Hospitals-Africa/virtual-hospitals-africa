@@ -1,0 +1,580 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 55,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    117.9
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p55-rb1-e01",
+   "page": 55,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with breast symptoms and temperature ≥ 38°C or body pain with painful lump in breast/s which may be fluctuant: breast abscess likely.",
+   "bbox": [
+    93.6,
+    91.6,
+    748.3,
+    102.7
+   ],
+   "key": "p55-c6a87d0c"
+  },
+  {
+   "id": "p55-rb1-e02",
+   "page": 55,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": null,
+   "section_y": -1,
+   "indent": 1,
+   "parent": null,
+   "text": "Give paracetamol 1g and tramadol 50mg. Refer urgently to surgical unit for incision and drainage.",
+   "bbox": [
+    79.5,
+    101.9,
+    470.7,
+    112.7
+   ],
+   "key": "p55-ae17f285"
+  },
+  {
+   "id": "p55-out-e01",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BREAST SYMPTOMS",
+   "bbox": [
+    339.0,
+    48.3,
+    503.0,
+    70.6
+   ],
+   "key": "p55-fc70855f"
+  },
+  {
+   "id": "p55-out-e02",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If penicillin allergy (history of anaphylaxis, urticaria or angioedema), give instead azithromycin 500mg daily for 3 days.",
+   "bbox": [
+    34.0,
+    542.9,
+    401.5,
+    551.9
+   ],
+   "key": "p55-90ce0e21"
+  },
+  {
+   "id": "p55-out-e03",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Usually due to poor latching. Help to latch baby properly. • Avoid using soap on nipples. • Advise to apply breastmilk to nipples after feeding and expose to air. Apply zinc and castor oil ointment between feeds. Assess and manage baby for oral thrush.",
+   "bbox": [
+    39.7,
+    252.3,
+    254.6,
+    302.5
+   ],
+   "key": "p55-eb6d61d2"
+  },
+  {
+   "id": "p55-out-e04",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Breastfeeding and painful/cracked nipples",
+   "bbox": [
+    70.1,
+    229.0,
+    224.7,
+    239.2
+   ],
+   "key": "p55-341e0287"
+  },
+  {
+   "id": "p55-out-e05",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painful breast/s • Check for pregnancy 174. May be a side effect of hormonal contraception. If no better after 3 months, change contraceptive method 170. • If breast exam normal, mastalgia likely.",
+   "bbox": [
+    491.6,
+    421.2,
+    673.2,
+    471.4
+   ],
+   "key": "p55-861703d4"
+  },
+  {
+   "id": "p55-out-e06",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Reassure this is common and advise a well-fitting bra. Give paracetamol 500mg-1g 4-6 hourly (max 4g/24 hours) for up to 5 days. • If symptoms change/worsen, refer to breast clinic/Regional Breast Unit within 60 days.",
+   "bbox": [
+    491.6,
+    484.5,
+    679.3,
+    534.7
+   ],
+   "key": "p55-d348f0d5"
+  },
+  {
+   "id": "p55-out-e07",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Nipple discharge • If pregnant and no other symptoms, reassure and give antenatal care 178. • Review medication: antipsychotics, antidepressants, COC and metoclopramide can cause nipple discharge. Discuss with doctor. • If cause uncertain, refer.",
+   "bbox": [
+    697.1,
+    421.2,
+    802.4,
+    531.4
+   ],
+   "key": "p55-539a2710"
+  },
+  {
+   "id": "p55-out-e08",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Breast lump/s Re-examine breast on day 7 of menstrual cycle. If lump persists, refer",
+   "bbox": [
+    337.6,
+    421.2,
+    473.2,
+    451.4
+   ],
+   "key": "p55-70f2cfac"
+  },
+  {
+   "id": "p55-out-e09",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "according to age:",
+   "bbox": [
+    373.3,
+    451.2,
+    435.6,
+    461.4
+   ],
+   "key": "p55-ee9defb2"
+  },
+  {
+   "id": "p55-out-e10",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient > 25 years, refer",
+   "bbox": [
+    415.6,
+    474.5,
+    473.2,
+    494.7
+   ],
+   "key": "p55-9899bc15"
+  },
+  {
+   "id": "p55-out-e11",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "to breast clinic/ Regional Breast",
+   "bbox": [
+    416.5,
+    494.5,
+    472.2,
+    514.7
+   ],
+   "key": "p55-7059d9a0"
+  },
+  {
+   "id": "p55-out-e12",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Unit within",
+   "bbox": [
+    424.0,
+    514.5,
+    464.8,
+    524.7
+   ],
+   "key": "p55-180e5cbe"
+  },
+  {
+   "id": "p55-out-e13",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "21 days.",
+   "bbox": [
+    429.5,
+    524.5,
+    459.3,
+    534.7
+   ],
+   "key": "p55-6eb82264"
+  },
+  {
+   "id": "p55-out-e14",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient < 25 years, refer to breast clinic/ Regional Breast",
+   "bbox": [
+    337.4,
+    474.5,
+    395.4,
+    514.7
+   ],
+   "key": "p55-73a6b3ee"
+  },
+  {
+   "id": "p55-out-e15",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Unit within",
+   "bbox": [
+    345.3,
+    514.5,
+    387.6,
+    524.7
+   ],
+   "key": "p55-0d94dfea"
+  },
+  {
+   "id": "p55-out-e16",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "60 days.",
+   "bbox": [
+    350.9,
+    524.5,
+    380.0,
+    534.7
+   ],
+   "key": "p55-1b92f593"
+  },
+  {
+   "id": "p55-out-e17",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Symptoms not related to breastfeeding",
+   "bbox": [
+    348.7,
+    397.9,
+    492.9,
+    408.1
+   ],
+   "key": "p55-572d5c4a"
+  },
+  {
+   "id": "p55-out-e18",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Axillary lump/s • Ask about other symptoms. If recent fever with cough/sore throat 23. If skin rash/itch 82. • If reactive node from infection or skin cause, manage as on symptom pages. Reassure that lymphadenopathy should resolve with treatment. • Review in 2-4 weeks. If lymph node persists, refer.",
+   "bbox": [
+    39.7,
+    421.2,
+    172.0,
+    531.4
+   ],
+   "key": "p55-ec0e0ba5"
+  },
+  {
+   "id": "p55-out-e19",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Breast enlargement • If only one breast enlarged, refer to breast clinic/Regional Breast Unit. • If BMI ≥ 25 156. • Review medication: antipsychotics, antidepressants, efavirenz, nifedipine, amlodipine can cause breast enlargement. Discuss with doctor. If on efavirenz, doctor to consider switch to dolutegravir 132.",
+   "bbox": [
+    188.5,
+    421.2,
+    318.3,
+    531.4
+   ],
+   "key": "p55-f137073a"
+  },
+  {
+   "id": "p55-out-e20",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is the patient breastfeeding?",
+   "bbox": [
+    368.7,
+    205.6,
+    473.0,
+    215.8
+   ],
+   "key": "p55-71ba0b51"
+  },
+  {
+   "id": "p55-out-e21",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes. Mastitis likely • Give flucloxacillin1 500mg 6 hourly for 5 days. • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed up to 5 days. • Advise warm compresses. If no better after 2 days or breast abscess develops, refer same day.",
+   "bbox": [
+    273.5,
+    261.7,
+    618.9,
+    302.7
+   ],
+   "key": "p55-b6f433cc"
+  },
+  {
+   "id": "p55-out-e22",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No. Engorgement/blocked",
+   "bbox": [
+    642.7,
+    261.7,
+    748.2,
+    272.7
+   ],
+   "key": "p55-26b36b9b"
+  },
+  {
+   "id": "p55-out-e23",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "duct likely • Advise frequent breastfeeds, warm compresses and to gently massage breast. • Advise to return if fever/body pain (mastitis) develops. • If symptoms persists, consider other causes and discuss/refer.",
+   "bbox": [
+    637.8,
+    271.7,
+    752.0,
+    352.7
+   ],
+   "key": "p55-be80fdbc"
+  },
+  {
+   "id": "p55-out-e24",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to breastfeeding counsellor/lactation consultant or support group. If HIV positive, give routine HIV care 126 and prevent transmission to baby 186.",
+   "bbox": [
+    107.6,
+    365.4,
+    683.3,
+    376.2
+   ],
+   "key": "p55-39562887"
+  },
+  {
+   "id": "p55-out-e25",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Breastfeeding and painful breast/s with or without lump/s",
+   "bbox": [
+    406.1,
+    229.2,
+    618.6,
+    239.4
+   ],
+   "key": "p55-f9488df4"
+  },
+  {
+   "id": "p55-out-e26",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Does patient have temperature ≥ 38°C or body pain?",
+   "bbox": [
+    415.5,
+    239.2,
+    609.2,
+    249.4
+   ],
+   "key": "p55-252459e9"
+  },
+  {
+   "id": "p55-out-e27",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If HIV negative, advise to continue breastfeeding. • If HIV positive and only one breast affected, express and discard milk from affected side. Continue breastfeeding from other side. - If both breasts affected, temporarily stop feeding from breasts, express and discard breast milk. Replace feeds with formula until cracks/mastitis resolved.",
+   "bbox": [
+    39.7,
+    315.6,
+    606.7,
+    345.8
+   ],
+   "key": "p55-19f12e2b"
+  },
+  {
+   "id": "p55-out-e28",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with breast symptoms not needing urgent attention Carefully examine both breasts including nipples and axillae. If any of the following warning signs, refer to breast clinic/Regional Breast Unit same week: • Skin changes: dimpling, ulceration, indentations or pulling (\"orange peel\" appearance) • Breast lump/s with any of: patient > 25 years, family history of breast cancer, irregular fixed lump, skin/nipple changes, nipple discharge, axillary lump",
+   "bbox": [
+    58.4,
+    129.4,
+    697.2,
+    180.8
+   ],
+   "key": "p55-83a75454"
+  },
+  {
+   "id": "p55-out-e29",
+   "page": 55,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Axillary lump/s with any of: skin/nipple changes, nipple discharge, breast lump/s • Nipple discharge/retraction with any of: patient ≥ 50 years, blood-stained or one-sided discharge, male, skin changes (crusts/ulcers), breast/axillary lump If none of above, continue to assess the patient below:",
+   "bbox": [
+    51.0,
+    150.6,
+    784.9,
+    192.5
+   ],
+   "key": "p55-adca6b63"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{"page": 182, "base": "B",
+ "decisions": [
+  {"role": "trigger", "difference": "A: (none)  vs  B: second Postpartum state trigger, on the task \"Measure BMI at routine postnatal visit\"",
+   "choice": "B", "final_expr": "(clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))",
+   "reason": "The extra trigger belongs to B's BMI measure task, kept because the assessment table says to assess 'BMI Every visit' for the postnatal patient.", "unsettled": false},
+  {"role": "check_for", "difference": "A: (Pallor of skin of face)  vs  B: (Pale complexion)",
+   "choice": "A", "final_expr": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "reason": "The page says 'Pallor', which has no exact concept; 'Pallor of skin of face' carries the page's word and is the term VHA's rules use most for pallor.", "unsettled": true},
+  {"role": "priority_condition", "difference": "A: (Pallor of skin of face)  vs  B: (Pale complexion)",
+   "choice": "A", "final_expr": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "reason": "Same concept choice as in check_for, for 'Pallor with respiratory rate ≥ 30, dizzy, faint or chest pain'.", "unsettled": true},
+  {"role": "priority_condition", "difference": "A: (active_condition Eclampsia)  vs  B: (and Seizure (<= (onset Postpartum state) (time_ago 1 weeks)))",
+   "choice": "B", "final_expr": "(and (clinical_finding (snomed_concept \"Seizure\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks)))",
+   "reason": "The red-box criterion is the finding 'Recent seizure, up to 1 week postpartum'; 'treat as eclampsia 177' is a management pointer, not 'eclampsia likely', so the condition is encoded directly from the page's words.", "unsettled": true},
+  {"role": "diagnosis", "difference": "A: (diagnosis Eclampsia probable) with conditions Postpartum state, onset <= 1 week, Seizure  vs  B: (none)",
+   "choice": "B", "final_expr": "",
+   "reason": "The brief maps 'X likely' to probable and 'consider/suspect X' to possible; the page says 'treat as eclampsia', which is neither, so no eclampsia diagnosis rule.", "unsettled": true},
+  {"role": "diagnosis_condition", "difference": "A: PPH rule includes (<= (onset Postpartum state) (time_ago 6 weeks))  vs  B: PPH rule without the window",
+   "choice": "A", "final_expr": "(<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 6 weeks))",
+   "reason": "'postpartum haemorrhage likely' sits in the box headed 'postnatal patient (within 6 weeks of delivery)', so the window is part of the page's logic for it.", "unsettled": false},
+  {"role": "measured", "difference": "A: (none)  vs  B: (measure (measurement Body mass index kg/m²))",
+   "choice": "B", "final_expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m²)",
+   "reason": "The table row 'BMI Every visit Patient's BMI = weight (kg) ÷ height (m) ÷ height (m)' tells the worker to measure BMI, which is not a routine vital.", "unsettled": false}
+ ],
+ "notes": "Both builds passed. Base B (rule descriptions, BMI measure task, seizure encoded in the priority rule). From A: the Pallor of skin of face concept and the 6-week window in the PPH diagnosis rule. A's eclampsia diagnosis rule and its four diagnosis conditions (Postpartum state, onset <= 6 weeks, onset <= 1 week, Seizure) were dropped; A's diagnosis_condition only_A entries for Postpartum state and the 6-week onset are retained via the PPH rule. The BP row (BP ≥ 140/90 recheck) was encoded by neither builder; BP is a routine vital, so no measure task was added. Remaining questions from both builders are merged."
+}

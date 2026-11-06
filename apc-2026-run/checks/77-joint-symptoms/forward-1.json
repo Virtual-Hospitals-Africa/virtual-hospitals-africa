@@ -1,0 +1,317 @@
+{
+ "page": 77,
+ "checker": "forward-1",
+ "elements": [
+  {
+   "element_key": "p77-7c96c325",
+   "scope": "in_scope",
+   "scope_reason": "Header: defines the priority rule's trigger (patient with a joint symptom) and its 'any of' structure.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as (and <presenting complaint> (or ...red-box items...)) with Urgent, exactly the house pattern. The presenting complaint 'joint symptom/s' is narrowed to Pain of joint; a patient recorded with joint swelling or stiffness but no joint pain would not trigger the task or the priority rule. Acceptable as the most natural anchor, noted only.",
+   "evidence": [
+    "Urgent: joint symptoms with danger signs :: (and (clinical_finding (snomed_concept \"Pain of joint\" \"finding\")) (or ...))",
+    "Check for urgent joint symptom conditions :: (task ... adult (clinical_finding (snomed_concept \"Pain of joint\" \"finding\")) (check_for ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p77-3f5aea10",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion with an 'X likely' conclusion (septic arthritis).",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Short history' - no onset/time criterion on the rule; a long-standing warm swollen painful stiff joint also matches",
+    "'single' joint - monoarticular involvement is not encoded (SNOMED has (snomed_concept \"Monoarticular joint involvement\" \"finding\"))"
+   ],
+   "problem": "Parts encoded correctly: warm = Joint warm; swollen = Joint swelling; extremely painful = Pain of joint + Severe; limited range of movement = Limitation of joint movement; 'septic arthritis likely' = probable Infective arthritis (SNOMED synonym of septic arthritis), and the priority rule consumes it via active_condition. The two discriminators the page uses to separate septic arthritis from a flare of chronic arthritis ('short history', 'single') are both absent, so a chronic polyarthritis flare that is warm, swollen, severely painful and stiff is diagnosed probable septic arthritis and escalated to Urgent. All four encoded parts are joined by 'and', matching the page.",
+   "evidence": [
+    "Diagnose probable septic arthritis (joint symptoms) :: (and (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\")))",
+    "Diagnose probable septic arthritis (joint symptoms) :: (diagnosis (snomed_concept \"Infective arthritis\" \"disorder\") probable)",
+    "Urgent: joint symptoms with danger signs :: (active_condition (snomed_concept \"Infective arthritis\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-66f4b3f4",
+   "scope": "in_scope",
+   "scope_reason": "Red-box vital-sign threshold.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: joint symptoms with danger signs :: (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-e6b01040",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion with an 'X likely' conclusion (fracture). The '->30' is a cross-reference and is not encodable.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Parts: 'injury in past 48 hours' = (<= (onset Traumatic injury) (time_ago 48 hours)), which per the house semantics means onset within the last 48 hours - correct direction; 'severe pain' = Pain of joint + Severe; 'severe swelling' = Joint swelling + Severe; 'deformity' = Deformity (general finding; (snomed_concept \"Joint deformity\" \"finding\") exists and is closer, but descendants match so the general form is acceptable); the three are 'or'-ed inside an 'and' with the injury, matching the page. 'fracture likely' = probable Fracture of bone, consumed by the priority rule via active_condition.",
+   "evidence": [
+    "Diagnose probable fracture (joint symptoms) :: (and (<= (onset (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (time_ago 48 hours)) (or (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Deformity\" \"finding\"))))",
+    "Diagnose probable fracture (joint symptoms) :: (diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+    "Urgent: joint symptoms with danger signs :: (active_condition (snomed_concept \"Fracture of bone\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-2e000362",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: joint symptoms with danger signs :: (clinical_finding (snomed_concept \"Unable to weight-bear\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-78aa9e3f",
+   "scope": "in_scope",
+   "scope_reason": "Red-box criterion with an 'X likely' conclusion (acute gout). The '->189' is a cross-reference.",
+   "verdict": "partial",
+   "parts_missing": [
+    "'no ... surgery' (into the joint) - not encoded; (snomed_concept \"History of surgery\" \"situation\") exists as an approximation",
+    "'no ... injection into joint' - not encoded; (snomed_concept \"Intra-articular injection\" \"procedure\") exists, though a past procedure may not be expressible as negated finding evidence (possibly not_representable)"
+   ],
+   "problem": "Parts encoded correctly: 'known gout' = Gout + Known present; 'affected joint involves big toe / midfoot / ankle' = Pain of joint with finding_site Structure of joint of hallux / Structure of midfoot region of foot / Ankle joint structure, 'or'-ed; 'no fever' = (no Fever); 'no wound' = (no Wound); the whole is an 'and', matching the page's italic 'and'. 'acute gout likely' = probable Acute gout. Note the priority rule repeats the full criterion inline instead of referencing (active_condition Acute gout); it is logically equivalent for the red-box branch but duplicates the logic. Two of the four exclusions (surgery, injection into joint) are missing; they are the page's guards against mistaking a post-procedure septic joint for a gout flare.",
+   "evidence": [
+    "Diagnose probable acute gout (joint symptoms) :: (and (clinical_finding (snomed_concept \"Gout\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Structure of joint of hallux\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Structure of midfoot region of foot\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Ankle joint structure\" \"body structure\")))) (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))) (no (clinical_finding (snomed_concept \"Wound\" \"disorder\"))))",
+    "Diagnose probable acute gout (joint symptoms) :: (diagnosis (snomed_concept \"Acute gout\" \"disorder\") probable)",
+    "Urgent: joint symptoms with danger signs :: (and (clinical_finding (snomed_concept \"Gout\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Structure of joint of hallux\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Structure of midfoot region of foot\" \"body structure\"))) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (finding_site (snomed_concept \"Ankle joint structure\" \"body structure\")))) (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))) (no (clinical_finding (snomed_concept \"Wound\" \"disorder\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-2e9cf914",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: header of the 'Manage and refer urgently' sub-box; no manage tasks in this pass by design.",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-2da3a654",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: a referral instruction. Its subjects (septic arthritis, injury/fracture) are already Urgent via the priority rule; 'suspected secondary gout (haematological malignancy)' and 'known gout with chronic kidney disease' are referral criteria that appear nowhere in the rules, but they are management (refer), not triage logic, and the brief excludes management steps.",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p77-40f0dbf3",
+   "scope": "in_scope",
+   "scope_reason": "Flowchart entry decision: 'Is there any of: joint warm/tender/swollen or unable to do all actions comfortably?' The examination instructions in the same block are management and not judged.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "The four screening findings are encoded as an 'or' group (Joint warm, Tenderness of joint, Joint swelling, Limitation of joint movement) that gates the sprain/strain, chronic arthritis and gonococcal arthritis rules; 'unable to do all actions comfortably' is reasonably mapped to Limitation of joint movement. All four are checked for in the task.",
+   "evidence": [
+    "Diagnose probable sprain/strain (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")))",
+    "Diagnose probable chronic arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (>= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)))",
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (or (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")) (and (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-5f68c027",
+   "scope": "in_scope",
+   "scope_reason": "Flowchart decision: 'Has there been recent injury?' splits the non-urgent branch into sprain/strain (Yes) and the duration question (No).",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Yes branch = (clinical_finding Traumatic injury) in the sprain/strain rule; No branch = (no (clinical_finding Traumatic injury)) in the chronic arthritis, gonococcal arthritis and acute gout (flowchart) rules. 'Recent' is not time-bounded in the sprain rule (the fracture rule uses 48 hours); minor, since the page gives no number here.",
+   "evidence": [
+    "Diagnose probable sprain/strain (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")))",
+    "Diagnose probable chronic arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (>= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)))",
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (or (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")) (and (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))))))",
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-0fe11088",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: a negative conclusion ('Joint problem unlikely') with no diagnosis to encode; it routes to other pages.",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-695fa732",
+   "scope": "in_scope",
+   "scope_reason": "Flowchart decision: 'Has joint pain lasted >= 6 weeks?' The bullet cross-references (->75, 78, 79, 80, 81) belong to the 'Joint problem unlikely' box and are cross_reference_only.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Yes branch = (>= (onset Pain of joint) (time_ago 6 weeks)) in the chronic arthritis rule (onset at least 6 weeks ago - correct direction); No branch = (<= (onset Pain of joint) (time_ago 6 weeks)) in the gonococcal and acute gout (flowchart) rules. Both branches cover the boundary value, which is harmless.",
+   "evidence": [
+    "Diagnose probable chronic arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (>= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)))",
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (or (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")) (and (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))))))",
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-ba5e31c6",
+   "scope": "in_scope",
+   "scope_reason": "'Sprain/strain likely' is an X-likely conclusion; the bullets after it are management and not judged.",
+   "verdict": "partial",
+   "parts_missing": [
+    "'strain' - the diagnosis concept Sprain of ligament of joint covers sprain only; no SNOMED concept for 'sprain or strain' was found, so this may be the closest available"
+   ],
+   "problem": "Evidence follows the flowchart: screening finding present AND injury. The diagnosis concept is narrower than the page's 'sprain/strain' but no combined concept exists in SNOMED (searched 'sprain strain'). The rule has no guard against the urgent fracture branch, so an injured patient with severe swelling gets both probable fracture and probable sprain (see rule-level problems).",
+   "evidence": [
+    "Diagnose probable sprain/strain (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")))",
+    "Diagnose probable sprain/strain (joint symptoms) :: (diagnosis (snomed_concept \"Sprain of ligament of joint\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p77-a9357b1e",
+   "scope": "in_scope",
+   "scope_reason": "Flowchart decision: 'Has patient had recent genital discharge or painless non-itchy skin rash?' (the 'No' at the start is the routing fragment from the injury question).",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'genital discharge' = Vaginal discharge OR Urethral discharge (SNOMED also has (snomed_concept \"Abnormal urogenital discharge\" \"finding\"), a single closer concept, but the pair is clinically equivalent and arguably clearer for the health worker); 'painless non-itchy skin rash' = Eruption + Painless AND (no Itching). The No branch is reproduced in the acute gout flowchart rule as the negations of the same three findings (the no-itching part is correctly dropped there). 'Recent' is not time-bounded; the page gives no number.",
+   "evidence": [
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (or (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")) (and (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))))))",
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p77-cc21b4c3",
+   "scope": "in_scope",
+   "scope_reason": "'Chronic arthritis likely' (with p77-6b2baac4 'likely ->188').",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Probable Chronic arthritis with screening finding, no injury, joint pain onset >= 6 weeks ago - the page's path exactly.",
+   "evidence": [
+    "Diagnose probable chronic arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (>= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)))",
+    "Diagnose probable chronic arthritis (joint symptoms) :: (diagnosis (snomed_concept \"Chronic arthritis\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-6b2baac4",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: fragment 'likely ->188.' of the chronic arthritis box; the 'likely' conclusion is judged under p77-cc21b4c3.",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-fe22e78f",
+   "scope": "in_scope",
+   "scope_reason": "'Gonococcal arthritis likely'; 'usually involves wrists, ankles, hands and feet' is descriptive, not a criterion; the remaining bullets are management/cross-reference.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Probable Gonococcal infection of joint (SNOMED synonym of gonococcal arthritis) with screening finding, no injury, pain < 6 weeks, and discharge or painless non-itchy rash - the page's path exactly.",
+   "evidence": [
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (and (or (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of joint\" \"finding\")) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")) (clinical_finding (snomed_concept \"Limitation of joint movement\" \"finding\"))) (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (or (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\")) (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\")) (and (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Itching\" \"finding\"))))))",
+    "Diagnose probable gonococcal arthritis (joint symptoms) :: (diagnosis (snomed_concept \"Gonococcal infection of joint\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-c2128b83",
+   "scope": "in_scope",
+   "scope_reason": "Flowchart decision (first line): 'Any sudden onset of 1-3 warm, extremely painful, red, swollen joints?'",
+   "verdict": "partial",
+   "parts_missing": [
+    "'1-3' joints - the joint count is not encoded; (snomed_concept \"Oligoarticular joint involvement\" \"finding\") exists and would express it, otherwise not_representable"
+   ],
+   "problem": "Encoded parts: sudden onset + extremely painful = Pain of joint with Severe and Sudden onset qualifiers; warm = Joint warm; red = Erythema with finding_site Joint structure; swollen = Joint swelling; all 'and'-ed as the page intends. Yes branch feeds the second 'or' arm of the acute gout rule, together with the preceding No answers (no injury, < 6 weeks, no discharge/rash).",
+   "evidence": [
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p77-6acc2f93",
+   "scope": "in_scope",
+   "scope_reason": "Second line of the same decision: 'swollen joints (often big toe or knee)?' '(often big toe or knee)' is descriptive, not a criterion.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'swollen' = Joint swelling in the acute gout flowchart arm.",
+   "evidence": [
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-037cf54b",
+   "scope": "in_scope",
+   "scope_reason": "'Acute gout likely' at the end of the flowchart (second route to the same diagnosis as the red box).",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Probable Acute gout; the rule's 'or' has the red-box route and this flowchart route as separate arms, and only the red-box arm is used by the priority rule, which matches the page (this route is non-urgent).",
+   "evidence": [
+    "Diagnose probable acute gout (joint symptoms) :: (and (no (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))) (<= (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"Vaginal discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Urethral discharge\" \"finding\"))) (no (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Joint warm\" \"finding\")) (clinical_finding (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Erythema\" \"finding\") (finding_site (snomed_concept \"Joint structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Joint swelling\" \"finding\")))",
+    "Diagnose probable acute gout (joint symptoms) :: (diagnosis (snomed_concept \"Acute gout\" \"disorder\") probable)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p77-5b811e71",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: analgesia, HIV test, review and referral-to-therapy instructions for the non-gout, non-gonococcal, non-chronic branch; no diagnosis is named.",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p77-d48e8928",
+  "p77-ec2a3f92",
+  "p77-3af38041",
+  "p77-c8b4b951",
+  "p77-4a0d4b8e"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "problem": "Neither 'short history' nor 'single joint' is encoded, and the rule has no guard against the chronic branch. Because the priority rule escalates on (active_condition Infective arthritis), any patient whose joint is warm, swollen, severely painful and stiff - including a long-standing polyarthritis flare that the page sends down the chronic arthritis path - is diagnosed probable septic arthritis and made Urgent. Adding (<= (onset ...) (time_ago N days)) on the pain and (snomed_concept \"Monoarticular joint involvement\" \"finding\") would restore the page's discriminators.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable acute gout (joint symptoms) / Urgent: joint symptoms with danger signs",
+   "problem": "The red-box gout criterion drops two of its four exclusions ('no surgery, injection into joint'). The page uses these to keep a post-procedure septic joint out of the gout branch; without them a known-gout patient with a recently injected, infected ankle is labelled probable acute gout rather than left to the septic arthritis path.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable acute gout (joint symptoms) / Urgent: joint symptoms with danger signs",
+   "problem": "'No fever' is written as (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))). The house standard says fever is recorded as (active_condition (snomed_concept \"Fever\" \"finding\")) because it is a common symptom; if the patient's fever was captured that way the negation may not see it, and the gout branch fires despite fever. The same page also offers Temperature >= 38 as a measurable alternative.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable sprain/strain (joint symptoms); Diagnose probable chronic arthritis (joint symptoms); Diagnose probable gonococcal arthritis (joint symptoms); acute gout flowchart arm",
+   "problem": "The flowchart is explicitly for the patient 'not needing urgent attention', but none of the non-urgent 'likely' rules excludes the urgent conditions. An injured patient with severe swelling or deformity gets probable sprain/strain alongside probable fracture; a patient matching septic arthritis also matches chronic or gonococcal arthritis if the other criteria line up. The page's branch order (red box first) is lost. Adding (no (active_condition X)) for Fracture of bone / Infective arthritis, or the equivalent negated findings, would restore it.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: joint symptoms with danger signs",
+   "problem": "The gout arm re-states the whole red-box criterion inline instead of referencing (active_condition (snomed_concept \"Acute gout\" \"disorder\")) as the septic arthritis and fracture arms do. Logically equivalent today, but any fix to the gout rule (e.g. the missing surgery/injection exclusions) must be made twice; and if active_condition were used, the flowchart (non-urgent) gout arm would wrongly become Urgent, so the duplication is a trade-off worth a comment rather than a defect.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable chronic arthritis / gonococcal arthritis / acute gout (flowchart arm)",
+   "problem": "All three depend on (onset (clinical_finding (snomed_concept \"Pain of joint\" \"finding\"))). A patient whose joint symptom is recorded as swelling or stiffness without a Pain of joint finding has no onset to compare, so none of these rules can fire; this mirrors the task anchor on Pain of joint and is a consequence of the page's own framing, noted only.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent joint symptom conditions",
+   "problem": "Every check_for item is consumed by at least one rule; no orphan findings. The check list and the priority rule agree. The 'Manage and refer urgently' criteria 'known gout with chronic kidney disease' and 'suspected secondary gout (haematological malignancy)' are not checked for anywhere; they are referral (management) criteria and out of scope, but a clinician may want them raised as a priority, since the page puts them in the red box.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box and the flowchart are both encoded with the right concepts, thresholds, directions and rule types, and the priority rule has the house (and complaint (or ...)) shape. The most consequential gap is the septic arthritis rule: 'short history' and 'single joint' are missing and nothing excludes the chronic branch, so a long-standing polyarthritis flare becomes probable septic arthritis and Urgent. Secondary problems: the red-box gout criterion omits the 'no surgery or injection into joint' exclusions, fever is negated as a clinical_finding where the house standard records it as an active_condition, and the non-urgent 'likely' rules do not exclude the urgent conditions, so fracture and sprain/strain fire together."
+}

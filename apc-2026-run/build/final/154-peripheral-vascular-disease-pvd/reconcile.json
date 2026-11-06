@@ -1,0 +1,16 @@
+{"page": 154, "base": "B",
+ "decisions": [
+  {"role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "reason": "The page says \"pallor\" in the leg; no pallor-of-limb concept exists, and White discoloration of skin (a child of A's Discoloration of skin) is the closest to paleness, whereas A's parent also covers red, blue or brown discoloration the page does not mention.",
+   "unsettled": false},
+  {"role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+   "reason": "Same \"pallor\" criterion of bullet 1 (\"numbness, weakness, pallor, no pulse\") in the acute limb ischaemia rule; kept consistent with the check_for task.",
+   "unsettled": false}
+ ],
+ "notes": "Builds agreed on 36 of 38 conditions; the only difference is the SNOMED stand-in for leg pallor (a SNOMED gap in both builds), resolved to B in both places. Base B; its priority rule description ('acute/critical limb ischaemia or ruptured AAA') kept as it names the three conditions more precisely. Remaining questions merged: A's question on escalating ruptured AAA beyond Urgent added; the pallor question now names A's broader alternative."}

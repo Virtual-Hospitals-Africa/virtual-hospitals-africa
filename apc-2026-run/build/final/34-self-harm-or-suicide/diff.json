@@ -1,0 +1,180 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/34-self-harm-or-suicide",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/34-self-harm-or-suicide",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable high risk of self-harm or suicide"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable low risk of self-harm or suicide"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: attempted/considered self-harm or suicide"
+  },
+  {
+   "atom": "task",
+   "description": "Check for self-harm or suicide risk"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable high risk of self-harm or suicide"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: attempted self-harm or suicide"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: high risk of self-harm or suicide"
+  },
+  {
+   "atom": "task",
+   "description": "Check for self-harm or suicide risk"
+  }
+ ],
+ "conditions_A": 36,
+ "conditions_B": 28,
+ "conditions_in_both": 20,
+ "agreement": 0.625,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(active_condition (snomed_concept \"High suicide risk\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of attempted suicide\" \"situation\"))) (time_ago 1 years))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of deliberate self harm\" \"situation\"))) (time_ago 1 years))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "only_B": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))"
+   ],
+   "both": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thoughts of self harm\" \"finding\"))) (time_ago 1 months))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))",
+     "relation": "B_narrower"
+    }
+   ],
+   "same_concept_different_form": [
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (snomed_concept \"No\" \"qualifier value\")))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))) (time_ago 1 months))"
+    },
+    {
+     "A": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\") (qualifier (snomed_concept \"In the past\" \"qualifier value\")))) (time_ago 1 years))"
+    },
+    {
+     "A": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Current\" \"qualifier value\"))))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))) (time_ago 1 months))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"At low risk for suicide\" \"finding\") probable)"
+   ],
+   "only_B": [],
+   "both": [
+    "(diagnosis (snomed_concept \"High suicide risk\" \"finding\") probable)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

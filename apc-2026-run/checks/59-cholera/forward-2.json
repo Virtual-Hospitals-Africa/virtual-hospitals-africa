@@ -1,0 +1,265 @@
+{
+ "page": 59,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p59-a5bb7fa3",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-ce0b7574",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Probable some-dehydration rule has wrong 'severe criteria absent' logic: it wraps three NEGATED items in any2, i.e. fires when at least 2 of (no unable/poor drinking, no poor turgor, no sunken eyes) hold, which is true with up to 1 sign present but the page requires fewer than 2 signs, and the any2 over negations is semantically fragile; should be (no (any2 present-items)). Also 'Moderate dehydration' is only an approximation of 'some dehydration'. The restless/thirsty/dry mouth/pulse>=100 part (any2 of 4) is correct.",
+   "evidence": [
+    "Diagnose probable some dehydration in cholera :: (diagnosis (snomed_concept \"Moderate dehydration\" \"disorder\") probable) ... (any2 (and (no Unable to drink)(no Difficulty drinking)) (no Decreased skin turgor) (no Sunken eyes)) ... (any2 Restlessness, Increased thirst, Xerostomia, (>= pulse bpm 100))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-62f0cd14",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-44947cb5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-b01cae1d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Manage as severe dehydration' is not recorded as a diagnosis (possible/probable severe dehydration); only an Urgent priority"
+   ],
+   "problem": "Header of the severe-dehydration box is encoded only as a priority evaluation; no severe dehydration diagnosis, so adjacent branches (reassess, rb4) cannot reference it.",
+   "evidence": [
+    "Urgent: cholera with severe dehydration :: (and (active_condition Cholera) (or Drowsy / Decreased level of consciousness / Acute confusion / Clouded consciousness / Difficulty breathing / Weak arterial pulse / (any2 (or Unable to drink, Difficulty drinking) Decreased skin turgor Sunken eyes)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-5dfe8db9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-eda8774d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-1daa568d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-3b72cc16",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-99e6ec15",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-e9ab46cf",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-cb8b9666",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-63971f2e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-a931d756",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-f597cf33",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-cefc78f3",
+   "scope": "borderline",
+   "scope_reason": "Reassess branch (signs of dehydration or ongoing diarrhoea/vomiting -> manage as severe) is flowchart routing, but it changes the triage level",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Branch from the hourly reassessment to severe/urgent is not encoded; priority is only triggered by the initial criteria.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-5536a234",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'in cholera outbreak area' is modelled as exposure to Vibrio cholerae, which is not the same as being in an outbreak area; 'with or without vomiting' fine"
+   ],
+   "problem": "Cholera probable rule present with watery diarrhoea AND exposure within 5 days; exposure concept is an approximation. Onset comparison uses <= time_ago 5 days (briefing says < means within); low confidence on direction. Isolation/glucose/discuss/record items are management or cross-reference.",
+   "evidence": [
+    "Diagnose probable cholera :: (and (clinical_finding Diarrhea (qualifier Watery)) (finding Exposure to (contextual qualifier) Vibrio cholerae) (<= (onset (finding Exposure ... )) (time_ago 5 days)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-9939a0d3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cholera with severe dehydration :: (and (active_condition Cholera) (or Drowsy / Decreased level of consciousness / Acute confusion / Clouded consciousness / Difficulty breathing / Weak arterial pulse / (any2 (or Unable to drink, Difficulty drinking) Decreased skin turgor Sunken eyes)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-1efb182a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cholera with severe dehydration :: (and (active_condition Cholera) (or Drowsy / Decreased level of consciousness / Acute confusion / Clouded consciousness / Difficulty breathing / Weak arterial pulse / (any2 (or Unable to drink, Difficulty drinking) Decreased skin turgor Sunken eyes)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-dfc9ebf2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Same as the some-dehydration probable rule: negation logic wrong (see p59-ce0b7574). The 'No' gate (not severe) is encoded only partially.",
+   "evidence": [
+    "Diagnose probable some dehydration in cholera :: (diagnosis (snomed_concept \"Moderate dehydration\" \"disorder\") probable) ... (any2 (and (no Unable to drink)(no Difficulty drinking)) (no Decreased skin turgor) (no Sunken eyes)) ... (any2 Restlessness, Increased thirst, Xerostomia, (>= pulse bpm 100))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p59-f1bbec25",
+   "scope": "borderline",
+   "scope_reason": "'Dehydration unlikely' is a conclusion but no concept; could be absence of all rules",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "No encoding of dehydration unlikely branch.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p59-2059be34",
+   "scope": "borderline",
+   "scope_reason": "Reassessment criteria (not passing urine, unable to walk unaided, ongoing diarrhoea/vomiting) are in-language findings that route to urgent",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Not encoded; findings not checked, so no escalation to severe.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p59-3808c649",
+  "p59-461cc863",
+  "p59-4ba03add",
+  "p59-6f6b0941",
+  "p59-af532c3b",
+  "p59-6a08dcb3",
+  "p59-47318e74",
+  "p59-31b90d54",
+  "p59-2cf692c1",
+  "p59-e671471b",
+  "p59-403c74d9"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: cholera with severe dehydration",
+   "problem": "Uses 'Clouded consciousness' which is not in the check_for list (and not on the page); evidence in a priority rule must be checked for, so this likely fails the file's checks and is an unjustified extra criterion.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "problem": "any2 over negated items does not express 'fewer than 2 of 3 signs'; use (no (any2 ...)).",
+   "severity": "high"
+  },
+  {
+   "rule": "Urgent: cholera with some dehydration",
+   "problem": "Page does not escalate some dehydration to Urgent (it is managed with ORS); priority level unjustified, only 'discuss suspected cholera with doctor'.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for level of dehydration in cholera",
+   "problem": "check_for omits pulse >=100 (routine vital, ok) but severe diagnosis not recorded; reassessment-hourly escalation branch lost.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The most consequential problem is the some-dehydration probable rule, whose any2 over negated severe signs does not express the page's 'not severe' gate. The severe criteria and cholera probable rule are broadly right but 'outbreak area' is approximated by exposure to Vibrio cholerae, and the reassess-to-severe branch is lost. 'Some dehydration' is given Urgent priority the page does not justify."
+}

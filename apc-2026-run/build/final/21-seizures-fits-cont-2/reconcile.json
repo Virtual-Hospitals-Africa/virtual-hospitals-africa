@@ -1,0 +1,71 @@
+{
+  "page": 21,
+  "base": "B",
+  "decisions": [
+    {
+      "role": "trigger",
+      "difference": "A: (or Seizure Post-ictal state)  vs  B: Seizure",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+      "reason": "The page's entry is \"Confirm that patient indeed had a seizure/fit\"; post-fit drowsiness and confusion are listed only as supporting features, so Post-ictal state alone is not the page's trigger.",
+      "unsettled": false
+    },
+    {
+      "role": "priority_condition / diagnosis_condition",
+      "difference": "A: Post-ictal state in the priority and meningitis rules' seizure anchor  vs  B: Seizure only",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+      "reason": "Follows the trigger decision: the red box sits under the Yes of \"had a seizure/fit\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for / priority_condition",
+      "difference": "A: no condition  vs  B: Frequent headache",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Frequent headache\" \"finding\"))",
+      "reason": "The page says \"headache getting worse/more frequent\"; A dropped \"more frequent\".",
+      "unsettled": false
+    },
+    {
+      "role": "check_for / priority_condition",
+      "difference": "A: (no (Epilepsy + Known present))  vs  B: (no Epilepsy)",
+      "choice": "A",
+      "final_expr": "(no (clinical_finding (snomed_concept \"Epilepsy\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+      "reason": "The page says \"no known epilepsy\"; Will's briefing writes known chronic conditions with Known present, and the HIV half of the same bullet already uses it. Two gate false positives are declared as known issues.",
+      "unsettled": false
+    },
+    {
+      "role": "check_for / priority_condition / diagnosis_condition",
+      "difference": "A: Weakness of face muscles, Muscle weakness of limb, Numbness of face, Numbness of limbs + Sudden onset + Unilateral  vs  B: Muscle weakness, Numbness + Sudden onset + Asymmetry",
+      "choice": "B",
+      "final_expr": "(clinical_finding (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\"))) ; same for Numbness",
+      "reason": "The red box says \"asymmetric weakness or numbness\" with no site, so the generic concepts plus Asymmetry match its words; they also cover the No branch's \"face, arm or leg\" (A's concepts are descendants).",
+      "unsettled": false
+    },
+    {
+      "role": "check_for / priority_condition / diagnosis_condition",
+      "difference": "A: Difficulty talking, Visual disturbance (no qualifier)  vs  B: both + Sudden onset",
+      "choice": "A",
+      "final_expr": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\")) ; (clinical_finding (snomed_concept \"Visual disturbance\" \"disorder\"))",
+      "reason": "In \"New sudden asymmetric weakness or numbness, difficulty speaking or visual disturbance\" (and \"...face, arm or leg; difficulty speaking...\") the comma/semicolon separates the items, so \"sudden\" grammatically attaches to weakness/numbness only; the page doesn't settle whether it distributes.",
+      "unsettled": true
+    },
+    {
+      "role": "priority_condition",
+      "difference": "A: (<= (onset Postpartum state) (time_ago 1 weeks)) alone  vs  B: (and Postpartum state (<= (onset Postpartum state) ...))",
+      "choice": "B",
+      "final_expr": "(and (clinical_finding (snomed_concept \"Postpartum state\" \"finding\")) (<= (onset (clinical_finding (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks)))",
+      "reason": "\"up to 1 week postpartum\" needs both the postpartum state and the window; B states the presence explicitly, same meaning.",
+      "unsettled": false
+    },
+    {
+      "role": "diagnosis",
+      "difference": "A: Cerebrovascular accident only  vs  B: Cerebrovascular accident and a second rule for Transient ischemic attack",
+      "choice": "B",
+      "final_expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") probable)",
+      "reason": "The page says \"Stroke or TIA likely\"; both diagnoses are named and there's no joint concept.",
+      "unsettled": false
+    }
+  ],
+  "notes": "Both builds passed. Base is B (it covered \"more frequent\" headache and the TIA half of \"Stroke or TIA likely\"); rule descriptions are B's. From A: Epilepsy + Known present for \"no known epilepsy\" (which brings A's two declared gate false positives), and unqualified Difficulty talking / Visual disturbance. Everything else was identical in both builds: meningitis as Seizure AND any one of the four (questioned), the >= onset convention for \"> 1 hour after fit\", BP as systolic OR diastolic, and the common faint rule. Remaining questions from both builders are merged."
+}

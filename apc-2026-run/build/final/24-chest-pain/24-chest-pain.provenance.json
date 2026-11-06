@@ -1,0 +1,1611 @@
+{
+ "edition": "2026",
+ "page": 24,
+ "lisp_file": "24-chest-pain.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Presenting complaint; Chest pain is a VHA warning sign."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Page wording; vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "Pulse irregular",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cfc52572"
+   ],
+   "quote": "Severe pain",
+   "confidence": "medium",
+   "note": "\"Severe pain\" in a chest pain patient read as chest pain qualified Severe; alternative was the generic \"Severe pain\" finding."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort in centre",
+   "confidence": "medium",
+   "note": "Central chest pain with New qualifier; \"discomfort\" has no site-specific concept (see SNOMED gaps)."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "left side of chest",
+   "confidence": "medium",
+   "note": "Left sided chest pain with New qualifier; \"discomfort\" has no site-specific concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort",
+   "confidence": "medium",
+   "note": "From build A: \"Chest discomfort\" with New. No centre/left-side discomfort concept exists, so this is broader than the page (any site of chest discomfort)."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "Pain radiates to neck",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "jaw",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s",
+   "confidence": "high",
+   "note": "\"shoulder/s\" split into left and right."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s",
+   "confidence": "high",
+   "note": "\"shoulder/s\" split into left and right."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s",
+   "confidence": "high",
+   "note": "\"arm/s\" split into left and right."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s",
+   "confidence": "high",
+   "note": "\"arm/s\" split into left and right."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "Pallor",
+   "confidence": "medium",
+   "note": "No plain \"Pallor\" finding; \"Pallor of skin of face\" is the form VHA rules already use."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cada55f5"
+   ],
+   "quote": "Known with ischaemic heart disease",
+   "confidence": "high",
+   "note": "Known chronic condition, Known present qualifier per Will."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "smoker",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "hypertension",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "high cholesterol",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Check for urgent chest pain signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "family history",
+   "confidence": "medium",
+   "note": "\"family history\" (of heart attack) read as family history of ischaemic heart disease."
+  },
+  {
+   "rule": "Record known cardiovascular disease risk for chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Presenting complaint; Chest pain is a VHA warning sign."
+  },
+  {
+   "rule": "Record known cardiovascular disease risk for chest pain",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %)",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "known CVD risk > 20%",
+   "confidence": "medium",
+   "note": "Known CVD risk recorded as a % measurement (measure task) and compared > 20."
+  },
+  {
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Presenting complaint; Chest pain is a VHA warning sign."
+  },
+  {
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation",
+   "confidence": "high",
+   "note": "ECG result the doctor records."
+  },
+  {
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression",
+   "confidence": "high",
+   "note": "ECG result the doctor records."
+  },
+  {
+   "rule": "Do an ECG for chest pain (doctor to review)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-2a230247",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block",
+   "confidence": "high",
+   "note": "ECG result the doctor records."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Presenting complaint; Chest pain is a VHA warning sign."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "lying down",
+   "confidence": "low",
+   "note": "No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position)."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "palpation",
+   "confidence": "medium",
+   "note": "Pain worse on palpation read as chest wall tenderness."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273"
+   ],
+   "quote": "breathing deeply",
+   "confidence": "medium",
+   "note": "Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+   "element_keys": [
+    "p24-515b498b"
+   ],
+   "quote": "Occurs at rest",
+   "confidence": "high",
+   "note": "Exact concept; \"or with minimal effort\" has no concept (SNOMED gap)."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-fd721edb"
+   ],
+   "quote": "Worse",
+   "confidence": "medium",
+   "note": "\"Worse than usual\" as chest pain qualified Worsening."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-fd721edb"
+   ],
+   "quote": "lasts longer than usual",
+   "confidence": "low",
+   "note": "\"Lasts longer than usual\" as chest pain qualified Prolonged; \"Prolonged\" is not relative to the usual episode."
+  },
+  {
+   "rule": "Check chest pain character for acute coronary syndrome",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-5e24c9c9"
+   ],
+   "quote": "Is patient known with stable angina",
+   "confidence": "high",
+   "note": "Known condition with Known present qualifier."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes",
+   "confidence": "medium",
+   "note": "Task fires when the positional question is answered Yes; No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position). The Yes leads into the \"Manage and refer urgently\" box that holds these criteria."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes",
+   "confidence": "medium",
+   "note": "Task fires when the positional question is answered Yes; Pain worse on palpation read as chest wall tenderness. The Yes leads into the \"Manage and refer urgently\" box that holds these criteria."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation or breathing deeply? Yes",
+   "confidence": "medium",
+   "note": "Task fires when the positional question is answered Yes; Chest pain worse on deep breathing read as \"Chest pain on breathing\". The Yes leads into the \"Manage and refer urgently\" box that holds these criteria."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "sudden breathlessness",
+   "confidence": "high",
+   "note": "Dyspnoea with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "\"More resonant ... on one side\" as hyperresonance, Unilateral."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "decreased breath sounds",
+   "confidence": "medium",
+   "note": "Decreased breath sounds, Unilateral (\"on one side\")."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side",
+   "confidence": "medium",
+   "note": "\"Pain on one side\" as left or right sided chest pain."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side",
+   "confidence": "medium",
+   "note": "\"Pain on one side\" as left or right sided chest pain."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "\"Trachea displaced\" is the active FSN for tracheal deviation."
+  },
+  {
+   "rule": "Check for tension pneumothorax or pneumonia in chest pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "coughing sputum",
+   "confidence": "high",
+   "note": "Productive cough."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "The page is about the patient with chest pain."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "worse on lying down",
+   "confidence": "low",
+   "note": "\"No\" branch, recorded as No. No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position)."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No",
+   "confidence": "medium",
+   "note": "\"No\" branch, recorded as No. Pain worse on palpation read as chest wall tenderness."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No",
+   "confidence": "medium",
+   "note": "\"No\" branch, recorded as No. Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\"))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-515b498b",
+    "p24-7aed0b2e"
+   ],
+   "quote": "Occurs at rest",
+   "confidence": "high",
+   "note": "\"Yes\" -> ACS likely. Exact concept; \"or with minimal effort\" has no concept (SNOMED gap)."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-fd721edb",
+    "p24-7aed0b2e"
+   ],
+   "quote": "Worse",
+   "confidence": "medium",
+   "note": "\"Yes\" -> ACS likely. \"Worse than usual\" as chest pain qualified Worsening."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-6d7d6bb9",
+    "p24-fd721edb",
+    "p24-7aed0b2e"
+   ],
+   "quote": "lasts longer than usual",
+   "confidence": "low",
+   "note": "\"Yes\" -> ACS likely. \"Lasts longer than usual\" as chest pain qualified Prolonged; \"Prolonged\" is not relative to the usual episode."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+   "element_keys": [
+    "p24-3a576c94"
+   ],
+   "quote": "Lasts ≥ 10 minutes",
+   "confidence": "low",
+   "note": "Duration read as chest pain onset at least 10 minutes ago; true for ongoing pain, not for a past episode."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-5e24c9c9",
+    "p24-5e84e28f"
+   ],
+   "quote": "Is patient known with stable angina",
+   "confidence": "medium",
+   "note": "\"No\" branch to ACS likely, recorded as No."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute coronary syndrome\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-a3901d71"
+   ],
+   "quote": "Acute coronary syndrome (heart attack or unstable angina) likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "The page is about the patient with chest pain."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST elevation",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "ST depression",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+   "element_keys": [
+    "p24-9aa0a923",
+    "p24-b49f3f33"
+   ],
+   "quote": "left bundle branch block",
+   "confidence": "high",
+   "note": "\"ECG abnormal\" is drawn into the \"Is chest pain/discomfort any of\" box (image), so it is an alternative to the positional No as entry to that question, not a direct route to ACS."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "worse on lying down",
+   "confidence": "low",
+   "note": "\"No\" branch, recorded as No. No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position)."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No",
+   "confidence": "medium",
+   "note": "\"No\" branch, recorded as No. Pain worse on palpation read as chest wall tenderness."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-eccddb18"
+   ],
+   "quote": "palpation or breathing deeply? No",
+   "confidence": "medium",
+   "note": "\"No\" branch, recorded as No. Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain at rest\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-515b498b",
+    "p24-9a945014"
+   ],
+   "quote": "Occurs at rest",
+   "confidence": "high",
+   "note": "\"No\" to the features question. Exact concept; \"or with minimal effort\" has no concept (SNOMED gap)."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-fd721edb",
+    "p24-9a945014"
+   ],
+   "quote": "Worse",
+   "confidence": "medium",
+   "note": "\"No\" to the features question. \"Worse than usual\" as chest pain qualified Worsening."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\"))))",
+   "element_keys": [
+    "p24-fd721edb",
+    "p24-9a945014"
+   ],
+   "quote": "lasts longer than usual",
+   "confidence": "low",
+   "note": "\"No\" to the features question. \"Lasts longer than usual\" as chest pain qualified Prolonged; \"Prolonged\" is not relative to the usual episode."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+   "element_keys": [
+    "p24-3a576c94",
+    "p24-9a945014"
+   ],
+   "quote": "Lasts ≥ 10 minutes No",
+   "confidence": "low",
+   "note": "Negation of \"lasts ≥ 10 minutes\": onset within the last 10 minutes (<=, the only form the database accepts; boundary at exactly 10 min overlaps)."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-5e24c9c9",
+    "p24-5e84e28f",
+    "p24-242dd16b"
+   ],
+   "quote": "Is patient known with stable angina",
+   "confidence": "high",
+   "note": "\"Yes\" branch: known with stable angina."
+  },
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-f4f574d5",
+    "p24-cc976758"
+   ],
+   "quote": "Patient has stable angina.",
+   "confidence": "medium",
+   "note": "Page states the outcome as a fact; encoded probable, as for a \"likely\" outcome."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "lying down",
+   "confidence": "low",
+   "note": "Tension pneumothorax sits in the \"Yes\" box. No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position)."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "palpation",
+   "confidence": "medium",
+   "note": "Tension pneumothorax sits in the \"Yes\" box. Pain worse on palpation read as chest wall tenderness."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61"
+   ],
+   "quote": "breathing deeply",
+   "confidence": "medium",
+   "note": "Tension pneumothorax sits in the \"Yes\" box. Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "sudden breathlessness",
+   "confidence": "high",
+   "note": "Dyspnoea with Sudden onset qualifier."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "more resonant",
+   "confidence": "medium",
+   "note": "\"More resonant ... on one side\" as hyperresonance, Unilateral."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "decreased breath sounds",
+   "confidence": "medium",
+   "note": "Decreased breath sounds, Unilateral (\"on one side\")."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side",
+   "confidence": "medium",
+   "note": "\"Pain on one side\" as left or right sided chest pain."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right sided chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "pain on one side",
+   "confidence": "medium",
+   "note": "\"Pain on one side\" as left or right sided chest pain."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "deviated trachea",
+   "confidence": "high",
+   "note": "\"Trachea displaced\" is the active FSN for tracheal deviation."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-a410cebc"
+   ],
+   "quote": "tension pneumothorax likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "chest pain worse on breathing deeply",
+   "confidence": "medium",
+   "note": "Pneumonia criterion; Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  },
+  {
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Productive cough\" \"finding\"))",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "coughing sputum",
+   "confidence": "high",
+   "note": "Productive cough."
+  },
+  {
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Exact threshold."
+  },
+  {
+   "rule": "Diagnose probable pneumonia in chest pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pneumonia\" \"disorder\") probable)",
+   "element_keys": [
+    "p24-ecb7c55a"
+   ],
+   "quote": "pneumonia likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "The page is about the patient with chest pain."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Exact threshold."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-aaf154d3"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Page wording; vocabulary concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "BP ≥ 180/110",
+   "confidence": "high",
+   "note": "Systolic ≥ 180 or diastolic ≥ 110 (Will's convention for a BP pair)."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "BP ≥ 180/110",
+   "confidence": "high",
+   "note": "Systolic ≥ 180 or diastolic ≥ 110 (Will's convention for a BP pair)."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "< 90/60",
+   "confidence": "high",
+   "note": "Systolic < 90 or diastolic < 60, per the shared decision."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p24-96b177f4"
+   ],
+   "quote": "< 90/60",
+   "confidence": "high",
+   "note": "Systolic < 90 or diastolic < 60, per the shared decision."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "Pulse irregular",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "> 100",
+   "confidence": "high",
+   "note": "Pulse rate observable used by VHA vitals."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p24-02a5e814"
+   ],
+   "quote": "< 50",
+   "confidence": "high",
+   "note": "Pulse rate observable used by VHA vitals."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cfc52572"
+   ],
+   "quote": "Severe pain",
+   "confidence": "medium",
+   "note": "\"Severe pain\" in a chest pain patient read as chest pain qualified Severe; alternative was the generic \"Severe pain\" finding."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort in centre",
+   "confidence": "medium",
+   "note": "Central chest pain with New qualifier; \"discomfort\" has no site-specific concept (see SNOMED gaps)."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "left side of chest",
+   "confidence": "medium",
+   "note": "Left sided chest pain with New qualifier; \"discomfort\" has no site-specific concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-dce602bd"
+   ],
+   "quote": "New pain or discomfort",
+   "confidence": "medium",
+   "note": "From build A: \"Chest discomfort\" with New. No centre/left-side discomfort concept exists, so this is broader than the page (any site of chest discomfort)."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "Pain radiates to neck",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "jaw",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s",
+   "confidence": "high",
+   "note": "\"shoulder/s\" split into left and right."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "shoulder/s",
+   "confidence": "high",
+   "note": "\"shoulder/s\" split into left and right."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s",
+   "confidence": "high",
+   "note": "\"arm/s\" split into left and right."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right arm\" \"finding\"))",
+   "element_keys": [
+    "p24-171e2e0d"
+   ],
+   "quote": "arm/s",
+   "confidence": "high",
+   "note": "\"arm/s\" split into left and right."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "Nausea",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p24-16c191e4"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Common symptom concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "Pallor",
+   "confidence": "medium",
+   "note": "No plain \"Pallor\" finding; \"Pallor of skin of face\" is the form VHA rules already use."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p24-122f0479"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-cada55f5"
+   ],
+   "quote": "Known with ischaemic heart disease",
+   "confidence": "high",
+   "note": "Known chronic condition, Known present qualifier per Will."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "smoker",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "hypertension",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "high cholesterol",
+   "confidence": "high",
+   "note": "Known present qualifier per Will."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %) 20)",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "known CVD risk > 20%",
+   "confidence": "medium",
+   "note": "Known CVD risk recorded as a % measurement (measure task) and compared > 20."
+  },
+  {
+   "rule": "Urgent: chest pain with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+   "element_keys": [
+    "p24-14c4bae1"
+   ],
+   "quote": "family history",
+   "confidence": "medium",
+   "note": "\"family history\" (of heart attack) read as family history of ischaemic heart disease."
+  },
+  {
+   "rule": "Urgent: probable acute coronary syndrome in chest pain",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute coronary syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p24-a3901d71"
+   ],
+   "quote": "Acute coronary syndrome (heart attack or unstable angina) likely. Manage and refer urgently",
+   "confidence": "high",
+   "note": "ACS likely -> manage and refer urgently -> Urgent."
+  },
+  {
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p24-72e73d4c"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "The page is about the patient with chest pain."
+  },
+  {
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "lying down",
+   "confidence": "low",
+   "note": "\"Yes\" -> Manage and refer urgently. No concept for pain worse on lying down; \"Pain aggravated by position\" is broader (any position)."
+  },
+  {
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of chest wall\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "palpation",
+   "confidence": "medium",
+   "note": "\"Yes\" -> Manage and refer urgently. Pain worse on palpation read as chest wall tenderness."
+  },
+  {
+   "rule": "Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+   "element_keys": [
+    "p24-776bf273",
+    "p24-62898c61",
+    "p24-49c54909"
+   ],
+   "quote": "breathing deeply",
+   "confidence": "medium",
+   "note": "\"Yes\" -> Manage and refer urgently. Chest pain worse on deep breathing read as \"Chest pain on breathing\"."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p24-8a28711c",
+   "element_id": "p24-rb1-e21",
+   "text": "If oxygen saturation < 94%, oxygen saturation not available, respiratory rate ≥ 30 or difficulty breathing, give face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-bc666c31",
+   "element_id": "p24-rb1-e25",
+   "text": "Not relieved by rest or sublingual nitrates",
+   "reason_category": "no_snomed_concept",
+   "reason": "No concept for chest pain not relieved by rest or sublingual nitrates."
+  },
+  {
+   "element_key": "p24-4c8f9179",
+   "element_id": "p24-rb1-e26",
+   "text": "Occurs more often than usual",
+   "reason_category": "no_snomed_concept",
+   "reason": "No concept for chest pain occurring more often than usual; \"Frequent\"/\"Increasing\" qualifiers do not mean \"more often than usual\"."
+  },
+  {
+   "element_key": "p24-b7f55ddb",
+   "element_id": "p24-rb1-e35",
+   "text": "If oxygen saturation < 90% or respiratory rate ≥ 30, give 40% face mask oxygen. Avoid oxygen if saturation ≥ 96%.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-c36b7029",
+   "element_id": "p24-rb1-e37",
+   "text": "Doctor to insert large bore cannula above 6th rib, anterior axillary line and arrange urgent chest tube.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-7f8c7662",
+   "element_id": "p24-rb1-e38",
+   "text": "Give single dose aspirin 150mg chewed/dissolved.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-4202ad1e",
+   "element_id": "p24-rb1-e39",
+   "text": "Establish IV access.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-302d3863",
+   "element_id": "p24-rb1-e40",
+   "text": "Give routine ischaemic heart disease care 153.",
+   "reason_category": "cross_reference_only",
+   "reason": "Routine ischaemic heart disease care is on page 153; management pointer."
+  },
+  {
+   "element_key": "p24-74c4a182",
+   "element_id": "p24-rb1-e41",
+   "text": "If BP < 90/60 or > 180/130, discuss further management with specialist or referral hospital.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-a6c40451",
+   "element_id": "p24-rb1-e42",
+   "text": "If current chest pain and BP > 90/60:",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-8fdeb5ee",
+   "element_id": "p24-rb1-e43",
+   "text": "If shock5/systolic BP <80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-f0cd448d",
+   "element_id": "p24-rb1-e44",
+   "text": "Give isosorbide dinitrate sublingual 5mg every 5 minutes until pain relieved to a maximum of 4 doses of 5mg. Avoid if sildenafil (Viagra®) or vardenafil used wi",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-c8926184",
+   "element_id": "p24-rb1-e45",
+   "text": "If ongoing severe chest pain, give morphine 5mg slow IV2. If needed, give another 1mg/minute until pain improved, up to 10mg.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-069676d6",
+   "element_id": "p24-rb1-e46",
+   "text": "Monitor BP. If BP drops < 90/60 stop morphine and discuss with specialist or referral hospital.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-e747a4d3",
+   "element_id": "p24-rb1-e47",
+   "text": "Doctor to review ECG as soon as possible (if not already done):",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-4dda70d1",
+   "element_id": "p24-rb1-e48",
+   "text": "If BP > 180/130, give single dose amlodipine 10mg orally.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-f39d446e",
+   "element_id": "p24-rb1-e49",
+   "text": "If no ST elevation or left bundle branch block, or unsure, discuss with specialist or referral hospital. If ongoing chest pain, repeat ECG.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-67d96111",
+   "element_id": "p24-rb1-e50",
+   "text": "Give streptokinase only if ECG shows ST elevation3 or left bundle branch block and if ≤ 6 hours since maximal chest pain. If > 6hrs since maximal chest pain or ",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-f0dc7bcd",
+   "element_id": "p24-rb1-e52",
+   "text": "Avoid if streptokinase given in past year4 or known allergy to it, stroke in past 3 months, recent major trauma, major surgery in past month, active bleeding, k",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-92d49f7e",
+   "element_id": "p24-rb1-e53",
+   "text": "Give streptokinase 1.5 million IU diluted in 100mL sodium chloride 0.9% IV over 30-60 minutes.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-39d9e0e9",
+   "element_id": "p24-rb1-e54",
+   "text": "Monitor BP: if < 90/60, slow rate of infusion (avoid stopping it). Aim to complete infusion in under 60 minutes.",
+   "reason_category": "management_step",
+   "reason": "Management step (oxygen/drug/IV/referral/monitoring); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p24-fdde835a",
+   "element_id": "p24-rb1-e14",
+   "text": "ECG normal/other abnormalities or unavailable or uncertain",
+   "reason_category": "flowchart_routing",
+   "reason": "Branch label. Not encoded as a gate: \"unavailable or uncertain\" cannot be written as recorded absence of the ECG findings; the branch's own question (worse on lying down/palpation/breathing = No) is the entry condition encoded instead."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "PROBABLE DIAGNOSIS EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stable angina\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "reason": "The page routes \"not known with stable angina\" to ACS likely. The finding is checked for in \"Check chest pain character for acute coronary syndrome\"; the checker does not match a (no X) nested inside an or of a probable rule to its check_for X. Kept as the faithful encoding."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Two \"No\" routes into ACS",
+   "decision": "Written as POS=No and (any feature or known stable angina = No), logically equal to the page.",
+   "alternatives": "Separate branch requiring every feature recorded No as well.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Worse on lying down",
+   "decision": "\"Pain aggravated by position\" (broader).",
+   "alternatives": "Leave unencoded as a SNOMED gap; Supine decubitus qualifier (a radiographic term).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Lasts >= 10 minutes",
+   "decision": "Chest pain onset >= 10 minutes ago; negation as onset <= 10 minutes ago.",
+   "alternatives": "Leave unencoded.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Tension pneumothorax criteria",
+   "decision": "All of: sudden dyspnoea, a one-sided sign (hyperresonance / decreased breath sounds / pain), trachea displaced; within the positional Yes box.",
+   "alternatives": "Any of the listed signs; no positional precondition.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Positional box urgency",
+   "decision": "Separate Urgent priority for chest pain worse on lying down/palpation/breathing (\"Manage and refer urgently\").",
+   "alternatives": "Rely on red-box priority only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Entry to the features question (reconciler)",
+   "decision": "ECG abnormal OR positional question = No leads into \"Is chest pain/discomfort any of\", for both the ACS and the stable angina rule, following the line drawn in the image (build A).",
+   "alternatives": "Build B: ECG abnormal alone gives ACS likely; stable angina requires each ECG finding recorded No.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Chest discomfort (reconciler)",
+   "decision": "\"Chest discomfort\" + New added to the red-box check and priority (build A), broader than \"centre or left side\".",
+   "alternatives": "Omit discomfort (build B), firing less often.",
+   "confidence": "medium"
+  }
+ ]
+}

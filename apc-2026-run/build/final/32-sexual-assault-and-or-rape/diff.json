@@ -1,0 +1,230 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/32-sexual-assault-and-or-rape",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/32-sexual-assault-and-or-rape",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible rape"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible sexual assault"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: sexual assault/rape with urgent signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent sexual assault/rape conditions"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: sexual assault/rape with urgent features"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent sexual assault/rape conditions"
+  }
+ ],
+ "conditions_A": 35,
+ "conditions_B": 24,
+ "conditions_in_both": 10,
+ "agreement": 0.339,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+    "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))"
+   ],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))) (time_ago 5 days))",
+    "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+    "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))"
+   ],
+   "only_B": [
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+    "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))"
+   ],
+   "is_a_related": [
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+     "relation": "A_narrower"
+    },
+    {
+     "A": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))) (time_ago 5 days))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))",
+     "relation": "A_narrower"
+    }
+   ],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+    "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)"
+   ],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

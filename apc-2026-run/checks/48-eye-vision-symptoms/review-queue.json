@@ -1,0 +1,2138 @@
+[
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p48-dd6dc05d",
+  "text": "New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking or visual disturbance: stroke or TIA likely152",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "TIA: the page says 'stroke or TIA likely' but only Cerebrovascular accident is diagnosed. Transient ischemic attack (disorder) exists in SNOMED and is not a descendant of Cerebrovascular accident, so the TIA half of the conclusion is lost."
+    ],
+    "problem": "All eight symptom parts (new sudden asymmetric weakness of face/arm/leg, numbness of face/arm/leg, difficulty speaking, visual disturbance) are checked for and OR-ed into a probable CVA rule, and the priority rule references (active_condition Cerebrovascular accident), so triage is right. Only the TIA diagnosis is missing. Minor: 'New'+'Sudden onset' are attached to difficulty talking and visual disturbance as well as to the weakness/numbness items; the page's 'new sudden' most naturally scopes all of them, so this is acceptable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "TIA not distinguished (only Cerebrovascular accident)",
+     "'visual disturbance' appears as both a stroke criterion and a separate sudden-vision criterion (acceptable)"
+    ],
+    "problem": "Weakness/numbness face/arm/leg with new+sudden+asymmetry, difficulty speaking and visual disturbance are all encoded as an or-list for a probable stroke diagnosis and in check_for. Priority relies on active_condition CVA and also directly on sudden visual disturbance; but sudden-onset weakness/numbness/speech difficulty reach Urgent only through the CVA diagnosis chain. Qualifier 'Asymmetry' on a finding is an approximation of 'asymmetric'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "TIA is not a diagnosis target: only 'Cerebrovascular accident' is made probable; page says 'stroke or TIA likely'"
+    ],
+    "problem": "All eight criteria (face/arm/leg weakness and numbness, asymmetry, speech difficulty, visual disturbance, new+sudden) are encoded as an OR and feed the Urgent rule via active_condition CVA. 'Transient ischemic attack' (disorder) exists in SNOMED and is not used.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-8c2d9685",
+  "text": "Chemical burn",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Generic 'Chemical burn' (any body site). SNOMED has no sideless 'Chemical burn of eye' (only left/right and eyelid variants), so the generic concept is the practical choice; within the eye-symptom task it is acceptable. Note that a chemical burn elsewhere on a patient with an eye complaint would also trigger Urgent, which is over-broad but safe.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "eye site: concept 'Chemical burn' is not eye-specific (only the Eye/vision finding trigger constrains it)"
+    ],
+    "problem": "Any chemical burn recorded alongside an eye/vision finding triggers Urgent, including a burn elsewhere on the body. A site-specific concept (chemical burn of eye) or a finding_site would be tighter.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded with generic 'Chemical burn' (no eye finding_site); no non-lateralised 'chemical burn of eye' concept exists, and the eye-symptom anchor supplies context. A finding_site on eye would be tighter.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-af81bb60",
+  "text": "If sudden redness and excessive eye discharge with recent STI symptoms: gonococcal conjunctivitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Sudden redness AND excessive discharge AND recent STI, probable Gonococcal conjunctivitis, referenced from the priority rule. 'Recent STI symptoms' is approximated as a recent sexually transmitted infectious disease rather than its symptoms (e.g. urethral/genital discharge); acceptable, but a nurse answering the check_for will be asked about an STI, not STI symptoms.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'STI symptoms' encoded as an STI disease, not as symptoms"
+    ],
+    "problem": "Page says 'recent STI symptoms'; the rule requires a recorded Sexually transmitted infectious disease (qualifier Recent), which a clinician would rarely have before diagnosing. 'Sudden redness' and 'excessive discharge' are encoded correctly with qualifiers. Probable gonococcal conjunctivitis rule exists and priority uses active_condition of it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Sudden red eye AND excessive discharge AND recent STI; 'recent STI symptoms' approximated as a recent STI disorder rather than STI symptoms (e.g. urethral/vaginal discharge) — reasonable proxy. Priority references active_condition Gonococcal conjunctivitis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-e06d0b96",
+  "text": "Whole eyelid swollen, red and painful: orbital cellulitis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Swollen AND red AND painful eyelid -> probable Orbital cellulitis, referenced from the priority rule. 'Whole' eyelid is not representable. Because 'Pain' at Eyelid structure is also a stye criterion, a painful stye with a swollen red lid will also satisfy this rule; that mirrors the page's own wording and is acceptable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'whole' eyelid not captured (swelling not site-qualified as whole)",
+     "eyelid swelling concept is generic; orbital cellulitis diagnosis is an eyelid presentation, not site-verified"
+    ],
+    "problem": "Swelling AND eyelid erythema AND eyelid pain encoded for probable orbital cellulitis, priority via active_condition. Acceptable representation; 'whole eyelid' lost.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Swollen AND red AND painful eyelid -> probable orbital cellulitis, referenced by priority. 'Whole' (eyelid) not expressed; eyelid pain is shared with the stye rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p48-41c8d88b",
+  "text": "Pregnant or up to 1 week post-partum, and BP ≥ 140/90: treat as severe pre-eclampsia 177",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "The conclusion 'treat as severe pre-eclampsia' is not produced as a diagnosis. 'Severe pre-eclampsia' (disorder) exists in SNOMED; the house pattern for a red-box item that names a condition is a probable diagnosis rule referenced from the priority rule. Borderline, since the page says 'treat as' rather than 'likely' and arrows to page 177."
+    ],
+    "problem": "The triage criterion itself is right: (Pregnancy OR Postpartum state with onset within the last 1 week) AND (SBP >= 140 OR DBP >= 90), Urgent. The onset comparator direction follows the briefing's convention ((<= (onset X) (time_ago 1 weeks)) = within the last week).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "no diagnosis rule for 'treat as severe pre-eclampsia' (Severe pre-eclampsia exists in SNOMED)"
+    ],
+    "problem": "Priority branch encodes (Pregnancy or postpartum onset within 1 week) with BP >= 140 systolic or >= 90 diastolic, which is correct in logic and direction (<= onset time_ago means within the last week per briefing). But the page says 'treat as severe pre-eclampsia' and no probable pre-eclampsia diagnosis is produced.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "(Pregnant OR postpartum onset within 1 week) AND (SBP>=140 OR DBP>=90) -> Urgent. Direction of the onset comparison matches the briefing's convention. 'Treat as severe pre-eclampsia' is a treat-as instruction, not 'X likely', so no diagnosis rule is required.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-664dfa1e",
+  "text": "If painful eye with redness, blurred vision, haloes around light, dilated unreactive pupil, headache/nausea/vomiting, acute glaucoma likely. Give acetazolamide 500mg orally, then 250mg 6 hourly.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Painful eye AND redness AND blurred vision AND haloes AND fixed dilated pupil AND (headache OR nausea OR vomiting) -> probable diagnosis, referenced from the priority rule so it is Urgent. Two notes. (1) Concept: 'Acute angle closure' (disorder, UK-extension id 1111451000000106) is not a descendant of Glaucoma in this release; the page says 'acute glaucoma'. Clinically acute angle closure is the same attack, so I accept it, but 'Angle-closure glaucoma' (disorder) would sit under Glaucoma. (2) Logic: the rule demands all five eye findings; the page lists them with commas, so the literal AND is defensible, but a clinician may expect fewer to suffice (any2/any3). Not marked as an error.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "unclear whether symptoms are all required; encoding demands all five findings plus one of headache/nausea/vomiting"
+    ],
+    "problem": "Acute glaucoma likely is in scope (diagnosis, priority). Rule is a strict AND of pain, red eye, blurred vision, haloes and fixed dilated pupil plus (headache or nausea or vomiting); the page reads as a descriptive list, so requiring every symptom risks missing real cases. Concept 'Acute angle closure' is a UK-extension term under 'Acute disease of eye', acceptable but not named glaucoma. Dosing (acetazolamide) is management, out of scope.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Acute glaucoma likely' encoded as probable Acute angle closure: pain AND redness AND blurred vision AND haloes AND fixed dilated pupil AND (headache OR nausea OR vomiting); acetazolamide dosing is management and out of scope. Strict all-of reading is literal to the comma list; priority references it (justified by 'manage and refer urgently').",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-5b92c4c6",
+  "text": "Approach to patient with eye/vision symptoms not needing urgent attention",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-9bd33347",
+  "text": "Eyes discharging or watery. Is there a prominent itch? Eyelid problems",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Discharge from eye, Watery eye and Itching of eye are checked for; the itch branch is used positively by the allergic rule and as (no Itching of eye) by the viral and bacterial rules, which is the flowchart's split.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Flowchart question headings (itch / eyelid problems).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Flowchart question 'discharging or watery; prominent itch?' encoded as the non-urgent check_for items and the itch / no-itch split in allergic vs viral/bacterial rules. 'Eyelid problems' heading is routing only.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-f22cf852",
+  "text": "Yes • If both eyes involved or patient has eczema, hayfever or asthma, allergic conjunctivitis likely:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "(discharge OR watery) AND itch AND (both eyes OR eczema OR hayfever OR asthma) -> probable Allergic conjunctivitis. 'Both eyes' is expressed as the discharge/watery finding with the 'Right and left' qualifier; hayfever is 'Allergic rhinitis caused by pollen' (SNOMED synonym 'hay fever'). All fine.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "localised cause likely branch"
+    ],
+    "problem": "Allergic conjunctivitis likely is a probable diagnosis with itch AND (discharge or watery) AND (both eyes, eczema, hayfever or asthma). 'Both eyes' captured via 'Right and left'. 'Hayfever' encoded as 'Allergic rhinitis caused by pollen'. Missing: the 'one eye, no eczema/hayfever/asthma: localised cause likely' branch (no diagnosis concept).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Discharge/watery AND itch AND (bilateral OR eczema OR hayfever OR asthma). Hayfever -> 'Allergic rhinitis caused by pollen' (SNOMED synonym hay fever).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p48-05c0c7c2",
+  "text": "51. If recurrent skin problem, check for urticaria and eczema 82. If recurrent cough or wheeze, check for asthma 138. • If one eye involved and no eczema, hayfever or asthma, localised cause likely: wash eye with sterile water. Try to identify and remove cause. Give oxymetazoline 0.025% eye drops 1 ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "No rule for the 'one eye, no atopy -> localised cause likely' branch. Nothing in SNOMED names 'localised cause'; the nearest usable concepts are 'Foreign body on external eye' or 'Irritant contact blepharoconjunctivitis', neither of which is what the page says. Acceptable to omit, but the negative branch of the itch=Yes flowchart is then silent."
+    ],
+    "problem": "Contains 'localised cause likely' (one eye involved and no eczema, hayfever or asthma), which is an 'X likely' conclusion, but 'localised cause' is not a SNOMED diagnosis; the allergic-rhinitis/eczema/asthma check-for items are cross-references to other pages. Reasonable builders would leave it out.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "No rule for itchy discharge/watery eye, one eye involved, no eczema/hayfever/asthma -> localised cause likely (e.g. a possible/probable irritant or foreign-body cause)"
+    ],
+    "problem": "The itch branch's second outcome is lost; nothing fires for the unilateral itchy case.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-54242764",
+  "text": "No. Is the discharge clear or pus? • If painful lump on eyelid, stye likely. Apply warm compresses four times a day. Advise to return if no better, discuss. • If itchy/swollen eyelids, wash twice a day with warm water. • Discuss/refer if: - Eyelashes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Clear vs pus is encoded as Serous vs Purulent conjunctival discharge (judged with p48-16ecc272). Painful lump on eyelid -> probable Hordeolum: Lump in eyelid AND Pain at Eyelid structure. Correct.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "eyelashes touching cornea / eyelids bent in-out referral criteria"
+    ],
+    "problem": "Contains the stye rule and the discharge decision; stye encoded as lump in eyelid AND eyelid pain (Hordeolum, probable). The 'No itch -> clear or pus?' branching is represented through negation of itch in viral/bacterial rules. The eyelid-problem referral criteria (eyelashes touching cornea, eyelids bent in/out) are not encoded; and the 'eyelid pain' finding is not in the non-urgent task check_for.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Stye likely = painful lump on eyelid encoded; 'clear or pus?' question routed into viral/bacterial rules. 'Discuss/refer if' items are management.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-2fa0d385",
+  "text": "Viral conjunctivitis likely • Apply cold compresses. • Give oxymetazoline 0.025% eye drops 1 drop 6 hourly up to 7 days. • Return to work once better/no discharge. • Refer if one red eye for >1 day, or no better after 5 days.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "A probable Viral conjunctivitis rule exists with the right rule type and concept. Its criteria are judged at p48-16ecc272 (error).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Viral conjunctivitis: no itch, clear watery (serous) discharge, and fever or sore throat or enlarged nodes. Reasonable 'or'. Fever is written as active_condition while the other symptoms use clinical_finding, and Fever is not in the non-urgent check_for.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "No itch AND serous discharge AND (fever OR sore throat OR enlarged nodes). Fever uses active_condition per house standard.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p48-c706e05c",
+  "text": "• Wash out eye with sterile water or sodium chloride 0.9%. • If foreign body not visible, use fluorescein stain and ultraviolet light. • Instil 1 drop tetracaine 1% eye drops4 and gently remove foreign body with moist cotton bud. • Apply eye shield until tetracaine has worn off. • Give chloramphenic",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "superficial foreign body diagnosis/check"
+    ],
+    "problem": "Superficial foreign body is a page category with referral criteria (removal unsuccessful, damage to eye, abnormal vision or eye movement, no better in 24 hours). No rule or concept for it exists. Likely borderline since the page has no explicit 'likely'.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p48-16ecc272",
+  "text": "Pus Clear watery discharge, fever, sore throat, enlarged",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "The flowchart's decision is 'Is the discharge clear or pus?'; the box text describes the viral picture, with fever/sore throat/lymph nodes as accompanying features. The viral rule instead requires clear discharge AND at least one of fever/sore throat/enlarged lymph nodes. A patient with no itch and clear watery discharge but none of those three gets no diagnosis at all, although the page sends them to 'Viral conjunctivitis likely'. Reasonable people could read the box as a conjunction, so confidence is medium; the safer encoding is serous discharge alone (or with the systemic features as optional support). The 'Pus' part is correct: Purulent conjunctival discharge AND no itch -> bacterial.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Flowchart branch labels; their content (clear watery discharge/fever/sore throat/nodes; pus) is judged under the viral and bacterial elements.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Pus vs clear watery discharge branch and the viral features fragment.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p48-d6d3696c",
+  "text": "lymph nodes",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Enlarged lymph nodes is checked for as Localized enlarged lymph nodes and used in the viral rule. The logic problem for this box is recorded under p48-16ecc272.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Fragment 'lymph nodes' of viral features.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c012",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually transmitted infectious disease\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'recent STI symptoms', not a diagnosed STI; no closer SNOMED concept, acceptable approximation.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"recent STI symptoms\" (symptoms), encoded as the STI disorder; symptoms/finding not diagnosis.",
+    "fix": "Use a finding for genital/urethral discharge or dysuria, or keep but accept as proxy.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Recent STI symptoms' is encoded as a recent STI disorder (a diagnosis), not as the symptoms; a patient with untested urethral/vaginal discharge would not match",
+    "fix": "Encode the STI symptoms (e.g. Urethral discharge / Vaginal discharge / genital ulcer, qualifier Recent) in an or, or accept the STI disorder as a proxy and say so",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c013",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Whole eyelid swollen'; 'whole' is the discriminator against a stye and is dropped.",
+    "fix": "Note the limitation; SNOMED has no 'whole eyelid' qualifier.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Whole eyelid swollen' loses 'whole', which is what separates orbital cellulitis from a localised lid lump (stye)",
+    "fix": "Add a qualifier or comment for whole-lid swelling if one exists; otherwise accept",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c014",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for a red eyelid; the house rule uses finding_site only when SNOMED lacks one.",
+    "fix": "(snomed_concept \"Erythema of skin of eyelid\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c029",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'sudden change in movement of eye' (a symptom/sign); 'Disorder of eye movements' is a disorder and a finding concept is closer.",
+    "fix": "(clinical_finding (snomed_concept \"Abnormal ocular motility\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c034",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Penetrating wound of eyeball with foreign body\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page \"Penetrating or metallic foreign body\" is two items; this concept covers only penetrating with foreign body, metallic is separate (c035) so overall OK.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c036",
+  "text": "Check for urgent eye/vision conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Chemical burn' has no eye site: descendants match in due_to, so a chemical burn of the hand in a patient with eye symptoms would satisfy it; page means a chemical burn of the eye.",
+    "fix": "(clinical_finding (snomed_concept \"Chemical burn\" \"disorder\") (finding_site (snomed_concept \"Structure of eye proper\" \"body structure\"))) — SNOMED has no sideless 'Chemical burn of eye'; 'Chemical injury to cornea' (disorder) is the nearest precoordinated concept.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page context is chemical burn of the eye; \"Chemical burn\" has no eye site, so a burn elsewhere on the body satisfies it (only gated by the Eye / vision finding trigger).",
+    "fix": "Add a finding_site of the eye, or a closer concept if one exists (only \"Chemical burn of eyelid\" found).",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c047",
+  "text": "Check for causes of non-urgent eye/vision symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'prominent' is dropped but SNOMED has no such qualifier; acceptable.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"prominent itch\"; encoded as any itching of eye, dropping \"prominent\".",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c048",
+  "text": "Check for causes of non-urgent eye/vision symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Both eyes involved\" encoded as Right and left qualifier on discharge/watery only; page implies both eyes involved with the symptom, acceptable but not itch-specific.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c049",
+  "text": "Check for causes of non-urgent eye/vision symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Both eyes involved\" encoded as Right and left qualifier on discharge/watery only; page implies both eyes involved with the symptom, acceptable but not itch-specific.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c055",
+  "text": "Check for causes of non-urgent eye/vision symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'enlarged lymph nodes' with no 'localized'; the exact concept is broader and matches descendants in due_to.",
+    "fix": "(snomed_concept \"Lymphadenopathy\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"enlarged lymph nodes\" (unspecified); concept is localized enlarged nodes.",
+    "fix": "Use a non-localized \"Enlarged lymph nodes\" concept if one exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'enlarged lymph nodes', not localized; Localized enlarged lymph nodes is narrower than the page",
+    "fix": "(snomed_concept \"Lymphadenopathy\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c066",
+  "text": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms :: (diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'stroke or TIA likely'; 'Cerebrovascular accident' covers stroke only, TIA is dropped.",
+    "fix": "Add a parallel probable rule for (snomed_concept \"Transient ischemic attack\" \"disorder\") with the same evidence, and reference both from the priority rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"stroke or TIA likely\"; Cerebrovascular accident does not cover TIA.",
+    "fix": "Add (snomed_concept \"Transient ischemic attack\" \"disorder\") as an alternative diagnosis/condition.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'stroke or TIA likely'; Cerebrovascular accident excludes TIA",
+    "fix": "Accept CVA as house proxy or add Transient ischemic attack (disorder) as an alternative",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c069",
+  "text": "Diagnose probable gonococcal conjunctivitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexually transmitted infectious disease\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'recent STI symptoms', not a diagnosed STI; no closer SNOMED concept, acceptable approximation.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"recent STI symptoms\" (symptoms), encoded as the STI disorder; symptoms/finding not diagnosis.",
+    "fix": "Use a finding for genital/urethral discharge or dysuria, or keep but accept as proxy.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Recent STI symptoms' is encoded as a recent STI disorder (a diagnosis), not as the symptoms; a patient with untested urethral/vaginal discharge would not match",
+    "fix": "Encode the STI symptoms (e.g. Urethral discharge / Vaginal discharge / genital ulcer, qualifier Recent) in an or, or accept the STI disorder as a proxy and say so",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c071",
+  "text": "Diagnose probable orbital cellulitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of eyelid\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Whole eyelid swollen'; 'whole' is the discriminator against a stye and is dropped.",
+    "fix": "Note the limitation; SNOMED has no 'whole eyelid' qualifier.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Whole eyelid swollen' loses 'whole', which is what separates orbital cellulitis from a localised lid lump (stye)",
+    "fix": "Add a qualifier or comment for whole-lid swelling if one exists; otherwise accept",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c072",
+  "text": "Diagnose probable orbital cellulitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Eyelid structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for a red eyelid; the house rule uses finding_site only when SNOMED lacks one.",
+    "fix": "(snomed_concept \"Erythema of skin of eyelid\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c088",
+  "text": "Diagnose probable allergic conjunctivitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'prominent' is dropped but SNOMED has no such qualifier; acceptable.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"prominent itch\"; encoded as any itching of eye, dropping \"prominent\".",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c089",
+  "text": "Diagnose probable allergic conjunctivitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Both eyes involved\" encoded as Right and left qualifier on discharge/watery only; page implies both eyes involved with the symptom, acceptable but not itch-specific.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c090",
+  "text": "Diagnose probable allergic conjunctivitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\") (qualifier (snomed_concept \"Right and left\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Both eyes involved\" encoded as Right and left qualifier on discharge/watery only; page implies both eyes involved with the symptom, acceptable but not itch-specific.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c095",
+  "text": "Diagnose probable viral conjunctivitis :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Encodes the 'No' answer to 'Is there a prominent itch?'.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page branch is 'No' to 'Is there a prominent itch?'; absence of any itching is stricter than absence of a prominent itch",
+    "fix": "Acceptable proxy; alternatively negate Itching of eye with a Severe/prominent qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c097",
+  "text": "Diagnose probable viral conjunctivitis :: (active_condition (snomed_concept \"Fever\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "active_condition is the house-recorded form for Fever.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Fever is a symptom in the page list but encoded as active_condition; other items are clinical_finding.",
+    "fix": "Use clinical_finding for consistency.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c099",
+  "text": "Diagnose probable viral conjunctivitis :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized enlarged lymph nodes\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'enlarged lymph nodes' with no 'localized'; the exact concept is broader and matches descendants in due_to.",
+    "fix": "(snomed_concept \"Lymphadenopathy\" \"disorder\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"enlarged lymph nodes\" (unspecified); concept is localized enlarged nodes.",
+    "fix": "Use a non-localized \"Enlarged lymph nodes\" concept if one exists.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'enlarged lymph nodes', not localized; Localized enlarged lymph nodes is narrower than the page",
+    "fix": "(snomed_concept \"Lymphadenopathy\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c101",
+  "text": "Diagnose probable bacterial conjunctivitis :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of eye\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Encodes the 'No' answer to 'Is there a prominent itch?'.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page branch is 'No' to 'Is there a prominent itch?'; absence of any itching is stricter than absence of a prominent itch",
+    "fix": "Acceptable proxy; alternatively negate Itching of eye with a Severe/prominent qualifier",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c108",
+  "text": "Urgent: eye/vision symptoms with danger signs :: (active_condition (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Follows the stroke rule: only CVA is referenced, so a TIA diagnosis would not make the patient Urgent; page says 'stroke or TIA'.",
+    "fix": "(or (active_condition (snomed_concept \"Cerebrovascular accident\" \"disorder\")) (active_condition (snomed_concept \"Transient ischemic attack\" \"disorder\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"stroke or TIA likely\"; Cerebrovascular accident does not cover TIA.",
+    "fix": "Add (snomed_concept \"Transient ischemic attack\" \"disorder\") as an alternative diagnosis/condition.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'stroke or TIA likely'; Cerebrovascular accident excludes TIA",
+    "fix": "Accept CVA as house proxy or add Transient ischemic attack (disorder) as an alternative",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c122",
+  "text": "Urgent: eye/vision symptoms with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'sudden change in movement of eye' (a symptom/sign); 'Disorder of eye movements' is a disorder and a finding concept is closer.",
+    "fix": "(clinical_finding (snomed_concept \"Abnormal ocular motility\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c131",
+  "text": "Urgent: eye/vision symptoms with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "'Chemical burn' has no eye site: any chemical burn anywhere makes an eye-symptom patient Urgent; page means a chemical burn of the eye.",
+    "fix": "(clinical_finding (snomed_concept \"Chemical burn\" \"disorder\") (finding_site (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page context is chemical burn of the eye; \"Chemical burn\" has no eye site, so a burn elsewhere on the body satisfies it (only gated by the Eye / vision finding trigger).",
+    "fix": "Add a finding_site of the eye, or a closer concept if one exists (only \"Chemical burn of eyelid\" found).",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable viral conjunctivitis",
+  "text": "Requires clear discharge AND one of fever / sore throat / enlarged lymph nodes. The flowchart decides on discharge type alone ('clear or pus'), so a no-itch patient with clear discharge and no systemic feature falls through every rule with no diagnosis. Drop the systemic-feature conjunct or make it optional.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+  "text": "The description says 'stroke or TIA' but the diagnosis is only Cerebrovascular accident. 'Transient ischemic attack' (disorder) exists and is not a descendant of CVA, so the TIA conclusion is not produced. Triage is unaffected because the priority rule keys on the CVA active_condition.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: eye/vision symptoms with danger signs (pregnancy/post-partum BP branch)",
+  "text": "The page's conclusion 'treat as severe pre-eclampsia' is not produced as a diagnosis. 'Severe pre-eclampsia' (disorder) exists; the house pattern for a red-box item naming a condition is a probable rule referenced from the priority rule. Borderline because the page says 'treat as' rather than 'likely'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+  "text": "'Acute angle closure' (UK-extension concept 1111451000000106) is not under Glaucoma in this SNOMED release (parents: Acute disease of eye, Disorder of iridocorneal angle, Angle closed). The page says 'acute glaucoma'. Clinically equivalent, but 'Angle-closure glaucoma' would keep the diagnosis inside the glaucoma hierarchy. Separately, requiring all five ocular findings is a strict literal reading of the page's comma list.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent eye/vision conditions",
+  "text": "Near-duplicate check_for items for the same finding differing only by a qualifier: 'Visual disturbance' with New+Sudden onset (stroke rule) and with Sudden onset only (priority rule); 'Red eye' plain, with Sudden onset, and with Unilateral; 'Pain in eye' plain and with Unilateral. Each is consumed by a rule so the test passes, but the nurse will be asked overlapping questions, and a 'Visual disturbance, Sudden onset' answer without 'New' will not reach the stroke rule.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable orbital cellulitis / Diagnose probable stye",
+  "text": "Both consume 'Pain' at Eyelid structure. A painful stye with a swollen, red lid satisfies the orbital cellulitis rule and becomes Urgent. This mirrors the page's own wording ('whole eyelid' is not representable), so it is noted, not faulted.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent eye/vision conditions (Chemical burn)",
+  "text": "Generic 'Chemical burn' is not eye-specific; a chemical burn anywhere will trigger Urgent in a patient with an eye complaint. SNOMED has no sideless 'Chemical burn of eye', so this is a pragmatic choice; over-triage rather than under-triage.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA",
+  "text": "Description says stroke or TIA but diagnosis concept is Cerebrovascular accident only; Urgent for weakness/numbness/speech relies on indirect active_condition CVA chain rather than the findings themselves.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of non-urgent eye/vision symptoms",
+  "text": "check_for omits Fever (used in viral rule) and Pain of eyelid (used in stye rule) although other rules use them; task 2 has the same trigger as task 1 so the 'not needing urgent attention' framing is not enforced (acceptable).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute glaucoma",
+  "text": "Strict AND of five symptoms plus an or-group; may be too restrictive for a descriptive symptom list.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable gonococcal conjunctivitis",
+  "text": "Requires a recorded STI disease rather than STI symptoms.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: eye/vision symptoms with danger signs",
+  "text": "Chemical burn and foreign-body concepts are not eye-specific/site-bound; no severe pre-eclampsia diagnosis despite 'treat as severe pre-eclampsia'; no non-urgent routes for superficial foreign body.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Priority rules",
+  "text": "Only one priority level (Urgent) used; page justifies this (single red box).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+  "text": "Rule title says 'stroke or TIA' but diagnoses only Cerebrovascular accident; TIA (which exists in SNOMED) is dropped.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+  "text": "A new sudden 'Visual disturbance' alone makes stroke probable. That is literal to the page, but on an eye page it means any sudden visual change from a local eye cause (e.g. acute glaucoma) also yields probable stroke. Worth a reviewer's eye.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none) localised cause branch",
+  "text": "The itch=yes, one-eye, no atopy branch ('localised cause likely') has no rule, so the flowchart's second itch outcome is lost.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent eye/vision conditions / Check for causes of non-urgent eye/vision symptoms",
+  "text": "Both tasks hang off 'Eye / vision finding', which is not a common symptom or warning sign. Unless another page records it, neither task or the Urgent rule fires (the briefing acknowledges this pattern).",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stye / Diagnose probable orbital cellulitis",
+  "text": "Both use the same eyelid-pain evidence. A painful swollen red eyelid with a lump makes both probable, so the urgent orbital cellulitis and the non-urgent stye co-fire. That is acceptable but needs a reviewer to know about it.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+  "text": "Page says 'stroke or TIA likely' but only Cerebrovascular accident is diagnosed; TIA is dropped. The 'or' over the FAST-type findings and the probable level are faithful.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable orbital cellulitis",
+  "text": "'Whole eyelid' is dropped, so a stye with surrounding redness (lump + red + painful eyelid) satisfies both this rule and the stye rule; the page uses 'whole' to separate them. Eyelid erythema also has a precoordinated concept.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable viral conjunctivitis",
+  "text": "Requires a systemic feature (fever, sore throat or lymph nodes) in addition to clear discharge. The page's branch is selected by 'clear' vs 'pus'; 'fever, sore throat, enlarged lymph nodes' read as descriptive, so the rule is narrower than the page: a no-itch clear watery discharge alone never gets a diagnosis. Judgment call.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: eye/vision symptoms with danger signs",
+  "text": "Structure (and eye-finding (or ...)) and the Urgent level match the box heading. Two items over-fire or under-fire: unsited 'Chemical burn' makes any chemical burn anywhere Urgent for an eye-symptom patient, and only CVA (not TIA) is referenced, so a TIA diagnosis would not make the patient Urgent. Both BP criteria and the 1-week post-partum window are encoded correctly under the house conventions.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent eye/vision conditions",
+  "text": "Task check_for list includes pregnancy/postpartum and duplicates of the rule conditions; acceptable, but pre-eclampsia (pregnant/postpartum with BP>=140/90) has no diagnosis rule, only an Urgent priority branch.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable stroke or TIA in a patient with eye/vision symptoms",
+  "text": "Diagnosis concept omits TIA. Also the page frames this as part of an 'any of' urgent list with 'visual disturbance' as one sign; OR structure matches.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable gonococcal conjunctivitis",
+  "text": "AND of three is faithful to the page sentence, but STI is encoded as a disorder rather than symptoms.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable acute glaucoma in a patient with eye/vision symptoms",
+  "text": "Requires ALL of pain, red eye, blurred vision, haloes, fixed dilated pupil AND one of headache/nausea/vomiting. The page lists these as features of a painful red eye; requiring every one (especially haloes and fixed pupil) is likely far too strict, so acute glaucoma would rarely fire.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable allergic conjunctivitis",
+  "text": "Single-eye branch ('one eye, no eczema/hayfever/asthma: localised cause likely') is not encoded; the rule only covers the both-eyes/atopy branch. Also the symptom requirement duplicates the itch branch faithfully.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: eye/vision symptoms with danger signs",
+  "text": "Acute glaucoma, gonococcal, orbital cellulitis, stroke and jaundice branches depend on diagnoses from rules above (stroke lacks TIA; glaucoma rule too strict), so those danger signs may not fire. Priority itself is justified by the red box heading. Chemical burn lacks eye site. Preeclampsia/postpartum branch uses onset <= 1 week, consistent with briefing convention.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of non-urgent eye/vision symptoms",
+  "text": "The page's 'one eye involved and no eczema, hayfever or asthma: localised cause likely' branch has no diagnosis rule (coverage gap, nothing invented). Fever is used by the viral rule but not listed (acceptable as a common symptom).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable gonococcal conjunctivitis",
+  "text": "'Recent STI symptoms' encoded as a recent STI disorder rather than the symptoms; and-structure and probable are right.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Weakness of face muscles + Sudden onset)  vs  B: (Weakness of face muscles + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+    "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Numbness of face + Sudden onset)  vs  B: (Numbness of face + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+    "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Muscle weakness of upper limb + Sudden onset), (Weakness of muscle of lower limb + Sudden onset)  vs  B: (Muscle weakness of limb + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding \"Muscle weakness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Weakness of muscle of lower limb\" New Sudden onset Asymmetry)",
+    "reason": "The page says \"arm or leg\" (A's concepts are the closer match) and \"new sudden asymmetric\" (B's qualifiers), so the final build combines them.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Numbness of upper limb + Sudden onset), (Numbness of lower limb + Sudden onset)  vs  B: (Numbness of limbs + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding \"Numbness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Numbness of lower limb\" New Sudden onset Asymmetry)",
+    "reason": "\"numbness of ... arm or leg\": A's single-limb concepts fit \"arm or leg\" better than B's plural \"limbs\"; B's qualifiers carry \"new sudden asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Difficulty talking + Sudden onset)  vs  B: (Difficulty talking + New + Sudden onset)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Difficulty talking\" New Sudden onset)",
+    "reason": "\"New sudden ... difficulty speaking\": B carries \"new\" as well as \"sudden\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Weakness of face muscles + Sudden onset)  vs  B: (Weakness of face muscles + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+    "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Numbness of face + Sudden onset)  vs  B: (Numbness of face + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Numbness of face\" \"finding\") (qualifier New) (qualifier Sudden onset) (qualifier Asymmetry))",
+    "reason": "The page says \"New sudden asymmetric weakness or numbness of face\"; B carries all three words, A drops \"new\" and \"asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Muscle weakness of upper limb + Sudden onset), (Weakness of muscle of lower limb + Sudden onset)  vs  B: (Muscle weakness of limb + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding \"Muscle weakness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Weakness of muscle of lower limb\" New Sudden onset Asymmetry)",
+    "reason": "The page says \"arm or leg\" (A's concepts are the closer match) and \"new sudden asymmetric\" (B's qualifiers), so the final build combines them.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Numbness of upper limb + Sudden onset), (Numbness of lower limb + Sudden onset)  vs  B: (Numbness of limbs + New + Sudden onset + Asymmetry)",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding \"Numbness of upper limb\" New Sudden onset Asymmetry); (clinical_finding \"Numbness of lower limb\" New Sudden onset Asymmetry)",
+    "reason": "\"numbness of ... arm or leg\": A's single-limb concepts fit \"arm or leg\" better than B's plural \"limbs\"; B's qualifiers carry \"new sudden asymmetric\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Difficulty talking + Sudden onset)  vs  B: (Difficulty talking + New + Sudden onset)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Difficulty talking\" New Sudden onset)",
+    "reason": "\"New sudden ... difficulty speaking\": B carries \"new\" as well as \"sudden\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Visual disturbance + Sudden onset) in the stroke rule  vs  B: (Visual disturbance + New + Sudden onset)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Visual disturbance\" New Sudden onset)",
+    "reason": "\"New sudden ... visual disturbance: stroke or TIA likely\"; B carries \"new\", and it keeps the stroke item distinct from the separate \"Sudden loss or change in vision\" item.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: (Visual disturbance + New + Sudden onset)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Visual disturbance\" New Sudden onset)",
+    "reason": "Needed so the stroke rule's evidence is checked for; the plain Sudden onset form stays for \"Sudden loss or change in vision\".",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Eczema/Allergic rhinitis caused by pollen/Asthma + Known present)  vs  B: (same concepts, no qualifier)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Eczema\"), (clinical_finding \"Allergic rhinitis caused by pollen\"), (clinical_finding \"Asthma\")",
+    "reason": "\"patient has eczema, hayfever or asthma\": the page adds nothing that \"Known present\" expresses; the plain form is closer.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Eczema/Allergic rhinitis caused by pollen/Asthma + Known present)  vs  B: (same concepts, no qualifier)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Eczema\"), (clinical_finding \"Allergic rhinitis caused by pollen\"), (clinical_finding \"Asthma\")",
+    "reason": "\"patient has eczema, hayfever or asthma\": the page adds nothing that \"Known present\" expresses; the plain form is closer.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Red eye), (Watery eye) unqualified, with Unilateral only on Pain in eye  vs  B: (Red eye + Unilateral), (Watery eye + Unilateral)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and (Pain in eye Unilateral) (or (Red eye Unilateral) (Watery eye Unilateral)))",
+    "reason": "\"One painful red/watery eye\": \"one\" qualifies the eye that is red/watery as well as painful, so B applies Unilateral throughout.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Herpes zoster involving tip of nose)  vs  B: (Herpes zoster, finding_site Nasal structure)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Herpes zoster\" (finding_site \"Nasal structure\"))",
+    "reason": "\"Shingles involving eye or nose\" names the nose, not its tip; A's concept is narrower than the page.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Chemical burn)  vs  B: (Chemical burn, finding_site Eye region structure)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Chemical burn\")",
+    "reason": "The page says just \"Chemical burn\"; the eye site is not in its words, and the trigger already requires an eye finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (Red eye), (Watery eye) unqualified, with Unilateral only on Pain in eye  vs  B: (Red eye + Unilateral), (Watery eye + Unilateral)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and (Pain in eye Unilateral) (or (Red eye Unilateral) (Watery eye Unilateral)))",
+    "reason": "\"One painful red/watery eye\": \"one\" qualifies the eye that is red/watery as well as painful, so B applies Unilateral throughout.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (Herpes zoster involving tip of nose)  vs  B: (Herpes zoster, finding_site Nasal structure)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Herpes zoster\" (finding_site \"Nasal structure\"))",
+    "reason": "\"Shingles involving eye or nose\" names the nose, not its tip; A's concept is narrower than the page.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (Chemical burn)  vs  B: (Chemical burn, finding_site Eye region structure)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Chemical burn\")",
+    "reason": "The page says just \"Chemical burn\"; the eye site is not in its words, and the trigger already requires an eye finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A only: (Headache), (Nausea), (Finding of vomiting)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Headache\"), (clinical_finding \"Nausea\"), (clinical_finding \"Finding of vomiting\")",
+    "reason": "\"headache/nausea/vomiting\" is evidence for \"acute glaucoma likely\", so it is checked for.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "Acute glaucoma rule structure. A: pain AND red AND blurred AND haloes AND dilated pupil AND (headache OR nausea OR vomiting)  vs  B: pain AND red AND (any one of the rest)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and Pain in eye, Red eye, Blurring of visual image, Sees haloes around lights, Fixed dilatation of pupil, (or Headache Nausea Finding of vomiting))",
+    "reason": "\"If painful eye with redness, blurred vision, haloes around light, dilated unreactive pupil, headache/nausea/vomiting\" lists features with commas and only the slash marks alternatives; A follows that literally, but the page does not say how many are needed.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A only: (Sore throat), (Localized enlarged lymph nodes)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Sore throat\"), (clinical_finding \"Localized enlarged lymph nodes\")",
+    "reason": "They are evidence in the final viral conjunctivitis rule (\"Clear watery discharge, fever, sore throat, enlarged lymph nodes\").",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A only: (active_condition Fever), (Sore throat), (Localized enlarged lymph nodes) in viral conjunctivitis  vs  B: clear discharge alone",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (no Itching of eye) (Serous conjunctival discharge) (or (active_condition Fever) (Sore throat) (Localized enlarged lymph nodes)))",
+    "reason": "The node reads \"Clear watery discharge, fever, sore throat, enlarged lymph nodes\"; A keeps the page's features (as an or), B drops them, and the page does not say how many are required.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Lump in eyelid)  vs  B: (Mass [morphologic abnormality], finding_site Eyelid structure)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Lump in eyelid\")",
+    "reason": "\"painful lump on eyelid\": A's finding concept says \"lump in eyelid\" directly; B uses a morphologic abnormality as a clinical finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (Lump in eyelid)  vs  B: (Mass [morphologic abnormality], finding_site Eyelid structure)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding \"Lump in eyelid\")",
+    "reason": "\"painful lump on eyelid\": A's finding concept says \"lump in eyelid\" directly; B uses a morphologic abnormality as a clinical finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "slug": "48-eye-vision-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Watery eye) in the urgent task  vs  B: (Watery eye) in the non-urgent task",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding \"Watery eye\") in \"Check for causes of non-urgent eye/vision symptoms\"",
+    "reason": "Plain watery eye now serves only \"Eyes discharging or watery\" (allergic rule); the urgent item uses the Unilateral form.",
+    "unsettled": false
+   }
+  ]
+ }
+]

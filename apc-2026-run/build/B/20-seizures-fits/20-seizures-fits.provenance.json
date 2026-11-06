@@ -1,0 +1,249 @@
+{
+ "edition": "2026",
+ "page": 20,
+ "lisp_file": "20-seizures-fits.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent seizure/fit conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "fitting",
+   "confidence": "high",
+   "note": "Seizure (finding) is the recorded warning sign for a current fit; 'fitting' = currently seizing. Trigger is the plain clinical_finding form the warning sign records."
+  },
+  {
+   "rule": "Check for urgent seizure/fit conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "unconscious",
+   "confidence": "medium",
+   "note": "Unconscious (finding) exists; chosen over the broader 'Decreased level of consciousness' because the page says unconscious."
+  },
+  {
+   "rule": "Urgent: unconscious and fitting",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "fitting",
+   "confidence": "high",
+   "note": "Presenting complaint half of 'unconscious and fitting'."
+  },
+  {
+   "rule": "Urgent: unconscious and fitting",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))",
+   "element_keys": [
+    "p20-13a9b3cd"
+   ],
+   "quote": "unconscious",
+   "confidence": "high",
+   "note": "Second half of 'unconscious and fitting' (and). Checked for in this file's task."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p20-f48ead42",
+   "element_id": "p20-rb1-e02",
+   "text": "If current head injury 30.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to head injury page 30; no triage logic here."
+  },
+  {
+   "element_key": "p20-b9ed7f55",
+   "element_id": "p20-rb1-e03",
+   "text": "Place in recovery position1. Do not place anything in mouth.",
+   "reason_category": "management_step",
+   "reason": "Positioning instruction."
+  },
+  {
+   "element_key": "p20-301420ed",
+   "element_id": "p20-rb1-e04",
+   "text": "Give oxygen via face mask or nasal cannula to maintain oxygen saturation ≥ 95%.",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy."
+  },
+  {
+   "element_key": "p20-e60ad24d",
+   "element_id": "p20-rb1-e05",
+   "text": "Establish IV access.",
+   "reason_category": "management_step",
+   "reason": "IV access."
+  },
+  {
+   "element_key": "p20-7ccc0ac7",
+   "element_id": "p20-rb1-e06",
+   "text": "Check fingerprick glucose: if glucose < 3 (< 4 if diabetes) or unable to measure 19.",
+   "reason_category": "cross_reference_only",
+   "reason": "Glucose (routine vital) < 3 (< 4 if diabetes) or unmeasurable routes to page 19; that page encodes the hypoglycaemia logic."
+  },
+  {
+   "element_key": "p20-ffd7e709",
+   "element_id": "p20-rb1-e07",
+   "text": "If ≥ 20 weeks pregnant up to 1 week postpartum 177.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pregnancy >= 20 weeks to 1 week postpartum routes to page 177 (eclampsia management); not encoded here."
+  },
+  {
+   "element_key": "p20-b4d23e9a",
+   "element_id": "p20-rb1-e08",
+   "text": "If not pregnant or < 20 weeks pregnant, manage as below:",
+   "reason_category": "flowchart_routing",
+   "reason": "Routing into the management sequence below."
+  },
+  {
+   "element_key": "p20-6872493a",
+   "element_id": "p20-rb1-e09",
+   "text": "If fit has lasted ≥ 5 minutes, give medication to stop the fit and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Fit duration >= 5 minutes is a threshold for giving anticonvulsants and referring; also not representable (no seizure-duration observable; onset is not duration)."
+  },
+  {
+   "element_key": "p20-8a9145dd",
+   "element_id": "p20-rb1-e10",
+   "text": "If IV access available: give midazolam2,3 10mg IV or diazepam2,3 10mg slow IV over 5 minutes.",
+   "reason_category": "management_step",
+   "reason": "Medicine and dose."
+  },
+  {
+   "element_key": "p20-772fd5be",
+   "element_id": "p20-rb1-e11",
+   "text": "If IV access not available: give midazolam2,3 10mg IM/buccal4 or if midazolam not available, give a single dose of rectal diazepam2,3 0.2-0.5mg/kg (maximum 20mg",
+   "reason_category": "management_step",
+   "reason": "Medicine and dose."
+  },
+  {
+   "element_key": "p20-2882d2e5",
+   "element_id": "p20-rb1-e12",
+   "text": "Monitor airway and breathing: if slow or shallow breathing, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds) 16 and refer ur",
+   "reason_category": "management_step",
+   "reason": "Airway monitoring/ventilation and referral."
+  },
+  {
+   "element_key": "p20-cac67785",
+   "element_id": "p20-rb1-e13",
+   "text": "Expect a response within 5 minutes:",
+   "reason_category": "flowchart_routing",
+   "reason": "Treatment-response routing."
+  },
+  {
+   "element_key": "p20-b0845901",
+   "element_id": "p20-rb1-e14",
+   "text": "If still fitting after 5 minutes",
+   "reason_category": "flowchart_routing",
+   "reason": "Treatment-response branch (still fitting after 5 minutes)."
+  },
+  {
+   "element_key": "p20-4c9558d1",
+   "element_id": "p20-rb1-e15",
+   "text": "If IV access available: give midazolam2,3 10mg IV or diazepam2,3 10mg slow IV over 5 minutes.",
+   "reason_category": "management_step",
+   "reason": "Medicine and dose (second dose)."
+  },
+  {
+   "element_key": "p20-e815c9f9",
+   "element_id": "p20-rb1-e16",
+   "text": "If IV access not available: give midazolam2,3 10mg IM/buccal4 or if not already given, single dose of rectal diazepam2,3 0.2-0.5mg/kg (maximum 20mg/dose)",
+   "reason_category": "management_step",
+   "reason": "Medicine and dose (second dose)."
+  },
+  {
+   "element_key": "p20-3ea194d0",
+   "element_id": "p20-rb1-e17",
+   "text": "Continue to monitor airway and breathing: if slow or shallow breathing, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds) 16 ",
+   "reason_category": "management_step",
+   "reason": "Airway monitoring, intubation, referral."
+  },
+  {
+   "element_key": "p20-0a1b11bb",
+   "element_id": "p20-rb1-e18",
+   "text": "Expect a response within 5 minutes:",
+   "reason_category": "flowchart_routing",
+   "reason": "Treatment-response routing."
+  },
+  {
+   "element_key": "p20-948b83db",
+   "element_id": "p20-rb1-e19",
+   "text": "If still fitting after 5 minutes",
+   "reason_category": "flowchart_routing",
+   "reason": "Treatment-response branch (still fitting after second dose)."
+  },
+  {
+   "element_key": "p20-34f812ea",
+   "element_id": "p20-rb1-e20",
+   "text": "Patient stops fitting",
+   "reason_category": "flowchart_routing",
+   "reason": "Treatment-response branch (stops fitting)."
+  },
+  {
+   "element_key": "p20-48fc5f76",
+   "element_id": "p20-rb1-e21",
+   "text": "Give a single dose crushed levetiracetam2 60mg/kg (maximum 4500mg) via nasogastric tube.",
+   "reason_category": "management_step",
+   "reason": "Levetiracetam dose."
+  },
+  {
+   "element_key": "p20-09155fda",
+   "element_id": "p20-rb1-e22",
+   "text": "Keep patient in recovery position1.",
+   "reason_category": "management_step",
+   "reason": "Positioning instruction."
+  },
+  {
+   "element_key": "p20-6ef3b4da",
+   "element_id": "p20-rb1-e23",
+   "text": "Continue to monitor airway and breathing: if breathing stops or gasping, ventilate with bag-valve mask with oxygen at 10-15L/min (1 breath every 3-5 seconds). A",
+   "reason_category": "management_step",
+   "reason": "Airway support."
+  },
+  {
+   "element_key": "p20-1f048da7",
+   "element_id": "p20-rb1-e24",
+   "text": "Continue oxygen to maintain sats ≥ 95%.",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy."
+  },
+  {
+   "element_key": "p20-2da89c59",
+   "element_id": "p20-rb1-e25",
+   "text": "If known with epilepsy and discontinued treatment, restart antiseizure medication or start new antiseizure medication if indicated.",
+   "reason_category": "management_step",
+   "reason": "Restarting/starting antiseizure medication."
+  },
+  {
+   "element_key": "p20-b24a08f2",
+   "element_id": "p20-rb1-e26",
+   "text": "If fitting continues, discuss further management with referral hospital.",
+   "reason_category": "management_step",
+   "reason": "Discuss with referral hospital."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the red box says 'urgent attention'.",
+   "alternatives": "Emergency, since the Seizure warning sign already carries Emergency; the page does not escalate itself, so the page's wording is kept.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unconscious concept",
+   "decision": "Unconscious (finding).",
+   "alternatives": "Decreased level of consciousness (finding), broader (would include drowsy patients); page says unconscious.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fit >= 5 minutes / status epilepticus",
+   "decision": "Not encoded as a diagnosis or priority; it is a medication threshold and the page names no diagnosis.",
+   "alternatives": "possible Status epilepticus rule on onset >= 5 minutes ago; rejected because onset of a recorded finding is not seizure duration and the page says no 'consider'.",
+   "confidence": "medium"
+  }
+ ]
+}

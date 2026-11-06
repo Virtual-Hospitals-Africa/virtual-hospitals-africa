@@ -1,0 +1,1572 @@
+{
+ "page": 56,
+ "checker": "backward-2",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Recent delivery'; Postpartum state carries no recency window.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of pelvic structure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right upper quadrant pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region left side\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only 'spreading to back'; thoracic left/right radiation are invented laterality variants (lumbar covers back); chest-side radiation could be read as chest, not back.",
+   "fix": "Keep lumbar and consider a generic 'back pain' radiation concept, drop lateral thoracic",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region right side\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only 'spreading to back'; thoracic left/right radiation are invented laterality variants (lumbar covers back); chest-side radiation could be read as chest, not back.",
+   "fix": "Keep lumbar and consider a generic 'back pain' radiation concept, drop lateral thoracic",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'during peri-umbilical percussion' context dropped (acceptable but a nuance).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'during peri-umbilical percussion' context dropped (acceptable but a nuance).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Obstipation means intractable constipation; page says no stools AND no flatus for 24h (absolute absence, i.e. obstruction sign). Concept is a loose match.",
+   "fix": "Consider a closer 'absence of stool' concept if one exists; none found by search",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for urgent abdominal pain conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")) (qualifier (snomed_concept \"During menstruation\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'only during periods' exclusivity not expressed; 'crampy lower abdominal pain' via Abdominal colic is acceptable.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Pain aggravated by position' is broader than 'worse lying down/bending forward'.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal frequency of defecation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal feces\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "expr": "(active_condition (snomed_concept \"Indigestion\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Dyspepsia mapped to 'Indigestion' (finding) used as a diagnosis; acceptable synonym but a disorder-level dyspepsia concept may be closer.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "expr": "(measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m\u00b2)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "expr": "(measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable abdominal aortic aneurysm from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable abdominal aortic aneurysm from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Appendicitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'during peri-umbilical percussion' context dropped (acceptable but a nuance).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'during peri-umbilical percussion' context dropped (acceptable but a nuance).",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Peritonitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right upper quadrant pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Cholecystitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region left side\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only 'spreading to back'; thoracic left/right radiation are invented laterality variants (lumbar covers back); chest-side radiation could be read as chest, not back.",
+   "fix": "Keep lumbar and consider a generic 'back pain' radiation concept, drop lateral thoracic",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to thoracic region right side\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says only 'spreading to back'; thoracic left/right radiation are invented laterality variants (lumbar covers back); chest-side radiation could be read as chest, not back.",
+   "fix": "Keep lumbar and consider a generic 'back pain' radiation concept, drop lateral thoracic",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Pancreatitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") \u00b0C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "expr": "(diagnosis (snomed_concept \"Infectious disease\" \"disorder\") probable)",
+   "verdict": "imprecise",
+   "reason": "'infection likely' in a guarding+fever+vaginal-discharge context means pelvic/genital infection; 'Infectious disease' is far too broad.",
+   "fix": "Use a pelvic infection / pelvic inflammatory disease concept",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'recent onset' of vomiting/diarrhoea/etc. is dropped; any vomiting qualifies.",
+   "fix": "Add recent-onset qualifier",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of appetite\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable dysmenorrhoea from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")) (qualifier (snomed_concept \"During menstruation\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "'only during periods' exclusivity not expressed; 'crampy lower abdominal pain' via Abdominal colic is acceptable.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable dysmenorrhoea from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Dysmenorrhea\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Pain aggravated by position' is broader than 'worse lying down/bending forward'.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Indigestion\" \"finding\") probable)",
+   "verdict": "imprecise",
+   "reason": "Dyspepsia mapped to 'Indigestion' (finding) used as a diagnosis; acceptable synonym but a disorder-level dyspepsia concept may be closer.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\") (qualifier (snomed_concept \"Postprandial\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epigastric pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hunger pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "'Pain aggravated by position' is broader than 'worse lying down/bending forward'.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(>= (measurement (snomed_concept \"Body mass index\" \"observable entity\") kg/m\u00b2) 25)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(>= (measurement (snomed_concept \"Waist circumference\" \"observable entity\") cm) 80)",
+   "verdict": "wrong",
+   "reason": "Page threshold is sex-specific: >=80cm for women OR >=94cm for men; rule applies 80 to everyone, so men with waist 80-93 cm wrongly get probable GORD.",
+   "fix": "Add sex split: (or (and female >=80) (and male >=94))",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "expr": "(diagnosis (snomed_concept \"Gastroesophageal reflux disease\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Recurrent abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal frequency of defecation\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal feces\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mucus in stool\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "expr": "(diagnosis (snomed_concept \"Irritable bowel syndrome\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Recent delivery'; Postpartum state carries no recency window.",
+   "fix": "",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "verdict": "imprecise",
+   "reason": "'Blood glucose status' is a vague observable; a concentration concept matches a numeric mmol/L value better.",
+   "fix": "(snomed_concept \"Blood glucose concentration\" \"observable entity\")",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal mass\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of pelvic structure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(active_condition (snomed_concept \"Appendicitis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c141",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(active_condition (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c142",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(active_condition (snomed_concept \"Cholecystitis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c143",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(active_condition (snomed_concept \"Pancreatitis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c144",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c145",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c146",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c147",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c148",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c149",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c150",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c151",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c152",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c153",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c154",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c155",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c156",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c157",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c158",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c159",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Footnote limits allergens to exposure within the past few hours; the time window is dropped.",
+   "fix": "Add a recency qualifier / time_ago 'a few hours' condition",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c160",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c161",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal rigidity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c162",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") \u00b0C) 38)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c163",
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge problem\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent abdominal pain conditions",
+   "verdict": "problem",
+   "problem": "check_for omits fever, glucose, blood pressure and body temperature which drive the urgent logic; pregnancy listed alone; page's 'check for pregnancy in all women of child-bearing potential' is not encoded as its own task.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of abdominal pain not needing urgent attention",
+   "verdict": "problem",
+   "problem": "Page branches with no encoding: urinary symptoms/dipstick, ART side effects, weight loss, abnormal discharge/pain on moving cervix -> lower abdominal pain syndrome, constipation/diarrhoea referral; lower-abdomen-and-woman gating lost.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Measure waist circumference and BMI for dyspepsia",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable abdominal aortic aneurysm from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable appendicitis from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable peritonitis from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable cholecystitis from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable pancreatitis from abdominal pain",
+   "verdict": "problem",
+   "problem": "Lateral thoracic radiation concepts are invented; page says 'spreading to back'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge",
+   "verdict": "problem",
+   "problem": "Diagnosis concept 'Infectious disease' is far too generic for a pelvic infection and would flag any infection.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis from sudden abdominal pain",
+   "verdict": "problem",
+   "problem": "Allergen exposure lacks 'within past few hours' window; otherwise possible is justified by 'check for anaphylaxis'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable gastroenteritis from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable dysmenorrhoea from abdominal pain",
+   "verdict": "problem",
+   "problem": "'only during periods' and woman-with-lower-abdominal-pain gating are not enforced.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable dyspepsia from abdominal pain",
+   "verdict": "ok",
+   "problem": "",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable GORD from dyspepsia with raised BMI and waist",
+   "verdict": "problem",
+   "problem": "Waist threshold applied as >=80 cm for all; page is >=80 for women, >=94 for men.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable irritable bowel syndrome from abdominal pain",
+   "verdict": "problem",
+   "problem": "Page lists four items for 'at least 2 of' (including pain relieved with passing stool); rule has only three, so that item is omitted.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: abdominal pain with red-box signs",
+   "verdict": "ok",
+   "problem": "Structure and Urgent priority match the red box; minor: pulsatile mass covered only via AAA/abdominal mass.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most consequential: GORD waist-circumference threshold ignores the sex split (>=94 cm men), and the infection rule uses the over-broad 'Infectious disease' concept. IBS rule omits the fourth 'pain relieved with passing stool' criterion, and allergen exposure drops the 'past few hours' window. Remaining claims are largely faithful, with several non-urgent page branches (LAP, urinary, weight loss) unencoded."
+}

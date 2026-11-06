@@ -1,0 +1,556 @@
+{
+ "page": 130,
+ "lisp_file": "130-hiv-routine-care-cont-5.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-270e769d"
+   ],
+   "quote": "delay starting ART"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "Breathlessness at rest"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "while talking"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "Drowsy"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p130-2b7c069e"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "Aggressive"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "agitated"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p130-eb260379"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p130-3ef19a25"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "New sudden weakness"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for HIV: danger signs before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-50eb213e"
+   ],
+   "quote": "Check if there is a reason to delay ART"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-4bafdf36"
+   ],
+   "quote": "Is patient known with TB"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "weight loss"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "night sweats"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "blood-stained sputum"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for HIV: TB symptoms and signs of meningitis before starting ART",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-01910b1f"
+   ],
+   "quote": "severe headache"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-50eb213e"
+   ],
+   "quote": "Check if there is a reason to delay ART"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p130-4bafdf36"
+   ],
+   "quote": "Is patient known with TB"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "weight loss"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "night sweats"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bloodstained sputum\" \"finding\"))",
+   "element_keys": [
+    "p130-6064ffbf"
+   ],
+   "quote": "blood-stained sputum"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible TB in HIV patient before starting ART",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p130-5bd5b327"
+   ],
+   "quote": "Exclude TB"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-270e769d"
+   ],
+   "quote": "delay starting ART"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p130-10429d7d"
+   ],
+   "quote": "Respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p130-fe4fb28d"
+   ],
+   "quote": "Pulse rate ≥120"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "Breathlessness at rest"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p130-916e3c14"
+   ],
+   "quote": "while talking"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dependent for walking\" \"finding\"))",
+   "element_keys": [
+    "p130-28388cee"
+   ],
+   "quote": "Unable to walk unaided"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "Drowsy"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p130-08862671"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p130-2b7c069e"
+   ],
+   "quote": "Seizures"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p130-eb260379"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "Aggressive"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p130-575a21f3"
+   ],
+   "quote": "agitated"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p130-3ef19a25"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "New sudden weakness"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "numbness"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: HIV danger signs before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-2a2e6228"
+   ],
+   "quote": "visual disturbance"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p130-50eb213e"
+   ],
+   "quote": "Check if there is a reason to delay ART"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p130-01910b1f"
+   ],
+   "quote": "severe headache"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p130-01910b1f"
+   ],
+   "quote": "neck stiffness"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: HIV with signs of meningitis before starting ART",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p130-01910b1f"
+   ],
+   "quote": "vomiting"
+  }
+ ]
+}

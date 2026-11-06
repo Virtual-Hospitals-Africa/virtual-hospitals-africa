@@ -1,0 +1,1158 @@
+{
+ "edition": "2026",
+ "page": 29,
+ "lisp_file": "29-bites-and-stings.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting complaint; Bite - wound covers snake, spider, animal and human bites as descendants; Insect bite - wound is the recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting complaint; Bite - wound covers snake, spider, animal and human bites as descendants; Insect bite - wound is the recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting complaint; Bite - wound covers snake, spider, animal and human bites as descendants; Insect bite - wound is the recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-b4137a46"
+   ],
+   "quote": "Snake bite",
+   "confidence": "high",
+   "note": "Snake bite wound; 'even if bite not seen' cannot be expressed (no wound-visibility qualifier)."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+   "element_keys": [
+    "p29-e59999bb"
+   ],
+   "quote": "Scorpion",
+   "confidence": "medium",
+   "note": "SNOMED has no 'scorpion sting' clinical finding; scorpion envenomation is modelled as 'bite of Scorpiones' poisoning."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "Spider bite",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep bite wound\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p29-400f0445"
+   ],
+   "quote": "Deep",
+   "confidence": "medium",
+   "note": "Precoordinated deep bite wound; 'needing sutures' is not expressible."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-400f0445"
+   ],
+   "quote": "large wound",
+   "confidence": "medium",
+   "note": "Bite wound with the Large qualifier; 'needing sutures' is not expressible."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p29-fe3e8682"
+   ],
+   "quote": "Actively bleeding",
+   "confidence": "medium",
+   "note": "Plain Bleeding (current encounter); the 'Uncontrolled' warning-sign qualifier would be narrower than 'actively'."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toxic effect of venom\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p29-57e75a52"
+   ],
+   "quote": "Venom in eyes",
+   "confidence": "medium",
+   "note": "Toxic effect of venom with eye as finding site; the spitting-cobra conjunctiva concept is too specific."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "element_keys": [
+    "p29-26c10958"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "Read as neurotoxic muscle weakness; Asthenia (general weakness) considered."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Has drooping eyelids\" \"finding\"))",
+   "element_keys": [
+    "p29-e7a5aa43"
+   ],
+   "quote": "Drooping eyelids",
+   "confidence": "high",
+   "note": "Ptosis of eyelid (disorder) considered."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p29-f136d2d0"
+   ],
+   "quote": "Difficulty swallowing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p29-f136d2d0"
+   ],
+   "quote": "speaking",
+   "confidence": "high",
+   "note": "'Difficulty speaking' does not exist; Difficulty talking is the active FSN."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+   "element_keys": [
+    "p29-bc84e6a4"
+   ],
+   "quote": "Double vision",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p29-25024e2b"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page's own 'Shock/systolic BP < 80', encoded as an or of the shock finding and SBP < 80."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "drooling",
+   "confidence": "medium",
+   "note": "Drooling is a synonym of Dribbling from mouth. Read 'with drooling, restlessness, muscle cramps' as any one of them."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "restlessness",
+   "confidence": "medium",
+   "note": "Any one of the three spider-bite signs."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cramp\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "muscle cramps",
+   "confidence": "medium",
+   "note": "'Muscle cramp' is a synonym of Cramp (finding)."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "Sudden onset of generalised itch",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Generalized rash is a disorder in SNOMED."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Itching with the face or tongue as finding site."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Itching with the face or tongue as finding site."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Swelling with the face or tongue as finding site, as on the gold page."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Swelling with the face or tongue as finding site, as on the gold page."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "tight throat",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "hoarseness",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-e50833d5",
+    "p29-680f5095"
+   ],
+   "quote": "extensive local response to bite",
+   "confidence": "low",
+   "note": "Insect bite reaction + Extensive qualifier; no SNOMED concept for an extensive local response, and none for spider bites or stings."
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "skin red",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent bite and sting conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "painful",
+   "confidence": "medium",
+   "note": "Pain of skin; plain Pain considered but the page means the skin is painful."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "Bite/sting context; footnote 3's 'exposure to possible allergen' includes an insect bite/sting."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "Bite/sting context; footnote 3's 'exposure to possible allergen' includes an insect bite/sting."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "Bite/sting context; footnote 3's 'exposure to possible allergen' includes an insect bite/sting."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+   "element_keys": [
+    "p29-e59999bb"
+   ],
+   "quote": "Scorpion",
+   "confidence": "medium",
+   "note": "Scorpion sting as part of the bite/sting context (not under Bite - wound in SNOMED)."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "Sudden onset of generalised itch",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Generalized rash is a disorder in SNOMED."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Itching with the face or tongue as finding site."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Itching with the face or tongue as finding site."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Swelling with the face or tongue as finding site, as on the gold page."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "face/tongue itch/swelling",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule. Swelling with the face or tongue as finding site, as on the gold page."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightness in throat\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "tight throat",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "hoarseness",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "chest pain",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "diarrhoea",
+   "confidence": "high",
+   "note": "Sudden onset applies to every symptom in this item; qualified form so it matches the probable anaphylaxis rule."
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after a bite or sting",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "anaphylaxis likely",
+   "confidence": "high",
+   "note": "Page says anaphylaxis likely -> probable."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-e50833d5",
+    "p29-680f5095"
+   ],
+   "quote": "extensive local response to bite",
+   "confidence": "low",
+   "note": "Insect bite reaction + Extensive qualifier; no SNOMED concept for an extensive local response, and none for spider bites or stings."
+  },
+  {
+   "rule": "Diagnose probable papular urticaria after a bite or sting",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Prurigo simplex\" \"disorder\") probable)",
+   "element_keys": [
+    "p29-680f5095"
+   ],
+   "quote": "papular urticaria likely",
+   "confidence": "high",
+   "note": "Papular urticaria is a synonym of Prurigo simplex."
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-23c7ce46"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "The cellulitis box is reached from the non-urgent bite/sting approach; applied to any bite/sting."
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-23c7ce46"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "The cellulitis box is reached from the non-urgent bite/sting approach; applied to any bite/sting."
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p29-23c7ce46"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "The cellulitis box is reached from the non-urgent bite/sting approach; applied to any bite/sting."
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "skin red",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "warm",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "painful",
+   "confidence": "medium",
+   "note": "Pain of skin; plain Pain considered but the page means the skin is painful."
+  },
+  {
+   "rule": "Diagnose probable cellulitis after a bite or sting",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cellulitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p29-309c4bf3"
+   ],
+   "quote": "cellulitis likely",
+   "confidence": "high",
+   "note": "Page says cellulitis likely -> probable."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting-complaint context of the red box."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting-complaint context of the red box."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "high",
+   "note": "Presenting-complaint context of the red box."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+   "element_keys": [
+    "p29-2e063dc4"
+   ],
+   "quote": "bite/sting",
+   "confidence": "medium",
+   "note": "Scorpion sting is a sting but not a descendant of Bite - wound, so it is added to the context group."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snake bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-b4137a46"
+   ],
+   "quote": "Snake bite",
+   "confidence": "high",
+   "note": "Snake bite wound; 'even if bite not seen' cannot be expressed (no wound-visibility qualifier)."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))",
+   "element_keys": [
+    "p29-e59999bb"
+   ],
+   "quote": "Scorpion",
+   "confidence": "medium",
+   "note": "SNOMED has no 'scorpion sting' clinical finding; scorpion envenomation is modelled as 'bite of Scorpiones' poisoning."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep bite wound\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p29-400f0445"
+   ],
+   "quote": "Deep",
+   "confidence": "medium",
+   "note": "Precoordinated deep bite wound; 'needing sutures' is not expressible."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))",
+   "element_keys": [
+    "p29-400f0445"
+   ],
+   "quote": "large wound",
+   "confidence": "medium",
+   "note": "Bite wound with the Large qualifier; 'needing sutures' is not expressible."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\"))",
+   "element_keys": [
+    "p29-fe3e8682"
+   ],
+   "quote": "Actively bleeding",
+   "confidence": "medium",
+   "note": "Plain Bleeding (current encounter); the 'Uncontrolled' warning-sign qualifier would be narrower than 'actively'."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toxic effect of venom\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of eye proper\" \"body structure\")))",
+   "element_keys": [
+    "p29-57e75a52"
+   ],
+   "quote": "Venom in eyes",
+   "confidence": "medium",
+   "note": "Toxic effect of venom with eye as finding site; the spitting-cobra conjunctiva concept is too specific."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "element_keys": [
+    "p29-26c10958"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "Read as neurotoxic muscle weakness; Asthenia (general weakness) considered."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Has drooping eyelids\" \"finding\"))",
+   "element_keys": [
+    "p29-e7a5aa43"
+   ],
+   "quote": "Drooping eyelids",
+   "confidence": "high",
+   "note": "Ptosis of eyelid (disorder) considered."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty swallowing\" \"finding\"))",
+   "element_keys": [
+    "p29-f136d2d0"
+   ],
+   "quote": "Difficulty swallowing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p29-f136d2d0"
+   ],
+   "quote": "speaking",
+   "confidence": "high",
+   "note": "'Difficulty speaking' does not exist; Difficulty talking is the active FSN."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+   "element_keys": [
+    "p29-bc84e6a4"
+   ],
+   "quote": "Double vision",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p29-25024e2b"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page's own 'Shock/systolic BP < 80', encoded as an or of the shock finding and SBP < 80."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p29-25024e2b"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": "Page's own threshold, strict <."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Spider bite wound\" \"disorder\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "Spider bite",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "drooling",
+   "confidence": "medium",
+   "note": "Drooling is a synonym of Dribbling from mouth. Read 'with drooling, restlessness, muscle cramps' as any one of them."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "restlessness",
+   "confidence": "medium",
+   "note": "Any one of the three spider-bite signs."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cramp\" \"finding\"))",
+   "element_keys": [
+    "p29-3a5d9eb0"
+   ],
+   "quote": "muscle cramps",
+   "confidence": "medium",
+   "note": "'Muscle cramp' is a synonym of Cramp (finding)."
+  },
+  {
+   "rule": "Urgent: bite or sting with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))",
+   "element_keys": [
+    "p29-10043674"
+   ],
+   "quote": "anaphylaxis likely",
+   "confidence": "high",
+   "note": "Red-box anaphylaxis item, via the probable anaphylaxis rule in this file."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p29-4488079a",
+   "element_id": "p29-rb1-e14",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list."
+  },
+  {
+   "element_key": "p29-1a82d877",
+   "element_id": "p29-rb1-e15",
+   "text": "If bleeding, apply direct pressure and elevate limb.",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-41b40e2e",
+   "element_id": "p29-rb1-e16",
+   "text": "If shock2 /systolic BP < 80, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-e25e6e61",
+   "element_id": "p29-rb1-e17",
+   "text": "Remove loose/dead skin. Wash wound with soap under running water for 15 minutes, clean with chlorhexidine 0.05% or povidone iodine 10% solution. Apply dressing.",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-63223330",
+   "element_id": "p29-rb1-e18",
+   "text": "If snake bite or venom in eyes:",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-60d39895",
+   "element_id": "p29-rb1-e19",
+   "text": "Keep patient calm and still. Immobilise limb and remove jewellery. Avoid applying tourniquet or sucking/squeezing out venom. Discuss with Poisons Information He",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-9a3e4cf6",
+   "element_id": "p29-rb1-e20",
+   "text": "If venom in eyes, immediately flush under running water or sodium chloride 0.9% for 20 minutes. If available, instil 1 drop tetracaine 1% eye drops before irrig",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-f76d946c",
+   "element_id": "p29-rb1-e21",
+   "text": "If very painful scorpion sting, inject lidocaine 2% 2mL around site and apply ice if tolerated.",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  },
+  {
+   "element_key": "p29-5e19824b",
+   "element_id": "p29-rb1-e22",
+   "text": "Give tetanus toxoid 0.5mL IM if none in past 5 years.",
+   "reason_category": "management_step",
+   "reason": "Management, medicine or referral step (no manage tasks in this pass)."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Scorpion sting concept",
+   "decision": "Poisoning due to bite of Scorpiones (disorder)",
+   "alternatives": "Bite of order Scorpiones (event, not a clinical finding); Venomous sting (too broad)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Spider bite with drooling, restlessness, muscle cramps",
+   "decision": "Spider bite AND any one of the three signs",
+   "alternatives": "Spider bite with all three; spider bite alone",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaphylaxis item 'or exposure to possible allergen'",
+   "decision": "Read as the context (the bite/sting itself, per footnote 3); probable anaphylaxis = bite/sting AND any sudden-onset symptom",
+   "alternatives": "Treat exposure as a standalone criterion (would make every bite/sting anaphylaxis likely)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Papular urticaria evidence",
+   "decision": "Insect bite reaction with Extensive qualifier alone",
+   "alternatives": "Spider bite/insect sting or-group (flagged always-true because Insect bite reaction is a kind of Insect bite - wound)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Cellulitis context",
+   "decision": "Any bite/sting (Bite - wound, Insect bite - wound, Insect sting)",
+   "alternatives": "Restrict to spider/insect bites and low-risk animal bites (routing not expressible)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Footnote 2 'shock likely'",
+   "decision": "Not encoded as a probable Shock rule; red box keeps Shock or SBP < 80",
+   "alternatives": "Probable shock from any of SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness",
+   "confidence": "medium"
+  }
+ ]
+}

@@ -1,0 +1,372 @@
+{
+ "page": 89,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p89-8bdefab1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (and (clinical_finding (snomed_concept \"Melanocytic nevus\" \"disorder\")) (or ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-84363ac6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Irregular colour' mapped to 'Mixed color'; slight narrowing but acceptable.",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (clinical_finding (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\")) / (... \"Mixed color of pigmented skin lesion\" ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-8b824d7b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "size change has no specific concept; relies on generic 'Change in skin lesion'"
+   ],
+   "problem": "Shape and colour change have their own concepts; size change only covered by the non-specific 'Change in skin lesion' (not pigmented/mole-specific).",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (clinical_finding (snomed_concept \"Change in skin lesion\" \"finding\")) ; \"Changing shape of pigmented skin lesion\" ; \"Changing color of pigmented skin lesion\""
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-8ff0a187",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "differs from surrounding moles"
+   ],
+   "problem": "No criterion for the 'differs from surrounding moles' item",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-e69abb09",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page says width; encoded as largest dimension in mm, with measure task. Reasonable.",
+   "evidence": [
+    "task 'Measure width of mole' :: (measure (measurement (snomed_concept \"Lesion size, largest dimension\" \"observable entity\") mm)) ; system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (> (measurement ... mm) 6)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-2bb54cda",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Bleeds easily' is a generic finding, not tied to the mole; acceptable as ANDed with nevus.",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (clinical_finding (snomed_concept \"Bleeds easily\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-72e93bf3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_priority_evaluation 'Urgent: mole needing same-week referral (skin lump/s)' :: (clinical_finding (snomed_concept \"Itching of pigmented skin lesion\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p89-bee317dd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'softens in the centre' not distinct from fluctuant; two identical rules for boil and abscess"
+   ],
+   "problem": "Boil and abscess share identical criteria; acceptable given page says boil/abscess, but boil/abscess in 'likely' sets all six criteria required with AND including pain, warm, red, firm.",
+   "evidence": [
+    "system_diagnosis_rule 'Diagnose probable boil' / 'Diagnose probable skin abscess' :: (and Pain of skin; Mass of skin Firm; Redness; warm; Fluctuant; Skin discharge)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-46fd9cf2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_diagnosis_rule 'Diagnose probable warts' :: (clinical_finding Papule of skin (qualifier Round shape)(qualifier Raised))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-2ce347b3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_diagnosis_rule 'Diagnose probable warts' :: (clinical_finding (snomed_concept \"Rough skin\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-2f698b4b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "skin-coloured"
+   ],
+   "problem": "'Small' papule captured; skin-coloured colour not encoded.",
+   "evidence": [
+    "system_diagnosis_rule 'Diagnose probable molluscum contagiosum' :: Papule of skin (qualifier Small)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-6429b0b0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "pearly"
+   ],
+   "problem": "'Pearly bumps' not encoded beyond papule; acceptable loss but unrecorded.",
+   "evidence": [
+    "system_diagnosis_rule 'molluscum' :: Papule of skin Small"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p89-a707fdd9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_diagnosis_rule 'molluscum' :: (clinical_finding (snomed_concept \"Skin dimple\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-002c7c4c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Palm body-site concept 'Palm (region) structure' and negation applied to papule only; acceptable. Concepts should be verified to resolve.",
+   "evidence": [
+    "system_diagnosis_rule 'molluscum' :: (no (clinical_finding Papule of skin (finding_site Palm (region) structure))) ; (no ... Structure of sole of foot)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-b3c4f406",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_diagnosis_rule 'Diagnose probable Kaposi's sarcoma' :: (and Mass of skin Painless (or Purple color, Brown color))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-fd1c37a0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'lumps on skin' as Mass of skin.",
+   "evidence": [
+    "system_diagnosis_rule 'Kaposi' :: Mass of skin"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-23225713",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "system_diagnosis_rule 'epidermoid cyst' and 'lipoma' :: Mass of subcutaneous tissue Smooth + Well defined"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-e67ecd4d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "optional central hole and discharge (appropriately not required)"
+   ],
+   "problem": "Round, firm captured. Epidermoid and lipoma both require mutually separate sets; fine.",
+   "evidence": [
+    "system_diagnosis_rule 'epidermoid cyst' :: Mass of subcutaneous tissue Round shape Firm"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-af3a3a87",
+   "scope": "borderline",
+   "scope_reason": "optional feature ('may have')",
+   "verdict": "missing",
+   "parts_missing": [
+    "central hole and discharge of white substance"
+   ],
+   "problem": "'May have' so optional; not encoded, reasonable omission.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p89-6e9c5d9d",
+   "scope": "borderline",
+   "scope_reason": "optional feature",
+   "verdict": "missing",
+   "parts_missing": [
+    "white discharge"
+   ],
+   "problem": "Optional feature; not encoded.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p89-37e2716c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "doughy"
+   ],
+   "problem": "'Soft' captured; 'doughy' not.",
+   "evidence": [
+    "system_diagnosis_rule 'lipoma' :: Mass of subcutaneous tissue Soft Painless"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-c06b8b64",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "moves easily (mobile)"
+   ],
+   "problem": "Painless captured; mobility not encoded.",
+   "evidence": [
+    "system_diagnosis_rule 'lipoma' :: Soft, Painless"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-a8f999bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Red papules, pustules, nodules (blackheads as comedone) encoded as OR. 'Skin nodule' and 'Pustule' are generic and could over-trigger acne.",
+   "evidence": [
+    "system_diagnosis_rule 'acne' :: (or Papule Red color; Pustule; Skin nodule; Comedone)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p89-6ae5ca79",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Distribution (face/chest/back) not encoded, a descriptor only.",
+   "evidence": [
+    "system_diagnosis_rule 'acne' :: Comedone"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p89-08f5bffe",
+  "p89-f23d53cb",
+  "p89-73bae610",
+  "p89-0e1e754f",
+  "p89-e6077bcf",
+  "p89-2ec0a6a3",
+  "p89-b7493736",
+  "p89-c5eaca59",
+  "p89-132e61fc",
+  "p89-99400e23",
+  "p89-05379956",
+  "p89-1c5d89bf",
+  "p89-8d3e9c90",
+  "p89-dd95a789",
+  "p89-1b5a3fb2",
+  "p89-f0f70fcd",
+  "p89-693fdd95",
+  "p89-c47fe137",
+  "p89-fce9bd45",
+  "p89-c313192f",
+  "p89-2f9d0d94",
+  "p89-9b7b1a43",
+  "p89-12795619",
+  "p89-6dd1b3bf",
+  "p89-4015fab0",
+  "p89-b229f21e",
+  "p89-5e460721",
+  "p89-705606c6",
+  "p89-c10b2a31",
+  "p89-7ff28e58",
+  "p89-d3eb4b13",
+  "p89-40a0fea9",
+  "p89-dd2931b0",
+  "p89-d40fc608"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: mole needing same-week referral",
+   "problem": "'Differs from surrounding moles' criterion absent; 'Bleeds easily' and size/colour-change items rely on generic concepts, and 'Change in skin lesion' is non-mole-specific, widening the trigger.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable boil / skin abscess",
+   "problem": "Two identical rules with all six criteria ANDed; page gives one 'boil/abscess likely' conclusion and cross-references p83. Requiring discharge and fluctuance together may miss early lesions.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable acne",
+   "problem": "Generic 'Skin nodule' and 'Pustule' alone trigger probable acne, overly sensitive relative to the page's red papules/pustules/nodules/blackheads on face/trunk.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for skin lump/s features",
+   "problem": "Mole check_for entry 'Melanocytic nevus' is placed in a task triggered by mass of skin, so a mole is listed as a finding to check; and no 'check_for' covers lipoma 'Soft ... Painless' mobility or molluscum skin-coloured.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable epidermoid cyst / lipoma",
+   "problem": "Both use Mass of subcutaneous tissue with overlapping Smooth/Well defined/Painless qualifiers and require both ANDed clinical_finding lines, effectively duplicating the same finding with different qualifier sets.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Mole referral criterion 'differs from surrounding moles' is missing and size-change is covered only by a generic change concept. Diagnosis rules capture main descriptors but drop skin-coloured/pearly (molluscum) and doughy/mobile (lipoma), and acne triggers on very generic pustule/nodule findings."
+}

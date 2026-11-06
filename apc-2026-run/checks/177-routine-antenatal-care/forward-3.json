@@ -1,0 +1,823 @@
+{
+ "page": 177,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p177-bfd8ee48",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Presenting complaint anchored on Pregnancy; Urgent matches 'give urgent attention'.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: Urgent (and (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) (or ...))",
+    "Check for urgent routine antenatal care conditions :: due_to (clinical_finding (snomed_concept \"Pregnancy\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-8573c81b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))",
+    "Check for urgent routine antenatal care conditions :: check_for (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-42fdc9da",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "Check for urgent routine antenatal care conditions :: check_for (clinical_finding (snomed_concept \"Bleeding from vagina\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-70ea6047",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "\"persistent\" (headache/blurred vision/abdominal pain) not expressed: plain Headache/Blurring/Abdominal pain used; \"Chronic persistent\" qualifier or an onset/duration criterion would be closer"
+   ],
+   "problem": "BP >= 140/90 encoded as SBP>=140 OR DBP>=90 (standard reading); the three symptoms correctly OR-ed and AND-ed with BP; \"treat as severe pre-eclampsia\" encoded as probable diagnosis and fed into the priority via active_condition. Only the \"persistent\" qualifier is lost, so any (even transient) headache in a pregnant woman with BP 140/90 becomes probable severe pre-eclampsia and Urgent.",
+   "evidence": [
+    "Diagnose probable severe pre-eclampsia in antenatal patient :: (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)) (or (clinical_finding (snomed_concept \"Headache\" \"finding\")) (clinical_finding (snomed_concept \"Blurring of visual image\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\"))))",
+    "Urgent: pregnant patient with antenatal danger signs :: (active_condition (snomed_concept \"Severe pre-eclampsia\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-25b0050e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38) (or (clinical_finding (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-3c0796e7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "\">= 1+\" dipstick grade approximated by plain Proteinuria (no grade expressible); acceptable.",
+   "evidence": [
+    "Diagnose probable severe pre-eclampsia in antenatal patient :: (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (clinical_finding (snomed_concept \"Proteinuria\" \"finding\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-73ff7288",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-98729344",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded inline in the priority rule rather than as a diagnosis; SNOMED has no \"severe hypertension\" concept (search returns none) and the page says \"treat as\", so inline is defensible. Inconsistent with the parallel pre-eclampsia lines, which got a probable rule.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (or (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160) (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)) (no (clinical_finding (snomed_concept \"Proteinuria\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-6062839d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (and (clinical_finding (snomed_concept \"Swollen calf\" \"finding\")) (clinical_finding (snomed_concept \"Pain in calf\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-cf812d8f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "\"< 37 weeks\" gestation gate absent (Gestational age exists as an observable entity but the language has no weeks unit, so not representable as written)"
+   ],
+   "problem": "Preterm labour probable fires on painful uterine contractions at any gestation, so a woman in normal term labour (>= 37 weeks) is diagnosed \"Premature labor\" and flagged Urgent. The limitation is the language, but the rule should at least be noted/limited; as encoded it is a wrong diagnosis at term.",
+   "evidence": [
+    "Diagnose probable preterm labour in antenatal patient :: (and (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) (clinical_finding (snomed_concept \"Painful uterine contractions\" \"finding\")))",
+    "Urgent: pregnant patient with antenatal danger signs :: (active_condition (snomed_concept \"Premature labor\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-ca3855bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Cross-reference to p179 not needed; both decreased and absent encoded.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Reduced fetal movement\" \"finding\")) (clinical_finding (snomed_concept \"Fetal movements absent\" \"situation\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-a9b52d27",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "\"clear/pale\" character of fluid not expressed",
+    "\"no contractions\" only excludes \"Uterine contractions present\"; \"Painful uterine contractions\" (the finding checked for preterm labour) is NOT a descendant of it (is_a = NO), so a patient recorded with painful contractions plus a gush still gets PROM probable"
+   ],
+   "problem": "\"Watery vaginal discharge\" + Sudden onset is a reasonable symptom-level stand-in for a gush of fluid (\"Amniotic fluid leaking\" disorder exists but is a conclusion). The exclusion of contractions is leaky because the two contraction concepts are siblings.",
+   "evidence": [
+    "Diagnose probable prelabour rupture of membranes in antenatal patient :: (and (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) (clinical_finding (snomed_concept \"Watery vaginal discharge\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (no (clinical_finding (snomed_concept \"Uterine contractions present\" \"finding\"))))",
+    "Urgent: pregnant patient with antenatal danger signs :: (active_condition (snomed_concept \"Premature rupture of membranes\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-f9cab683",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Shock OR SBP < 80 both in priority. Footnote 1 (definition of shock likely) is judged under p177-out-e02 and is missing.",
+   "evidence": [
+    "Urgent: pregnant patient with antenatal danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-f9bcdead",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-52e33f88",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-1e9cb727",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-30e5cf96",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-57e14ff4",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d1ba5ef7",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-9e3b46c1",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0f0a004d",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-1f5f47af",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-020eeb99",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7fff68b3",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Column heading for a management column.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-3f1f9ae7",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Gestation < 22 weeks gate for the miscarriage branch; no weeks unit. Consequence: miscarriage/ectopic rules are not gated (see rule-level problems).",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-61a64a2c",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Late pregnancy >= 22 weeks branch label; gestation not representable.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-53a07d48",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Late pregnancy >= 22 weeks branch label; gestation not representable.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-473743de",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e8d9cb73",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Seizures < 20 weeks routed to page 20.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-00b04dd3",
+   "scope": "borderline",
+   "scope_reason": "\"treat for eclampsia\" is a management instruction, but it encodes a diagnostic conclusion (seizure in pregnancy >= 20 weeks to 1 week postpartum = eclampsia); a possible Eclampsia rule (Eclampsia disorder exists) from Pregnancy + Seizure would be the house-style encoding, with the gestation bound not representable.",
+   "verdict": "missing",
+   "parts_missing": [
+    "possible/probable Eclampsia diagnosis from Pregnancy + Seizure"
+   ],
+   "problem": "No eclampsia rule; seizure only feeds the priority.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-a8a04032",
+   "scope": "borderline",
+   "scope_reason": "Confirmatory test for PROM (sterile speculum, litmus turns/stays blue) is a diagnostic criterion, but phrased as an action.",
+   "verdict": "missing",
+   "parts_missing": [
+    "litmus/nitrazine-positive amniotic fluid as evidence for PROM"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p177-b4a254cf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All four alternatives (os open, os dilated, POC in os, POC in vagina) checked and consumed by both branches.",
+   "evidence": [
+    "Check for miscarriage signs in pregnant patient with vaginal bleeding :: check_for (clinical_finding (snomed_concept \"Cervical os open\" \"finding\")) (clinical_finding (snomed_concept \"Cervix dilated\" \"finding\")) (clinical_finding (snomed_concept \"Products of conception at uterine os cervix\" \"finding\")) (clinical_finding (snomed_concept \"Products of conception in vagina\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b4a6f302",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-23abd5b1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-96c781cd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-c0bb9842",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-12dd2eba",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-17aca511",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-23f91824",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-5639d9f2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-93d89fef",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-17560643",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-53eacb3e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0f282d67",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-85cd3884",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-dbf64f5b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-9e9311cc",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e2908d2c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-101df623",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b1127d4f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-99e49da0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-fb4ee8a4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-8ec81dbe",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-84deb32d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-14ff2096",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-557fe2f0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d2a483a5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7b16527b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-4442455c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-0b3e398a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-7d60413a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-57c6f81c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-e8ae98f4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-5287ee49",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Fever/tachycardia/foul POC triggers antibiotics; page names no diagnosis (implicit septic miscarriage), so not encoded is acceptable.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-b1e18292",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "\"No\" branch; carried by the (no ...) conditions in the threatened/complete/ectopic rules.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d079dd4c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "\"Yes\" branch; carried by the (or ...) conditions in the incomplete/inevitable rules.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-52cc90b5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Page says \"Threatened or complete miscarriage likely\" -> should be probable; encoded as two possible rules. Branch logic (vaginal bleeding AND none of the four os/POC findings) is right, but there is also no < 22 weeks gate, so it fires for any antepartum bleed in late pregnancy.",
+   "evidence": [
+    "Diagnose possible threatened miscarriage in antenatal patient :: (diagnosis (snomed_concept \"Threatened abortion\" \"disorder\") possible) ... (no (clinical_finding (snomed_concept \"Cervical os open\" \"finding\"))) (no ... \"Cervix dilated\") (no ... \"Products of conception at uterine os cervix\") (no ... \"Products of conception in vagina\")",
+    "Diagnose possible complete miscarriage in antenatal patient :: (diagnosis (snomed_concept \"Complete miscarriage\" \"disorder\") possible) ..."
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-70137a40",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Page says \"Incomplete or inevitable miscarriage likely\" -> should be probable; encoded as possible. Yes-branch OR logic correct; evidence is already in a check_for, so probable would pass the tests. No < 22 weeks gate.",
+   "evidence": [
+    "Diagnose possible incomplete miscarriage in antenatal patient :: (diagnosis (snomed_concept \"Incomplete miscarriage\" \"disorder\") possible) (and ... (or (clinical_finding (snomed_concept \"Cervical os open\" \"finding\")) (clinical_finding (snomed_concept \"Cervix dilated\" \"finding\")) (clinical_finding (snomed_concept \"Products of conception at uterine os cervix\" \"finding\")) (clinical_finding (snomed_concept \"Products of conception in vagina\" \"finding\"))))",
+    "Diagnose possible inevitable miscarriage in antenatal patient :: (diagnosis (snomed_concept \"Inevitable abortion\" \"disorder\") possible) ..."
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p177-d668c5c6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "\"Refer to exclude ectopic pregnancy and confirm diagnosis\" (text split over three fragments) -> possible Ectopic pregnancy on the No branch; rule type correct.",
+   "evidence": [
+    "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding :: (diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") possible) (and Pregnancy, Bleeding from vagina, (no os/POC findings x4))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-2879fbb7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "\"Refer to exclude ectopic pregnancy and confirm diagnosis\" (text split over three fragments) -> possible Ectopic pregnancy on the No branch; rule type correct.",
+   "evidence": [
+    "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding :: (diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") possible) (and Pregnancy, Bleeding from vagina, (no os/POC findings x4))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-11d3fe31",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "\"Refer to exclude ectopic pregnancy and confirm diagnosis\" (text split over three fragments) -> possible Ectopic pregnancy on the No branch; rule type correct.",
+   "evidence": [
+    "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding :: (diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") possible) (and Pregnancy, Bleeding from vagina, (no os/POC findings x4))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p177-30ee0b8f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "Footnote 1: \"SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness: shock likely\" -> no probable Shock rule; Shock is only a raw check_for item",
+    "Footnote 4: chorioamnionitis = temperature >= 38, painful abdomen or foul-smelling amniotic fluid -> no Chorioamnionitis rule (concept exists)",
+    "Footnote 3 (unknown gestation, uterus above umbilicus = late pregnancy): flowchart routing, not representable; footnotes 2 and 5: management, out of scope"
+   ],
+   "problem": "Two definitional diagnostic statements in the footnotes are not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p177-8cd61b9a"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose possible threatened/complete miscarriage, ectopic pregnancy, incomplete/inevitable miscarriage",
+   "problem": "Page's 'likely' conclusions for the early-pregnancy branch are encoded as possible, not probable (threatened, complete, incomplete, inevitable). The evidence is all in the miscarriage check_for, so probable would pass the tests.",
+   "severity": "high"
+  },
+  {
+   "rule": "All five miscarriage/ectopic rules",
+   "problem": "The < 22 weeks gate is lost (not representable) and nothing distinguishes the late-pregnancy >= 22 weeks branch, so every pregnant woman with vaginal bleeding and no os/POC findings (including a third-trimester antepartum haemorrhage) gets threatened miscarriage, complete miscarriage and ectopic pregnancy all at once. Threatened, complete and ectopic share identical evidence.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable preterm labour in antenatal patient",
+   "problem": "No gestation bound, so normal term labour is diagnosed as Premature labor and becomes Urgent via active_condition.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable prelabour rupture of membranes in antenatal patient",
+   "problem": "(no Uterine contractions present) does not exclude Painful uterine contractions (sibling concepts, not is_a), so PROM and preterm labour can both fire on the same patient.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable severe pre-eclampsia in antenatal patient",
+   "problem": "'persistent' qualifier dropped from headache/blurred vision/abdominal pain.",
+   "severity": "low"
+  },
+  {
+   "rule": "(none)",
+   "problem": "No eclampsia rule (seizure from 20 weeks to 1 week postpartum: treat for eclampsia), no shock-likely rule from footnote 1, no chorioamnionitis rule from footnote 4.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "The red-box triage is encoded faithfully (all 12 danger signs in the Urgent rule, with correct BP thresholds and pre-eclampsia/PROM/preterm-labour diagnoses). The main problems: the early-pregnancy branch's 'miscarriage likely' conclusions are encoded as possible instead of probable, and with no gestation gate they fire for any vaginal bleed. Preterm labour fires at term. Eclampsia, shock (footnote 1) and chorioamnionitis (footnote 4) have no rules."
+}

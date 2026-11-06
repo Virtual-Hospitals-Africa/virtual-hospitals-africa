@@ -1,0 +1,71 @@
+{
+ "page": 35,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "reason": "The page says 'Angry behaviour', an observed behaviour; 'Anger reaction' (under Outbursts of anger) is a behavioural finding, while 'Feeling angry' is a mood finding; no concept 'Angry behavior' exists, so the page does not fully settle the choice.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "reason": "The page says 'Tense posturing like gripping arm rails tightly, clenching fists', i.e. physical tension, which the narrower 'Feeling physically tense' names; both are patient-reported feelings rather than observed posture, so neither is exact.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "reason": "The page lists 'insulting' behaviour, which A left uncovered; insults are verbal abuse and no 'insulting' concept exists.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "reason": "The page's examples 'pounding walls, throwing objects' are acts against property, which 'Physical aggression' alone does not name; 'Destructive behavior' is a child of Aggressive behavior.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+   "reason": "The page says 'Angry behaviour', an observed behaviour; 'Anger reaction' (under Outbursts of anger) is a behavioural finding, while 'Feeling angry' is a mood finding; no concept 'Angry behavior' exists, so the page does not fully settle the choice.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+   "reason": "The page says 'Tense posturing like gripping arm rails tightly, clenching fists', i.e. physical tension, which the narrower 'Feeling physically tense' names; both are patient-reported feelings rather than observed posture, so neither is exact.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+   "reason": "The page lists 'insulting' behaviour, which A left uncovered; insults are verbal abuse and no 'insulting' concept exists.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+   "reason": "The page's examples 'pounding walls, throwing objects' are acts against property, which 'Physical aggression' alone does not name; 'Destructive behavior' is a child of Aggressive behavior.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds agree on the trigger, the Urgent level, the rule structure and that no diagnosis or measure rules are supported. B was taken as base because it covers every red-box word ('insulting', 'pounding walls, throwing objects') that A left to broader concepts. B's files are used as-is (rule descriptions, provenance, flowchart); A's clinician question on loud speech / 'Finding of shouting' was merged into the remaining questions. Each difference appears twice (check_for and priority_condition) because both rules carry the same list."
+}

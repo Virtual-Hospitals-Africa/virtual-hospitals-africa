@@ -1,0 +1,371 @@
+{
+ "page": 80,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p80-926bed09",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Trigger is very broad but acceptable for a page titled leg symptoms.",
+   "evidence": [
+    "task \"Check for urgent leg symptom conditions\" :: (or (clinical_finding \"Finding of lower limb\") (clinical_finding \"Muscle pain\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-06cb61f7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable fracture of leg :: (and (clinical_finding \"Unable to weight-bear\") (clinical_finding \"Injury of lower limb\"))",
+    "check_for :: both items present"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p80-83caf7ab",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "risk factors (optional modifiers)",
+    "pain unilateral"
+   ],
+   "problem": "Core criteria encoded. Unilaterality is attached only to swelling, not to pain; the page says one calf for both. The 'especially if' risk factors (BMI>30, smoker, immobile, pregnant, oestrogen, trauma, hospitalisation, TB, cancer) are not encoded, though they only raise suspicion so omission is defensible.",
+   "evidence": [
+    "Diagnose probable DVT :: (and (clinical_finding \"Swollen calf\" (qualifier \"Unilateral\")) (clinical_finding \"Pain in calf\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-4186fc98",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Pallor mapped to white discolouration of skin; acceptable. SNOMED concept names not independently verified by me (tool call failed).",
+   "evidence": [
+    "Diagnose probable acute limb ischaemia :: (and (clinical_finding \"Pain in lower limb\" (qualifier \"Sudden onset\") (qualifier \"Severe (severity modifier)\") (qualifier \"At rest\")) (or numbness / weakness / white discoloration+site / absent pulse+site))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-1a9f15a3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "explicit exercise-related muscle pain of legs or buttocks"
+   ],
+   "problem": "Page: muscle pain in legs or buttocks on exercise. 'Intermittent claudication' is a reasonable proxy, but buttock exercise pain is not explicitly covered, and 'Intermittent claudication' as a finding does not state 'relieved by rest' (not needed here). Logic of and/or is right.",
+   "evidence": [
+    "Diagnose probable critical limb ischaemia :: (and (clinical_finding \"Intermittent claudication\") (or Pain in lower limb at rest / Ulcer of lower extremity / Gangrenous disorder+Lower limb structure))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p80-10c2a2eb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Refer urgently mapped to Urgent priority via active_condition of the four diagnoses; matches the page.",
+   "evidence": [
+    "system_priority_evaluation \"Urgent: leg symptoms with fracture, DVT or limb ischaemia\" :: Urgent (and trigger (or active_condition Fracture / DVT / Acute ischemia / Critical ischemia))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-d654e8a5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Arthropathy as probable joint problem; 'unable to do all actions comfortably' approximated by three difficulty findings. 'Only in the foot -> 81' is cross reference.",
+   "evidence": [
+    "Diagnose probable joint problem :: (or Joint warm / Tenderness of joint / Joint swelling / Difficulty walking / sitting down / standing up)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-d6ecf04f",
+   "scope": "borderline",
+   "scope_reason": "management_step; arguable",
+   "verdict": "missing",
+   "parts_missing": [
+    "statin-related muscle symptoms"
+   ],
+   "problem": "Statin plus muscle pain/weakness: discuss with doctor. Management/referral advice, language has no manage task; could be a possible diagnosis (statin myopathy) but house standard unlikely to require.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-c2a2f3ee",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Swelling gate used as negation in the no-swelling branches only; the yes-swelling branches are not gated on its presence (sprain rule uses joint swelling).",
+   "evidence": [
+    "sciatic/PVD rules :: (no (clinical_finding \"Swelling of lower limb\"))",
+    "check_for \"Swelling of lower limb\""
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-f90817a4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "single-joint qualifier"
+   ],
+   "problem": "'Swelling over one joint' has no unilateral/single-joint qualification and no exclusion of both legs swollen.",
+   "evidence": [
+    "HF rule :: Swelling of bilateral lower limbs",
+    "sprain rule :: Joint swelling"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-bb8b14ed",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "posterior lower-leg radiation link"
+   ],
+   "problem": "Radiation 'down back of lower leg' approximated by pain radiating to leg; link between buttock pain and radiation is not expressed.",
+   "evidence": [
+    "sciatica :: (and (no Swelling) (Pain in buttock) (or radiating left / right))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-e6d4711d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "PVD :: (and (no Swelling of lower limb) (clinical_finding \"Intermittent claudication\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-ab2b7409",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "relieved by rest"
+   ],
+   "problem": "'relieved by rest' folded into claudication concept; no explicit encoding.",
+   "evidence": [
+    "PVD :: Intermittent claudication"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-0bd5d103",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "relieved by rest"
+   ],
+   "problem": "same as 'that is relieved'; fragment of the same criterion.",
+   "evidence": [
+    "PVD :: Intermittent claudication"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-16c33acb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "no-injury branch"
+   ],
+   "problem": "Recent injury used for sprain/strain. Breathing difficulty worse lying flat mapped to Orthopnea. The 'No recent injury' branch (check skin, pregnancy, kidney, refer) is not encoded.",
+   "evidence": [
+    "sprain :: (and Joint swelling Injury of lower limb)",
+    "HF :: Orthopnea"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-0127ebc3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Orthopnoea = difficulty breathing worse on lying flat.",
+   "evidence": [
+    "HF :: (and Swelling of bilateral lower limbs Orthopnea)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-0632bacf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Management and return advice are out of scope.",
+   "evidence": [
+    "Diagnose probable sciatic nerve irritation :: Sciatica probable"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-f2697575",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "sprain/strain differentiation"
+   ],
+   "problem": "Two rules with identical criteria fire together; page has one combined 'sprain/strain likely'. Acceptable but duplicative. Does not exclude both-legs-swollen.",
+   "evidence": [
+    "Diagnose probable sprain / strain :: (and Joint swelling Injury of lower limb) (two identical rules)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-e675bd73",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment of heart failure likely.",
+   "evidence": [
+    "HF rule"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-5f6eaa6b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment (likely 151).",
+   "evidence": [
+    "Diagnose probable heart failure (leg symptoms)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-30c7633f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-a30c5323",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment.",
+   "evidence": [
+    "PVD rule"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-61fba136",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment.",
+   "evidence": [
+    "PVD rule"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-42f5caf1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Fragment (likely 154).",
+   "evidence": [
+    "PVD rule"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-8d344047",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "Skin check branch under no-injury; flowchart routing/management.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p80-6ea7a3a4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Pregnancy/kidney checks and referral are management/routing.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p80-78abc552",
+  "p80-6206f55d",
+  "p80-38b2c16f",
+  "p80-916f960f",
+  "p80-ef07ee06",
+  "p80-e92c7e1e",
+  "p80-137a4f98",
+  "p80-1f315ad6"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable sprain / strain (two rules)",
+   "problem": "Sprain and strain rules have identical criteria, so any joint swelling after injury yields both; page has one combined conclusion and no differentiator. Also no exclusion of both-legs-swollen.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable PVD / critical limb ischaemia",
+   "problem": "Both rules key on the same Intermittent claudication concept, so critical limb ischaemia always co-fires with PVD; PVD's no-swelling gate is not on page for critical limb ischaemia. Acceptable but loses the page's separation of exertional pain relieved by rest vs. at rest.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable DVT",
+   "problem": "Unilateral qualifier only on swelling; pain in calf not constrained to the same leg; risk factors dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Task 2 / flowchart",
+   "problem": "No-injury branch (check skin, pregnancy, kidney dipstick, refer) not encoded; only management/routing, so low impact. Statin note not encoded.",
+   "severity": "low"
+  },
+  {
+   "rule": "Joint problem",
+   "problem": "Probable arthropathy fires on any single difficulty finding or joint sign including joint swelling from injury, so sprain and arthropathy co-fire.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Box 1 is largely well encoded (fracture, DVT, acute and critical limb ischaemia as probable diagnoses feeding an Urgent priority). Most consequential weaknesses are approximate mapping of exertional muscle pain to intermittent claudication and identical sprain/strain rules that co-fire with each other and with joint problem, plus dropped DVT risk factors and the no-injury branch. SNOMED concept validity was not verified because the snomed tool errored on my calls."
+}

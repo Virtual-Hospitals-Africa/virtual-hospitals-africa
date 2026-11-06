@@ -1,0 +1,250 @@
+{
+ "page": 170,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p170-6cb01d4d",
+   "scope": "borderline",
+   "scope_reason": "Red-box header is a trigger condition ('unprotected sex in past 5 days and does not want pregnancy') for a management action (give emergency contraception), not a diagnosis or an urgent-attention box. The language could express it as a check task / possible rule (SNOMED 'Unprotected sexual intercourse' finding exists; '< (onset ...) (time_ago 5 days)' is representable), and the house standard says red-box items become check tasks; but the page names no priority and no diagnosis, so reasonable people could leave it out.",
+   "verdict": "missing",
+   "parts_missing": [
+    "unprotected sexual intercourse within past 5 days (e.g. clinical_finding 'Unprotected sexual intercourse' with onset < time_ago 5 days)",
+    "does not want pregnancy",
+    "any check task or rule tied to the red box at all"
+   ],
+   "problem": "Nothing in the file relates to the red box; the only red box on the page is entirely unencoded. If the builders judged it management-only, that is defensible, but no trigger/check for recent unprotected sex exists, so the time-critical emergency-contraception pathway is invisible to the rules.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p170-5034a3f9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: pregnancy test then copper IUD or levonorgestrel 1.5 mg \u2014 treatment choice",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-a848ab7e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: weight > 80 kg / BMI >= 30 / enzyme-inducing drugs select the EC method/dose; no diagnosis or triage. (BMI also has no unit in the language.)",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-f5f3c0c2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: azole interaction changes EC method choice",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-459b77f5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: repeat dose if vomiting < 2 h",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-a5a53e29",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: start long-term contraception; follow-up pregnancy test",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-96c090e0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: PEP assessment is a cross-reference to p119; return for pregnancy test if period > 7 days late is follow-up advice",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-22bba0dc",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: STI symptoms (vaginal discharge, ulcers, lower abdominal pain) route to p62; no 'consider/likely' conclusion on this page",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p170-38e31bf1",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: conditions trigger a method-suitability check on p172",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-fedfc171",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: ART/TB/antiseizure meds -> method suitability p172",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-07d2b107",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: menopausal symptoms -> 'if menopausal' p187; page does not say 'consider menopause'",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p170-8ac2ee0d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: risky sexual behaviour -> safe sex advice",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-3a9fa9cc",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: adherence counselling / missed doses -> p171",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-95d7b186",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: side effects managed on p171",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-84760152",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable: BMI has no unit in the language; BMI >= 25 is a cross-reference to p156",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-bf99bf49",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: BP >= 140/90 -> p148 (cross-reference); BP thresholds then govern method choice (avoid COC / injectable), not triage or diagnosis",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p170-ffc2df31",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: breast/axillary lumps route to p55/p42",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-df2449ab",
+   "scope": "in_scope",
+   "scope_reason": "'if pregnancy suspected (nausea/breast tenderness/missed period when using combined oral contraceptive), check for pregnancy' is a 'suspect X' conclusion -> possible Pregnancy. The 'before starting contraception, check for pregnancy' half is a test/management step and out of scope.",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as possible Pregnancy when on COC AND any of nausea / breast tenderness / missed period, with a matching check task; concepts exist and are appropriate ('Missed period' is the closest to the page wording). Minor: the page's parenthesis is ambiguous whether 'when using COC' qualifies all three signs or only 'missed period'; the rules apply it to all three, which is the more natural reading but narrows the rule (a woman on an injectable/implant or not yet on contraception with a missed period gets no possible-pregnancy rule here). 'Missed period' will not match a recorded 'Amenorrhea'/'Secondary amenorrhea' (not a descendant).",
+   "evidence": [
+    "(task \"Check for suspected pregnancy on combined oral contraceptive\") :: (task ... adult (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")) (check_for (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of breast\" \"finding\")) (clinical_finding (snomed_concept \"Missed period\" \"finding\"))))",
+    "Diagnose possible pregnancy on combined oral contraceptive :: (diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible) adult (and (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")) (or (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of breast\" \"finding\")) (clinical_finding (snomed_concept \"Missed period\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p170-f5d02824",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: HIV test, routine care p126; 'consider need for PrEP' is a prevention decision, not a diagnosis",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-99c0ffce",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: cervical screening schedule by HIV status",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p170-0445d9e9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: advice/education; vomiting/diarrhoea pill rules are dose-repeat management",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p170-1376c51d",
+  "p170-89b39678",
+  "p170-491459b2",
+  "p170-6c309f4a",
+  "p170-7ad5e5e1",
+  "p170-11de6c3a",
+  "p170-9439b3b1"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "(file as a whole)",
+   "problem": "No rule addresses the page's only red box (emergency contraception after unprotected sex in the past 5 days). There is no check for 'Unprotected sexual intercourse' with a 5-day onset window, so a time-critical need is never surfaced by the rules. Defensible only if the whole box is treated as management.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible pregnancy on combined oral contraceptive",
+   "problem": "Restricts all three suspicion signs to COC users. A missed period in a patient not on COC (or about to start contraception \u2014 the page's other trigger for a pregnancy check) yields no possible-pregnancy rule on this page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for suspected pregnancy on combined oral contraceptive / Diagnose possible pregnancy \u2026",
+   "problem": "'Missed period' is not an ancestor of 'Amenorrhea'/'Secondary amenorrhea', so a clinician recording amenorrhoea would not trigger the rule; consistent between task and rule otherwise (every check_for item is used as evidence).",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page's red box (emergency contraception within 5 days of unprotected sex) is not encoded at all; it is mostly management, but the trigger itself (recent unprotected sex) could have been a check/possible rule and is the most consequential omission. The only logic encoded \u2014 possible pregnancy on COC with nausea, breast tenderness or missed period \u2014 is correct with sound SNOMED concepts, though it narrows suspicion to COC users. Everything else on the page is management, cross-references or BMI (not representable)."
+}

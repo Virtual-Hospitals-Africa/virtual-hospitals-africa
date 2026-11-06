@@ -1,0 +1,612 @@
+{
+ "page": 152,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Decreased vision in one/both eyes' - Reduced visual acuity is the closest finding; the 'one/both eyes' phrase is inclusive and needs no site.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Difficulty understanding' in a stroke list means receptive language; 'verbal language' is the right narrowing.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'loss of balance'; 'Impairment of balance' is the parent of (snomed_concept \"Unable to balance\" \"finding\"), whose SNOMED synonym is literally 'loss of balance'. The broader parent is defensible since descendants match in due_to, so this is minor.",
+   "fix": "(clinical_finding (snomed_concept \"Unable to balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) - optional",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'loss of ... co-ordination'; Decreased coordination is a sibling of Incoordination, either fits.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Quote is 'stroke' cut from 'new stroke/TIA'; the 'New' qualifier is dropped, so any patient with a recorded (previous) stroke triggers the new-stroke check on every visit. As a trigger for a check task this is tolerable, but it is not what the heading says, and it is asymmetric with the TIA entry which does carry 'New'.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Decreased vision in one/both eyes' - Reduced visual acuity is the closest finding; the 'one/both eyes' phrase is inclusive and needs no site.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Difficulty understanding' in a stroke list means receptive language; 'verbal language' is the right narrowing.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'loss of balance'; 'Impairment of balance' is the parent of (snomed_concept \"Unable to balance\" \"finding\"), whose SNOMED synonym is literally 'loss of balance'. The broader parent is defensible since descendants match in due_to, so this is minor.",
+   "fix": "(clinical_finding (snomed_concept \"Unable to balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) - optional",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'loss of ... co-ordination'; Decreased coordination is a sibling of Incoordination, either fits.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'new stroke/TIA' - TIA with 'New' qualifier matches the heading.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Decreased vision in one/both eyes' - Reduced visual acuity is the closest finding; the 'one/both eyes' phrase is inclusive and needs no site.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Difficulty understanding' in a stroke list means receptive language; 'verbal language' is the right narrowing.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'loss of balance'; 'Impairment of balance' is the parent of (snomed_concept \"Unable to balance\" \"finding\"), whose SNOMED synonym is literally 'loss of balance'. The broader parent is defensible since descendants match in due_to, so this is minor.",
+   "fix": "(clinical_finding (snomed_concept \"Unable to balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) - optional",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'loss of ... co-ordination'; Decreased coordination is a sibling of Incoordination, either fits.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "'suggests a stroke' is a consider/suspect-level statement, so possible is the right certainty.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "Page adds 'especially on one side of the body'; 'especially' is emphasis, not a requirement, so dropping laterality is acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced visual acuity\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Decreased vision in one/both eyes' - Reduced visual acuity is the closest finding; the 'one/both eyes' phrase is inclusive and needs no site.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diplopia\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty understanding verbal language\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'Difficulty understanding' in a stroke list means receptive language; 'verbal language' is the right narrowing.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impairment of balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'loss of balance'; 'Impairment of balance' is the parent of (snomed_concept \"Unable to balance\" \"finding\"), whose SNOMED synonym is literally 'loss of balance'. The broader parent is defensible since descendants match in due_to, so this is minor.",
+   "fix": "(clinical_finding (snomed_concept \"Unable to balance\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) - optional",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'loss of ... co-ordination'; Decreased coordination is a sibling of Incoordination, either fits.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrovascular accident\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Quote is 'new stroke' but the condition is bare Cerebrovascular accident with no 'New' qualifier. The page separates 'new stroke/TIA' (urgent box) from 'previous stroke/TIA' (routine assessment table); as written, every routine-care patient with a recorded stroke is flagged Urgent at every visit. The TIA sibling (c065) carries 'New' and shows the intended form.",
+   "fix": "(clinical_finding (snomed_concept \"Cerebrovascular accident\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: new stroke/TIA",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transient ischemic attack\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "'new stroke/TIA' - TIA with 'New' qualifier matches the heading.",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for new stroke/TIA",
+   "verdict": "ok",
+   "problem": "Type and structure are right: unqualified symptoms (incl. the common symptom Dizziness) trigger a check for the sudden-onset forms, which is the page's logic. Minor: the trigger's bare Cerebrovascular accident drops 'New' (c016), so previous-stroke patients get this check at every routine visit; and the check_for has TIA(New) but no CVA(New) counterpart, so the priority rule's CVA evidence is only in a task due_to, not a check_for.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible stroke from sudden-onset neurological symptoms",
+   "verdict": "ok",
+   "problem": "'Sudden onset of one or more of the following suggests a stroke' is faithfully an or of sudden-onset findings at possible. Not encoded: the parenthetical 'or a TIA if symptoms lasted < 24 hours and resolved completely' (no possible TIA diagnosis rule). That duration-and-resolution condition is probably not expressible in the grammar, so this is a noted gap rather than an error.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: new stroke/TIA",
+   "verdict": "problem",
+   "problem": "Urgent is justified by the heading 'Give urgent attention to the patient with a new stroke/TIA', and the or of sudden-onset findings is a fair reading since those findings are what 'suggests a stroke'. But (c064) bare Cerebrovascular accident without the 'New' qualifier contradicts the page's split between new stroke/TIA (urgent) and previous stroke/TIA (routine table): every patient on this routine-care page with a recorded stroke would be Urgent at every visit. Secondary: the box's own escalation branch ('within 3 hours of onset, refer urgently for thrombolysis' vs 'refer same day') and 'BP >= 220/120, discuss with specialist' are not represented anywhere; they read as management/referral steps so leaving them out is defensible under the no-manage-tasks rule, but the 3-hour window is the page's one time-critical triage distinction.",
+   "severity": "high"
+  }
+ ],
+ "summary": "The Urgent priority evaluation fires on bare Cerebrovascular accident with no 'New' qualifier (c064), so a patient with a previous stroke under routine care is flagged Urgent at every visit, which inverts the page's new-vs-previous split; the task trigger (c016) has the same omission at lower stakes. Everything else is faithful: all 19 concepts exist, the sudden-onset qualifier matches the page's framing, possible stroke is the right certainty for 'suggests', and Urgent matches the box heading. Minor: 'loss of balance' has an exact SNOMED synonym under Unable to balance (the chosen parent is acceptable), and the possible-TIA reading and the 3-hour thrombolysis window are not encoded."
+}

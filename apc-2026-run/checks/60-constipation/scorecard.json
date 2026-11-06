@@ -1,0 +1,575 @@
+{
+ "page": 60,
+ "slug": "60-constipation",
+ "validation_ok": true,
+ "builder_agreement": 0.478,
+ "elements": 13,
+ "elements_agreed": 9,
+ "claims": 48,
+ "claims_agreed": 20,
+ "queue": 71,
+ "queue_by_priority": {
+  "high": 8,
+  "medium": 37,
+  "low": 26
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p60-3ea295c1",
+   "id": "p60-rb1-e01",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 3
+   }
+  },
+  {
+   "key": "p60-e3979f69",
+   "id": "p60-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "error": 1
+   }
+  },
+  {
+   "key": "p60-4b9a5451",
+   "id": "p60-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 1,
+    "in_scope": 2
+   },
+   "verdicts": {
+    "correct": 2
+   }
+  },
+  {
+   "key": "p60-57233c7b",
+   "id": "p60-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-76bb003c",
+   "id": "p60-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 1,
+    "partial": 2
+   }
+  },
+  {
+   "key": "p60-85e3c5b5",
+   "id": "p60-out-e03",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-3553d185",
+   "id": "p60-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-97db84e3",
+   "id": "p60-out-e05",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-1432cd44",
+   "id": "p60-out-e06",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-63a37d3c",
+   "id": "p60-out-e07",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-1e89f954",
+   "id": "p60-out-e08",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-3ead8ac8",
+   "id": "p60-out-e09",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p60-cb8c75ea",
+   "id": "p60-out-e10",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 1,
+    "borderline": 2
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent constipation conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent constipation conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent constipation conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent constipation conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent constipation conditions",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent constipation conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "wrong": 2
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent constipation conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "wrong": 2
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent constipation conditions",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "wrong": 2
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for faecal impaction in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,491 @@
+{
+ "edition": "2026",
+ "page": 54,
+ "lisp_file": "54-gum-teeth-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tooth finding\" \"finding\"))",
+   "element_keys": [
+    "p54-d516b4e7"
+   ],
+   "quote": "gum/teeth symptoms",
+   "confidence": "medium",
+   "note": "Presenting complaint is not a recorded common symptom/warning sign; 'gum/teeth symptoms' modelled as any Tooth finding or Gingivae finding (descendants match). Alternative: Toothache only, too narrow."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingivae finding\" \"finding\"))",
+   "element_keys": [
+    "p54-d516b4e7"
+   ],
+   "quote": "gum/teeth symptoms",
+   "confidence": "medium",
+   "note": "Gum half of 'gum/teeth symptoms'; Gingivae finding covers bleeding/swollen/sore gums as descendants."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Facial swelling\" \"finding\"))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "swelling of face",
+   "confidence": "high",
+   "note": "Precoordinated 'Facial swelling'."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Jaw region structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "jaw",
+   "confidence": "medium",
+   "note": "No general jaw-swelling concept (only 'Swelling of lower jaw region'); page says jaw without side, so Swelling + finding_site Jaw region structure."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "next to tooth",
+   "confidence": "medium",
+   "note": "'Swelling next to tooth' = Swelling with finding_site Tooth, gum, and/or supporting structure (resolves; body structure checked)."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to eat\" \"finding\"))",
+   "element_keys": [
+    "p54-344aa684"
+   ],
+   "quote": "Unable to eat",
+   "confidence": "high",
+   "note": "Exact concept; 'eat or drink' read as either one."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\"))",
+   "element_keys": [
+    "p54-344aa684"
+   ],
+   "quote": "Unable to eat or drink",
+   "confidence": "high",
+   "note": "Exact concept; 'eat or drink' read as either one."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\")))",
+   "element_keys": [
+    "p54-643f0c3e"
+   ],
+   "quote": "Tooth pain that is felt without touching tooth/gum",
+   "confidence": "medium",
+   "note": "Toothache qualified Spontaneous = pain without stimulus/touch."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p54-643f0c3e"
+   ],
+   "quote": "wakes patient at night",
+   "confidence": "low",
+   "note": "No 'toothache waking from sleep' concept; Toothache qualified Night time is the closest. Alternative: Night pain with finding_site Tooth structure. Neither captures 'wakes'."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Staining of tooth\" \"disorder\"))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "Brown/black staining of teeth at gumline",
+   "confidence": "medium",
+   "note": "Staining of tooth (child of Tooth discolored); colour and 'at gumline' not expressed."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cavity\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tooth structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "holes, pits",
+   "confidence": "low",
+   "note": "No precoordinated finding for holes/pits in teeth; Cavity (morphologic abnormality) at Tooth structure. 'Cavitated caries' rejected as it presupposes the diagnosis."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tooth absent\" \"finding\"))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "missing teeth",
+   "confidence": "medium",
+   "note": "Tooth absent finding. Alternative 'Loss of teeth' (disorder)."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingival erythema\" \"disorder\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "Gums red",
+   "confidence": "medium",
+   "note": "Gingival erythema (disorder) for red gums; no finding-level red gums concept."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding gums\" \"finding\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "bleeding",
+   "confidence": "high",
+   "note": "Exact finding."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingival enlargement\" \"disorder\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "enlarged",
+   "confidence": "medium",
+   "note": "Gingival enlargement (disorder). Alternative 'Swollen gums' finding."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\"))",
+   "element_keys": [
+    "p54-50b5e5b0"
+   ],
+   "quote": "Previous/current tooth pain",
+   "confidence": "medium",
+   "note": "Toothache; 'previous' vs 'current' not distinguishable, a recorded toothache covers both."
+  },
+  {
+   "rule": "Check for urgent and likely gum/teeth conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pus\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-50b5e5b0"
+   ],
+   "quote": "pus in mouth",
+   "confidence": "medium",
+   "note": "Pus (morphologic abnormality) at Oral cavity structure; no precoordinated concept."
+  },
+  {
+   "rule": "Diagnose probable dental caries (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Staining of tooth\" \"disorder\"))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "Brown/black staining of teeth at gumline",
+   "confidence": "medium",
+   "note": "Staining of tooth (child of Tooth discolored); colour and 'at gumline' not expressed."
+  },
+  {
+   "rule": "Diagnose probable dental caries (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cavity\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tooth structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "holes, pits",
+   "confidence": "low",
+   "note": "No precoordinated finding for holes/pits in teeth; Cavity (morphologic abnormality) at Tooth structure. 'Cavitated caries' rejected as it presupposes the diagnosis."
+  },
+  {
+   "rule": "Diagnose probable dental caries (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tooth absent\" \"finding\"))",
+   "element_keys": [
+    "p54-c5bb22f4"
+   ],
+   "quote": "missing teeth",
+   "confidence": "medium",
+   "note": "Tooth absent finding. Alternative 'Loss of teeth' (disorder)."
+  },
+  {
+   "rule": "Diagnose probable dental caries (gum/teeth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dental caries\" \"disorder\") probable)",
+   "element_keys": [
+    "p54-0ec14f4e"
+   ],
+   "quote": "Dental caries likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable gum problem (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingival erythema\" \"disorder\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "Gums red",
+   "confidence": "medium",
+   "note": "Gingival erythema (disorder) for red gums; no finding-level red gums concept."
+  },
+  {
+   "rule": "Diagnose probable gum problem (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding gums\" \"finding\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "bleeding",
+   "confidence": "high",
+   "note": "Exact finding."
+  },
+  {
+   "rule": "Diagnose probable gum problem (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingival enlargement\" \"disorder\"))",
+   "element_keys": [
+    "p54-87167443"
+   ],
+   "quote": "enlarged",
+   "confidence": "medium",
+   "note": "Gingival enlargement (disorder). Alternative 'Swollen gums' finding."
+  },
+  {
+   "rule": "Diagnose probable gum problem (gum/teeth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Gingival disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p54-9b793f47"
+   ],
+   "quote": "Gum problem likely",
+   "confidence": "medium",
+   "note": "'Gum problem' mapped to Gingival disease (disorder); alternative Periodontal disease (narrower)."
+  },
+  {
+   "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\"))",
+   "element_keys": [
+    "p54-50b5e5b0"
+   ],
+   "quote": "Previous/current tooth pain",
+   "confidence": "medium",
+   "note": "Toothache; 'previous' vs 'current' not distinguishable, a recorded toothache covers both."
+  },
+  {
+   "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pus\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Oral cavity structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-50b5e5b0"
+   ],
+   "quote": "pus in mouth",
+   "confidence": "medium",
+   "note": "Pus (morphologic abnormality) at Oral cavity structure; no precoordinated concept."
+  },
+  {
+   "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-7f0f7151"
+   ],
+   "quote": "swelling next to tooth",
+   "confidence": "medium",
+   "note": "'Swelling next to tooth' = Swelling with finding_site Tooth, gum, and/or supporting structure (resolves; body structure checked)."
+  },
+  {
+   "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dental abscess\" \"disorder\") probable)",
+   "element_keys": [
+    "p54-e16ade11"
+   ],
+   "quote": "Dental abscess likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tooth finding\" \"finding\"))",
+   "element_keys": [
+    "p54-d516b4e7"
+   ],
+   "quote": "gum/teeth symptoms",
+   "confidence": "medium",
+   "note": "Presenting complaint is not a recorded common symptom/warning sign; 'gum/teeth symptoms' modelled as any Tooth finding or Gingivae finding (descendants match). Alternative: Toothache only, too narrow."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gingivae finding\" \"finding\"))",
+   "element_keys": [
+    "p54-d516b4e7"
+   ],
+   "quote": "gum/teeth symptoms",
+   "confidence": "medium",
+   "note": "Gum half of 'gum/teeth symptoms'; Gingivae finding covers bleeding/swollen/sore gums as descendants."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Body temperature >= 38 °C, ANDed with the swelling group as the page's 'and'."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Facial swelling\" \"finding\"))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "swelling of face",
+   "confidence": "high",
+   "note": "Precoordinated 'Facial swelling'."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Jaw region structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "jaw",
+   "confidence": "medium",
+   "note": "No general jaw-swelling concept (only 'Swelling of lower jaw region'); page says jaw without side, so Swelling + finding_site Jaw region structure."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))",
+   "element_keys": [
+    "p54-5176d624"
+   ],
+   "quote": "next to tooth",
+   "confidence": "medium",
+   "note": "'Swelling next to tooth' = Swelling with finding_site Tooth, gum, and/or supporting structure (resolves; body structure checked)."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to eat\" \"finding\"))",
+   "element_keys": [
+    "p54-344aa684"
+   ],
+   "quote": "Unable to eat",
+   "confidence": "high",
+   "note": "Exact concept; 'eat or drink' read as either one."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\"))",
+   "element_keys": [
+    "p54-344aa684"
+   ],
+   "quote": "Unable to eat or drink",
+   "confidence": "high",
+   "note": "Exact concept; 'eat or drink' read as either one."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\")))",
+   "element_keys": [
+    "p54-643f0c3e"
+   ],
+   "quote": "Tooth pain that is felt without touching tooth/gum",
+   "confidence": "medium",
+   "note": "Toothache qualified Spontaneous = pain without stimulus/touch."
+  },
+  {
+   "rule": "Urgent: gum/teeth symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p54-643f0c3e"
+   ],
+   "quote": "wakes patient at night",
+   "confidence": "low",
+   "note": "No 'toothache waking from sleep' concept; Toothache qualified Night time is the closest. Alternative: Night pain with finding_site Tooth structure. Neither captures 'wakes'."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p54-c8879178",
+   "element_id": "p54-rb1-e05",
+   "text": "Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral step; the urgency itself is the Urgent priority evaluation."
+  },
+  {
+   "element_key": "p54-9c6fb10b",
+   "element_id": "p54-rb1-e06",
+   "text": "© BMJ Best Practice",
+   "reason_category": "figure_or_note",
+   "reason": "Image credit."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Presenting complaint",
+   "decision": "(or Tooth finding, Gingivae finding) as trigger of the check_for task and first conjunct of the Urgent rule",
+   "alternatives": "Toothache alone; Disorder of teeth AND/OR supporting structures (disorder)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Dental abscess logic",
+   "decision": "AND of tooth pain, pus in mouth and swelling next to tooth (the page lists them together under one box)",
+   "alternatives": "Toothache AND (pus OR swelling) - fires more often",
+   "confidence": "low"
+  },
+  {
+   "topic": "Night tooth pain",
+   "decision": "Toothache qualified Night time",
+   "alternatives": "Night pain with finding_site Tooth structure",
+   "confidence": "low"
+  },
+  {
+   "topic": "Holes/pits in teeth",
+   "decision": "Cavity (morphologic abnormality) at Tooth structure",
+   "alternatives": "Cavitated caries (presupposes caries); leave unencoded",
+   "confidence": "low"
+  },
+  {
+   "topic": "'May have tooth pain with hot or cold food/drink'",
+   "decision": "Not encoded as caries evidence; 'may have' is optional, and making it sufficient alone would overstate the page",
+   "alternatives": "Sensitive dentin (disorder) inside the or",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unable to eat or drink",
+   "decision": "Either one alone is enough (or)",
+   "alternatives": "Require both",
+   "confidence": "high"
+  }
+ ]
+}

@@ -1,0 +1,654 @@
+{
+ "page": 122,
+ "slug": "122-hiv-post-exposure-prophylaxis-pep",
+ "validation_ok": true,
+ "builder_agreement": 0.962,
+ "elements": 40,
+ "elements_agreed": 30,
+ "claims": 25,
+ "claims_agreed": 21,
+ "queue": 33,
+ "queue_by_priority": {
+  "low": 6,
+  "medium": 22,
+  "high": 5
+ },
+ "missing_reports": [],
+ "element_rows": [
+  {
+   "key": "p122-d3c61078",
+   "id": "p122-rb1-e01",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p122-ece680e3",
+   "id": "p122-rb1-e02",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "partial": 3
+   }
+  },
+  {
+   "key": "p122-f91d1f4a",
+   "id": "p122-rb1-e03",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 3
+   },
+   "verdicts": {
+    "correct": 2,
+    "partial": 1
+   }
+  },
+  {
+   "key": "p122-f4e69d03",
+   "id": "p122-rb1-e04",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "missing": 3
+   }
+  },
+  {
+   "key": "p122-a1c52d85",
+   "id": "p122-rb1-e05",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-4f2c9b15",
+   "id": "p122-rb1-e06",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-2c009c2b",
+   "id": "p122-rb1-e07",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-442d3cb9",
+   "id": "p122-rb1-e08",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-7adc89b5",
+   "id": "p122-rb1-e09",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-f2b3f849",
+   "id": "p122-rb1-e10",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-50cf76d4",
+   "id": "p122-rb1-e11",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "borderline": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p122-1552264b",
+   "id": "p122-rb1-e12",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "in_scope": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p122-dcb6ef42",
+   "id": "p122-rb1-e13",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-9d8e81dc",
+   "id": "p122-rb1-e14",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "missing": 1
+   }
+  },
+  {
+   "key": "p122-b30bfa32",
+   "id": "p122-rb1-e15",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-44a15641",
+   "id": "p122-rb1-e16",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-df97ddef",
+   "id": "p122-rb1-e17",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-6786a848",
+   "id": "p122-rb1-e18",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-2159e4f1",
+   "id": "p122-rb1-e19",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-aee433ff",
+   "id": "p122-rb1-e20",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-4124454c",
+   "id": "p122-rb1-e21",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-e8dacaa9",
+   "id": "p122-rb1-e22",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-9de20e54",
+   "id": "p122-rb1-e23",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-d87a3a75",
+   "id": "p122-rb1-e24",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-379f19bb",
+   "id": "p122-rb1-e25",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-e6f979b4",
+   "id": "p122-rb1-e26",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-4e294967",
+   "id": "p122-rb1-e27",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-6c867d6b",
+   "id": "p122-rb1-e28",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-5732d81b",
+   "id": "p122-rb1-e29",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-cdff65fd",
+   "id": "p122-rb1-e30",
+   "box": 1,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 1,
+    "borderline": 2
+   },
+   "verdicts": {
+    "missing": 2
+   }
+  },
+  {
+   "key": "p122-b1ddc7c9",
+   "id": "p122-rb1-e31",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-4d182c9e",
+   "id": "p122-rb1-e32",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-7b0245c2",
+   "id": "p122-rb1-e33",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-8c9424fe",
+   "id": "p122-rb1-e34",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-71be4d95",
+   "id": "p122-rb1-e35",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-d9586564",
+   "id": "p122-rb1-e36",
+   "box": 1,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-dfd4f2b0",
+   "id": "p122-out-e01",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  },
+  {
+   "key": "p122-975cbcf7",
+   "id": "p122-out-e02",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "out_of_scope": 2,
+    "borderline": 1
+   },
+   "verdicts": {
+    "partial": 1
+   }
+  },
+  {
+   "key": "p122-f2abb36e",
+   "id": "p122-out-e03",
+   "box": 0,
+   "status": "queue",
+   "scopes": {
+    "in_scope": 2,
+    "out_of_scope": 1
+   },
+   "verdicts": {
+    "partial": 1,
+    "correct": 1
+   }
+  },
+  {
+   "key": "p122-b9cc6423",
+   "id": "p122-out-e04",
+   "box": 0,
+   "status": "agreed",
+   "scopes": {
+    "out_of_scope": 3
+   },
+   "verdicts": {}
+  }
+ ],
+ "claim_rows": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 1,
+    "imprecise": 2
+   }
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "queue",
+   "verdicts": {
+    "faithful": 2,
+    "imprecise": 1
+   }
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for HIV PEP: exposure to infectious fluid or human bite",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 3
+   }
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "agreed",
+   "verdicts": {
+    "faithful": 3
+   }
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite",
+   "status": "queue",
+   "verdicts": {
+    "imprecise": 2,
+    "faithful": 1
+   }
+  }
+ ]
+}

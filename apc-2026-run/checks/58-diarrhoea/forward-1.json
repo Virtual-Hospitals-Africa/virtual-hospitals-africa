@@ -1,0 +1,242 @@
+{
+  "page": 58,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p58-6e30e294",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: sets the priority level (Urgent) and the trigger (patient with diarrhoea) for the priority evaluation.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: diarrhoea with shock or cholera :: (system_priority_evaluation \"Urgent: diarrhoea with shock or cholera\" adult Urgent (and (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-6472199e",
+      "scope": "in_scope",
+      "scope_reason": "Two criteria: shock; SBP < 80.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts are in the check_for and in the Urgent priority rule with the right concept, number, unit and direction. Note that 'Shock' is taken as a raw recorded finding; the page's footnote 1 defines when shock is likely and that definition is not encoded (see p58-efbc6ba3).",
+      "evidence": [
+        "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: diarrhoea with shock or cholera :: (or (clinical_finding (snomed_concept \"Shock\" \"disorder\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80) (active_condition (snomed_concept \"Cholera\" \"disorder\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-be21e627",
+      "scope": "in_scope",
+      "scope_reason": "Compound criterion with an 'X likely' conclusion: watery diarrhoea (with or without vomiting) AND cholera outbreak area in past 5 days -> cholera likely; ->59 is a cross reference only.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'in past 5 days': the exposure has no time window. The grammar allows a timestamp comparison on an insertable finding, so (< (onset (finding Exposure to ... Vibrio cholerae)) (time_ago 5 days)) or similar was available; as written, exposure recorded at any time satisfies the rule."
+      ],
+      "problem": "Watery diarrhoea is encoded as Diarrhea + qualifier Watery (correct; 'with or without vomiting' correctly leaves vomiting out). 'Been in cholera outbreak area' is approximated as exposure to Vibrio cholerae, which is an acceptable proxy (SNOMED also has (snomed_concept \"Exposure to Vibrio cholerae\" \"event\"), but the gold standard's Exposure-to pattern is the house form). 'Cholera likely' is a probable Cholera rule and the priority rule references it via active_condition, exactly as the briefing asks. Only the 5-day window is lost.",
+      "evidence": [
+        "Diagnose probable cholera in diarrhoea :: (and (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\")) (or (clinical_finding (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\"))) (and (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks)) (no (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))))))",
+        "Urgent: diarrhoea with shock or cholera :: (active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+        "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\"))) ; (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p58-e3fbfc0a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-30f91a10",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "IV fluid, repeat-until, continue, stop and refer are all management; the 'if shock/SBP < 80' condition it repeats is already judged under p58-6472199e and is encoded in the priority rule.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-efbc6ba3",
+      "scope": "borderline",
+      "scope_reason": "Footnote 1 is an 'X likely' statement: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' It defines the red box's 'Shock' and the house standard turns 'X likely' into a probable rule. Footnotes 2-4 (loperamide dose by weight, ORS recipe, alcohol with metronidazole) are management. Borderline because the footnote is a definition rather than a flowchart conclusion, and because it is ambiguous whether the features are all-of or any-of.",
+      "verdict": "missing",
+      "parts_missing": [
+        "No probable Shock diagnosis rule from SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness (all routine vitals or findable concepts).",
+        "Pulse >= 100, respiratory rate > 30, confusion/restlessness and weakness are not checked for or used anywhere."
+      ],
+      "problem": "The rules treat Shock as something the nurse records directly. The page tells the nurse how to recognise it; that definition is lost, so a patient with SBP 85, pulse 120, RR 34 and confusion is not flagged as shock (the SBP < 80 arm of the priority rule does not catch them either).",
+      "evidence": [
+        "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p58-f18ab8d0",
+      "scope": "in_scope",
+      "scope_reason": "Carries two 'X likely' conclusions (dehydration likely; overflow diarrhoea likely) and the diarrhoea definition (>= 3 loose stools/day). ORS, metoclopramide, IV fluid and 'ask about duration' are management or routing.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Dehydration: thirst OR dry mouth OR poor skin turgor, each with a sensible concept (Increased thirst, Xerostomia, Decreased skin turgor), anchored on Diarrhea, probable -> correct. Overflow diarrhoea: 'prolonged constipation' as Chronic constipation plus watery diarrhoea, probable 'Chronic constipation with overflow' -> correct ('Spurious diarrhea - overflow' (finding) also exists and is closer to the page's wording, but the disorder is a fair choice; the 'followed by' sequence is not expressible). '>= 3 loose stools/day' is a stool-frequency threshold with no unit in the language, so it is not representable and the plain Diarrhea common-symptom anchor is the right substitute.",
+      "evidence": [
+        "Diagnose probable dehydration in diarrhoea :: (and (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (or (clinical_finding (snomed_concept \"Increased thirst\" \"finding\")) (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\"))))",
+        "Diagnose probable overflow diarrhoea :: (and (clinical_finding (snomed_concept \"Chronic constipation\" \"disorder\")) (clinical_finding (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\"))))",
+        "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Increased thirst\" \"finding\")) ; (clinical_finding (snomed_concept \"Xerostomia\" \"finding\")) ; (clinical_finding (snomed_concept \"Decreased skin turgor\" \"finding\")) ; (clinical_finding (snomed_concept \"Chronic constipation\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-7c5796f3",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision on duration that gates the dysentery / cholera / gastroenteritis conclusions.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Per the briefing's convention ((< (onset X) (time_ago 3 days)) = onset within the last 3 days), (<= (onset Diarrhea) (time_ago 2 weeks)) reads 'diarrhoea for 2 weeks or less', which matches the page. Used consistently in all three left-branch rules.",
+      "evidence": [
+        "Diagnose probable dysentery in diarrhoea :: (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+        "Diagnose probable gastroenteritis in diarrhoea :: (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+        "Diagnose probable cholera in diarrhoea :: (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p58-7df2329f",
+      "scope": "borderline",
+      "scope_reason": "The > 2 weeks branch is a flowchart decision, but everything under it is referral, stool testing, HIV testing and treatment; it contains no 'X likely'. The only diagnostic-flavoured content is presumptive giardiasis in HIV-negative/unknown patients ('Treat for giardiasis'), which the house standard would not turn into a diagnosis rule because the page does not say 'likely'.",
+      "verdict": "missing",
+      "parts_missing": [
+        "No rule references diarrhoea > 2 weeks; the branch and its discriminators (blood/mucus -> refer, HIV status, stool result) are absent from the file."
+      ],
+      "problem": "Nothing in the file distinguishes chronic diarrhoea. This is defensible under the no-manage-tasks rule, but a check_for of HIV status or Mucus in stool, or a possible Giardiasis rule, would have carried the branch's logic. Low weight.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p58-400c6dde",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: blood in the stool.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Hematochezia (SNOMED synonym 'blood in stool') is checked for and used positively (dysentery) and negated (gastroenteritis, cholera second arm).",
+      "evidence": [
+        "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))",
+        "Diagnose probable dysentery in diarrhoea :: (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))",
+        "Diagnose probable gastroenteritis in diarrhoea :: (no (clinical_finding (snomed_concept \"Hematochezia\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-c4c91295",
+      "scope": "in_scope",
+      "scope_reason": "'Dysentery likely' conclusion of the <= 2 weeks / blood = Yes branch; ciprofloxacin and 'refer if no response' are management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable 'Dysenteric diarrhea' from diarrhoea <= 2 weeks AND blood in stool matches the flowchart exactly. Concept is the SNOMED dysentery disorder; fine.",
+      "evidence": [
+        "Diagnose probable dysentery in diarrhoea :: (and (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks)) (clinical_finding (snomed_concept \"Hematochezia\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-b2b17c35",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: cholera outbreak area in past 5 days.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'in past 5 days' is not encoded (same gap as p58-be21e627)."
+      ],
+      "problem": "Encoded as exposure to Vibrio cholerae, used positively in the cholera rule and negated in the gastroenteritis rule, which reproduces the Yes/No fork. The 5-day window is dropped.",
+      "evidence": [
+        "Check for diarrhoea urgent signs and causes :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+        "Diagnose probable gastroenteritis in diarrhoea :: (no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p58-e32a8666",
+      "scope": "in_scope",
+      "scope_reason": "'Cholera likely' conclusion of the <= 2 weeks / no blood / cholera area = Yes branch.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The second arm of the cholera rule (diarrhoea <= 2 weeks AND no blood AND exposure) is exactly this branch. The red-box arm (watery diarrhoea AND exposure) is the first arm. Both lead to one probable Cholera rule, which the priority evaluation then consumes.",
+      "evidence": [
+        "Diagnose probable cholera in diarrhoea :: (and (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks)) (no (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-478a52a7",
+      "scope": "in_scope",
+      "scope_reason": "'Gastroenteritis likely' conclusion of the <= 2 weeks / no blood / cholera area = No branch; loperamide, metoclopramide, hyoscine, advice and return criteria are management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable gastroenteritis from diarrhoea <= 2 weeks AND no blood AND no cholera exposure reproduces the flowchart. 'Inflammation of stomach and intestine' is the SNOMED fully specified name for gastroenteritis (25374005); correct.",
+      "evidence": [
+        "Diagnose probable gastroenteritis in diarrhoea :: (and (<= (onset (clinical_finding (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks)) (no (clinical_finding (snomed_concept \"Hematochezia\" \"finding\"))) (no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p58-ce96dcc0",
+      "scope": "in_scope",
+      "scope_reason": "One in-scope part: 'If > 65 years, bed-bound or receiving palliative care, check for solid immobile bulk of stool in rectum. If present, impaction likely: refer.' Hygiene advice, social-worker referral and palliative care ->191 are management / cross reference.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The three-way trigger is reduced to bed-bound OR palliative care; '> 65 years' is dropped, but the language's age determinations are only adult / older child / younger child and there is no years unit, so it is not representable. 'Receiving palliative care' as 'Seen by palliative care service' and 'solid immobile bulk of stool in rectum' as 'Fullness of rectum due to feces' are reasonable concepts, and 'Fecal impaction' is probable only when the rectal finding is present, as the page says. The targeted check task is a good reading of 'check for'. Note the diagnosis rule repeats the trigger findings rather than relying on the check task; harmless.",
+      "evidence": [
+        "Check rectum for faecal impaction in diarrhoea :: (and (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (or (clinical_finding (snomed_concept \"Bed-ridden\" \"finding\")) (clinical_finding (snomed_concept \"Seen by palliative care service\" \"finding\")))) (check_for (clinical_finding (snomed_concept \"Fullness of rectum due to feces\" \"finding\")))",
+        "Diagnose probable faecal impaction in diarrhoea :: (and (clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (or (clinical_finding (snomed_concept \"Bed-ridden\" \"finding\")) (clinical_finding (snomed_concept \"Seen by palliative care service\" \"finding\"))) (clinical_finding (snomed_concept \"Fullness of rectum due to feces\" \"finding\")))"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p58-6f0cc57f",
+    "p58-0d305b6e",
+    "p58-45ce5d26",
+    "p58-290b8c9b",
+    "p58-e0072844",
+    "p58-57d9096a",
+    "p58-4ab5a2b6",
+    "p58-7e08384f",
+    "p58-bac28fa8",
+    "p58-a75329af",
+    "p58-f00ad896",
+    "p58-b38b5007",
+    "p58-bd57a62c",
+    "p58-2179d4d8",
+    "p58-8cb83345",
+    "p58-8a9b0af9",
+    "p58-2e55d5ad"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Check for diarrhoea urgent signs and causes / Urgent: diarrhoea with shock or cholera",
+      "problem": "Shock is a raw recorded finding with no probable Shock rule from footnote 1 (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness). Pulse, RR and confusion are routine vitals or findable concepts, so the definition was encodable. A shocked patient whose SBP is still >= 80 is missed by the priority rule unless the nurse independently records 'Shock'.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable cholera in diarrhoea / Diagnose probable gastroenteritis in diarrhoea",
+      "problem": "The cholera-area exposure has no 'past 5 days' window. Any past recorded exposure to Vibrio cholerae makes cholera probable (and suppresses gastroenteritis) regardless of when it occurred.",
+      "severity": "medium"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "The 'Diarrhoea > 2 weeks' branch is absent: no rule or check_for distinguishes chronic diarrhoea, HIV status, mucus in stool or stool results. Defensible because that branch has no 'X likely' and is mostly management, but the flowchart branch is lost.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable faecal impaction in diarrhoea / Check rectum for faecal impaction in diarrhoea",
+      "problem": "'> 65 years' is one of three alternative triggers on the page and is absent from both the check task and the diagnosis rule. Not representable in the grammar (no age comparison, no years unit), so recorded here for the remaining-questions file rather than as an error.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box and the <= 2 weeks flowchart are encoded faithfully: Urgent on diarrhoea with shock, SBP < 80 or probable cholera; probable dehydration, overflow diarrhoea, dysentery, cholera and gastroenteritis with the page's and/or logic, correct concepts and a consistent reading of the 2-week onset. Two real gaps: footnote 1's definition of shock ('shock likely' from SBP < 80, pulse >= 100, RR > 30, confusion, weakness) is not a rule, so shock is only caught if recorded directly, and the cholera exposure has no 'past 5 days' window. The > 2 weeks branch is not represented at all and '> 65 years' is dropped from the impaction trigger, but both are mostly management or not representable."
+}

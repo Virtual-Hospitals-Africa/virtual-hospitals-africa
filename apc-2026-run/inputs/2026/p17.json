@@ -1,0 +1,850 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 17,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    532.2
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p17-rb1-e01",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient has no pulse, record the time and start chest compressions",
+   "bbox": [
+    285.3,
+    91.6,
+    556.6,
+    102.7
+   ],
+   "key": "p17-4dcb9379"
+  },
+  {
+   "id": "p17-rb1-e02",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Give continuous cycles of 30 chest compressions and 2 breaths with bag-valve-mask attached to 100% oxygen at 10-15L/min.",
+   "bbox": [
+    157.4,
+    106.3,
+    641.9,
+    117.2
+   ],
+   "key": "p17-15d7f8c1"
+  },
+  {
+   "id": "p17-rb1-e03",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Attach monitor/defibrillator and pause compressions to check initial heart rhythm:",
+   "bbox": [
+    157.4,
+    116.3,
+    477.8,
+    127.2
+   ],
+   "key": "p17-19d4581f"
+  },
+  {
+   "id": "p17-rb1-e04",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Ventricular fibrillation (VF)",
+   "bbox": [
+    87.8,
+    136.2,
+    190.6,
+    147.2
+   ],
+   "key": "p17-53f31922"
+  },
+  {
+   "id": "p17-rb1-e05",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Pulseless ventricular tachycardia (pVT)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Pulseless ventricular tachycardia (pVT)",
+   "bbox": [
+    253.2,
+    136.2,
+    402.6,
+    147.2
+   ],
+   "key": "p17-8e7af24b"
+  },
+  {
+   "id": "p17-rb1-e06",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Asystole",
+   "bbox": [
+    499.9,
+    136.2,
+    532.7,
+    147.2
+   ],
+   "key": "p17-e86cfe0c"
+  },
+  {
+   "id": "p17-rb1-e07",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Any other rhythm:",
+   "bbox": [
+    670.1,
+    136.3,
+    739.8,
+    147.2
+   ],
+   "key": "p17-ddfd1e55"
+  },
+  {
+   "id": "p17-rb1-e08",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Pulseless electrical activity (PEA)",
+   "bbox": [
+    642.1,
+    146.2,
+    767.8,
+    157.2
+   ],
+   "key": "p17-9b3baabe"
+  },
+  {
+   "id": "p17-rb1-e09",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give shock of 120-150J.",
+   "bbox": [
+    188.8,
+    182.6,
+    278.0,
+    193.5
+   ],
+   "key": "p17-37a13056"
+  },
+  {
+   "id": "p17-rb1-e10",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "If monophasic defibrillator, give instead shock of 360J.",
+   "bbox": [
+    130.1,
+    192.6,
+    336.6,
+    203.5
+   ],
+   "key": "p17-74ec1131"
+  },
+  {
+   "id": "p17-rb1-e11",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Pulseless ventricular tachycardia (pVT)",
+   "section_y": 136.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Immediately restart CPR, starting with chest compressions.",
+   "bbox": [
+    276.4,
+    212.7,
+    506.1,
+    223.5
+   ],
+   "key": "p17-bbc9dda4"
+  },
+  {
+   "id": "p17-rb1-e12",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Pulseless ventricular tachycardia (pVT)",
+   "section_y": 136.2,
+   "indent": 1,
+   "parent": null,
+   "text": "After 2 minutes of CPR, pause compressions and recheck heart rhythm",
+   "bbox": [
+    276.4,
+    222.5,
+    559.9,
+    233.5
+   ],
+   "key": "p17-b0554c29"
+  },
+  {
+   "id": "p17-rb1-e13",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "VF",
+   "bbox": [
+    110.2,
+    242.7,
+    119.7,
+    253.5
+   ],
+   "key": "p17-f3165061"
+  },
+  {
+   "id": "p17-rb1-e14",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless ventricular tachycardia (pVT)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "pVT",
+   "bbox": [
+    256.9,
+    242.7,
+    272.0,
+    253.5
+   ],
+   "key": "p17-df9a37a6"
+  },
+  {
+   "id": "p17-rb1-e15",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless ventricular tachycardia (pVT)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Asystole",
+   "bbox": [
+    393.3,
+    242.7,
+    425.2,
+    253.5
+   ],
+   "key": "p17-fe294141"
+  },
+  {
+   "id": "p17-rb1-e16",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Other rhythm",
+   "bbox": [
+    610.5,
+    242.7,
+    662.8,
+    253.5
+   ],
+   "key": "p17-9b189024"
+  },
+  {
+   "id": "p17-rb1-e17",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give shock of 120-150J (increase joules with each shock given). If monophasic defibrillator, give instead shock of 360J.",
+   "bbox": [
+    74.2,
+    262.7,
+    318.1,
+    283.5
+   ],
+   "key": "p17-d4cfe82f"
+  },
+  {
+   "id": "p17-rb1-e18",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Feel for carotid pulse for up to 10 seconds.",
+   "bbox": [
+    556.1,
+    262.7,
+    717.4,
+    273.5
+   ],
+   "key": "p17-0a6c0a1c"
+  },
+  {
+   "id": "p17-rb1-e19",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No pulse felt",
+   "bbox": [
+    511.4,
+    282.7,
+    559.5,
+    293.5
+   ],
+   "key": "p17-1e19da66"
+  },
+  {
+   "id": "p17-rb1-e20",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Unsure",
+   "bbox": [
+    643.9,
+    282.7,
+    671.1,
+    293.5
+   ],
+   "key": "p17-62f787e6"
+  },
+  {
+   "id": "p17-rb1-e21",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Pulse felt",
+   "bbox": [
+    741.9,
+    282.7,
+    776.6,
+    293.5
+   ],
+   "key": "p17-5f95ac4f"
+  },
+  {
+   "id": "p17-rb1-e22",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "If patient has no pulse, record the time and start chest compressions",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "PEA",
+   "bbox": [
+    589.7,
+    302.7,
+    604.6,
+    313.5
+   ],
+   "key": "p17-dd662121"
+  },
+  {
+   "id": "p17-rb1-e23",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Stop CPR",
+   "bbox": [
+    741.8,
+    302.7,
+    778.5,
+    313.5
+   ],
+   "key": "p17-59eba97e"
+  },
+  {
+   "id": "p17-rb1-e24",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Pulseless electrical activity (PEA)",
+   "section_y": 146.2,
+   "indent": 0,
+   "parent": null,
+   "text": "and check breathing 16.",
+   "bbox": [
+    739.8,
+    312.7,
+    780.6,
+    343.5
+   ],
+   "key": "p17-3976ccd4"
+  },
+  {
+   "id": "p17-rb1-e25",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 5,
+   "parent": null,
+   "text": "Immediately restart CPR, starting with chest compressions.",
+   "bbox": [
+    81.4,
+    322.7,
+    311.1,
+    333.5
+   ],
+   "key": "p17-856517c1"
+  },
+  {
+   "id": "p17-rb1-e26",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 5,
+   "parent": null,
+   "text": "Give adrenaline1 1mL (1:1000 solution) IV, followed by 5mL sterile water or sodium chloride 0.9%. Repeat adrenaline every 2 cycles (every 3-5 minutes).",
+   "bbox": [
+    81.4,
+    332.7,
+    681.4,
+    343.5
+   ],
+   "key": "p17-d3d1d501"
+  },
+  {
+   "id": "p17-rb1-e27",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 5,
+   "parent": null,
+   "text": "After every 2 minutes of CPR, pause compressions, recheck heart rhythm and manage as above.",
+   "bbox": [
+    81.4,
+    342.5,
+    464.1,
+    353.5
+   ],
+   "key": "p17-5d8711c5"
+  },
+  {
+   "id": "p17-rb1-e28",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 0,
+   "parent": null,
+   "text": "While giving continuous CPR",
+   "bbox": [
+    325.1,
+    362.6,
+    436.8,
+    373.6
+   ],
+   "key": "p17-04208e07"
+  },
+  {
+   "id": "p17-rb1-e29",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 2,
+   "parent": null,
+   "text": "Doctor to consider intubation. If intubated, give 1 breath every 6 seconds and continuous chest compressions.",
+   "bbox": [
+    61.5,
+    372.7,
+    487.7,
+    383.6
+   ],
+   "key": "p17-a9d132cd"
+  },
+  {
+   "id": "p17-rb1-e30",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 2,
+   "parent": null,
+   "text": "Look for and manage possible cause:",
+   "bbox": [
+    61.5,
+    382.7,
+    207.8,
+    393.6
+   ],
+   "key": "p17-673e16f9"
+  },
+  {
+   "id": "p17-rb1-e31",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 3,
+   "parent": "p17-rb1-e30",
+   "text": "If trauma, diarrhoea/vomiting or dehydration2, give sodium chloride 0.9% 1L IV rapidly. Repeat if needed. If unsure, discuss with doctor.",
+   "bbox": [
+    67.2,
+    392.7,
+    592.9,
+    403.6
+   ],
+   "key": "p17-f6e804ae"
+  },
+  {
+   "id": "p17-rb1-e32",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 3,
+   "parent": "p17-rb1-e30",
+   "text": "If glucose < 3 (< 4 if diabetes) or unable to measure 19. If temperature ≤ 35°C 18. If overdose/poisoning, discuss with specialist or poison helpline 200.",
+   "bbox": [
+    67.2,
+    402.7,
+    671.2,
+    413.6
+   ],
+   "key": "p17-cd9acb7c"
+  },
+  {
+   "id": "p17-rb1-e33",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 3,
+   "parent": "p17-rb1-e30",
+   "text": "If more resonant/decreased breath sounds on 1 side or deviated trachea, tension pneumothorax likely. Insert large bore cannula above the 6th rib, anterior axillary line. Arrange urgent chest tube.",
+   "bbox": [
+    67.2,
+    412.6,
+    685.8,
+    433.6
+   ],
+   "key": "p17-4ff37dc2"
+  },
+  {
+   "id": "p17-rb1-e34",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Decide when to stop CPR",
+   "section_y": 442.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Decide when to stop CPR",
+   "bbox": [
+    166.2,
+    442.6,
+    263.1,
+    453.6
+   ],
+   "key": "p17-c722e4cf"
+  },
+  {
+   "id": "p17-rb1-e35",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "How to give chest compressions",
+   "section_y": 446.9,
+   "indent": 0,
+   "parent": null,
+   "text": "How to give chest compressions",
+   "bbox": [
+    528.2,
+    446.9,
+    655.5,
+    458.1
+   ],
+   "key": "p17-426c53ca"
+  },
+  {
+   "id": "p17-rb1-e36",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If ongoing VF/pVT, temperature ≤ 35°C, snake bite or overdose/poisoning, continue CPR and discuss/transfer urgently.",
+   "bbox": [
+    56.4,
+    452.8,
+    345.8,
+    473.6
+   ],
+   "key": "p17-79aa55c6"
+  },
+  {
+   "id": "p17-rb1-e37",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Ensure patient is lying on firm surface. If on bed, use backboard or move patient onto floor.",
+   "bbox": [
+    399.9,
+    457.3,
+    751.9,
+    468.1
+   ],
+   "key": "p17-668834bf"
+  },
+  {
+   "id": "p17-rb1-e38",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Place heel of one hand over lower half of sternum. Place heel of second hand on top of first hand.",
+   "bbox": [
+    399.9,
+    467.3,
+    758.7,
+    478.1
+   ],
+   "key": "p17-b184c953"
+  },
+  {
+   "id": "p17-rb1-e39",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 1,
+   "parent": null,
+   "text": "If none of above or asystole after 20 minutes of continuous CPR or incurable underlying disease, consider stopping CPR in consultation with doctor.",
+   "bbox": [
+    56.4,
+    472.8,
+    353.5,
+    493.6
+   ],
+   "key": "p17-b4c73754"
+  },
+  {
+   "id": "p17-rb1-e40",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Push down quickly, hard (depth of 5-6cm) and fast (100-120 per minute).",
+   "bbox": [
+    399.9,
+    477.3,
+    682.1,
+    488.1
+   ],
+   "key": "p17-28aca3a5"
+  },
+  {
+   "id": "p17-rb1-e41",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Allow chest to return to normal shape between compressions.",
+   "bbox": [
+    399.9,
+    487.3,
+    642.4,
+    498.1
+   ],
+   "key": "p17-55d5bc3f"
+  },
+  {
+   "id": "p17-rb1-e42",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "Ventricular fibrillation (VF)",
+   "section_y": 136.2,
+   "indent": 2,
+   "parent": "p17-rb1-e39",
+   "text": "If CPR stopped, pronounce dead and arrange bereavement counselling for family.",
+   "bbox": [
+    62.1,
+    492.8,
+    370.6,
+    503.6
+   ],
+   "key": "p17-31747a83"
+  },
+  {
+   "id": "p17-rb1-e43",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Do not interrupt compressions unless giving ventilations or checking heart rhythm.",
+   "bbox": [
+    399.9,
+    497.3,
+    723.4,
+    508.1
+   ],
+   "key": "p17-2c45f8e0"
+  },
+  {
+   "id": "p17-rb1-e44",
+   "page": 17,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": "While giving continuous CPR",
+   "section_y": 362.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Swop with colleague every 2 minutes to avoid fatigue.",
+   "bbox": [
+    399.9,
+    507.3,
+    612.3,
+    518.1
+   ],
+   "key": "p17-c3fb1162"
+  },
+  {
+   "id": "p17-out-e01",
+   "page": 17,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Adrenaline is also known as epinephrine. 2 Thirst, dry mouth, poor skin turgor, BP < 90/60, dehydration likely.",
+   "bbox": [
+    34.0,
+    543.3,
+    369.2,
+    551.8
+   ],
+   "key": "p17-548401ca"
+  },
+  {
+   "id": "p17-out-e02",
+   "page": 17,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "CARDIOPULMONARY RESUSCITATION (CPR)",
+   "bbox": [
+    243.4,
+    48.7,
+    598.5,
+    71.0
+   ],
+   "key": "p17-a6a7320b"
+  }
+ ]
+}

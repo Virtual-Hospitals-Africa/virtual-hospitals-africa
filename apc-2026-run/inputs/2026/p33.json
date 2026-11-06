@@ -1,0 +1,382 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 33,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    122.6,
+    806.4,
+    154.4
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p33-rb1-e01",
+   "page": 33,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the traumatised/abused patient with any of:",
+   "section_y": 127.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the traumatised/abused patient with any of:",
+   "bbox": [
+    283.8,
+    127.6,
+    558.1,
+    138.7
+   ],
+   "key": "p33-ae45ef98"
+  },
+  {
+   "id": "p33-rb1-e02",
+   "page": 33,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the traumatised/abused patient with any of:",
+   "section_y": 127.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Sexual assault/rape within last 5 days if woman or last 3 days if man 32",
+   "bbox": [
+    72.3,
+    138.4,
+    358.4,
+    149.2
+   ],
+   "key": "p33-ad385df3"
+  },
+  {
+   "id": "p33-rb1-e03",
+   "page": 33,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the traumatised/abused patient with any of:",
+   "section_y": 127.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Injuries needing attention 30",
+   "bbox": [
+    392.6,
+    138.4,
+    519.3,
+    149.2
+   ],
+   "key": "p33-48769124"
+  },
+  {
+   "id": "p33-rb1-e04",
+   "page": 33,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the traumatised/abused patient with any of:",
+   "section_y": 127.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Suicidal thoughts/plans, overdose or self harm 34",
+   "bbox": [
+    551.3,
+    138.4,
+    755.8,
+    149.2
+   ],
+   "key": "p33-0b08397b"
+  },
+  {
+   "id": "p33-out-e01",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Suspect abuse if patient discloses, examination contradicts history, abuse clear on examination or patient's behaviour seems strange. • Ensure a safe space, offer confidentiality, be patient, listen attentively, and record the patient’s account of abuse. Allow a trusted friend/relative to stay close.",
+   "bbox": [
+    51.0,
+    89.5,
+    627.3,
+    109.7
+   ],
+   "key": "p33-af319d48"
+  },
+  {
+   "id": "p33-out-e02",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Family Violence, Child Protection and Sexual Offences detective. 2One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer.",
+   "bbox": [
+    34.0,
+    543.3,
+    517.3,
+    551.8
+   ],
+   "key": "p33-551f2ad1"
+  },
+  {
+   "id": "p33-out-e03",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the traumatised/abused patient",
+   "bbox": [
+    343.3,
+    167.4,
+    498.6,
+    178.5
+   ],
+   "key": "p33-e38d14e3"
+  },
+  {
+   "id": "p33-out-e04",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess Note",
+   "bbox": [
+    39.7,
+    183.1,
+    155.8,
+    194.2
+   ],
+   "key": "p33-8c8235f3"
+  },
+  {
+   "id": "p33-out-e05",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Symptoms Ask about injuries 30 and genital symptoms 62. If difficulty sleeping 99. Manage other symptoms on symptom pages.",
+   "bbox": [
+    39.7,
+    198.0,
+    566.4,
+    208.8
+   ],
+   "key": "p33-fbbfe68c"
+  },
+  {
+   "id": "p33-out-e06",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Abuse • If forced to do any form of sexual act without consent, sexual assault/rape likely 32. • If history of physical assault, old/new scars, bruises of different ages or unusual wounds, physical abuse likely. Document clinical examination on J88 form. • If history of harassment, intimidation, being ridiculed/controlled, insulted or threatened, or patient excessively withdrawn/fearful/anxious, emotional/verbal/psychological abuse likely. • If patient reports any other unwelcomed behaviour, manipulation or violation, consider other types of abuse.",
+   "bbox": [
+    39.7,
+    212.4,
+    776.0,
+    253.4
+   ],
+   "key": "p33-79aa6d72"
+  },
+  {
+   "id": "p33-out-e07",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Social risk Ask about living conditions, disabilities and identity of perpetrator to determine if mandatory reporting is needed. Advise and treat as below.",
+   "bbox": [
+    39.7,
+    257.6,
+    614.4,
+    267.8
+   ],
+   "key": "p33-0a8c7096"
+  },
+  {
+   "id": "p33-out-e08",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Willingness to report to police and undergo forensic examination",
+   "bbox": [
+    39.7,
+    272.0,
+    117.9,
+    302.2
+   ],
+   "key": "p33-d8c4df5f"
+  },
+  {
+   "id": "p33-out-e09",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If patient agrees to report, or is unsure/unwilling to report but agrees to forensic examination: contact FCS1 detective and refer to Thuthuzela Care Centre/other dedicated centre. • Ensure patient is transported with police vehicle or ambulance. • If patient declines both, respect his/her decision and advise that they can open a case later.",
+   "bbox": [
+    136.2,
+    272.0,
+    747.6,
+    302.2
+   ],
+   "key": "p33-d368ee91"
+  },
+  {
+   "id": "p33-out-e10",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mental health If stress, anxiety or low mood 98.",
+   "bbox": [
+    39.7,
+    306.0,
+    258.6,
+    316.8
+   ],
+   "key": "p33-fdf49565"
+  },
+  {
+   "id": "p33-out-e11",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Substance use In the past year, has patient drunk ≥ 4 drinks2/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+   "bbox": [
+    39.7,
+    320.6,
+    650.0,
+    331.4
+   ],
+   "key": "p33-2d774dd4"
+  },
+  {
+   "id": "p33-out-e12",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Family planning Do pregnancy test. If pregnant 175. If pregnancy test negative, assess contraceptive needs and offer long-term contraceptive same day 170.",
+   "bbox": [
+    39.7,
+    335.2,
+    632.2,
+    346.0
+   ],
+   "key": "p33-d596424b"
+  },
+  {
+   "id": "p33-out-e13",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the traumatised/abused patient • Reassure patient that information is confidential, except where mandatory reporting is needed (patient has disability, ≥ 60 years, or children exposed to domestic violence). If unsure if mandatory reporting is needed, discuss with Thuthuzela Care Centre/other dedicated centre. • Encourage patient to report to police and open a case. If patient declines, respect his/her decision, explain that s/he will still receive treatment and may open a case later. • Advise that there are many organisations that offer support and counselling and link patient to these 200.",
+   "bbox": [
+    51.0,
+    359.7,
+    768.6,
+    410.9
+   ],
+   "key": "p33-db900727"
+  },
+  {
+   "id": "p33-out-e14",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Treat the traumatised/abused patient • Discuss with Thuthuzela Care Centre/other dedicated centre/social worker/DSD (regardless of willingness to open a case), to arrange ongoing support and assess for application of protection order. • If mandatory reporting is needed (patient has disability, ≥ 60 years, or children exposed to domestic violence): report to social worker, local DSD or FCS1 detective. • If physical abuse, document examination on J88 form. Avoid handing J88 to patient. If patient willing to open case, police to collect and sign for J88. If not willing, keep form in patient's clinical records. • Ensure patient has follow up with trauma counsellor/mental health nurse/psychologist/social worker/helpline 200. • If at risk of further harm, needing shelter or history of domestic violence, offer referral to social worker same day. • Manage any injuries 30. • Give paracetamol 500mg-1g orally 4-6 hourly (up to 4g in 24 hours) as needed for pain for up to 5 days.",
+   "bbox": [
+    51.0,
+    425.8,
+    788.3,
+    506.9
+   ],
+   "key": "p33-3c6077d3"
+  },
+  {
+   "id": "p33-out-e15",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review the traumatised/abused patient in 1 month.",
+   "bbox": [
+    321.1,
+    521.9,
+    522.6,
+    532.9
+   ],
+   "key": "p33-4c9cd5eb"
+  },
+  {
+   "id": "p33-out-e16",
+   "page": 33,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TRAUMATISED/ABUSED PATIENT",
+   "bbox": [
+    288.1,
+    48.7,
+    553.8,
+    71.0
+   ],
+   "key": "p33-3f8d026d"
+  }
+ ]
+}

@@ -1,0 +1,549 @@
+{
+ "page": 27,
+ "checker": "backward-1",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Trigger 'Poisoning' covers 'suspected poisoning/overdose': 'Overdose' is a SNOMED descendant of 'Poisoning', and Poisoning is a VHA warning sign.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'just had a seizure' read as post-ictal state; reasonable reading of 'Having/just had'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Confused' -> Acute confusion is fine, but it is a child of 'Clouded consciousness' (also listed), so this entry is redundant rather than wrong.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Clouded consciousness' is the SNOMED parent of Acute confusion and the broad concept for 'Confused'; acceptable.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says bare 'Weakness'; 'Muscle weakness' is narrower and is not a descendant of the general concept 'Asthenia' (synonym Weakness), so a recorded general weakness would not match.",
+   "fix": "(clinical_finding (snomed_concept \"Asthenia\" \"finding\")) alongside or instead of Muscle weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Dribbling from mouth' carries the synonym 'drooling'; no 'excessive' qualifier exists, acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Persistent vomiting' (disorder) is the exact SNOMED name; no finding-category form exists.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slow respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page's 'slow/shallow' is either; two separate concepts are the right reading. 'Slow shallow breathing' (finding) exists but would require both.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shallow breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "See c020.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "'Shock' is the footnote-defined shock; the rule pairs it with SBP < 80 as the page does.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Same anchor as the task; organophosphate poisoning is itself a descendant of Poisoning, so the and-structure is coherent.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Dribbling from mouth' carries the synonym 'drooling'; acceptable for 'excessive drooling'.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "Page says 'vomiting/diarrhoea' (not persistent) in the organophosphate list; 'Finding of vomiting' is the common-symptom form and Persistent vomiting is its descendant.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 60)",
+   "verdict": "imprecise",
+   "reason": "Number and direction match the page, but 'Pulse, function' is a cardiovascular function concept, not a rate; (snomed_concept \"Heart rate\" \"observable entity\") exists and is the rate concept. Keep whatever concept VHA records as the routine pulse vital, since evidence matching is by exact string.",
+   "fix": "(< (measurement (snomed_concept \"Heart rate\" \"observable entity\") bpm) 60) if that is the recorded vital",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "'BP < 90/60' split into systolic < 90 or diastolic < 60, the same convention as the gold anaphylaxis rules.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "See c030.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable organophosphate poisoning",
+   "expr": "(diagnosis (snomed_concept \"Organophosphate poisoning\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "Trigger 'Poisoning' covers 'suspected poisoning/overdose' (Overdose is_a Poisoning).",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'just had a seizure' read as post-ictal state; reasonable reading of 'Having/just had'.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Confused' -> Acute confusion is fine, but it is a child of 'Clouded consciousness' (also listed), so this entry is redundant rather than wrong.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Clouded consciousness' is the SNOMED parent of Acute confusion and the broad concept for 'Confused'; acceptable.",
+   "fix": "",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says bare 'Weakness'; 'Muscle weakness' is narrower and is not a descendant of the general concept 'Asthenia' (synonym Weakness), so a recorded general weakness would not match.",
+   "fix": "(clinical_finding (snomed_concept \"Asthenia\" \"finding\")) alongside or instead of Muscle weakness",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "'Dribbling from mouth' carries the synonym 'drooling'; acceptable.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "See c017.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slow respiration\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "See c020.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shallow breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "See c020.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 12)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "See c022.",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 60)",
+   "verdict": "imprecise",
+   "reason": "Number and direction match the page, but 'Pulse, function' is a cardiovascular function concept, not a rate; (snomed_concept \"Heart rate\" \"observable entity\") exists and is the rate concept. Keep whatever concept VHA records as the routine pulse vital, since evidence matching is by exact string.",
+   "fix": "(< (measurement (snomed_concept \"Heart rate\" \"observable entity\") bpm) 60) if that is the recorded vital",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "verdict": "imprecise",
+   "reason": "Number and direction match the page, but 'Pulse, function' is a cardiovascular function concept, not a rate; (snomed_concept \"Heart rate\" \"observable entity\") exists and is the rate concept. Keep whatever concept VHA records as the routine pulse vital, since evidence matching is by exact string.",
+   "fix": "(> (measurement (snomed_concept \"Heart rate\" \"observable entity\") bpm) 100) if that is the recorded vital",
+   "confidence": "low"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for urgent poisoning/overdose conditions",
+   "verdict": "ok",
+   "problem": "Type and trigger right; the list is exactly the red-box items plus the organophosphate discriminators. Minor: 'Muscle weakness' is narrower than the page's 'Weakness' (see c013), and 'Acute confusion' is redundant under 'Clouded consciousness'. 'Excessive secretions' from the organophosphate sentence is not checked for.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "verdict": "problem",
+   "problem": "The page lists a cholinergic cluster ('pinpoint pupils, excessive drooling/sweating, excessive secretions, vomiting/diarrhoea, pulse < 60, BP < 90/60 ... organophosphate poisoning likely') as a constellation; the rule makes it a flat 'or', so any poisoning with vomiting alone, diarrhoea alone, or a diastolic BP < 60 alone becomes a PROBABLE organophosphate poisoning. 'probable' for 'likely' is right, but the and/or structure is looser than the page. Also 'excessive secretions' is dropped from the list. Suggested fix: require at least two of the listed features (any2, grouping drooling/sweating and vomiting/diarrhoea so each counts once), or anchor on pinpoint pupils/drooling plus one other.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: poisoning/overdose with danger signs",
+   "verdict": "ok",
+   "problem": "Urgent is justified by 'Give urgent attention to the patient with suspected poisoning/overdose and any of:'; (and Poisoning (or ...)) matches the box; all twelve box criteria are present, with 'Shock1/systolic BP < 80' and 'Pulse < 60 or >100' split correctly. Minor: 'Muscle weakness' narrower than 'Weakness' (c045); pulse concept see c057. Not encoded anywhere: the footnote 'shock likely' definition (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness), which the brief would make a probable Shock rule feeding this evaluation.",
+   "severity": "low"
+  }
+ ],
+ "summary": "No invented content: every one of the 58 conditions traces to the red box or the organophosphate sentence, and every SNOMED concept exists. The most consequential problem is the probable organophosphate rule, which flattens the page's symptom cluster into a plain 'or' (vomiting alone or diastolic BP < 60 alone, in any poisoning, yields a probable organophosphate diagnosis) and omits 'excessive secretions'. Lesser issues: 'Muscle weakness' is narrower than the page's bare 'Weakness' ('Asthenia' is the general concept and does not subsume it), the pulse measurement uses 'Pulse, function' rather than a rate concept (keep whatever VHA records as the routine vital), and the footnote's 'shock likely' definition has no probable Shock rule."
+}

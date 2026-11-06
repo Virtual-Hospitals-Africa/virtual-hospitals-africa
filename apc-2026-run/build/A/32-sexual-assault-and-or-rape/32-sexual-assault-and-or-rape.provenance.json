@@ -1,0 +1,477 @@
+{
+ "edition": "2026",
+ "page": 32,
+ "lisp_file": "32-sexual-assault-and-or-rape.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted and/or raped",
+   "confidence": "high",
+   "note": "Presenting complaint. \"Victim of sexual aggression\" (synonym sexual assault victim) covers its descendant \"Victim of rape\", so one concept serves \"sexually assaulted and/or raped\"."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect sexual assault",
+   "confidence": "medium",
+   "note": "A suspected (possible) sexual assault also triggers the urgent check, so that the page red box applies when only the defining account was recorded."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect rape",
+   "confidence": "medium",
+   "note": "A suspected (possible) rape also triggers the urgent check."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy (finding), the form VHA rules already use."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention",
+   "confidence": "medium",
+   "note": "\"Traumatic injury\" (disorder) matches any recorded injury (descendants match). \"needing attention\" has no qualifier, so any injury counts; fires more often than the page intends for trivial injuries."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": "Suicidal thoughts (finding)."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts/plans",
+   "confidence": "high",
+   "note": "\"Planning suicide\" (finding) for \"plans\". It is a descendant of Suicidal thoughts, kept separately to mirror the page."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose",
+   "confidence": "high",
+   "note": "\"Overdose\" (disorder), the page wording; it is a child of \"Poisoning\", the warning-sign concept, which therefore does not match here."
+  },
+  {
+   "rule": "Check for urgent sexual assault/rape conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm",
+   "confidence": "high",
+   "note": "\"Self-injurious behavior\" (finding), already in VHA vocabulary."
+  },
+  {
+   "rule": "Diagnose possible sexual assault",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "forced into sexual act (excluding penetration) without consent",
+   "confidence": "medium",
+   "note": "\"Victim of forced sexual activity\" matches \"forced into sexual act without consent\". The \"(excluding penetration)\" exclusion is not encoded: penetration is rape, itself a sexual assault, so excluding it would only hide a true sexual assault."
+  },
+  {
+   "rule": "Diagnose possible sexual assault",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect sexual assault",
+   "confidence": "medium",
+   "note": "The page \"suspects\" sexual assault, so a possible diagnosis. Victim-of finding used as the diagnosed concept: no disorder concept for sexual assault exists (the \"Sexual assault\" concept is an event)."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "penetration of patient's vagina/anus/mouth with any object, without consent",
+   "confidence": "medium",
+   "note": "One of the SNOMED sexual-assault-with-penetration events (vagina: digital, foreign body; anus: penis, digital, foreign body; mouth: penis). Penile-vaginal penetration has no specific event concept other than \"Rape\" itself, so it is covered by recording \"Victim of rape\" directly."
+  },
+  {
+   "rule": "Diagnose possible rape",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect rape",
+   "confidence": "medium",
+   "note": "The page \"suspects\" rape, so a possible diagnosis of \"Victim of rape\" (finding); no disorder concept exists."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))",
+   "element_keys": [
+    "p32-83ced725"
+   ],
+   "quote": "sexually assaulted and/or raped",
+   "confidence": "high",
+   "note": "Presenting complaint. \"Victim of sexual aggression\" (synonym sexual assault victim) covers its descendant \"Victim of rape\", so one concept serves \"sexually assaulted and/or raped\"."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(diagnosis (snomed_concept \"Victim of sexual aggression\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect sexual assault",
+   "confidence": "medium",
+   "note": "A suspected (possible) sexual assault also triggers the urgent check, so that the page red box applies when only the defining account was recorded."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(diagnosis (snomed_concept \"Victim of rape\" \"finding\") possible)",
+   "element_keys": [
+    "p32-23691e73"
+   ],
+   "quote": "Suspect rape",
+   "confidence": "medium",
+   "note": "A suspected (possible) rape also triggers the urgent check."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of sexual aggression\" \"finding\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "The language has no patient sex, so \"5 days if woman or 3 days if man\" cannot be split; the 5-day window is used for everyone, so this fires more often than the page intends for men assaulted 3-5 days ago. Written as <= per the time-comparison decision. Relies on the finding onset being the assault date, not the recording date."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of forced sexual activity\" \"finding\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window applied to the onset of the forced sexual activity finding, which feeds the possible sexual assault diagnosis."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of vagina\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of vagina with foreign body\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with anal penetration by penis\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with digital penetration of anus\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with penetration of anus with foreign body\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault with oral penetration by penis\" \"event\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p32-1565c8a9"
+   ],
+   "quote": "Sexual assault/rape within last 5 days",
+   "confidence": "low",
+   "note": "Same 5-day window (sex not representable) applied to the onset of this penetration event, which feeds the possible rape diagnosis. Written as <= per the time-comparison decision."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p32-1acff658"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy (finding), the form VHA rules already use."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p32-c2e4440c"
+   ],
+   "quote": "Injuries needing attention",
+   "confidence": "medium",
+   "note": "\"Traumatic injury\" (disorder) matches any recorded injury (descendants match). \"needing attention\" has no qualifier, so any injury counts; fires more often than the page intends for trivial injuries."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": "Suicidal thoughts (finding)."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "Suicidal thoughts/plans",
+   "confidence": "high",
+   "note": "\"Planning suicide\" (finding) for \"plans\". It is a descendant of Suicidal thoughts, kept separately to mirror the page."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "overdose",
+   "confidence": "high",
+   "note": "\"Overdose\" (disorder), the page wording; it is a child of \"Poisoning\", the warning-sign concept, which therefore does not match here."
+  },
+  {
+   "rule": "Urgent: sexual assault/rape with urgent signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Self-injurious behavior\" \"finding\"))",
+   "element_keys": [
+    "p32-d7902574"
+   ],
+   "quote": "self harm",
+   "confidence": "high",
+   "note": "\"Self-injurious behavior\" (finding), already in VHA vocabulary."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p32-4025182b",
+   "element_id": "p32-rb1-e06",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list; management is out of scope."
+  },
+  {
+   "element_key": "p32-44367ff7",
+   "element_id": "p32-rb1-e07",
+   "text": "If severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, or use of a foreign object, manage and refer urg",
+   "reason_category": "management_step",
+   "reason": "Criteria for urgent referral to the next level of care (severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, foreign object): a referral step, not encoded per the no-management decision."
+  },
+  {
+   "element_key": "p32-88cbb9cd",
+   "element_id": "p32-rb1-e08",
+   "text": "If BP < 90/60, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluids if BP < 90/60: medicine and dose."
+  },
+  {
+   "element_key": "p32-1a56fe79",
+   "element_id": "p32-rb1-e09",
+   "text": "If oxygen saturation < 95% or difficulty breathing, give face mask oxygen: 1-4L/min via nasal prongs or 6-10L/min via facemask (up to 10-15L/min via non-rebreat",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy: management."
+  },
+  {
+   "element_key": "p32-95b9d9a9",
+   "element_id": "p32-rb1-e10",
+   "text": "Prevent HIV and hepatitis B. If exposure to blood, blood-stained fluid, vaginal fluid/semen, or unsure: give PEP as soon as possible 122.",
+   "reason_category": "management_step",
+   "reason": "HIV/hepatitis B PEP: medicine and referral to page 122."
+  },
+  {
+   "element_key": "p32-2dcdca69",
+   "element_id": "p32-rb1-e11",
+   "text": "Prevent STIs. If genital symptoms 62. If no genital symptoms, give single dose each of ceftriaxone 250mg IM1, azithromycin 1g and metronidazole2 2g orally. If p",
+   "reason_category": "management_step",
+   "reason": "STI prophylaxis: medicines and doses."
+  },
+  {
+   "element_key": "p32-cd35a65a",
+   "element_id": "p32-rb1-e12",
+   "text": "If rape in woman of child bearing age, pregnancy test negative, not on reliable contraception and ≤ 5 days since rape, give emergency contraception 170.",
+   "reason_category": "management_step",
+   "reason": "Emergency contraception: medicine; refers to page 170."
+  },
+  {
+   "element_key": "p32-bc3bcf9d",
+   "element_id": "p32-rb1-e13",
+   "text": "Discuss with Thuthuzela Care Centre/other dedicated centre for urgent referral and forensic examination.",
+   "reason_category": "management_step",
+   "reason": "Discuss/refer to Thuthuzela Care Centre for forensic examination: referral."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Sex-specific time window",
+   "decision": "One 5-day onset window for everyone, because the language cannot express patient sex.",
+   "alternatives": "A 3-day window for everyone (under-triages women at 3-5 days); dropping the criterion.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Presenting complaint concept",
+   "decision": "\"Victim of sexual aggression\" (finding) as the trigger; \"Victim of rape\" is its descendant and matches. Possible diagnoses of these two findings for the page's \"Suspect sexual assault/rape\" sentences also trigger the task and the priority rule.",
+   "alternatives": "\"Sexual assault\" / \"Rape\" event concepts; \"Alleged victim of sexual assault\" (situation).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Injuries needing attention",
+   "decision": "Any \"Traumatic injury\" counts; \"needing attention\" is not representable.",
+   "alternatives": "Severity qualifier (not on the page).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Manage and refer urgently criteria",
+   "decision": "Not encoded (management/referral).",
+   "alternatives": "An Emergency/Very urgent priority for severe bleeding, strangulation etc.; the page does not state a higher priority.",
+   "confidence": "medium"
+  }
+ ]
+}

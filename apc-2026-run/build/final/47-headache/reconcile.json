@@ -1,0 +1,127 @@
+{
+ "page": 47,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for, priority_condition, diagnosis_condition (stroke, TIA)",
+   "difference": "A: (Difficulty talking)  vs  B: (Difficulty talking + Sudden onset)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "reason": "\"New sudden\" qualifies the weakness/numbness clause; \"difficulty speaking\" follows a semicolon without it, so the unqualified form is closer to the words.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for, priority_condition",
+   "difference": "A: (and (Headache + Worsening) (Frequent headache))  vs  B: (Frequent headache + Worsening)",
+   "choice": "A",
+   "final_expr": "(and (clinical_finding Headache (qualifier Worsening)) (clinical_finding Frequent headache))",
+   "reason": "\"Getting worse and more frequent\" names two properties joined by \"and\"; A encodes each, B's single concept reads as a frequent headache that worsens.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, priority_condition",
+   "difference": "A: (Wakes up during night)  vs  B: not encoded",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Wakes up during night\" \"finding\"))",
+   "reason": "\"Headache that wakes patient\" is a red-box item; A's concept (already in VHA's vocabulary) approximates it inside the headache rule, whereas B drops it entirely.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, priority_condition",
+   "difference": "A: (and (Headache + Chronic persistent) (Procedure: Highly active antiretroviral therapy))  vs  B: not encoded",
+   "choice": "A",
+   "final_expr": "(and (clinical_finding Headache (qualifier Chronic persistent)) (finding Procedure Highly active antiretroviral therapy))",
+   "reason": "\"Persistent headache since starting ART\" is a red-box item; A's encoding passes all checks and uses a concept already in VHA's vocabulary, so it is kept with \"since\" recorded as not modelled.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (meningitis)",
+   "difference": "A: not present  vs  B: (Clouded consciousness)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "\"Drowsy/confused\": Clouded consciousness is VHA's common term for confusion and sits beside Acute confusion, so both record forms of \"confused\" count.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (sinusitis)",
+   "difference": "A: (Purulent nasal discharge)  vs  B: (Nasal discharge + Thick)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "reason": "The page says \"thick nasal ... discharge\", not purulent; B uses the page's word.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (sinusitis)",
+   "difference": "A: (Posterior rhinorrhea)  vs  B: (Posterior rhinorrhea + Thick)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Posterior rhinorrhea\" \"disorder\") (qualifier (snomed_concept \"Thick\" \"qualifier value\")))",
+   "reason": "\"Thick\" applies to \"nasal/postnasal discharge\" alike.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (tension headache)",
+   "difference": "A: (Tightness sensation @ Head structure)  vs  B: (Tightening pain @ Head structure)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Tightness sensation\" \"finding\") (finding_site (snomed_concept \"Head structure\" \"body structure\")))",
+   "reason": "\"Tightness around head\" matches Tightness sensation; the page lists pain separately (\"or generalised pressure-like pain\").",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (muscular neck pain)",
+   "difference": "A: (Aching headache + Continuous)  vs  B: (Aching pain + Continuous)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Aching pain\" \"finding\") (qualifier (snomed_concept \"Continuous\" \"qualifier value\")))",
+   "reason": "The page says \"constant aching pain\"; B uses the page's words, and the rule's Headache condition keeps the headache context.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for, diagnosis_condition (muscular neck pain)",
+   "difference": "A: (Tenderness @ Entire skeletal muscle of neck)  vs  B: (Tenderness @ Skeletal muscle structure of neck)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Tenderness\" \"finding\") (finding_site (snomed_concept \"Skeletal muscle structure of neck\" \"body structure\")))",
+   "reason": "\"Tender neck muscles\" is any part of the neck muscles; the structure concept (both resolve) fits better than the \"entire\" concept.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (SBP >= 180 or DBP >= 110) without the pregnancy clause  vs  B: (and (SBP >= 180 or DBP >= 110) (no Pregnancy))",
+   "choice": "A",
+   "final_expr": "(>= SBP 180) / (>= DBP 110) as members of the red-box or",
+   "reason": "Inside the red-box \"or\" a pregnant patient with BP >= 180/110 already meets \"Pregnant ... and BP >= 140/90\", so dropping \"and not pregnant\" leaves the urgent result unchanged, whereas B's (no Pregnancy) misses men and anyone without a recorded \"not pregnant\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis (tick bite fever)",
+   "difference": "A: Spotted fever group rickettsial disease  vs  B: African tick bite fever",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"African tick bite fever\" \"disorder\") probable)",
+   "reason": "The page writes \"tick bite fever\", which matches African tick bite fever by name; whether it is also meant to cover Boutonneuse fever (A's broader parent) the page does not say.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis, diagnosis_condition (acute viral infection)",
+   "difference": "A: not encoded  vs  B: possible Acute viral disease when Q0 = Yes, sinusitis branch absent and no tick bite",
+   "choice": "B",
+   "final_expr": "(system_diagnosis_rule \"Diagnose possible acute viral infection in headache\" ... possible)",
+   "reason": "The page names a diagnosis for the \"none of above\" branch (\"treat as acute viral infection\"); \"treat as\" is neither \"likely\" nor \"consider\", so it is kept at possible and the malaria exclusion cannot be modelled.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition (tension headache, muscular neck pain)",
+   "difference": "A: no Headache condition  vs  B: (Headache) in each rule",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Headache\" \"finding\"))",
+   "reason": "Both nodes sit in \"Approach to the patient with headache\", so anchoring the rule on Headache follows the page and matches the other flowchart rules.",
+   "unsettled": false
+  },
+  {
+   "role": "rule descriptions",
+   "difference": "A: \"… in headache\" / \"Check for urgent headache conditions\" / \"Urgent: headache with red-box danger signs\"  vs  B: \"… in patient with headache\" / \"Check for urgent headache danger signs\" / \"Urgent: headache with danger signs (APC p47)\"",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "Both are topic-specific and unique; the base build's names are kept (acute viral infection takes the same pattern).",
+   "unsettled": false
+  }
+ ],
+ "notes": "Base A. Both builders passed. Shared conditions (101) are unchanged. Provenance for conditions taken from B was copied from B's provenance (marked [from builder B]). Flowchart from A, updated for the acute viral infection rule and the changed concepts. Remaining questions merged from both; B's 'since starting ART not encoded' and 'wakes patient only Morning headache' items are replaced by A's encodings and their gaps. Malaria likely stays unencoded in both (no concept for having been in a malaria area)."
+}

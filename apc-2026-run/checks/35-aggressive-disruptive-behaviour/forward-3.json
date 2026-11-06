@@ -1,0 +1,490 @@
+{
+ "page": 35,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p35-80245a7f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header becomes Urgent priority with (and <aggressive OR disruptive> (or ...)) as the house standard requires; Aggressive behavior is a recorded warning sign, so the rule can fire.",
+   "evidence": [
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: Urgent (and (or (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disruptive behavior\" \"finding\"))) (or ...))",
+    "Check for urgent aggressive/disruptive behaviour signs :: due_to (or (clinical_finding (snomed_concept \"Aggressive behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disruptive behavior\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-aa9b9dcf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Anger reaction' (child of 'Outbursts of anger') is a reasonable fit. 'Feeling angry' also exists but is a subjective feeling, not observed behaviour.",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Anger reaction\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Anger reaction\" \"finding\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p35-20e04b0d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All three parts are covered: challenging (Challenging behavior), insulting (Verbally abusive behavior), provocative (Provocative behavior).",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Challenging behavior\" \"finding\"))",
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Provocative behavior\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Challenging behavior\" \"finding\")) (clinical_finding (snomed_concept \"Verbally abusive behavior\" \"finding\")) (clinical_finding (snomed_concept \"Provocative behavior\" \"finding\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p35-9173924e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "observed tense posturing (gripping arm rails, clenching fists)"
+   ],
+   "problem": "'Feeling physically tense' (parent 'Feeling tense') is a symptom the patient feels and reports. The page describes posturing the clinician observes, so a health worker seeing clenched fists may not record it under this concept. There is no precoordinated SNOMED concept for tense posture or clenched fists; 'Physically threatening behavior' is a possible alternative.",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Feeling physically tense\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Feeling physically tense\" \"finding\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p35-61fd1d24",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Verbal aggression' covers aggressive speech. 'Loud' has no separate concept, which is acceptable.",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Verbal aggression\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Verbal aggression\" \"finding\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p35-d906a979",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Frequently changing position maps to Restlessness and pacing to Pacing up and down.",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Restlessness\" \"finding\"))",
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Pacing up and down\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Restlessness\" \"finding\")) (clinical_finding (snomed_concept \"Pacing up and down\" \"finding\")) ...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-6ff7fb2b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Hitting maps to Physical aggression; pounding walls and throwing objects map to Destructive behavior. Both are children of Aggressive behavior.",
+   "evidence": [
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Physical aggression\" \"finding\"))",
+    "Check for urgent aggressive/disruptive behaviour signs :: check_for (clinical_finding (snomed_concept \"Destructive behavior\" \"finding\"))",
+    "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (or ... (clinical_finding (snomed_concept \"Physical aggression\" \"finding\")) (clinical_finding (snomed_concept \"Destructive behavior\" \"finding\")) ...)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-355c22e9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Header for management steps.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-07173df1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Safety measures.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-4a3f93e0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Verbal de-escalation.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-4a549765",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-21c7415f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-0535168f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "'Take all threats seriously' is advice, not a triage criterion.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-4d354f63",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Criteria for involuntary admission (mental illness AND refuses AND danger). This is a management or legal decision with a cross-reference to p158, not triage or diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-0f914f13",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Indications for restraint or sedation.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-9a4f50c0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Cross-reference to p36.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-3f55a385",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-b196688f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "The >65 / substance-user caveat is about the sedation route.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-76a2025b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "'Will patient accept oral medication?' is a treatment decision node.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-594cc78b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-cc7f998c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-c4b9b4bd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Oral sedation dosing.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-7e086277",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-d99bf28f",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Response-to-sedation branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-217a2373",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Response-to-sedation branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-1ec0e900",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Selects medication by likely cause. The page gives no criteria for any cause, so there is no probable or possible diagnosis to encode.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-2ac9e20a",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medication-selection branch with no diagnostic criteria; the footnote defines stimulants only.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-c67ce43c",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medication-selection branch with no diagnostic criteria.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-1b58a965",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medication-selection branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-285cf984",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medication-selection branch; delirium is handled on p36.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-fccbaa9a",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Medication-selection branch.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-1c7af79b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-c00e937a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-f8c73474",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-06279d53",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-552631c1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Age-adjusted dosing.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-5644598e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Olanzapine intolerance changes the drug choice; it is not a diagnosis.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-3c82f64a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-68822531",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-51b4c85a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-1c7da1a4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Monitoring schedule.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-a7a0f05f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Cross-reference to p36.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p35-f2a43bbd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Referral and forms.",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p35-5e9dbeaa",
+  "p35-356a0ede"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "problem": "'Feeling physically tense' is a felt symptom. The page lists observed posturing (gripping rails, clenching fists), so clinicians may never record this concept for that sign and the Urgent rule would miss it.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "problem": "Destructive behavior, Verbal aggression and Physical aggression are descendants of Aggressive behavior, so any of them also satisfies the trigger arm. This is harmless and matches the page's 'any of', but it means the (and trigger \u2026) adds nothing for those three.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+   "problem": "Aggressive behavior is itself a recorded warning sign, and it may already carry its own priority level in shared/warning_signs.ts, which this checker may not open. If that level is higher than Urgent, this rule would be redundant or inconsistent with it. Worth confirming.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent aggressive/disruptive behaviour signs",
+   "problem": "'Disruptive behavior' is not listed among the known warning signs or common symptoms. A patient recorded only as disruptive may therefore never trigger the task unless it is captured elsewhere.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box criteria are fully encoded: one check task and one Urgent priority rule, with every SNOMED concept present and sensible. The main weakness is that 'Tense posturing like gripping arm rails, clenching fists' is mapped to 'Feeling physically tense', a felt symptom rather than observed posture, so it is only partially captured. The rest of the page (sedation flowchart, cause-based medication choice, admission and referral) is management or routing with no diagnostic criteria, so it is correctly left out."
+}

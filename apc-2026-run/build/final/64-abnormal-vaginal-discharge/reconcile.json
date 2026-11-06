@@ -1,0 +1,55 @@
+{
+ "page": 64,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for + priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "reason": "Page says \"Recent delivery/TOP/miscarriage\"; A's delivery + Recent keeps the page's words and parallels TOP/miscarriage + Recent, and Delivery finding is already in VHA's vocabulary.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for + priority_condition",
+   "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Menstrual period late\" \"finding\"))",
+   "reason": "Page says \"missed/overdue period\"; an exact concept exists for overdue (late), so it is encoded alongside Missed period instead of being folded into it.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for + priority_condition",
+   "difference": "A: (none)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peritonitis\" \"disorder\"))",
+   "reason": "Page names \"Peritonitis\" with its signs in brackets; recording the disorder itself should also trigger urgency, so B's or of the disorder and the three signs is kept.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for + diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\")) (and its (no …) forms)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical excitation present\" \"finding\")) (and its (no …) forms)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain on movement of cervix\" \"finding\"))",
+   "reason": "Page asks \"pain on moving the cervix\"; A's concept name matches those words exactly (neither is an is-a of the other).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for + diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Vaginal structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritus of vagina\" \"disorder\"))",
+   "reason": "Page says \"discharge itchy\"; a precoordinated vaginal-itch concept exists, and the briefing uses finding_site only when none does.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\")) required in all five diagnosis rules  vs  B: not required",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+   "reason": "The flowchart is the \"Approach to a patient with an abnormal vaginal discharge\"; without it B's BV rule would fire for any patient recorded as not sexually active with no vulval signs.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed; base A (rule descriptions from A). Six differences in diff.json collapse into the six concept decisions above (each concept appears in several roles; the (no …) counts for pain on moving the cervix follow decision 4). Builder B's clinician questions on itch in the not-sexually-active branch and the 'recent' window were merged into the remaining-questions file. The gate's (no X) artefact for Scratch marks + finding_site stays declared as a known issue, as in both builds."
+}

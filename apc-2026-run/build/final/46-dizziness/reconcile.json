@@ -1,0 +1,87 @@
+{
+ "page": 46,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: Unable to stand alone  vs  B: Unable to stand",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Unable to stand alone\" \"finding\"))",
+   "reason": "The page says \"Unable to stand without support\", which is standing alone; \"Unable to stand\" would miss a patient who can stand only with support.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: Unable to stand alone  vs  B: Unable to stand",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Unable to stand alone\" \"finding\"))",
+   "reason": "Same as the check_for decision: \"without support\" maps to \"alone\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Excessively deep breathing  vs  B: Deep breathing",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "reason": "The page asks whether the patient was breathing \"very ... deeply\", which is excessive deep breathing, not just deep breathing (the two concepts are siblings).",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: Excessively deep breathing (and its (no \u2026) exclusions in the two vertigo rules)  vs  B: Deep breathing",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "reason": "Follows the check_for decision on \"very quickly or deeply\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Collapse  vs  B: (none)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Collapse\" \"finding\"))",
+   "reason": "The flowchart question asks about breathing \"immediately before or during the collapse\" after \"Ask about fainting/collapse attacks\", so collapse is asked about.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: hyperventilation requires Collapse; vertigo rules use (or (no Collapse) (and (no Tachypnea) (no Excessively deep breathing)))  vs  B: no collapse condition; vertigo rules use (no Tachypnea) (no Deep breathing)",
+   "choice": "A",
+   "final_expr": "(and Dizziness Collapse (or Tachypnea Excessively deep breathing)); No branch: (or (no Collapse) (and (no Tachypnea) (no Excessively deep breathing)))",
+   "reason": "The question's words, \"before or during the collapse\", presuppose a collapse; but the page doesn't say what happens to a dizzy patient who has no collapse, so this is unsettled.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (>= (onset sudden-onset Dizziness) (time_ago 1 hours)) in vestibular neuronitis  vs  B: no time condition",
+   "choice": "A",
+   "final_expr": "(>= (onset (clinical_finding (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))) (time_ago 1 hours))",
+   "reason": "\"Lasting hours/days\" is the page's only difference between vestibular neuronitis and positional vertigo (\"lasting seconds\"); onset at least 1 hour ago is the closest the language gets, but it's an approximation of how long an episode lasts.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: Dizziness in positional vertigo rule  vs  B: (none)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Dizziness\" \"finding\"))",
+   "reason": "The whole flowchart is for \"the patient with dizziness\", and every other rule is anchored on Dizziness.",
+   "unsettled": false
+  },
+  {
+   "role": "rule_description",
+   "difference": "A: Check for causes of dizziness  vs  B: Check for causes of dizziness not needing urgent attention",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "B follows the page's box header \"Approach to the patient with dizziness not needing urgent attention\".",
+   "unsettled": false
+  },
+  {
+   "role": "rule_description",
+   "difference": "A: Diagnose \u2026 with dizziness  vs  B: Diagnose \u2026 in dizziness / Diagnose probable positional vertigo / vestibular neuronitis",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "Descriptions must be unique across the book; A's \"with dizziness\" ties every rule to this page, while B's bare vertigo/neuronitis names could collide with the ear page.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Base is A, because it is more faithful to the flowchart's collapse wording and \"lasting hours/days\". From B, only the causes task description is taken. B's extra clinician question (exclude positional vertigo from vestibular neuronitis) and its SNOMED-gap notes are merged into remaining-questions. Unable to stand alone and Excessively deep breathing are not in VHA's vocabulary.tsv; their siblings Unable to stand and Deep breathing are, but they fit the page's words less well."
+}

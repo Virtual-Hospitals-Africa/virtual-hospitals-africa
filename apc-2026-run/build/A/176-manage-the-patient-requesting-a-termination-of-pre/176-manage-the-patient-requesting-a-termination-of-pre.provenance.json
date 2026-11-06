@@ -1,0 +1,435 @@
+{
+ "edition": "2026",
+ "page": 176,
+ "lisp_file": "176-manage-the-patient-requesting-a-termination-of-pre.lisp",
+ "conditions": [
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "trigger",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days",
+   "confidence": "high",
+   "note": "Recent TOP recorded as the finding Induced termination of pregnancy (disorder); \"within the past 14 days\" as (<= (onset ...) (time_ago 14 days)) per the brief's time-comparison rule. Not a common symptom/warning sign, so the rule fires only if the TOP is recorded with an onset."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "adnexal mass",
+   "confidence": "high",
+   "note": "Precoordinated SNOMED finding for adnexal mass."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix",
+   "confidence": "medium",
+   "note": "Parenthetical \"(closed cervix and small uterus)\" read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus",
+   "confidence": "medium",
+   "note": "Parenthetical read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "guarding",
+   "confidence": "high",
+   "note": "\"guarding/rebound abdominal tenderness\" split into guarding OR rebound tenderness."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "rebound abdominal tenderness",
+   "confidence": "high",
+   "note": "\"guarding/rebound\" split; Rebound tenderness is abdominal by default."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "foul-smelling discharge",
+   "confidence": "medium",
+   "note": "Closest SNOMED concept (child of Finding of odor of vaginal discharge); the page does not say vaginal, but post-TOP context implies it."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "enlarged uterus",
+   "confidence": "high",
+   "note": "First of the two \"either\" items."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "open cervical os",
+   "confidence": "high",
+   "note": "Second \"either\" item: open os AND (bleeding or products of conception visible)."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "bleeding",
+   "confidence": "medium",
+   "note": "\"open cervical os with bleeding\" visible on speculum; Bleeding from vagina is the closest recorded concept (Bleeding from cervix does not exist)."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible",
+   "confidence": "high",
+   "note": "POC visible at the open os."
+  },
+  {
+   "rule": "Check for complications after a termination of pregnancy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible",
+   "confidence": "medium",
+   "note": "POC visible in the vagina, added alongside POC at the os as the other place they are seen."
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days",
+   "confidence": "high",
+   "note": "Recent TOP recorded as the finding Induced termination of pregnancy (disorder); \"within the past 14 days\" as (<= (onset ...) (time_ago 14 days)) per the brief's time-comparison rule. Not a common symptom/warning sign, so the rule fires only if the TOP is recorded with an onset."
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-956dd68e"
+   ],
+   "quote": "If adnexal mass",
+   "confidence": "high",
+   "note": "Red box \"If adnexal mass, ectopic pregnancy likely\"."
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix",
+   "confidence": "medium",
+   "note": "Parenthetical \"(closed cervix and small uterus)\" read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus",
+   "confidence": "medium",
+   "note": "Parenthetical read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Diagnose probable ectopic pregnancy after a termination of pregnancy",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") probable)",
+   "element_keys": [
+    "p176-956dd68e"
+   ],
+   "quote": "ectopic pregnancy likely",
+   "confidence": "high",
+   "note": "Red box \"ectopic pregnancy likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days",
+   "confidence": "high",
+   "note": "Recent TOP recorded as the finding Induced termination of pregnancy (disorder); \"within the past 14 days\" as (<= (onset ...) (time_ago 14 days)) per the brief's time-comparison rule. Not a common symptom/warning sign, so the rule fires only if the TOP is recorded with an onset."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Enlarged uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "enlarged uterus",
+   "confidence": "high",
+   "note": "First of the two \"either\" items."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "open cervical os",
+   "confidence": "high",
+   "note": "Second \"either\" item: open os AND (bleeding or products of conception visible)."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "bleeding",
+   "confidence": "medium",
+   "note": "\"open cervical os with bleeding\" visible on speculum; Bleeding from vagina is the closest recorded concept (Bleeding from cervix does not exist)."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible",
+   "confidence": "high",
+   "note": "POC visible at the open os."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+   "element_keys": [
+    "p176-d30fcc84"
+   ],
+   "quote": "products of conception visible",
+   "confidence": "medium",
+   "note": "POC visible in the vagina, added alongside POC at the os as the other place they are seen."
+  },
+  {
+   "rule": "Diagnose probable incomplete termination of pregnancy",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Incomplete induced termination of pregnancy\" \"disorder\") probable)",
+   "element_keys": [
+    "p176-e29f46d0"
+   ],
+   "quote": "incomplete TOP likely",
+   "confidence": "high",
+   "note": "\"incomplete TOP likely\" -> probable; SNOMED Incomplete induced termination of pregnancy."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))) (time_ago 14 days))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "who had a TOP within the past 14 days",
+   "confidence": "high",
+   "note": "Recent TOP recorded as the finding Induced termination of pregnancy (disorder); \"within the past 14 days\" as (<= (onset ...) (time_ago 14 days)) per the brief's time-comparison rule. Not a common symptom/warning sign, so the rule fires only if the TOP is recorded with an onset."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of uterine adnexa\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "adnexal mass",
+   "confidence": "high",
+   "note": "Precoordinated SNOMED finding for adnexal mass."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os closed\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "closed cervix",
+   "confidence": "medium",
+   "note": "Parenthetical \"(closed cervix and small uterus)\" read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Small uterus\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "small uterus",
+   "confidence": "medium",
+   "note": "Parenthetical read as part of the adnexal-mass criterion (AND)."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal guarding\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "guarding",
+   "confidence": "high",
+   "note": "\"guarding/rebound abdominal tenderness\" split into guarding OR rebound tenderness."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rebound tenderness\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "rebound abdominal tenderness",
+   "confidence": "high",
+   "note": "\"guarding/rebound\" split; Rebound tenderness is abdominal by default."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Offensive vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "foul-smelling discharge",
+   "confidence": "medium",
+   "note": "Closest SNOMED concept (child of Finding of odor of vaginal discharge); the page does not say vaginal, but post-TOP context implies it."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "temperature ≥ 38˚C",
+   "confidence": "high",
+   "note": "Exact threshold and direction."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "SBP < 80 alone, as written; no shock finding on this page."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "pulse ≥ 100",
+   "confidence": "high",
+   "note": "Exact threshold; Pulse, function is the recorded heart-rate vital."
+  },
+  {
+   "rule": "Urgent: complications within 14 days of a termination of pregnancy",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p176-53fe09d9"
+   ],
+   "quote": "respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Exact threshold."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p176-575802ba",
+   "element_id": "p176-rb1-e01",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "\"Yes\" branch label of the review question; the branch is encoded as the Urgent priority evaluation."
+  },
+  {
+   "element_key": "p176-878dbb2d",
+   "element_id": "p176-rb1-e02",
+   "text": "Manage urgently 182.",
+   "reason_category": "cross_reference_only",
+   "reason": "\"Manage urgently 182\": the urgency is encoded as the Urgent priority level; the management itself is on page 182."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Adnexal mass criterion",
+   "decision": "Encoded \"adnexal mass (closed cervix and small uterus)\" as adnexal mass AND closed cervix AND small uterus, in both the Urgent rule and the probable ectopic rule.",
+   "alternatives": "Adnexal mass alone (the red box says only \"If adnexal mass\"); broader but drops the page's parenthetical.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Trigger",
+   "decision": "Recent TOP = Induced termination of pregnancy (disorder) with onset within 14 days.",
+   "alternatives": "The procedure concept Induced termination of pregnancy (procedure); a procedure cannot be the subject of onset.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Incomplete TOP precondition",
+   "decision": "The probable incomplete TOP rule does not require \"No\" to the urgent question.",
+   "alternatives": "Add (no ...) for every urgent item; too heavy and would not fire when items are simply unrecorded.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Foul-smelling discharge",
+   "decision": "Offensive vaginal discharge (finding).",
+   "alternatives": "Vaginal discharge with an odour qualifier; none needed.",
+   "confidence": "medium"
+  }
+ ]
+}

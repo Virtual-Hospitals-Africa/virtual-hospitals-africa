@@ -1,0 +1,1078 @@
+{
+ "edition": "2026",
+ "page": 26,
+ "lisp_file": "26-palpitations.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Presenting complaint; not a recorded common symptom."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syncope\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "Faint",
+   "confidence": "high",
+   "note": "'Faint' read as syncope; Loss of consciousness listed too (Syncope is a descendant of it)."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "loss of consciousness",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "Dizziness",
+   "confidence": "high",
+   "note": "Common symptom; direct match."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "light-headedness",
+   "confidence": "high",
+   "note": "Lightheadedness is not a descendant of Dizziness in SNOMED, so listed separately."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-850303bb"
+   ],
+   "quote": "Confusion",
+   "confidence": "medium",
+   "note": "Clouded consciousness is the AVPU 'Confused' record and VHA's usual confusion concept; Acute confusion considered."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p26-1746eb86"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign; direct match."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "Pulse irregular",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known diabetes, clinical_finding + Known present form so the priority rule's evidence is checked for (Will's language reminder)."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain",
+   "confidence": "high",
+   "note": "Calf pain."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thigh pain\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain",
+   "confidence": "high",
+   "note": "Thigh pain."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling",
+   "confidence": "high",
+   "note": "Calf swelling; 'and/or' encoded as or of pain and swelling."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thigh structure\" \"body structure\")))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling",
+   "confidence": "medium",
+   "note": "No precoordinated thigh swelling concept; Swelling with finding_site Thigh structure (site verified)."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea = breathlessness worse lying flat."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "VHA vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Muscle weakness + Sudden onset + Asymmetry qualifiers; 'New' folded into Sudden onset."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Numbness + Sudden onset + Asymmetry ('new sudden asymmetric' applies to weakness or numbness)."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'; reading of scope is a judgment call."
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'."
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-6438e9f2"
+   ],
+   "quote": "palpitations not needing urgent attention",
+   "confidence": "high",
+   "note": "The causes check belongs to the approach for patients not needing urgent attention; triggered by the complaint itself."
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "VHA vocabulary thirst concept; 'Increased thirst' was the alternative."
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = dry mouth."
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "decreased urine output",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "Difficulty breathing worse on lying flat",
+   "confidence": "high",
+   "note": "Orthopnoea = breathlessness worse lying flat."
+  },
+  {
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "leg swelling",
+   "confidence": "high",
+   "note": "VHA vocabulary concept."
+  },
+  {
+   "rule": "Diagnose probable heart failure from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Heart failure\" \"disorder\") probable)",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Muscle weakness + Sudden onset + Asymmetry qualifiers; 'New' folded into Sudden onset."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Numbness + Sudden onset + Asymmetry ('new sudden asymmetric' applies to weakness or numbness)."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'; reading of scope is a judgment call."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'."
+  },
+  {
+   "rule": "Diagnose possible stroke from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "consider stroke",
+   "confidence": "high",
+   "note": "'consider' -> possible."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Muscle weakness + Sudden onset + Asymmetry qualifiers; 'New' folded into Sudden onset."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Numbness + Sudden onset + Asymmetry ('new sudden asymmetric' applies to weakness or numbness)."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'; reading of scope is a judgment call."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'."
+  },
+  {
+   "rule": "Diagnose possible TIA from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "TIA",
+   "confidence": "high",
+   "note": "'consider stroke/TIA' -> possible TIA, a second rule because a rule has one concept."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "thirst",
+   "confidence": "medium",
+   "note": "VHA vocabulary thirst concept; 'Increased thirst' was the alternative."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = dry mouth."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\"))",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "decreased urine output",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p26-12820836",
+    "p26-07537519"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "high",
+   "note": "'likely' -> probable."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p26-ae623d86",
+    "p26-0b237fcc"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "medium",
+   "note": "'None of the above' excludes fever: encoded as temperature < 38 °C (the complement of the page's >= 38 °C)."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Thirst due to water deprivation) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Xerostomia) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Decreased skin turgor) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Decreased urine output) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Disorder of thyroid gland\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "consider thyroid",
+   "confidence": "medium",
+   "note": "'consider' -> possible; general thyroid disorder concept since the page does not say hyper-/hypo-."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p26-ae623d86",
+    "p26-0b237fcc"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "medium",
+   "note": "'None of the above' excludes fever: encoded as temperature < 38 °C (the complement of the page's >= 38 °C)."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Thirst due to water deprivation) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Xerostomia) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Decreased skin turgor) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased urine output\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "If none of the above",
+   "confidence": "medium",
+   "note": "'None of the above' excludes dehydration: (no Decreased urine output) after the dehydration check; requires an explicit No answer."
+  },
+  {
+   "rule": "Diagnose possible electrolyte imbalance from palpitations",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Electrolyte imbalance\" \"disorder\") possible)",
+   "element_keys": [
+    "p26-b734420c"
+   ],
+   "quote": "electrolyte abnormalities",
+   "confidence": "high",
+   "note": "'consider' -> possible."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p26-aa2dfef1"
+   ],
+   "quote": "palpitations",
+   "confidence": "high",
+   "note": "Page context: the red box/approach applies to the patient with palpitations."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Syncope\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "Faint",
+   "confidence": "high",
+   "note": "'Faint' read as syncope; Loss of consciousness listed too (Syncope is a descendant of it)."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-496756d0"
+   ],
+   "quote": "loss of consciousness",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "Dizziness",
+   "confidence": "high",
+   "note": "Common symptom; direct match."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p26-c7834187"
+   ],
+   "quote": "light-headedness",
+   "confidence": "high",
+   "note": "Lightheadedness is not a descendant of Dizziness in SNOMED, so listed separately."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p26-850303bb"
+   ],
+   "quote": "Confusion",
+   "confidence": "medium",
+   "note": "Clouded consciousness is the AVPU 'Confused' record and VHA's usual confusion concept; Acute confusion considered."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p26-1746eb86"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign; direct match."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "BP ≥ 180/110",
+   "confidence": "high",
+   "note": "BP >= 180/110 as systolic >= 180 or diastolic >= 110."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "BP ≥ 180/110",
+   "confidence": "high",
+   "note": "Diastolic >= 110."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "< 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p26-e82c9125"
+   ],
+   "quote": "< 90/60",
+   "confidence": "high",
+   "note": "Diastolic < 60."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "Pulse irregular",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 150)",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "> 150",
+   "confidence": "high",
+   "note": "Pulse > 150 bpm."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p26-a6e92e5c"
+   ],
+   "quote": "< 50",
+   "confidence": "high",
+   "note": "Pulse < 50 bpm."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "Fingerprick glucose < 3",
+   "confidence": "high",
+   "note": "Routine glucose vital, mmol/L."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known diabetes, clinical_finding + Known present form so the priority rule's evidence is checked for (Will's language reminder)."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p26-c2e787d2"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Paired with known diabetes in an and."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain",
+   "confidence": "high",
+   "note": "Calf pain."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thigh pain\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "Calf or thigh pain",
+   "confidence": "high",
+   "note": "Thigh pain."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling",
+   "confidence": "high",
+   "note": "Calf swelling; 'and/or' encoded as or of pain and swelling."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Thigh structure\" \"body structure\")))",
+   "element_keys": [
+    "p26-4629973a"
+   ],
+   "quote": "and/or swelling",
+   "confidence": "medium",
+   "note": "No precoordinated thigh swelling concept; Swelling with finding_site Thigh structure (site verified)."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Direct match."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "element_keys": [
+    "p26-bc26b5e3"
+   ],
+   "quote": "oxygen saturation < 94%",
+   "confidence": "high",
+   "note": "Routine vital."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p26-a12d9250"
+   ],
+   "quote": "heart failure likely",
+   "confidence": "high",
+   "note": "References the probable heart failure rule, as Will's briefing prescribes for a likely diagnosis in the red box."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Muscle weakness + Sudden onset + Asymmetry qualifiers; 'New' folded into Sudden onset."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Numbness + Sudden onset + Asymmetry ('new sudden asymmetric' applies to weakness or numbness)."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'; reading of scope is a judgment call."
+  },
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p26-2f958f66"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "medium",
+   "note": "Sudden onset qualifier carried over from 'New sudden'."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p26-547ade55",
+   "element_id": "p26-rb1-e11",
+   "text": "Hb < 8",
+   "reason_category": "not_representable",
+   "reason": "Hb has no observable/unit in the language; omitted from the priority rule, which therefore fires less often than the page intends."
+  },
+  {
+   "element_key": "p26-b57cf078",
+   "element_id": "p26-rb1-e14",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management section."
+  },
+  {
+   "element_key": "p26-885c8b9f",
+   "element_id": "p26-rb1-e15",
+   "text": "Assess and manage airway, breathing and circulation 16. If oxygen saturation < 94%, oxygen saturation machine not available, respiratory rate ≥ 30 or difficulty",
+   "reason_category": "management_step",
+   "reason": "ABC and oxygen management."
+  },
+  {
+   "element_key": "p26-2771df4c",
+   "element_id": "p26-rb1-e16",
+   "text": "Do ECG if available and send with patient.",
+   "reason_category": "management_step",
+   "reason": "ECG and referral step."
+  },
+  {
+   "element_key": "p26-2cdfc9ef",
+   "element_id": "p26-rb1-e17",
+   "text": "If chest pain, confusion, BP < 90/60 or signs of heart failure, or stroke: discuss with specialist if immediate treatment or cardioversion needed before urgent ",
+   "reason_category": "management_step",
+   "reason": "Specialist discussion before urgent referral."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Thyroid/electrolyte 'none of the above'",
+   "decision": "possible rules require palpitations, temperature < 38 °C and explicit No for each dehydration sign; ECG, Hb, pregnancy and medication exclusions not representable",
+   "alternatives": "trigger on palpitations alone (fires far more often); omit the rules",
+   "confidence": "low"
+  },
+  {
+   "topic": "Stroke findings qualifiers",
+   "decision": "Sudden onset on all four; Asymmetry only on weakness/numbness; 'New' folded into Sudden onset",
+   "alternatives": "add New qualifier; Unilateral instead of Asymmetry; no qualifiers on speech/vision",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Palpitations in diagnosis evidence",
+   "decision": "heart failure, stroke/TIA and dehydration rules require Palpitations, because the page states them in the palpitations context",
+   "alternatives": "evidence without Palpitations (broader, would duplicate other pages' rules)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Anaemia and anxiety",
+   "decision": "not encoded: anaemia needs Hb; anxiety needs exclusion of all other causes",
+   "alternatives": "possible anaemia from pallor; possible anxiety from palpitations",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Confusion concept",
+   "decision": "Clouded consciousness",
+   "alternatives": "Acute confusion (warning sign)",
+   "confidence": "medium"
+  }
+ ]
+}

@@ -1,0 +1,346 @@
+{
+ "page": 86,
+ "lisp_file": "86-itch-with-no-rash.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for causes of itch with no rash",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\"))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "Is the skin very dry?"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "Did the patient start any new medication"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for causes of itch with no rash",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin/eyes"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\"))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "Is the skin very dry?"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable dry skin in itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Xeroderma\" \"disorder\") probable)",
+   "element_keys": [
+    "p86-76a3bfaa"
+   ],
+   "quote": "Dry skin (xeroderma/ichthyosis) likely"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "Is the skin very dry?"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "Did the patient start any new medication"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable medication side-effect in itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Adverse reaction caused by drug\" \"disorder\") probable)",
+   "element_keys": [
+    "p86-705cb0c3"
+   ],
+   "quote": "Medication side-effect likely"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p86-1207152b"
+   ],
+   "quote": "ITCH"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "no rash"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "scabies"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Louse infestation\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "lice"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-2d4712df"
+   ],
+   "quote": "insect bites"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe dry skin\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-408147fa"
+   ],
+   "quote": "Is the skin very dry?"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p86-49892321"
+   ],
+   "quote": "Did the patient start any new medication"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scleral icterus\" \"finding\"))",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "yellow skin/eyes"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable jaundice in itch with no rash",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)",
+   "element_keys": [
+    "p86-6ad84bcb"
+   ],
+   "quote": "jaundice likely"
+  }
+ ]
+}

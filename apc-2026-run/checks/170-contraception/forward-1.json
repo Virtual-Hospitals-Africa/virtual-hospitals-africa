@@ -1,0 +1,234 @@
+{
+  "page": 170,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p170-6cb01d4d",
+      "scope": "borderline",
+      "scope_reason": "This red box is a management box ('Give emergency contraception if ...'), not a 'give urgent attention' triage box, so the house standard's red-box-to-priority pattern does not apply directly. But the trigger is a criterion the language can express: (clinical_finding (snomed_concept \"Unprotected sexual intercourse\" \"finding\")) with (< (onset ...) (time_ago 5 days)). 'Does not want pregnancy' has no SNOMED finding (searched 'does not want pregnancy', 'pregnancy not wanted': none), though 'Unwanted pregnancy' (finding) exists as a loose proxy. A check task 'Check pregnancy test' anchored on that trigger would be within the briefing's check_for pattern.",
+      "verdict": "missing",
+      "parts_missing": [
+        "unprotected sex within the past 5 days (expressible: 'Unprotected sexual intercourse' finding + onset within 5 days)",
+        "does not want pregnancy (no exact concept; 'Unwanted pregnancy' finding is the nearest)"
+      ],
+      "problem": "Nothing in the file refers to emergency contraception, unprotected sex or a pregnancy test; the page's only red box is entirely unencoded.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-5034a3f9",
+      "scope": "borderline",
+      "scope_reason": "Two parts. (a) 'Check pregnancy test' is a check step the page tells the health worker to perform, conditional on the box-header trigger; SNOMED has 'Urine pregnancy test' (procedure) and 'Pregnancy test negative'/'Pregnancy test positive' (findings), so a check task is expressible. (b) 'if negative, insert Copper IUD as soon as possible or give single dose levonorgestrel 1.5mg orally' is a management step (no manage tasks by design).",
+      "verdict": "missing",
+      "parts_missing": [
+        "(a) check pregnancy test when unprotected sex in past 5 days (check task; not encoded)"
+      ],
+      "problem": "Part (a) is not encoded. Part (b) is out of scope (management_step).",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-a848ab7e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: the criteria (weight > 80 kg; BMI >= 30; on efavirenz, rifampicin, phenytoin or carbamazepine) only select a dose/method of emergency contraception. With no manage tasks there is nothing to consume them, and a check_for with no consumer fails test constraint 2. Also BMI is not_representable (no unit) and the grammar has no medication atom, so 'on efavirenz' would need a finding/situation concept (only substance/product concepts were found).",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-f5f3c0c2",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: on ketoconazole/fluconazole -> counsel about nausea/vomiting and offer Copper IUD instead. Drug-interaction advice selecting a method; no diagnostic or triage conclusion.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-459b77f5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: vomiting < 2 hours after levonorgestrel -> repeat dose. A dosing instruction.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-a5a53e29",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: offer long-term contraceptive at the same visit; follow-up pregnancy test in 2 weeks if injectable/implant given. Both are management/follow-up instructions.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-96c090e0",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only for 'Assess for HIV and hepatitis B post-exposure prophylaxis -> 119' (the PEP logic lives on page 119); management_step for 'advise patient to return for pregnancy test if next period is more than 7 days late' (follow-up advice).",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-22bba0dc",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: 'Check for symptoms of STIs: vaginal discharge, ulcers, lower abdominal pain. If present -> 62.' The diagnostic logic for those symptoms is on page 62; this page draws no conclusion of its own. A check_for of these on this page would have no consuming rule in this file.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-38e31bf1",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: a list of conditions (cancer, blood clots, hypertension, stroke, IHD, diabetes, liver disease, migraines, unexplained vaginal bleeding) that send the reader to the method-suitability table on page 172. No diagnosis or priority on this page.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-fedfc171",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: if on ART, TB treatment or antiseizure medication -> check suitability on page 172. Method-selection logic lives on 172; grammar also has no medication atom.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-07d2b107",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: ask about menopausal symptoms if > 40 (yearly); 'if menopausal -> 187'. The menopause diagnosis is made on page 187; SNOMED 'Menopausal symptom' (finding) exists if a builder wanted a check task, but nothing on this page would consume it.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-8ac2ee0d",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step: risky sexual behaviour -> give safe sex advice. Counselling, no diagnosis or priority.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-84760152",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable (BMI has no unit in the language, so 'BMI >= 25' cannot be a measurement comparison) and cross_reference_only (-> 156).",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-bf99bf49",
+      "scope": "borderline",
+      "scope_reason": "Three parts. (1) 'Check BP: if >= 140/90 -> 148' is cross_reference_only (hypertension is diagnosed on 148). (2) 'known hypertension or BP >= 140/90 -> avoid/change from combined oral contraceptive' and (3) 'BP >= 160/100 -> also avoid/change from injectable' are contraceptive-method management decisions. The thresholds themselves are fully representable (BP is a routine vital in mmHg; 'known hypertension' = active_condition), so a strict reader could expect them encoded; the conclusion, however, is a management step the house standard leaves out, and there is no diagnosis to attach them to.",
+      "verdict": "missing",
+      "parts_missing": [
+        "(2) known hypertension or BP >= 140/90 while on combined oral contraceptive",
+        "(3) BP >= 160/100 while on injectable"
+      ],
+      "problem": "Not encoded; defensible as management_step, but the thresholds are expressible and a builder could reasonably have recorded them. Low consequence.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-ffc2df31",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: check for lumps in breasts (-> 55) and axillae (-> 42). The diagnostic logic is on those pages; a check_for here would have no consumer in this file.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p170-df2449ab",
+      "scope": "in_scope",
+      "scope_reason": "'If pregnancy suspected (nausea/breast tenderness/missed period when using combined oral contraceptive), check for pregnancy' is a 'suspect X' with explicit discriminating findings: a check task plus a possible diagnosis of Pregnancy is exactly the house pattern. 'Before starting contraception ... check for pregnancy' is a second trigger for the same check.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'Before starting contraception' -> check for pregnancy: not encoded. Both the task and the rule are gated on (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")), so a patient who is not yet on contraception never triggers the pregnancy check."
+      ],
+      "problem": "The 'pregnancy suspected on COC' half is encoded correctly: all five concepts exist exactly (Uses combined oral contraception 268458002, Nausea 422587007, Tenderness of breast 55222007, Missed period 36521000, Pregnancy 77386006); the or-of-three symptoms and the 'possible' level match the page's 'if pregnancy suspected'. Minor reading choice: the page's 'when using combined oral contraceptive' most naturally qualifies 'missed period' (amenorrhoea on injectables is expected) but could be read as qualifying all three; the rule gates all three on COC, which is the narrower reading and will not fire for nausea/breast tenderness in a patient on another method. The 'before starting contraception' branch has no SNOMED hook here either (no 'starting contraception' concept found), but it is a page trigger the rule lost.",
+      "evidence": [
+        "Check for suspected pregnancy on combined oral contraceptive :: (task \"Check for suspected pregnancy on combined oral contraceptive\" adult (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")) (check_for (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of breast\" \"finding\")) (clinical_finding (snomed_concept \"Missed period\" \"finding\"))))",
+        "Diagnose possible pregnancy on combined oral contraceptive :: (system_diagnosis_rule \"Diagnose possible pregnancy on combined oral contraceptive\" (diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible) adult (and (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")) (or (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of breast\" \"finding\")) (clinical_finding (snomed_concept \"Missed period\" \"finding\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-f5d02824",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: test for HIV -> 124; positive -> 126; negative, consider PrEP -> 119. All the logic is on the referenced pages.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p170-99c0ffce",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step (screening schedule by age and HIV status) and cross_reference_only (-> 70). No diagnosis or priority.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p170-1376c51d",
+    "p170-89b39678",
+    "p170-491459b2",
+    "p170-6c309f4a",
+    "p170-7ad5e5e1",
+    "p170-3a9fa9cc",
+    "p170-95d7b186",
+    "p170-11de6c3a",
+    "p170-0445d9e9",
+    "p170-9439b3b1"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Check for suspected pregnancy on combined oral contraceptive / Diagnose possible pregnancy on combined oral contraceptive",
+      "problem": "The page's pregnancy check has two triggers: 'before starting contraception' and 'if pregnancy suspected on COC'. Both the task and the rule are anchored only on 'Uses combined oral contraception', so the first trigger is lost and a new patient (the one most in need of a pregnancy check before a method is started) never reaches the check.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for suspected pregnancy on combined oral contraceptive",
+      "problem": "The task's only trigger is (clinical_finding (snomed_concept \"Uses combined oral contraception\" \"finding\")), which nothing in this file records and which is not a common symptom, warning sign or routine vital. Unless intake or another page records that finding, the task and therefore the rule will never fire (Will's briefing, 'Anchoring due_to so rules actually fire').",
+      "severity": "medium"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "The page's only red box (emergency contraception) has no rule at all. It is a management box rather than a 'give urgent attention' box, so no priority evaluation is owed, but its trigger ('unprotected sex in past 5 days') and its first step ('check pregnancy test') are expressible as a check task with 'Unprotected sexual intercourse' + onset within 5 days, and the house standard expects every red box to be represented as check tasks where the language allows.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose possible pregnancy on combined oral contraceptive",
+      "problem": "The COC gate is applied to all three symptoms. On the page, 'when using combined oral contraceptive' reads most naturally as qualifying 'missed period' only; nausea or breast tenderness in a patient on an injectable or implant would also be 'pregnancy suspected' but will not trigger the rule. Narrower than the page, not wrong.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The one in-scope diagnostic element (suspected pregnancy on combined oral contraception) is encoded with exact, verified SNOMED concepts and the right or-logic and possible level, but it loses the page's other trigger, 'before starting contraception', and its only anchor ('Uses combined oral contraception') is a finding nothing in the file records, so the task may never fire. The emergency-contraception red box is entirely unencoded; most of it is management by design, but its trigger and the 'check pregnancy test' step are expressible as a check task. The BP thresholds for avoiding COC/injectable are expressible but lead only to management decisions, so their omission is defensible."
+}

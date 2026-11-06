@@ -1,0 +1,95 @@
+{
+ "page": 52,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "reason": "\"Dry mouth\" is the column heading this line sits under, so the diabetes check needs it. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" names thirst. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "reason": "The same line names urinary frequency. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "reason": "The same line names weight loss. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "The page says only \"If very itchy\" with no site, so A's siteless itch is closer to its words; the rule still requires the cracked corners of the mouth.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "reason": "\"Dry mouth\" is the column heading this line sits under, so the diabetes check needs it. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" names thirst. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+   "reason": "The same line names urinary frequency. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "reason": "The same line names weight loss. The page says \"check for diabetes\", read as possible, the same way both builders read \"check for anaphylaxis 28\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of angle of mouth\" \"body structure\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "The page says only \"If very itchy\" with no site, so A's siteless itch is closer to its words; the rule still requires the cracked corners of the mouth.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)",
+   "reason": "\"If thirst, urinary frequency, weight loss, check for diabetes 19\" is a check-for prompt, which both builders encoded as a possible diagnosis for \"check for anaphylaxis 28\"; B dropped it as a pointer.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Builds agreed on 75 conditions (0.92). Final = builder A's lisp and provenance unchanged; builder B's flowchart was kept and edited to match A's rule names and the diabetes rule. The remaining questions from both builders were merged. Whether thirst/urinary frequency/weight loss means any one or all three stays an open clinician question (A reads it as any one). Recording Xerostomia may trigger VHA's Urgent 'Dry mouth' warning sign; see the remaining questions."
+}

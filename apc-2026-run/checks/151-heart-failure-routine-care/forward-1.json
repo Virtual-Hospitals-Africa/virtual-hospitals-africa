@@ -1,0 +1,300 @@
+{
+  "page": 151,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p151-25600fc3",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: the trigger (patient with heart failure) and the priority level (urgent attention) for the 'any of' list.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as Urgent with (and <heart failure> (or ...)), as the house standard prescribes. Minor: the trigger is a clinical_finding rather than an active_condition for a known chronic condition; the briefing allows either.",
+      "evidence": [
+        "Urgent: heart failure with urgent signs :: (system_priority_evaluation \"Urgent: heart failure with urgent signs\" adult Urgent (and (clinical_finding (snomed_concept \"Heart failure\" \"disorder\")) (or ...)))",
+        "Check for urgent heart failure conditions :: (task \"Check for urgent heart failure conditions\" adult (clinical_finding (snomed_concept \"Heart failure\" \"disorder\")) (check_for ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-b4ee2b85",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion (the arrow to page 24 is routing only).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent heart failure conditions :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+        "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-72b50a2b",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "No precoordinated SNOMED concept for worsening/decompensated heart failure exists in the release (searched 'worsening heart failure', 'exacerbation heart failure', 'decompensated heart failure': no results), so Heart failure qualified by Worsening with a nested Rapid qualifier is a reasonable encoding; the grammar accepts nested qualifiers and both qualifier values exist. 'Symptoms' is read as the heart failure itself, which is the page's meaning.",
+      "evidence": [
+        "Check for urgent heart failure conditions :: (clinical_finding (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\") (qualifier (snomed_concept \"Rapid\" \"qualifier value\"))))",
+        "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Heart failure\" \"disorder\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\") (qualifier (snomed_concept \"Rapid\" \"qualifier value\"))))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p151-1c16fce4",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: respiratory rate >= 30; difficulty breathing.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts are in the priority rule as alternatives inside the 'or'. Respiratory rate is a routine vital, so it is correctly absent from check_for; Difficulty breathing is checked for.",
+      "evidence": [
+        "Urgent: heart failure with urgent signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+        "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))",
+        "Check for urgent heart failure conditions :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-e2e92bd8",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts: systolic < 90; diastolic < 60.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as SBP < 90 or DBP < 60 in mmHg, the same reading of 'BP < 90/60' as the gold standard uses. BP is a routine vital, so no check_for entry is needed.",
+      "evidence": [
+        "Urgent: heart failure with urgent signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+        "Urgent: heart failure with urgent signs :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-b25fa159",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent heart failure conditions :: (clinical_finding (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+        "Urgent: heart failure with urgent signs :: (clinical_finding (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-09309dd5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header of the management list; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-29b1c987",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "The SpO2 < 94% threshold only gates oxygen therapy; it is not a triage criterion on this page.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-72cb07e6",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "SBP > 90 gates the furosemide dose only.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-38483590",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "SBP > 90 gates the isosorbide dinitrate dose only.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-134f63bb",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "BP >= 180/130 gates the enalapril dose only.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-cae4818a",
+      "scope": "borderline",
+      "scope_reason": "The opening line gives the presenting picture of heart failure (leg swelling and difficulty breathing worse on lying down / with effort) and says a doctor must confirm the diagnosis. There is no 'X likely' or 'consider X' wording, so a strict reading is figure_or_note; but the house standard's anaphylaxis-style pre-screen (a possible diagnosis whose purpose is to trigger the check_for task) would fit, since a patient without a recorded heart failure finding never triggers this page.",
+      "verdict": "missing",
+      "parts_missing": ["possible Heart failure from leg swelling + difficulty breathing / orthopnea"],
+      "problem": "No possible-diagnosis rule and no check_for for the presenting features. Leg swelling symptom (finding), Orthopnea (finding) and Dyspnea exist in SNOMED. Without it the only way into the page is a pre-recorded Heart failure finding.",
+      "evidence": [],
+      "confidence": "low"
+    },
+    {
+      "element_key": "p151-676bd327",
+      "scope": "borderline",
+      "scope_reason": "'If fainting/blackouts, refer same day' is a same-day escalation criterion, not a treatment step; the rest of the row is routing to the symptom pages.",
+      "verdict": "missing",
+      "parts_missing": ["fainting/blackouts -> same-day referral"],
+      "problem": "Syncope (finding) is not checked for and no priority evaluation covers it. Whether 'refer same day' maps to a priority level is a judgement call; it is not encoded either way.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p151-7d5bc2bb",
+      "scope": "borderline",
+      "scope_reason": "Three parts: known hypertension -> 149 and BP >= 140/90 -> 148 are cross-references only; 'If new irregular pulse, refer same day' is a same-day escalation criterion.",
+      "verdict": "missing",
+      "parts_missing": ["new irregular pulse -> same-day referral"],
+      "problem": "Pulse irregular (finding) with a New qualifier is neither checked for nor used in any rule. The two page cross-references are out of scope (cross_reference_only).",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p151-fcd14b9a",
+      "scope": "borderline",
+      "scope_reason": "Weight every visit is an assessment instruction, not triage logic, but weight is not a routine vital and the house standard asks for a measure task for such instructions.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The comparison with the patient's least-symptomatic weight is not representable; the measurement itself is encoded.",
+      "evidence": [
+        "Measure weight in heart failure routine care :: (measure (measurement (snomed_concept \"Body weight\" \"observable entity\") kg))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p151-58897853",
+      "scope": "out_of_scope",
+      "scope_reason": "not_representable",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "eGFR, creatinine change and potassium thresholds have no unit in the language and the consequences are medication management (stop enalapril/spironolactone, timing of repeat tests).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-4faeb13f",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Advice list. The 'gains >= 2 kg in 2 days, return to clinic' criterion is a change-over-time rule the language cannot express and is patient advice rather than triage.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-eb3f4479",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Hydrochlorothiazide dose and contraindications (eGFR < 30 also not representable).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-b70d5dec",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Furosemide selection and dosing notes.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-b0d5c7ea",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Enalapril dosing and contraindications.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-1c636ecf",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Carvedilol dosing, titration and contraindications. The BP < 90/60 and pulse < 50 thresholds here gate the drug, not triage; the 'cardiogenic shock' footnote is judged separately under p151-497e7407.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-c9f75c4c",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Spironolactone dosing and contraindications (eGFR and potassium also not representable).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p151-497e7407",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 3 is an explicit 'X likely' statement with representable criteria: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' Footnotes 1 (drink definition) and 2 (ECG heart block -> refer) are figure_or_note / management.",
+      "verdict": "missing",
+      "parts_missing": [
+        "probable Shock from SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness"
+      ],
+      "problem": "No system_diagnosis_rule for Shock (disorder, exists in SNOMED). SBP, pulse and respiratory rate are routine vitals; confusion/restlessness and weakness would need check_for entries. The footnote sits under the carvedilol contraindication, so the clinical purpose is to recognise cardiogenic shock in a heart-failure patient, which is also a reason to escalate; the house standard encodes every 'X likely' as a probable rule.",
+      "evidence": [],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p151-bb157ad9",
+    "p151-c30fa1c9",
+    "p151-120dd340",
+    "p151-eb6177d1",
+    "p151-34d89059",
+    "p151-ea6db19b",
+    "p151-ab3a47c8",
+    "p151-28dcc512",
+    "p151-71463249",
+    "p151-a6e1f507",
+    "p151-9382e997"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "(whole file)",
+      "problem": "Footnote 3 ('shock likely') is the page's only 'X likely' statement and there is no probable Shock diagnosis rule. Criteria are SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, all expressible (vitals plus clinical findings).",
+      "severity": "medium"
+    },
+    {
+      "rule": "(whole file)",
+      "problem": "The two 'refer same day' criteria in the assessment table (fainting/blackouts; new irregular pulse) are not encoded anywhere: neither checked for nor in a priority evaluation. Whether same-day referral maps to a priority level is a judgement call, but the findings themselves (Syncope; Pulse irregular + New) are absent.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent heart failure conditions / Urgent: heart failure with urgent signs",
+      "problem": "Both rules trigger only on (clinical_finding Heart failure). On a routine-care page the patient's heart failure is a known chronic condition that may be recorded as an active_condition rather than a clinical finding; if the system records it that way the check_for task and the priority rule never fire. The briefing permits the clinical_finding form, so this is a design question, not a defect.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent heart failure conditions",
+      "problem": "No pre-screen possible-diagnosis rule for heart failure from the page's opening picture (leg swelling, difficulty breathing worse lying down / on effort), so a patient presenting with these features but no recorded heart failure never reaches this page's red-box check. The page itself does not say 'likely' or 'consider', so this is optional under the house standard.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent heart failure conditions",
+      "problem": "The check_for item for rapid worsening reuses the trigger concept (Heart failure) with nested qualifiers. The test's self-reference check is by exact string so it passes, and no precoordinated concept exists, but the nesting (Rapid inside Worsening) is an unusual shape; a flat pair of qualifiers would be equivalent and simpler.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is encoded completely and correctly: all five urgent criteria (seven parts) appear in the check_for task and the Urgent priority evaluation with the right concepts, units, thresholds and and/or structure, and every SNOMED concept resolves. The most consequential gap is outside the box: footnote 3's 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) is an explicit 'X likely' with no probable Shock rule. The assessment table's two same-day referral criteria (fainting/blackouts, new irregular pulse) are also absent, and there is no pre-screen possible Heart failure rule, so the page only fires for a patient with heart failure already recorded as a clinical finding."
+}

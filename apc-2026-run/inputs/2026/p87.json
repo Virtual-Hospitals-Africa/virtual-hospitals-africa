@@ -1,0 +1,310 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 87,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.8,
+    806.4,
+    108.3
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p87-rb1-e01",
+   "page": 87,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check if the patient needs urgent attention 82.",
+   "bbox": [
+    323.1,
+    92.0,
+    518.8,
+    103.1
+   ],
+   "key": "p87-8cdf7fc2"
+  },
+  {
+   "id": "p87-out-e01",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "GENERALISED NON-ITCHY RASH",
+   "bbox": [
+    288.4,
+    48.7,
+    553.5,
+    71.0
+   ],
+   "key": "p87-7bd6d699"
+  },
+  {
+   "id": "p87-out-e02",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If rash persists ≥ 2 weeks or diagnosis uncertain, discuss/refer.",
+   "bbox": [
+    301.4,
+    436.0,
+    540.5,
+    447.0
+   ],
+   "key": "p87-25ba71c9"
+  },
+  {
+   "id": "p87-out-e03",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Secondary syphilis likely",
+   "bbox": [
+    131.6,
+    240.2,
+    228.1,
+    251.2
+   ],
+   "key": "p87-43087de7"
+  },
+  {
+   "id": "p87-out-e04",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    243.8,
+    349.2,
+    309.9,
+    356.6
+   ],
+   "key": "p87-bf84e8af"
+  },
+  {
+   "id": "p87-out-e05",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© CDC Public Health Image Library",
+   "bbox": [
+    89.7,
+    349.2,
+    176.7,
+    356.6
+   ],
+   "key": "p87-312ba94d"
+  },
+  {
+   "id": "p87-out-e06",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Rash often on palms and soles. May have wart-like lesions on genitals and patchy hair loss. • Treat syphilis 67.",
+   "bbox": [
+    51.0,
+    363.0,
+    283.6,
+    393.2
+   ],
+   "key": "p87-56468e2b"
+  },
+  {
+   "id": "p87-out-e07",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Check for tick bite (small dark brown/black scab). If tick bite or tick present and headache, temperature ≥ 38°C or body pain, tick bite fever likely 38. • If unexplained rash or lesion/s of skin/genitals/anus/rectum/mouth/eyes and ≥ 1 of: headache/backache/body pain, swollen lymph nodes, temperature > 38.5°C, fatigue, sore throat/nasal congestion/ cough consider mpox 40. • If patient started any medication, such as an antiseizure medication, ART, TB medication, co-trimoxazole or TB preventive treatment (TPT) in the past 3 months, consider drug rash 88. • Test for syphilis 66 and HIV 124.",
+   "bbox": [
+    51.0,
+    149.1,
+    787.3,
+    200.1
+   ],
+   "key": "p87-89554e4e"
+  },
+  {
+   "id": "p87-out-e08",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Syphilis reactive HIV positive",
+   "bbox": [
+    149.6,
+    215.4,
+    417.8,
+    225.6
+   ],
+   "key": "p87-fd394714"
+  },
+  {
+   "id": "p87-out-e09",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Give routine HIV care",
+   "bbox": [
+    357.8,
+    240.8,
+    436.5,
+    251.0
+   ],
+   "key": "p87-c9122f43"
+  },
+  {
+   "id": "p87-out-e10",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Syphilis and HIV negative",
+   "bbox": [
+    595.2,
+    215.4,
+    687.4,
+    225.6
+   ],
+   "key": "p87-a7e06b39"
+  },
+  {
+   "id": "p87-out-e11",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Was patient at risk1 of HIV in the past 6 weeks?",
+   "bbox": [
+    556.9,
+    240.8,
+    725.7,
+    251.0
+   ],
+   "key": "p87-e1419590"
+  },
+  {
+   "id": "p87-out-e12",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes No",
+   "bbox": [
+    546.0,
+    266.3,
+    731.3,
+    276.5
+   ],
+   "key": "p87-9c7e5806"
+  },
+  {
+   "id": "p87-out-e13",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Rash may be part of HIV seroconversion illness. Repeat HIV test after 6 weeks. • Encourage safe sex practices.",
+   "bbox": [
+    491.8,
+    291.8,
+    608.7,
+    332.0
+   ],
+   "key": "p87-fb7dab3a"
+  },
+  {
+   "id": "p87-out-e14",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Non-specific viral rash likely • Patient may have temperature ≥ 38°C, headache, lymphadenopathy, muscle pain/body aches. • Reassure rash will resolve on its own. • If fever or pain, give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days.",
+   "bbox": [
+    649.8,
+    291.0,
+    796.6,
+    372.0
+   ],
+   "key": "p87-dfe1467f"
+  },
+  {
+   "id": "p87-out-e15",
+   "page": 87,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1HIV can be transmitted via exposure to infectious body fluids, through sexual contact (rape/sexual assault or consensual sex, burst condom), occupational or non-occupational exposure (sharps injury, splash to eye/mouth/nose/broken skin), sharing needles, contact with used condom and exposure to blood.",
+   "bbox": [
+    34.0,
+    535.5,
+    793.4,
+    552.0
+   ],
+   "key": "p87-18275fb8"
+  }
+ ]
+}

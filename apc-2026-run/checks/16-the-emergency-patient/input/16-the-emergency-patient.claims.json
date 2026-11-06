@@ -1,0 +1,909 @@
+{
+ "page": 16,
+ "lisp_file": "16-the-emergency-patient.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "element_keys": [
+    "p16-e6d6ad20",
+    "p16-e64d521e"
+   ],
+   "quote": "emergency patient Does the patient respond to voice or physical stimulation?"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p16-e4810de1"
+   ],
+   "quote": "No pulse felt"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory obstruction\" \"disorder\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "airway obstructed"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p16-e6d6ad20",
+    "p16-4b218729"
+   ],
+   "quote": "emergency patient If difficulty breathing"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "pulse < 50"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 9)",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "respiratory rate < 9"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "respiratory rate > 30"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "trigger",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "element_keys": [
+    "p16-4b218729"
+   ],
+   "quote": "oxygen saturation < 94%"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p16-e4810de1"
+   ],
+   "quote": "No pulse felt"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gasping for breath\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "Gasping"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Agonal respiration\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "Gasping"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Apnea\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "not breathing"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "snoring"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gurgling\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "gurgling"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noisy respiration\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "noisy breathing"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue lips\" \"finding\"))",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "blue lips"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue tongue\" \"finding\"))",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "blue lips/ tongue"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "sudden breathlessness"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "deviated trachea"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "decreased consciousness"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "acute heart failure"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "Leg swelling"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "difficulty breathing which worsens on lying down"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea on exertion\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "difficulty breathing which worsens on lying down/with effort"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "heavy bleeding"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "confusion"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "confusion/restlessness"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "restlessness"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 3\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 4\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 5\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 6\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 7\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for emergency patient airway, breathing and circulation signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 8\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "sudden breathlessness"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "more resonant/decreased breath sounds/ pain on 1 side"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Trachea displaced\" \"disorder\"))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "deviated trachea"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable tension pneumothorax (emergency patient)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tension pneumothorax\" \"disorder\") probable)",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "tension pneumothorax likely"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "respiratory rate > 30"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "confusion/restlessness"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "confusion/restlessness"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "confusion/restlessness"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable shock (emergency patient)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Shock\" \"disorder\") probable)",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "shock likely"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unresponsive\" \"finding\"))",
+   "element_keys": [
+    "p16-e64d521e",
+    "p16-36bad2ae"
+   ],
+   "quote": "Does the patient respond to voice or physical stimulation? No"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent pulse\" \"finding\"))",
+   "element_keys": [
+    "p16-e4810de1"
+   ],
+   "quote": "No pulse felt or unsure"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+   "element_keys": [
+    "p16-3f32bc88"
+   ],
+   "quote": "Start CPR"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gasping for breath\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "Gasping"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Agonal respiration\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "Gasping"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Emergency: emergency patient unresponsive, pulseless or not breathing",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Apnea\" \"finding\"))",
+   "element_keys": [
+    "p16-a611c553"
+   ],
+   "quote": "not breathing"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory obstruction\" \"disorder\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "airway obstructed"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Snoring\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "snoring"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gurgling\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "gurgling"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Noisy respiration\" \"finding\"))",
+   "element_keys": [
+    "p16-513d7bb4"
+   ],
+   "quote": "noisy breathing"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p16-4b218729"
+   ],
+   "quote": "If difficulty breathing or oxygen saturation < 94%"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "element_keys": [
+    "p16-4b218729"
+   ],
+   "quote": "oxygen saturation < 94%"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 9)",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "respiratory rate < 9"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue lips\" \"finding\"))",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "blue lips"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blue tongue\" \"finding\"))",
+   "element_keys": [
+    "p16-6153a2f5"
+   ],
+   "quote": "blue lips/ tongue"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))",
+   "element_keys": [
+    "p16-6ef6c3cf"
+   ],
+   "quote": "tension pneumothorax likely"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "pulse < 50 and unstable"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "BP < 90/60"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "decreased consciousness"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "chest pain"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute heart failure\" \"disorder\"))",
+   "element_keys": [
+    "p16-3f586123"
+   ],
+   "quote": "acute heart failure"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "Leg swelling"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Orthopnea\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "difficulty breathing which worsens on lying down/with effort"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea on exertion\" \"finding\"))",
+   "element_keys": [
+    "p16-c57722be"
+   ],
+   "quote": "difficulty breathing which worsens on lying down/with effort"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "shock"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p16-5b2bde21"
+   ],
+   "quote": "heavy bleeding"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 3\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 4\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 5\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 6\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 7\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Glasgow coma scale, 8\" \"finding\"))",
+   "element_keys": [
+    "p16-73bb82a1"
+   ],
+   "quote": "GCS ≤ 8"
+  }
+ ]
+}

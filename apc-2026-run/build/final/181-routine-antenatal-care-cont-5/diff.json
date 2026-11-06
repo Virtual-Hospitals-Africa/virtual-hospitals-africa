@@ -1,0 +1,54 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/181-routine-antenatal-care-cont-5",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/181-routine-antenatal-care-cont-5",
+ "rules_A": [],
+ "rules_B": [],
+ "conditions_A": 0,
+ "conditions_B": 0,
+ "conditions_in_both": 0,
+ "agreement": 1.0,
+ "groups": {
+  "trigger": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "check_for": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis_condition": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "diagnosis": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

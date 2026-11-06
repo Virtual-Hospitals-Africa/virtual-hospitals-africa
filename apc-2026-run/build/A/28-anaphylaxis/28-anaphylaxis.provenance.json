@@ -1,0 +1,1633 @@
+{
+ "edition": "2026",
+ "page": 28,
+ "lisp_file": "28-anaphylaxis.lisp",
+ "conditions": [
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p28-8fd7fcd8"
+   ],
+   "quote": "possible anaphylaxis",
+   "confidence": "high",
+   "note": "pre-screen possible diagnosis triggers the questions (gold standard)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "itch with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "rash with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "bite half of bite/sting"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "sting half of bite/sting"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Fish\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "fish",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Milk\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "milk",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "egg",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "peanuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "tree nuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "exposed to any medication",
+   "confidence": "high",
+   "note": "medication exposure as Drug or medicament substance"
+  },
+  {
+   "rule": "Check for anaphylaxis",
+   "role": "check_for",
+   "expr": "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "insect bite/sting which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "prior reaction to bite/sting recorded as insect venom allergy"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "recurrent cough",
+   "confidence": "high",
+   "note": "Recurrent qualifier"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "\"recurrent\" read as applying to each item of the list"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": "\"recurrent\" read as applying to each item of the list"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "difficulty breathing, exclude asthma",
+   "confidence": "medium",
+   "note": "\"recurrent\" read as applying to each item; distinct from the red-box Difficulty breathing"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "scaly, itchy skin on wrists",
+   "confidence": "medium",
+   "note": "scaly skin with finding_site wrist"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "ankles",
+   "confidence": "medium",
+   "note": "scaly skin with finding_site ankle"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "inside elbows",
+   "confidence": "medium",
+   "note": "inside of elbow = cubital fossa"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "behind knees",
+   "confidence": "medium",
+   "note": "behind knee = popliteal fossa"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "dry skin: no \"Dry skin\" finding; Xeroderma (disorder) is the dry-skin concept"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "itchy skin",
+   "confidence": "medium",
+   "note": "itchy skin (shared by eczema and urticaria rules)"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "raised wheals that appear suddenly",
+   "confidence": "medium",
+   "note": "wheal with Sudden onset; red/raised are inherent to a wheal; 24-hour course not encoded"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "recurrent sneezing",
+   "confidence": "medium",
+   "note": "Recurrent qualifier; > 4 weeks as onset comparison in the diagnosis rule"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "itchy/runny/blocked nose",
+   "confidence": "medium",
+   "note": "itchy nose: Itching with finding_site Nasal structure"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "runny",
+   "confidence": "high",
+   "note": "runny nose = Nasal discharge (common symptom)"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "blocked nose",
+   "confidence": "high",
+   "note": "blocked nose = Nasal congestion"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "both eyes watery",
+   "confidence": "medium",
+   "note": "no bilateral watery eye concept; Watery eye unqualified"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "watery and itchy",
+   "confidence": "high",
+   "note": "itching of both eyes"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "fish",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1); Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Fish\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "milk",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1); Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Milk\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "egg",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1); Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "peanuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1); Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "tree nuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1); Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "exposed to any medication",
+   "confidence": "high",
+   "note": "medication exposure as Drug or medicament substance; Q1 branch, paired with allergy to same substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "a trigger that caused anaphylaxis before is recorded as an allergy to that substance (gold-standard pairing)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "bite half of bite/sting"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "sting half of bite/sting"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+   "element_keys": [
+    "p28-b949a38d"
+   ],
+   "quote": "insect bite/sting which has caused anaphylaxis before",
+   "confidence": "medium",
+   "note": "prior reaction to bite/sting recorded as insect venom allergy"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "fish",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "milk",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "egg",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "peanuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "element_keys": [
+    "p28-3d242b5e"
+   ],
+   "quote": "tree nuts",
+   "confidence": "high",
+   "note": "exposure to a common anaphylaxis food (footnote 1)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "exposed to any medication",
+   "confidence": "high",
+   "note": "medication exposure as Drug or medicament substance"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "bite half of bite/sting"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "sting half of bite/sting"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "itch with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "rash with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is systolic < 90"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is diastolic < 60"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "Abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-57d50a64"
+   ],
+   "quote": "sudden onset generalised itch/rash",
+   "confidence": "high",
+   "note": "itch; \"generalised\" not encoded (gold standard)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-57d50a64"
+   ],
+   "quote": "sudden onset generalised itch/rash",
+   "confidence": "high",
+   "note": "rash; \"generalised\" not encoded (gold standard)"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-57d50a64"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-57d50a64"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p28-29d329b5"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p28-29d329b5"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is systolic < 90"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p28-29d329b5"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is diastolic < 60"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p28-29d329b5"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p28-29d329b5"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+   "element_keys": [
+    "p28-345b41d9",
+    "p28-6fd3c1f2"
+   ],
+   "quote": "Treat as anaphylaxis",
+   "confidence": "high",
+   "note": "\"Treat as anaphylaxis\" outcomes -> probable"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "itch with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "high",
+   "note": "rash with Sudden onset from \"sudden onset of\"; \"generalised\" not encoded"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is systolic < 90"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60; this is diastolic < 60"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "bite half of bite/sting"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p28-46be17a2"
+   ],
+   "quote": "insect bite/sting",
+   "confidence": "high",
+   "note": "sting half of bite/sting"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "medium",
+   "note": "pre-screen uses unqualified itch (gold-standard pattern)"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "Generalised itch/rash",
+   "confidence": "medium",
+   "note": "pre-screen uses unqualified rash (gold-standard pattern)"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "medium",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-44b146d8"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "medium",
+   "note": "face or tongue as finding_site"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p28-29084cc2"
+   ],
+   "quote": "dizziness/collapse",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p28-8fd7fcd8"
+   ],
+   "quote": "possible anaphylaxis",
+   "confidence": "high",
+   "note": "pre-screen whose only purpose is to trigger the check task"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "recurrent cough",
+   "confidence": "high",
+   "note": "Recurrent qualifier"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": "\"recurrent\" read as applying to each item of the list"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": "\"recurrent\" read as applying to each item of the list"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "difficulty breathing, exclude asthma",
+   "confidence": "medium",
+   "note": "\"recurrent\" read as applying to each item; distinct from the red-box Difficulty breathing"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Asthma\" \"disorder\") possible)",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "exclude asthma",
+   "confidence": "high",
+   "note": "\"exclude asthma\" -> possible"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "scaly, itchy skin on wrists",
+   "confidence": "medium",
+   "note": "scaly skin with finding_site wrist"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "ankles",
+   "confidence": "medium",
+   "note": "scaly skin with finding_site ankle"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "inside elbows",
+   "confidence": "medium",
+   "note": "inside of elbow = cubital fossa"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "behind knees",
+   "confidence": "medium",
+   "note": "behind knee = popliteal fossa"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "dry",
+   "confidence": "medium",
+   "note": "dry skin: no \"Dry skin\" finding; Xeroderma (disorder) is the dry-skin concept"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "itchy skin",
+   "confidence": "medium",
+   "note": "itchy skin (shared by eczema and urticaria rules)"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "eczema likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "raised wheals that appear suddenly",
+   "confidence": "medium",
+   "note": "wheal with Sudden onset; red/raised are inherent to a wheal; 24-hour course not encoded"
+  },
+  {
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "itchy skin",
+   "confidence": "medium",
+   "note": "itchy skin (shared by eczema and urticaria rules)"
+  },
+  {
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Urticaria\" \"disorder\") probable)",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "urticaria likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "recurrent sneezing or itchy/runny/blocked nose most days for > 4 weeks",
+   "confidence": "medium",
+   "note": "Recurrent qualifier; > 4 weeks as onset comparison in the diagnosis rule; onset > 4 weeks ago from \"most days for > 4 weeks\" (\"most days\" not encoded)"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "itchy/runny/blocked nose",
+   "confidence": "medium",
+   "note": "itchy nose: Itching with finding_site Nasal structure; onset > 4 weeks ago from \"most days for > 4 weeks\" (\"most days\" not encoded)"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "runny",
+   "confidence": "high",
+   "note": "runny nose = Nasal discharge (common symptom); onset > 4 weeks ago from \"most days for > 4 weeks\" (\"most days\" not encoded)"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))) (time_ago 4 weeks))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "blocked nose",
+   "confidence": "high",
+   "note": "blocked nose = Nasal congestion; onset > 4 weeks ago from \"most days for > 4 weeks\" (\"most days\" not encoded)"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "allergic rhinitis likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "element_keys": [
+    "p28-c79f4dbd"
+   ],
+   "quote": "Assess the patient with previous anaphylaxis",
+   "confidence": "high",
+   "note": "previous anaphylaxis recorded as History of anaphylaxis situation"
+  },
+  {
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "both eyes watery",
+   "confidence": "medium",
+   "note": "no bilateral watery eye concept; Watery eye unqualified"
+  },
+  {
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "watery and itchy",
+   "confidence": "high",
+   "note": "itching of both eyes"
+  },
+  {
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Allergic conjunctivitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p28-f6e39748"
+   ],
+   "quote": "allergic conjunctivitis likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: anaphylaxis",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))",
+   "element_keys": [
+    "p28-8fd7fcd8"
+   ],
+   "quote": "Give urgent attention to the patient with possible anaphylaxis",
+   "confidence": "medium",
+   "note": "Urgent on active (probable) anaphylaxis, i.e. after the questions say \"Treat as anaphylaxis\", as in the gold standard"
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p28-4f99695e",
+   "element_id": "p28-rb1-e03",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-0710cea4",
+   "element_id": "p28-rb1-e04",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-070ba821",
+   "element_id": "p28-rb1-e06",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-21cb83f7",
+   "element_id": "p28-rb1-e07",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-e3340eab",
+   "element_id": "p28-rb1-e12",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-e23719ce",
+   "element_id": "p28-rb1-e13",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-8d56155c",
+   "element_id": "p28-rb1-e14",
+   "text": "No",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-6b9bcae7",
+   "element_id": "p28-rb1-e15",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "Yes/No branch of the red-box flowchart; encoded by the branch structure of Diagnose probable anaphylaxis"
+  },
+  {
+   "element_key": "p28-16be4c10",
+   "element_id": "p28-rb1-e17",
+   "text": "Anaphylaxis unlikely. Treat symptoms as on symptom pages. If unsure, discuss.",
+   "reason_category": "flowchart_routing",
+   "reason": "Negative outcome: no rule fires; symptom pages handle the rest"
+  },
+  {
+   "element_key": "p28-07081abb",
+   "element_id": "p28-rb1-e19",
+   "text": "Manage anaphylaxis and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  },
+  {
+   "element_key": "p28-c695b35d",
+   "element_id": "p28-rb1-e20",
+   "text": "Give immediately adrenaline2 0.5mL (1:1000 solution) IM into mid outer thigh. Repeat every 5 minutes if needed. If patient has a prescribed auto-injector (like ",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  },
+  {
+   "element_key": "p28-8796ba9d",
+   "element_id": "p28-rb1-e21",
+   "text": "Raise legs and give face mask oxygen at 8-10L/min up to 15L/min (100%) if needed.",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  },
+  {
+   "element_key": "p28-366ea3c4",
+   "element_id": "p28-rb1-e22",
+   "text": "Give sodium chloride 0.9% 1-2 L IV rapidly if BP still < 90/60 after adrenaline. Repeat until systolic BP > 90 then continue 1L 6 hourly. Stop if breathing wors",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  },
+  {
+   "element_key": "p28-d1dbc24e",
+   "element_id": "p28-rb1-e23",
+   "text": "If persistent wheeze or difficulty breathing despite adrenaline2, also give 1mL salbutamol 0.5% solution and 2mL ipratropium bromide solution with 1mL sodium ch",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  },
+  {
+   "element_key": "p28-9d41a893",
+   "element_id": "p28-rb1-e24",
+   "text": "Give hydrocortisone 200mg IM/slow IV immediately and promethazine 50mg IM/slow IV.",
+   "reason_category": "management_step",
+   "reason": "Management (no manage tasks in this pass)"
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "reason": "Used as evidence inside (> (onset …) (time_ago 4 weeks)) in Diagnose probable allergic rhinitis in previous anaphylaxis (\"most days for > 4 weeks\"); the checker does not count findings inside an onset comparison. Dropping the duration would make the rule fire more often than the page intends."
+  },
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "reason": "Used as evidence inside (> (onset …) (time_ago 4 weeks)) in Diagnose probable allergic rhinitis in previous anaphylaxis (\"most days for > 4 weeks\"); the checker does not count findings inside an onset comparison. Dropping the duration would make the rule fire more often than the page intends."
+  },
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "reason": "Used as evidence inside (> (onset …) (time_ago 4 weeks)) in Diagnose probable allergic rhinitis in previous anaphylaxis (\"most days for > 4 weeks\"); the checker does not count findings inside an onset comparison. Dropping the duration would make the rule fire more often than the page intends."
+  },
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "reason": "Used as evidence inside (> (onset …) (time_ago 4 weeks)) in Diagnose probable allergic rhinitis in previous anaphylaxis (\"most days for > 4 weeks\"); the checker does not count findings inside an onset comparison. Dropping the duration would make the rule fire more often than the page intends."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Priority level and trigger",
+   "decision": "Urgent on (active_condition Anaphylaxis), i.e. after the flowchart reaches \"Treat as anaphylaxis\" (probable), following the gold standard; the possible pre-screen only triggers the check task",
+   "alternatives": "Urgent on the possible diagnosis, since the header says \"urgent attention to the patient with possible anaphylaxis\"",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pre-screen possible rule",
+   "decision": "Copied the gold-standard pre-screen (any sudden-onset skin sign, or any2 of bite/sting, itch, rash, face/tongue swelling, difficulty breathing, dizziness, collapse, low BP); abdominal pain and vomiting are not in the pre-screen",
+   "alternatives": "Add abdominal pain/vomiting to the any2",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Q1 encoding",
+   "decision": "Exposure to substance X AND allergy to X; insect bite/sting AND insect venom allergy",
+   "alternatives": "History of anaphylaxis caused by X (situation concepts), not anchored in recorded data",
+   "confidence": "medium"
+  },
+  {
+   "topic": "\"Generalised\" and \"in the few hours before\"",
+   "decision": "Not encoded (gold standard); exposures recorded in the encounter are taken as recent",
+   "alternatives": "Generalized qualifier on itch/rash; onset comparison on exposure",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Lower-half \"likely\" rules",
+   "decision": "Encoded the Other allergy row as diagnosis rules conditioned on History of anaphylaxis, with a check task triggered by it",
+   "alternatives": "Leave the lower half unencoded as routine care (gold standard 2023 did); or drop the History of anaphylaxis condition",
+   "confidence": "low"
+  },
+  {
+   "topic": "Allergic rhinitis duration",
+   "decision": "(> (onset X) (time_ago 4 weeks)) per Will briefing semantics (\"onset at least N ago\"); \"most days\" not encoded",
+   "alternatives": ">= instead of >",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Recurrent in the asthma row",
+   "decision": "Recurrent qualifier applied to each of cough, wheeze, tight chest, difficulty breathing",
+   "alternatives": "Recurrent on cough only",
+   "confidence": "medium"
+  }
+ ]
+}

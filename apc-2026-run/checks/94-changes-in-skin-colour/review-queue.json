@@ -1,0 +1,1816 @@
+[
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-6aa1434b",
+  "text": "Is the skin yellow, too dark, too light or absent of colour?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Root question; trigger of the check task",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The first branch is encoded as the check list: yellow, dark (3 sites), light, and absent (patchy or generalised).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-3a757725",
+  "text": "Where are patches on body?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-eb1e00d9",
+  "text": "Red-brown discolouration.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Represented as Hyperpigmentation of skin at the lower leg. The page's own branch is 'Dark patches', so hyperpigmentation is a fair concept; the more literal (clinical_finding \"Discoloration of skin\") with the same finding_site would also have worked and would catch a nurse who records 'discolouration' rather than 'hyperpigmentation'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "red-brown colour",
+     "breaks in skin or ulcers",
+     "spidery veins"
+    ],
+    "problem": "Rule fires on any hyperpigmentation of the lower leg; the distinguishing descriptors are not encoded (acceptable as supporting description, but they are the page's criteria).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Red-brown discolouration' is represented by hyperpigmentation of the lower leg.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p94-522be670",
+  "text": "May have breaks in skin or",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "breaks in skin",
+     "ulcers"
+    ],
+    "problem": "Not checked for and not in the venous stasis rule. Since the page makes them optional, omitting them does not change which patients get the probable diagnosis, but a check_for item such as (clinical_finding (snomed_concept \"Ulcer of lower extremity\" \"disorder\")) would prompt the nurse for the feature the page describes (and the page cross-refers ulcers to p90). Low severity.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "breaks in skin / leg ulcer as supporting evidence"
+    ],
+    "problem": "'May have' supporting features: breaks in skin or ulcers (skin ulcer of lower leg) are not checked and not used as alternative evidence.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p94-326fce77",
+  "text": "ulcers, spidery veins.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "ulcers",
+     "spidery veins"
+    ],
+    "problem": "Not encoded. 'Spidery veins' has usable concepts (snomed_concept \"Telangiectasia of skin\" \"disorder\") or (snomed_concept \"Spider nevus\" \"disorder\"). Low severity because the page does not make them required.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "spidery veins (telangiectasia/varicose veins)"
+    ],
+    "problem": "'May have' supporting feature (spidery veins, ulcers) is optional, not a criterion.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-84170a8e",
+  "text": "Flat, brown patches on",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Brown patches on the face -> Hyperpigmentation of skin at Face structure. 'Flat' is not qualified, which is acceptable (no SNOMED qualifier is needed to discriminate on this page).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "flat",
+     "brown",
+     "cheeks, forehead, upper lip sub-sites (only Face structure)"
+    ],
+    "problem": "Face-level site only; acceptable.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-bfd2dde3",
+  "text": "cheeks, forehead and",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Generalised to Face structure, which covers cheeks and forehead and matches the flowchart's 'Face' branch.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Cheeks and forehead are covered by Face structure.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-020ba336",
+  "text": "upper lip",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Covered by Face structure.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The upper lip is covered by Face structure.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-654874ca",
+  "text": "Light or dark patches with fine scale. Usually on trunk,",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as (and Scaly skin (or Hyperpigmentation@Trunk Hypopigmentation)). Scale is required, as the page's 'with fine scale' implies, and both colour branches are covered. Minor: 'usually on trunk' is treated as required for dark patches (via the flowchart 'Trunk' branch) but no site is required for light patches; that asymmetry follows the page's own flowchart.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Fine scale, light or dark, trunk encoded. Hypopigmentation is not restricted to trunk, matches 'usually'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "dark scaly patches on the neck or upper arms (only trunk is encoded for dark patches)"
+    ],
+    "problem": "Fine scale is correctly required. Dark patches are site-limited to the trunk, but the page says 'usually on trunk, neck and upper arms'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p94-8dc68478",
+  "text": "neck and upper arms.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "neck",
+     "upper arms"
+    ],
+    "problem": "Dark scaly patches on the neck or upper arms would not satisfy the tinea rule, because the dark-patch arm requires finding_site Trunk structure. Neck and upper arm are not descendants of Trunk structure. Light scaly patches anywhere do fire. Low severity: the flowchart itself only offers Lower legs / Face / Trunk for dark patches.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "neck, upper arms as sites"
+    ],
+    "problem": "Same as the previous element: neck and upper arms are not encoded.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-922901e2",
+  "text": "Absence of colour",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p94-d82e66fb",
+  "text": "Is absence of colour patchy or generalised?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p94-7d40901f",
+  "text": "Hepatitis A IgM positive Hepatitis",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Hepatitis A IgM positive -> acute hepatitis A"
+    ],
+    "problem": "Not encoded. SNOMED offers (snomed_concept \"Acute type A viral hepatitis\" \"disorder\") as a diagnosis target, but the input 'IgM positive' has no (clinical_finding ...) form; the result would have to be recorded as a free lab value, which the language cannot compare. Medium severity if a finding form exists in VHA's recorded lab results; otherwise a not_representable note was warranted.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Acute hepatitis A diagnosis from positive IgM"
+    ],
+    "problem": "No rule for hepatitis A. If a test-result finding is expressible it should be encoded; otherwise not_representable.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Acute hepatitis A rule from a positive HAV IgM"
+    ],
+    "problem": "A positive Hepatitis A IgM leads to 'acute hepatitis A infection', which is a diagnostic conclusion. 'Hepatitis A detected' (finding) exists in SNOMED, but it is a lab result reviewed later rather than at triage.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p94-70ba91e8",
+  "text": "Patient has acute hepatitis A infection • Notify4 within 7 days. • Educate that infection will resolve by itself and no specific treatment needed. Advise strict handwashing, especially before handling food and after using toilet. Avoid alcohol and paracetamol whilst ill. • Check HBsAg result. If pos",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "diagnosis of acute hepatitis A"
+    ],
+    "problem": "No diagnosis rule for (snomed_concept \"Acute type A viral hepatitis\" \"disorder\"). Depends on whether the IgM-positive criterion (p94-7d40901f) can be represented; if it cannot, this is not_representable rather than a miss.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Hepatitis A diagnosis",
+     "refer if HBsAg positive",
+     "refer if vomiting and unable to tolerate fluids"
+    ],
+    "problem": "No hepatitis A diagnosis rule, and no refer-if-vomiting criterion.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "diagnosis of acute hepatitis A"
+    ],
+    "problem": "'Patient has acute hepatitis A infection' is a lab-driven diagnosis. The rest of the element is management (notify, educate, refer).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p94-d3625fac",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 3If on atazanavir 131. 4Notify via NMC App (download from NICD website/app store) or www.nicd.ac.za/nmc-",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "pulse >= 100",
+     "respiratory rate > 30",
+     "confusion/restlessness",
+     "weakness",
+     "a probable Shock rule combining them"
+    ],
+    "problem": "Only SBP < 80 appears (as a separate criterion in the priority rule); Shock is checked for as a bare clinical_finding with no rule deriving it from the footnote's signs. If no other page already diagnoses probable Shock from these vitals, a patient with jaundice, pulse 110 and RR 32 but SBP 85 would not be flagged Urgent here. Low-medium severity because shock is likely defined centrally (warning signs) and the nurse can record Shock directly.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "pulse >= 100",
+     "respiratory rate > 30",
+     "confusion/restlessness, weakness as shock definition"
+    ],
+    "problem": "Only the Shock concept is used; fine as a summary, since the footnote defines the concept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "pulse >= 100",
+     "respiratory rate > 30",
+     "restlessness",
+     "weakness",
+     "probable shock rule / active_condition Shock in the Urgent rule"
+    ],
+    "problem": "The Urgent rule depends on a clinician recording 'Shock' directly. Only SBP < 80 (shared with the BP criterion) is encoded from the footnote.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c005",
+  "text": "Check for causes of changes in skin colour :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Usually on trunk, neck and upper arms': the site is typical, not required, and neck/upper arms are excluded by Trunk structure.",
+    "fix": "Keep the Trunk branch but also accept dark scaly patches without a site, or add Neck structure and Upper arm structure branches.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says the tinea-versicolor patches are 'usually on trunk, neck and upper arms'; Trunk structure alone is narrower than the page's trunk branch description.",
+    "fix": "Accept neck/upper arm sites too, or note that the Trunk branch covers them.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c006",
+  "text": "Check for causes of changes in skin colour :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Light patches' branch has no site on page; Hypopigmentation fine but check_for list mixes branches",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c007",
+  "text": "Check for causes of changes in skin colour :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'fine scale' is a feature of tinea versicolor patches, not a general check for skin colour change",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c010",
+  "text": "Check for causes of changes in skin colour :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says the absence of colour 'involves ... hair'; White hair is one specific colour, narrower than hair hypopigmentation. No closer SNOMED concept found (Hypopigmentation of hair does not exist).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says albinism involves hair; 'White hair' is an inference (hair colour loss), not stated",
+    "fix": "Consider 'Hypopigmentation of hair' if it exists",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says albinism 'involves hair'; White hair is narrower (hair in albinism can be white, yellow or light brown).",
+    "fix": "Consider a broader hair hypopigmentation concept if one exists; otherwise accept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c011",
+  "text": "Check for causes of changes in skin colour :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says involves eyes; iris hypopigmentation is a narrower inference",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c017",
+  "text": "Check for urgent jaundice conditions (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'confused' with no acuity; Acute confusion is narrower and is a child of Clouded consciousness (c018), so it is redundant.",
+    "fix": "Drop it; Clouded consciousness already covers it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c018",
+  "text": "Check for urgent jaundice conditions (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'confused' already mapped to Acute confusion; Clouded consciousness is an extra near-duplicate",
+    "fix": "Drop or keep as synonym only",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Confused' is already covered by Acute confusion; Clouded consciousness is a reduced-awareness concept closer to 'drowsy', an extra interpretation rather than the page's word.",
+    "fix": "Acceptable as a synonym net; otherwise drop.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c021",
+  "text": "Check for urgent jaundice conditions (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Redundant third concept for 'bruising or bleeding'",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c024",
+  "text": "Check for urgent jaundice conditions (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page defines the binge as '≥ 4 drinks/session'; the threshold is dropped (the grammar has no way to express it).",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Check for urgent jaundice conditions (changes in skin colour) :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Using any medication' encoded as exposure to drug; broad but matches; note footnote 3 atazanavir not encoded",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Footnote 3 on 'Using any medication' says 'If on atazanavir ↻131' (atazanavir jaundice is managed on p131), but the condition counts every drug, including atazanavir, as an urgent trigger. Exposure-to-drug also does not specify current use.",
+    "fix": "Exclude atazanavir (or route it to p131) and use a current-medication concept.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c030",
+  "text": "Diagnose probable venous stasis (changes in skin colour) :: (diagnosis (snomed_concept \"Venous stasis\" \"finding\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Venous stasis (finding) sits directly under 'Venous finding', a generic haemodynamic state; the page means the skin changes of chronic venous disease (red-brown discolouration, ulcers, spidery veins).",
+    "fix": "(snomed_concept \"Venous stasis syndrome\" \"disorder\") or (snomed_concept \"Stasis dermatitis\" \"disorder\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c034",
+  "text": "Diagnose probable tinea versicolor (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c005: the page's site is 'usually on trunk, neck and upper arms', so the Trunk requirement is stricter than the page and excludes neck and upper arms; the light-patch branch (c035) carries no site, which is inconsistent.",
+    "fix": "Accept dark scaly patches regardless of site, or add Neck structure and Upper arm structure branches.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Trunk-only finding site drops the neck and upper arms that the page names as usual sites for tinea versicolor.",
+    "fix": "(or …Trunk structure… …Neck structure… …Upper arm structure…) as finding sites.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c035",
+  "text": "Diagnose probable tinea versicolor (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Hypopigmentation has no trunk site; page ties light patches to trunk box",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c040",
+  "text": "Diagnose probable albinism (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c010: 'involves ... hair' is hair hypopigmentation, of which White hair is one specific colour; no closer SNOMED concept found.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Required as AND condition though page only says 'involves skin, hair and eyes', not a separate finding the clinician checks; makes rule hard to fire",
+    "fix": "Make hair/eyes optional or drop",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c010: 'Involves skin, hair' is broader than White hair, and requiring it in an AND may miss albinism with light (not white) hair.",
+    "fix": "Consider a broader hair concept or drop it from the AND.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Diagnose probable albinism (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As c040: required AND but page presents it as description",
+    "fix": "Make optional",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Urgent: jaundice with danger signs (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c017: 'confused' has no acuity on the page; Acute confusion is a child of Clouded consciousness (c051) and redundant.",
+    "fix": "Drop it; Clouded consciousness already covers it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c051",
+  "text": "Urgent: jaundice with danger signs (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c018: Clouded consciousness is not quite 'confused'.",
+    "fix": "Acceptable as a synonym net; otherwise drop.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c057",
+  "text": "Urgent: jaundice with danger signs (changes in skin colour) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c024: the '≥ 4 drinks/session' threshold is dropped.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c058",
+  "text": "Urgent: jaundice with danger signs (changes in skin colour) :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c025: the atazanavir footnote exception is lost, so a patient on atazanavir with jaundice is flagged Urgent when the page sends them to p131.",
+    "fix": "Add (not … atazanavir) or a separate rule for atazanavir.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour) / Check for urgent jaundice conditions (changes in skin colour)",
+  "text": "(clinical_finding (snomed_concept \"Jaundice\" \"finding\")) is used as priority evidence and as the task trigger but is never checked for in this file; only Yellow skin is. The active_condition arm is covered by the probable jaundice rule, but the clinical_finding arm will fail the house test's 'priority evidence must be checked for' constraint unless Jaundice is a shared warning sign or common symptom. Either add Jaundice to the first check_for or drop the clinical_finding arm.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "The red-box criterion 'Hb < 12 (woman) or < 13 (man)' is silently absent. It is not representable as a threshold, but the stripped file shows no placeholder; the nearest keepable form is (clinical_finding (snomed_concept \"Hemoglobin below reference range\" \"finding\")) in the check_for and the (or ...), so the nurse is at least prompted.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule) acute hepatitis A",
+  "text": "The page's 'Hepatitis A IgM positive -> Patient has acute hepatitis A infection' is the one definite diagnosis on the page and has no rule. If VHA can record a positive IgM as a finding, add a diagnosis rule for (snomed_concept \"Acute type A viral hepatitis\" \"disorder\"); if not, it should be recorded as not representable.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule) probable Shock from footnote 1",
+  "text": "Footnote 1 defines 'shock likely' as SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness. Only SBP < 80 is encoded; there is no probable Shock rule, so the Shock check_for item relies on the nurse recording Shock by judgement. Probably handled centrally; confirm.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea versicolor (changes in skin colour)",
+  "text": "Dark scaly patches require finding_site Trunk structure, so the page's 'neck and upper arms' do not fire for the dark-patch arm while light scaly patches fire with no site at all. Follows the flowchart literally; consider dropping the site on the dark arm or adding neck/upper-arm sites.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of changes in skin colour",
+  "text": "The optional venous-stasis features 'breaks in skin or ulcers, spidery veins' are not in the check_for, so the nurse is not prompted for them. Not required by the page ('may have'), so low.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of changes in skin colour",
+  "text": "Trigger is (clinical_finding (snomed_concept \"Discoloration of skin\" \"finding\")), which is not one of the listed common symptoms or warning signs; the task only runs if that finding is recorded somewhere. Yellow skin is a child of Discoloration of skin, so a recorded Yellow skin would trigger it, but the dark/light/absent branches depend on the nurse recording the parent concept.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule) hepatitis A branch",
+  "text": "The IgM positive/negative flowchart branch and 'acute hepatitis A infection' conclusion are lost; no hepatitis A diagnosis or referral rule exists.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: jaundice with danger signs",
+  "text": "Hb < 12 (woman) / < 13 (man) criterion is silently dropped (not_representable). Priority rule is therefore weaker than the page; reviewers should be told. Also the 'any medication' branch fires for any patient on any drug.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of changes in skin colour",
+  "text": "Dark patches vs light patches distinction relies on Hyperpigmentation/Hypopigmentation; Hyperpigmentation sites are body-structure qualified, so patches on other sites match nothing and the venous stasis/melasma rules cannot be told apart from plain hyperpigmentation features (red-brown, spidery veins) that the page uses.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable albinism",
+  "text": "ANDs generalised congenital achromia, white hair and iris hypopigmentation; a patient lacking one of the three recorded findings gets no albinism suggestion. Defensible but strict.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable vitiligo",
+  "text": "Fires on any patchy achromia, with no exclusion for the other conditions. Page-faithful.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent jaundice conditions",
+  "text": "Temperature and systolic BP are used in the priority rule but absent from check_for (measurements, acceptable). Check list and priority rule otherwise agree.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "The shock criterion relies only on a recorded 'Shock' finding or SBP < 80. Footnote 1's shock definition (pulse >= 100, RR > 30, restlessness, weakness) has no probable-shock rule, so a jaundiced patient who is tachycardic and tachypnoeic with SBP >= 80 is not escalated unless shock is entered manually.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "The Hb < 12/13 red-box criterion cannot be represented (no unit), so one red-box line has no encoding. This is expected, but it should be listed as a known gap.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "The Hepatitis A IgM-positive branch, leading to 'Patient has acute hepatitis A infection', has no diagnosis rule. It may be out of scope for triage because it is a lab result at review.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea versicolor (changes in skin colour)",
+  "text": "Dark scaly patches count only on the trunk. The page's description includes the neck and upper arms, and no check item exists for those sites.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent jaundice conditions (changes in skin colour)",
+  "text": "'Confused' is mapped to Acute confusion and Clouded consciousness rather than the broader Confusional state. This is a minor coverage risk.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of changes in skin colour",
+  "text": "The trigger 'Discoloration of skin' is not a common symptom or warning sign, so the anchor depends on the complaint being recorded with that concept. Yellow skin is a SNOMED child of it, so descendant matching helps.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent jaundice conditions (changes in skin colour)",
+  "text": "The red-box criterion 'Hb < 12 (woman) or < 13 (man)' is not checked for at all (no measurement and no proxy such as (clinical_finding (snomed_concept \"Anemia\" \"disorder\"))). Everything else in the check_for is on the page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea versicolor (changes in skin colour)",
+  "text": "and(scale, or(dark, light)) matches the page, but the dark branch is pinned to Trunk structure while the page says 'usually on trunk, neck and upper arms' and the light branch has no site; dark scaly patches on the neck or upper arm would not fire.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "One of the nine red-box danger signs is missing: 'Hb < 12 (woman) or < 13 (man)'. The grammar has no sex and no g/dL unit, so it cannot be encoded literally, but it was dropped silently rather than approximated; the closest proxy is (clinical_finding (snomed_concept \"Anemia\" \"disorder\")) (exists), added to the or and to the task's check_for. Type, Urgent level ('Refer urgently'), trigger and and/or structure are otherwise faithful.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent jaundice conditions (changes in skin colour)",
+  "text": "Omits Hb < 12 (woman) / < 13 (man) from the red box; no sex-specific Hb condition. Clouded consciousness and bleeding synonyms are padding.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "Hb < 12 (woman) / < 13 (man) danger sign missing; so a jaundiced anaemic patient is not triaged urgent. Also nothing encodes the 2-day review rule (ALT>=200, INR>=1.5, plts<150, Hb) or hepatitis A / HBsAg referral logic.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable albinism (changes in skin colour)",
+  "text": "Requires white hair AND iris hypopigmentation AND generalized congenital achromia; page only says present from birth, involves skin, hair and eyes. Rule will rarely fire.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea versicolor (changes in skin colour)",
+  "text": "Hypopigmentation arm has no trunk restriction, so any scaly light patch fires it; also dark patches only on trunk captured, face dark scaly patches not.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: jaundice with danger signs (changes in skin colour)",
+  "text": "The red-box criterion 'Hb < 12 (woman) or < 13 (man)' is missing from the OR entirely, so a jaundiced, anaemic patient is not flagged Urgent. The atazanavir exception in footnote 3 is also lost (see c058). Otherwise, the jaundice AND any-of structure, the Urgent level and the footnote-1 SBP<80 are faithful.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent jaundice conditions (changes in skin colour)",
+  "text": "There is no prompt to obtain a haemoglobin (Hb level estimation), so the missing Hb danger sign can't be captured either. Temperature and BP come from vitals, so their absence here is acceptable.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable venous stasis (changes in skin colour)",
+  "text": "Trigger (dark patches on lower legs) and 'likely'→probable are right, but the diagnosis concept is a generic venous finding; Venous stasis syndrome or Stasis dermatitis is closer.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea versicolor (changes in skin colour)",
+  "text": "The structure scale AND (dark trunk patches OR light patches) matches the page, but dark patches are restricted to the trunk although the page says 'trunk, neck and upper arms'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "Page says 'Drowsy or confused'; 'Confusion' has no FSN and the app records confusion both as the Confusion warning sign (Acute confusion) and AVPU 'Confused' (Clouded consciousness), so both are kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+    "reason": "Page says 'Easy bruising or bleeding'; 'Bleeds easily' is the closest wording and its parent 'Finding of tendency to bleed' (VHA's common form) means the same easy bleeding, so both are kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "reason": "Page says 'recent alcohol binge'; B's Recent qualifier carries the word 'recent' that A drops.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "Page says 'Drowsy or confused'; 'Confusion' has no FSN and the app records confusion both as the Confusion warning sign (Acute confusion) and AVPU 'Confused' (Clouded consciousness), so both are kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+    "reason": "Page says 'Easy bruising or bleeding'; 'Bleeds easily' is the closest wording and its parent 'Finding of tendency to bleed' (VHA's common form) means the same easy bleeding, so both are kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+    "reason": "Page says 'recent alcohol binge'; B's Recent qualifier carries the word 'recent' that A drops.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Present from birth' = Congenital.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Involves … hair'.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Involves … eyes'.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+    "reason": "Page describes the tinea versicolor patches as 'Light or dark patches with fine scale'; A requires the scale, B only the flowchart route; kept the encoding closer to the page's words, but the page doesn't say the scale is required.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")) (qualifier (snomed_concept \"Congenital\" \"qualifier value\")))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Present from birth' = Congenital.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White hair\" \"finding\"))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Involves … hair'.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Iris hypopigmentation\" \"finding\"))",
+    "reason": "Page: 'Generalised' → 'Present from birth. Involves skin, hair and eyes.' → 'Albinism likely'; A encodes the description box's words, B only the branch; the page doesn't say whether the description is a requirement, so the encoding closer to the page's words is kept. ('Involves … eyes'.)",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))  vs  B: (none)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\"))",
+    "reason": "Page describes the tinea versicolor patches as 'Light or dark patches with fine scale'; A requires the scale, B only the flowchart route; kept the encoding closer to the page's words, but the page doesn't say the scale is required.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 94,
+  "slug": "94-changes-in-skin-colour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: (diagnosis (snomed_concept \"Venous stasis syndrome\" \"disorder\") probable)  vs  B: (diagnosis (snomed_concept \"Venous stasis\" \"finding\") probable)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Venous stasis\" \"finding\") probable)",
+    "reason": "Page says 'Venous stasis likely'; 'Venous stasis' (finding) is that exact name, while 'Venous stasis syndrome' adds a disorder the page doesn't name.",
+    "unsettled": false
+   }
+  ]
+ }
+]

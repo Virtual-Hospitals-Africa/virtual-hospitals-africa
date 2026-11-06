@@ -1,0 +1,309 @@
+{
+ "page": 81,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p81-54f7e4fb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Header becomes Urgent priority gated on the presenting complaint (Finding of foot region) with an or over the three red-box diagnoses, as the house standard prescribes.",
+   "evidence": [
+    "Urgent: foot symptoms with fracture or limb ischaemia :: (and (clinical_finding (snomed_concept \"Finding of foot region\" \"finding\")) (or (active_condition (snomed_concept \"Fracture of bone\" \"disorder\")) (active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\")) (active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))))",
+    "Check for urgent foot symptom conditions :: check_for lists all box-1 findings (Unable to weight-bear, Traumatic injury, sudden severe rest foot pain, numbness/weakness/pallor/absent pulse of leg, Intermittent claudication, rest foot pain, Ulcer of foot, Gangrene of foot)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-197f31de",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Unable to bear weight + injury -> probable fracture, referenced by the Urgent rule. The 'following' (temporal) link is only implied by co-occurrence, which is acceptable. '→ 30' is a cross-reference.",
+   "evidence": [
+    "Diagnose probable fracture with foot symptoms :: probable (snomed_concept \"Fracture of bone\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Finding of foot region\" \"finding\")) (clinical_finding (snomed_concept \"Unable to weight-bear\" \"finding\")) (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\")))",
+    "Urgent: foot symptoms with fracture or limb ischaemia :: (and (clinical_finding (snomed_concept \"Finding of foot region\" \"finding\")) (or (active_condition (snomed_concept \"Fracture of bone\" \"disorder\")) (active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\")) (active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))))",
+    "Check for urgent foot symptom conditions :: check_for lists all box-1 findings (Unable to weight-bear, Traumatic injury, sudden severe rest foot pain, numbness/weakness/pallor/absent pulse of leg, Intermittent claudication, rest foot pain, Ulcer of foot, Gangrene of foot)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-a9d58d7b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "All four leg features present as an or, joined by and to sudden severe foot pain at rest. Minor: 'Foot pulse absent' (finding) exists and is closer to a foot/leg pulse than 'Peripheral pulse absent'; pallor is encoded as 'White discoloration of skin' at a lower-limb skin site, with no closer 'pallor of leg' concept found.",
+   "evidence": [
+    "Diagnose probable acute lower limb ischaemia with foot symptoms :: probable (snomed_concept \"Acute lower limb ischemia\" \"disorder\") <- (and (clinical_finding Foot pain + Sudden onset + Severe + At rest) (or Numbness of lower limb | Weakness of muscle of lower limb | White discoloration of skin @ Skin structure of lower limb | Peripheral pulse absent))",
+    "Urgent: foot symptoms with fracture or limb ischaemia :: (and (clinical_finding (snomed_concept \"Finding of foot region\" \"finding\")) (or (active_condition (snomed_concept \"Fracture of bone\" \"disorder\")) (active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\")) (active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))))",
+    "Check for urgent foot symptom conditions :: check_for lists all box-1 findings (Unable to weight-bear, Traumatic injury, sudden severe rest foot pain, numbness/weakness/pallor/absent pulse of leg, Intermittent claudication, rest foot pain, Ulcer of foot, Gangrene of foot)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-74e46a6e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Exertional leg/buttock muscle pain is mapped to 'Intermittent claudication', which is clinically right. It is joined by and to (rest foot pain or foot ulcer or gangrene), which matches the page's 'associated with ... ,' list. 'Ischemic foot with rest pain' exists as a possible closer rest-pain concept, but the current encoding is acceptable.",
+   "evidence": [
+    "Diagnose probable critical lower limb ischaemia with foot symptoms :: probable (snomed_concept \"Critical lower limb ischemia\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Intermittent claudication\" \"finding\")) (or Foot pain + At rest | Ulcer of foot | Gangrene of foot))",
+    "Urgent: foot symptoms with fracture or limb ischaemia :: (and (clinical_finding (snomed_concept \"Finding of foot region\" \"finding\")) (or (active_condition (snomed_concept \"Fracture of bone\" \"disorder\")) (active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\")) (active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))))",
+    "Check for urgent foot symptom conditions :: check_for lists all box-1 findings (Unable to weight-bear, Traumatic injury, sudden severe rest foot pain, numbness/weakness/pallor/absent pulse of leg, Intermittent claudication, rest foot pain, Ulcer of foot, Gangrene of foot)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-839a9f80",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "high",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-a2a7035a",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "problem": "This routes to p77 when the problem is in the joint, which is a flowchart routing with no diagnosis on this page.",
+   "evidence": [],
+   "confidence": "high",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-7d5b6c24",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "The or over interdigital cracks/peeling/scaling and over thickened+scaly skin of the sole, heel or side (border) of the foot matches the page. The page's 'thickened scaly skin' is read as needing both, which is right.",
+   "evidence": [
+    "Diagnose probable tinea pedis from foot skin changes :: probable (snomed_concept \"Tinea pedis\" \"disorder\") <- (or Fissure in skin|Peeling of skin|Scaly skin @ Structure of interdigital space of foot; (and Thick skin, Scaly skin) @ sole / heel / border of foot)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-ee9b224e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "The 'Generalised foot pain' branch is encoded as Foot pain with a Generalized qualifier and gates both the neuropathy and PVD rules, as the flowchart does.",
+   "evidence": [
+    "Diagnose probable peripheral neuropathy from foot symptoms :: probable (snomed_concept \"Peripheral nerve disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Burning feet | Paresthesia of foot | Numbness of foot))",
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-b2c569e6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Burning, pins/needles and numbness are encoded as an or, but the qualifiers 'constant' and 'worse at night' are dropped, so any burning or tingling with generalised foot pain fires probable peripheral neuropathy.",
+   "evidence": [
+    "Diagnose probable peripheral neuropathy from foot symptoms :: probable (snomed_concept \"Peripheral nerve disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Burning feet | Paresthesia of foot | Numbness of foot))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "constant (persistent) character",
+    "worse at night (nocturnal aggravation)"
+   ]
+  },
+  {
+   "element_key": "p81-bce81f62",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'Peripheral neuropathy likely' becomes probable 'Peripheral nerve disease'. The rest of the box is management (HIV/syphilis/diabetes tests, drugs, referral), which is out of scope by design.",
+   "evidence": [
+    "Diagnose probable peripheral neuropathy from foot symptoms :: probable (snomed_concept \"Peripheral nerve disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Burning feet | Paresthesia of foot | Numbness of foot))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-4bc7de93",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "problem": "'Localised pain' is a branch header with no conclusion of its own. Heel pain and the 1st-MTP bony lump are localised in themselves, so no rule needs it; 'Ensure shoes fit' is management.",
+   "evidence": [],
+   "confidence": "medium",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-de21fb49",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Heel pain and the bony lump at the base of the big toe with foot deformity are encoded. 'Worse on starting walking' (first-step/start-up pain, the hallmark of plantar fasciitis) is encoded as the broader 'Pain aggravated by walking', so the 'on starting' nuance is lost; no closer SNOMED concept was found.",
+   "evidence": [
+    "Diagnose probable plantar fasciitis from heel pain :: probable (snomed_concept \"Plantar fasciitis\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Heel pain\" \"finding\")) (clinical_finding (snomed_concept \"Pain aggravated by walking\" \"finding\")))",
+    "Diagnose probable bunion from foot deformity :: probable (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Deformity of foot\" \"finding\")) (clinical_finding (snomed_concept \"Bony swelling of toe joint\" \"finding\") (finding_site (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\"))))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "'on starting' walking (start-up pain) nuance"
+   ]
+  },
+  {
+   "element_key": "p81-580e6118",
+   "scope": "borderline",
+   "scope_reason": "optional supporting features, not criteria",
+   "problem": "'May have callus, redness or ulcer' is optional, not required, and is rightly left out of the bunion criteria. Reasonable people could argue for check_for items.",
+   "evidence": [
+    "Diagnose probable bunion from foot deformity :: probable (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Deformity of foot\" \"finding\")) (clinical_finding (snomed_concept \"Bony swelling of toe joint\" \"finding\") (finding_site (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\"))))"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-d6576abd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'Foot pain with' is the PVD branch under generalised foot pain, encoded as Foot pain (Generalized).",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-cf0b3d45",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Muscle pain at the lower limb or the buttock, as an or. The page does not say 'on exercise' here, so not requiring claudication is faithful.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-099c3ec5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "This is a fragment of 'Peripheral vascular disease likely'.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-b5da04b4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "This is a fragment of 'Peripheral vascular disease likely'.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-8db686bc",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "This is a fragment of 'Peripheral vascular disease likely'.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-236d6d33",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'likely → 154': encoded as probable 'Peripheral vascular disease'; the → 154 is a cross-reference.",
+   "evidence": [
+    "Diagnose probable peripheral vascular disease from foot symptoms :: probable (snomed_concept \"Peripheral vascular disease\" \"disorder\") <- (and (clinical_finding Foot pain (qualifier Generalized)) (or Muscle pain @ Lower limb structure | Muscle pain @ Buttock structure))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-d6d41e43",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'Plantar fasciitis likely' becomes a probable diagnosis. The rest is management, and 'BMI ≥ 25 → 156' is advice routing, not diagnosis.",
+   "evidence": [
+    "Diagnose probable plantar fasciitis from heel pain :: probable (snomed_concept \"Plantar fasciitis\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Heel pain\" \"finding\")) (clinical_finding (snomed_concept \"Pain aggravated by walking\" \"finding\")))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-fd91a5af",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'Bunion likely' becomes probable 'Hallux valgus AND bunion'. The remainder is management.",
+   "evidence": [
+    "Diagnose probable bunion from foot deformity :: probable (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") <- (and (clinical_finding (snomed_concept \"Deformity of foot\" \"finding\")) (clinical_finding (snomed_concept \"Bony swelling of toe joint\" \"finding\") (finding_site (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\"))))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p81-cf487151",
+   "scope": "borderline",
+   "scope_reason": "classification whose consequence is follow-up frequency (management); arguably a 'possible' rule",
+   "problem": "'Foot at risk' in diabetes/PVD (diabetes or PVD plus a skin lesion, deformity, abnormal light-prick sensation after 2 attempts, or absent/reduced foot pulses) is a classification criterion that could be a possible/probable 'foot at risk' rule, but it is not encoded at all. It is borderline because its consequence is review frequency (management), and no SNOMED 'foot at risk' concept was found by search.",
+   "evidence": [],
+   "confidence": "low",
+   "verdict": "missing",
+   "parts_missing": [
+    "diabetes/PVD + skin lesion / deformity / abnormal sensation / reduced pulses -> foot at risk"
+   ]
+  }
+ ],
+ "outside_not_logic": [
+  "p81-3c8072cf",
+  "p81-f7533506",
+  "p81-5085f794",
+  "p81-8299dae4"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable peripheral neuropathy from foot symptoms",
+   "problem": "The rule omits 'constant' and 'worse at night', so it is broader than the page. Any burning feet, paraesthesia or numbness with generalised foot pain gives probable neuropathy.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable plantar fasciitis from heel pain",
+   "problem": "'Pain aggravated by walking' is broader than the page's 'worse on starting walking' (start-up pain), so the specificity of the criterion is reduced.",
+   "severity": "low"
+  },
+  {
+   "rule": "(none)",
+   "problem": "The diabetes/PVD 'foot at risk' criteria (skin, deformity, light-prick sensation, absent/reduced pulses) have no rule or check_for items. This is arguably acceptable as management-driven.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+   "problem": "'Peripheral pulse absent' is used where 'Foot pulse absent' (finding) exists. The current concept is broader (it could match an absent radial pulse) but is not wrong for 'no pulse in the leg'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of foot symptoms not needing urgent attention",
+   "problem": "The check list offers 'Foot pain' only with a Generalized qualifier. There is no localised-pain item, and nothing in the check list captures 'worse at night' or 'on starting walking', so those page criteria cannot be elicited even if the rules wanted them.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box is encoded faithfully: three probable diagnoses (fracture, acute and critical limb ischaemia) feed an Urgent priority rule gated on a foot finding, and every SNOMED concept resolves. The most consequential problem is that the peripheral-neuropathy rule drops 'constant' and 'worse at night', so it over-fires. Minor problems: plantar fasciitis loses the 'on starting walking' nuance, and the diabetes/PVD 'foot at risk' criteria are not encoded (borderline scope)."
+}

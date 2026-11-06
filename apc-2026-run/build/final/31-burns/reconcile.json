@@ -1,0 +1,79 @@
+{
+ "page": 31,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page says 'confused', not 'acute'; Clouded consciousness subsumes Acute confusion (is_a checked), so it matches the Confusion warning sign and the AVPU 'Confused' form.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (excluding (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (excluding (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))))",
+   "reason": "The page lists 'Other injury' as an urgent criterion; Traumatic injury with record-level excluding Burn encodes 'other than the burn' without making every burn urgent, whereas B left the element unencoded.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "reason": "'Over 70 percent body burnt' is > 10% TBSA and is not under the 70-79 band (is_a NO), so including it lets that recorded form count for 'Partial thickness burn ... > 10% TBSA'.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "reason": "The page names 'black sputum' among inhalation-injury signs; Finding of color of sputum + Black color qualifier is the closest valid form, and A dropped it.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page says 'confused', not 'acute'; Clouded consciousness subsumes Acute confusion (is_a checked), so it matches the Confusion warning sign and the AVPU 'Confused' form.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (excluding (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))))",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (excluding (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))))",
+   "reason": "The page lists 'Other injury' as an urgent criterion; Traumatic injury with record-level excluding Burn encodes 'other than the burn' without making every burn urgent, whereas B left the element unencoded.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "reason": "'Over 70 percent body burnt' is > 10% TBSA and is not under the 70-79 band (is_a NO), so including it lets that recorded form count for 'Partial thickness burn ... > 10% TBSA'.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "B only: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "reason": "The page names 'black sputum' among inhalation-injury signs; Finding of color of sputum + Black color qualifier is the closest valid form, and A dropped it. It is one of the 'Inhalation injury likely (… or black sputum)' signs.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (diagnosis (snomed_concept \"Adult victim of abuse\" \"finding\") possible)  vs  B: (diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible)",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible)",
+   "reason": "The page says 'consider abuse' with no qualifier; the rule is already restricted to adults, so the general Victim of abuse concept is closer to the page's words.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Base is B (encodes black sputum, broader confusion concept, Over 70 percent band); the only change taken from A is 'Other injury' as Traumatic injury excluding Burn in check_for and the priority rule. Rule descriptions are B's. A's clinician question on inhalation signs requiring a burn is merged; its AVPU 'Confused' question is resolved by Clouded consciousness. No flowchart: neither build had one and the page has no branches."
+}

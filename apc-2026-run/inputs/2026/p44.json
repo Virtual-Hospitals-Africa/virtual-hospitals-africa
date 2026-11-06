@@ -1,0 +1,706 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 44,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.7,
+    144.2,
+    806.4,
+    228.8
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p44-rb1-e01",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "bbox": [
+    285.3,
+    149.2,
+    556.8,
+    160.3
+   ],
+   "key": "p44-d93d6fb0"
+  },
+  {
+   "id": "p44-rb1-e02",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Hb < 6",
+   "bbox": [
+    129.6,
+    159.8,
+    160.6,
+    170.6
+   ],
+   "key": "p44-0d734d89"
+  },
+  {
+   "id": "p44-rb1-e03",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/SBP < 80",
+   "bbox": [
+    244.4,
+    159.8,
+    312.1,
+    170.6
+   ],
+   "key": "p44-6d7615f6"
+  },
+  {
+   "id": "p44-rb1-e04",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Swollen legs",
+   "bbox": [
+    374.1,
+    159.8,
+    427.5,
+    170.6
+   ],
+   "key": "p44-7de4f779"
+  },
+  {
+   "id": "p44-rb1-e05",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Widespread/easy bruising",
+   "bbox": [
+    496.1,
+    159.8,
+    601.0,
+    170.6
+   ],
+   "key": "p44-090ce294"
+  },
+  {
+   "id": "p44-rb1-e06",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Pulse ≥ 100",
+   "bbox": [
+    129.6,
+    169.8,
+    179.0,
+    180.6
+   ],
+   "key": "p44-6a59f54f"
+  },
+  {
+   "id": "p44-rb1-e07",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Dizzy/faint",
+   "bbox": [
+    244.4,
+    169.8,
+    291.4,
+    180.6
+   ],
+   "key": "p44-e4c47dc8"
+  },
+  {
+   "id": "p44-rb1-e08",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Jaundice",
+   "bbox": [
+    374.1,
+    169.8,
+    413.7,
+    180.6
+   ],
+   "key": "p44-46fa518e"
+  },
+  {
+   "id": "p44-rb1-e09",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Purple/red rash that does not disappear with pressure",
+   "bbox": [
+    496.1,
+    169.8,
+    707.5,
+    180.6
+   ],
+   "key": "p44-68cf035b"
+  },
+  {
+   "id": "p44-rb1-e10",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Respiratory rate ≥ 30",
+   "bbox": [
+    129.6,
+    179.8,
+    214.7,
+    190.6
+   ],
+   "key": "p44-3af4e6b8"
+  },
+  {
+   "id": "p44-rb1-e11",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Chest pain or palpitations",
+   "bbox": [
+    244.4,
+    179.8,
+    348.5,
+    190.6
+   ],
+   "key": "p44-535b6112"
+  },
+  {
+   "id": "p44-rb1-e12",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with pallor/anaemia and any of:",
+   "section_y": 149.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Black2 or bloody stools",
+   "bbox": [
+    374.1,
+    179.8,
+    466.1,
+    190.6
+   ],
+   "key": "p44-0087408f"
+  },
+  {
+   "id": "p44-rb1-e13",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 192.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    79.7,
+    192.6,
+    185.6,
+    203.6
+   ],
+   "key": "p44-4067ef12"
+  },
+  {
+   "id": "p44-rb1-e14",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 192.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If respiratory rate increased, give face mask oxygen.",
+   "bbox": [
+    79.7,
+    202.7,
+    281.9,
+    213.6
+   ],
+   "key": "p44-12512a96"
+  },
+  {
+   "id": "p44-rb1-e15",
+   "page": 44,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 192.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    79.7,
+    212.7,
+    634.4,
+    223.6
+   ],
+   "key": "p44-e5fb2b62"
+  },
+  {
+   "id": "p44-out-e01",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "PALLOR AND ANAEMIA",
+   "bbox": [
+    326.7,
+    48.7,
+    515.4,
+    71.0
+   ],
+   "key": "p44-9c48863f"
+  },
+  {
+   "id": "p44-out-e02",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Patient has pallor if s/he has pale conjunctiva or palms. Compare patient’s palms to your own. • Check Hb: anaemia likely if: - Non-pregnant woman has Hb < 12. Pregnant woman has Hb < 11 178. - Man has Hb < 13.",
+   "bbox": [
+    51.0,
+    89.5,
+    398.9,
+    129.7
+   ],
+   "key": "p44-6a455751"
+  },
+  {
+   "id": "p44-out-e03",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with pallor/anaemia not needing urgent attention • Test for HIV 124 and check for TB 102. • Check for pregnancy 174. • If fever now or in past 3 days, and in a malaria area in past 3 months, malaria likely 39. • If not pregnant, send full blood count (FBC) and manage further according to mean cell volume (MCV)3 result:",
+   "bbox": [
+    204.1,
+    243.0,
+    612.0,
+    294.2
+   ],
+   "key": "p44-72e4dbad"
+  },
+  {
+   "id": "p44-out-e04",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MCV3 low",
+   "bbox": [
+    235.8,
+    308.7,
+    273.0,
+    318.9
+   ],
+   "key": "p44-640f93fe"
+  },
+  {
+   "id": "p44-out-e05",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Iron deficiency anaemia likely Is patient a man or a woman who no longer has periods?",
+   "bbox": [
+    149.1,
+    332.7,
+    359.7,
+    353.7
+   ],
+   "key": "p44-aab5aa6e"
+  },
+  {
+   "id": "p44-out-e06",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MCV3 normal",
+   "bbox": [
+    501.4,
+    308.7,
+    549.5,
+    318.9
+   ],
+   "key": "p44-2be650d0"
+  },
+  {
+   "id": "p44-out-e07",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Systemic disease or long-",
+   "bbox": [
+    494.4,
+    332.7,
+    556.5,
+    353.7
+   ],
+   "key": "p44-d87b7f21"
+  },
+  {
+   "id": "p44-out-e08",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "term condition",
+   "bbox": [
+    495.9,
+    352.7,
+    556.8,
+    363.7
+   ],
+   "key": "p44-d79de733"
+  },
+  {
+   "id": "p44-out-e09",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "likely",
+   "bbox": [
+    516.3,
+    363.5,
+    536.6,
+    373.7
+   ],
+   "key": "p44-524eae7d"
+  },
+  {
+   "id": "p44-out-e10",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• If HIV, TB and pregnancy excluded, discuss/refer. • If patient is known with life- limiting illness, give palliative care 191.",
+   "bbox": [
+    492.5,
+    388.2,
+    557.6,
+    478.4
+   ],
+   "key": "p44-8697ea1e"
+  },
+  {
+   "id": "p44-out-e11",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MCV3 high",
+   "bbox": [
+    673.8,
+    308.7,
+    712.4,
+    318.9
+   ],
+   "key": "p44-03a0439c"
+  },
+  {
+   "id": "p44-out-e12",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Macrocytic anaemia likely If on zidovudine or antiseizure medication, discuss with doctor. Is patient postpartum or known to misuse alcohol4?",
+   "bbox": [
+    584.5,
+    332.7,
+    801.6,
+    363.7
+   ],
+   "key": "p44-df036884"
+  },
+  {
+   "id": "p44-out-e13",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes Yes",
+   "bbox": [
+    56.7,
+    368.2,
+    665.7,
+    388.4
+   ],
+   "key": "p44-3ce825d3"
+  },
+  {
+   "id": "p44-out-e14",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Discuss/ refer to look",
+   "bbox": [
+    40.7,
+    393.0,
+    86.7,
+    413.2
+   ],
+   "key": "p44-153e411b"
+  },
+  {
+   "id": "p44-out-e15",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "for hidden blood loss.",
+   "bbox": [
+    43.2,
+    413.0,
+    83.7,
+    433.2
+   ],
+   "key": "p44-c657b721"
+  },
+  {
+   "id": "p44-out-e16",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Ask about abnormal vaginal bleeding: if abnormal 73. • Give ferrous sulphate compound BPC 170mg or ferrous fumarate 200mg 12 hourly with food. If not tolerated (abdominal pain, nausea, vomiting, constipation), give instead ferrous sulphate compound BPC 340mg or ferrous fumarate 400mg once weekly with food.",
+   "bbox": [
+    111.2,
+    392.5,
+    460.1,
+    433.4
+   ],
+   "key": "p44-5ca77ad1"
+  },
+  {
+   "id": "p44-out-e17",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Repeat Hb monthly on treatment: if Hb decreases or if no better after 4 weeks, refer. - Continue treatment until 3 months after Hb reaches normal value. • Advise: - To eat foods rich in iron: liver, kidney, meat, eggs, spinach, beans, peas, lentils, nuts, dried fruit",
+   "bbox": [
+    111.2,
+    433.2,
+    463.4,
+    473.4
+   ],
+   "key": "p44-1ab4867c"
+  },
+  {
+   "id": "p44-out-e18",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "and fortified cereals. Foods rich in vitamin C help iron absorption: guavas, peppers, oranges, strawberries, broccoli, cauliflower. - Avoid drinking tea/coffee with meals as these interfere with iron absorption. Also avoid taking",
+   "bbox": [
+    116.9,
+    473.2,
+    467.1,
+    503.4
+   ],
+   "key": "p44-afcae097"
+  },
+  {
+   "id": "p44-out-e19",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "iron tablets with milk or calcium tablets. - Warn that stools may become black with treatment, reassure this is normal.",
+   "bbox": [
+    116.9,
+    503.2,
+    395.9,
+    523.4
+   ],
+   "key": "p44-73644dac"
+  },
+  {
+   "id": "p44-out-e20",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Folate deficiency likely • Give folate 5mg daily until Hb normal. • Repeat Hb monthly on treatment: if Hb decreases or if no better after 4 weeks, refer. • Advise to eat foods rich in folic acid: liver, eggs, fortified cereals, citrus fruit, spinach, other green vegetables, lentils, dry beans, peanuts. • Avoid alcohol 165. • If chronic diarrhoea, refer.",
+   "bbox": [
+    583.9,
+    402.2,
+    736.0,
+    523.2
+   ],
+   "key": "p44-58591865"
+  },
+  {
+   "id": "p44-out-e21",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to investigate for vitamin",
+   "bbox": [
+    758.1,
+    403.0,
+    800.1,
+    433.2
+   ],
+   "key": "p44-477e6009"
+  },
+  {
+   "id": "p44-out-e22",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "B12 deficiency.",
+   "bbox": [
+    758.7,
+    433.0,
+    797.6,
+    453.2
+   ],
+   "key": "p44-01c15ee8"
+  },
+  {
+   "id": "p44-out-e23",
+   "page": 44,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Black stools may be caused by iron tablets. Only refer if black stools started before iron treatment. 3Mean cell volume (MCV) helps identify cause of anaemia. Check on FBC result sheet if MCV low, normal or high compared to reference range. 4Drinks > 14 drinks/week or ≥ 4 drinks/session. One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer.",
+   "bbox": [
+    34.3,
+    535.3,
+    799.4,
+    551.8
+   ],
+   "key": "p44-cc85f839"
+  }
+ ]
+}

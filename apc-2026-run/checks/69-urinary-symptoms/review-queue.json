@@ -1,0 +1,1720 @@
+[
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-0b341ae3",
+  "text": "Give urgent attention to the patient with urinary symptoms and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header: trigger (urinary symptoms), level (Urgent) and 'any of' structure of the priority rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": "",
+    "problem": "figure_or_note",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-fdf84f8c",
+  "text": "Flank pain with leucocytes/nitrites on dipstick and any of: vomiting, BP < 90/60, pulse ≥ 100, diabetes, male, pregnant or post menopause: complicated pyelonephritis likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts present with the right logic: flank pain; leucocytes OR nitrites; any of vomiting, SBP < 90 or DBP < 60, pulse >= 100, diabetes, male, pregnancy, postmenopausal state. Diagnosis is 'Acute pyelonephritis' probable: SNOMED has no 'complicated pyelonephritis' concept, so this is the nearest; the consequence (indistinguishable from the uncomplicated rule) is recorded under rule-level problems. The priority rule inlines the same criteria rather than referencing the diagnosis, which is the only way to keep the uncomplicated case out of Urgent.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Complicated pyelonephritis is not distinguishable from uncomplicated: both rules emit the identical diagnosis 'Acute pyelonephritis' probable, and the uncomplicated rule (flank pain + leucocytes/nitrites) fires whenever the complicated one does"
+    ],
+    "problem": "Criteria are all encoded correctly (flank pain, leucocytes OR nitrites, any of vomiting, SBP<90, DBP<60, pulse>=100, diabetes, male, pregnant, postmenopausal), including the 'BP < 90/60' split. But the 'complicated pyelonephritis likely' conclusion has no distinct identity; the same concept is used for the non-urgent route, so downstream cannot tell urgent from non-urgent. Also the urgent priority repeats the criteria rather than keying off the diagnosis.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts encoded: flank pain AND (leucocytes OR nitrites) AND any of vomiting, SBP<90 or DBP<60, pulse>=100, diabetes, male, pregnant, postmenopausal. Diagnosis uses 'Acute pyelonephritis' (no SNOMED 'complicated pyelonephritis'), so the complicated/uncomplicated distinction rests on rule description only (see rule-level problems). Priority rule inlines the criteria instead of (active_condition ...), which is defensible because the uncomplicated rule yields the same concept.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-81db1af0",
+  "text": "Burning/frequency/urgency or leucocytes/nitrites on dipstick",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All five findings are checked for (Dysuria, Increased frequency of urination, Urgent desire to urinate, Leukocytes in urine, Nitrite detected in urine) and the man-branch rules use the five-way 'or'. The woman branch correctly narrows to leucocytes/nitrites for the UTI rules and to symptoms-without-leucocytes/nitrites for the diabetes and pregnancy rules.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": "",
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Branch entry condition carried into each downstream rule (Dysuria/frequency/urgency or leucocytes/nitrites).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p69-5298740b",
+  "text": "Approach to the patient with urinary symptoms not needing urgent attention • If flank pain with leucocytes/nitrites, uncomplicated pyelonephritis likely: send urine MCS. Give ciprofloxacin 500mg 12 hourly for 7 days and paracetamol 500mg-1g 4-6 hourly (max 4g/24 hours). • Advise to return if worse: ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'not needing urgent attention' / 'uncomplicated': the absence of the complicating features (vomiting, BP < 90/60, pulse >= 100, diabetes, male, pregnant, post menopause) is not required, so this rule also fires on every complicated case",
+     "a diagnosis concept that differs from the complicated rule's: both rules produce (diagnosis \"Acute pyelonephritis\" probable), so nothing downstream can tell the two apart"
+    ],
+    "problem": "The evidence of this rule is a strict subset of the complicated rule's evidence. A man with flank pain and nitrites gets 'probable Acute pyelonephritis' from both rules; the page calls that complicated and urgent, and never uncomplicated. Either add (no ...) for each complicating feature here, or document that the system deliberately records one pyelonephritis diagnosis and leaves the complicated/uncomplicated split to the priority rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Does not exclude the urgent complicating features, so it also fires for patients who need urgent care (same concept as complicated)",
+     "'Advise to return if worse: refer' is management"
+    ],
+    "problem": "Uncomplicated pyelonephritis likely (flank pain with leucocytes/nitrites) encoded, but with the same diagnosis concept as the complicated rule; no distinction is possible.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'not needing urgent attention' context: no exclusion of the complicating features, so the rule is a strict superset of the complicated rule and fires alongside it with the identical diagnosis concept"
+    ],
+    "problem": "Uncomplicated pyelonephritis is encoded as Acute pyelonephritis probable on flank pain + leucocytes/nitrites, identical concept to the complicated rule; the two are indistinguishable in output. Either add (no ...) of the complicating features or accept and document that one concept covers both.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-84b3e7b5",
+  "text": "MUS likely 63. Otherwise treat for: No: Simple UTI likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Simple UTI is encoded as 'Lower urinary tract infectious disease' probable and complicated UTI as 'Urinary tract infectious disease' probable; the two rules are mutually exclusive by evidence, so the parent/child relation between the concepts does not cause double firing.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Simple UTI uses concept 'Lower urinary tract infectious disease' while complicated UTI uses 'Urinary tract infectious disease' (a supertype), so a complicated UTI conclusion subsumes simple UTI"
+    ],
+    "problem": "Simple UTI likely (woman, leucocytes/nitrites, no catheter, diabetes, pregnancy, urinary tract problem) is encoded correctly in logic. The concept pair does not capture the simple-versus-complicated distinction cleanly. The page's 'MUS likely' fragment is covered under the man rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Otherwise treat for' complicated UTI (man with frequency/urgency) and 'No: Simple UTI likely' (woman with leuc/nit and none of catheter/diabetes/pregnancy/urinary tract problem) both encoded.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-8d7fdeff",
+  "text": "No: Are there leucocytes/nitrites on dipstick? Yes Acute prostatitis likely • If also MUS, give ceftriaxone2 250mg IM3 and azithromycin 1g. • If no MUS, give ciprofloxacin 500mg 12 hourly for 14 days. • Give ibuprofen4 400mg 8 hourly with food for up to 5 days. • Refer if temperature ≥ 38°C, difficu",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Acute prostatitis likely: probable Acute prostatitis with Male + infection feature + (perineal pain OR body pain OR prostate tender); correctly does not exclude urethral discharge ('If also MUS'). The leucocytes/nitrites decision is used by the complicated-UTI and MUS male branches (yes) and by the diabetes rule's male branch (no).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Prostatitis 'Yes' path correct; the 'No: are there leucocytes/nitrites' sub-branch routes to complicated UTI (encoded) or MUS (encoded)"
+    ],
+    "problem": "Acute prostatitis likely encoded. Complicated UTI male branch encoded as leuco/nitrite AND frequency/urgency with no prostatitis signs. Treatment items are management and out of scope. The male complicated-UTI branch does not exclude urethral discharge.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Acute prostatitis likely on Yes to perineal/body pain or prostate tender, in the burning/frequency/urgency-or-leuc/nit branch; 'No: are there leucocytes/nitrites' branch correctly carried into complicated UTI / MUS / diabetes rules. Management and referral criteria out of scope.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p69-9c2548ae",
+  "text": "Man • Check for urethral discharge. If present, MUS likely 63. • Any of: perineal/body pain or prostate tender on rectal exam?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "MUS likely: probable Urethritis with Male + any infection feature + Urethral discharge (SNOMED has no 'male urethritis syndrome'; Urethritis is the right concept). Prostatitis question: Perineal pain, Generalized aches and pains, Tenderness of prostate are checked for and used as the 'or' in the prostatitis rule and as 'no' in the complicated-UTI, MUS and diabetes male branches. 'Generalized acute body pains' (finding) exists and is marginally closer to the page's 'body pain' than 'Generalized aches and pains'; not an error.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Urethral discharge present -> MUS likely is encoded, but a man with discharge AND perineal pain/prostate tenderness fires both urethritis and prostatitis; page order checks discharge first"
+    ],
+    "problem": "Urethritis (MUS) probable with discharge is encoded; prostatitis pain branch encoded. 'Body pain' mapped to 'Generalized aches and pains', a loose match. No cross-exclusion between urethral discharge and the complicated UTI branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Urethral discharge -> MUS likely (Urethritis probable) and the perineal/body pain/prostate tender question are both encoded. 'Urethritis' stands in for 'male urethritis syndrome' (no closer SNOMED concept found).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-8ef1795d",
+  "text": "No burning/frequency/urgency and no leucocytes/nitrites on dipstick",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "the negated gate (no dysuria, no frequency, no urgency, no leucocytes, no nitrites) as a precondition of the blood-on-dipstick / schistosomiasis branch"
+    ],
+    "problem": "Nothing in the file represents this side of the flowchart; the only negations of leucocytes/nitrites are in the diabetes and pregnancy rules, which belong to the other side.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": "",
+    "problem": "flowchart_routing",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Routing header for the blood-on-dipstick / flow-problem side; its only diagnostic endpoint (schistosomiasis) is missing, judged under p69-97881141/p69-ac69a490.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-2c52b11d",
+  "text": "urine • If on furosemide, doctor to review. • If vaginal atrophy 187, if constipation 60. • Advise to reduce alcohol and caffeine, and do pelvic muscle exercises. • If vaginal prolapse or no response, refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Leakage of urine and poor stream/difficulty passing urine symptoms not in any check_for",
+     "Vaginal atrophy/constipation cross-references"
+    ],
+    "problem": "Flow problem branch (leakage, poor stream) not represented; possible-diagnosis rules (vaginal atrophy, constipation) absent. Mostly routing/management, so low weight.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-e7a2e142",
+  "text": "Flow problem Blood on dipstick5 Send urine for microscopy. If at risk of bilharzia6, also request for Schistosoma ova:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "the blood-on-dipstick branch (no infection features + blood in urine) as a route to the schistosomiasis diagnosis",
+     "'at risk of bilharzia' (footnote 6: washed/swam in dams/streams/lakes in an endemic area) as a finding"
+    ],
+    "problem": "'Blood in urine' is checked for, but only consumed by the kidney-disease and kidney-stone rules; the dipstick-blood branch of the flowchart has no rule. No SNOMED finding for 'exposure to fresh water in an endemic area' was found, so that part may be not_representable; the dipstick-blood gate itself is representable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Blood on dipstick without burning/frequency/urgency and no leucocytes/nitrites: send urine for microscopy; request Schistosoma ova if at risk of bilharzia"
+    ],
+    "problem": "Whole 'no burning/frequency/urgency and no leucocytes/nitrites' branch has no check_for items or rules (blood on dipstick not tied to schistosomiasis work-up). Bilharzia risk (washed/swam in dams) is not captured anywhere.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "'Flow problem' header and 'Blood on dipstick: send urine for microscopy; if at risk of bilharzia request Schistosoma ova' are routing/management; the risk criterion feeds the missing schistosomiasis rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-97881141",
+  "text": "Schistosoma positive",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Schistosoma positive on microscopy as a finding"
+    ],
+    "problem": "Not encoded. SNOMED has 'Schistosoma haematobium egg' (organism) and 'Schistosoma haematobium infection' (disorder); a finding of ova on microscopy would need a construct such as a finding with the organism as value, or the builder should record why it cannot be expressed.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Schistosoma positive on urine microscopy as evidence (e.g. 'Urine microscopy: parasites present' finding, which exists)"
+    ],
+    "problem": "No rule or check_for item for the Schistosoma result.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-ac69a490",
+  "text": "Schistosomiasis likely • Notify7. • If fever, cough, headache, or urticaria, refer same day. • If not, give single dose praziquantel 40mg/ kg. • Advise to boil water before use and avoid swimming in contaminated water. • Refer if swelling of face/ feet or blood in urine persists ≥ 2 months after tre",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable diagnosis of schistosomiasis when Schistosoma ova are positive",
+     "footnote 6 shortcut: microscopy not available and lives in endemic area -> treat as schistosomiasis"
+    ],
+    "problem": "No rule, check_for item or diagnosis concept for schistosomiasis anywhere in the file. 'Urinary schistosomiasis' (disorder) and 'Schistosoma haematobium infection' (disorder) both exist in SNOMED, so the diagnosis itself is representable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Schistosomiasis probable diagnosis (Schistosoma ova positive / blood on microscopy plus exposure)"
+    ],
+    "problem": "No schistosomiasis diagnosis rule and no check_for for it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable 'Urinary schistosomiasis' (disorder exists) on blood in urine (no burning/frequency/urgency, no leuc/nit) + Schistosoma positive"
+    ],
+    "problem": "'Schistosomiasis likely' has no system_diagnosis_rule at all. Management bullets in the box are out of scope.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p69-b2e0b82d",
+  "text": "1Do not mix Ringer's lactate and IV ceftriaxone. 2If severe penicillin allergy (history of angioedema, anaphylactic shock or bronchospasm), omit ceftriaxone and increase azithromycin to 2g. 3Dissolve 250mg in 0.9mL lidocaine 1% without adrenaline (epinephrine). 4Avoid if peptic ulcer, asthma, hypert",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Footnotes. Footnote 5 (repeat dipstick after menstruation) and 7 (notification) are notes; footnotes 1-4 are prescribing cautions. Footnote 6 contains a diagnostic shortcut ('if microscopy not available and patient lives in endemic area, treat as schistosomiasis'); 'microscopy not available' is not a patient finding the language can express, so it is listed as a missing part under p69-ac69a490 for the record rather than judged here.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "bilharzia exposure risk",
+     "possible/presumptive schistosomiasis when microscopy unavailable in endemic area"
+    ],
+    "problem": "Not encoded, consistent with the schistosomiasis branch being absent entirely.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Check for urgent urinary symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for facial swelling; Swelling + finding_site Face structure is a post-coordination of it.",
+    "fix": "(clinical_finding (snomed_concept \"Facial swelling\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) in both check_for and kidney-disease rule",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c016",
+  "text": "Check for urgent urinary symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for foot swelling; Swelling + finding_site Foot structure is a post-coordination of it.",
+    "fix": "(clinical_finding (snomed_concept \"Foot swelling\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) in both check_for and kidney-disease rule",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c027",
+  "text": "Check for urinary infection features :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+    "fix": "Narrow it, or accept as a deliberate broad reading.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c030",
+  "text": "Check for urinary infection features :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'body pain' mapped to Generalized aches and pains; closest available",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+    "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c043",
+  "text": "Diagnose probable complicated pyelonephritis (urinary symptoms) :: (diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'complicated pyelonephritis likely'; SNOMED has no complicated-pyelonephritis concept, so this rule and the uncomplicated rule both diagnose the same concept and the urgent/non-urgent distinction is lost in the diagnosis record (the priority rule compensates by re-listing the criteria)",
+    "fix": "No closer concept found (searched 'pyelonephritis'); keep, but record the gap in remaining questions",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Acute pyelonephritis\" does not carry \"complicated\"; the same concept is used for the uncomplicated rule.",
+    "fix": "Differentiate through the rule conditions, and make the uncomplicated rule exclude the complicating factors.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"complicated pyelonephritis likely\"; plain Acute pyelonephritis is the same concept the uncomplicated rule emits, so the complicated/uncomplicated distinction (which drives urgent vs routine management) is lost in the diagnosis. No precoordinated complicated-pyelonephritis concept exists.",
+    "fix": "Keep concept but differentiate the uncomplicated rule by negating the complicating features (see R3), or add a qualifier if the grammar allows one on diagnoses.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c047",
+  "text": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms) :: (diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Uncomplicated pyelonephritis is only the non-urgent case (flank pain + leuc/nit without the complicating features), but the rule has the same diagnosis and no exclusion.",
+    "fix": "Add (no ...) for vomiting, BP<90/60, pulse>=100, diabetes, male, pregnancy and postmenopausal.",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says \"uncomplicated pyelonephritis likely\" under \"not needing urgent attention\", i.e. flank pain + leucocytes/nitrites WITHOUT any complicating feature; the rule has no negations, so it also fires for every complicated case.",
+    "fix": "Add (no …) for vomiting, Male, Pregnancy, Postmenopausal state, Diabetes mellitus and the BP/pulse thresholds to the uncomplicated rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c050",
+  "text": "Diagnose probable kidney disease (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for facial swelling; Swelling + finding_site Face structure is a post-coordination of it.",
+    "fix": "(clinical_finding (snomed_concept \"Facial swelling\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) in both check_for and kidney-disease rule",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c051",
+  "text": "Diagnose probable kidney disease (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Foot structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "A precoordinated concept exists for foot swelling; Swelling + finding_site Foot structure is a post-coordination of it.",
+    "fix": "(clinical_finding (snomed_concept \"Foot swelling\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\"))) in both check_for and kidney-disease rule",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c066",
+  "text": "Diagnose probable simple UTI in a woman (urinary symptoms) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+    "fix": "Narrow it, or accept as a deliberate broad reading.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c067",
+  "text": "Diagnose probable simple UTI in a woman (urinary symptoms) :: (diagnosis (snomed_concept \"Lower urinary tract infectious disease\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Simple UTI mapped to Lower urinary tract infectious disease; Acute cystitis is an alternative but not clearly closer",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Simple UTI\" in a woman (no catheter/diabetes/pregnancy/urinary tract problem) is uncomplicated cystitis; Lower urinary tract infectious disease is acceptable but broader.",
+    "fix": "(snomed_concept \"Acute cystitis\" \"disorder\") is closer (exists); otherwise keep.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c074",
+  "text": "Diagnose probable complicated UTI (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of urinary system\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"urinary tract problem\" mapped to the very broad \"Disorder of urinary system\", which also covers infection and stones.",
+    "fix": "Narrow it, or accept as a deliberate broad reading.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c077",
+  "text": "Diagnose probable complicated UTI (urinary symptoms) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+    "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c083",
+  "text": "Diagnose probable complicated UTI (urinary symptoms) :: (diagnosis (snomed_concept \"Urinary tract infectious disease\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Urinary tract infectious disease is broader than 'Complicated UTI': it is the parent of Lower urinary tract infectious disease (used for Simple UTI) and of pyelonephritis, so an active_condition on it would also match simple UTI; no complicated-UTI concept exists in SNOMED",
+    "fix": "No closer concept found; keep, and note that the two UTI rules are only distinguishable by rule name",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c086",
+  "text": "Diagnose probable male urethritis syndrome (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased frequency of urination\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Quote is \"If no frequency/urgency\", but the condition is used as a positive entry criterion. The concept is right only through the parent branch \"Burning/frequency/urgency or leuc/nit\".",
+    "fix": "Cite the parent branch element.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Condition is right (frequency/urgency as the entry symptom for the MUS-with-discharge branch), but the citation \"If no frequency/urgency\" belongs to the other MUS branch and says the opposite.",
+    "fix": "Cite p69-81db1af0 \"Burning/frequency/urgency\".",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c087",
+  "text": "Diagnose probable male urethritis syndrome (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urgent desire to urinate\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Quote is \"If no frequency/urgency\", but the condition is used as a positive entry criterion. The concept is right only through the parent branch \"Burning/frequency/urgency or leuc/nit\".",
+    "fix": "Cite the parent branch element.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Condition is right (frequency/urgency as the entry symptom for the MUS-with-discharge branch), but the citation \"If no frequency/urgency\" belongs to the other MUS branch and says the opposite.",
+    "fix": "Cite p69-81db1af0 \"Burning/frequency/urgency\".",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c093",
+  "text": "Diagnose probable male urethritis syndrome (urinary symptoms) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+    "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c107",
+  "text": "Diagnose probable acute prostatitis (urinary symptoms) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+    "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c119",
+  "text": "Diagnose possible diabetes (urinary symptoms with glycosuria) :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says \"perineal/body pain\"; \"Generalized aches and pains\" is a loose match for non-perineal body pain.",
+    "fix": "Consider \"Pain of perineum\" plus a wider body-pain concept, or confirm the intent with the clinician.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c121",
+  "text": "Diagnose possible diabetes (urinary symptoms with glycosuria) :: (diagnosis (snomed_concept \"Diabetes mellitus\" \"disorder\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "The page says \"exclude diabetes\", which is a prompt to test, not \"consider/suspect\". The possible diagnosis is defensible but is a stretch.",
+    "fix": "Keep as possible, with the page wording noted.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c126",
+  "text": "Diagnose possible pregnancy (urinary frequency) :: (diagnosis (snomed_concept \"Pregnancy\" \"finding\") possible)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "The page says \"exclude pregnancy\", not \"consider/suspect\". The possible diagnosis is defensible but is a stretch.",
+    "fix": "Keep as possible, with the page wording noted.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c142",
+  "text": "Urgent: urinary symptoms with danger signs :: (active_condition (snomed_concept \"Kidney disease\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Danger sign encoded as active_condition \"Kidney disease\", i.e. an already recorded condition. The page criterion is the probable-diagnosis picture (blood/protein in urine with new swelling, BP >=140/90 or oliguria). A probable diagnosis from another rule will not satisfy active_condition.",
+    "fix": "Inline the kidney disease criteria from the diagnosis rule inside the Urgent rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c143",
+  "text": "Urgent: urinary symptoms with danger signs :: (active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "wrong",
+    "reason": "Same problem: active_condition \"Kidney stone\" in place of blood in urine plus sudden severe unilateral flank/groin pain.",
+    "fix": "Inline the kidney stone criteria.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(whole file) / Schistosomiasis branch",
+  "text": "The right-hand half of the flowchart ('No burning/frequency/urgency and no leucocytes/nitrites' -> 'Blood on dipstick' -> microscopy -> 'Schistosoma positive' -> 'Schistosomiasis likely') is absent: no check_for item, no probable diagnosis rule, no use of 'Blood in urine' outside the red-box rules. 'Urinary schistosomiasis' (disorder) exists in SNOMED, so at least the diagnosis is expressible; if the ova-on-microscopy evidence cannot be expressed the file should say so rather than omit the branch silently.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms) vs Diagnose probable complicated pyelonephritis (urinary symptoms)",
+  "text": "Both rules produce (diagnosis \"Acute pyelonephritis\" probable), and the uncomplicated rule's evidence (flank pain + leucocytes/nitrites) is a strict subset of the complicated rule's, so the uncomplicated rule fires on every complicated patient and the two diagnoses are the same record. The page's distinction (complicated = urgent, ceftriaxone IV/IM; uncomplicated = oral ciprofloxacin) survives only in the priority rule. Add (no ...) for the seven complicating features to the uncomplicated rule, or document the collapse deliberately.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: urinary symptoms with danger signs",
+  "text": "Two of the four Urgent branches are (active_condition \"Kidney disease\") and (active_condition \"Kidney stone\"). Descendants match in due_to and 'Chronic kidney disease' is-a 'Kidney disease', so any patient with urinary symptoms and a pre-existing kidney disease (or a previously recorded stone) on their record is marked Urgent, which the page does not say: its trigger is the acute criteria (blood/protein + new swelling/BP/oliguria; blood + sudden severe one-sided pain). This is the house pattern from the briefing, but 'Kidney disease' is a common chronic condition in this population, so the over-trigger is larger here than on most pages. Inlining the criteria, as was done for pyelonephritis, would avoid it.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urinary infection features / Diagnose probable simple UTI in a woman / Diagnose probable complicated UTI",
+  "text": "'Urinary tract problem' is encoded as 'Disorder of urinary system', whose descendants include Kidney disease, Kidney stone, Urinary tract infectious disease, Urethritis, Proteinuria of undiagnosed cause and Hematuria syndrome, i.e. the very conditions this page records. If any of these is on the record as a clinical finding, the Simple UTI rule is suppressed and the Complicated UTI rule fires; the page means a known structural/functional urinary tract problem. A narrower concept (e.g. 'Disorder of urinary tract proper' or a 'Known present' qualifier) would be closer; at minimum this should be noted.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated UTI (urinary symptoms), male branch",
+  "text": "The page sends a man with urethral discharge to MUS (page 63); the male complicated-UTI branch does not exclude Urethral discharge, so such a man gets both Urethritis and Urinary tract infectious disease. The page is ambiguous about whether the second bullet applies to him, so this is a judgment call, not an error.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent urinary symptom conditions / Check for urinary infection features",
+  "text": "Minor concept choices: 'Oliguria' for 'passing little urine' where 'Decreased urine output' (finding) is the closer paraphrase; 'Generalized aches and pains' for 'body pain' where 'Generalized acute body pains' (finding) exists. Neither is wrong. The flow-problem branch (leakage of urine, poor stream/difficulty passing urine) is referral-only with no diagnosis, so its omission is consistent with the no-manage-tasks rule; 'Urinary incontinence' and 'Difficulty passing urine' exist should a later pass want them.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable complicated pyelonephritis / uncomplicated pyelonephritis",
+  "text": "Both emit 'Acute pyelonephritis' probable. The uncomplicated rule's criteria are a subset of the complicated one's, so the pair is redundant and the urgent/non-urgent distinction is lost. No exclusion of the complicating features in the uncomplicated rule.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: urinary symptoms with danger signs",
+  "text": "Kidney disease and kidney stone triggers use active_condition rather than the page's criteria; this works only if the diagnosis rules feed active conditions. Complicated pyelonephritis criteria are inlined while the other two are not (inconsistent). Priority is fine for the page (red box = urgent).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable simple UTI / complicated UTI",
+  "text": "Different concepts (Lower urinary tract infectious disease vs Urinary tract infectious disease) where the page has simple vs complicated UTI; complicated is a supertype so it subsumes simple. Male complicated UTI does not exclude urethral discharge, so it overlaps with MUS.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole page)",
+  "text": "Blood on dipstick / schistosomiasis branch and flow-problem branch (leakage, poor stream) have no rules or check_for items.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urinary infection features",
+  "text": "Check list has no items for blood on dipstick, bilharzia exposure, or leakage/poor stream.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent urinary symptom conditions",
+  "text": "Protein/blood/little urine and BP lack measurement checks, though they are used by the rules; 'Body pain' mapped to 'Generalized aches and pains' (loose).",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(none) schistosomiasis branch",
+  "text": "The whole 'No burning/frequency/urgency and no leucocytes/nitrites -> Blood on dipstick -> Schistosoma positive -> Schistosomiasis likely' branch is lost. 'Urinary schistosomiasis' (disorder) and 'Urine microscopy: parasites present' (finding) exist, so it is representable.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+  "text": "Same diagnosis concept as the complicated rule and a strict subset of its criteria, so every complicated case also fires the 'uncomplicated' rule and the output cannot distinguish them; the page's split (urgent vs not urgent) survives only in the priority rule.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable simple UTI in a woman / complicated UTI",
+  "text": "'Urinary tract problem' is encoded as 'Disorder of urinary system', which has UTI and kidney stone as descendants: any recorded urinary disorder (including a prior UTI) blocks simple UTI and forces complicated UTI. Also 'Lower urinary tract infectious disease' is_a 'Urinary tract infectious disease', so simple and complicated UTI concepts nest.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible pregnancy (urinary frequency)",
+  "text": "Does not require the branch entry explicitly beyond frequency itself (acceptable), but fires in women already known to be pregnant; harmless.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urinary infection features",
+  "text": "Nothing is checked for the right-hand branch of the page: blood on dipstick with Schistosoma ova on microscopy / bilharzia risk, which the page resolves to 'Schistosomiasis likely'. The check_for list matches the left-hand branch faithfully.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+  "text": "The page puts 'uncomplicated pyelonephritis likely' under 'not needing urgent attention', i.e. flank pain with leucocytes/nitrites and none of the complicating features (vomiting, BP < 90/60, pulse ≥ 100, diabetes, male, pregnant, post menopause). The rule has no exclusion of those features, so it also fires for every complicated case. Because both rules diagnose the same concept the practical effect is small, but the rule is not faithful to the page's branching.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+  "text": "Duplicates the Urgent branch; the diagnosis \"Acute pyelonephritis\" cannot be told apart from the uncomplicated rule.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+  "text": "No exclusion of the complicating features, so it fires with every complicated case and gives the same diagnosis. The page offers it only in the non-urgent approach.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable simple UTI in a woman (urinary symptoms)",
+  "text": "Condition \"Burning/frequency/urgency or leuc/nit\" alternative is not encoded. The leuc/nit requirement matches the \"If leucocytes/nitrites\" bullet. Overlap with the complicated rule is avoided. Minor.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated UTI (urinary symptoms)",
+  "text": "The male branch does not exclude urethral discharge, so it can fire together with male urethritis. The page checks for discharge first.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: urinary symptoms with danger signs",
+  "text": "Kidney disease and kidney stone branches use active_condition rather than the page criteria. Kidney disease and kidney stone urgency is likely never triggered by findings alone.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent urinary symptom conditions",
+  "text": "Covers all four red-box criteria correctly. Face/foot swelling would be better as the precoordinated Facial swelling / Foot swelling. Male/Pregnancy/Postmenopausal state are recorded as clinical findings, so they only fire if a health worker records them as findings, not from demographics.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable complicated pyelonephritis (urinary symptoms)",
+  "text": "Logic matches the red-box line exactly (BP < 90/60 split as systolic<90 OR diastolic<60 is the usual reading). But it emits the same concept, Acute pyelonephritis probable, as the uncomplicated rule, so the output can't tell the two apart.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+  "text": "Page: uncomplicated pyelonephritis is flank pain + leucocytes/nitrites in a patient NOT meeting the urgent criteria. The rule has no negation of vomiting/BP<90/60/pulse>=100/diabetes/male/pregnant/post-menopause, so it fires on every complicated case too. It also uses the same diagnosis concept as the complicated rule.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: urinary symptoms with danger signs",
+  "text": "Urgent is justified by the 'Give urgent attention' heading and all four red-box items are present. The house standard says a red-box item with a named likely diagnosis should be referenced as (active_condition X). Kidney disease and kidney stone are done that way, but complicated pyelonephritis is inlined (it can't be referenced separately because it shares the Acute pyelonephritis concept with the uncomplicated rule).",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: Urinary symptoms trigger on a second task 'Check for urinary infection features'  vs  B: one task only",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary symptoms\" \"finding\"))",
+    "reason": "The page separates the red box from the 'Approach to the patient with urinary symptoms not needing urgent attention' algorithm, so the non-urgent findings get their own task with the same 'urinary symptoms' trigger.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "reason": "'sudden, severe, one-sided pain in flank or groin' is written literally by the Unilateral qualifier; left/right precoordinated concepts are equivalent but further from the words.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: approach-algorithm findings (dysuria, frequency, urgency, female, glycosuria, catheter, urinary system disorder, urethral discharge, perineal pain, body aches, prostate tenderness) in a second task  vs  B: same findings in the red-box task",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "same 11 findings, in 'Check for urinary infection features'",
+    "reason": "These are not red-box items; the page places them in the non-urgent approach, so they belong outside the urgent task (same expressions in both builds).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: kidney disease and kidney stone criteria written inline (blood/protein, new face/feet swelling, SBP>=140, DBP>=90, oliguria; blood in urine + sudden severe L/R flank/groin pain)  vs  B: (active_condition Kidney disease), (active_condition Kidney stone)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(active_condition (snomed_concept \"Kidney disease\" \"disorder\")) | (active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+    "reason": "The red box names 'kidney disease likely' and 'kidney stone likely' for these subsets, and the standard (Will's briefing) says to write a probable rule and reference it with active_condition; A's concern that a pre-existing condition would also fire is recorded for a clinician.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "Complicated pyelonephritis criteria: both builds write them inline",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(and Flank pain (or Leukocytes Nitrite) (or vomiting SBP<90 DBP<60 pulse>=100 diabetes male pregnancy postmenopausal))",
+    "reason": "Both agree; active_condition Acute pyelonephritis would also fire on the non-urgent 'uncomplicated pyelonephritis likely' rule.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: one rule 'probable acute pyelonephritis' (flank pain + leucocytes/nitrites) for both statements  vs  B: two rules, complicated (with the seven factors) and uncomplicated (flank pain + leucocytes/nitrites)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "Diagnose probable complicated pyelonephritis (urinary symptoms); Diagnose probable uncomplicated pyelonephritis (urinary symptoms)",
+    "reason": "The page has two 'likely' statements ('complicated pyelonephritis likely' with its factors, 'uncomplicated pyelonephritis likely'), and each 'X likely' becomes a probable rule.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A: simple UTI = Acute cystitis  vs  B: Lower urinary tract infectious disease",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Lower urinary tract infectious disease\" \"disorder\") probable)",
+    "reason": "The page says 'Simple UTI', an infection, not specifically cystitis; B's concept keeps 'urinary tract infection' wording, but SNOMED has no simple-UTI concept so the page does not settle it.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: MUS by urethral discharge = Male + Urethral discharge  vs  B: Male + (burning/frequency/urgency or leucocytes/nitrites) + Urethral discharge",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and Male (or Dysuria Frequency Urgency Leukocytes Nitrite) Urethral discharge)",
+    "reason": "The Man box sits under the 'Burning/frequency/urgency or leucocytes/nitrites on dipstick' column, so the gate is part of the page's path; a clinician question asks whether discharge alone should suffice.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: possible diabetes as two branches (woman / man) each with the gate and (no leucocytes)(no nitrites) glycosuria  vs  B: one and with shared gate and (or Female (and Male no-prostatitis-signs))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(and (or Dysuria Frequency Urgency) (no Leukocytes) (no Nitrite) Glycosuria (or Female (and Male (no Perineal pain) (no Generalized aches and pains) (no Tenderness of prostate))))",
+    "reason": "Logically equivalent encodings of 'If glucose, exclude diabetes' / 'If glucose on dipstick, exclude diabetes'; the diff counts only duplicated atoms, so B's base form was kept.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "B only: complicated-pyelonephritis rule conditions (flank pain, leucocytes, nitrite, vomiting, SBP<90, DBP<60, pulse>=100, diabetes, male, pregnancy, postmenopausal)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "see 'Diagnose probable complicated pyelonephritis (urinary symptoms)'",
+    "reason": "Follows from keeping the separate complicated-pyelonephritis rule: 'Flank pain with leucocytes/nitrites on dipstick and any of: vomiting, BP < 90/60, pulse ≥ 100, diabetes, male, pregnant or post menopause'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "slug": "69-urinary-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: kidney stone pain = sudden severe Left/Right flank or inguinal pain  vs  B: sudden severe unilateral Flank / Inguinal pain",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) | (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+    "reason": "Same as the check_for decision: 'one-sided' maps directly to Unilateral.",
+    "unsettled": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,446 @@
+{
+ "page": 58,
+ "lisp_file": "58-diarrhoea.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "watery diarrhoea"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "has been in cholera outbreak area"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "thirst"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "history of prolonged constipation"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "blood in the stool"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check rectum for faecal impaction in diarrhoea",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "solid immobile bulk of stool in rectum"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "has been in cholera outbreak area"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "watery diarrhoea"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "Is there blood in the stool?"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cholera\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "cholera likely"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "thirst"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dry mouth"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "poor skin turgor"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable dehydration in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "dehydration likely"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation\" \"disorder\"))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "history of prolonged constipation"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "watery stool"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable overflow diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chronic constipation with overflow\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-f18ab8d0"
+   ],
+   "quote": "overflow diarrhoea likely"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "blood in the stool"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable dysentery in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dysenteric diarrhea\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-c4c91295"
+   ],
+   "quote": "Dysentery likely"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))) (time_ago 2 weeks))",
+   "element_keys": [
+    "p58-7c5796f3"
+   ],
+   "quote": "Diarrhoea ≤ 2 weeks"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-400c6dde"
+   ],
+   "quote": "Is there blood in the stool?"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p58-b2b17c35"
+   ],
+   "quote": "Has patient been in cholera outbreak area in past 5 days?"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable gastroenteritis in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Inflammation of stomach and intestine\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-478a52a7"
+   ],
+   "quote": "Gastroenteritis likely"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fullness of rectum due to feces\" \"finding\"))",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "If present"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable faecal impaction in diarrhoea",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+   "element_keys": [
+    "p58-ce96dcc0"
+   ],
+   "quote": "impaction likely"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p58-6e30e294"
+   ],
+   "quote": "patient with diarrhoea"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p58-6472199e"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p58-be21e627"
+   ],
+   "quote": "cholera likely"
+  }
+ ]
+}

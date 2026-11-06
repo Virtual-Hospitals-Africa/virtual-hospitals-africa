@@ -1,0 +1,568 @@
+{
+ "page": 36,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p36-cf86a3e4",
+   "scope": "borderline",
+   "scope_reason": "Header of the urgent box; the task trigger (Abnormal behavior or Disturbance in thinking) captures it",
+   "problem": "",
+   "evidence": [
+    "Check for urgent abnormal thoughts or behaviour conditions :: (or (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\")) (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\")))"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-2765dde2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Urgent: abnormal thoughts or behaviour of sudden or recent onset :: (system_priority_evaluation ... Urgent (and (or Abnormal behavior|Disturbance in thinking) (or ... Sudden onset ... Recent ...)))",
+    "check_for :: (clinical_finding (snomed_concept \"Abnormal behavior\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-48cbdcc4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Minor: 'Recent' qualifier value is a reasonable but loose match for 'recent onset'; the leading (or abnormal behaviour/disturbance) conjunct is redundant.",
+   "evidence": [
+    "Urgent: abnormal thoughts or behaviour of sudden or recent onset :: (system_priority_evaluation ... Urgent (and (or Abnormal behavior|Disturbance in thinking) (or ... Sudden onset ... Recent ...)))",
+    "check_for :: (clinical_finding (snomed_concept \"Disturbance in thinking\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-a8c75101",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Diagnose probable psychosis :: (clinical_finding (snomed_concept \"Lack of insight\" \"finding\"))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-419e9709",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Diagnose probable stimulant drug intoxication :: (or Dilated pupil / Restlessness / Paranoid ideation / Nausea / Sweating / pulse / BP)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-02505318",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Diagnose probable alcohol intoxication :: (or Smell of alcohol on breath / Slurred speech / Incoordination / Unsteady when walking)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-663005f3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Withdrawal rule requires a stop/reduction finding but not known substance use; reduced drug intake not covered.",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal :: (or (clinical_finding (snomed_concept \"Stopped drinking alcohol\" ...)) (... \"Decreased alcohol consumption\" ...) (... \"Abstinent from drug misuse\" ...))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Known alcohol/drug user' precondition not encoded (only stopped/decreased drinking or abstinent from drug misuse)",
+    "'reduced' drug intake: only alcohol reduction and drug abstinence represented"
+   ]
+  },
+  {
+   "element_key": "p36-64320099",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Acceptable approximation but 'Exposure to (contextual qualifier)' + 'Substance' is very generic and the SNOMED combination may not be evaluable as a patient finding; 'unknown substance' captured only via generic Substance.",
+   "evidence": [
+    "Diagnose probable poisoning :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "route of exposure (ingestion/inhalation/absorption) not captured; generic 'Exposure to' with Drug or Substance only"
+   ]
+  },
+  {
+   "element_key": "p36-9e02913e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "psychosis :: (clinical_finding (snomed_concept \"Hallucinations\" \"finding\"))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-a6e87f30",
+   "scope": "in_scope",
+   "scope_reason": "Part of stimulant list (paranoia, nausea); nausea/paranoia also in check_for",
+   "problem": "",
+   "evidence": [
+    "stimulant :: (clinical_finding (snomed_concept \"Paranoid ideation\" \"finding\")) ; (Nausea)"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-a1da20c2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "psychosis :: (clinical_finding (snomed_concept \"Delusion\" \"finding\"))"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-4dba80b5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'BP >= 140/90' encoded as systolic>=140 OR diastolic>=90, a reasonable reading. Sweating also a withdrawal symptom, correctly encoded in both.",
+   "evidence": [
+    "stimulant :: (>= (measurement Pulse, function bpm) 100); (>= Systolic ... 140); (>= Diastolic ... 90)",
+    "Sweating"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-a5e3889c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Largely correct. 'Feeling agitated' severe interpretation is a judgement call; mild agitation does not qualify, consistent with page.",
+   "evidence": [
+    "withdrawal :: (clinical_finding (snomed_concept \"Feeling agitated\" ...) (qualifier Severe)) ; Hallucinations"
+   ],
+   "confidence": "low",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-f9d45a98",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "'Disorganised speech or behaviour' mapped to 'Incoherent speech' only; disorganised speech is not the same as incoherent speech and disorganised behaviour has no concept (the entry condition Abnormal behavior does not substitute).",
+   "evidence": [
+    "psychosis :: (clinical_finding (snomed_concept \"Incoherent speech\" \"finding\"))"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "disorganised behaviour (only speech via 'Incoherent speech')"
+   ]
+  },
+  {
+   "element_key": "p36-970dd0ce",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Diagnose probable alcohol intoxication :: (diagnosis (snomed_concept \"Alcohol intoxication\" \"disorder\") probable)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-5fef3b21",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "Diagnose probable alcohol/drug withdrawal :: (diagnosis (snomed_concept \"Substance withdrawal syndrome\" \"disorder\") probable)"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-1b5f50a9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "(diagnosis (snomed_concept \"Intoxication caused by stimulant\" \"disorder\") probable)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-c1656caf",
+   "scope": "in_scope",
+   "scope_reason": "'likely' of stimulant intoxication",
+   "problem": "",
+   "evidence": [
+    "stimulant rule :: probable"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-af3a0016",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (diazepam)",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-4d48d28e",
+   "scope": "in_scope",
+   "scope_reason": "'intoxication likely' of stimulant/alcohol label fragment",
+   "problem": "",
+   "evidence": [
+    "stimulant and alcohol intoxication rules :: probable"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-863ac997",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (thiamine)",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-1546eb2b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "(diagnosis (snomed_concept \"Psychotic disorder\" \"disorder\") probable)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-855ac708",
+   "scope": "in_scope",
+   "scope_reason": "'Poisoning likely' in scope; helpline text is management",
+   "problem": "",
+   "evidence": [
+    "(diagnosis (snomed_concept \"Poisoning\" \"disorder\") probable)"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-0391ed5c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (ECG/discuss; pulse irregular/chest pain/BP are conditional management)",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-12f5ea48",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-1fa4180d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-5767195c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-286ca926",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (head injury check)",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-87ca516f",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: header of management list",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-8371dba7",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-7c6c7464",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only / management",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-a1527c8a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Stroke 'consider' and TIA 'consider' both encoded as possible with identical criteria; page does not distinguish them, which is fine. Asymmetry lost; arm/leg/face weakness and numbness plus speech and visual encoded with Sudden onset.",
+   "evidence": [
+    "Diagnose possible stroke :: (and (or Abnormal behavior|Disturbance in thinking) (or Weakness of face muscles+Sudden onset ... Visual disturbance+Sudden onset))",
+    "Diagnose possible TIA :: same criteria"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "'asymmetric' not captured",
+    "'new' qualifier implicitly sudden onset",
+    "stroke/TIA only fire when abnormal behaviour/thinking also present (acceptable per box context)"
+   ]
+  },
+  {
+   "element_key": "p36-c7a79db7",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: recent head injury -> page 30",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-0753fb49",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: suicidal thoughts",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-ef521aae",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: oxygen",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-9371e240",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only / management: glucose check",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-11306d7e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: rehydration",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-bbd51d26",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: involuntary admission",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-7dee22aa",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: LP referral",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-432f30bd",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: header introducing the flowchart",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-72e8a36d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Delirium encoded as Abnormal behaviour/thinking AND fluctuating consciousness AND temp >= 38 C. Page box does not require abnormal behaviour as a conjunct (it is the page context), so acceptable. Duration omitted (minor).",
+   "evidence": [
+    "Diagnose probable delirium :: (clinical_finding Fluctuation of level of consciousness) (>= (measurement Body temperature \u00b0C) 38)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "'over hours/days' duration not encoded; only fluctuation of consciousness"
+   ]
+  },
+  {
+   "element_key": "p36-e6ee5b80",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "Mania list: Elevated mood, Increased energy, Pressure of speech, Feeling irritable. 'Reckless' is missing; 'talkative' mapped to pressure of speech is narrower than the page.",
+   "evidence": [
+    "Diagnose probable mania :: (or Elevated mood / Increased energy / Pressure of speech / Feeling irritable)"
+   ],
+   "confidence": "medium",
+   "verdict": "partial",
+   "parts_missing": [
+    "'reckless' (no concept)",
+    "'talkative' mapped to 'Pressure of speech' (stronger concept)"
+   ]
+  },
+  {
+   "element_key": "p36-bcaa3702",
+   "scope": "in_scope",
+   "scope_reason": "'Delirium likely' conclusion; ceftriaxone is management",
+   "problem": "",
+   "evidence": [
+    "(diagnosis (snomed_concept \"Delirium\" \"disorder\") probable)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-cd4d5484",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "problem": "",
+   "evidence": [
+    "(diagnosis (snomed_concept \"Mania\" \"disorder\") probable)"
+   ],
+   "confidence": "high",
+   "verdict": "correct",
+   "parts_missing": []
+  },
+  {
+   "element_key": "p36-5901c4c8",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: 'refer urgently unless'",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-30912b6c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: routine schizophrenia care",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-61e931a3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: diabetes exception",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-83566ce2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: alcohol exception",
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p36-ee7af581",
+   "scope": "in_scope",
+   "scope_reason": "Dementia: >= 6 months memory/disorientation/language/coping",
+   "problem": "Rule additionally requires Abnormal behavior/Disturbance in thinking, but the page's dementia path is for patients with abnormal thoughts or behaviour, so acceptable. Also 'consider' = possible: correct. Not encoded: 'less able to cope with daily activities and work/social function' is mapped to 'Difficulty coping' (loose).",
+   "evidence": [
+    "Diagnose possible dementia :: (or (>= (onset (clinical_finding Memory impairment)) (time_ago 6 months)) ... Disorientated, Language difficulty, Difficulty coping)"
+   ],
+   "confidence": "medium",
+   "verdict": "correct",
+   "parts_missing": []
+  }
+ ],
+ "outside_not_logic": [
+  "p36-330b4924",
+  "p36-8cb634e4"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: abnormal thoughts or behaviour of sudden or recent onset",
+   "problem": "Priority fires only on sudden/recent onset. The box is the urgent box and tells the clinician to look for delirium, mania, psychosis, intoxication, withdrawal and poisoning and 'manage before referral'/'refer urgently', so probable diagnoses and stroke/TIA are not linked to Urgent priority; a patient with e.g. psychosis likely but no sudden/recent qualifier gets no priority. Judgement call, but the page does not clearly say those are non-urgent either.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible stroke / TIA",
+   "problem": "Identical criteria for stroke and TIA, no distinguishing logic; 'asymmetric' lost; requires abnormal behaviour AND sudden neuro sign whereas the page says 'new sudden' symptom only (page is within the abnormal-behaviour context, acceptable).",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable alcohol/drug withdrawal",
+   "problem": "'Known alcohol/drug user' precondition missing; 'reduced drug intake' uncovered.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable psychosis",
+   "problem": "'Disorganised speech or behaviour' mapped to 'Incoherent speech' only.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable mania",
+   "problem": "'Reckless' absent; 'talkative' mapped to the narrower 'Pressure of speech'.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable poisoning",
+   "problem": "'Exposure to' + generic Substance/Drug is vague and may match anything; route of exposure missing.",
+   "severity": "low"
+  },
+  {
+   "rule": "check_for list",
+   "problem": "Delirium temperature and stimulant vitals cannot be listed; check_for lacks 'Disorganised behaviour' and 'Reckless'. Otherwise findings used by rules are listed. 'Visual disturbance' is tagged 'disorder' rather than finding (valid concept but semantic tag unusual).",
+   "severity": "low"
+  }
+ ],
+ "summary": "Core structure is sound: the sudden/recent Urgent priority, the nine likely-diagnosis rules, stroke/TIA and dementia are present with valid concepts. Most consequential gaps are that the withdrawal rule omits the known-user precondition and drug reduction, psychosis maps disorganised speech/behaviour only to incoherent speech, mania loses reckless/talkative, and probable diagnoses are not tied to Urgent priority."
+}

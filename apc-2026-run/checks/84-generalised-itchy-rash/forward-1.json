@@ -1,0 +1,351 @@
+{
+  "page": 84,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p84-79a55d69",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only: the red box on this page carries no criteria of its own; it defers to the urgent-attention box on page 82 (skin symptoms). There is nothing on this page to turn into a priority evaluation, and the file correctly has none.",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-80a8b92b",
+      "scope": "in_scope",
+      "scope_reason": "'insect bites likely' with criteria: red itchy crops of bumps; may have blistered; healed with darkening of skin; may have scratch marks.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'red' (erythematous) quality of the bumps: the rule uses Papule of skin + Grouped only; a (qualifier \"Red color\") or Erythematous rash is available",
+        "'may have blistered' (Blister of skin exists) - optional feature, not checked for",
+        "'healed with darkening of skin' (Hyperpigmentation of skin is already in the file but only used by the PPE rule) - optional feature, not attached to insect bites",
+        "'may have scratch marks' (Scratch marks, finding, exists) - optional feature, not checked for"
+      ],
+      "problem": "Only the core 'itchy crops of bumps' is encoded (Pruritic rash AND grouped papules). The three 'may have' features are optional on the page, so leaving them out of the due_to is defensible, but the house standard asks the check_for to carry the discriminating findings the page names; none of blister, darkening or scratch marks is checked for. 'Red' is a required descriptor and is dropped. As written, any itchy grouped papules fire 'probable insect bites'.",
+      "evidence": [
+        "Diagnose probable insect bites (generalised itchy rash) :: (and (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\"))))",
+        "Check for causes of generalised itchy rash :: (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-85358be3",
+      "scope": "in_scope",
+      "scope_reason": "Scabies criterion: small red bumps and burrows in webspaces (of fingers).",
+      "verdict": "partial",
+      "parts_missing": [
+        "'small' and 'red' descriptors of the bumps (minor)",
+        "burrows are not tied to the listed sites: the rule takes Burrows in skin anywhere, while the page says burrows in webspaces/axillae/waist/genitals (minor, arguably more permissive than the page in a harmless direction)"
+      ],
+      "problem": "Bumps-in-webspaces-of-fingers is correctly encoded as Papule of skin at Structure of interdigital web of hand, and burrows as Burrows in skin; both are required (and), matching the page's 'bumps and burrows'. The 'small red' descriptors are dropped.",
+      "evidence": [
+        "Diagnose probable scabies (generalised itchy rash) :: (and (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (clinical_finding (snomed_concept \"Burrows in skin\" \"disorder\")) (or (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Structure of interdigital web of hand\" \"body structure\"))) ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-5c1e4bda",
+      "scope": "in_scope",
+      "scope_reason": "Scabies sites: fingers (webspaces), axillae, waist, genitals; 'Very' (itchy).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All four sites are encoded as finding_site variants of Papule of skin, combined with or. Concepts resolve and mean what the page says (Axillary region structure, Structure of waist region of trunk, Genital structure).",
+      "evidence": [
+        "Diagnose probable scabies (generalised itchy rash) :: (or (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Structure of interdigital web of hand\" \"body structure\"))) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Axillary region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Structure of waist region of trunk\" \"body structure\"))) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Genital structure\" \"body structure\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-39db2e16",
+      "scope": "in_scope",
+      "scope_reason": "Scabies criterion: very itchy, especially at night. Nocturnal itch is a classic discriminator for scabies.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'especially at night': no finding carries a night-time qualifier. (snomed_concept \"Night time\" \"qualifier value\") exists and could qualify Itching or Pruritic rash",
+        "'very' (severity) - minor"
+      ],
+      "problem": "Itch is covered only by the task's due_to anchor (Pruritic rash), which every rule on the page shares, so the one feature that separates scabies from the other columns (worse at night) is not asked about or used.",
+      "evidence": [
+        "Diagnose probable scabies (generalised itchy rash) :: (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-63977f2e",
+      "scope": "in_scope",
+      "scope_reason": "PPE criterion: hyperpigmented, itchy (bumps).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Hyperpigmentation is encoded as a separate required finding (Hyperpigmentation of skin) rather than as a quality of the papules; acceptable approximation since the language has no pigmentation qualifier on a site-specific papule. Itchy is covered by the Pruritic rash anchor.",
+      "evidence": [
+        "Diagnose probable papular pruritic eruption (generalised itchy rash) :: (and (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (clinical_finding (snomed_concept \"Hyperpigmentation of skin\" \"disorder\")) (or ...))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-99961fff",
+      "scope": "in_scope",
+      "scope_reason": "PPE sites: bumps on limbs, trunk.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable papular pruritic eruption (generalised itchy rash) :: (or (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Limb structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Trunk structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Face structure\" \"body structure\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-9ecbeb70",
+      "scope": "in_scope",
+      "scope_reason": "PPE site: or face.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable papular pruritic eruption (generalised itchy rash) :: (clinical_finding (snomed_concept \"Papule of skin\" \"disorder\") (finding_site (snomed_concept \"Face structure\" \"body structure\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-f9ab68e5",
+      "scope": "in_scope",
+      "scope_reason": "Eczema criterion: patches of dry, scaly, itchy skin on wrists.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Dry is encoded as Xeroderma (general, required) and scaly as Scaly skin at the wrist; 'patches' is not separately expressible. The split of dry (anywhere) and scaly (at site) is a reasonable rendering of 'dry, scaly patches at site'.",
+      "evidence": [
+        "Diagnose probable eczema (generalised itchy rash) :: (and (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (clinical_finding (snomed_concept \"Xeroderma\" \"disorder\")) (or (clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Wrist region structure\" \"body structure\"))) ...))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-0db93026",
+      "scope": "in_scope",
+      "scope_reason": "Eczema sites: ankles, inside elbows, behind knees.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Antecubital region structure = inside elbows, Popliteal region structure = behind knees; both correct.",
+      "evidence": [
+        "Diagnose probable eczema (generalised itchy rash) :: (or (clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Wrist region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Ankle region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Antecubital region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Popliteal region structure\" \"body structure\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-c92b1237",
+      "scope": "in_scope",
+      "scope_reason": "Urticaria criterion: very itchy, red, raised wheals.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Wheal (finding) is by definition a raised, red, itchy lesion, so 'red, raised' are intrinsic; itchy is the page anchor.",
+      "evidence": [
+        "Diagnose probable urticaria (generalised itchy rash) :: (clinical_finding (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-946ad93f",
+      "scope": "in_scope",
+      "scope_reason": "Urticaria criterion: wheals that appear suddenly.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable urticaria (generalised itchy rash) :: (clinical_finding (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-14f14bc9",
+      "scope": "borderline",
+      "scope_reason": "Urticaria criterion: wheals 'usually disappear within 24 hours'. 'Usually' softens it, and the language has onset but no resolution time, so strict encoding is hard; but a (qualifier \"Transitory\" \"qualifier value\") on Wheal exists and would carry the sense.",
+      "verdict": "missing",
+      "parts_missing": [
+        "transience of individual wheals (resolve within 24 h) - not encoded in any form"
+      ],
+      "problem": "The 24-hour transience is the feature that separates urticaria from the other sudden red rashes on this page (drug rash); the rule reduces urticaria to 'sudden-onset wheals'.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-654807c2",
+      "scope": "borderline",
+      "scope_reason": "Continuation of the previous fragment: '24 hours'.",
+      "verdict": "missing",
+      "parts_missing": [
+        "the 24-hour window - see p84-14f14bc9"
+      ],
+      "problem": "Same as p84-14f14bc9.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-b2736e71",
+      "scope": "in_scope",
+      "scope_reason": "Drug rash criterion: diffuse red rash mainly on trunk, arms and legs.",
+      "verdict": "partial",
+      "parts_missing": [
+        "distribution 'mainly on trunk, arms and legs' - no finding_site on the rash. 'Mainly' makes this soft, so low weight"
+      ],
+      "problem": "Diffuse red rash is well encoded (Erythematous rash + Diffuse qualifier). The distribution hint is dropped.",
+      "evidence": [
+        "Diagnose probable drug rash (generalised itchy rash) :: (clinical_finding (snomed_concept \"Erythematous rash\" \"disorder\") (qualifier (snomed_concept \"Diffuse\" \"qualifier value\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-5861a82b",
+      "scope": "in_scope",
+      "scope_reason": "Drug rash criterion: appeared within 3 months of starting a new medication.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as 'New medication commenced' with onset within the last 3 months. Under the house convention ((< (onset X) (time_ago N)) = within the last N) the <= direction is right. It approximates 'rash appeared within 3 months of the medication start' by 'medication started within the last 3 months', which is the only form the language allows (no relative comparison between two onsets); acceptable.",
+      "evidence": [
+        "Diagnose probable drug rash (generalised itchy rash) :: (<= (onset (clinical_finding (snomed_concept \"New medication commenced\" \"finding\"))) (time_ago 3 months))",
+        "Check for causes of generalised itchy rash :: (clinical_finding (snomed_concept \"New medication commenced\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-f9f2a803",
+      "scope": "in_scope",
+      "scope_reason": "Carries the conclusion 'Scabies likely'; the rest of the text is management (out of scope by design).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable scabies rule exists; diagnosis concept 'Infestation caused by Sarcoptes scabiei var hominis' is the SNOMED concept for human scabies.",
+      "evidence": [
+        "Diagnose probable scabies (generalised itchy rash) :: (diagnosis (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-f4e5148f",
+      "scope": "borderline",
+      "scope_reason": "Mostly scabies management, but ends with 'If yellow crusts, also treat for likely impetigo 93': an 'X likely' conditional on a finding (yellow crusts) in a scabies patient. It is also a cross-reference to page 93, so reasonable people could leave it to that page.",
+      "verdict": "missing",
+      "parts_missing": [
+        "probable impetigo given scabies + yellow crusts (Impetigo, disorder, exists)"
+      ],
+      "problem": "No rule or check_for item for yellow crusts / impetigo on this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-b43cc0b9",
+      "scope": "in_scope",
+      "scope_reason": "Conclusion header 'Papular pruritic eruption' (likely).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable PPE rule exists. The only SNOMED concept for PPE is the HIV-specific one ('...due to human immunodeficiency virus infection'); the page's PPE is the HIV-associated entity (next line says test for HIV), so the concept is the right one even though HIV is not yet confirmed at this point.",
+      "evidence": [
+        "Diagnose probable papular pruritic eruption (generalised itchy rash) :: (diagnosis (snomed_concept \"Papular pruritic eruption of skin due to human immunodeficiency virus infection\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-03225de4",
+      "scope": "borderline",
+      "scope_reason": "'(PPE) likely' plus management. One line carries diagnostic logic: 'If lesions in webspaces, axillae or genitals, also treat for scabies in adjacent column' - i.e. PPE lesions at scabies sites imply scabies as well, without requiring burrows. 'Test for HIV' is a management/cross-reference step.",
+      "verdict": "partial",
+      "parts_missing": [
+        "scabies co-diagnosis from lesions in webspaces/axillae/genitals alone: the scabies rule requires Burrows in skin as well, so a PPE patient with papules in the webspaces but no recorded burrows does not get scabies"
+      ],
+      "problem": "The 'PPE likely' conclusion is correct. The adjacent-column cross-link suggests the scabies rule's mandatory burrows is stricter than the page intends for this path.",
+      "evidence": [
+        "Diagnose probable papular pruritic eruption (generalised itchy rash) :: (diagnosis (snomed_concept \"Papular pruritic eruption of skin due to human immunodeficiency virus infection\" \"disorder\") probable)",
+        "Diagnose probable scabies (generalised itchy rash) :: (and (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")) (clinical_finding (snomed_concept \"Burrows in skin\" \"disorder\")) (or ...))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p84-5041ed38",
+      "scope": "in_scope",
+      "scope_reason": "Carries 'Eczema likely'; the rest is management, a cross-reference (low mood -> 98) and referral criteria, all out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable eczema rule exists with the correct concept.",
+      "evidence": [
+        "Diagnose probable eczema (generalised itchy rash) :: (diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-c6824b07",
+      "scope": "in_scope",
+      "scope_reason": "Carries 'Urticaria likely'. The block also says 'if recurrent cough or wheeze, exclude asthma 138' and 'check for allergic conjunctivitis 48 / rhinitis 51'; these are cross-references into other pages' logic rather than criteria of this page, so I do not require them here.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable urticaria rule exists with the correct concept. (Note for a clinician: 'exclude asthma' on recurrent cough/wheeze in a urticaria patient could be a possible-asthma rule, but it belongs to page 138's logic.)",
+      "evidence": [
+        "Diagnose probable urticaria (generalised itchy rash) :: (diagnosis (snomed_concept \"Urticaria\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p84-82ef7e41",
+      "scope": "in_scope",
+      "scope_reason": "Conclusion 'Drug rash likely' (-> 88).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable drug rash rule exists; 'Eruption caused by drug' is the SNOMED concept whose synonym is 'drug rash'.",
+      "evidence": [
+        "Diagnose probable drug rash (generalised itchy rash) :: (diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "outside_not_logic": [
+    "p84-a55b72cc",
+    "p84-db3200fa",
+    "p84-6d3022c5",
+    "p84-1c09d11a",
+    "p84-ce0b66b4",
+    "p84-7c43be29",
+    "p84-fd05e4a5",
+    "p84-44c09406",
+    "p84-63674bd6",
+    "p84-4cd8cee2",
+    "p84-46fdfdad",
+    "p84-155a061d",
+    "p84-fa6f4dd1"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Diagnose probable urticaria (generalised itchy rash)",
+      "problem": "The page's discriminator 'usually disappear within 24 hours' is not encoded in any form; urticaria is reduced to sudden-onset wheals. A Transitory qualifier on Wheal (concept exists) would capture it, or the gap should be recorded as not representable.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable scabies (generalised itchy rash)",
+      "problem": "'Very itchy, especially at night' is not used: itch is only the shared Pruritic rash anchor, so nocturnal itch (the scabies-specific feature) is neither checked for nor required. Night time qualifier value exists.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable scabies (generalised itchy rash)",
+      "problem": "Burrows in skin is mandatory. The PPE column says lesions in webspaces, axillae or genitals alone warrant treating for scabies, so the page tolerates scabies without observed burrows; consider (or burrows site-papules) or a possible-scabies rule on site alone.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable insect bites (generalised itchy rash)",
+      "problem": "Fires on any itchy grouped papules; 'red' is dropped and the page's supporting features (blistered, healed with darkening, scratch marks) are neither checked for nor used, although concepts exist for all three. This is the broadest rule on the page and overlaps with PPE (papules on limbs/trunk) and scabies.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for causes of generalised itchy rash / scabies box",
+      "problem": "'If yellow crusts, also treat for likely impetigo' is an 'X likely' with a finding that is not checked for and has no rule (Impetigo, disorder, exists). Could be left to page 93, but then it should be noted as a deliberate omission.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable drug rash (generalised itchy rash)",
+      "problem": "The check_for lists the plain (clinical_finding ... \"New medication commenced\") while the only use is wrapped in (onset ...). Evidence matching is by exact s-expression string, so whether the usage test counts this depends on how the test unwraps onset; if it does not, the check_for item would be flagged as never used. Low confidence either way; the page-48 precedent suggests it is fine.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable papular pruritic eruption (generalised itchy rash)",
+      "problem": "Hyperpigmentation of skin is required as a free-standing finding, not as a quality of the papules, so any patient with background hyperpigmentation plus papules on a limb is PPE; conversely insect bites 'healed with darkening' are not distinguished. Minor given the language.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The page's five column diagnoses and the insect-bites line are all present as probable rules with correct SNOMED concepts and the right site structures, and the red box is correctly left to page 82. The most consequential gaps are discriminators the page states but the rules drop: urticaria's resolution within 24 hours, scabies' itch worse at night, and the red/blister/darkening/scratch-mark features of insect bites, which leaves the insect-bites rule firing on any itchy grouped papules. Smaller points: scabies requires burrows even though the PPE column treats site alone as enough, and the conditional 'likely impetigo' in the scabies box has no rule."
+}

@@ -1,0 +1,229 @@
+{
+ "page": 58,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p58-6e30e294",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Header; its 'diarrhoea' precondition is carried by the task trigger and priority rule.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p58-6472199e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Shock and SBP<80 both encoded in the Urgent rule (footnote definition of shock is not needed). Shock is also in check_for; SBP<80 is not in check_for (minor).",
+   "evidence": [
+    "Urgent: diarrhoea with shock or cholera :: (or (clinical_finding (snomed_concept \"Shock\" \"disorder\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80) ...)",
+    "Check for diarrhoea urgent signs and causes :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-be21e627",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'past 5 days' time bound on outbreak exposure",
+    "'with or without vomiting' is fine (no part needed)",
+    "direct urgent trigger: urgency depends on active_condition Cholera rather than on watery diarrhoea + exposure"
+   ],
+   "problem": "Probable-cholera rule is (exposure AND (watery OR (onset <= 2 weeks ago AND no blood))). The red box requires watery diarrhoea AND exposure; the second OR branch merges the flowchart (<=2wk, no blood, outbreak) and makes non-watery diarrhoea qualify. Its onset direction is wrong: per Will's briefing (<= (onset X) (time_ago 2 weeks)) means onset at least 2 weeks ago, i.e. the opposite of 'diarrhoea <= 2 weeks'. Exposure has no 5-day window. Urgent priority fires on active_condition Cholera, a confirmed condition, so a patient with only watery diarrhoea + outbreak exposure (a probable diagnosis) may not trigger Urgent.",
+   "evidence": [
+    "Diagnose probable cholera in diarrhoea :: (and (finding (snomed_concept \"Exposure to (contextual qualifier)\" ...) (snomed_concept \"Vibrio cholerae\" \"organism\")) (or (clinical_finding Diarrhea (qualifier Watery)) (and (<= (onset (clinical_finding Diarrhea)) (time_ago 2 weeks)) (no Hematochezia))))",
+    "Urgent: diarrhoea with shock or cholera :: (active_condition (snomed_concept \"Cholera\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p58-e3fbfc0a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p58-30f91a10",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p58-f18ab8d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Confirm >=3 loose stools/day' (not representable, acceptable)",
+    "dehydration rule lacks the 'unable to drink / no better after 2 hours' branch (management, out of scope)"
+   ],
+   "problem": "Dehydration likely (thirst OR dry mouth OR poor skin turgor, with diarrhoea) is correct, and overflow likely (prolonged constipation then watery stool) is encoded; 'Chronic constipation' for 'prolonged constipation' and the unordered AND (no sequence 'followed by') is acceptable but approximate. Impaction bullet: page says >65 years, bed-bound OR palliative care; the age >65 criterion is dropped, and both the check task and the diagnosis fire for any age with bed-bound/palliative. The page's 'check' step also exists as a task. Impaction is 'likely' only if present - encoded. Palliative care 'life-limiting illness' routine care is management.",
+   "evidence": [
+    "Diagnose probable dehydration in diarrhoea :: (and Diarrhea (or Increased thirst Xerostomia Decreased skin turgor))",
+    "Diagnose probable overflow diarrhoea :: (and Chronic constipation Diarrhea (qualifier Watery))",
+    "Diagnose probable faecal impaction in diarrhoea :: (and Diarrhea (or Bed-ridden Seen by palliative care service) Fullness of rectum due to feces)",
+    "Check rectum for faecal impaction in diarrhoea :: (and Diarrhea (or Bed-ridden Seen by palliative care service))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-7c5796f3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "The <=2 weeks branch is encoded with (<= (onset ...) (time_ago 2 weeks)), which per the briefing means onset at least 2 weeks ago (duration >= 2 weeks): reversed direction. Affects gastroenteritis, dysentery and cholera rules. Should be (> (onset ...) (time_ago 2 weeks)) or equivalent.",
+   "evidence": [
+    "Diagnose probable dysentery in diarrhoea :: (<= (onset (clinical_finding Diarrhea)) (time_ago 2 weeks))",
+    "Diagnose probable gastroenteritis in diarrhoea :: (<= (onset (clinical_finding Diarrhea)) (time_ago 2 weeks))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-0d305b6e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Refer / send stool / test HIV are management.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p58-400c6dde",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Blood in stool is encoded via Hematochezia (reasonable; 'blood/mucous' arguably broader). Dysentery rule is correct in structure (<=2wk + blood) except for the reversed onset direction. Gastroenteritis uses 'no blood' correctly.",
+   "evidence": [
+    "Diagnose probable dysentery in diarrhoea :: (and (<= (onset Diarrhea) (time_ago 2 weeks)) Hematochezia)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-b2b17c35",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "5-day window"
+   ],
+   "problem": "Outbreak exposure is encoded as a generic 'Exposure to (contextual qualifier)' + Vibrio cholerae with no 'outbreak area' or 5-day constraint. Gastroenteritis correctly requires no exposure.",
+   "evidence": [
+    "Diagnose probable gastroenteritis in diarrhoea :: (no (finding (snomed_concept \"Exposure to (contextual qualifier)\" ...) (snomed_concept \"Vibrio cholerae\" \"organism\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-e32a8666",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Cholera likely is a probable rule, but see cholera problems (watery branch, onset direction, loosely tied to non-watery).",
+   "evidence": [
+    "Diagnose probable cholera in diarrhoea"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-478a52a7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Gastroenteritis likely: encoded as <=2wk (wrong direction) AND no blood AND no cholera exposure. It does not require the diarrhoea finding itself in the rule, only onset of it.",
+   "evidence": [
+    "Diagnose probable gastroenteritis in diarrhoea :: (and (<= (onset Diarrhea) (time_ago 2 weeks)) (no Hematochezia) (no exposure))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-c4c91295",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [],
+   "problem": "Dysentery likely present; concept 'Dysenteric diarrhea' is reasonable. Onset direction reversed.",
+   "evidence": [
+    "Diagnose probable dysentery in diarrhoea"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p58-7df2329f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "onset > 2 weeks branch"
+   ],
+   "problem": "No rule or check uses prolonged diarrhoea (> 2 weeks). Its outcomes are management (refer, stool tests, giardiasis), so likely out of scope, but the branch also gives no diagnosis; consider borderline.",
+   "evidence": [],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p58-6f0cc57f",
+  "p58-efbc6ba3",
+  "p58-2e55d5ad",
+  "p58-ce96dcc0",
+  "p58-290b8c9b",
+  "p58-4ab5a2b6",
+  "p58-a75329af",
+  "p58-b38b5007",
+  "p58-e0072844",
+  "p58-57d9096a",
+  "p58-bac28fa8",
+  "p58-f00ad896",
+  "p58-2179d4d8",
+  "p58-8a9b0af9",
+  "p58-45ce5d26",
+  "p58-7e08384f",
+  "p58-bd57a62c",
+  "p58-8cb83345"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable cholera/gastroenteritis/dysentery",
+   "problem": "(<= (onset Diarrhea) (time_ago 2 weeks)) means onset at least 2 weeks ago per the briefing; page means diarrhoea of 2 weeks or less. Direction reversed in three rules.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable cholera in diarrhoea",
+   "problem": "Merges red-box (watery + outbreak) with flowchart (<=2wk, no blood, outbreak) as OR; non-watery diarrhoea qualifies; no 5-day window.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: diarrhoea with shock or cholera",
+   "problem": "Cholera arm uses active_condition (confirmed) rather than the page's trigger (watery diarrhoea + outbreak exposure), so the urgent criterion may not fire for probable cholera.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable faecal impaction / Check rectum task",
+   "problem": "Age > 65 criterion dropped; bed-bound or palliative alone triggers.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for diarrhoea urgent signs and causes",
+   "problem": "Task check_for mixes urgent signs with items from the non-urgent approach (thirst, constipation, haematochezia, bed-ridden); SBP<80 not listed.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Onset direction for diarrhoea <=2 weeks is reversed in the cholera, gastroenteritis and dysentery rules, so they fire for the wrong durations. Cholera merges the red-box and flowchart criteria and the Urgent rule keys on a confirmed cholera condition without the 5-day window. Shock, SBP<80, dehydration and overflow are encoded acceptably."
+}

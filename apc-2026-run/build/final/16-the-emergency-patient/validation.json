@@ -1,0 +1,46 @@
+{
+ "ok": true,
+ "summary": {
+  "parse": 0,
+  "snomed": 0,
+  "database": 0,
+  "provenance": 0,
+  "quotes": 0,
+  "keys": 0,
+  "coverage": 0,
+  "always_true": 0,
+  "will": 0,
+  "files": 0
+ },
+ "problems": {
+  "parse": [],
+  "snomed": [],
+  "database": [],
+  "provenance": [],
+  "quotes": [],
+  "keys": [],
+  "coverage": [],
+  "always_true": [],
+  "will": [],
+  "files": []
+ },
+ "warnings": [
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrest\" \"disorder\"))",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Respiratory obstruction\" \"di",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 9)",
+  "trigger does not cite a box header or page heading: rule 'Check for emergency patient airway, breathing and circulation signs' :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)"
+ ],
+ "counts": {
+  "task": 1,
+  "system_diagnosis_rule": 2,
+  "system_priority_evaluation": 2
+ },
+ "n_conditions": 90,
+ "n_elements": 45,
+ "n_outside": 2,
+ "n_cited": 14,
+ "n_not_encoded": 32
+}

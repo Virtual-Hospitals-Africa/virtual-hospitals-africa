@@ -1,0 +1,508 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 43,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.1,
+    806.3,
+    203.6
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p43-rb1-e01",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "bbox": [
+    271.6,
+    91.1,
+    570.2,
+    102.3
+   ],
+   "key": "p43-78963a6b"
+  },
+  {
+   "id": "p43-rb1-e02",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 2,
+   "parent": null,
+   "text": "New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking or visual disturbance: consider stroke or TIA 152",
+   "bbox": [
+    54.2,
+    101.6,
+    355.6,
+    122.4
+   ],
+   "key": "p43-25ab7dfe"
+  },
+  {
+   "id": "p43-rb1-e03",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Glucose < 3 (or < 4 if diabetes) or ≥ 11.1 19",
+   "bbox": [
+    385.1,
+    101.8,
+    563.8,
+    112.6
+   ],
+   "key": "p43-9c86c0f5"
+  },
+  {
+   "id": "p43-rb1-e04",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Chest pain 24",
+   "bbox": [
+    385.1,
+    111.8,
+    451.5,
+    122.6
+   ],
+   "key": "p43-63e6a88d"
+  },
+  {
+   "id": "p43-rb1-e05",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Difficulty breathing or respiratory rate ≥ 30 23",
+   "bbox": [
+    54.2,
+    121.6,
+    243.7,
+    132.4
+   ],
+   "key": "p43-3a76b7c8"
+  },
+  {
+   "id": "p43-rb1-e06",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Hb < 6 44",
+   "bbox": [
+    385.1,
+    121.8,
+    436.3,
+    132.6
+   ],
+   "key": "p43-59e753c2"
+  },
+  {
+   "id": "p43-rb1-e07",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Difficulty breathing worse on lying flat and leg swelling, heart failure likely 151",
+   "bbox": [
+    54.2,
+    131.4,
+    370.0,
+    142.4
+   ],
+   "key": "p43-792c7975"
+  },
+  {
+   "id": "p43-rb1-e08",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Worsening weakness of leg/s",
+   "bbox": [
+    385.1,
+    131.8,
+    501.5,
+    142.6
+   ],
+   "key": "p43-3c8fd86b"
+  },
+  {
+   "id": "p43-rb1-e09",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 2,
+   "parent": null,
+   "text": "Thirst, dry mouth, poor skin turgor, BP < 90/60, dehydration likely",
+   "bbox": [
+    54.2,
+    141.4,
+    313.1,
+    152.4
+   ],
+   "key": "p43-b3b1f30a"
+  },
+  {
+   "id": "p43-rb1-e10",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with weakness or tiredness and any of:",
+   "section_y": 91.1,
+   "indent": 1,
+   "parent": null,
+   "text": "Temperature ≥ 38°C now or in past 3 days 38",
+   "bbox": [
+    385.1,
+    141.8,
+    569.5,
+    152.6
+   ],
+   "key": "p43-26006aa8"
+  },
+  {
+   "id": "p43-rb1-e11",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage urgently:",
+   "section_y": 157.4,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage urgently:",
+   "bbox": [
+    51.2,
+    157.4,
+    121.8,
+    168.4
+   ],
+   "key": "p43-c05d04a2"
+  },
+  {
+   "id": "p43-rb1-e12",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 157.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If dehydration likely, give oral rehydration solution (ORS) and observe. If unable to drink, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens. If IV rehydration needed or no better with oral rehydration after 2 hours, refer.",
+   "bbox": [
+    51.2,
+    167.6,
+    778.4,
+    188.4
+   ],
+   "key": "p43-efbe813f"
+  },
+  {
+   "id": "p43-rb1-e13",
+   "page": 43,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage urgently:",
+   "section_y": 157.4,
+   "indent": 1,
+   "parent": null,
+   "text": "If worsening weakness of leg/s, refer urgently.",
+   "bbox": [
+    51.2,
+    187.6,
+    233.3,
+    198.4
+   ],
+   "key": "p43-527a397b"
+  },
+  {
+   "id": "p43-out-e01",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "WEAKNESS OR TIREDNESS",
+   "bbox": [
+    313.2,
+    48.7,
+    528.7,
+    71.0
+   ],
+   "key": "p43-4edca382"
+  },
+  {
+   "id": "p43-out-e02",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to patient with weakness or tiredness not needing urgent attention • Look for a cause for tiredness if it persists and patient is unable to complete routine tasks and it disrupts work, social and family life. • First check symptoms, medications, mental health and long-term health conditions:",
+   "bbox": [
+    147.4,
+    222.7,
+    631.1,
+    253.9
+   ],
+   "key": "p43-c48acc60"
+  },
+  {
+   "id": "p43-out-e03",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check symptoms • If cough, weight loss, night sweats or fever, check for TB 102. • If patient has difficulty sleeping 99. • If weight gain, low mood, dry skin, constipation or cold intolerance, check TSH. If abnormal, refer to doctor. • Check for symptoms/signs suggestive of cancer or if eligible for cancer screening 194.",
+   "bbox": [
+    48.2,
+    268.3,
+    215.7,
+    369.3
+   ],
+   "key": "p43-7ac76b8c"
+  },
+  {
+   "id": "p43-out-e04",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check medications • If on abacavir or zidovudine, check for urgent side effects 131. • Chlorphenamine, enalapril, amlodipine, fluoxetine, amitriptyline, metoclopramide, sodium valproate, phenytoin and spironolactone can cause weakness or tiredness. Discuss with doctor.",
+   "bbox": [
+    250.9,
+    268.3,
+    389.6,
+    359.3
+   ],
+   "key": "p43-a27f34b0"
+  },
+  {
+   "id": "p43-out-e05",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check mental health • In the past month, has patient felt down/ depressed/hopeless or little interest/pleasure in doing things? If yes to either 159. • In the past year, has patient drunk ≥ 4 drinks1/session, used illegal drugs or misused prescription/over-the-counter medications? If yes to any 165. • If none of the above, assess for stress and anxiety 98.",
+   "bbox": [
+    425.2,
+    268.3,
+    598.5,
+    369.3
+   ],
+   "key": "p43-d9bf9d23"
+  },
+  {
+   "id": "p43-out-e06",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check long-term health conditions • Test for HIV 124. If HIV positive, give routine care 126. • Check for pregnancy 174. • Check Hb. If < 12 (woman) or < 13 (man), anaemia likely 44. • Check for diabetes 19. • If patient has a life-limiting illness, also give palliative care 191.",
+   "bbox": [
+    633.6,
+    268.3,
+    791.8,
+    359.3
+   ],
+   "key": "p43-9b35877c"
+  },
+  {
+   "id": "p43-out-e07",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes No",
+   "bbox": [
+    330.2,
+    410.0,
+    735.6,
+    420.2
+   ],
+   "key": "p43-5c0a4937"
+  },
+  {
+   "id": "p43-out-e08",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is there muscle weakness on examination2?",
+   "bbox": [
+    341.7,
+    384.5,
+    502.3,
+    394.7
+   ],
+   "key": "p43-fbdf4e0b"
+  },
+  {
+   "id": "p43-out-e09",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Ask about duration of tiredness:",
+   "bbox": [
+    277.4,
+    435.4,
+    395.6,
+    445.6
+   ],
+   "key": "p43-c77efdca"
+  },
+  {
+   "id": "p43-out-e10",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "< 1 month ≥ 1 month",
+   "bbox": [
+    108.1,
+    460.9,
+    455.7,
+    471.1
+   ],
+   "key": "p43-a7ee6187"
+  },
+  {
+   "id": "p43-out-e11",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Doctor to confirm weakness and: - Check potassium, sodium,",
+   "bbox": [
+    665.4,
+    435.4,
+    792.3,
+    455.6
+   ],
+   "key": "p43-1c67a33a"
+  },
+  {
+   "id": "p43-out-e12",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "calcium, phosphate, TSH - Discuss/refer to specialist. • If no doctor available, refer. • If any other symptoms managed above, reassure that tiredness should resolve with treatment. • Advise to return if no better in 1 month.",
+   "bbox": [
+    51.1,
+    455.4,
+    771.4,
+    526.5
+   ],
+   "key": "p43-218a7170"
+  },
+  {
+   "id": "p43-out-e13",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Check FBC, differential count, sodium, calcium, creatinine and ALT. If abnormal, discuss with doctor. • If likely cause found, reassure that tiredness should resolve with treatment. If tiredness persists despite treatment, discuss/refer. • If no cause found, review in 1 month. If tiredness persists and cause still not found, discuss/refer.",
+   "bbox": [
+    252.3,
+    486.3,
+    622.0,
+    526.5
+   ],
+   "key": "p43-2c8c54cd"
+  },
+  {
+   "id": "p43-out-e14",
+   "page": 43,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 2If unsure how to examine for muscle weakness, discuss with doctor.",
+   "bbox": [
+    34.0,
+    543.3,
+    527.0,
+    551.8
+   ],
+   "key": "p43-5d39e508"
+  }
+ ]
+}

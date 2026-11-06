@@ -1,0 +1,1056 @@
+{
+ "page": 38,
+ "lisp_file": "38-fever.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent fever conditions",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-85d89ea6"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent fever conditions",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p38-725c1121"
+   ],
+   "quote": "seizure"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p38-3354ef5c"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p38-921e3bf0"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p38-a439224b"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "drowsy"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of right lower quadrant of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p38-a92d36c0"
+   ],
+   "quote": "Tender in right lower abdomen"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-96ad4a30"
+   ],
+   "quote": "Severe abdominal"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-96ad4a30"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p38-1c3b2c00"
+   ],
+   "quote": "Jaundice"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "element_keys": [
+    "p38-6b933aad"
+   ],
+   "quote": "Easy bleeding"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent fever conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p38-6b933aad"
+   ],
+   "quote": "bruising"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "trigger",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick bite"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-17389c5c"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "backache"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "swollen lymph nodes"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "nasal congestion"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in nose/throat"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of fever not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in nose/throat"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-85d89ea6"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "Neck stiffness"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "drowsy"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "confused"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "purple/red rash"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable meningitis from fever page",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable appendicitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-85d89ea6"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable appendicitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable appendicitis from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of right lower quadrant of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p38-a92d36c0"
+   ],
+   "quote": "Tender in right lower abdomen"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable appendicitis from fever page",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Appendicitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p38-a92d36c0"
+   ],
+   "quote": "appendicitis likely"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "lesion/s of skin/genitals/anus/rectum/mouth/eyes"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "backache"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "swollen lymph nodes"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "temperature > 38.5°C"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "nasal congestion"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose possible mpox from fever page",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "consider mpox"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "sore throat, mild fever"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "mild fever"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in nose/throat"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pseudomembrane\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Pharyngeal structure\" \"body structure\")))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "thick grey layer (pseudomembrane) in nose/throat"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose possible diphtheria from fever page",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Diphtheria caused by Corynebacterium diphtheriae\" \"disorder\") possible)",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "consider diphtheria"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-0a04184f"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick bite"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\"))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable tick bite fever",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)",
+   "element_keys": [
+    "p38-0a04184f"
+   ],
+   "quote": "Tick bite fever likely"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-2172e4f3"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "Does patient have a tick bite"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Infestation caused by Argasidae\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-e536e654"
+   ],
+   "quote": "tick present"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p38-17389c5c"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p38-17389c5c"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Common cold\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-17389c5c"
+   ],
+   "quote": "recent common cold"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose probable acute viral infection from fever page",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute viral disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p38-17389c5c"
+   ],
+   "quote": "acute viral infection likely"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p38-85d89ea6"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p38-2d9a1b25"
+   ],
+   "quote": "temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p38-725c1121"
+   ],
+   "quote": "seizure"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p38-3354ef5c"
+   ],
+   "quote": "Decreased consciousness"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p38-921e3bf0"
+   ],
+   "quote": "Respiratory rate ≥ 30"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p38-921e3bf0"
+   ],
+   "quote": "difficulty breathing"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p38-a439224b"
+   ],
+   "quote": "Shock"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p38-a439224b"
+   ],
+   "quote": "systolic BP < 80"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p38-9f57068b"
+   ],
+   "quote": "meningitis likely"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Appendicitis\" \"disorder\"))",
+   "element_keys": [
+    "p38-a92d36c0"
+   ],
+   "quote": "appendicitis likely"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-96ad4a30"
+   ],
+   "quote": "Severe abdominal"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p38-96ad4a30"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p38-1c3b2c00"
+   ],
+   "quote": "Jaundice"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "element_keys": [
+    "p38-6b933aad"
+   ],
+   "quote": "Easy bleeding"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Urgent: fever with red-box danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p38-6b933aad"
+   ],
+   "quote": "bruising"
+  }
+ ]
+}

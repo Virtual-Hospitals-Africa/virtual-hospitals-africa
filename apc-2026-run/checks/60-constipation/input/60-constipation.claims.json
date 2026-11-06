@@ -1,0 +1,486 @@
+{
+ "page": 60,
+ "lisp_file": "60-constipation.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent constipation conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-3ea295c1"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "No stools"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "flatus/wind"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "distension"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent constipation conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "overflow diarrhoea"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for faecal impaction in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for faecal impaction in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for faecal impaction in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for faecal impaction in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "overflow diarrhoea"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for faecal impaction in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "solid immobile bulk of stool in rectum"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rectal hemorrhage\" \"disorder\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Rectal bleeding"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "visible blood in stool"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Persistent abdominal discomfort"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "cramps"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flatulence symptom\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "gas"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "tenesmus"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Unexplained weight loss"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for colorectal cancer symptoms in constipation",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bed-ridden\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "bed-bound"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seen by palliative care service\" \"finding\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "receiving palliative care"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "overflow diarrhoea"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hard stool\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Rectum structure\" \"body structure\")))",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "solid immobile bulk of stool in rectum"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable faecal impaction in constipation",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fecal impaction\" \"disorder\") probable)",
+   "element_keys": [
+    "p60-76bb003c"
+   ],
+   "quote": "impaction likely"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "diarrhoea"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rectal hemorrhage\" \"disorder\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Rectal bleeding"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "visible blood in stool"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Persistent abdominal discomfort"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal colic\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "cramps"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flatulence symptom\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "gas"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "cramps, gas or pain"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "tenesmus"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Unexplained weight loss"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "weakness"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose possible colorectal cancer in constipation",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Malignant neoplasm of cecum and/or colon and/or rectum\" \"disorder\") possible)",
+   "element_keys": [
+    "p60-cb8c75ea"
+   ],
+   "quote": "Assess the patient with constipation for colorectal cancer"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+   "element_keys": [
+    "p60-3ea295c1"
+   ],
+   "quote": "patient with constipation"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "No stools or flatus/wind in the past 24 hours"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to break wind\" \"finding\"))) (time_ago 24 hours))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "No stools or flatus/wind in the past 24 hours"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "abdominal pain"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Urgent: constipation with no stools or flatus for 24 hours",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p60-e3979f69"
+   ],
+   "quote": "distension"
+  }
+ ]
+}

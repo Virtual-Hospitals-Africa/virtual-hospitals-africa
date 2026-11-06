@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APC 2026 Rule Review</title>
+<style>
+:root { --bg: #f7f6f3; --panel: #fff; --ink: #1c1d1f; --muted: #5f6368; --line: #dcdad4; --accent: #1f5f99; --ok: #1e7b46; --bad: #b3261e; --warn: #9a6200; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #16171a; --panel: #1f2125; --ink: #e8e6e1; --muted: #a4a7ad; --line: #34373d; --accent: #7db4ea; --ok: #6fcf97; --bad: #f28b82; --warn: #f0b85a; } }
+:root[data-theme="dark"] { --bg: #16171a; --panel: #1f2125; --ink: #e8e6e1; --muted: #a4a7ad; --line: #34373d; --accent: #7db4ea; --ok: #6fcf97; --bad: #f28b82; --warn: #f0b85a; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 20px; margin: 0 0 4px; }
+p { color: var(--muted); margin: 4px 0 12px; }
+input { font: inherit; padding: 4px 8px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel); color: var(--ink); width: min(100%, 340px); }
+label { margin-left: 10px; color: var(--muted); font-size: 13px; }
+.tablewrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td.t { white-space: normal; }
+th { color: var(--muted); font-weight: 600; cursor: pointer; }
+a { color: var(--accent); }
+.ok { color: var(--ok); } .bad { color: var(--bad); font-weight: 600; } .warn { color: var(--warn); }
+.tot { margin-top: 10px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<script id="data" type="application/json">__DATA__</script>
+<div class="wrap">
+  <h1>APC 2026 → VHA rules: review pages</h1>
+  <p>AI agents turned the APC 2026 guide into VHA rules. This list has one row for each of the 83 pages of the guide that has a clinical red box; click a title to review that page's rules against the page itself. Start with the pages that have high-priority items. No clinician has reviewed these rules yet, and the checkers' verdicts are AI judgments, not clinical sign-off. Counts of your decisions are drafts kept in this browser.</p>
+  <p><a href="guide.html" target="_blank" rel="noopener">Reviewer’s guide</a>: what every part of these pages means, and how to review. Each "?" opens a short explanation.</p>
+  <input id="q" placeholder="filter by page, title or status">
+  <label><input type="checkbox" id="hi" style="width:auto"> only pages with high-priority items</label>
+  <div class="tablewrap"><table id="t"></table></div>
+  <div class="tot" id="tot"></div>
+</div>
+<script src="help.js"></script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("data").textContent);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function drafts(r) {
+  try { const d = JSON.parse(localStorage.getItem(`apc-review|2026|p${r.page}`) || "{}");
+    const v = Object.values(d).filter(x => x.decision);
+    return { n: v.filter(x => x.rule_hash === r.rule_hash).length, stale: v.filter(x => x.rule_hash !== r.rule_hash).length };
+  } catch { return { n: 0, stale: 0 } }
+}
+const COLS = [["page", "page", "page"], ["title", "title", "title"], ["status_2023", "change since APC 2023", "status_2023"], ["ok", "checks", "checks"], ["conditions", "conditions", "conditions"], ["elements", "page elements", "elements"], ["agreement", "builder agreement", "agreement"], ["queue", "queue", "queue"], ["high", "high", "high"], ["drafts", "decided here", "drafts"]];
+let sortKey = "page", asc = true;
+function render() {
+  const q = document.getElementById("q").value.toLowerCase(), hi = document.getElementById("hi").checked;
+  let rows = D.rows.map(r => ({ ...r, drafts: drafts(r) }));
+  rows = rows.filter(r => (!q || `${r.page} ${r.title} ${r.status_2023}`.toLowerCase().includes(q)) && (!hi || r.high > 0));
+  rows.sort((a, b) => { const x = sortKey === "drafts" ? a.drafts.n : a[sortKey], y = sortKey === "drafts" ? b.drafts.n : b[sortKey]; return (x > y ? 1 : x < y ? -1 : 0) * (asc ? 1 : -1) });
+  document.getElementById("t").innerHTML = `<tr>${COLS.map(([k, l, h]) => `<th data-k="${k}">${l}${k === sortKey ? (asc ? " ▲" : " ▼") : ""}${helpButton(h)}</th>`).join("")}</tr>` + rows.map(r => `<tr>
+    <td>${r.page}</td><td class="t"><a href="${esc(r.slug)}.html">${esc(r.title)}</a>${r.flowchart ? " · flowchart" : ""}</td><td class="t">${esc(r.status_2023)}</td>
+    <td>${!r.built ? '<span class="warn">not built</span>' : r.ok ? '<span class="ok">pass</span>' : '<span class="bad">FAIL</span>'}</td>
+    <td>${r.conditions}</td><td>${r.elements}</td><td>${r.agreement ?? ""}</td><td>${r.queue ?? ""}</td><td>${r.high ? `<span class="bad">${r.high}</span>` : (r.high ?? "")}</td>
+    <td>${r.drafts.n}${r.drafts.stale ? ` <span class="bad">(${r.drafts.stale} reconfirm)</span>` : ""}</td></tr>`).join("");
+  document.querySelectorAll("th").forEach(th => th.onclick = () => { const k = th.dataset.k; asc = sortKey === k ? !asc : true; sortKey = k; render() });
+  const all = D.rows;
+  document.getElementById("tot").textContent = `${all.length} pages · ${all.filter(r => r.built).length} built · ${all.filter(r => r.ok).length} pass · ${all.reduce((n, r) => n + (r.conditions || 0), 0)} conditions · ${all.reduce((n, r) => n + (r.queue || 0), 0)} queue items (${all.reduce((n, r) => n + (r.high || 0), 0)} high) · generated ${D.generated}`;
+}
+document.getElementById("q").oninput = render; document.getElementById("hi").onchange = render;
+render();
+</script>
+</body>
+</html>

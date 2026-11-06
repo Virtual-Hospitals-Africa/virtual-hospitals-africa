@@ -1,0 +1,1989 @@
+[
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-625dc325",
+  "text": "Lump in groin that gets bigger when standing/coughing/passing stool and any of: severe pain, vomiting, no stools or flatus/wind for past 24 hours, or lump cannot be reduced: incarcerated/strangulated inguinal hernia likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Part (d) is encoded as an AND of two 24-hour findings: constipation with onset >= 24 hours ago AND unable to break wind with onset >= 24 hours ago. The page lists 'no stools or flatus/wind for past 24 hours' as one item in an 'any of' list, i.e. either absence qualifies; requiring both is stricter than the page, so a patient with 24 hours of no stools but who can still pass wind (or vice versa) does not reach the probable diagnosis and the Urgent priority. The other parts are correct: (a) Groin mass + Cough impulse of mass present (a reasonable proxy for 'gets bigger when standing/coughing/passing stool'; the standing/straining components are not separately represented but the SNOMED cough-impulse concept is the standard sign for a reducible hernia); (b) Severe pain; (c) Finding of vomiting; (e) Groin mass with Irreducible qualifier; (f) two probable rules, Irreducible inguinal hernia and Strangulated inguinal hernia, with identical evidence, which matches the page's 'incarcerated/strangulated' wording. The 'past 24 hours' is approximated with Constipation onset >= 24 hours ago; the language cannot say 'no stool passed', so this is the closest available.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'gets bigger when standing' and 'when passing stool' are not captured; only 'Cough impulse of mass present' is used",
+     "'no stools or flatus' is encoded as the findings 'Constipation' AND 'Unable to break wind' (onset >= 24 h ago); the page wording is 'no stools or flatus', which could mean either, and Constipation is not the same as no stools"
+    ],
+    "problem": "Compound element is mostly encoded: the cough impulse, the four 'any of' branches (severe pain, vomiting, 24 h obstruction, irreducible) and both diagnoses (probable irreducible and probable strangulated inguinal hernia) are present. The onset direction is correct per the briefing ((>= onset (time_ago 24 hours)) means at least 24 h ago). Weaknesses: the 'bigger on standing / passing stool' triggers are lost, and the two diagnosis rules have identical logic, so nothing distinguishes incarcerated from strangulated. That duplication follows the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'gets bigger when standing/coughing/passing stool' is reduced to 'Cough impulse of mass present' (only the coughing part; standing and passing stool are not represented, and no qualifier or finding_site expresses enlargement on standing/straining)",
+     "'no stools ... for past 24 hours' is encoded as onset of 'Constipation' >= 24 h ago; Constipation is not the same as having passed no stool at all for 24 h (a patient constipated for a week who passed a hard stool today satisfies it)"
+    ],
+    "problem": "Approximate concepts for two of the parts. Correct parts: lump in groin (Groin mass), severe pain (Severe pain), vomiting (Finding of vomiting), lump cannot be reduced (Groin mass + Irreducible), outer and/inner or structure, probable rule type, and the incarcerated/strangulated split into two probable rules (Irreducible inguinal hernia = SNOMED synonym of incarcerated). 'No stools or flatus' is encoded as stools AND flatus both absent (and); this is the clinically usual reading (absolute constipation) but the page's 'or' could be read as either; noted, not counted as an error.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p42-64190a5f",
+  "text": "Refer urgently.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Urgent is the level the house standard assigns to a red box; the page does not escalate to Emergency/Very urgent.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "'Refer urgently' is a management step. The Urgent priority evaluation covers the triage consequence.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Urgent is the house-standard level for the red box; the page does not escalate further.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p42-a507183a",
+  "text": "LUMP/SWELLING IN NECK, AXILLA OR GROIN",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-0eb7409a",
+  "text": "• Review medication: atenolol, allopurinol, co-trimoxazole, phenytoin and antibiotics can cause a drug hypersensitivity reaction with lymphadenopathy. Discuss with doctor. • Is lymphadenopathy localised (neck or axilla or groin) or generalised (≥ 2 areas)?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "drug-hypersensitivity cause: no check_for of the named medications and no possible diagnosis",
+     "localised vs generalised distinction: no check_for of Generalized enlarged lymph nodes / Localized enlarged lymph nodes (both exist in SNOMED) and nothing downstream uses it"
+    ],
+    "problem": "Neither part is encoded. The medication review is defensibly out of scope (it ends in 'discuss with doctor'); the localised/generalised distinction matters only because the page's lower flowchart (refer same week if generalised) is also not encoded, see rule_level_problems.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "drug hypersensitivity as a possible cause",
+     "generalised vs localised"
+    ],
+    "problem": "No rule or check_for covers medication-related lymphadenopathy.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible drug hypersensitivity reaction in a patient with lymphadenopathy taking atenolol/allopurinol/co-trimoxazole/phenytoin/antibiotics",
+     "localised vs generalised distinction (no rule uses it)"
+    ],
+    "problem": "Nothing in the file references these drugs or the localised/generalised split.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-43bba3b9",
+  "text": "• Generalised lymphadenopathy or • Unwell or • Lymph node/s getting bigger quickly",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "generalised lymphadenopathy (Generalized enlarged lymph nodes exists in SNOMED)",
+     "unwell (Generally unwell / Malaise exist)",
+     "lymph node/s getting bigger quickly (no SNOMED finding found; would need a qualifier)"
+    ],
+    "problem": "None of the three criteria is in a check_for or used by a rule. If the project wants same-week referral criteria captured, these are the ones on this page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "generalised lymphadenopathy",
+     "unwell",
+     "node getting bigger quickly"
+    ],
+    "problem": "Same as the element above: the criteria that lead to referral this week are not encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Criteria (generalised, unwell, growing quickly) only route to 'Refer same week'; no diagnosis or red-box priority.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-d433b932",
+  "text": "Refer same week.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'Refer same week' is a disposition; see p42-43bba3b9 for its criteria.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "no priority rule for generalised / unwell / rapidly enlarging node"
+    ],
+    "problem": "Nothing encodes this branch, so those patients are not distinguished from localised and well ones.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p42-abfe1dbc",
+  "text": "• Test for HIV 124, TB 102 and syphilis 66. Do full blood count. If abnormal, discuss with doctor. • If cough, weight loss, night sweats or fever: refer to doctor to aspirate lymph node for TB testing (see adjacent). If doctor not available/unable to aspirate or tests negative for TB, refer same wee",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "(b) TB suspicion in lymphadenopathy: no check_for of Night sweats / Unexplained weight loss (Cough and Fever are common symptoms) and no possible Tuberculosis diagnosis",
+     "(c) the 21-day window ('contact ... in the 21 days before symptom onset') is not encoded; the exposure is a (finding (Exposure to ...) (Monkeypox virus)) and onset/time_ago applies only to a clinical_finding or active_condition subject, so this is likely not_representable and should be recorded as such"
+    ],
+    "problem": "Part (c) is otherwise encoded faithfully: possible Monkeypox requires active lymphadenopathy, exposure to Monkeypox virus, at least one of the rash/lesion sites (Eruption; Skin lesion; Lesion of genitalia; Skin lesion at Anal structure; Lesion of rectum; Oral lesion; Lesion of eye), and at least one of headache / backache / body pain (Generalized aches and pains) / temperature > 38.5 C / fatigue / sore throat / nasal congestion / cough, matching the page's two-group AND. 'Unexplained' on the rash is not representable. Part (b) is missing entirely: the page's cough/weight loss/night sweats/fever cluster is the one place it tells the clinician to suspect TB, and the house standard maps 'suspect X' to a possible rule; it is borderline because the page phrases it as a referral for testing rather than 'TB likely'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "21-day contact window (the exposure finding has no time bound)",
+     "'unexplained' rash/lesion qualifier",
+     "'probable/confirmed' qualifier on the contact",
+     "'Body pain' is only partly covered by Backache and Generalized aches and pains",
+     "Body temperature > 38.5 is in the diagnosis rule but absent from the mpox check_for task"
+    ],
+    "problem": "The possible mpox rule matches the structure: lymphadenopathy AND exposure AND (a rash or lesion at skin/genitals/anus/rectum/mouth/eyes) AND (headache, backache, body pain, temp > 38.5, fatigue, sore throat, nasal congestion, cough). The 21-day window is lost; since contact is a finding only, any past exposure would qualify. The mpox task's check_for omits temperature, so the check list and the rule disagree. The 'genitals' lesion uses Lesion of genitalia; 'anus' is a Skin lesion with an anal finding_site. Both are reasonable. The rule's lymphadenopathy precondition is not on the page.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "mpox: '21 days before symptom onset' window on the contact is dropped (exposure is unbounded in time)",
+     "mpox: 'unexplained' rash/lesion qualifier is dropped",
+     "TB: 'If cough, weight loss, night sweats or fever' in a patient with lymphadenopathy -> aspirate for TB implies a possible TB lymphadenitis rule; nothing encodes it"
+    ],
+    "problem": "Mpox possible rule otherwise matches: contact (Exposure + Monkeypox virus), lesions of skin/genitals/anus/rectum/mouth/eyes (or), and >= 1 of headache/backache/body pain, temp > 38.5 °C, fatigue, sore throat/nasal congestion/cough (or). Rule type possible is right for 'consider'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-0934ccaf",
+  "text": "Axilla • Check arms, breasts, chest, upper abdomen and back. • If lump in breast 55. No: check lower abdomen, legs, buttocks, genitals, anal region Yes: treat for bubo 65.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "hot and tender groin lymph node -> bubo (treat as on page 65)"
+    ],
+    "problem": "No rule or check_for covers the hot/tender groin node or a bubo diagnosis. SNOMED has no 'Bubo' disorder ('Bubo' is a morphologic abnormality, 'Inguinal bubo' a qualifier value); the closest usable encodings are Inguinal lymphadenopathy (disorder) with a Tender qualifier as the criterion, and a possible diagnosis of Chancroid (synonym 'bubo') or Acute inflammation of inguinal lymph node, which would need a remaining-questions note. The axilla/lower-body check lists and the breast cross-reference are out of scope.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Examination instructions, a pointer to breast lump (p55) and a pointer to bubo (p65).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Examination steps, breast lump -> p55. The 'Yes: treat for bubo' fragment in this element belongs to the groin hot/tender decision (judged at p42-45efa657).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p42-45efa657",
+  "text": "Groin Is the groin lymph node hot and tender?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "groin lymph node hot and tender"
+    ],
+    "problem": "Not in any check_for and not used by any rule. See p42-0934ccaf.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "bubo (hot, tender groin node)"
+    ],
+    "problem": "No rule or check_for for a hot, tender groin node. The Groin mass 'Yes' branch is lost.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Groin lymph node hot and tender -> bubo likely"
+    ],
+    "problem": "No rule or check_for item for a hot/tender groin node; 'Tenderness of lymph node' (finding) and 'Inguinal lymphadenopathy' (disorder) exist in SNOMED.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p42-64e6b5d2",
+  "text": "Approach to the patient with lump/swelling in neck, axilla or groin not needing urgent attention • If lump on the skin 89. If lump beneath skin, examine neck, inguinal area, axillae and perineum:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'If lump on the skin -> 89' routes to another page; 'examine neck, inguinal area, axillae and perineum' is examination guidance. The skin-lump branch is nonetheless reflected: Mass of skin is in the check_for and excluded with (no ...) from the lymphadenopathy rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Lump on skin -> p89 is a cross reference; the exclusion is nonetheless used as (no Mass of skin) in the lymphadenopathy rule, and examination of neck/inguinal/axillae/perineum is a management step.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p42-c30e3edd",
+  "text": "moves up when patient swallows:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'moves up when patient swallows' is the discriminating criterion of the thyroid-mass rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Continuation of the thyroid-mass criterion.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p42-22bbfbff",
+  "text": "Inguinal hernia likely if lump in groin",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Groin mass + Cough impulse of mass present -> probable Inguinal hernia. Because the irreducible/strangulated rules share the same base evidence plus extra criteria, the plain hernia rule fires alongside them in the urgent case; that is consistent with the page (both are hernias).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'gets bigger when standing' and 'when passing stools' (only the coughing trigger is encoded)"
+    ],
+    "problem": "The probable inguinal hernia rule requires Groin mass AND Cough impulse. The page says 'standing/coughing/passing stools', which is an 'or' across three triggers. A hernia that enlarges on standing or straining without a cough impulse is missed.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'gets bigger when standing/ ... passing stools' (only the coughing component is captured by 'Cough impulse of mass present')"
+    ],
+    "problem": "Inguinal hernia probable rule exists with Groin mass + Cough impulse; enlargement on standing or straining at stool is not representable by the chosen concept, so a hernia that is only noticed on standing would miss.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p42-9e6f669a",
+  "text": "that gets bigger when standing/",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Represented by Cough impulse of mass present; 'standing' is not separately representable and the cough-impulse sign is the accepted proxy.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "standing and passing-stool triggers"
+    ],
+    "problem": "Same as the inguinal hernia element: the continuation text is only partially encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "standing",
+     "passing stools"
+    ],
+    "problem": "Same as p42-22bbfbff.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p42-d3d618cb",
+  "text": "coughing/passing stools: refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'coughing/passing stools' completes the hernia criterion; 'refer' is a management step and is not judged.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Refer.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p42-9622ca78",
+  "text": "• If none of above: a lump in neck, axilla or groin is likely an enlarged lymph node (lymphadenopathy). If unsure, discuss/refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Site OR (Mass of neck / Mass of axilla / Groin mass) with (no ...) exclusions for each discriminating finding on the page: skin lump (-> 89), thyroid movement, cough impulse (hernia), recurrent abscess (hidradenitis). The urgent red-box features (pulsatile, irreducible) are not excluded, but those are subsets of the cough-impulse/groin-mass logic and the page does not list them under 'above' for this purpose, so this is acceptable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "no exclusion of a pulsatile groin mass (aneurysm) or of hernia/HS rule outcomes",
+     "no mass of unspecified type excluded by the 'If none of above' structure beyond findings"
+    ],
+    "problem": "Lymphadenopathy is probable if a neck, axilla or groin mass is present and there is no skin mass, no swallowing movement, no cough impulse and no recurrent abscess. It does not exclude the Pulsatile groin mass, so a pulsating groin lump also yields probable lymphadenopathy. It also does not use the diagnoses ('none of above'). The 'If unsure, discuss/refer' part is management.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'None of above' encoded as negations of skin lump, thyroid movement, cough impulse and recurrent abscess. Minor: does not exclude a pulsatile groin mass (aneurysm) from the lymphadenopathy conclusion, but the 'above' refers to the non-urgent approach box. 'If unsure, discuss/refer' is management.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c001",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mass of body region\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Trigger 'Mass of body region' is broader than the page title: a mass of the back, limbs or trunk would also start this neck/axilla/groin check (descendants match in due_to). Builder likely chose it because the three site masses sit in check_for and cannot also be the due_to.",
+    "fix": "Accept as a constraint-driven approximation, or trigger on (or Mass of neck, Mass of axilla, Groin mass) and move those three out of check_for.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c006",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says the neck LUMP moves up on swallowing; 'Thyroid gland moves with swallowing' describes normal thyroid movement and presupposes the lump is thyroid. No closer SNOMED concept found; acceptable only because it is paired with Mass of neck.",
+    "fix": "Keep, but pair with Mass of neck everywhere (already done in the diagnosis rule); consider a qualifier-based form if VHA allows.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c007",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c012",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in axilla\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'painful abscesses'; 'Pain in axilla' is a separate regional-pain symptom, not a property of the abscess. No 'Painful' qualifier value exists in SNOMED; in practice the two co-occur so the effect is small.",
+    "fix": "Drop the regional pain findings and rely on Recurrent abscess + site abscess, or keep and note the approximation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c013",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c012: 'painful' decomposed into 'Inguinal pain', a regional symptom rather than a painful abscess; no 'Painful' qualifier exists.",
+    "fix": "As c012.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c014",
+  "text": "Check for causes of lump/swelling in neck, axilla or groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c012: 'painful' decomposed into 'Perineal pain'; no 'Painful' qualifier exists.",
+    "fix": "As c012.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c016",
+  "text": "Check for urgent lump/swelling in groin conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Check for urgent lump/swelling in groin conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'no stools ... for past 24 hours' (absolute); 'Constipation' is broader (infrequent/hard stools). (snomed_concept \"Obstipation\" \"disorder\") exists and is closer, but Constipation is the recorded common symptom so it anchors; the 24-hour window cannot be expressed inside check_for and is applied in the diagnosis rules.",
+    "fix": "Acceptable as is; optionally note Obstipation as the closer concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'No stools' encoded as Constipation (broader/different from obstipation); the page's no-stool-and-no-flatus-for-24h is only captured with Unable to break wind.",
+    "fix": "Keep AND with flatus; consider Absolute constipation if it exists (not found).",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c024",
+  "text": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin) :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page: 'contact with a probable/confirmed mpox case in the 21 days before symptom onset'. The 21-day window is dropped and cannot be set in check_for. 'Exposure to monkeypox virus' (event) exists as a precoordinated concept but the house pattern uses the contextual-qualifier form, so the concept choice is acceptable.",
+    "fix": "Keep the finding; if the grammar allows, bound onset of the exposure in the diagnosis rule (see c080).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Drops 'probable/confirmed case' and the 21-days-before-onset window; exposure to Monkeypox virus is broader.",
+    "fix": "Add a timing window (exposure within 21 days of symptom onset) if the grammar allows; otherwise note it as a known gap.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page's window 'in the 21 days before symptom onset' is dropped; any mpox exposure at any time qualifies. A closer single concept also exists: (snomed_concept \"Exposure to monkeypox virus\" \"event\").",
+    "fix": "Add a 21-day timing constraint on the exposure, and consider (snomed_concept \"Exposure to monkeypox virus\" \"event\").",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c025",
+  "text": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unexplained rash'; the 'unexplained' qualifier is dropped, so any rash with a known cause qualifies.",
+    "fix": "Note the qualifier or accept as a known simplification.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c040",
+  "text": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Gets bigger when standing/coughing/passing stool' is encoded only as a cough impulse; for a groin lump a closer concept exists: (snomed_concept \"Cough impulse in inguinal canal\" \"finding\"). Minor.",
+    "fix": "Optional: use Cough impulse in inguinal canal for the groin hernia rules.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c043",
+  "text": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin :: (>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c019: 'Constipation' is broader than 'no stools for past 24 hours'; the >= 24 h onset window is faithful.",
+    "fix": "Acceptable; Obstipation (disorder) is closer in meaning.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'No stools' encoded as Constipation (broader/different from obstipation); the page's no-stool-and-no-flatus-for-24h is only captured with Unable to break wind.",
+    "fix": "Keep AND with flatus; consider Absolute constipation if it exists (not found).",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'No stools ... for past 24 hours' is encoded as Constipation with onset at least 24h ago; Constipation is broader than absolute absence of stool. (snomed_concept \"Obstipation\" \"disorder\") is closer. Timing direction is correct per house convention. Treating 'no stools or flatus' as AND (neither) is a defensible reading.",
+    "fix": "Consider Obstipation; otherwise acceptable.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c046",
+  "text": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin :: (diagnosis (snomed_concept \"Irreducible inguinal hernia\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Incarcerated' mapped to 'Irreducible inguinal hernia' (synonym match); acceptable, but identical logic is duplicated for strangulated.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c048",
+  "text": "Diagnose probable strangulated inguinal hernia, lump in groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Gets bigger when standing/coughing/passing stool' is encoded only as a cough impulse; for a groin lump a closer concept exists: (snomed_concept \"Cough impulse in inguinal canal\" \"finding\"). Minor.",
+    "fix": "Optional: use Cough impulse in inguinal canal for the groin hernia rules.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c051",
+  "text": "Diagnose probable strangulated inguinal hernia, lump in groin :: (>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))) (time_ago 24 hours))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c019/c043.",
+    "fix": "Acceptable; Obstipation (disorder) is closer in meaning.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'No stools' encoded as Constipation (broader/different from obstipation); the page's no-stool-and-no-flatus-for-24h is only captured with Unable to break wind.",
+    "fix": "Keep AND with flatus; consider Absolute constipation if it exists (not found).",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'No stools ... for past 24 hours' is encoded as Constipation with onset at least 24h ago; Constipation is broader than absolute absence of stool. (snomed_concept \"Obstipation\" \"disorder\") is closer. Timing direction is correct per house convention. Treating 'no stools or flatus' as AND (neither) is a defensible reading.",
+    "fix": "Consider Obstipation; otherwise acceptable.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c058",
+  "text": "Diagnose probable thyroid mass, lump in neck moving on swallowing :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says the neck LUMP moves up on swallowing; 'Thyroid gland moves with swallowing' describes normal thyroid movement and presupposes the lump is thyroid. No closer SNOMED concept found; acceptable only because it is paired with Mass of neck.",
+    "fix": "Keep, but pair with Mass of neck everywhere (already done in the diagnosis rule); consider a qualifier-based form if VHA allows.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c061",
+  "text": "Diagnose probable inguinal hernia, lump in groin :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c064",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of axilla\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Hidradenitis rule needs recurrent abscess plus a site-specific abscess, but 'Recurrent abscess' has no site, so recurrence is not tied to axilla/groin/perineum.",
+    "fix": "Use a recurrent-abscess concept restricted to the site if available.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c065",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in axilla\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c012: 'painful' encoded as 'Pain in axilla'.",
+    "fix": "As c012.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c066",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of groin\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Hidradenitis rule needs recurrent abscess plus a site-specific abscess, but 'Recurrent abscess' has no site, so recurrence is not tied to axilla/groin/perineum.",
+    "fix": "Use a recurrent-abscess concept restricted to the site if available.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c067",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inguinal pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c013: 'painful' encoded as 'Inguinal pain'.",
+    "fix": "As c012.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c068",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abscess of perineum\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Hidradenitis rule needs recurrent abscess plus a site-specific abscess, but 'Recurrent abscess' has no site, so recurrence is not tied to axilla/groin/perineum.",
+    "fix": "Use a recurrent-abscess concept restricted to the site if available.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c069",
+  "text": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perineal pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "As c014: 'painful' encoded as 'Perineal pain'.",
+    "fix": "As c012.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says the abscesses are painful; site-specific pain (axilla/inguinal/perineal) is separate from the abscess and not linked to it, so any pain at the site satisfies it.",
+    "fix": "Prefer a painful-abscess concept if one exists; otherwise accept.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c075",
+  "text": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thyroid gland moves with swallowing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Negating 'Thyroid gland moves with swallowing' is clinically odd: a normal thyroid always moves with swallowing, so the exclusion relies on the clinician reading the concept as 'the lump moves'. Intent (exclude thyroid mass) is right.",
+    "fix": "Exclude via (no (active_condition Mass of thyroid gland)) or the same finding paired with Mass of neck.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c076",
+  "text": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin :: (no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough impulse of mass present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Cough impulse is narrower than the page's 'bigger when standing/coughing/passing stool' (standing and straining also count); acceptable proxy, no closer concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c080",
+  "text": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin) :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "The 21-day window before symptom onset is dropped from the diagnosis rule. The grammar allows (onset (finding ...)) comparisons, so a (< (onset exposure) (time_ago 21 days)) bound is expressible relative to now, though not relative to symptom onset.",
+    "fix": "Add (< (onset (finding Exposure-to Monkeypox virus)) (time_ago 21 days)) if the finding supports onset, and note that 'before symptom onset' is approximated by 'within the last 21 days'.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Drops 'probable/confirmed case' and the 21-days-before-onset window; exposure to Monkeypox virus is broader.",
+    "fix": "Add a timing window (exposure within 21 days of symptom onset) if the grammar allows; otherwise note it as a known gap.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page's window 'in the 21 days before symptom onset' is dropped; any mpox exposure at any time qualifies. A closer single concept also exists: (snomed_concept \"Exposure to monkeypox virus\" \"event\").",
+    "fix": "Add a 21-day timing constraint on the exposure, and consider (snomed_concept \"Exposure to monkeypox virus\" \"event\").",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c081",
+  "text": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says 'unexplained rash'; the 'unexplained' qualifier is dropped, so any rash with a known cause qualifies.",
+    "fix": "Note the qualifier or accept as a known simplification.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin; Diagnose probable strangulated inguinal hernia, lump in groin",
+  "text": "'and' where the page means 'or': the 24-hour obstruction item is encoded as constipation >= 24 h AND unable to break wind >= 24 h. The page's 'no stools or flatus/wind for past 24 hours' sits inside an 'any of' list and reads as either absence. Because the Urgent priority depends on these probable diagnoses via active_condition, the stricter conjunction also narrows the red-box trigger.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file) lower flowchart",
+  "text": "Nothing below the 'lymphadenopathy likely' rule is encoded except mpox. The lost branches are: localised vs generalised (>= 2 areas); groin node hot and tender -> bubo (-> 65); cough / weight loss / night sweats / fever -> suspect TB (aspirate for TB testing); generalised or unwell or node enlarging quickly -> refer same week. The bubo and TB-suspicion branches are the ones the house standard would most plausibly expect as possible diagnoses; the others resolve to management/referral and are arguably out of scope, but no remaining-questions decision is visible in the rules to confirm that was deliberate.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "The 21-day exposure window before symptom onset is not encoded and is probably not representable (onset/time_ago takes a clinical_finding or active_condition, not an exposure finding). Should be flagged as not_representable rather than silently dropped.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses",
+  "text": "Three separately recorded findings (Recurrent abscess + site abscess + site pain) are needed to satisfy one page phrase; 'painful' as a separate regional pain finding is an indirect reading of 'painful abscesses'. Over-strict rather than wrong.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable incarcerated (irreducible) inguinal hernia; Diagnose probable strangulated inguinal hernia",
+  "text": "Identical evidence in two probable rules, so both diagnoses are always produced together. This follows the page's 'incarcerated/strangulated' wording, but the irreducible-lump item alone is really the incarceration criterion while pain/vomiting/obstruction point to strangulation; a split would be more faithful clinically. Low because the page itself does not separate them.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of lump/swelling in neck, axilla or groin",
+  "text": "The task is triggered by Mass of body region, of which Mass of neck, Mass of axilla, Groin mass and Mass of skin are all descendants, and then checks for those same four findings. The test's exact-string self-reference check passes, but when the trigger is a recorded Groin mass the task asks the clinician to confirm the finding that triggered it. Harmless, but the site findings could be dropped from check_for since they are the triggers.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable thyroid mass, lump in neck moving on swallowing",
+  "text": "'Thyroid gland moves with swallowing' presupposes the lump is thyroid; the page's criterion is that the neck lump moves on swallowing. No better SNOMED concept was found (no 'neck mass moves on swallowing'), so this is the best available and should be noted as a SNOMED gap rather than fixed.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm",
+  "text": "The priority rule relies on active_condition of diagnoses produced by probable rules. This is the briefing's pattern, but the groin mass requirement is redundant with the diagnoses, and the Urgent level is justified by 'Give urgent attention'/'Refer urgently'. No problem otherwise.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable incarcerated (irreducible) inguinal hernia / strangulated inguinal hernia",
+  "text": "The two rules are identical, so any patient meeting one meets the other. The page gives one combined criterion ('incarcerated/strangulated'), so this is faithful but undiscriminating.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable lymphadenopathy",
+  "text": "Pulsatile groin mass is not excluded, so a suspected aneurysm also yields probable lymphadenopathy. Hernia without cough impulse (bigger on standing/straining) also yields lymphadenopathy.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for mpox features in lymphadenopathy",
+  "text": "check_for lacks Body temperature > 38.5 although the mpox diagnosis rule uses it; the 21-day contact window is not representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of lump/swelling in neck, axilla or groin",
+  "text": "Not a problem per se, but the generalised/localised split, bubo and drug-hypersensitivity branches from the flowchart are lost with no non-urgent referral priority.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable incarcerated/strangulated inguinal hernia (both rules)",
+  "text": "'No stools ... for past 24 hours' is encoded via onset of 'Constipation' >= 24 h; Constipation (a common symptom) is not equivalent to no stool passed in 24 h, so a chronically constipated patient with a reducible hernia, cough impulse and inability to pass wind would be labelled incarcerated AND strangulated and triaged Urgent, while the intended 'no stools' meaning has no direct concept.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Inguinal hernia rules (probable inguinal, incarcerated, strangulated) and lymphadenopathy negation",
+  "text": "'Gets bigger when standing/coughing/passing stool' is represented only by 'Cough impulse of mass present'. A groin hernia noticed only on standing/straining fails every hernia rule, and (because the negation also uses only cough impulse) is instead labelled probable lymphadenopathy, and the Urgent hernia priority cannot fire.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Incarcerated and strangulated hernia rules",
+  "text": "The two probable rules have identical evidence, so every qualifying patient gets both diagnoses; this matches the page's 'incarcerated/strangulated' but the system cannot distinguish them. Acceptable, but worth noting.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) flowchart branches",
+  "text": "Hot/tender groin node -> bubo, TB-suggestive symptoms -> aspirate for TB, and the drug-hypersensitivity medication list are not encoded as possible diagnoses; the localised/generalised split is not used anywhere.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in lymphadenopathy",
+  "text": "Contact time window (21 days before symptom onset) and 'unexplained' rash qualifier dropped; Body temperature criterion is fine as a routine vital.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of lump/swelling in neck, axilla or groin",
+  "text": "Type and contents right (every red-box item and every discriminating finding for a 'likely' diagnosis is listed, grouped sensibly). Trigger is broader than the page (see c001). Low impact.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "Contents match the mpox bullet. Two softenings: the 21-day contact window is dropped (c024), and on the page this bullet sits in the 'Generalised' / 'No medication or infective cause' column, whereas the task fires on any lymphadenopathy. Broader than the page but not wrong.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses",
+  "text": "'painful abscesses' is encoded as site abscess AND a separate regional pain symptom (Pain in axilla / Inguinal pain / Perineal pain), which is not what the page says and makes the rule need two recorded findings per site where the page has one. Also requires 'Recurrent abscess' on top of the site abscess (double recording). The site 'or' and 'likely' -> probable are right.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+  "text": "'If none of above' is encoded as exclusion of skin lump, thyroid movement, cough impulse and recurrent abscess, which covers the non-urgent boxes but not the red box: a pulsating groin lump is not excluded, so it can be labelled probable lymphadenopathy as well as probable aneurysm. Exclusion on 'Recurrent abscess' at any site is slightly broader than the page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "Logic (exposure AND [rash/lesions] AND >=1 systemic) matches the bullet and 'consider mpox' -> possible is right. The 21-day window before symptom onset and 'unexplained' (rash) are dropped (c080).",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "Mpox exposure loses the probable/confirmed-case and 21-day window.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin",
+  "text": "Logic identical to the strangulated rule; page gives one combined 'incarcerated/strangulated likely' so both fire together. Also irreducible is an OR option alongside the other signs, matching the page's 'any of'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable hidradenitis suppurativa, recurrent painful abscesses",
+  "text": "Recurrence and site not linked; pain is a separate site pain finding rather than abscess being painful.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "Same 21-day/case-definition gap; 'unexplained' rash not captured. Possible is right ('consider mpox').",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for mpox features in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "Temperature > 38.5°C is used in the mpox diagnosis but is not in check_for. That may be fine if vitals are captured elsewhere, but it should be confirmed. The 21-day exposure window is also missing.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable lymphadenopathy, lump in neck, axilla or groin",
+  "text": "'If none of above' is encoded by negating skin lump, thyroid movement, cough impulse and recurrent abscess. The thyroid exclusion negates a normal-physiology finding (c075), so a recorded 'thyroid moves with swallowing' in a patient with an axillary or groin node would wrongly block the diagnosis. A pulsatile groin mass is also not excluded, though the urgent pathway would normally catch it first.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible mpox in lymphadenopathy (lump in neck, axilla or groin)",
+  "text": "'Consider mpox' is correctly encoded as possible, with the right and/or structure: exposure AND (rash or lesion at any listed site) AND (>=1 systemic symptom). The 21-day exposure window before symptom onset is dropped, which broadens the rule.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: separate tasks triggered by (Mass of neck) and (Mass of axilla)  vs  B: none (their checks sit in the main 'Mass of body region' task)",
+  "detail": [
+   {
+    "choice": "neither",
+    "final": "",
+    "reason": "The page's approach box is one examination of 'neck, inguinal area, axillae and perineum'; B's single task checks the same findings from the 'Lump' complaint, so per-site tasks add no logic from the page.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Cough impulse in inguinal canal)  vs  B: (Cough impulse of mass present) [main task and red-box task]",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Cough impulse of mass present\" \"finding\"))",
+    "reason": "The page describes the lump itself ('lump in groin that gets bigger when ... coughing'), which B's concept names; A's concept is about the inguinal canal. Neither covers standing/passing stool.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (Obstipation)  vs  B: (Constipation) + (Unable to break wind)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Constipation\" \"finding\")); (clinical_finding (snomed_concept \"Unable to break wind\" \"finding\"))",
+    "reason": "'No stools or flatus/wind' names two things, and B's two findings match 'stools' and 'flatus/wind'; Obstipation's SNOMED meaning (severe constipation vs absolute constipation) does not clearly say 'no flatus'. Neither concept says 'no stools' exactly.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Recurrent abscess) with finding_site Axillary region / Inguinal region / Perineal structure  vs  B: (Recurrent abscess), (Abscess of axilla/groin/perineum), (Pain in axilla), (Inguinal pain), (Perineal pain)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "B's seven findings",
+    "reason": "The page says 'recurrent, painful abscesses in axilla, groin or perineum'; B encodes 'painful' through site pain, which A drops (A's notes say its rule fires more often), and uses precoordinated site abscess concepts.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Skin lesion, finding_site Anal structure) in the mpox check  vs  B: absent",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\") (finding_site (snomed_concept \"Anal structure\" \"body structure\")))",
+    "reason": "The page lists 'lesion/s of skin/genitals/anus/rectum/mouth/eyes'; B left anus out for lack of a precoordinated concept, while A's postcoordinated form resolves.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "Hernia rules: A: (Cough impulse in inguinal canal), (>= (onset Obstipation) 24 h)  vs  B: (Cough impulse of mass present), (and (>= (onset Constipation) 24 h) (>= (onset Unable to break wind) 24 h))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "as B",
+    "reason": "Same reasons as the check_for decisions above: B's concepts name the lump's cough impulse and both 'stools' and 'flatus/wind'.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Hidradenitis: A: (or Recurrent abscess at each of three sites)  vs  B: (and Recurrent abscess (or (and Abscess of site, Pain at site) x3))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "as B",
+    "reason": "B carries the page's word 'painful'; A's rule omits it.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Lymphadenopathy 'none of above': A: (no Cough impulse in inguinal canal), (no Recurrent abscess at each of three sites)  vs  B: (no Cough impulse of mass present), (no Recurrent abscess)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "as B",
+    "reason": "Kept consistent with the concepts chosen for the hernia and hidradenitis rules, whose absence 'none of above' refers to; B's unsited (no Recurrent abscess) is slightly broader than 'not hidradenitis'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Mpox rule: A: includes (Skin lesion, finding_site Anal structure)  vs  B: absent",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Skin lesion\" \"disorder\") (finding_site (snomed_concept \"Anal structure\" \"body structure\")))",
+    "reason": "The page lists 'anus' among the lesion sites.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: one rule (Irreducible inguinal hernia)  vs  B: also (Strangulated inguinal hernia) probable, same evidence",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Strangulated inguinal hernia\" \"disorder\") probable)",
+    "reason": "The page says 'incarcerated/strangulated inguinal hernia likely', and SNOMED's Strangulated inguinal hernia is not a descendant of Irreducible inguinal hernia, so only B represents both named diagnoses.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "slug": "42-lump-swelling-in-neck-axilla-or-groin",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: absent  vs  B: (active_condition Strangulated inguinal hernia)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(active_condition (snomed_concept \"Strangulated inguinal hernia\" \"disorder\"))",
+    "reason": "Follows the diagnosis decision: the red box gives urgent attention to an incarcerated or strangulated hernia.",
+    "unsettled": false
+   }
+  ]
+ }
+]

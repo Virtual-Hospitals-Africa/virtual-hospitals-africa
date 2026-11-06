@@ -1,0 +1,634 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 27,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    117.1,
+    806.4,
+    403.2
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p27-rb1-e01",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "bbox": [
+    254.2,
+    122.2,
+    587.7,
+    133.3
+   ],
+   "key": "p27-27a96e18"
+  },
+  {
+   "id": "p27-rb1-e02",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Attempted self-harm/suicide 34",
+   "bbox": [
+    107.7,
+    133.0,
+    245.0,
+    143.8
+   ],
+   "key": "p27-6cac9bb1"
+  },
+  {
+   "id": "p27-rb1-e03",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Confused, agitated or hallucinating",
+   "bbox": [
+    312.5,
+    132.8,
+    452.7,
+    143.6
+   ],
+   "key": "p27-2ff7a448"
+  },
+  {
+   "id": "p27-rb1-e04",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty breathing, tight chest, or slow/shallow breathing",
+   "bbox": [
+    503.2,
+    132.8,
+    731.5,
+    143.6
+   ],
+   "key": "p27-507118b0"
+  },
+  {
+   "id": "p27-rb1-e05",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Decreased level of consciousness 18",
+   "bbox": [
+    107.7,
+    143.0,
+    261.6,
+    153.8
+   ],
+   "key": "p27-d51fb97a"
+  },
+  {
+   "id": "p27-rb1-e06",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Weakness, muscle twitching",
+   "bbox": [
+    312.5,
+    142.8,
+    425.8,
+    153.6
+   ],
+   "key": "p27-db5e2bec"
+  },
+  {
+   "id": "p27-rb1-e07",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Respiratory rate < 12",
+   "bbox": [
+    503.2,
+    142.8,
+    590.1,
+    153.6
+   ],
+   "key": "p27-0d14028b"
+  },
+  {
+   "id": "p27-rb1-e08",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Having/just had a seizure 20",
+   "bbox": [
+    107.7,
+    153.0,
+    231.2,
+    163.8
+   ],
+   "key": "p27-2483ce63"
+  },
+  {
+   "id": "p27-rb1-e09",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Excessive drooling/sweating",
+   "bbox": [
+    312.5,
+    152.8,
+    426.6,
+    163.6
+   ],
+   "key": "p27-47d51c84"
+  },
+  {
+   "id": "p27-rb1-e10",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/systolic BP < 80",
+   "bbox": [
+    503.2,
+    152.8,
+    596.6,
+    163.6
+   ],
+   "key": "p27-c310d871"
+  },
+  {
+   "id": "p27-rb1-e11",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Pupils dilated or pinpoint",
+   "bbox": [
+    107.7,
+    163.0,
+    210.2,
+    173.8
+   ],
+   "key": "p27-54ae997c"
+  },
+  {
+   "id": "p27-rb1-e12",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Persistent vomiting",
+   "bbox": [
+    312.5,
+    162.8,
+    392.3,
+    173.6
+   ],
+   "key": "p27-756940e0"
+  },
+  {
+   "id": "p27-rb1-e13",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with suspected poisoning/overdose and any of:",
+   "section_y": 122.2,
+   "indent": 1,
+   "parent": null,
+   "text": "Pulse < 60 or >100",
+   "bbox": [
+    503.2,
+    162.8,
+    579.5,
+    173.6
+   ],
+   "key": "p27-e254c2f0"
+  },
+  {
+   "id": "p27-rb1-e14",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    177.0,
+    157.1,
+    188.0
+   ],
+   "key": "p27-88a5552a"
+  },
+  {
+   "id": "p27-rb1-e15",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "First assess and manage airway, breathing, circulation and level of consciousness 16. If oxygen saturation < 94%, give oxygen via face mask or nasal cannula to maintain oxygen saturation ≥ 94%. Doctor to consider intubation.",
+   "bbox": [
+    51.2,
+    187.2,
+    779.3,
+    208.0
+   ],
+   "key": "p27-340616f7"
+  },
+  {
+   "id": "p27-rb1-e16",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock1/systolic BP < 80, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    207.0,
+    607.9,
+    218.0
+   ],
+   "key": "p27-0f6836c0"
+  },
+  {
+   "id": "p27-rb1-e17",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If poison on skin (e.g. pesticides):",
+   "bbox": [
+    51.2,
+    217.2,
+    184.5,
+    228.0
+   ],
+   "key": "p27-d484415a"
+  },
+  {
+   "id": "p27-rb1-e18",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 2,
+   "parent": "p27-rb1-e17",
+   "text": "Health worker to wear gloves, apron and surgical mask. If health worker/caregiver has any skin contact or contact with bodily fluids, wash off immediately.",
+   "bbox": [
+    56.9,
+    227.2,
+    648.7,
+    238.0
+   ],
+   "key": "p27-4bab9192"
+  },
+  {
+   "id": "p27-rb1-e19",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 2,
+   "parent": "p27-rb1-e17",
+   "text": "Remove patient's clothes and wash patient with soap and water after emergency care given.",
+   "bbox": [
+    56.9,
+    237.2,
+    413.6,
+    248.0
+   ],
+   "key": "p27-2d35b113"
+  },
+  {
+   "id": "p27-rb1-e20",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If poison in eye/s, immediately flush eye/s under running water or sodium chloride 0.9% for at least 20 minutes.",
+   "bbox": [
+    51.2,
+    247.2,
+    487.7,
+    258.0
+   ],
+   "key": "p27-2c720cc2"
+  },
+  {
+   "id": "p27-rb1-e21",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Ask about amount, type and time of substance ingestion/exposure. Examine tablets, packets/containers of suspected substance. If any of the following oral preparations taken in toxic dose in the past hour: paracetamol/amitriptyline/carbamazepine/phenytoin/theophylline/salicylates/mushroom poisoning/slow release preparations/digoxin/beta-blockers/NSAIDs and patient fully awake/cooperative or intubated, give activated charcoal2 50g diluted in 100mL water orally or via nasogastric tube. Avoid activated charcoal if patient swallowed petrol/paraffin/iron/lithium/ lead/mercury/arsenic/drain cleaners/alcohol/antifreeze/household detergents.",
+   "bbox": [
+    51.2,
+    257.2,
+    787.0,
+    298.0
+   ],
+   "key": "p27-9163aefa"
+  },
+  {
+   "id": "p27-rb1-e22",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If pinpoint pupils, excessive drooling/sweating, excessive secretions, vomiting/diarrhoea, pulse < 60, BP < 90/60, organophosphate poisoning likely. Give atropine 2mg IV immediately. Reassess every 3-5 minutes. If no response (still has excessive secretions, difficulty breathing, saturation < 94%, persistently low BP/pulse), give repeated doses of atropine every 3-5 minutes, doubling the dose each time: 4mg, 8mg, 16mg, 32mg. If some response, give the same or reduced dose. Continue until secretions controlled. Suction secretions frequently.",
+   "bbox": [
+    51.2,
+    297.0,
+    787.3,
+    328.0
+   ],
+   "key": "p27-2a1c7693"
+  },
+  {
+   "id": "p27-rb1-e23",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If shallow breathing/respiratory rate < 12 and opioid3 overdose suspected, connect bag-valve-mask to oxygen and slowly deliver each breath with patient. Also give naloxone 0.4mg IV/IM4 immediately. If known opioid user/addict, discuss starting dose of naloxone with PIH. Reassess every 2 minutes: if respiratory rate still < 12, give increasing doses of naloxone every 2-3 minutes: 0.8mg, 2mg, 4mg, up to a total of 10mg. Naloxone wears off quickly, monitor closely and give further doses if needed.",
+   "bbox": [
+    51.2,
+    327.0,
+    790.5,
+    358.0
+   ],
+   "key": "p27-c1cdf7c4"
+  },
+  {
+   "id": "p27-rb1-e24",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If overdose of > 10g or 200mg/kg of paracetamol or symptomatic and referral delay, give N-acetylcysteine 140mg/kg orally, then 70mg/kg 4 hourly. Avoid giving N-acetylcysteine together with activated charcoal. Monitor closely for possible anaphylactic reaction5 after initial dose, assess and manage 28.",
+   "bbox": [
+    51.2,
+    357.2,
+    778.1,
+    378.0
+   ],
+   "key": "p27-50e63b39"
+  },
+  {
+   "id": "p27-rb1-e25",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If exposed to carbon monoxide (exhaust fumes), give 100% face mask oxygen.",
+   "bbox": [
+    51.2,
+    377.2,
+    354.7,
+    388.0
+   ],
+   "key": "p27-1cf83c31"
+  },
+  {
+   "id": "p27-rb1-e26",
+   "page": 27,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 177.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If no response, or overdose/poisoning with other or unknown substance, discuss with specialist or Poisons Information Helpline 200. Notify6 if pesticide, mercury or lead poisoning.",
+   "bbox": [
+    51.2,
+    387.2,
+    750.2,
+    398.0
+   ],
+   "key": "p27-172cf4c6"
+  },
+  {
+   "id": "p27-out-e01",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "While assessing the patient, contact Poisons Information Helpline (PIH) 200 or consult AfriTox database (if available) to help with management and to calculate toxic dose.",
+   "bbox": [
+    104.8,
+    89.1,
+    737.1,
+    99.9
+   ],
+   "key": "p27-c027c823"
+  },
+  {
+   "id": "p27-out-e02",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2When mixing, add a small amount of water to charcoal in a container. Cap and shake the container to mix, then add the rest of the water. 3Examples of opioids include: codeine, tramadol, morphine, oxycodone, hydrocodone, fentanyl. 4Give naloxone IM only if IV not possible. 5Generalised rash, face/tongue swelling, vomiting, BP < 90/60. 6Notify within 24 hours (7 days if lead/mercury poisoning) via NMC App (download from NICD website/app store) or www.nicd.ac.za/nmc-overview/notification-process.",
+   "bbox": [
+    34.0,
+    527.3,
+    805.8,
+    551.8
+   ],
+   "key": "p27-45b81a13"
+  },
+  {
+   "id": "p27-out-e03",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "POISONING/OVERDOSE",
+   "bbox": [
+    324.6,
+    48.7,
+    517.3,
+    71.0
+   ],
+   "key": "p27-73ea64bd"
+  },
+  {
+   "id": "p27-out-e04",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Toxic dose",
+   "bbox": [
+    137.2,
+    466.7,
+    175.4,
+    476.9
+   ],
+   "key": "p27-2dfb39f0"
+  },
+  {
+   "id": "p27-out-e05",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Refer urgently. • Discuss need for activated charcoal with PIH 200. • If self-harm 34. • Advise to return if condition worsens.",
+   "bbox": [
+    51.0,
+    491.7,
+    788.5,
+    512.5
+   ],
+   "key": "p27-35ac1a06"
+  },
+  {
+   "id": "p27-out-e06",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Non-toxic dose and no symptoms Unknown poison or dose Non-toxic dose and has symptoms",
+   "bbox": [
+    323.5,
+    466.7,
+    780.7,
+    476.9
+   ],
+   "key": "p27-2e736f38"
+  },
+  {
+   "id": "p27-out-e07",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with suspected poisoning/overdose not needing urgent attention • Ask about amount, type and time of substance ingestion or exposure. Examine tablets, packets, containers of suspected substance. If intentional exposure to poison/overdose, refer. • Contact the PIH 200 or consult AfriTox poisons information database to determine if toxic dose has been swallowed:",
+   "bbox": [
+    51.0,
+    420.3,
+    716.0,
+    451.4
+   ],
+   "key": "p27-001186c3"
+  },
+  {
+   "id": "p27-out-e08",
+   "page": 27,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Discuss further management with PIH 200.",
+   "bbox": [
+    370.3,
+    491.7,
+    537.5,
+    502.5
+   ],
+   "key": "p27-4d8711c1"
+  }
+ ]
+}

@@ -1,0 +1,598 @@
+{
+ "edition": "2026",
+ "page": 94,
+ "lisp_file": "94-changes-in-skin-colour.lisp",
+ "conditions": [
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\"))",
+   "element_keys": [
+    "p94-5ed643dc"
+   ],
+   "quote": "CHANGES IN SKIN COLOUR",
+   "confidence": "medium",
+   "note": "Page title is the presenting complaint; 'Discoloration of skin' (finding) is the closest general SNOMED finding. Not a recorded common symptom or warning sign."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p94-354fdabf"
+   ],
+   "quote": "Yellow skin",
+   "confidence": "high",
+   "note": "First branch of 'Is the skin yellow…?'."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-f5a9e389"
+   ],
+   "quote": "Dark patches Lower legs",
+   "confidence": "medium",
+   "note": "Dark patches = 'Hyperpigmentation of skin'; 'Lower legs' as finding_site 'Structure of lower limb from knee to ankle' (no 'Lower leg structure' FSN)."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-5203c82c"
+   ],
+   "quote": "Dark patches Face",
+   "confidence": "medium",
+   "note": "Dark patches on face; finding_site Face structure."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-53d45d2b"
+   ],
+   "quote": "Dark patches Trunk",
+   "confidence": "medium",
+   "note": "Dark patches on trunk; finding_site Trunk structure."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p94-8490ac39"
+   ],
+   "quote": "Light patches",
+   "confidence": "medium",
+   "note": "Light patches = 'Hypopigmentation of skin' (disorder); 'Achromia of skin' is not its descendant, so absence of colour does not also match."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Patchy\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-922901e2",
+    "p94-0da30557"
+   ],
+   "quote": "Absence of colour Patchy",
+   "confidence": "medium",
+   "note": "Absence of colour = 'Achromia of skin' with qualifier Patchy."
+  },
+  {
+   "rule": "Check for type of skin colour change (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-922901e2",
+    "p94-e23e3d57"
+   ],
+   "quote": "Absence of colour Generalised",
+   "confidence": "medium",
+   "note": "Absence of colour = 'Achromia of skin' with qualifier Generalized."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p94-89a52e77"
+   ],
+   "quote": "jaundice",
+   "confidence": "high",
+   "note": "Red box header: 'patient with jaundice'."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p94-89a52e77"
+   ],
+   "quote": "jaundice",
+   "confidence": "high",
+   "note": "Also fires on the probable jaundice diagnosis made from yellow skin ('Yellow skin: jaundice likely')."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p94-72fa29d2"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock (disorder); footnote 1's definition of shock not imported, per the shared decision."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-e93a548d"
+   ],
+   "quote": "Severe abdominal pain",
+   "confidence": "high",
+   "note": "Abdominal pain with Severe qualifier."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p94-63218814"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p94-63218814"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "'Confusion' has no FSN; 'Clouded consciousness' is the app's AVPU 'Confused' finding. 'Acute confusion' considered but page does not say acute."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p94-7bac9aff"
+   ],
+   "quote": "Easy bruising",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "element_keys": [
+    "p94-7bac9aff"
+   ],
+   "quote": "Easy bruising or bleeding",
+   "confidence": "medium",
+   "note": "Read as easy bruising or easy bleeding; 'Finding of tendency to bleed' encodes easy bleeding. Plain 'Bleeding' considered and rejected."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p94-8e75a1e3"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol dependence\" \"disorder\"))",
+   "element_keys": [
+    "p94-70e9a876"
+   ],
+   "quote": "Alcohol dependent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-70e9a876"
+   ],
+   "quote": "recent alcohol binge",
+   "confidence": "medium",
+   "note": "'Drinking binge' with Recent qualifier; the '≥ 4 drinks/session' threshold has no unit in the language and is left to the definition of binge."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p94-bd06c9ef"
+   ],
+   "quote": "Using any medication",
+   "confidence": "medium",
+   "note": "Gold-standard exposure form for 'Drug or medicament'; 'Taking medication' is an observable entity and cannot be a finding."
+  },
+  {
+   "rule": "Check for urgent jaundice conditions (changes in skin colour)",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p94-bd06c9ef"
+   ],
+   "quote": "illegal drugs",
+   "confidence": "high",
+   "note": "'Illicit drug use' (finding)."
+  },
+  {
+   "rule": "Diagnose probable jaundice (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow skin\" \"finding\"))",
+   "element_keys": [
+    "p94-354fdabf"
+   ],
+   "quote": "Yellow skin",
+   "confidence": "high",
+   "note": "'Yellow skin: jaundice likely'."
+  },
+  {
+   "rule": "Diagnose probable jaundice (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Jaundice\" \"finding\") probable)",
+   "element_keys": [
+    "p94-354fdabf"
+   ],
+   "quote": "jaundice likely",
+   "confidence": "high",
+   "note": "Jaundice (finding) as the probable diagnosis."
+  },
+  {
+   "rule": "Diagnose probable venous stasis (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of lower limb from knee to ankle\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-f5a9e389"
+   ],
+   "quote": "Dark patches Lower legs",
+   "confidence": "medium",
+   "note": "Routing only (Dark patches → Lower legs → Venous stasis likely); descriptive text (red-brown, may have ulcers, spidery veins) not required."
+  },
+  {
+   "rule": "Diagnose probable venous stasis (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Venous stasis\" \"finding\") probable)",
+   "element_keys": [
+    "p94-342169a5"
+   ],
+   "quote": "Venous stasis likely",
+   "confidence": "high",
+   "note": "'Venous stasis' exists only as a finding."
+  },
+  {
+   "rule": "Diagnose probable melasma (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-5203c82c"
+   ],
+   "quote": "Dark patches Face",
+   "confidence": "medium",
+   "note": "Routing only (Dark patches → Face → Melasma likely)."
+  },
+  {
+   "rule": "Diagnose probable melasma (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chloasma\" \"disorder\") probable)",
+   "element_keys": [
+    "p94-77029585"
+   ],
+   "quote": "Melasma likely",
+   "confidence": "high",
+   "note": "No 'Melasma' FSN; 'Chloasma' (disorder) is its synonym in SNOMED."
+  },
+  {
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Trunk structure\" \"body structure\")))",
+   "element_keys": [
+    "p94-354fdabf",
+    "p94-53d45d2b"
+   ],
+   "quote": "Dark patches Trunk",
+   "confidence": "medium",
+   "note": "Routing: Dark patches → Trunk → Tinea versicolor likely; fine scale is descriptive and not required."
+  },
+  {
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypopigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p94-8490ac39"
+   ],
+   "quote": "Light patches",
+   "confidence": "medium",
+   "note": "Routing: Light patches → Tinea versicolor likely (the page has no further question on this branch)."
+  },
+  {
+   "rule": "Diagnose probable tinea versicolor (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Pityriasis versicolor\" \"disorder\") probable)",
+   "element_keys": [
+    "p94-f03fdeae"
+   ],
+   "quote": "Tinea versicolor likely",
+   "confidence": "high",
+   "note": "No 'Tinea versicolor' FSN; 'Pityriasis versicolor' (disorder)."
+  },
+  {
+   "rule": "Diagnose probable vitiligo (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Patchy\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-922901e2",
+    "p94-0da30557"
+   ],
+   "quote": "Absence of colour Patchy",
+   "confidence": "medium",
+   "note": "Routing: Absence of colour → Patchy → Vitiligo likely."
+  },
+  {
+   "rule": "Diagnose probable vitiligo (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Vitiligo\" \"disorder\") probable)",
+   "element_keys": [
+    "p94-072c4939"
+   ],
+   "quote": "Vitiligo likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Achromia of skin\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-922901e2",
+    "p94-e23e3d57"
+   ],
+   "quote": "Absence of colour Generalised",
+   "confidence": "medium",
+   "note": "Routing: Absence of colour → Generalised → Albinism likely; 'Present from birth / skin, hair and eyes' descriptive, not required."
+  },
+  {
+   "rule": "Diagnose probable albinism (changes in skin colour)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Albinism\" \"disorder\") probable)",
+   "element_keys": [
+    "p94-212255cd"
+   ],
+   "quote": "Albinism likely",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p94-89a52e77"
+   ],
+   "quote": "jaundice",
+   "confidence": "high",
+   "note": "Red box: 'patient with jaundice and any of'."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Jaundice\" \"finding\"))",
+   "element_keys": [
+    "p94-89a52e77"
+   ],
+   "quote": "jaundice",
+   "confidence": "high",
+   "note": "Also the probable jaundice diagnosis from yellow skin."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p94-d3c40686"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p94-72fa29d2"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock/BP < 80 encoded as an or of Shock and SBP < 80."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p94-72fa29d2"
+   ],
+   "quote": "BP < 80",
+   "confidence": "high",
+   "note": "Page writes 'BP < 80'; read as systolic, consistent with footnote 1 ('SBP < 80')."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-e93a548d"
+   ],
+   "quote": "Severe abdominal pain",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p94-63218814"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p94-63218814"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "Clouded consciousness = AVPU 'Confused'."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "element_keys": [
+    "p94-7bac9aff"
+   ],
+   "quote": "Easy bruising",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+   "element_keys": [
+    "p94-7bac9aff"
+   ],
+   "quote": "Easy bruising or bleeding",
+   "confidence": "medium",
+   "note": "Easy bleeding = tendency to bleed."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p94-8e75a1e3"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol dependence\" \"disorder\"))",
+   "element_keys": [
+    "p94-70e9a876"
+   ],
+   "quote": "Alcohol dependent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drinking binge\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p94-70e9a876"
+   ],
+   "quote": "recent alcohol binge",
+   "confidence": "medium",
+   "note": "≥ 4 drinks/session not representable; binge left to the finding's meaning."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p94-bd06c9ef"
+   ],
+   "quote": "Using any medication",
+   "confidence": "medium",
+   "note": "Exposure to Drug or medicament (gold form)."
+  },
+  {
+   "rule": "Urgent: jaundice with danger signs (changes in skin colour)",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p94-bd06c9ef"
+   ],
+   "quote": "illegal drugs",
+   "confidence": "high",
+   "note": ""
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p94-d09dc9d7",
+   "element_id": "p94-rb1-e03",
+   "text": "Hb < 12 (woman) or < 13 (man)",
+   "reason_category": "not_representable",
+   "reason": "Hb has no observable/unit in the language; the urgent rule therefore fires less often than the page intends (anaemic jaundiced patients without another sign are missed)."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Diagnoses follow flowchart routing only",
+   "decision": "Each 'X likely' rule uses the branch path (colour type + site or pattern); the descriptive boxes (red-brown, fine scale, present from birth, etc.) are not required.",
+   "alternatives": "Require descriptive features too (e.g. Scaly skin for tinea versicolor, Congenital for albinism); would fire less often and add check_for items.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Light patches → tinea versicolor",
+   "decision": "Any hypopigmentation of skin gives probable tinea versicolor, as the page routes Light patches directly to that box.",
+   "alternatives": "Require scale, or restrict to trunk/neck/upper arms.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Jaundice trigger",
+   "decision": "Red-box task and priority fire on clinical_finding Jaundice or active_condition Jaundice (the latter from the probable jaundice rule on yellow skin).",
+   "alternatives": "Only one of the two forms.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock/BP < 80",
+   "decision": "or of Shock (disorder) and systolic BP < 80; footnote 1 not imported.",
+   "alternatives": "Encode footnote criteria.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Using any medication",
+   "decision": "Exposure to Drug or medicament (gold pattern).",
+   "alternatives": "'Current drug user' (finding), which reads as illicit use.",
+   "confidence": "medium"
+  }
+ ]
+}

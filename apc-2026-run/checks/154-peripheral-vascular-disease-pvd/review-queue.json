@@ -1,0 +1,601 @@
+[
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p154-519fa751",
+  "text": "Give urgent attention to the patient with peripheral vascular disease and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header: the priority trigger ('urgent attention to the patient with PVD and any of').",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Priority rule is gated on PVD finding only; no recorded-diagnosis form"
+    ],
+    "problem": "Header encoded as Urgent priority with PVD AND (acute OR critical OR ruptured AAA active_condition). Structure matches the page. Minor: PVD as clinical_finding must be recorded in the encounter.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Header trigger 'patient with peripheral vascular disease and any of' encoded as PVD anchor + Urgent priority over the three likely diagnoses. Note PVD is not a common symptom/warning sign, so the rules only fire when PVD is recorded as a finding.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p154-66451b0e",
+  "text": "Sudden severe leg pain at rest with any of the following in the leg: numbness, weakness, pallor, no pulse, acute limb ischaemia likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All six parts present with the page's and/or structure. 'Pallor' has no lower-limb precoordinated SNOMED concept (search for 'pallor' returns only organ-specific findings), so 'White discoloration of skin' with finding_site 'Skin structure of lower limb' is an acceptable approximation; 'Peripheral pulse absent' with finding_site 'Lower limb structure' is likewise acceptable ('Foot pulse absent' exists as a child but the page says 'no pulse' in the leg generally). 'Weakness of muscle of lower limb' is the only lower-limb weakness finding available.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Pallor encoded as 'White discoloration of skin' (lower limb skin), which is a looser concept than pallor; 'no pulse' encoded as 'Peripheral pulse absent' at lower limb, acceptable",
+     "Qualifiers 'in the leg' for numbness/weakness are carried by limb-specific concepts"
+    ],
+    "problem": "Logic is right (PVD and sudden severe rest leg pain and any of four). Sole weakness is pallor mapped to white discoloration; no closer pallor-of-limb concept found. 'Weakness of muscle of lower limb' is slightly narrower than 'weakness'. Rule is probable, correct type.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All parts present: sudden+severe+at-rest leg pain AND any of numbness/weakness/pallor/no pulse in the leg -> probable Acute lower limb ischemia. Pallor via White discoloration of skin + leg skin site is acceptable (no precoordinated leg pallor concept found).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p154-aa7f7f88",
+  "text": "• Peripheral vascular disease is characterised by claudication: muscle pain in legs or buttocks on exercise that is relieved by rest. Leg pulses are reduced and skin may be cool, shiny and hairless. • Refer the patient newly diagnosed with peripheral vascular disease for specialist assessment.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible PVD from intermittent claudication (SNOMED 'Intermittent claudication' finding exists) and/or reduced leg pulses"
+    ],
+    "problem": "No rule produces a PVD diagnosis; every rule in the file is gated on (clinical_finding \"Peripheral vascular disease\"), which is neither a common symptom nor a warning sign. Reasonable to leave out on a chronic-condition page, so low severity.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible PVD from claudication (muscle pain in legs/buttocks on exercise relieved by rest) with reduced leg pulses / cool shiny hairless skin"
+    ],
+    "problem": "No rule recognises PVD from its characteristic features; every rule on the page depends on PVD already being recorded. House standard would not strictly require it since the page does not say 'consider PVD'.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p154-aea5d3a7",
+  "text": "Assess the patient with peripheral vascular disease",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p154-a24fed8b",
+  "text": "Abdomen Every visit If pulsatile mass felt, refer for assessment for possible abdominal aortic aneurysm.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Refer for assessment for possible abdominal aortic aneurysm' if pulsatile mass felt: a 'possible X' conclusion.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "(no verdict)",
+    "verdict": "(no verdict)",
+    "parts_missing": null,
+    "problem": null,
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'If pulsatile mass felt, refer for assessment for possible AAA' encoded as a possible AAA rule; the refer step is management and correctly omitted.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Numbness is qualified 'in the leg' on the page; concept is lower limb numbness, ok but check_for lists it standalone, losing the 'with sudden severe rest pain' conjunction.",
+    "fix": "Make check_for items conjunctive or document that check_for is a symptom list (task has no and/or logic)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c004",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Page says 'weakness ... in the leg'; no plain 'Weakness of lower limb' concept exists, and this one (a child of Paresis of lower extremity) is the closest.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same: weakness only counts with sudden severe rest pain; as a standalone check_for item it is broader than the page.",
+    "fix": "Make check_for items conjunctive or document that check_for is a symptom list (task has no and/or logic)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c005",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "No 'Pallor' (finding), 'Pale skin' or 'Pallor of lower limb' concept exists in this release; only face-, organ- and whole-body pallor. White discoloration of skin with a lower-limb site is the best available approximation of 'pallor ... in the leg'.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'pallor'; 'White discoloration of skin' is a different concept (white vs pale); no lower-limb pallor concept found, 'Pale discoloration of skin' family is closer.",
+    "fix": "Consider a pallor/pale skin concept with lower limb site",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c006",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'no pulse'; 'Absent pulse' exists and is closer than 'Peripheral pulse absent'; site is only 'in the leg'.",
+    "fix": "(snomed_concept \"Absent pulse\" \"finding\")",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c007",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Leg rest pain in PVD has a precoordinated concept; Pain in lower limb + At rest also matches every sudden-severe-rest-pain record, so acute limb ischaemia presentations always fire critical limb ischaemia too.",
+    "fix": "Consider (snomed_concept \"Pain at rest due to peripheral vascular disease\" \"disorder\") (exists), used consistently in check_for and the critical rule; otherwise acceptable as is.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c011",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page has one item 'abdominal/back pain' tied to a pulsatile mass; as standalone check_for item it is broader than the page (needs pulsatile mass).",
+    "fix": "Make check_for items conjunctive or document that check_for is a symptom list (task has no and/or logic)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c012",
+  "text": "Check for urgent peripheral vascular disease conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c011: backache standalone is not a danger sign on the page without the pulsatile mass.",
+    "fix": "Make check_for items conjunctive or document that check_for is a symptom list (task has no and/or logic)",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c021",
+  "text": "Diagnose probable critical limb ischaemia in peripheral vascular disease :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c007: closer concept exists for ischaemic rest pain in PVD; current expression is the generic leg pain at rest.",
+    "fix": "Consider (snomed_concept \"Pain at rest due to peripheral vascular disease\" \"disorder\").",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "All rules (task due_to, three probable rules, possible AAA rule, priority evaluation)",
+  "text": "Everything is anchored on (clinical_finding \"Peripheral vascular disease\" \"disorder\"). On a chronic-condition page the patient's PVD is most naturally recorded as an active condition, and the briefing's own convention for known chronic conditions in a due_to is (active_condition X). If the system records PVD as an active condition rather than a clinical finding, none of these rules fire. The builders' choice keeps the test's check_for constraint satisfied, but it should be confirmed that a recorded PVD condition matches the clinical_finding form, or the priority/diagnosis due_tos should accept either form.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent peripheral vascular disease conditions",
+  "text": "The check_for asks for 'Pain in lower limb' twice: once with Sudden onset + Severe + At rest (acute rule) and once with At rest only (critical rule). Because evidence matches by exact string, a nurse who records the sudden severe at-rest form will trigger the acute rule but not the critical one unless the plain at-rest form is also recorded; in practice the acute path is the more urgent so nothing is lost, but the duplicate prompt is a nuisance and the page treats 'leg pain at rest' as one question.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Page-level anchoring",
+  "text": "No possible-PVD pre-screen rule from intermittent claudication (page's first bullet), so the file cannot be reached from a presenting complaint; it only runs once PVD is already recorded. Acceptable for a chronic-condition page, noted for completeness.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent peripheral vascular disease conditions",
+  "text": "The task's trigger is the PVD finding, and the same PVD finding is a required evidence in every rule; acceptable. check_for 'Pain in lower limb + At rest' (critical) and the qualified sudden-severe form both used as evidence; no unused check_for items found.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease",
+  "text": "Not in red box; encodes outside element p154-a24fed8b (pulsatile mass: refer for possible AAA) as possible. Good, but outside element is a management referral so this is optional; the rule is also redundant with the probable rupture rule only in part.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent priority evaluation",
+  "text": "Page's urgency for CLI is 'discuss same-day urgency with specialist', arguably less than Urgent; Urgent for all three is a judgement call the page does not clearly justify.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "all rules",
+  "text": "Every rule (check task, three probable rules, possible AAA, priority) is anchored on (clinical_finding Peripheral vascular disease). PVD is not a common symptom or warning sign, so a patient presenting with sudden painful pale leg or pulsatile abdominal mass with back pain but no previously recorded PVD will not trigger any of this logic. This follows the page wording ('patient with PVD and any of') but limits reach, especially for ALI and rAAA which are emergencies.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+  "text": "Rest pain is encoded as (Pain in lower limb + At rest qualifier) while ALI uses (Pain in lower limb + Sudden onset + Severe + At rest). Evidence matching is by exact s-expression; unless qualifier subsumption is applied, a patient recorded with the ALI pain form would not also satisfy the CLI rest-pain criterion. Harmless clinically (ALI is also Urgent) but worth noting.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+  "text": "'BP < 90/60' encoded as SBP<90 OR DBP<60, so a DBP of 58 with SBP 120 plus pulsatile mass yields probable rupture. Consistent with the gold standard convention; flagged only for awareness.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent peripheral vascular disease conditions",
+  "text": "Task lists the symptoms flat; abdominal/back pain, backache, numbness and weakness alone appear as urgent check items though the page needs them in combination. Also omits BP < 90/60 from check_for although it is a page trigger.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+    "reason": "The page says \"pallor\" in the leg; no pallor-of-limb concept exists, and White discoloration of skin (a child of A's Discoloration of skin) is the closest to paleness, whereas A's parent also covers red, blue or brown discoloration the page does not mention.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 154,
+  "slug": "154-peripheral-vascular-disease-pvd",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+    "reason": "Same \"pallor\" criterion of bullet 1 (\"numbness, weakness, pallor, no pulse\") in the acute limb ischaemia rule; kept consistent with the check_for task.",
+    "unsettled": false
+   }
+  ]
+ }
+]

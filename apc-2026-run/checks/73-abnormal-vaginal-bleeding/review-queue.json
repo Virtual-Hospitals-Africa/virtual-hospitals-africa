@@ -1,0 +1,919 @@
+[
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p73-21042048",
+  "text": "Give urgent attention to the patient with vaginal bleeding and any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Presenting complaint encoded as (clinical_finding \"Bleeding from vagina\") as the check task's due_to and as the first conjunct of the Urgent priority rule, structured (and <complaint> (or ...)) as the house standard asks. \"Bleeding from vagina\" (289530006) is the general concept; \"Abnormal vaginal bleeding\" (301822002) also exists but the red box says plain \"vaginal bleeding\" and descendants match automatically, so the general concept is the right choice.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Header; trigger is carried by the Bleeding from vagina conjunct.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Trigger 'patient with vaginal bleeding' encoded as Bleeding from vagina (finding) in both the check_for due_to and the priority rule's outer and; Urgent level matches 'Give urgent attention'. Note: Bleeding from vagina is not a recorded common symptom/warning sign, so the task only fires if the complaint is recorded with this concept.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p73-3beb8da5",
+  "text": "Shock1/SBP < 80",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts present and or-ed: Shock (27942005, disorder) as a checked finding, and SBP < 80 mmHg as a routine-vital comparison with the right direction and unit. Note the footnote that defines when \"shock likely\" (element p73-61f8d432) is not turned into a probable Shock rule; see that element.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Footnote 1 'shock likely' logic (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) is not encoded as a probable Shock diagnosis rule; the priority rule relies on Shock being recorded directly"
+    ],
+    "problem": "Shock -> Shock (disorder) as a clinical_finding, and SBP < 80 -> (< Systolic blood pressure mmHg 80): both parts present and correctly or'd. But the superscript 1 attaches the footnote's definition of shock to this item, and the house standard asks for a probable rule + (active_condition Shock) when the red box names a likely diagnosis; neither exists on this page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-04e86008",
+  "text": "Pallor with pulse ≥ 100, respiratory rate ≥ 30, dizziness/weakness or chest pain",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [],
+    "problem": "Logic is right: (and Pallor (or pulse>=100 RR>=30 Dizziness Asthenia Chest pain)) matches the page's \"Pallor with ... or ...\" reading, and all six parts are present with correct thresholds, directions and the only available rate unit (bpm). Two concept problems. (1) Pulse >= 100 is measured on \"Pulse, function\" (8499008), whose parent is \"Cardiovascular function\": it names a physiological function, not a rate. The measurable observable is \"Heart rate\" (364075005, parent \"Cardiovascular measure\"). If the routine pulse vital is recorded under Heart rate this comparison never matches, and the pulse part of the criterion is silently lost. (2) Pallor is encoded as \"Pallor of skin of face\" (1209208002), which narrows the page's generic \"pallor\" (in APC usually conjunctival/palmar pallor) to the face; \"Pale discoloration of entire skin of body\" is the other candidate and SNOMED has no plain \"Pallor\" finding, so this is a lesser concern but should be noted. \"Asthenia\" for weakness and the routine \"Respiratory rate\" concept are acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Structure matches (pallor AND any of pulse>=100, RR>=30, dizziness, weakness, chest pain). Minor: facial-only pallor concept; respiratory rate unit bpm may be a unit mismatch (breaths/min).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [],
+    "problem": "Structure is right: pallor AND (pulse >= 100 OR RR >= 30 OR dizziness OR weakness OR chest pain); thresholds, units and >= direction match the box (box says RR >= 30, footnote says > 30; the box value was used, correctly). Weakness -> Asthenia is acceptable. The concept is the problem: 'Pallor' is encoded as 'Pallor of skin of face' (finding), which is narrower than the page's general pallor (often judged at conjunctiva/palms). Sibling concepts such as 'Pale complexion' or 'Pale discoloration of entire skin of body' (which SNOMED returns for a 'Pallor' search) are not descendants, so a pallor recorded that way will not trigger the rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-34ca81b5",
+  "text": "Approach to the patient with abnormal vaginal bleeding not needing urgent attention: • Check for pregnancy 174. • Do a pelvic examination to check for pelvic masses, a speculum examination to visualise cervix and a cervical screen if needed 70. • If > 40 years, ask about menopausal symptoms: hot flu",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "postmenopausal bleeding (> 1 year after final period) as a checked finding / referral criterion"
+    ],
+    "problem": "Not encoded. A check_for of \"Postmenopausal bleeding\" (or similar) would at least capture the finding, even if the two-week referral itself is management.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Refer within 2 weeks if new bleeding >1 year after final period (age>40); approach steps."
+    ],
+    "problem": "Not encoded in rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Check pregnancy, pelvic/speculum exam, menopausal symptom enquiry and 'new bleeding > 1 year after final period, refer within 2 weeks' are assessment and referral steps with no named diagnosis. Postmenopausal bleeding as a referral trigger is arguably encodable, but the page names no 'consider X'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-0c390427",
+  "text": "• If bleeding from elsewhere like easy bruising/purple rash/bleeding gums, arrange FBC and refer to doctor next day. • If Hb < 12, treat for likely anaemia 44. • Give COC2 ethinylestradiol/ levonorgestrel 30mcg/150mcg for 3-6 months 170. If pregnancy desired or COC contraindicated3, discuss/refer. •",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "easy bruising / purpura / bleeding gums as checked findings"
+    ],
+    "problem": "Anaemia likely cannot be encoded (Hb has no unit). The bleeding-from-elsewhere findings are not checked for anywhere; the page uses them to route to next-day doctor review, which is the closest thing to a diagnostic branch on the lower page.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Heavy periods: bruising/bleeding gums -> refer next day; Hb<12 anaemia; COC."
+    ],
+    "problem": "Not encoded in rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Likely anaemia when Hb < 12 isn't representable. Bleeding elsewhere (bruising/purple rash/bleeding gums) leads to FBC and referral the next day, and the COC/ibuprofen/reassurance steps are management. Bleeding-tendency referral is borderline but names no diagnosis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-5901ed40",
+  "text": "manage as breakthrough bleeding (see adjacent). • Refer the patient: - Same week if mass in abdomen - If no better after 3 months on treatment - If excessive bleeding after IUD insertion - If sexual abuse suspected - If history of foreign body inserted into",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Refer same week if abdominal mass; sexual abuse suspected; foreign body; IUD bleeding."
+    ],
+    "problem": "Not encoded in rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Referral criteria (mass in abdomen same week, sexual abuse suspected, foreign body, etc.); no diagnosis or urgent priority named.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-a08fd98d",
+  "text": "• If weight change, pulse ≥ 100, tremor, weakness/ tiredness, dry skin, constipation or intolerance to cold or heat, check TSH. If abnormal, refer to doctor. • Give COC2 ethinylestradiol/ levonorgestrel 30mcg/150mcg for 3-6 months 170. If pregnancy desired or COC contraindicated3, discuss/refer.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "check_for of the thyroid-symptom cluster",
+     "a possible thyroid-disorder rule (or measure task for TSH) driven by them"
+    ],
+    "problem": "Nothing from the lower page is encoded; the rule set has no system_diagnosis_rule at all.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Irregular periods: pulse>=100 etc -> check TSH, refer."
+    ],
+    "problem": "Not encoded in rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Thyroid-symptom criteria lead to 'check TSH'. The page never says 'consider thyroid disease', so this is a test order, not a possible diagnosis. Borderline: a possible hyper/hypothyroidism rule could be defended.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-b18b2bd0",
+  "text": "Refer patient within 2 weeks if: • Patient complains of pelvic pain. • Bleeding persists > 1 week after STI treatment or after diarrhoea/vomiting stop. • Bleeding persists despite treatment. If pain during periods 72.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Two-week referral criteria (pelvic pain, persistence after treatment) are routine referral management, not red-box triage; cross-reference to page 72 for dysmenorrhoea.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Refer within 2 weeks if pelvic pain / bleeding persists."
+    ],
+    "problem": "Not encoded in rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Referral within 2 weeks criteria; routine-referral logic, not triage priority.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p73-61f8d432",
+  "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Combined oral contraceptive. 3Avoid COC if smoker ≥ 35 years, migraines and ≥ 35 years old or visual disturbances, up to 6 weeks postpartum, BP ≥ 140/90, hypertension, CVD risk > 10%, blood clots, prev",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Shock diagnosis rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness",
+     "check_for of confusion/restlessness (not in the check list at all)"
+    ],
+    "problem": "No system_diagnosis_rule exists. Shock is only a tickable clinical_finding in the check_for, so the health worker must recognise shock unaided; the page gives the criteria and the rules do not use them. Note RR > 30 in the footnote vs RR >= 30 in the red box.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "probable Shock rule: any of SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness (the footnote's 'shock likely')",
+     "check_for confusion/restlessness"
+    ],
+    "problem": "Footnote 1 is an explicit 'shock likely' statement and so should be a probable diagnosis rule. Nothing on this page encodes it (it may exist on a shared shock page, which I can't see). Footnotes 2-4 (COC definition, COC and NSAID contraindications) are management or figure notes and out of scope.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent abnormal vaginal bleeding conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'Recent delivery' = postpartum state; recency is intrinsic to the concept, so no qualifier is needed.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Postpartum state is open-ended; page says recent delivery.",
+    "fix": "Keep, but note timing window is lost; no closer concept confirmed.",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'Recent delivery' read as Postpartum state; acceptable since postpartum implies recent delivery.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for urgent abnormal vaginal bleeding conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Pallor' with no site; 'Pallor of skin of face' is narrower (face only) and is not a descendant of the general complexion concept. SNOMED has no plain 'Pallor' finding; the closest unqualified concept is (snomed_concept \"Pale complexion\" \"finding\"), confirmed with exists.",
+    "fix": "Use (clinical_finding (snomed_concept \"Pale complexion\" \"finding\")), optionally or-ed with (clinical_finding (snomed_concept \"Pale conjunctiva\" \"finding\")) and the existing face concept, in both rules.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Pallor' with no site; 'of skin of face' narrows it.",
+    "fix": "Use a generic pallor concept if one exists; otherwise accept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says plain 'Pallor' (anaemia/haemorrhage sign); 'Pallor of skin of face' is a narrower site-specific concept.",
+    "fix": "Use (snomed_concept \"Pale complexion\" \"finding\") (exists, id 398979000, carries the 'pallor' sense) in both the check_for and the priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c009",
+  "text": "Check for urgent abnormal vaginal bleeding conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Asthenia is SNOMED's general 'weakness' finding; no plain 'Weakness' finding exists.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says weakness (and footnote weakness); Asthenia is generalised weakness, acceptable but 'Muscle weakness' is not intended.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'weakness' -> Asthenia is a fair match.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Urgent: abnormal vaginal bleeding with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Postpartum state is open-ended; page says recent delivery.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Urgent: abnormal vaginal bleeding with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c007: page says unqualified 'Pallor'; the face-only concept is narrower than the page and a closer unqualified concept (snomed_concept \"Pale complexion\" \"finding\") exists.",
+    "fix": "Use (clinical_finding (snomed_concept \"Pale complexion\" \"finding\")) (or an or of pallor concepts) as the anchor of the 'Pallor with …' and-group.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Pallor' with no site; 'of skin of face' narrows it.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says plain 'Pallor' (anaemia/haemorrhage sign); 'Pallor of skin of face' is a narrower site-specific concept.",
+    "fix": "Use (snomed_concept \"Pale complexion\" \"finding\") (exists, id 398979000, carries the 'pallor' sense) in both the check_for and the priority rule.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c024",
+  "text": "Urgent: abnormal vaginal bleeding with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "As c009.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Pulse >= 100 is compared on (measurement \"Pulse, function\" bpm). \"Pulse, function\" (8499008) is a cardiovascular-function observable, not a rate; \"Heart rate\" (364075005) is the measurable. If the routine pulse vital is not recorded under this concept the comparison never matches and the pulse arm of the pallor criterion is silently lost.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(missing) Diagnose probable shock",
+  "text": "Footnote 1 defines \"shock likely\" (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) and the red box cites it. The house standard says a red-box criterion backed by an \"X likely\" gets a probable rule referenced via (active_condition X). Instead Shock is a bare tickable finding and confusion/restlessness is not checked for at all.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Hb < 6 is absent (not representable). The rule therefore cannot fire on the one laboratory danger sign; no proxy finding was attempted. By design, but it should be recorded as a known gap.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole file)",
+  "text": "No system_diagnosis_rule exists for the page. The lower page's only symptom-driven discrimination (thyroid-symptom cluster leading to TSH, bleeding-from-elsewhere leading to FBC/referral, postmenopausal bleeding leading to 2-week referral) is not captured as check_for findings. Defensible under a strict reading of \"X likely / consider X\", but the house standard also asks for every discriminating finding the algorithm uses.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "\"Pallor of skin of face\" narrows the page's generic pallor to the face; SNOMED has no plain \"Pallor\" finding, and \"Pale discoloration of entire skin of body\" is the alternative. Minor concept-fit issue, not a logic error.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "\"Victim of rape\" is a child of \"Victim of sexual aggression\"; both are listed, which is redundant since descendants match. \"Postpartum state\" lacks the \"Recent\" qualifier its sibling findings carry. Neither changes behaviour.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_priority_evaluation Urgent",
+  "text": "Hb < 6 omitted from the urgent criteria; not representable (no unit) but nothing records this. Acceptable per brief.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for",
+  "text": "check_for lists pregnancy/postpartum/shock/pallor/dizziness/asthenia/chest pain/assault, but omits the measurements the rule uses (systolic BP < 80, pulse >= 100, respiratory rate >= 30), so check list and priority rule disagree.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for",
+  "text": "Footnote 1 defines shock as SBP<80, pulse>=100, RR>30 (strict), confusion/restlessness, weakness; shock is encoded as a bare finding with no criteria; RR > 30 vs >= 30 differs between box (>=30) and footnote (>30); rule follows box.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_priority_evaluation Urgent",
+  "text": "Flowchart section (non-urgent approach) has refer-within-2-weeks / next-day referrals (e.g. new bleeding >1 year after final period, bleeding easy bruising, mass in abdomen same week, TSH criteria with pulse >=100) that carry triage logic; no lower-priority evaluations encoded. Likely intended page scope is the red box only, but these are a miss against the house standard of priority evaluations.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "file",
+  "text": "No probable/possible diagnosis rules; page has 'treat for likely anaemia' (needs Hb, not representable) so none expected.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none) / Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Footnote 1 defines 'shock likely' for the red-box 'Shock' item, but no probable Shock system_diagnosis_rule exists and the priority rule uses a bare (clinical_finding Shock) rather than (active_condition Shock). Shock only triggers if a clinician records it directly; the pulse >= 100 / RR > 30 / confusion / weakness without pallor route to shock is lost (only SBP < 80 survives).",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Pallor is encoded as 'Pallor of skin of face', a narrow concept; generalized pallor concepts ('Pale discoloration of entire skin of body', 'Pale complexion') are siblings, not descendants, so they won't match and the pallor-plus-tachycardia branch can silently fail.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Hb < 6 can't be represented; one of the six red-box criteria is unencodable. Acceptable by design, but it should be flagged for reviewers.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "'Victim of rape' is a descendant of 'Victim of sexual aggression', so it's redundant in both the check_for and the priority or. Harmless.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "Recent delivery maps to Postpartum state, which carries no recency qualifier, while miscarriage and termination carry 'Recent'. The treatment is inconsistent but defensible.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "Type and trigger are right, but the red-box criterion 'Hb < 6' (element p73-rb1-e06) is not checked for at all, and there is nothing to prompt the Hb check the page relies on ('Check Hb: if Hb < 12, treat for likely anaemia'). The grammar has no g/dL unit, so if a measurement cannot be expressed, the gap must at least be recorded and approximated (e.g. (clinical_finding (snomed_concept \"Hemoglobin below reference range\" \"finding\")) with a Severe qualifier), not silently dropped. Pallor should be the unqualified concept (see c007).",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Urgent level and (and complaint (or …)) structure match the box heading; the 'Pallor with …' and/or nesting is faithful. But 'Hb < 6' is missing from the or-list, so a patient with vaginal bleeding and Hb < 6 is never flagged urgent. Also, footnote 1 ('If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely') is an 'X likely' with no probable Shock diagnosis rule, so the Shock branch only fires if shock is recorded by hand.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(page coverage)",
+  "text": "The page's non-urgent diagnostic logic is not encoded: 'If Hb < 12, treat for likely anaemia' (stated twice, heavy periods and spotting) should be a probable (snomed_concept \"Anemia\" \"disorder\") rule with vaginal bleeding + low Hb; 'shock likely' (footnote 1) should be a probable (snomed_concept \"Shock\" \"disorder\") rule. The page's 2-week referral triggers (new bleeding > 1 year after final period, i.e. (snomed_concept \"Postmenopausal bleeding\" \"finding\"); pelvic pain; bleeding persisting after treatment) and 'bleeding from elsewhere … refer to doctor next day' are not represented in any form.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "Omits Hb < 6 criterion from the red box, and omits the measurement-based danger signs (SBP < 80, pulse >= 100, RR >= 30), so the task does not prompt for them.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Missing the red-box criterion 'Hb < 6' (page element p73-37cf32fe), an Urgent trigger. Otherwise and/or structure matches the page (bleeding AND any of the listed; pallor AND any of pulse/RR/dizziness/weakness/chest pain). Priority Urgent is justified by the box heading.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: abnormal vaginal bleeding with danger signs",
+  "text": "Red-box criterion 'Hb < 6' is missing entirely from the Urgent priority rule (and from the check_for). No haemoglobin measurement/unit is used; if the grammar has no g/dL unit it should at least be recorded as a known gap (e.g. a severe-anaemia finding) rather than silently dropped. Structure otherwise faithful: (and vaginal bleeding (or ...)), pallor AND (pulse>=100 | RR>=30 | dizziness | weakness | chest pain) is a reasonable reading of 'Pallor with ...'. Urgent level matches the 'Give urgent attention' heading.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent abnormal vaginal bleeding conditions",
+  "text": "check_for omits Hb < 6 (no Hb measure task) and the routine vitals are rightly omitted. Trigger 'Bleeding from vagina' is right. Otherwise covers the red box.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "(missing) diagnosis rules",
+  "text": "The file encodes only the red box. Page has 'treat for likely anaemia' (Hb < 12, both in heavy periods and spotting branches) -> should be a probable Anaemia rule; footnote 1 'shock likely' (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness) -> probable Shock rule referenced via active_condition from the priority rule. Also unencoded triage cues: TSH/thyroid suspicion in irregular periods, 'If sexual abuse suspected' refer. Brief says every 'X likely' should be a probable diagnosis.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (clinical_finding (snomed_concept \"Pale complexion\" \"finding\"))  vs  B: (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "reason": "The page says only \"Pallor\", which has no exact SNOMED finding; both are faithful, and 'Pallor of skin of face' keeps the page's word and is the form VHA's vocabulary already uses most (5 vs 3).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (clinical_finding (snomed_concept \"Pale complexion\" \"finding\"))  vs  B: (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "reason": "Same concept choice as check_for for \"Pallor with pulse ≥ 100, ...\", kept consistent so the checked-for item is the evidence used.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (none)  vs  B: (clinical_finding (snomed_concept \"Victim of rape\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+    "reason": "The page names both \"Sexual assault and/or rape\"; 'Victim of rape' is a child of 'Victim of sexual aggression', so asking for it explicitly mirrors the page without changing when the rule fires.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "slug": "73-abnormal-vaginal-bleeding",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (none)  vs  B: (clinical_finding (snomed_concept \"Victim of rape\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of rape\" \"finding\"))",
+    "reason": "\"and/or rape\" is an explicit urgent criterion; the extra or-branch is subsumed by its parent, so firing is unchanged and the page's wording is visible.",
+    "unsettled": false
+   }
+  ]
+ }
+]

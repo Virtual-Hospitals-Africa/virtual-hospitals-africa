@@ -1,0 +1,135 @@
+{
+ "page": 24,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (or Tenderness of chest wall, Chest pain on breathing)  vs  B: adds Pain aggravated by position to the pneumothorax/pneumonia task trigger",
+   "choice": "B",
+   "final_expr": "(or (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) Tenderness of chest wall, Chest pain on breathing)",
+   "reason": "The page's question is \"worse on lying down, palpation or breathing deeply\"; B covers \"lying down\" (with a broader concept), A leaves it out.",
+   "unsettled": true
+  },
+  {
+   "role": "trigger",
+   "difference": "A: none  vs  B: two extra Chest pain triggers (separate tasks \"Do an ECG for chest pain (doctor to review)\" and \"Check chest pain character for acute coronary syndrome\")",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Chest pain\" \"finding\"))",
+   "reason": "The page has a separate step \"Do an ECG (doctor to review)\" and separate questions; B's split mirrors them, and the checked-for items are the same in both builds.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (Chest discomfort, New)  vs  B: none",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "reason": "The page says \"New pain or discomfort in centre or left side of chest\"; omitting discomfort drops a listed item, though the concept has no site and is broader.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Pale complexion  vs  B: Pallor of skin of face",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "reason": "Page says \"Pallor\", which has no concept; both are face-pallor findings in the vocabulary and B's is the one VHA's rules use most (5 uses vs 3).",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Hyperresonance  vs  B: Hyperresonance (Unilateral)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "reason": "The page says \"more resonant/decreased breath sounds/pain on one side\"; \"on one side\" applies to the resonance too.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Decreased breath sounds  vs  B: Decreased breath sounds (Unilateral)",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "reason": "Same reason: \"decreased breath sounds … on one side\".",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: none  vs  B: Pain aggravated by position",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))",
+   "reason": "The page asks whether chest pain is \"worse on lying down\"; B is the only build that checks for it (concept is broader).",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (Chest discomfort, New) in red-box priority  vs  B: none",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "reason": "Red box lists \"New pain or discomfort in centre or left side of chest\".",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: Pale complexion  vs  B: Pallor of skin of face",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+   "reason": "As for check_for: \"Pallor\"; consistent concept with VHA's existing rules.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: Urgent on (active_condition Pneumonia) and (active_condition Tension pneumothorax)  vs  B: none",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "Both diagnoses sit inside the positional Yes box headed \"Manage and refer urgently\", which B's positional priority already covers; an active_condition priority on Pneumonia would also fire for pneumonia from other pages.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: none  vs  B: Urgent: chest pain AND (Pain aggravated by position OR Tenderness of chest wall OR Chest pain on breathing)",
+   "choice": "B",
+   "final_expr": "(and (clinical_finding Chest pain) (or Pain aggravated by position, Tenderness of chest wall, Chest pain on breathing))",
+   "reason": "The Yes branch of \"Is chest pain worse on lying down, palpation or breathing deeply?\" leads to \"Manage and refer urgently:\" without a \"likely\" diagnosis.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: Hyperresonance / Decreased breath sounds  vs  B: same with Unilateral (tension pneumothorax rule)",
+   "choice": "B",
+   "final_expr": "(Hyperresonance|Decreased breath sounds (qualifier Unilateral))",
+   "reason": "\"more resonant/decreased breath sounds/pain on one side\".",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: no Pain aggravated by position  vs  B: Pain aggravated by position in the positional Yes/No conditions of the ACS, stable angina and tension pneumothorax rules",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")))",
+   "reason": "The question names \"lying down\"; B represents it, A cannot.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: ACS = chest pain AND (ECG abnormal OR positional No) AND (feature OR not known stable angina)  vs  B: ACS = chest pain AND (ECG abnormal OR (positional No AND (feature OR not known stable angina)))",
+   "choice": "new",
+   "final_expr": "(and Chest pain (or ST elevation, ST depression, LBBB, (and (no PAP) (no Tenderness) (no Pain on breathing))) (or rest, worsening, prolonged, onset>=10 min, (no known stable angina)))",
+   "reason": "The image draws \"ECG abnormal\" into the \"Is chest pain/discomfort any of\" box, not straight to ACS (A's structure); kept B's three positional negatives.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: no stable angina rule  vs  B: stable angina rule gated on each abnormal ECG finding recorded No",
+   "choice": "new",
+   "final_expr": "(and Chest pain (or ST elevation, ST depression, LBBB, (and (no PAP) (no Tenderness) (no Pain on breathing))) (no rest) (no worsening) (no prolonged) (<= onset 10 min) (known stable angina))",
+   "reason": "Both ECG branches reach \"Is patient known with stable angina?\" via the features box, so the entry is the same as ACS's; B's ECG-No gate contradicts \"ECG abnormal\" feeding that box and excluded an unavailable ECG.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: none  vs  B: (diagnosis Stable angina probable)",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable)",
+   "reason": "The page states an outcome, \"Patient has stable angina\"; encoded probable as for a \"likely\" outcome, but the patient is already known with it.",
+   "unsettled": true
+  }
+ ],
+ "notes": "Both builds passed. Base B (more complete: lying-down concept, unilateral qualifiers, separate ECG step, positional Urgent priority, stable angina outcome). From A: the flowchart routing (ECG abnormal enters the features question; confirmed on an image crop) and 'Chest discomfort' New. Dropped A's active_condition priorities on pneumonia and tension pneumothorax (covered by B's positional Urgent priority). Element p24-fdde835a ('ECG normal/... unavailable or uncertain'), cited by B only through its ECG-No gate, is now accounted for as flowchart_routing. Counts by choice: {\"B\": 12, \"A\": 2, \"new\": 2}"
+}

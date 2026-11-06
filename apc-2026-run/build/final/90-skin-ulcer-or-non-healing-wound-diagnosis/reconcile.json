@@ -1,0 +1,103 @@
+{
+ "page": 90,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (clinical_finding \"Wound, non-healed\" morphologic abnormality)  vs  B: (clinical_finding \"Chronic wound\" disorder), in tasks, priority rules and diagnosis rules",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\"))",
+   "reason": "The page says \"non-healing wound\", which \"Wound, non-healed\" names directly (and VHA's vocabulary already uses it); \"Chronic wound\" adds a duration the page does not state.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (clinical_finding \"Confined to chair\")  vs  B: (clinical_finding \"Dependence on wheelchair\"), also in the pressure-ulcer rule and the three Q1 No negations",
+   "choice": "B",
+   "final_expr": "(clinical_finding (snomed_concept \"Dependence on wheelchair\" \"finding\"))",
+   "reason": "The page says \"in wheelchair\"; \"Dependence on wheelchair\" names the wheelchair, \"Confined to chair\" does not.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: infection = Infected ulcer of skin or Local infection of wound  vs  B: also any one of Erythema, Warm skin, Swelling (also in check_for)",
+   "choice": "A",
+   "final_expr": "(or (clinical_finding \"Infected ulcer of skin\") (clinical_finding \"Local infection of wound\"))",
+   "reason": "The page's criterion is \"Infection\", with \"(surrounding skin red/warm/swollen)\" as its description; B's unsited single signs would make any swelling or redness count as infection, but the page does not say whether the signs alone suffice.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Skin ulcer with finding_site at 8 pressure sites (occiput, spine, scapula, elbow, sacrum, hip, ankle, heel)  vs  B: none (site half not modelled)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Skin ulcer\" \"disorder\") (finding_site \u2026)) x 8",
+   "reason": "Q1 is an \"and\": \"bedridden/in wheelchair and is ulcer in common pressure ulcer site (see below)\"; A encodes both halves from the figure, B drops the second and over-fires.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: arterial, venous and diabetic rules require Q1 = No  vs  B: they do not",
+   "choice": "A",
+   "final_expr": "(or (and (no bedridden) (no wheelchair)) (and (no ulcer at each pressure site)))",
+   "reason": "The flowchart reaches \"Is ulcer on the lower leg or foot?\" only on the No branch of Q1, so the later diagnoses require it.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (clinical_finding \"Weak arterial pulse\" (finding_site \"Foot structure\"))  vs  B: (clinical_finding \"Abnormal foot pulse\"), in check_for, arterial rule and negations",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Weak arterial pulse\" \"finding\") (finding_site (snomed_concept \"Foot structure\" \"body structure\")))",
+   "reason": "The page says \"reduced\" foot pulses; a weak pulse at the foot is that, while \"Abnormal foot pulse\" also covers biphasic/monophasic pulses.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (clinical_finding \"Swelling of lower limb\" (qualifier Chronic))  vs  B: (clinical_finding \"Leg swelling symptom\" (qualifier Chronic)), in check_for, venous rule and diabetic negation",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Swelling of lower limb\" \"finding\") (qualifier (snomed_concept \"Chronic\" \"qualifier value\")))",
+   "reason": "The page asks about \"chronic swelling of the leg\" as an observation; \"Swelling of lower limb\" matches the words, while B's narrower concept is a reported symptom but is the one VHA's vocabulary uses more often.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: no lower-leg/foot site forms of the wound  vs  B: Chronic wound with finding_site lower leg / foot (check_for and arterial, venous, diabetic rules)",
+   "choice": "neither",
+   "final_expr": "",
+   "reason": "Follows the trigger decision (no \"Chronic wound\"); the page asks \"Is ulcer on the lower leg or foot?\", which \"Skin ulcer\" with those sites already covers.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: critical limb ischaemia rule without the ulcer/wound  vs  B: with (or Skin ulcer, wound) as context",
+   "choice": "B",
+   "final_expr": "(or (clinical_finding (snomed_concept \"Skin ulcer\" \"disorder\")) (clinical_finding (snomed_concept \"Wound, non-healed\" \"morphologic abnormality\")))",
+   "reason": "The red box applies to \"the patient with a skin ulcer or non-healing wound\", so this page's CLI rule is scoped to that patient (with A's wound concept).",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (diagnosis \"Ischemic ulcer\")  vs  B: (diagnosis \"Ischemic ulcer of lower limb\")",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Ischemic ulcer of lower limb\" \"disorder\") probable)",
+   "reason": "The branch only covers \"ulcer on the lower leg or foot\", so the narrower concept (is-a \"Ischemic ulcer\") is exact.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: two urgent rules (infection; critical limb ischaemia)  vs  B: one urgent rule with an or of both",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "Same logic either way; the page lists two separate bullets, and two named rules keep them distinct.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: two tasks (urgent conditions; cause)  vs  B: one task",
+   "choice": "A",
+   "final_expr": "",
+   "reason": "Same items either way; the page separates the red box from \"Identify cause\", and splitting matches that.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Base is A (pressure sites from the figure and Q1 No negations follow the flowchart; B over-fired). From B: Dependence on wheelchair, Ischemic ulcer of lower limb, and the ulcer/wound context on the CLI rule. Several diff lines collapse into each decision (the trigger and wheelchair concepts recur in many rules). A's known issues for (no X) of sited/qualified findings are kept."
+}

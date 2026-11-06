@@ -1,0 +1,681 @@
+{
+ "edition": "2026",
+ "page": 59,
+ "lisp_file": "59-cholera.lisp",
+ "conditions": [
+  {
+   "rule": "Check for cholera",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "high",
+   "note": "Diarrhoea is a recorded common symptom, the natural anchor; page has no red box for the cholera entry, so the outside sentence is cited."
+  },
+  {
+   "rule": "Check for cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "high",
+   "note": "Diarrhea + Watery qualifier (vocabulary uses this qualifier). No precoordinated watery diarrhoea concept found. \"With or without vomiting\" so vomiting not required."
+  },
+  {
+   "rule": "Check for cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "has been in cholera outbreak area",
+   "confidence": "medium",
+   "note": "Exposure to (contextual qualifier) + Vibrio cholerae (organism), the page-20 exposure pattern. Alternatives: \"Exposure to Vibrio cholerae\" (event category) and History of travel with high risk of exposure to communicable disease (situation; implies travel, page also covers residents)."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "trigger",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "Dehydration assessment follows once cholera is likely (\"Decide on further management according to level of dehydration\")."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Drowsy (finding); paired with Decreased level of consciousness for \"drowsy/decreased consciousness\"."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "decreased consciousness",
+   "confidence": "high",
+   "note": "Exact match for \"decreased consciousness\"."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confused\" is a synonym of Clouded consciousness (most-used in vocabulary); its descendant Acute confusion (a warning sign) also matches. No plain \"Confusion\" FSN."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept; vocabulary term."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "weak pulse",
+   "confidence": "medium",
+   "note": "No \"Weak pulse\" FSN; Weak arterial pulse is in vocabulary. Thready pulse considered (weak and rapid) but narrower."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "unable to drink",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty drinking\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "drinking poorly",
+   "confidence": "medium",
+   "note": "No \"drinking poorly\" concept; Difficulty drinking is the closest sibling under Finding related to ability to drink. Grouped with Unable to drink as one any2 item."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Decreased skin turgor = poor skin turgor; vocabulary term."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sunken eyes\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "sunken eyes",
+   "confidence": "high",
+   "note": "Exact concept; vocabulary term."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "restless",
+   "confidence": "high",
+   "note": "Restlessness (finding)."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "thirsty",
+   "confidence": "medium",
+   "note": "No \"Thirst\" finding FSN. Increased thirst chosen over Excessive thirst and over vocabulary's Thirst due to water deprivation (wrong mechanism for diarrhoeal loss)."
+  },
+  {
+   "rule": "Check for dehydration in cholera",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "\"Dry mouth\" is Xerostomia; general concept so Xerostomia due to dehydration (vocabulary) matches as a descendant."
+  },
+  {
+   "rule": "Diagnose probable cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\") (qualifier (snomed_concept \"Watery\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "watery diarrhoea",
+   "confidence": "high",
+   "note": "Diarrhea + Watery qualifier (vocabulary uses this qualifier). No precoordinated watery diarrhoea concept found. \"With or without vomiting\" so vomiting not required."
+  },
+  {
+   "rule": "Diagnose probable cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "has been in cholera outbreak area",
+   "confidence": "medium",
+   "note": "Exposure to (contextual qualifier) + Vibrio cholerae (organism), the page-20 exposure pattern. Alternatives: \"Exposure to Vibrio cholerae\" (event category) and History of travel with high risk of exposure to communicable disease (situation; implies travel, page also covers residents)."
+  },
+  {
+   "rule": "Diagnose probable cholera",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Vibrio cholerae\" \"organism\"))) (time_ago 5 days))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "in past 5 days",
+   "confidence": "medium",
+   "note": "\"in past 5 days\" = within 5 days, written as <= per the time-comparison decision. Onset of an exposure record may equal its recording time, so this may add little in practice."
+  },
+  {
+   "rule": "Diagnose probable cholera",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cholera\" \"disorder\") probable)",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "\"cholera likely\" -> probable Cholera."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "The dehydration algorithm sits under the cholera assessment on this page; restricts the rule to the page's population."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "drowsy",
+   "confidence": "high",
+   "note": "Drowsy (finding); paired with Decreased level of consciousness for \"drowsy/decreased consciousness\"."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "decreased consciousness",
+   "confidence": "high",
+   "note": "Exact match for \"decreased consciousness\"."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "\"Confused\" is a synonym of Clouded consciousness (most-used in vocabulary); its descendant Acute confusion (a warning sign) also matches. No plain \"Confusion\" FSN."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept; vocabulary term."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\"))",
+   "element_keys": [
+    "p59-9939a0d3"
+   ],
+   "quote": "weak pulse",
+   "confidence": "medium",
+   "note": "No \"Weak pulse\" FSN; Weak arterial pulse is in vocabulary. Thready pulse considered (weak and rapid) but narrower."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "unable to drink",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty drinking\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "drinking poorly",
+   "confidence": "medium",
+   "note": "No \"drinking poorly\" concept; Difficulty drinking is the closest sibling under Finding related to ability to drink. Grouped with Unable to drink as one any2 item."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Decreased skin turgor = poor skin turgor; vocabulary term."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sunken eyes\" \"finding\"))",
+   "element_keys": [
+    "p59-1efb182a"
+   ],
+   "quote": "sunken eyes",
+   "confidence": "high",
+   "note": "Exact concept; vocabulary term."
+  },
+  {
+   "rule": "Diagnose probable severe dehydration in cholera",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Severe dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p59-b01cae1d"
+   ],
+   "quote": "Manage as severe dehydration",
+   "confidence": "medium",
+   "note": "\"Manage as severe dehydration\" read as probable Severe dehydration (the page does not say \"likely\" here but directs management as such)."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Cholera\" \"disorder\"))",
+   "element_keys": [
+    "p59-5536a234"
+   ],
+   "quote": "cholera likely",
+   "confidence": "high",
+   "note": "The dehydration algorithm sits under the cholera assessment on this page; restricts the rule to the page's population."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Every \"any of\" item must be recorded absent."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Every \"any of\" item must be recorded absent."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Every \"any of\" item must be recorded absent."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Every \"any of\" item must be recorded absent."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weak arterial pulse\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Every \"any of\" item must be recorded absent."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to drink\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Any2 of absences = at most one of the \">= 2 of\" groups present."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty drinking\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Any2 of absences = at most one of the \">= 2 of\" groups present."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Any2 of absences = at most one of the \">= 2 of\" groups present."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sunken eyes\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p59-9939a0d3",
+    "p59-1efb182a",
+    "p59-dfc9ebf2"
+   ],
+   "quote": "No: Does patient have",
+   "confidence": "medium",
+   "note": "Q1 = No branch, written as recorded absence (no ...): VHA evidence code rejects (not ...). Any2 of absences = at most one of the \">= 2 of\" groups present."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "restless",
+   "confidence": "high",
+   "note": "Restlessness (finding)."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Increased thirst\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "thirsty",
+   "confidence": "medium",
+   "note": "No \"Thirst\" finding FSN. Increased thirst chosen over Excessive thirst and over vocabulary's Thirst due to water deprivation (wrong mechanism for diarrhoeal loss)."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "\"Dry mouth\" is Xerostomia; general concept so Xerostomia due to dehydration (vocabulary) matches as a descendant."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p59-dfc9ebf2"
+   ],
+   "quote": "pulse ≥ 100",
+   "confidence": "high",
+   "note": "Pulse, function >= 100 bpm, as written."
+  },
+  {
+   "rule": "Diagnose probable some dehydration in cholera",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p59-ce0b7574"
+   ],
+   "quote": "Some dehydration likely",
+   "confidence": "medium",
+   "note": "\"Some dehydration likely\" -> probable Dehydration (disorder). No \"some dehydration\" concept; Moderate/Mild dehydration would add a grade the page does not state."
+  },
+  {
+   "rule": "Urgent: severe dehydration in cholera",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Severe dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p59-b01cae1d"
+   ],
+   "quote": "Manage as severe dehydration and refer urgently",
+   "confidence": "medium",
+   "note": "\"refer urgently\" -> Urgent on the severe dehydration diagnosis. Page has no explicit \"give urgent attention\" box."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p59-a5bb7fa3",
+   "element_id": "p59-rb1-e01",
+   "text": "Yes",
+   "reason_category": "flowchart_routing",
+   "reason": "\"Yes\" arrow from the Q2 question into the some-dehydration box; the branch itself is the any2 in \"Diagnose probable some dehydration in cholera\"."
+  },
+  {
+   "element_key": "p59-62f0cd14",
+   "element_id": "p59-rb1-e03",
+   "text": "Give oral rehydration solution (ORS) 75mL/kg (or at least 2-4L) over 4 hours.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-44947cb5",
+   "element_id": "p59-rb1-e04",
+   "text": "Give additional ORS (as much as tolerated) after each episode of diarrhoea/ vomiting.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-5dfe8db9",
+   "element_id": "p59-rb2-e02",
+   "text": "Insert 2 large bore IV lines, if possible.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-eda8774d",
+   "element_id": "p59-rb2-e03",
+   "text": "Give Ringer's lactate IV fluid as first fluid choice. If unavailable, give sodium chloride 0.9% IV:",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-1daa568d",
+   "element_id": "p59-rb2-e04",
+   "text": "Give 30mL/kg IV over first 30 minutes, then give 70mL/kg over next 2.5 hours, while awaiting transfer.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-3b72cc16",
+   "element_id": "p59-rb2-e05",
+   "text": "If transport delayed > 3 hours: continue 5mL/kg/hour IV.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-99e6ec15",
+   "element_id": "p59-rb2-e06",
+   "text": "If unable to insert IV line and patient able to drink, give oral rehydration solution (ORS) 30mL/kg over first 30 minutes, then 70mL/ kg over next 2.5 hours.",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-e9ab46cf",
+   "element_id": "p59-rb2-e07",
+   "text": "If unable to insert IV line and decreased level of consciousness, insert nasogastric tube (NGT) and give ORS 30mL/kg over first 30 minutes, then 70mL/kg over ne",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-cb8b9666",
+   "element_id": "p59-rb2-e08",
+   "text": "Calculate further fluids according to ongoing losses. Add 10mL/kg of IV fluid/ORS for every episode of diarrhoea or vomiting. Increase rate of fluids to give ne",
+   "reason_category": "management_step",
+   "reason": "Fluid/IV/ORS management detail; no manage tasks or doses in this pass."
+  },
+  {
+   "element_key": "p59-f597cf33",
+   "element_id": "p59-rb3-e01",
+   "text": "Reassess every 15-30 minutes.",
+   "reason_category": "management_step",
+   "reason": "Reassessment interval during IV treatment; no triage/diagnostic logic."
+  },
+  {
+   "element_key": "p59-63971f2e",
+   "element_id": "p59-rb3-e02",
+   "text": "If no better or worse, discuss with referral centre.",
+   "reason_category": "management_step",
+   "reason": "Discussion/referral step after treatment response."
+  },
+  {
+   "element_key": "p59-a931d756",
+   "element_id": "p59-rb3-e03",
+   "text": "If awake, able to drink and pulse < 100, continue IV fluids, but also manage as some dehydration: give ORS 75mL/kg (or at least 2-4L) over 4 hours.",
+   "reason_category": "management_step",
+   "reason": "Fluid management according to response to IV treatment (state after treatment is not representable either)."
+  },
+  {
+   "element_key": "p59-cefc78f3",
+   "element_id": "p59-rb4-e01",
+   "text": "Manage as severe dehydration and refer urgently (see adjacent).",
+   "reason_category": "not_representable",
+   "reason": "Reached only from \"Reassess hourly\" after ORS has been given; the language cannot express \"on reassessment after treatment\", and encoding these signs into the initial severe-dehydration rule would change it (e.g. pulse >= 100 alone would become severe). Urgent priority for severe dehydration is already given by \"Urgent: severe dehydration in cholera\"."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Severe dehydration as a diagnosis",
+   "decision": "\"Manage as severe dehydration and refer urgently\" is encoded as a probable Severe dehydration diagnosis plus an Urgent priority evaluation.",
+   "alternatives": "Priority rule directly on the Q1 criteria without a diagnosis; Very urgent/Emergency (the page says only \"refer urgently\").",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Q1 = No branch for some dehydration",
+   "decision": "Written with recorded absences (no ...) of every Q1 item and any2 of absences for the \">= 2 of\" group, because VHA evidence code rejects (not ...). The rule therefore needs the Q1 items recorded absent.",
+   "alternatives": "Drop the exclusion (rule would fire alongside severe dehydration); (not (active_condition Severe dehydration)) — not supported.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Some dehydration concept",
+   "decision": "Dehydration (disorder), the general concept.",
+   "alternatives": "Moderate dehydration or Mild dehydration (both exist); the page grades only none/some/severe.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Cholera outbreak area exposure",
+   "decision": "(finding Exposure to (contextual qualifier) / Vibrio cholerae organism), with onset <= 5 days.",
+   "alternatives": "\"Exposure to Vibrio cholerae\" (event); History of travel with high risk of exposure to communicable disease (situation).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Dehydration rules scoped to cholera",
+   "decision": "Dehydration task and rules require (active_condition Cholera), since the algorithm sits under the cholera assessment.",
+   "alternatives": "Unscoped dehydration rules triggered by diarrhoea (would overlap other diarrhoea pages).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Reassess-hourly node",
+   "decision": "Not encoded (post-treatment reassessment).",
+   "alternatives": "Fold its signs into severe dehydration (would over-trigger at first assessment).",
+   "confidence": "high"
+  }
+ ]
+}

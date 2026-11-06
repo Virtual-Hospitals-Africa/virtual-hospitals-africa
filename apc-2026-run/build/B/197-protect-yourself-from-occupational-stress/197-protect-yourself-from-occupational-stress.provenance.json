@@ -1,0 +1,1454 @@
+{
+ "edition": "2026",
+ "page": 197,
+ "lisp_file": "197-protect-yourself-from-occupational-stress.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "element_keys": [
+    "p197-067dc3f3"
+   ],
+   "quote": "occupational stress",
+   "confidence": "high",
+   "note": "Occupational stress encoded as Stress at work (finding)."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Stress at work\" \"finding\") possible)",
+   "element_keys": [
+    "p197-067dc3f3"
+   ],
+   "quote": "occupational stress",
+   "confidence": "high",
+   "note": "Occupational stress encoded as Stress at work (finding). The possible-diagnosis form chains this task to the page's identification signs."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+   "element_keys": [
+    "p197-97d04034"
+   ],
+   "quote": "Alcohol or drug intoxication",
+   "confidence": "high",
+   "note": "Parent concept covers alcohol intoxication and drug intoxication in one; 'at work' not expressible."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+   "element_keys": [
+    "p197-ff846223"
+   ],
+   "quote": "Inappropriate behaviour",
+   "confidence": "high",
+   "note": "'at work' not expressible."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p197-73b8d4ed"
+   ],
+   "quote": "Aggressive",
+   "confidence": "high",
+   "note": "Also a VHA warning sign (Aggression). 'at work' not expressible."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "element_keys": [
+    "p197-73b8d4ed"
+   ],
+   "quote": "violent behaviour",
+   "confidence": "medium",
+   "note": "SNOMED has no 'Violent behavior' finding; Physical aggression (child of Aggressive behavior) is the closest current-behaviour concept."
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p197-2faddd5a"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent occupational stress conditions in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p197-2faddd5a"
+   ],
+   "quote": "Suicidal thoughts or plans",
+   "confidence": "high",
+   "note": "'plans' encoded as Planning suicide."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Identify occupational stress",
+   "confidence": "medium",
+   "note": "The identification section has no presenting complaint; anchored on Stress at work so the signs are asked when work stress is recorded."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for signs of occupational stress in a health worker",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible occupational stress",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Stress at work\" \"finding\") possible)",
+   "element_keys": [
+    "p197-d2f8e7be"
+   ],
+   "quote": "stress",
+   "confidence": "medium",
+   "note": "'may have ... stress' -> possible; Stress at work chosen because the page is about occupational stress."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible substance misuse in a health worker with occupational stress signs",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Harmful pattern of substance use\" \"disorder\") possible)",
+   "element_keys": [
+    "p197-d2f8e7be"
+   ],
+   "quote": "substance misuse",
+   "confidence": "medium",
+   "note": "'may have' -> possible diagnosis."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible depression in a health worker with occupational stress signs",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Depressive disorder\" \"disorder\") possible)",
+   "element_keys": [
+    "p197-d2f8e7be"
+   ],
+   "quote": "depression",
+   "confidence": "medium",
+   "note": "'may have' -> possible diagnosis."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible anxiety in a health worker with occupational stress signs",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anxiety disorder\" \"disorder\") possible)",
+   "element_keys": [
+    "p197-d2f8e7be"
+   ],
+   "quote": "anxiety",
+   "confidence": "medium",
+   "note": "'may have' -> possible diagnosis."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heavy drinking session\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "drunk ≥ 4 drinks1/ session",
+   "confidence": "low",
+   "note": "The drink count (≥ 4 per session) and 'in the past year' are not expressible; Heavy drinking session is the closest concept."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "used illegal drugs",
+   "confidence": "high",
+   "note": "'in the past year' not expressible."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Misuse of medication\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "misused prescription or over- the-counter medications",
+   "confidence": "high",
+   "note": "One concept covers prescription and OTC misuse."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smell of alcohol on breath\" \"finding\"))",
+   "element_keys": [
+    "p197-39e778a5"
+   ],
+   "quote": "Smells of alcohol",
+   "confidence": "medium",
+   "note": "Page does not say breath; breath is the usual site and the only concept."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indifference\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "Indifferent",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "tense",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "irritable",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "angry",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "felt down/depressed",
+   "confidence": "high",
+   "note": "'In the past month' not expressible (onset would mean started within a month, which is different)."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling hopeless\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "hopeless",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anhedonia\" \"finding\"))",
+   "element_keys": [
+    "p197-3b001bd0"
+   ],
+   "quote": "little interest/pleasure in doing things",
+   "confidence": "high",
+   "note": "Anhedonia chosen over Loss of interest because the page names both interest and pleasure."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bereavement\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Bereavement",
+   "confidence": "high",
+   "note": "'Recent' not expressible."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accidental needle stick injury\" \"disorder\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Needlestick injury",
+   "confidence": "high",
+   "note": "No site-less 'Needle stick injury'; Accidental needle stick injury is the general concept."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p197-72a4dffb"
+   ],
+   "quote": "Traumatic event",
+   "confidence": "medium",
+   "note": "'Traumatic event' exists only as an event concept; the finding Victim of psychological trauma is the closest finding."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absenteeism at work\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Frequent absenteeism",
+   "confidence": "high",
+   "note": "'Frequent' not expressible separately."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excess sick leave\" \"finding\"))",
+   "element_keys": [
+    "p197-83fbfff8"
+   ],
+   "quote": "Often takes sick leave",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Reduced concentration",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p197-e33a1617"
+   ],
+   "quote": "Fatigue",
+   "confidence": "high",
+   "note": "Fatigue is a common symptom, so these possible rules can fire for any adult (see remaining questions)."
+  },
+  {
+   "rule": "Diagnose possible burnout in a health worker with occupational stress signs",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Physical AND emotional exhaustion state\" \"disorder\") possible)",
+   "element_keys": [
+    "p197-d2f8e7be"
+   ],
+   "quote": "burnout",
+   "confidence": "medium",
+   "note": "'may have' -> possible diagnosis. Burnout is a synonym of this concept."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress at work\" \"finding\"))",
+   "element_keys": [
+    "p197-067dc3f3"
+   ],
+   "quote": "occupational stress",
+   "confidence": "high",
+   "note": "Occupational stress encoded as Stress at work (finding)."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intoxication caused by psychoactive substance\" \"disorder\"))",
+   "element_keys": [
+    "p197-97d04034"
+   ],
+   "quote": "Alcohol or drug intoxication",
+   "confidence": "high",
+   "note": "Parent concept covers alcohol intoxication and drug intoxication in one; 'at work' not expressible."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Inappropriate behavior\" \"finding\"))",
+   "element_keys": [
+    "p197-ff846223"
+   ],
+   "quote": "Inappropriate behaviour",
+   "confidence": "high",
+   "note": "'at work' not expressible."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Aggressive behavior\" \"finding\"))",
+   "element_keys": [
+    "p197-73b8d4ed"
+   ],
+   "quote": "Aggressive",
+   "confidence": "high",
+   "note": "Also a VHA warning sign (Aggression). 'at work' not expressible."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))",
+   "element_keys": [
+    "p197-73b8d4ed"
+   ],
+   "quote": "violent behaviour",
+   "confidence": "medium",
+   "note": "SNOMED has no 'Violent behavior' finding; Physical aggression (child of Aggressive behavior) is the closest current-behaviour concept."
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p197-2faddd5a"
+   ],
+   "quote": "Suicidal thoughts",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: occupational stress with intoxication, inappropriate or violent behaviour, or suicidality",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))",
+   "element_keys": [
+    "p197-2faddd5a"
+   ],
+   "quote": "Suicidal thoughts or plans",
+   "confidence": "high",
+   "note": "'plans' encoded as Planning suicide."
+  }
+ ],
+ "elements_not_encoded": [],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Possible diagnoses from the identification section",
+   "decision": "Encoded 'may have substance misuse, stress, depression/anxiety or burnout' as five possible rules (Stress at work, Harmful pattern of substance use, Depressive disorder, Anxiety disorder, Physical AND emotional exhaustion state), each on any of the identification signs.",
+   "alternatives": "Not encoding them (the page is addressed to health workers, which the language cannot express); gating them on Stress at work.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Trigger",
+   "decision": "Both tasks are anchored on Stress at work (finding); the urgent task also fires on a possible diagnosis of Stress at work.",
+   "alternatives": "Stress (finding); no anchor exists in common symptoms or warning signs.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the box says 'Arrange urgent assessment'.",
+   "alternatives": "Very urgent for suicidal plans; the page does not escalate.",
+   "confidence": "high"
+  },
+  {
+   "topic": "'at work' qualifier",
+   "decision": "Dropped: the language has no work-setting qualifier.",
+   "alternatives": "none",
+   "confidence": "medium"
+  }
+ ]
+}

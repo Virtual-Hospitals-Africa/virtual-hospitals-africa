@@ -1,0 +1,1701 @@
+[
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-197f31de",
+  "text": "Unable to bear weight following injury, fracture likely 30.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All three parts encoded: Unable to weight-bear AND Traumatic injury, anchored to a foot finding, as a probable fracture; the priority rule consumes the fracture via active_condition. 'Fracture of bone' is the generic concept, which matches the page (it does not say fracture of foot). The cross-reference to page 30 is not representable and is correctly left out.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'following injury' is encoded as Traumatic injury (a disorder concept), acceptable but loose; fracture concept is not foot-specific"
+    ],
+    "problem": "Encoding is essentially right (unable to weight-bear AND injury -> probable fracture). Fracture of bone is generic, not foot/lower-limb; 'Unable to weight-bear' confirmed as the closest concept is 'Difficulty weight-bearing'/'Non-weight-bearing' exist, so wording is acceptable. Minor only.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Unable to bear weight + injury -> probable fracture, referenced by the Urgent rule. The 'following' (temporal) link is only implied by co-occurrence, which is acceptable. '→ 30' is a cross-reference.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-839a9f80",
+  "text": "Refer urgently.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The page says 'urgent attention' and 'Refer urgently', not 'Emergency', so the Urgent level is the right one. The referral action itself is out of scope by design (no manage tasks).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "'Refer urgently' is a management step; its priority consequence is carried by the Urgent priority rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p81-cf487151",
+  "text": "If the patient has diabetes or PVD, identify the foot at risk and review more frequently if patient also has any of: • Skin: callus, corns, cracks, wet soft skin between toes 85, ulcers 90. • Foot deformity: most commonly bunions (see above). If foot deformity, refer for specialist care. • Sensation",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "trigger: known diabetes or PVD",
+     "callus / corns",
+     "cracks between toes",
+     "wet soft skin between toes",
+     "ulcers",
+     "foot deformity (refer for specialist care)",
+     "abnormal light-prick sensation after 2 attempts",
+     "absent or reduced foot pulses",
+     "conclusion: foot at risk"
+    ],
+    "problem": "Nothing from this block is encoded: no check_for task triggered by diabetes/PVD, no rule. Most of the findings are expressible (SNOMED has 'Foot callus', 'Ulcer of foot', 'Deformity of foot', '10g monofilament sensation absent', 'Foot pulse absent'; 'Diabetic foot' exists as a disorder), so a check_for task on (active_condition Diabetes mellitus / Peripheral vascular disease) with a possible 'Diabetic foot' conclusion was feasible. Because it is not an 'X likely' and the page's output is a management decision, I rate this as a borderline omission rather than an error.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "foot-at-risk criteria: callus/corns/cracks/wet soft skin between toes/ulcers; abnormal light-prick sensation; absent or reduced foot pulses"
+    ],
+    "problem": "No rule or check_for captures the foot-at-risk criteria in diabetes/PVD patients.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "diabetes/PVD + skin lesion / deformity / abnormal sensation / reduced pulses -> foot at risk"
+    ],
+    "problem": "'Foot at risk' in diabetes/PVD (diabetes or PVD plus a skin lesion, deformity, abnormal light-prick sensation after 2 attempts, or absent/reduced foot pulses) is a classification criterion that could be a possible/probable 'foot at risk' rule, but it is not encoded at all. It is borderline because its consequence is review frequency (management), and no SNOMED 'foot at risk' concept was found by search.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-ee9b224e",
+  "text": "Generalised foot pain",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as Foot pain with the 'Generalized' qualifier, checked for and used as the AND anchor of both branches under it (peripheral neuropathy and PVD).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The 'Generalised foot pain' branch is encoded as Foot pain with a Generalized qualifier and gates both the neuropathy and PVD rules, as the flowchart does.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p81-b2c569e6",
+  "text": "Constant burning pain, pins/needles or numbness of feet worse at night",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "constant",
+     "worse at night"
+    ],
+    "problem": "Burning feet, Paresthesia of foot and Numbness of foot are encoded as an OR, which matches the page's 'or'. The two qualifying words are dropped: 'constant' (SNOMED has 'Constant pain' as a finding) and 'worse at night' (SNOMED has the qualifier value 'Night time' and the finding 'Symptom occurs at night'). Neither is a hard discriminator, so the clinical effect is small, but the page's criterion is narrower than the rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'constant' not captured",
+     "'worse at night' not captured",
+     "'pins/needles' encoded as Paresthesia of foot (ok)"
+    ],
+    "problem": "Burning/pins and needles/numbness encoded as OR, but the nocturnal worsening and constancy are dropped, and the rule additionally requires Generalized foot pain, which the page does not state as a prerequisite sign (it is a flowchart branch label).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "constant (persistent) character",
+     "worse at night (nocturnal aggravation)"
+    ],
+    "problem": "Burning, pins/needles and numbness are encoded as an or, but the qualifiers 'constant' and 'worse at night' are dropped, so any burning or tingling with generalised foot pain fires probable peripheral neuropathy.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-bce81f62",
+  "text": "Peripheral neuropathy likely • Test for HIV 124 and syphilis 66. If HIV positive, give routine care 126. • Check for diabetes 19. • In the past year, has patient drunk ≥ 4 drinks1/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165. If harmful alcoh",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Probable diagnosis uses 'Peripheral nerve disease' (disorder), which is the SNOMED concept whose synonym is 'Peripheral neuropathy' (no concept named exactly 'Peripheral neuropathy' exists; the tool suggests this one). Evidence follows the flowchart (generalised foot pain AND one of burning/pins-and-needles/numbness).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "conditions embedded in the bullets (isoniazid, linezolid, cancer, one-sided) are management and out of scope"
+    ],
+    "problem": "Diagnosis concept 'Peripheral nerve disease' is broader than 'Peripheral neuropathy'; a closer concept (a plain 'Peripheral neuropathy' disorder) was not verified in search results, which listed only subtypes. Likely acceptable. Management bullets not encoded by design.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Peripheral neuropathy likely' becomes probable 'Peripheral nerve disease'. The rest of the box is management (HIV/syphilis/diabetes tests, drugs, referral), which is out of scope by design.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-4bc7de93",
+  "text": "Localised pain Ensure that shoes fit properly.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "No explicit 'localised' qualifier is encoded, but both branches under this node (heel pain; foot deformity / bony lump at first MTP joint) are site-specific findings, so the localisation is implied by the findings themselves. Acceptable.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "'Localised pain' is a branch header with no conclusion of its own. Heel pain and the 1st-MTP bony lump are localised in themselves, so no rule needs it; 'Ensure shoes fit' is management.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p81-de21fb49",
+  "text": "Heel pain, worse on starting walking Foot deformity Bony lump at base of big toe; may have callus,",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "(a) Heel pain exact. (b) 'Pain aggravated by walking' is the nearest SNOMED finding; it loses the 'on starting' nuance (start-up pain), but no SNOMED concept for first-step pain exists, so this is the best available. (c) Deformity of foot exact. (d) 'Bony swelling of toe joint' with finding_site 'First metatarsophalangeal joint structure' is a precise encoding of 'bony lump at base of big toe'. (e) 'may have callus' is an optional descriptive feature, not a criterion, so its omission is correct. Logic is AND for both nodes, matching the page's comma/semicolon.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'worse on starting walking' (first steps) is encoded as the generic 'Pain aggravated by walking'"
+    ],
+    "problem": "Heel pain worse on starting walking is a start-up pattern; 'Pain aggravated by walking' is not specific and not site-bound to heel. Plantar fasciitis rule also merges the heel pain node. Bunion branch (foot deformity, bony lump at base of big toe) is encoded in the bunion rule; optional 'callus, redness or ulcer' not encoded (acceptable as 'may have').",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'on starting' walking (start-up pain) nuance"
+    ],
+    "problem": "Heel pain and the bony lump at the base of the big toe with foot deformity are encoded. 'Worse on starting walking' (first-step/start-up pain, the hallmark of plantar fasciitis) is encoded as the broader 'Pain aggravated by walking', so the 'on starting' nuance is lost; no closer SNOMED concept was found.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p81-580e6118",
+  "text": "redness or ulcer",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Fragment of the bunion node: '... may have callus, redness or ulcer'. These are optional accompanying features ('may have'), not criteria, so the house standard would not require them in the rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "callus, redness, ulcer"
+    ],
+    "problem": "Optional features not encoded; reasonable people could skip.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'May have callus, redness or ulcer' is optional, not required, and is rightly left out of the bunion criteria. Reasonable people could argue for check_for items.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-d6576abd",
+  "text": "Foot pain with",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The node sits under 'Generalised foot pain', so encoding the foot pain as Foot pain + Generalized qualifier is faithful.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "flowchart node text fragmented; see peripheral vascular disease rule"
+    ],
+    "problem": "Part of 'Foot pain with muscle pain in legs or buttocks' node: foot pain + muscle pain encoded, but page node does not say foot pain is generalised only by position under the Generalised branch (acceptable).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Foot pain with' is the PVD branch under generalised foot pain, encoded as Foot pain (Generalized).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-b5da04b4",
+  "text": "vascular",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Fragment 'vascular'; covered by the PVD rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "This is a fragment of 'Peripheral vascular disease likely'.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-8db686bc",
+  "text": "disease",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Fragment 'disease'; covered by the PVD rule.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "This is a fragment of 'Peripheral vascular disease likely'.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-236d6d33",
+  "text": "likely 154.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'likely' -> probable, as the house standard requires.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "'likely ->154' : the 'likely' is covered by the PVD rule; page 154 is a cross reference.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'likely → 154': encoded as probable 'Peripheral vascular disease'; the → 154 is a cross-reference.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p81-d6d41e43",
+  "text": "Plantar fasciitis likely • Advise to: decrease aggravating physical activity (like running). Apply ice. Avoid bare feet - wear shoes with good support or use shoe inserts. Stretch and exercise feet regularly: stretch calf muscle/s on waking and before sleep, roll foot/feet over cold drink bottle. • ",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Exact SNOMED disorder, probable certainty, evidence from the heel-pain node.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "management bullets out of scope by design"
+    ],
+    "problem": "Plantar fasciitis likely is encoded as probable; the check list in task 2 includes the same findings. Only the trigger imprecision above.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Plantar fasciitis likely' becomes a probable diagnosis. The rest is management, and 'BMI ≥ 25 → 156' is advice routing, not diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent foot symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Traumatic injury is broad; page says 'following injury' (history of injury)",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c007",
+  "text": "Check for urgent foot symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'pallor' of the leg (ischaemic paleness); 'White discoloration of skin' is a pigmentation finding (is-a Discoloration of skin) and reads as leukoderma rather than pallor. No bare 'Pallor' or limb-pallor finding exists in this release (only 'Pallor of skin of face', 'Pale discoloration of entire skin of body'), so this is the nearest available; flag for a clinician.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c008",
+  "text": "Check for urgent foot symptom conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says no pulse 'in the leg'; 'Peripheral pulse absent' has no site and would also match an absent arm pulse.",
+    "fix": "(clinical_finding (snomed_concept \"Peripheral pulse absent\" \"finding\") (finding_site (snomed_concept \"Lower limb structure\" \"body structure\"))) or (snomed_concept \"Foot pulse absent\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c024",
+  "text": "Check for causes of foot symptoms not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page qualifies this as 'Constant ... worse at night'; both qualifiers are dropped, so any burning foot pain counts. 'Constant pain' and 'Night pain' exist as findings but there is no clean way to attach them; acceptable approximation, note for clinician.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'Constant burning pain ... worse at night'; 'constant' and 'worse at night' dropped",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c025",
+  "text": "Check for causes of foot symptoms not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c024: 'Constant' and 'worse at night' dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page qualifies 'worse at night'; dropped",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c026",
+  "text": "Check for causes of foot symptoms not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c024: 'Constant' and 'worse at night' dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page qualifies 'worse at night'; dropped",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c030",
+  "text": "Check for causes of foot symptoms not needing urgent attention :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'worse on starting walking' (start-up pain, the plantar fasciitis discriminator); the concept covers any pain aggravated by walking. No closer SNOMED concept found; nearest available.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: 'worse on starting walking' (start-up pain); 'Pain aggravated by walking' loses the starting-walking timing",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says pain worse on STARTING walking (first-step pain, typical of plantar fasciitis); 'Pain aggravated by walking' is broader (pain throughout walking, as in claudication). No closer SNOMED concept found.",
+    "fix": "accept; note in the review",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c035",
+  "text": "Diagnose probable fracture with foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c003: broad concept for 'following injury'",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c036",
+  "text": "Diagnose probable fracture with foot symptoms :: (diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says fracture likely -> p30 (any fracture); 'Fracture of bone' acceptable but generic; consider foot/ankle fracture if intended",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c040",
+  "text": "Diagnose probable acute lower limb ischaemia with foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"White discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c007: 'White discoloration of skin' is a pigmentation finding standing in for 'pallor'; no limb-pallor concept exists in this release.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Diagnose probable acute lower limb ischaemia with foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says no pulse 'in the leg'; 'Peripheral pulse absent' has no site and would also match an absent arm pulse.",
+    "fix": "add (finding_site (snomed_concept \"Lower limb structure\" \"body structure\")) or use (snomed_concept \"Foot pulse absent\" \"finding\")",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c059",
+  "text": "Diagnose probable peripheral neuropathy from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burning feet\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page requires 'Constant ... worse at night'; without the qualifiers the probable neuropathy rule fires on any burning foot pain with generalised foot pain.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c024: constant/worse at night dropped",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c060",
+  "text": "Diagnose probable peripheral neuropathy from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c059: 'Constant' and 'worse at night' dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c025",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c061",
+  "text": "Diagnose probable peripheral neuropathy from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of foot\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c059: 'Constant' and 'worse at night' dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c026",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page qualifies the neuropathy symptoms as 'constant' and 'worse at night'; that timing is dropped, so any intermittent burning/tingling/numbness with generalised foot pain fires probable neuropathy.",
+    "fix": "add (qualifier (snomed_concept \"Night pain\" \"finding\")) is not a qualifier; consider an extra (clinical_finding (snomed_concept \"Night pain\" \"finding\")) or a \"Constant pain\" finding, or accept as a deliberate simplification",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c063",
+  "text": "Diagnose probable peripheral vascular disease from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Generalised' qualifier for PVD is borrowed from the neighbouring header; the PVD box says only 'Foot pain with muscle pain in legs or buttocks'",
+    "fix": "Use foot pain without Generalized qualifier",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c064",
+  "text": "Diagnose probable peripheral vascular disease from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page does not say 'on exercise' here; muscle pain in legs is fine, but PVD box is a sibling of generalised pain, not an AND with it",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c065",
+  "text": "Diagnose probable peripheral vascular disease from foot symptoms :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c064",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c068",
+  "text": "Diagnose probable plantar fasciitis from heel pain :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c030: page says 'worse on starting walking'; concept is broader (any walking). No closer concept found.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c030",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Page says pain worse on STARTING walking (first-step pain); 'Pain aggravated by walking' is broader and overlaps with claudication-type pain. No closer SNOMED concept found.",
+    "fix": "accept; note in the review",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c074",
+  "text": "Urgent: foot symptoms with fracture or limb ischaemia :: (active_condition (snomed_concept \"Fracture of bone\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c036",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable critical lower limb ischaemia with foot symptoms / Diagnose probable peripheral vascular disease from foot symptoms",
+  "text": "The page uses almost the same phrase twice ('Muscle pain in legs or buttocks on exercise' in the red box; 'muscle pain in legs or buttocks' in the PVD flowchart branch) and the file codes them differently: 'Intermittent claudication' for the CLI rule, 'Muscle pain' + finding_site (Lower limb structure / Buttock structure) for the PVD rule. The two check lists therefore contain three different muscle-pain items and the two rules do not see each other's recordings: a nurse who records lower-limb muscle pain (the PVD check item) together with foot pain at rest will not trigger critical limb ischaemia (the urgent diagnosis), and a recorded claudication with generalised foot pain may not trigger PVD (it depends on whether a finding without a finding_site satisfies a site-constrained evidence clause). Suggest the CLI rule accept either form (or the PVD branch add Intermittent claudication), so that the urgent path is not lost on a wording choice.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no rule) - 'If the patient has diabetes or PVD, identify the foot at risk ...' block",
+  "text": "This block is a criteria list ('any of': callus/corns, cracks, wet soft skin between toes, ulcers, foot deformity, abnormal light-prick sensation, absent/reduced foot pulses) with a trigger (known diabetes or PVD) and a conclusion (foot at risk -> review more frequently; deformity -> specialist referral). None of it is encoded: no check_for task triggered by (active_condition Diabetes mellitus / Peripheral vascular disease) and no rule. Expressible concepts exist ('Foot callus', 'Ulcer of foot', 'Deformity of foot', '10g monofilament sensation absent', 'Foot pulse absent', 'Diabetic foot'). Borderline because the conclusion is a review-frequency decision, not an 'X likely'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "The page's criterion 'Constant burning pain, pins/needles or numbness of feet worse at night' is encoded without 'constant' and without 'worse at night', although SNOMED offers 'Constant pain' (finding) and the qualifier value 'Night time'. The rule is broader than the page.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "The rule requires a separately recorded 'Foot pain (Generalized)' AND one of Burning feet / Paresthesia of foot / Numbness of foot. On the page the burning pain is the pain, so a nurse who records only 'Burning feet' (or only 'Numbness of foot') will not reach the diagnosis. Defensible because the node sits under 'Generalised foot pain', but it doubles the recording burden for the commonest presentation.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent foot symptom conditions",
+  "text": "'Foot pain' appears twice as a check item with different qualifier sets (Sudden onset + Severe + At rest for ALI; At rest alone for CLI). If evidence matching requires the qualifier set to match exactly, a single recording of sudden severe foot pain at rest will not satisfy the CLI rule's 'at rest' branch even though the page would count it. Depends on matcher semantics, so low.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+  "text": "'Pallor' in the leg is approximated as 'White discoloration of skin' with finding_site 'Skin structure of lower limb'. SNOMED has no lower-limb pallor concept (only 'Pallor of skin of face' and 'Pale discoloration of entire skin of body'), so this is the best available, but a reviewer should confirm nurses will recognise it as pallor.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy / PVD",
+  "text": "Both require a 'Foot pain' with a 'Generalized' qualifier taken from a flowchart branch label; a patient with only burning/numbness feet (as the page states) will not trigger neuropathy.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable plantar fasciitis from heel pain",
+  "text": "'Pain aggravated by walking' is non-specific to the 'worse on starting walking' pattern and not site-bound; plantar fasciitis may fire on any heel pain with walking pain.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of foot symptoms not needing urgent attention",
+  "text": "Check list lacks the nocturnal pattern and foot-at-risk (diabetes/PVD) criteria.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: foot symptoms with fracture or limb ischaemia",
+  "text": "Priority is conditioned on Finding of foot region AND diagnosis; fracture of bone not foot-specific.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "The rule omits 'constant' and 'worse at night', so it is broader than the page. Any burning feet, paraesthesia or numbness with generalised foot pain gives probable neuropathy.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable plantar fasciitis from heel pain",
+  "text": "'Pain aggravated by walking' is broader than the page's 'worse on starting walking' (start-up pain), so the specificity of the criterion is reduced.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none)",
+  "text": "The diabetes/PVD 'foot at risk' criteria (skin, deformity, light-prick sensation, absent/reduced pulses) have no rule or check_for items. This is arguably acceptable as management-driven.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable acute lower limb ischaemia with foot symptoms",
+  "text": "'Peripheral pulse absent' is used where 'Foot pulse absent' (finding) exists. The current concept is broader (it could match an absent radial pulse) but is not wrong for 'no pulse in the leg'.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for causes of foot symptoms not needing urgent attention",
+  "text": "The check list offers 'Foot pain' only with a Generalized qualifier. There is no localised-pain item, and nothing in the check list captures 'worse at night' or 'on starting walking', so those page criteria cannot be elicited even if the rules wanted them.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "Probable neuropathy fires on generalised foot pain plus any burning/pins-needles/numbness of feet; the page requires these to be constant and worse at night. Broader than the page; no clean SNOMED qualifier, so accept or add a clinician note.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "Requires generalised foot pain AND a symptom; page entry is 'constant burning pain, pins/needles or numbness of feet worse at night' under generalised pain; constant/night pattern dropped.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral vascular disease from foot symptoms",
+  "text": "Adds a 'Generalized' qualifier not on the PVD box; page says foot pain with muscle pain in legs or buttocks.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable plantar fasciitis from heel pain",
+  "text": "'Pain aggravated by walking' is broader than 'worse on starting walking'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: foot symptoms with fracture or limb ischaemia",
+  "text": "Requires 'Finding of foot region' in addition to the diagnosis; acute/critical ischaemia rules do not require that finding, so a patient with foot pain at rest might not satisfy it unless foot pain is a descendant of Finding of foot region. Page urgent box has no extra gate beyond the diagnoses.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable peripheral neuropathy from foot symptoms",
+  "text": "Drops 'constant' and 'worse at night' from the page's symptom description, so the probable diagnosis is broader than the page; otherwise and(generalised foot pain, or(burning, pins/needles, numbness)) is faithful.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable plantar fasciitis from heel pain",
+  "text": "'Worse on starting walking' (start-up pain) encoded as generic 'Pain aggravated by walking', which is broader; no closer SNOMED concept exists.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "trigger",
+  "text": "A: one task  vs  B: second task 'Check for causes of foot symptoms not needing urgent attention' triggered by Finding of foot region",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Finding of foot region\" \"finding\"))",
+    "reason": "The page separates the red box from 'Approach to the patient with foot symptoms not needing urgent attention', so a second check task matches its layout.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Traumatic injury  vs  B: Injury of lower limb",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))",
+    "reason": "The page says 'following injury' without a site.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: fracture rule without foot complaint  vs  B: fracture rule with (clinical_finding Finding of foot region)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Finding of foot region\" \"finding\"))",
+    "reason": "The red box applies to 'the patient with foot symptoms', and with a site-free injury the foot complaint keeps the rule in this page's context.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Foot pain + Sudden onset + Severe + At rest  vs  B: Foot pain + Sudden onset + Severe AND Pain provoked by rest at Foot structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "reason": "'Sudden severe foot pain at rest' describes one pain, so one finding with three qualifiers is closer than two separate findings.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Foot pain + At rest  vs  B: Pain provoked by rest at Foot structure (critical limb ischaemia)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+    "reason": "'Foot pain at rest' is written the same way as in the acute item, so the same form is used.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: White discoloration of skin at Skin structure of lower limb  vs  B: at Lower limb structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"White discoloration of skin\" \"finding\") (finding_site (snomed_concept \"Skin structure of lower limb\" \"body structure\")))",
+    "reason": "Pallor is a skin finding 'in the leg', so the skin-of-lower-limb site is the more exact site (both resolve).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Peripheral pulse absent  vs  B: Foot pulse absent (B narrower)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Peripheral pulse absent\" \"finding\"))",
+    "reason": "The page says 'no pulse' 'in the leg', not in the foot; the foot-only concept is narrower than the page (also VHA vocabulary).",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Thick skin AND Scaly skin at sole/heel/border  vs  B: Scaly skin alone at sole/heel/sides",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(and (clinical_finding Thick skin @site) (clinical_finding Scaly skin @site)) for each site",
+    "reason": "The page says 'thickened scaly skin', and `Thick skin` (finding) exists, so both features are required.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Skin structure of heel  vs  B: Heel structure (scaly skin site)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (finding_site (snomed_concept \"Skin structure of heel\" \"body structure\")))",
+    "reason": "The finding is of the skin on the heels, so the skin site is more exact.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Skin structure of border of foot  vs  B: Skin structure of lateral + medial border of foot",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(finding_site (snomed_concept \"Skin structure of border of foot\" \"body structure\"))",
+    "reason": "'Sides of feet' names both sides at once; one border-of-foot site matches the wording.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Foot pain (plain)  vs  B: Foot pain + Generalized (neuropathy, PVD)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Foot pain\" \"finding\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))",
+    "reason": "Both rules sit under the page's 'Generalised foot pain' branch.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Burning feet  vs  B: Burning pain at Foot structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Burning feet\" \"finding\"))",
+    "reason": "'Burning pain … of feet' is the precoordinated Burning feet (is-a Foot pain and Burning pain).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Paresthesia of foot  vs  B: Pins and needles at Foot structure",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Paresthesia of foot\" \"finding\"))",
+    "reason": "'Pins/needles … of feet' is paresthesia of the feet; the foot-specific precoordinated concept is used (Pins and needles is-a Paresthesia).",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: PVD also accepts Intermittent claudication  vs  B: muscle pain at leg/buttock only",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "empty",
+    "reason": "The PVD box says 'Foot pain with muscle pain in legs or buttocks' without 'on exercise', so claudication is not added.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Pain aggravated by walking  vs  B: Pain provoked by walking",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding (snomed_concept \"Pain aggravated by walking\" \"finding\"))",
+    "reason": "'Worse on starting walking' means aggravated, not provoked.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for/diagnosis_condition",
+  "text": "A: Mass of body region at first MTP joint  vs  B: Bony swelling of toe joint at first MTP joint",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Bony swelling of toe joint\" \"finding\") (finding_site (snomed_concept \"First metatarsophalangeal joint structure\" \"body structure\")))",
+    "reason": "The page says 'Bony lump at base of big toe'; the bony swelling concept keeps 'bony'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A: bunion requires Foot pain  vs  B: no foot pain condition",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "empty",
+    "reason": "The bunion box's own criteria are the deformity and bony lump; plain foot pain does not encode 'localised' anyway.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "slug": "81-foot-symptoms",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: Hallux valgus AND bunion  vs  B: Swelling of first metatarsophalangeal joint of hallux (A narrower)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(diagnosis (snomed_concept \"Hallux valgus AND bunion\" \"disorder\") probable)",
+    "reason": "The page names 'Bunion'; the concept whose FSN contains 'bunion' is closer than the broader swelling concept.",
+    "unsettled": false
+   }
+  ]
+ }
+]

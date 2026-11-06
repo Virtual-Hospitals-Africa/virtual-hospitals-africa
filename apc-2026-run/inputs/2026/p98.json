@@ -1,0 +1,490 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 98,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.8,
+    806.4,
+    108.3
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p98-rb1-e01",
+   "page": 98,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with suicidal thoughts or behaviour 34.",
+   "bbox": [
+    265.4,
+    92.0,
+    576.5,
+    103.1
+   ],
+   "key": "p98-b70e7b19"
+  },
+  {
+   "id": "p98-out-e01",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "LOW MOOD, STRESS OR ANXIETY",
+   "bbox": [
+    286.0,
+    48.7,
+    555.9,
+    71.0
+   ],
+   "key": "p98-3b757a91"
+  },
+  {
+   "id": "p98-out-e02",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient with low mood, stress or anxiety. If patient known with depression, give routine depression care instead 160.",
+   "bbox": [
+    168.9,
+    118.7,
+    684.3,
+    129.9
+   ],
+   "key": "p98-d5070c49"
+  },
+  {
+   "id": "p98-out-e03",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess Note",
+   "bbox": [
+    39.7,
+    134.9,
+    138.2,
+    145.9
+   ],
+   "key": "p98-e7580af9"
+  },
+  {
+   "id": "p98-out-e04",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Anxiety • If excessive worry causes impaired function/distress for at least 6 months with ≥ 3 of: muscle tension, restlessness, irritability, difficulty sleeping, poor concentration, tiredness, generalised anxiety disorder likely 160. • If anxiety is induced by a particular situation/object (phobia) or is repeated sudden fear with physical symptoms and no obvious cause (panic), discuss/refer. • If anxiety > 1 month linked to a bad experience, with ≥ 3 of: nightmares/flashbacks, avoids situations/people, constantly on guard/easily startled, feels numb/detached from others/surroundings, post-traumatic stress disorder (PTSD) likely. Discuss/refer.",
+   "bbox": [
+    39.7,
+    148.1,
+    791.5,
+    199.1
+   ],
+   "key": "p98-eb4428e6"
+  },
+  {
+   "id": "p98-out-e05",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Depression In the past month, has patient felt down/depressed/hopeless or little interest/pleasure in doing things? If yes to either 159.",
+   "bbox": [
+    39.7,
+    201.8,
+    545.4,
+    212.6
+   ],
+   "key": "p98-346bde9a"
+  },
+  {
+   "id": "p98-out-e06",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Substance use In the past year, has patient drunk ≥ 4 drinks1/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+   "bbox": [
+    39.7,
+    215.2,
+    631.1,
+    226.0
+   ],
+   "key": "p98-758da856"
+  },
+  {
+   "id": "p98-out-e07",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Abuse If patient is being abused 33.",
+   "bbox": [
+    39.7,
+    228.7,
+    227.1,
+    239.5
+   ],
+   "key": "p98-ce14956d"
+  },
+  {
+   "id": "p98-out-e08",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Stressors • Help identify psychosocial stressors. Ask about family or relationship problems, infertility, financial difficulty, bereavement, chronic ill-health. If sexual problems 74. • If patient has a life-limiting illness, in bed or chair for 50% or more of the day or dependent on others for most care, also give palliative care 191. • If older person, ask about loneliness and if available, refer to nearest social club for older people in the area.",
+   "bbox": [
+    39.7,
+    242.1,
+    684.0,
+    273.0
+   ],
+   "key": "p98-d7ad470b"
+  },
+  {
+   "id": "p98-out-e09",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Women’s health • If recent delivery, give postnatal care 182 and if available, refer to mother's support group. • If woman > 40 years, ask about menopausal symptoms: hot flushes, night sweats, vaginal dryness, mood changes, difficulty sleeping and sexual problems 74.",
+   "bbox": [
+    39.7,
+    275.6,
+    668.7,
+    296.4
+   ],
+   "key": "p98-ff6d9ce9"
+  },
+  {
+   "id": "p98-out-e10",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Medication Review medication: prednisone, efavirenz, metoclopramide, theophylline and contraceptives can cause mood changes. Discuss with doctor. Consider alternative contraceptive 187.",
+   "bbox": [
+    39.7,
+    299.1,
+    740.8,
+    309.9
+   ],
+   "key": "p98-d4e348ad"
+  },
+  {
+   "id": "p98-out-e11",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the patient with low mood, stress or anxiety • Refer to social worker, occupational therapist, counsellor or psychiatric nurse/psychologist. Encourage supportive family member/friend to attend follow up visits as well. • Encourage patient to question negative thinking and be realistic if s/he often predicts the worst, exaggerates problem, inappropriately takes the blame, takes things personally. • Help patient to choose strategies to get help and cope:",
+   "bbox": [
+    51.0,
+    321.2,
+    698.6,
+    362.3
+   ],
+   "key": "p98-47b90a35"
+  },
+  {
+   "id": "p98-out-e12",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Limit alcohol and avoid drugs • Limit alcohol to ≤ 2 drinks/ day if man and 1 drink/day if woman. • Avoid drugs.",
+   "bbox": [
+    697.5,
+    377.0,
+    753.2,
+    458.9
+   ],
+   "key": "p98-f2fa37a8"
+  },
+  {
+   "id": "p98-out-e13",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Get enough sleep",
+   "bbox": [
+    49.8,
+    365.0,
+    115.0,
+    374.9
+   ],
+   "key": "p98-eaead4a0"
+  },
+  {
+   "id": "p98-out-e14",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient has difficulty sleeping,",
+   "bbox": [
+    51.3,
+    374.8,
+    156.4,
+    383.9
+   ],
+   "key": "p98-e4a37837"
+  },
+  {
+   "id": "p98-out-e15",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "give advice 99.",
+   "bbox": [
+    97.3,
+    383.2,
+    154.7,
+    392.9
+   ],
+   "key": "p98-36a20e8e"
+  },
+  {
+   "id": "p98-out-e16",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Access support Link patient with helpline or support group 200.",
+   "bbox": [
+    628.7,
+    409.2,
+    683.0,
+    455.1
+   ],
+   "key": "p98-05359983"
+  },
+  {
+   "id": "p98-out-e17",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Get active Do some enjoyable physical activity",
+   "bbox": [
+    560.9,
+    378.1,
+    654.0,
+    406.0
+   ],
+   "key": "p98-5bb40d65"
+  },
+  {
+   "id": "p98-out-e18",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Do a relaxing breathing exercise each day.",
+   "bbox": [
+    425.4,
+    378.9,
+    469.7,
+    415.0
+   ],
+   "key": "p98-f8557d16"
+  },
+  {
+   "id": "p98-out-e19",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Spend time with supportive",
+   "bbox": [
+    165.5,
+    437.0,
+    258.4,
+    446.1
+   ],
+   "key": "p98-64643c21"
+  },
+  {
+   "id": "p98-out-e20",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "friends or family.",
+   "bbox": [
+    184.4,
+    446.0,
+    237.8,
+    455.1
+   ],
+   "key": "p98-d33531c5"
+  },
+  {
+   "id": "p98-out-e21",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Find a creative or fun activity to do.",
+   "bbox": [
+    333.3,
+    378.9,
+    371.1,
+    415.0
+   ],
+   "key": "p98-afe327bd"
+  },
+  {
+   "id": "p98-out-e22",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Encourage patient to take time to relax:",
+   "bbox": [
+    246.3,
+    365.0,
+    389.5,
+    374.9
+   ],
+   "key": "p98-cc5d903c"
+  },
+  {
+   "id": "p98-out-e23",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Deal with bereavement issues if patient or family member has a life-limiting illness or if patient is recently bereaved: - Acknowledge grief reactions: denial, disbelief, confusion, shock, sadness, bargaining, yearning, anger, humiliation, despair, guilt and acceptance. - Allow patient/family to share sorrow and talk of memories, the meaning of the patient’s life or religious beliefs. Suggest connecting with a spiritual counsellor as appropriate. - Identify worrying issues (e.g. child care, will and funeral arrangements) and who can give practical support with these before and after the patient dies. • For tips on how to communicate effectively 198.",
+   "bbox": [
+    51.0,
+    460.5,
+    693.3,
+    510.7
+   ],
+   "key": "p98-1700be03"
+  },
+  {
+   "id": "p98-out-e24",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review the patient every 2-4 weeks. If no improvement after 3 months, assess for depression/anxiety 159.",
+   "bbox": [
+    213.1,
+    524.1,
+    628.7,
+    535.1
+   ],
+   "key": "p98-1ea380c6"
+  },
+  {
+   "id": "p98-out-e25",
+   "page": 98,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer.",
+   "bbox": [
+    34.0,
+    543.5,
+    316.7,
+    552.0
+   ],
+   "key": "p98-d7b30ec1"
+  }
+ ]
+}

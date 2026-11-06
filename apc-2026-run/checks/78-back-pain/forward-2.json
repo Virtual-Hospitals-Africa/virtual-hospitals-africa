@@ -1,0 +1,385 @@
+{
+ "page": 78,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p78-039cfbc5",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: header; its trigger (back pain) is encoded as the Backache gate of the priority rule",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-40365d4f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Retention of urine\" \"disorder\")) / \"Urinary incontinence\" / \"Incontinence of feces\""
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-ed0cd35e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check urine dipstick in back pain with flank pain :: (and Backache Flank pain) (check_for Leukocytes in urine, Nitrite detected in urine, Blood in urine)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-caaea878",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Buttocks/perineum mapped to 'Numbness of saddle area' (reasonable); legs to lower limb numbness.",
+   "evidence": [
+    "Urgent: back pain with red box features :: \"Numbness of saddle area\" / \"Numbness of lower limb\""
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-011e92d7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "complicated vs uncomplicated is not distinguishable: both diagnosis rules produce the same concept Acute pyelonephritis; the complicated rule is not excluded from the uncomplicated one",
+    "'sepsis' is expanded correctly (SBP<80, pulse>=100, RR>30, confusion) but concept/unit names (Pulse, function; bpm for RR) unverified"
+   ],
+   "problem": "Logic and thresholds match the page, but 'complicated pyelonephritis likely' is a separate page conclusion and is only represented as a duplicate probable Acute pyelonephritis; the uncomplicated rule also fires for every complicated case.",
+   "evidence": [
+    "Diagnose probable complicated pyelonephritis in back pain :: (and Flank pain (or Leukocytes in urine Nitrite detected in urine) (or Finding of vomiting (< SBP mmHg 80) (>= Pulse bpm 100) (> Respiratory rate bpm 30) Acute confusion Diabetes mellitus Known present Male Pregnancy Postmenopausal state))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-5789dfd9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: back pain with red box features :: \"Weakness of muscle of lower limb\" / \"Difficulty walking\""
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-4312454b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Groin mapped to inguinal region; acceptable. Flank pain is used as the pain site where page says 'pain' (acceptable given dipstick branch).",
+   "evidence": [
+    "Diagnose probable kidney stone in back pain :: (and Blood in urine (Flank pain + Sudden onset + Severe + Unilateral) (Radiating pain + finding_site Inguinal region structure))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-0cdbb4ab",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'recent'",
+    "'x-ray unavailable or abnormal' (x-ray result not representable)"
+   ],
+   "problem": "Encoded as any Traumatic injury triggering Urgent, with no recency and no x-ray condition; over-triggers for old injury.",
+   "evidence": [
+    "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-c5b771e6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable pancreatitis in back pain :: (and Backache (Upper abdominal pain + Sudden onset + Severe) (or Nausea Finding of vomiting))",
+    "Priority: (active_condition Acute pancreatitis)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-d8f3fd1b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable abdominal aortic aneurysm in back pain :: (and Backache (clinical_finding Pulsatile mass of abdomen))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-0948ac9c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: back pain with red box features :: (clinical_finding Malignant neoplastic disease + Known present)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-4c1a2fe5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: header of management block",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-ad6cb2d1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-80a99c9e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-74de0069",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-f02d007a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-2f1fb8f0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-3be01c6f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "mpox: 'unexplained' not captured; sound otherwise",
+    "uncomplicated pyelonephritis not guarded against complicated case"
+   ],
+   "problem": "Three conclusions: uncomplicated pyelonephritis (encoded), mpox consider (encoded as possible with correct or-lists and >38.5 C), TB question (encoded as possible TB). Minor: TB rule uses active_condition Fever while mechanical rule uses clinical_finding Fever; check_for in task 3 lacks Fever, and Headache/Lymphadenopathy/Fatigue/Sore throat/Nasal congestion/Temperature used by the mpox rule are not in any check_for (mpox rule uses findings no task asks for).",
+   "evidence": [
+    "Diagnose probable uncomplicated pyelonephritis :: (and Flank pain (or Leukocytes Nitrite))",
+    "Diagnose possible mpox :: (and (or Eruption Skin lesion Lesion of genitalia/rectum Oral lesion Lesion of eye) (or Headache Backache Generalized aches and pains Lymphadenopathy (> Body temperature C 38.5) Fatigue Sore throat Nasal congestion Cough))",
+    "Diagnose possible TB :: (and Backache (or Cough Weight decreased Night sweats (active_condition Fever)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-6d6f7cfc",
+   "scope": "borderline",
+   "scope_reason": "age and duration criteria may be expressible via ages/onset; red-flag list otherwise encodable",
+   "verdict": "partial",
+   "parts_missing": [
+    "> 50 years",
+    "pain for > 6 weeks (not in task 3 check_for; only appears, in reverse, in mechanical rule)"
+   ],
+   "problem": "Red-flag list encoded as check_for in task 3 only; no rule consumes most of them except the mechanical rule's no-list, and no rule encodes the doctor x-ray/refer branch.",
+   "evidence": [
+    "Check for causes of back pain not needing urgent attention :: Backache Progressive, History of malignant neoplasm, History of spinal surgery, Osteoporosis, Use of steroids, HIV, Intravenous drug user, Deformity of spine"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-e0a40c28",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "< 40 years",
+    "sleep disturbed by pain (in check_for/mechanical only)",
+    "pain better with exercise",
+    "does not get better with rest",
+    "morning stiffness lasting > 30 minutes (duration missing)"
+   ],
+   "problem": "Yes branch leads to 'Inflammatory back pain likely' and there is no inflammatory back pain diagnosis rule. Sleep disturbance and morning stiffness appear only as a negated condition of the mechanical rule; exercise/rest/age criteria are absent.",
+   "evidence": [
+    "Check ... not needing urgent attention :: Sleep pattern disturbance; Stiff back + Morning"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-078a3526",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "'Inflammatory back pain likely' has no probable diagnosis rule.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p78-7ee13543",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "age conditions (<40 / >50 years) from both question nodes",
+    "'pain better with exercise' and 'does not get better with rest' negations"
+   ],
+   "problem": "Mechanical rule encodes the first node's items and the second node's sleep and morning stiffness only. The onset comparison looks reversed: (<= onset (time_ago 6 weeks)) means onset at least 6 weeks ago, whereas mechanical pain requires pain NOT for > 6 weeks (should be >=). Morning stiffness is not restricted to > 30 minutes. Fever/cough etc. correct.",
+   "evidence": [
+    "Diagnose probable mechanical back pain :: (<= (onset (clinical_finding Backache)) (time_ago 6 weeks)) ; (no Stiff back + Morning) ; (no Sleep pattern disturbance)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-1437f8a0",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes label",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-448dd5e7",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes label",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-db095b14",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: Check for TB (p102); TB possible rule covers the trigger",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-1830d022",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: parenthetical 'may also have fatigue'",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-6459c9f2",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: continuation of parenthetical",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-b23dc9b5",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: ibuprofen/refer for Unsure branch",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-bb74af1f",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: page reference fragment",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p78-d386b708",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: doctor x-ray/refer",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p78-7ba5d5f4",
+  "p78-66beb9a8"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable mechanical back pain",
+   "problem": "Onset comparison direction appears reversed ((<= onset (time_ago 6 weeks)) = pain older than 6 weeks); age (<40, >50), exercise and rest criteria and >30 min stiffness duration missing, so it fires for patients the page sends to inflammatory or x-ray branches.",
+   "severity": "high"
+  },
+  {
+   "rule": "(none)",
+   "problem": "No 'Inflammatory back pain likely' probable diagnosis; flowchart branch lost.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable complicated/uncomplicated pyelonephritis",
+   "problem": "Both rules give Acute pyelonephritis probable; the uncomplicated rule is not exclusive of complicated, so the distinction is lost.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent priority / Traumatic injury",
+   "problem": "Injury without recent/x-ray qualifiers triggers Urgent for any trauma history.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible mpox",
+   "problem": "Uses Headache, Lymphadenopathy, Generalized aches, Fatigue, Sore throat, Nasal congestion, body temperature that no task's check_for asks; page lists them as mpox discriminators.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible TB / mechanical",
+   "problem": "Fever encoded as active_condition in TB rule but clinical_finding in mechanical rule, and Fever is absent from any check_for.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "problem": "check_for items (e.g. Lesion of eye, Skin lesion) are used by mpox rule, but Progressive backache and several history items are consumed only inside negations; no rule uses them to route to x-ray/doctor.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box urgent logic is largely correct, but the non-urgent flowchart is incomplete: there is no Inflammatory back pain likely rule, and the mechanical back pain rule has a likely reversed 6-week onset comparison and omits age, exercise and rest criteria. Complicated and uncomplicated pyelonephritis collapse to the same concept, and the injury criterion lacks recency and x-ray conditions."
+}

@@ -1,0 +1,361 @@
+{
+  "page": 78,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p78-039cfbc5",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the Urgent priority evaluation (and Backache (or ...)).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Priority rule is present, anchored on Backache, Urgent, with one or-branch per bullet. Per-bullet defects are recorded on the bullets.",
+      "evidence": [
+        "Urgent: back pain with red box features :: (system_priority_evaluation \"Urgent: back pain with red box features\" adult Urgent (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (or ...)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-40365d4f",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts (urinary retention, urinary incontinence, faecal incontinence) all checked for and all in the priority or-list. 'Bowel retention' has no distinct encoding but is not a standard clinical entity; acceptable.",
+      "evidence": [
+        "Check for urgent back pain conditions :: (clinical_finding (snomed_concept \"Retention of urine\" \"disorder\")) (clinical_finding (snomed_concept \"Urinary incontinence\" \"finding\")) (clinical_finding (snomed_concept \"Incontinence of feces\" \"finding\"))",
+        "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Retention of urine\" \"disorder\")) (clinical_finding (snomed_concept \"Urinary incontinence\" \"finding\")) (clinical_finding (snomed_concept \"Incontinence of feces\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-ed0cd35e",
+      "scope": "in_scope",
+      "scope_reason": "A conditional check instruction: flank pain triggers a dipstick check.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Separate task triggered by Backache + Flank pain, checking leukocytes, nitrite and blood; Flank pain itself is recorded by the first task's check_for so the trigger can fire.",
+      "evidence": [
+        "Check urine dipstick in back pain with flank pain :: (task \"Check urine dipstick in back pain with flank pain\" adult (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (clinical_finding (snomed_concept \"Flank pain\" \"finding\"))) (check_for (clinical_finding (snomed_concept \"Leukocytes in urine\" \"finding\")) (clinical_finding (snomed_concept \"Nitrite detected in urine\" \"finding\")) (clinical_finding (snomed_concept \"Blood in urine\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-caaea878",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Numbness of saddle area' covers buttocks and perineum (SNOMED has no separate buttock/perineum numbness concepts); 'Numbness of lower limb' covers legs. Both in check_for and priority.",
+      "evidence": [
+        "Check for urgent back pain conditions :: (clinical_finding (snomed_concept \"Numbness of saddle area\" \"finding\")) (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+        "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Numbness of saddle area\" \"finding\")) (clinical_finding (snomed_concept \"Numbness of lower limb\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-011e92d7",
+      "scope": "in_scope",
+      "scope_reason": "'complicated pyelonephritis likely' -> probable diagnosis rule; also a red-box urgent criterion.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'complicated' is lost: the diagnosis concept is plain 'Acute pyelonephritis', identical to the uncomplicated rule's concept, so the two 'likely' outcomes the page distinguishes collapse into one diagnosis (SNOMED has no 'complicated pyelonephritis' concept; a note or a distinguishing choice such as 'Sepsis'-level evidence was still needed)"
+      ],
+      "problem": "Logic is otherwise right: flank pain AND (leukocytes OR nitrite) AND any of vomiting / sepsis (expanded from footnote 1 as SBP < 80, pulse >= 100, RR > 30, confusion) / known diabetes / male / pregnant / postmenopausal. The priority rule inlines the same criteria rather than referencing the ambiguous active_condition, which is the right call given the shared concept.",
+      "evidence": [
+        "Diagnose probable complicated pyelonephritis in back pain :: (and (clinical_finding (snomed_concept \"Flank pain\" \"finding\")) (or (clinical_finding (snomed_concept \"Leukocytes in urine\" \"finding\")) (clinical_finding (snomed_concept \"Nitrite detected in urine\" \"finding\"))) (or (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\")) (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Male\" \"finding\")) (clinical_finding (snomed_concept \"Pregnancy\" \"finding\")) (clinical_finding (snomed_concept \"Postmenopausal state\" \"finding\"))))",
+        "Urgent: back pain with red box features :: (and (clinical_finding (snomed_concept \"Flank pain\" \"finding\")) (or (clinical_finding (snomed_concept \"Leukocytes in urine\" \"finding\")) (clinical_finding (snomed_concept \"Nitrite detected in urine\" \"finding\"))) (or (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\")) ... (clinical_finding (snomed_concept \"Postmenopausal state\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-5789dfd9",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent back pain conditions :: (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\")) (clinical_finding (snomed_concept \"Difficulty walking\" \"finding\"))",
+        "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Weakness of muscle of lower limb\" \"finding\")) (clinical_finding (snomed_concept \"Difficulty walking\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-0cdbb4ab",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "partial",
+      "parts_missing": [
+        "'recent': no onset constraint on the injury (the page does not quantify 'recent', so an onset window would be a judgment call, but nothing marks recency at all)",
+        "'x-ray unavailable or abnormal': 'unavailable' is not representable, but 'abnormal' is (SNOMED 'Plain X-ray of spine abnormal' finding exists) and is neither checked for nor used"
+      ],
+      "problem": "Encoded as any 'Traumatic injury' -> Urgent. This is broader than the page (an injury with a normal x-ray is not an urgent criterion). Defensible as a conservative approximation where x-ray is usually unavailable, but the x-ray-abnormal part was expressible and is absent.",
+      "evidence": [
+        "Check for urgent back pain conditions :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))",
+        "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Traumatic injury\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p78-4312454b",
+      "scope": "in_scope",
+      "scope_reason": "'kidney stone likely' -> probable diagnosis rule; also a red-box urgent criterion via active_condition.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Blood in urine AND flank pain qualified sudden+severe+unilateral AND radiating pain sited at the inguinal region. 'Radiating pain' with finding_site inguinal region is an acceptable approximation of 'radiating to groin'. Priority rule references (active_condition Kidney stone). The rule does not require Backache but flank pain is the clinical anchor; acceptable.",
+      "evidence": [
+        "Diagnose probable kidney stone in back pain :: (and (clinical_finding (snomed_concept \"Blood in urine\" \"finding\")) (clinical_finding (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Radiating pain\" \"finding\") (finding_site (snomed_concept \"Inguinal region structure\" \"body structure\"))))",
+        "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Kidney stone\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-c5b771e6",
+      "scope": "in_scope",
+      "scope_reason": "'pancreatitis likely' -> probable diagnosis rule; also a red-box urgent criterion via active_condition.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable pancreatitis in back pain :: (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (clinical_finding (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Nausea\" \"finding\")) (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))))",
+        "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Acute pancreatitis\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-d8f3fd1b",
+      "scope": "in_scope",
+      "scope_reason": "'abdominal aortic aneurysm likely' -> probable diagnosis rule; red-box urgent criterion via active_condition.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable abdominal aortic aneurysm in back pain :: (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (clinical_finding (snomed_concept \"Pulsatile mass of abdomen\" \"finding\")))",
+        "Urgent: back pain with red box features :: (active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-0948ac9c",
+      "scope": "in_scope",
+      "scope_reason": "",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Check for urgent back pain conditions :: (clinical_finding (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Urgent: back pain with red box features :: (clinical_finding (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-4c1a2fe5",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-ad6cb2d1",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-80a99c9e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "The 'BP < 90/60' here is a fluid-therapy trigger, not a triage criterion; management is out of scope by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-74de0069",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-f02d007a",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-2f1fb8f0",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Same-day referral; the underlying criterion (known cancer) is judged at p78-0948ac9c.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-66beb9a8",
+      "scope": "in_scope",
+      "scope_reason": "Footnote 1 defines 'sepsis' used by the complicated-pyelonephritis criterion; footnotes 2 and 3 are management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Sepsis = any of SBP < 80, pulse >= 100, RR > 30, confusion: all four encoded with the right comparator, threshold and unit in both the diagnosis rule and the priority rule.",
+      "evidence": [
+        "Diagnose probable complicated pyelonephritis in back pain :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80) (>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100) (> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30) (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-3be01c6f",
+      "scope": "in_scope",
+      "scope_reason": "Carries three logic items: 'uncomplicated pyelonephritis likely', 'consider mpox', and the TB screening question (cough, weight loss, night sweats or fever).",
+      "verdict": "partial",
+      "parts_missing": [
+        "mpox: 'lesion/s of ... anus' is not encoded ('Lesion of rectum' does not cover the anus; SNOMED 'Disorder of anus' (disorder) exists as a usable approximation)",
+        "uncomplicated pyelonephritis: the rule does not exclude the complicating factors (vomiting, sepsis, diabetes, male, pregnant, postmenopause) that the page uses to route the patient to the red box, so it fires on complicated cases too; and it diagnoses the same concept as the complicated rule, so 'uncomplicated' is lost"
+      ],
+      "problem": "Uncomplicated pyelonephritis: flank pain AND (leukocytes OR nitrite) -> probable Acute pyelonephritis, matching the page's positive criteria. Mpox: possible Monkeypox from (rash or skin/genital/rectal/oral/eye lesion) AND >= 1 of headache / backache / body pain / lymphadenopathy / temp > 38.5 / fatigue / sore throat / nasal congestion / cough: all nine second-group items present, threshold and unit right. TB: possible Tuberculosis from Backache AND any of cough / weight loss / night sweats / fever, with fever as active_condition per the house convention; correct.",
+      "evidence": [
+        "Diagnose probable uncomplicated pyelonephritis in back pain :: (and (clinical_finding (snomed_concept \"Flank pain\" \"finding\")) (or (clinical_finding (snomed_concept \"Leukocytes in urine\" \"finding\")) (clinical_finding (snomed_concept \"Nitrite detected in urine\" \"finding\"))))",
+        "Diagnose possible mpox in back pain :: (and (or (clinical_finding (snomed_concept \"Eruption\" \"morphologic abnormality\")) (clinical_finding (snomed_concept \"Skin lesion\" \"disorder\")) (clinical_finding (snomed_concept \"Lesion of genitalia\" \"disorder\")) (clinical_finding (snomed_concept \"Lesion of rectum\" \"disorder\")) (clinical_finding (snomed_concept \"Oral lesion\" \"disorder\")) (clinical_finding (snomed_concept \"Lesion of eye\" \"disorder\"))) (or (clinical_finding (snomed_concept \"Headache\" \"finding\")) (clinical_finding (snomed_concept \"Backache\" \"finding\")) (clinical_finding (snomed_concept \"Generalized aches and pains\" \"finding\")) (clinical_finding (snomed_concept \"Lymphadenopathy\" \"disorder\")) (> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5) (clinical_finding (snomed_concept \"Fatigue\" \"finding\")) (clinical_finding (snomed_concept \"Sore throat\" \"finding\")) (clinical_finding (snomed_concept \"Nasal congestion\" \"finding\")) (clinical_finding (snomed_concept \"Cough\" \"finding\"))))",
+        "Diagnose possible TB in back pain :: (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (or (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Weight decreased\" \"finding\")) (clinical_finding (snomed_concept \"Night sweats\" \"finding\")) (active_condition (snomed_concept \"Fever\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-6d6f7cfc",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: the red-flag list whose 'No' leads toward mechanical back pain. Its 'Yes' branch is routing to a doctor/x-ray (no diagnosis), so only the negation is encodable.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'> 50 years': not representable (the grammar has no numeric age; only adult / older child / younger child), so the mechanical rule cannot exclude older patients; this should be recorded as a known gap"
+      ],
+      "problem": "The other nine parts are all negated in the mechanical rule: progressive pain, pain for > 6 weeks (as onset within the last 6 weeks, correct under the briefing's time_ago convention), previous cancer (History of malignant neoplasm), back surgery (History of spinal surgery), osteoporosis, steroid use (route not specified; 'Use of steroids' is acceptable), HIV, IV drug use, deformity (Deformity of spine). All nine findings are checked for in the third task.",
+      "evidence": [
+        "Diagnose probable mechanical back pain :: (no (clinical_finding (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\")))) (<= (onset (clinical_finding (snomed_concept \"Backache\" \"finding\"))) (time_ago 6 weeks)) (no (clinical_finding (snomed_concept \"History of malignant neoplasm\" \"situation\"))) (no (clinical_finding (snomed_concept \"History of spinal surgery\" \"situation\"))) (no (clinical_finding (snomed_concept \"Osteoporosis\" \"disorder\"))) (no (clinical_finding (snomed_concept \"Use of steroids\" \"finding\"))) (no (clinical_finding (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))) (no (clinical_finding (snomed_concept \"Intravenous drug user\" \"finding\"))) (no (clinical_finding (snomed_concept \"Deformity of spine\" \"finding\")))",
+        "Check for causes of back pain not needing urgent attention :: (clinical_finding (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Deformity of spine\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p78-e0a40c28",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision: inflammatory-features list; 'Yes' -> inflammatory back pain likely, 'No' -> mechanical back pain likely.",
+      "verdict": "partial",
+      "parts_missing": [
+        "'< 40 years': not representable (no numeric age in the grammar)",
+        "'pain better with exercise': not encoded, although SNOMED 'Exercise relieves symptom' (finding) exists",
+        "'does not get better with rest': not encoded; no close SNOMED concept found, so arguably not_representable, but it is not noted anywhere in the rules",
+        "'morning stiffness lasting > 30 minutes': 'Stiff back' + 'Morning' qualifier captures morning stiffness but not the > 30 minute duration (likely not representable; acceptable approximation)"
+      ],
+      "problem": "Only two of the five features (sleep disturbed by pain as 'Sleep pattern disturbance', morning stiffness as 'Stiff back'+'Morning') are checked for, and they are used only as negations in the mechanical rule. The 'Yes' branch, 'Inflammatory back pain likely', has no rule at all (see p78-078a3526). 'Sleep pattern disturbance' is also broader than 'sleep disturbed by pain'.",
+      "evidence": [
+        "Check for causes of back pain not needing urgent attention :: (clinical_finding (snomed_concept \"Sleep pattern disturbance\" \"finding\")) (clinical_finding (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\")))",
+        "Diagnose probable mechanical back pain :: (no (clinical_finding (snomed_concept \"Sleep pattern disturbance\" \"finding\"))) (no (clinical_finding (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-078a3526",
+      "scope": "in_scope",
+      "scope_reason": "An 'X likely' conclusion: the house standard requires a probable diagnosis rule.",
+      "verdict": "missing",
+      "parts_missing": [
+        "whole rule: no system_diagnosis_rule for inflammatory back pain exists"
+      ],
+      "problem": "No probable rule for inflammatory back pain. SNOMED has no literal 'Inflammatory back pain', but 'Axial spondyloarthritis' (disorder), 'Spondyloarthritis' (disorder) or 'Arthritis of spine' (disorder) are usable; evidence would be Backache AND none of the TB/red-flag items AND any of the inflammatory features (sleep disturbance, morning stiffness, exercise relieves symptom). The flowchart's 'Yes' branch is simply lost.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-db095b14",
+      "scope": "in_scope",
+      "scope_reason": "'Check for TB' is the 'Yes' outcome of the TB screening question; the house standard treats 'check for / consider X' as a possible diagnosis.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose possible TB in back pain :: (system_diagnosis_rule \"Diagnose possible TB in back pain\" (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible) adult (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (or (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Weight decreased\" \"finding\")) (clinical_finding (snomed_concept \"Night sweats\" \"finding\")) (active_condition (snomed_concept \"Fever\" \"finding\")))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p78-7ee13543",
+      "scope": "in_scope",
+      "scope_reason": "Carries 'Mechanical back pain likely' (the rest of the block is management and cross-references: BMI -> 156, mood -> 98, analgesia, physiotherapy, >= 3 months -> 76).",
+      "verdict": "partial",
+      "parts_missing": [
+        "the rule cannot exclude '> 50 years' or '< 40 years' (not representable) and does not exclude 'pain better with exercise' or 'does not get better with rest' (see p78-e0a40c28), so it reaches 'mechanical' for some patients the page routes elsewhere",
+        "the page reaches this box only for patients not needing urgent attention, but the rule does not exclude the red-box features (e.g. urinary retention, saddle numbness, pulsatile mass); it can fire alongside the Urgent evaluation"
+      ],
+      "problem": "Rule exists as probable 'Mechanical low back pain' = Backache AND no TB features AND none of the e04 red flags AND none of the encoded e06 inflammatory features, which follows the three 'No' branches. Two defects beyond the missing parts: (1) fever is negated as (no (clinical_finding Fever)) while the house convention (and the TB rule in this same file) records fever as (active_condition Fever), so the negation may not match the recorded form; (2) the 'Unsure' branch (inflammatory features unsure -> ibuprofen and refer) is routing/management and is reasonably not encoded. The 'Mechanical low back pain' concept narrows 'mechanical back pain' to the lumbar region; acceptable, closest available.",
+      "evidence": [
+        "Diagnose probable mechanical back pain :: (system_diagnosis_rule \"Diagnose probable mechanical back pain\" (diagnosis (snomed_concept \"Mechanical low back pain\" \"finding\") probable) adult (and (clinical_finding (snomed_concept \"Backache\" \"finding\")) (no (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (no (clinical_finding (snomed_concept \"Weight decreased\" \"finding\"))) (no (clinical_finding (snomed_concept \"Night sweats\" \"finding\"))) (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))) ... (no (clinical_finding (snomed_concept \"Sleep pattern disturbance\" \"finding\"))) (no (clinical_finding (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))))"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p78-7ba5d5f4",
+    "p78-d386b708",
+    "p78-448dd5e7",
+    "p78-1437f8a0",
+    "p78-1830d022",
+    "p78-6459c9f2",
+    "p78-bb74af1f",
+    "p78-b23dc9b5"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "(missing) Diagnose probable inflammatory back pain",
+      "problem": "The flowchart's 'Yes' branch of the inflammatory-features question ('Inflammatory back pain likely') has no diagnosis rule. The house standard requires every 'X likely' to be a probable rule; the two inflammatory features that are checked for are only ever used as negations. A usable SNOMED concept exists (Axial spondyloarthritis / Spondyloarthritis / Arthritis of spine), and 'Exercise relieves symptom' is available for 'pain better with exercise'.",
+      "severity": "high"
+    },
+    {
+      "rule": "Diagnose probable complicated pyelonephritis in back pain / Diagnose probable uncomplicated pyelonephritis in back pain",
+      "problem": "Both rules diagnose the identical concept 'Acute pyelonephritis' probable, and the uncomplicated rule's evidence is a strict subset of the complicated rule's, so every complicated case also satisfies the uncomplicated rule and the system cannot tell the page's two outcomes apart. The uncomplicated rule should at least carry (no ...) for the complicating factors, and the shared concept should be recorded as a SNOMED gap.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable mechanical back pain",
+      "problem": "Fever is negated as (no (clinical_finding (snomed_concept \"Fever\" \"finding\"))) whereas the house convention and the TB rule in the same file use (active_condition (snomed_concept \"Fever\" \"finding\")). If fever is recorded as an active condition the negation may not see it, so a febrile patient can be diagnosed with mechanical back pain while also being flagged as possible TB.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable mechanical back pain",
+      "problem": "Age criteria ('> 50 years' and '< 40 years') are not representable in the grammar, so two of the page's branch conditions are silently absent from the rule. This is a language limitation but it is not flagged anywhere in the file and the rule fires for patients the page would route to a doctor.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: back pain with red box features",
+      "problem": "'Recent injury and x-ray unavailable or abnormal' is reduced to any 'Traumatic injury'. 'Plain X-ray of spine abnormal' (finding) exists in SNOMED and could have been checked for; as written, a patient with an old or x-rayed-normal injury is made Urgent.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose possible mpox in back pain",
+      "problem": "'anus' is missing from the lesion sites (page: skin/genitals/anus/rectum/mouth/eyes). 'Lesion of rectum' does not subsume anal lesions; 'Disorder of anus' (disorder) is available.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable mechanical back pain / Diagnose probable uncomplicated pyelonephritis in back pain",
+      "problem": "Neither 'not needing urgent attention' rule excludes the red-box features, so a patient with, for example, saddle numbness or a pulsatile mass can be labelled probable mechanical back pain at the same time as being made Urgent. The page's layout makes the non-urgent path conditional on the red box being clear.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The most consequential miss is that 'Inflammatory back pain likely', the Yes branch of the page's final flowchart question, has no diagnosis rule at all, and three of its five features (< 40 years, pain better with exercise, does not get better with rest) are not encoded even though 'Exercise relieves symptom' exists in SNOMED. The red box is otherwise well covered: every bullet is checked for and in the Urgent evaluation, and pancreatitis, kidney stone and AAA each have a correct probable rule; the two pyelonephritis rules, however, both diagnose plain 'Acute pyelonephritis' with nested evidence, so complicated and uncomplicated cannot be distinguished. The mechanical back pain rule follows the three No branches but cannot express the age cut-offs and negates fever in a form that differs from the house convention used elsewhere in the same file."
+}

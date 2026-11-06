@@ -1,0 +1,341 @@
+{
+ "page": 102,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p102-8d1cf36b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Trigger 'suspected TB' encoded as possible TB diagnosis, produced by the system_diagnosis_rule.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (and (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-d73eb0c6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-0dc99669",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Two parts (at rest; while talking) encoded as Dyspnea at rest and Unable to complete a sentence in one breath; reasonable.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Dyspnea at rest\" \"finding\")) / (clinical_finding (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-12ed0574",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "plain 'confused' (not necessarily acute) is narrowed to 'Acute confusion'"
+   ],
+   "problem": "Drowsy and Acute confusion encoded as separate alternatives. The page says 'Drowsy/confused'; 'Acute' is not on the page and could miss chronic/unspecified confusion.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Drowsy\" \"finding\")) / (clinical_finding (snomed_concept \"Acute confusion\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-56ca0cdf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Persistent vomiting\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-3b56083a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Unable to walk' drops 'unaided' nuance; acceptable.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Unable to walk\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-2fbcc260",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-ada0c81e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-937da012",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Stiff neck\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-010b5c09",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-d66060d7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'Severe malnutrition' mapped to Deficiency of macronutrients + Severe; a closer malnutrition concept may exist"
+   ],
+   "problem": "Two parts: severe malnutrition and wasted. 'Wasted' encoded as Nutritional wasting (fine). 'Severe malnutrition' uses the broader 'Deficiency of macronutrients' with a severity qualifier; fidelity of concept is questionable and the qualifier may not match recorded form.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\"))) / (clinical_finding (snomed_concept \"Nutritional wasting\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-edc01452",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 39)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-ac568a06",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "quantity >= 1 tablespoon of fresh blood"
+   ],
+   "problem": "Encoded as any Hemoptysis; the volume threshold is lost, so any blood-streaked sputum triggers Urgent (over-triage). Volume is not representable in the language, so this is a known approximation.",
+   "evidence": [
+    "Urgent: suspected TB with danger signs :: (clinical_finding (snomed_concept \"Hemoptysis\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-a177ff83",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-b5f8b47b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-3b97e746",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'drenching' qualifier on night sweats"
+   ],
+   "problem": "TB symptoms cough, weight loss, night sweats, fever encoded as possible TB. Cough and fever are anchored; 'current' and 'drenching' not expressed. Weight decreased/cough are broad.",
+   "evidence": [
+    "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR :: (or (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Weight decreased\" \"finding\")) (clinical_finding (snomed_concept \"Night sweats\" \"finding\")) (active_condition (snomed_concept \"Fever\" \"finding\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-c40f108f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "DS-TB in last 2 years (yearly check)",
+    "PLHIV (at diagnosis, re-engagement, yearly)"
+   ],
+   "problem": "Test-for-TB-even-without-symptoms triggers for previous DS-TB treatment and PLHIV are not encoded in the possible-TB rule; timing parts not representable but the conditions (history of TB, HIV) could be evidence.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-688f44a4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "TB contact and abnormal CXR/CAD both encoded.",
+   "evidence": [
+    "Diagnose possible TB ... :: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\")) / (clinical_finding (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p102-505d4c58",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "pregnant at first antenatal visit"
+   ],
+   "problem": "Pregnancy at first antenatal visit (PLHIV condition) not encoded; it is conditional on HIV so borderline.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p102-2b801a97",
+   "scope": "borderline",
+   "scope_reason": "Mostly management; contains diagnostic logic 'HIV and TB symptoms and CD4 <= 200 or WHO stage 3/4 -> urine LAM; LAM positive -> diagnose TB'. CD4 has no unit in the language; LAM result is a lab test.",
+   "verdict": "missing",
+   "parts_missing": [
+    "Diagnose TB on positive urine LAM"
+   ],
+   "problem": "No probable/confirmed TB diagnosis rule for LAM positive.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p102-758f428c",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "MTB detected NAAT positive is a lab result branch; no confirmed-TB rule. Flowchart branches (treated in last 2 years, DST) not encoded.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-a680223d",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "NAAT trace branch; lab result.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p102-961ce2fa",
+   "scope": "borderline",
+   "scope_reason": "'Diagnose INH-resistant TB' is a diagnosis conclusion but depends on DST lab result (not representable).",
+   "verdict": "missing",
+   "parts_missing": [
+    "INH-resistant TB diagnosis"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p102-7728f754",
+   "scope": "borderline",
+   "scope_reason": "'Diagnose RR-TB' is a diagnosis conclusion but depends on DST lab result (not representable).",
+   "verdict": "missing",
+   "parts_missing": [
+    "RR-TB diagnosis"
+   ],
+   "problem": "",
+   "evidence": [],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p102-21b979e6",
+  "p102-bfa056d1",
+  "p102-00fdd25c",
+  "p102-614fe580",
+  "p102-f0862318",
+  "p102-cdbf5d64",
+  "p102-164436b0",
+  "p102-63b01687",
+  "p102-ea16e7d5",
+  "p102-6ef809e7",
+  "p102-4e9a7c2a",
+  "p102-133dd53b",
+  "p102-71ca2e73",
+  "p102-863e00e0",
+  "p102-d1047051",
+  "p102-1ee08fdc",
+  "p102-3df70f20",
+  "p102-4a8cf562",
+  "p102-23053e52",
+  "p102-ce6f3d9f",
+  "p102-e89722ef",
+  "p102-bf03d836",
+  "p102-fda2c52a",
+  "p102-e9d1ac25",
+  "p102-f6aec8cc"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for urgent suspected TB conditions (task) / system_diagnosis_rule",
+   "problem": "Possible-TB rule omits two of the page's 'test even without symptoms' triggers (recent DS-TB treatment, PLHIV/pregnant at first antenatal visit); only symptoms, contact and CXR are encoded.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "problem": "Hemoptysis fires without the >= 1 tablespoon volume; Drowsy/confused narrowed to Acute confusion.",
+   "severity": "low"
+  },
+  {
+   "rule": "whole page",
+   "problem": "No TB diagnosis rule for confirmed pathways (NAAT positive, urine LAM, INH-resistant, RR-TB); these depend on lab results and are arguably not representable.",
+   "severity": "low"
+  },
+  {
+   "rule": "system_diagnosis_rule possible TB",
+   "problem": "Broad evidence: any Cough, Weight decreased or Fever makes TB possible, which then combines with any danger sign (e.g. Fever > 39 alone) to give Urgent. Page logic is 'suspected TB' so acceptable but over-triages.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Red-box danger signs are well encoded (13 criteria, all with plausible concepts and correct thresholds), with minor fidelity losses on haemoptysis volume, 'confused' narrowing and malnutrition concept. The most consequential gap is that the possible-TB rule misses the page's 'test even without symptoms' triggers (recent TB treatment, PLHIV, pregnancy) and no diagnostic conclusions (LAM, INH-resistant, RR-TB) exist, though these are largely lab-dependent."
+}

@@ -1,0 +1,482 @@
+{
+ "edition": "2026",
+ "page": 154,
+ "lisp_file": "154-peripheral-vascular-disease-pvd.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Presenting context of the red box ('patient with peripheral vascular disease'); not a recorded common symptom, so plain clinical_finding form is used."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "Sudden severe leg pain at rest",
+   "confidence": "high",
+   "note": "Pain in lower limb with Sudden onset + Severe + At rest qualifiers (all required)."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "numbness",
+   "confidence": "high",
+   "note": "'in the leg' -> Numbness of lower limb."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "weakness",
+   "confidence": "high",
+   "note": "'in the leg' -> Weakness of muscle of lower limb."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "pallor",
+   "confidence": "low",
+   "note": "No SNOMED pallor-of-leg/limb concept (only face, lung, optic disc etc.). Used broader Discoloration of skin at Lower limb structure; fires more often than the page intends (any leg discoloration), but only together with sudden severe rest pain."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "no pulse",
+   "confidence": "medium",
+   "note": "Peripheral pulse absent at Lower limb structure; Foot pulse absent was narrower than 'no pulse in the leg'."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "Leg pain occurring at rest",
+   "confidence": "high",
+   "note": "Pain in lower limb qualified At rest; no precoordinated generic rest-pain-of-leg concept (the found ones are atherosclerosis/side-specific)."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of lower extremity\" \"disorder\"))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "ulcer or gangrene on leg",
+   "confidence": "high",
+   "note": "Ulcer of lower extremity (disorder); 'Ulcer of lower limb' does not exist."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "ulcer or gangrene on leg",
+   "confidence": "medium",
+   "note": "No generic gangrene-of-leg concept (only side/atherosclerosis-specific); Gangrenous disorder with finding_site Lower limb structure."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "Pulsatile mass in abdomen",
+   "confidence": "high",
+   "note": "Pulsatile mass of abdomen (finding)."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "abdominal/back pain",
+   "confidence": "high",
+   "note": "'abdominal' half of abdominal/back pain."
+  },
+  {
+   "rule": "Check for urgent peripheral vascular disease conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "abdominal/back pain",
+   "confidence": "high",
+   "note": "'back' half; Backache is the recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Presenting context of the red box ('patient with peripheral vascular disease'); not a recorded common symptom, so plain clinical_finding form is used."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "Sudden severe leg pain at rest",
+   "confidence": "high",
+   "note": "Pain in lower limb with Sudden onset + Severe + At rest qualifiers (all required)."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "numbness",
+   "confidence": "high",
+   "note": "'in the leg' -> Numbness of lower limb."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "weakness",
+   "confidence": "high",
+   "note": "'in the leg' -> Weakness of muscle of lower limb."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discoloration of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "pallor",
+   "confidence": "low",
+   "note": "No SNOMED pallor-of-leg/limb concept (only face, lung, optic disc etc.). Used broader Discoloration of skin at Lower limb structure; fires more often than the page intends (any leg discoloration), but only together with sudden severe rest pain."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "no pulse",
+   "confidence": "medium",
+   "note": "Peripheral pulse absent at Lower limb structure; Foot pulse absent was narrower than 'no pulse in the leg'."
+  },
+  {
+   "rule": "Diagnose probable acute limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute lower limb ischemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "acute limb ischaemia likely",
+   "confidence": "high",
+   "note": "'acute limb ischaemia likely' -> probable Acute lower limb ischemia; Urgent via active_condition."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Presenting context of the red box ('patient with peripheral vascular disease'); not a recorded common symptom, so plain clinical_finding form is used."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"At rest\" \"qualifier value\")))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "Leg pain occurring at rest",
+   "confidence": "high",
+   "note": "Pain in lower limb qualified At rest; no precoordinated generic rest-pain-of-leg concept (the found ones are atherosclerosis/side-specific)."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer of lower extremity\" \"disorder\"))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "ulcer or gangrene on leg",
+   "confidence": "high",
+   "note": "Ulcer of lower extremity (disorder); 'Ulcer of lower limb' does not exist."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrenous disorder\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower limb structure\" \"body structure\")))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "ulcer or gangrene on leg",
+   "confidence": "medium",
+   "note": "No generic gangrene-of-leg concept (only side/atherosclerosis-specific); Gangrenous disorder with finding_site Lower limb structure."
+  },
+  {
+   "rule": "Diagnose probable critical limb ischaemia in peripheral vascular disease",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Critical lower limb ischemia\" \"disorder\") probable)",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "critical limb ischaemia likely",
+   "confidence": "high",
+   "note": "'critical limb ischaemia likely' -> probable Critical lower limb ischemia; Urgent via active_condition."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Presenting context of the red box ('patient with peripheral vascular disease'); not a recorded common symptom, so plain clinical_finding form is used."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "Pulsatile mass in abdomen",
+   "confidence": "high",
+   "note": "Pulsatile mass of abdomen (finding)."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "abdominal/back pain",
+   "confidence": "high",
+   "note": "'abdominal' half of abdominal/back pain."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "abdominal/back pain",
+   "confidence": "high",
+   "note": "'back' half; Backache is the recorded common symptom."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will's convention)."
+  },
+  {
+   "rule": "Diagnose probable ruptured abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Ruptured abdominal aortic aneurysm\" \"disorder\") probable)",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "ruptured abdominal aortic aneurysm likely",
+   "confidence": "high",
+   "note": "'ruptured abdominal aortic aneurysm likely' -> probable; Urgent via active_condition."
+  },
+  {
+   "rule": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Possible-AAA rule sits in the PVD assessment table; anchored on PVD like the rest of the page."
+  },
+  {
+   "rule": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p154-a24fed8b"
+   ],
+   "quote": "If pulsatile mass felt, refer for assessment for possible abdominal aortic aneurysm",
+   "confidence": "high",
+   "note": "Assessment table: pulsatile mass -> possible AAA."
+  },
+  {
+   "rule": "Diagnose possible abdominal aortic aneurysm in peripheral vascular disease",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") possible)",
+   "element_keys": [
+    "p154-a24fed8b"
+   ],
+   "quote": "possible abdominal aortic aneurysm",
+   "confidence": "high",
+   "note": "'possible abdominal aortic aneurysm' -> possible diagnosis."
+  },
+  {
+   "rule": "Urgent: peripheral vascular disease with limb ischaemia or ruptured aortic aneurysm",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral vascular disease\" \"disorder\"))",
+   "element_keys": [
+    "p154-519fa751"
+   ],
+   "quote": "peripheral vascular disease",
+   "confidence": "high",
+   "note": "Presenting context of the red box ('patient with peripheral vascular disease'); not a recorded common symptom, so plain clinical_finding form is used."
+  },
+  {
+   "rule": "Urgent: peripheral vascular disease with limb ischaemia or ruptured aortic aneurysm",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute lower limb ischemia\" \"disorder\"))",
+   "element_keys": [
+    "p154-66451b0e"
+   ],
+   "quote": "acute limb ischaemia likely",
+   "confidence": "high",
+   "note": "'acute limb ischaemia likely' -> probable Acute lower limb ischemia; Urgent via active_condition."
+  },
+  {
+   "rule": "Urgent: peripheral vascular disease with limb ischaemia or ruptured aortic aneurysm",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Critical lower limb ischemia\" \"disorder\"))",
+   "element_keys": [
+    "p154-84084111"
+   ],
+   "quote": "critical limb ischaemia likely",
+   "confidence": "high",
+   "note": "'critical limb ischaemia likely' -> probable Critical lower limb ischemia; Urgent via active_condition."
+  },
+  {
+   "rule": "Urgent: peripheral vascular disease with limb ischaemia or ruptured aortic aneurysm",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Ruptured abdominal aortic aneurysm\" \"disorder\"))",
+   "element_keys": [
+    "p154-280198a5"
+   ],
+   "quote": "ruptured abdominal aortic aneurysm likely",
+   "confidence": "high",
+   "note": "'ruptured abdominal aortic aneurysm likely' -> probable; Urgent via active_condition."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p154-17a52d0a",
+   "element_id": "p154-rb1-e05",
+   "text": "Manage urgently:",
+   "reason_category": "management_step",
+   "reason": "'Manage urgently' header of referral/management steps; no manage tasks."
+  },
+  {
+   "element_key": "p154-96828fed",
+   "element_id": "p154-rb1-e06",
+   "text": "If acute limb ischaemia likely, refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p154-5f001255",
+   "element_id": "p154-rb1-e07",
+   "text": "If critical limb ischaemia likely, discuss same day urgency of referral with specialist.",
+   "reason_category": "management_step",
+   "reason": "Referral/discussion step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p154-0cc913eb",
+   "element_id": "p154-rb1-e08",
+   "text": "If ruptured abdominal aortic aneurysm likely, avoid giving IV fluids even if BP < 90/60 (raising blood pressure may worsen the rupture). Refer urgently.",
+   "reason_category": "management_step",
+   "reason": "Avoid IV fluids / refer urgently: management, not encoded."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "PVD as a conjunct of each probable diagnosis",
+   "decision": "Each 'X likely' rule requires recorded peripheral vascular disease, because the red box frames all three criteria within 'the patient with peripheral vascular disease'.",
+   "alternatives": "Diagnose ALI/CLI/ruptured AAA from the findings alone (would fire in patients without known PVD).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pallor in the leg",
+   "decision": "Discoloration of skin with finding_site Lower limb structure (broader than pallor).",
+   "alternatives": "Leave pallor out as a SNOMED gap (ALI rule would then fire less often).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Single Urgent priority evaluation",
+   "decision": "One Urgent rule: PVD and any of the three probable diagnoses as active_condition. Page says 'urgent attention', so no escalation to Very urgent/Emergency.",
+   "alternatives": "Three separate priority rules; Emergency for ruptured AAA.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Possible AAA from assessment table",
+   "decision": "'If pulsatile mass felt, refer for assessment for possible abdominal aortic aneurysm' encoded as a possible AAA diagnosis rule (PVD and pulsatile abdominal mass).",
+   "alternatives": "Treat as management/referral only.",
+   "confidence": "medium"
+  }
+ ]
+}

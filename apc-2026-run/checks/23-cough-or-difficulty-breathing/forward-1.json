@@ -1,0 +1,579 @@
+{
+  "page": 23,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p23-a5357eb9",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the presenting complaint and the any-of structure of the Urgent priority rule.",
+      "verdict": "partial",
+      "parts_missing": [
+        "presenting complaint 'difficulty breathing' is anchored only to (clinical_finding Difficulty breathing); the recorded common symptom is Dyspnea, which is neither an ancestor nor a descendant of Difficulty breathing, so a patient recorded with Dyspnea and no cough does not trigger the check tasks or the priority rule"
+      ],
+      "problem": "Structure (and <complaint> (or ...red-box items...)) is correct. The complaint anchor should include Dyspnea (the common symptom from shared/common_symptoms.ts) alongside Cough and Difficulty breathing.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (and (or (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))) (or ...))",
+        "Check for urgent cough or difficulty breathing conditions :: (or (clinical_finding (snomed_concept \"Cough\" \"finding\")) (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-1a1fd5e0",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with 'heart failure likely'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts: worse lying flat = Orthopnea (correct), leg swelling = Swelling of lower limb (correct), 'heart failure likely' = probable Heart failure rule, referenced as active_condition from the priority rule (correct house pattern). Cross-reference to 164 is out of scope.",
+      "evidence": [
+        "Diagnose probable heart failure (cough/difficulty breathing page) :: (and (clinical_finding (snomed_concept \"Orthopnea\" \"finding\")) (clinical_finding (snomed_concept \"Swelling of lower limb\" \"finding\")))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (active_condition (snomed_concept \"Heart failure\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-b4cfda62",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts present: Shock as a finding and SBP < 80 as a measurement. Note that the footnote defining 'shock likely' (p23-0d90b567) is not encoded as a probable rule, so Shock must be recorded directly; see that element.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-6861e109",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion; the arrow to page 22 is cross-reference only.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Wheezing\" \"finding\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Tight chest\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-cc83a21d",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion (routine vital).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Pulse, function in bpm is the house vital concept (anchors/vitals.ts heart_rate).",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-c141d3be",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with three parts.",
+      "verdict": "partial",
+      "parts_missing": [
+        "oxygen saturation drops to < 87% on exertion (walking 15-20m)"
+      ],
+      "problem": "Cyanosis and SpO2 < 92% are encoded. The exertional desaturation part is absent: the measurement language has no 'on exertion' context, so a < 87 threshold cannot be tied to a walk test, but the page's criterion could still be approximated with a finding (SNOMED has 'Desaturation of blood' (disorder) and 'Dyspnea on exertion' (finding)); nothing of the kind is checked for or used.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Cyanosis\" \"finding\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 92)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-01fd8d09",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with three parts.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Confused = Clouded consciousness (the AVPU 'Confused' vital form in anchors/vitals.ts), agitated = Feeling agitated, reduced consciousness = Decreased level of consciousness. All three in check_for and in the priority or.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Feeling agitated\" \"finding\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-959d4e89",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Hemoptysis is also the 'Coughing blood' warning-sign form. The volume threshold (>= 1 tablespoon) and 'fresh' are not representable in the language; accepted as the closest encoding.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Hemoptysis\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-668e2972",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with 'tension pneumothorax likely'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Parts: sudden breathlessness = Dyspnea + Sudden onset (correct); more resonant / decreased breath sounds / pain on 1 side = or of Hyperresonance, Decreased breath sounds, Chest pain each with Unilateral qualifier (correct, matches the page's slash-separated alternatives); deviated trachea = Trachea displaced (the SNOMED synonym for tracheal deviation; correct); BP < 90/60 = or of SBP < 90, DBP < 60 (correct, matches the gold page's pattern). The probable rule is referenced from the priority rule as active_condition. The rule conjoins all four groups, which is a defensible strict reading of the comma list but will rarely fire; see rule-level notes.",
+      "evidence": [
+        "Diagnose probable tension pneumothorax (cough/difficulty breathing page) :: (and (clinical_finding (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Trachea displaced\" \"disorder\")) (or (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90) (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (active_condition (snomed_concept \"Tension pneumothorax\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-1a01453c",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with two parts.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Breathless at rest = Dyspnea at rest; breathless while talking = Unable to complete a sentence in one breath (closest SNOMED finding).",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-ffc3b65e",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Page says swelling AND pain in one calf; encoded as and of Swollen calf (Unilateral) and Pain in calf (Unilateral). Logic and laterality match.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (and (clinical_finding (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-9102a553",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion (routine vital).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-513f0a6e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Header of the 'Manage and refer urgently' block; no manage tasks by design.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-03f55f0d",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Oxygen administration with its SpO2 < 95% trigger is a management step.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-1d9fa461",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "Cannula insertion and chest tube; the 'tension pneumothorax likely' condition it depends on is encoded (see p23-668e2972).",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-10759f4e",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "IV fluids; its trigger (shock / SBP < 80) is encoded in the priority rule.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-e9ac69ab",
+      "scope": "borderline",
+      "scope_reason": "This is a management line (ceftriaxone), but it carries a diagnostic definition: 'severe pneumonia' = 2 or more of confusion/decreased consciousness, BP < 90/60, RR >= 30, age > 65. The house standard turns named 'X' conditions into diagnosis rules, and any2 exists in the language; age > 65 is not representable (only age buckets exist), so the definition could be encoded at best with three of its four criteria.",
+      "verdict": "missing",
+      "parts_missing": [
+        "any2 of (Clouded consciousness or Decreased level of consciousness), (SBP < 90 or DBP < 60), RR >= 30, [age > 65 not representable] as a probable 'severe pneumonia' rule"
+      ],
+      "problem": "No rule for severe pneumonia; the Pneumonia probable rule has no severity tier. Because the only consequence on this page is drug choice, a reviewer may reasonably keep this out of scope.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-324d1341",
+      "scope": "out_of_scope",
+      "scope_reason": "cross_reference_only",
+      "verdict": null,
+      "parts_missing": [],
+      "problem": "'If rapid deep breathing, check fingerprick glucose; if > 11.1 go to 19' routes to the diabetes emergency page. Glucose is a routine vital (no measure task needed) and the > 11.1 logic belongs to page 19. A check_for of Kussmaul's respiration would be unused on this page.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-1128cc7a",
+      "scope": "borderline",
+      "scope_reason": "Mostly management and cross-references (HIV test, AHR, TB NAAT, smoking cessation), but 'Ask about duration and recurrence' is the flowchart's root decision.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Duration is expressed with onset comparisons in every branch rule and recurrence via the Recurrent qualifier in the second task's check_for. Tests and referrals are not encoded, by design.",
+      "evidence": [
+        "Check for causes of cough or difficulty breathing not needing urgent attention :: (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+        "Check for causes of cough or difficulty breathing not needing urgent attention :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-88004b5f",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch condition used by the acute viral / bronchitis / pneumonia rules.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "(<= (onset Cough) (time_ago 2 weeks)) means onset within the last 2 weeks per the briefing's time semantics, and (no Cough Recurrent) encodes 'not recurrent'. Direction is right.",
+      "evidence": [
+        "Diagnose probable pneumonia (short cough with crackles/bronchial breathing) :: (<= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks))",
+        "Diagnose probable pneumonia (short cough with crackles/bronchial breathing) :: (no (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-ba551fd6",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch condition used by all chronic-branch rules.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as or of onset >= 2 weeks (cough or difficulty breathing) and Recurrent (cough or difficulty breathing). Matches 'or'. Same Dyspnea-vs-Difficulty-breathing anchoring caveat as the header.",
+      "evidence": [
+        "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing) :: (or (>= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) (>= (onset (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))) (time_ago 2 weeks)) (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-620b3770",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart decision.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Yes branch = or of Respiratory crackles, Bronchial breathing (pneumonia); No branch = no of both (acute viral infection, acute bronchitis). Both findings in check_for.",
+      "evidence": [
+        "Diagnose probable pneumonia (short cough with crackles/bronchial breathing) :: (or (clinical_finding (snomed_concept \"Respiratory crackles\" \"finding\")) (clinical_finding (snomed_concept \"Bronchial breathing\" \"finding\")))",
+        "Diagnose probable acute viral infection (short cough, no crackles) :: (no (clinical_finding (snomed_concept \"Respiratory crackles\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-b3d80faf",
+      "scope": "in_scope",
+      "scope_reason": "Two 'X likely' conclusions (acute viral infection; acute bronchitis) plus management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Acute viral infection likely = probable Acute viral disease under short, non-recurrent cough without crackles/bronchial breathing (correct). Acute bronchitis likely = same branch plus Common cold and or of Tight chest / Chest pain / Productive cough: 'tight/sore chest or coughing sputum' is matched. 'Recent' on the cold is not time-bounded (minor; an onset comparison could express it). 'Usually sudden onset fever, chills or body pain' is descriptive, not a criterion, and is rightly not required. Paracetamol, rest and return advice are management.",
+      "evidence": [
+        "Diagnose probable acute viral infection (short cough, no crackles) :: (and (<= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) (no (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (no (clinical_finding (snomed_concept \"Respiratory crackles\" \"finding\"))) (no (clinical_finding (snomed_concept \"Bronchial breathing\" \"finding\"))))",
+        "Diagnose probable acute bronchitis (short cough, recent cold) :: (clinical_finding (snomed_concept \"Common cold\" \"disorder\")) ... (or (clinical_finding (snomed_concept \"Tight chest\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (clinical_finding (snomed_concept \"Productive cough\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-04553a03",
+      "scope": "in_scope",
+      "scope_reason": "'Pneumonia likely' conclusion; the rest (x-ray, referral conditions, comorbidity question for antibiotic choice) is management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable Pneumonia under short, non-recurrent cough with crackles or bronchial breathing matches the flowchart. The 'Any of: HIV, > 65 years, ...' question only selects the antibiotic and is correctly left out.",
+      "evidence": [
+        "Diagnose probable pneumonia (short cough with crackles/bronchial breathing) :: (and (<= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) (no (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (or (clinical_finding (snomed_concept \"Respiratory crackles\" \"finding\")) (clinical_finding (snomed_concept \"Bronchial breathing\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-5f9ce05b",
+      "scope": "in_scope",
+      "scope_reason": "Three 'consider X' conclusions on the chronic branch.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Nose problems = possible Disorder of the nose under chronic/recurrent plus or of Itching (nasal), Nasal congestion, Clearing throat - hawking (correct). Asthma and COPD = possible rules fired by the chronic/recurrent branch alone, which is what the page says ('also consider').",
+      "evidence": [
+        "Diagnose possible nose disorder (chronic or recurrent cough) :: (or (clinical_finding (snomed_concept \"Itching\" \"finding\") (finding_site (snomed_concept \"Nasal structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Nasal congestion\" \"finding\")) (clinical_finding (snomed_concept \"Clearing throat - hawking\" \"finding\")))",
+        "Diagnose possible asthma (chronic or recurrent cough/difficulty breathing) :: (or (>= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) ...)",
+        "Diagnose possible COPD (chronic or recurrent cough/difficulty breathing) :: (or (>= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) ...)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-6b62b40a",
+      "scope": "in_scope",
+      "scope_reason": "PJP column criteria (fragment: 'HIV with CD4 < 200 and dry').",
+      "verdict": "partial",
+      "parts_missing": [
+        "CD4 < 200 (no cell-count unit in the language; not_representable)"
+      ],
+      "problem": "HIV is encoded as Human immunodeficiency virus infection with Known present qualifier, dry cough as Dry cough. The CD4 threshold is dropped, so the rule fires for any HIV patient with chronic dry cough and dyspnea; this is the best the language allows, but it widens the rule.",
+      "evidence": [
+        "Diagnose probable PJP (chronic cough with HIV) :: (clinical_finding (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+        "Diagnose probable PJP (chronic cough with HIV) :: (clinical_finding (snomed_concept \"Dry cough\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-556bdf75",
+      "scope": "in_scope",
+      "scope_reason": "PJP column criteria (fragment: 'cough, shortness of breath').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Shortness of breath = Dyspnea (the recorded common symptom). Dry cough covers the cough part.",
+      "evidence": [
+        "Diagnose probable PJP (chronic cough with HIV) :: (clinical_finding (snomed_concept \"Dyspnea\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-6357cc45",
+      "scope": "in_scope",
+      "scope_reason": "Diagnosis name fragment ('Pneumocystis pneumonia').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Concept Pneumocystosis jirovecii pneumonia (disorder) is the right SNOMED concept for PJP.",
+      "evidence": [
+        "Diagnose probable PJP (chronic cough with HIV) :: (diagnosis (snomed_concept \"Pneumocystosis jirovecii pneumonia\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-21128af7",
+      "scope": "in_scope",
+      "scope_reason": "'(PJP) likely' conclusion; the rest (x-ray, co-trimoxazole, HIV care, same-day referral with RR > 24) is management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Probable PJP rule exists with the chronic/recurrent guard, HIV, dry cough and dyspnea. The referral trigger 'RR > 24' is a management step and not encoded, by design.",
+      "evidence": [
+        "Diagnose probable PJP (chronic cough with HIV) :: (and (or ...chronic/recurrent...) (clinical_finding (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Dry cough\" \"finding\")) (clinical_finding (snomed_concept \"Dyspnea\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-ec986182",
+      "scope": "in_scope",
+      "scope_reason": "OSA column criteria.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Persistent snoring = Habitual snoring; poor sleep = Poor sleep pattern; 'or' preserved.",
+      "evidence": [
+        "Diagnose probable obstructive sleep apnoea (chronic cough page) :: (or (clinical_finding (snomed_concept \"Habitual snoring\" \"finding\")) (clinical_finding (snomed_concept \"Poor sleep pattern\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-75e01b32",
+      "scope": "in_scope",
+      "scope_reason": "Diagnosis name fragment ('Obstructive sleep apnoea').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Diagnose probable obstructive sleep apnoea (chronic cough page) :: (diagnosis (snomed_concept \"Obstructive sleep apnea syndrome\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-6559e2ac",
+      "scope": "in_scope",
+      "scope_reason": "'likely' conclusion fragment for OSA; overweight cross-reference and referral criteria are management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The probable OSA rule carries the page's chronic/recurrent guard plus snoring or poor sleep. 'Refer if enlarged tonsils, stops breathing/chokes/gasps while sleeping' is a referral step, not encoded by design.",
+      "evidence": [
+        "Diagnose probable obstructive sleep apnoea (chronic cough page) :: (and (or ...chronic/recurrent...) (or (clinical_finding (snomed_concept \"Habitual snoring\" \"finding\")) (clinical_finding (snomed_concept \"Poor sleep pattern\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-2cff60d9",
+      "scope": "in_scope",
+      "scope_reason": "Post-infectious cough column criteria (fragment: 'Recent upper').",
+      "verdict": "partial",
+      "parts_missing": [
+        "'Recent' is not encoded; Upper respiratory infection is matched with no time bound (an onset comparison such as onset within the last 8 weeks would express it)"
+      ],
+      "problem": "Upper respiratory infection (disorder) is the right concept; only the recency is lost.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (clinical_finding (snomed_concept \"Upper respiratory infection\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-efe482a5",
+      "scope": "in_scope",
+      "scope_reason": "Post-infectious cough column criteria (fragment: 'respiratory tract infection,').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Completes 'upper respiratory tract infection'; see p23-2cff60d9.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (clinical_finding (snomed_concept \"Upper respiratory infection\" \"disorder\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-d00344dc",
+      "scope": "in_scope",
+      "scope_reason": "Post-infectious cough column criteria (fragment: 'no difficulty').",
+      "verdict": "partial",
+      "parts_missing": [
+        "exclusion of Dyspnea: the negation covers Difficulty breathing only, and Dyspnea (the recorded common symptom) is not a descendant of it, so a patient recorded with Dyspnea still gets probable post-infectious cough"
+      ],
+      "problem": "Encoded as (no (clinical_finding Difficulty breathing)). Should also exclude Dyspnea.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (no (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-7b93b459",
+      "scope": "in_scope",
+      "scope_reason": "Post-infectious cough column criteria (fragment: 'breathing').",
+      "verdict": "partial",
+      "parts_missing": [
+        "same as p23-d00344dc: Dyspnea not excluded"
+      ],
+      "problem": "Completes 'no difficulty breathing'.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (no (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-652e1c50",
+      "scope": "in_scope",
+      "scope_reason": "Diagnosis name fragment ('Post-infectious').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Persistent cough after viral respiratory infection (disorder) is the closest SNOMED concept for post-infectious cough; no plain 'post-infectious cough' concept exists.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (diagnosis (snomed_concept \"Persistent cough after viral respiratory infection\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-307beea4",
+      "scope": "in_scope",
+      "scope_reason": "'cough likely' conclusion for post-infectious cough; reassurance and return advice are management.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "The probable rule's guard uses cough-only chronic/recurrent conditions (the difficulty-breathing variants are omitted), which is consistent with the column's 'no difficulty breathing'.",
+      "evidence": [
+        "Diagnose probable post-infectious cough :: (and (or (>= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 weeks)) (clinical_finding (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (clinical_finding (snomed_concept \"Upper respiratory infection\" \"disorder\")) (no (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-f2c32620",
+      "scope": "in_scope",
+      "scope_reason": "Smoker column criteria (fragment: 'Smoker or').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Smoker (finding) used in both the lung cancer and the COPD rules.",
+      "evidence": [
+        "Diagnose possible lung cancer (smoker with chronic cough and weight loss) :: (or (clinical_finding (snomed_concept \"Smoker\" \"finding\")) (clinical_finding (snomed_concept \"Ex-smoker\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-36b1eddf",
+      "scope": "in_scope",
+      "scope_reason": "Smoker column criteria (fragment: 'recently stopped').",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Ex-smoker (finding). 'Recently' is not expressed, which slightly widens the rules to any ex-smoker; the language has no way to date a smoking-status finding short of an onset comparison, so accepted.",
+      "evidence": [
+        "Diagnose probable COPD (smoker with cough for 2 years or more) :: (clinical_finding (snomed_concept \"Ex-smoker\" \"finding\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p23-81e8590b",
+      "scope": "in_scope",
+      "scope_reason": "'consider lung cancer' and 'COPD likely' conclusions.",
+      "verdict": "partial",
+      "parts_missing": [
+        "COPD: 'coughing with/without sputum most days of 3 months' (frequency over a period; not_representable). Only the >= 2 years duration is encoded."
+      ],
+      "problem": "Lung cancer = possible Malignant neoplasm of lung under chronic/recurrent + smoker/ex-smoker + Weight decreased: correct. COPD likely = probable COPD under smoker/ex-smoker + cough onset >= 2 years ago: direction and unit correct; the 'most days of 3 months' part cannot be expressed. Both rules are correctly nested under the smoker column.",
+      "evidence": [
+        "Diagnose possible lung cancer (smoker with chronic cough and weight loss) :: (and (or ...chronic/recurrent...) (or (clinical_finding (snomed_concept \"Smoker\" \"finding\")) (clinical_finding (snomed_concept \"Ex-smoker\" \"finding\"))) (clinical_finding (snomed_concept \"Weight decreased\" \"finding\")))",
+        "Diagnose probable COPD (smoker with cough for 2 years or more) :: (and (or (clinical_finding (snomed_concept \"Smoker\" \"finding\")) (clinical_finding (snomed_concept \"Ex-smoker\" \"finding\"))) (>= (onset (clinical_finding (snomed_concept \"Cough\" \"finding\"))) (time_ago 2 years)))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p23-0d90b567",
+      "scope": "borderline",
+      "scope_reason": "Footnotes. Footnotes 2-5 are management (cannula gauge, penicillin allergy, moxifloxacin, co-trimoxazole dosing). Footnote 1 is an 'X likely' definition: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely', which the house standard would encode as a probable Shock rule referenced from the red box.",
+      "verdict": "missing",
+      "parts_missing": [
+        "probable Shock rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness (Clouded consciousness / Feeling agitated), weakness (Asthenia or similar)"
+      ],
+      "problem": "The priority rule uses (clinical_finding Shock) and so only fires on shock when a health worker records 'Shock' directly; the page's own definition of shock is not encoded. The footnote's wording does not say whether all or any of the listed signs are required, which the builders should record as a clinician question.",
+      "evidence": [
+        "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p23-ae1bbc74",
+    "p23-ee5f365f",
+    "p23-f706014f",
+    "p23-7a57c6f2",
+    "p23-173c7994",
+    "p23-9cbaa225"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Check for urgent cough or difficulty breathing conditions; Check for causes of cough or difficulty breathing not needing urgent attention; Urgent: cough or difficulty breathing with red-box signs; all chronic-branch rules",
+      "problem": "The presenting complaint is anchored to (clinical_finding \"Difficulty breathing\") but the recorded common symptom is Dyspnea (anchors/common_symptoms.ts), and SNOMED says Difficulty breathing is not a descendant of Dyspnea (parent: Finding of ease of respiration). A patient recorded with Dyspnea and no cough gets neither check task nor the Urgent evaluation, even with SpO2 < 92% or RR >= 30, and the onset/Recurrent conditions on Difficulty breathing never match. Add Dyspnea (and its onset/Recurrent forms) to each place Difficulty breathing is used as a trigger, and to the negation in the post-infectious cough rule.",
+      "severity": "high"
+    },
+    {
+      "rule": "Urgent: cough or difficulty breathing with red-box signs",
+      "problem": "Exertional desaturation (SpO2 drops to < 87% on walking 15-20m) is missing from the check list and the priority rule; cyanosis and < 92% at rest are the only parts encoded.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Urgent: cough or difficulty breathing with red-box signs (Shock)",
+      "problem": "Footnote 1 defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness); no probable Shock rule exists, so the Shock disjunct only fires on a directly recorded Shock finding. The house pattern for a red-box 'X likely' is a probable rule referenced via active_condition.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable tension pneumothorax (cough/difficulty breathing page)",
+      "problem": "All four groups (sudden dyspnea, one-sided sign, deviated trachea, BP < 90/60) are required conjunctively. The page's comma list can be read that way, but tracheal deviation and hypotension are late signs; requiring every one means the rule, and therefore the Urgent disjunct for tension pneumothorax, will almost never fire. Worth a clinician question (any2/any3 of the groups with sudden dyspnea required).",
+      "severity": "low"
+    },
+    {
+      "rule": "(none) severe pneumonia",
+      "problem": "The red box's 'severe pneumonia (2 or more of confusion/decreased consciousness, BP < 90/60, RR >= 30, age > 65)' is not encoded. It governs management on this page, and age > 65 is not representable, so leaving it out is defensible; recorded here so the decision is explicit.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable PJP (chronic cough with HIV)",
+      "problem": "CD4 < 200 is dropped (no cell-count unit in the language), so the rule fires for any known-HIV patient with chronic dry cough and dyspnea. Not fixable in the language; should be listed under 'could not model'.",
+      "severity": "low"
+    },
+    {
+      "rule": "Diagnose probable post-infectious cough; Diagnose probable acute bronchitis",
+      "problem": "'Recent' upper respiratory tract infection and 'recent' cold are matched with no time bound; an onset comparison on the infection finding would express the page's recency.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The most consequential problem is anchoring: every trigger and chronic-branch condition uses 'Difficulty breathing', which is not a descendant of the recorded common symptom Dyspnea, so a breathless patient without cough never reaches the check tasks or the Urgent evaluation, and the post-infectious cough exclusion does not exclude Dyspnea. The red box is otherwise well covered: all twelve criteria are encoded with the right concepts, thresholds and units, with heart failure and tension pneumothorax as probable rules referenced from the priority rule; the two gaps are exertional desaturation (< 87% on walking) and the footnote's 'shock likely' definition, which has no probable rule. Every flowchart branch has its rule (acute viral infection, acute bronchitis, pneumonia, nose disorder, asthma, COPD possible and probable, PJP, OSA, post-infectious cough, lung cancer), with CD4 < 200 and 'most days of 3 months' correctly left out as not representable."
+}

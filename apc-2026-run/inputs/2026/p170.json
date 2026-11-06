@@ -1,0 +1,526 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 170,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.3,
+    806.4,
+    167.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p170-rb1-e01",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 0,
+   "parent": null,
+   "text": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "bbox": [
+    209.2,
+    91.4,
+    634.6,
+    102.5
+   ],
+   "key": "p170-6cb01d4d"
+  },
+  {
+   "id": "p170-rb1-e02",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 1,
+   "parent": null,
+   "text": "Check pregnancy test and if negative, insert Copper IUD1 as soon as possible or give single dose levonorgestrel 1.5mg orally.",
+   "bbox": [
+    56.9,
+    101.5,
+    551.3,
+    112.5
+   ],
+   "key": "p170-5034a3f9"
+  },
+  {
+   "id": "p170-rb1-e03",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 2,
+   "parent": "p170-rb1-e02",
+   "text": "If patient > 80kg, BMI2 ≥ 30, or on efavirenz, rifampicin, phenytoin or carbamazepine, offer Copper IUD1 or increase dose of levonorgestrel to 3mg.",
+   "bbox": [
+    62.5,
+    111.5,
+    637.6,
+    122.5
+   ],
+   "key": "p170-a848ab7e"
+  },
+  {
+   "id": "p170-rb1-e04",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 2,
+   "parent": "p170-rb1-e02",
+   "text": "If patient on ketoconazole/fluconazole, advise levonorgestrel may cause nausea/vomiting and offer Copper IUD1 instead.",
+   "bbox": [
+    62.5,
+    121.7,
+    541.0,
+    132.5
+   ],
+   "key": "p170-f5f3c0c2"
+  },
+  {
+   "id": "p170-rb1-e05",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 2,
+   "parent": "p170-rb1-e02",
+   "text": "If patient vomits < 2 hours after taking levonorgestrel, repeat dose.",
+   "bbox": [
+    62.5,
+    131.7,
+    322.3,
+    142.5
+   ],
+   "key": "p170-459b77f5"
+  },
+  {
+   "id": "p170-rb1-e06",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 2,
+   "parent": "p170-rb1-e02",
+   "text": "Offer to start long-term contraceptive at same visit (if IUD not chosen). If injectable or implant given, check pregnancy test in 2 weeks.",
+   "bbox": [
+    62.5,
+    141.7,
+    576.9,
+    152.5
+   ],
+   "key": "p170-a5a53e29"
+  },
+  {
+   "id": "p170-rb1-e07",
+   "page": 170,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give emergency contraception if patient had unprotected sex in past 5 days and does not want pregnancy:",
+   "section_y": 91.4,
+   "indent": 1,
+   "parent": null,
+   "text": "Assess for HIV and hepatitis B post-exposure prophylaxis 119. Advise patient to return for pregnancy test if next period is more than 7 days late.",
+   "bbox": [
+    56.9,
+    151.7,
+    620.2,
+    162.5
+   ],
+   "key": "p170-96c090e0"
+  },
+  {
+   "id": "p170-out-e01",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "CONTRACEPTION",
+   "bbox": [
+    349.7,
+    48.5,
+    492.2,
+    70.8
+   ],
+   "key": "p170-1376c51d"
+  },
+  {
+   "id": "p170-out-e02",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1The levonorgestrel IUD 52mg (LNG-IUD) is not coded for emergency contraception. 2BMI = weight (kg) ÷ height (m) ÷ height (m). 3If patient > 40 years old, check breasts 6 monthly.",
+   "bbox": [
+    34.0,
+    542.8,
+    599.4,
+    551.8
+   ],
+   "key": "p170-9439b3b1"
+  },
+  {
+   "id": "p170-out-e03",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient starting and using contraception",
+   "bbox": [
+    318.4,
+    183.9,
+    525.3,
+    195.1
+   ],
+   "key": "p170-89b39678"
+  },
+  {
+   "id": "p170-out-e04",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess When to assess Note",
+   "bbox": [
+    39.7,
+    199.3,
+    217.6,
+    210.3
+   ],
+   "key": "p170-491459b2"
+  },
+  {
+   "id": "p170-out-e05",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Symptoms Every visit Check for symptoms of STIs: vaginal discharge, ulcers, lower abdominal pain. If present 62. Manage other symptoms as on symptom pages.",
+   "bbox": [
+    39.7,
+    213.2,
+    680.3,
+    224.1
+   ],
+   "key": "p170-22bba0dc"
+  },
+  {
+   "id": "p170-out-e06",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Long-term health conditions",
+   "bbox": [
+    39.7,
+    227.4,
+    99.5,
+    247.6
+   ],
+   "key": "p170-6c309f4a"
+  },
+  {
+   "id": "p170-out-e07",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "First visit Check suitability of method if any of: cancer (especially breast, cervical, uterine), blood clots, hypertension, stroke, ischaemic heart disease, diabetes, liver disease, migraines, or unexplained vaginal bleeding 172.",
+   "bbox": [
+    113.4,
+    227.4,
+    792.8,
+    247.6
+   ],
+   "key": "p170-38e31bf1"
+  },
+  {
+   "id": "p170-out-e08",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Medication Every visit If on ART, TB treatment or antiseizure medication, check method is suitable 172.",
+   "bbox": [
+    39.7,
+    250.5,
+    479.0,
+    261.4
+   ],
+   "key": "p170-fedfc171"
+  },
+  {
+   "id": "p170-out-e09",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Periods Every visit Ask about interval between periods, blood loss, number of days period lasts, dysmenorrhoea (pain/cramps associated with periods).",
+   "bbox": [
+    39.7,
+    264.7,
+    647.3,
+    274.9
+   ],
+   "key": "p170-7ad5e5e1"
+  },
+  {
+   "id": "p170-out-e10",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Menopause If > 40 years: yearly Ask about menopausal symptoms: hot flushes, night sweats, vaginal dryness, mood changes, difficulty sleeping. If menopausal 187.",
+   "bbox": [
+    39.7,
+    277.8,
+    654.7,
+    288.7
+   ],
+   "key": "p170-07d2b107"
+  },
+  {
+   "id": "p170-out-e11",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Sexual health Every visit If risky sexual behaviour (new or multiple partner/s, uses condoms unreliably, has sex under influence of alcohol/drugs), give safe sex advice.",
+   "bbox": [
+    39.7,
+    292.0,
+    675.5,
+    302.2
+   ],
+   "key": "p170-8ac2ee0d"
+  },
+  {
+   "id": "p170-out-e12",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Adherence Every visit • If using contraceptive, ask about concerns and satisfaction with method. If unsatisfied, consider different contraceptive, rather than risking unwanted pregnancy. • If patient has missed injections or pills, manage 171.",
+   "bbox": [
+    39.7,
+    305.6,
+    750.9,
+    325.8
+   ],
+   "key": "p170-3a9fa9cc"
+  },
+  {
+   "id": "p170-out-e13",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Side effects Every visit If already on contraceptive, ask about and manage side effects 171.",
+   "bbox": [
+    39.7,
+    328.7,
+    436.8,
+    339.5
+   ],
+   "key": "p170-95d7b186"
+  },
+  {
+   "id": "p170-out-e14",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Weight (BMI2) Every visit BMI = weight (kg) ÷ height (m) ÷ height (m). Aim for BMI of 18 to < 25. If BMI ≥ 25 156.",
+   "bbox": [
+    39.7,
+    342.4,
+    502.4,
+    353.2
+   ],
+   "key": "p170-84760152"
+  },
+  {
+   "id": "p170-out-e15",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "BP First visit; every visit if on pill or injectable",
+   "bbox": [
+    39.7,
+    356.6,
+    187.9,
+    376.8
+   ],
+   "key": "p170-11de6c3a"
+  },
+  {
+   "id": "p170-out-e16",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Check BP: if ≥ 140/90 148. • If known hypertension or BP ≥ 140/90, avoid/change from combined oral contraceptive. If BP ≥ 160/100, also avoid/change from injectable.",
+   "bbox": [
+    198.4,
+    356.2,
+    679.4,
+    377.0
+   ],
+   "key": "p170-bf99bf49"
+  },
+  {
+   "id": "p170-out-e17",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Breasts First visit, then yearly3 Check for lumps in breasts and axillae. If lumps in breasts 55; if lumps in axillae 42.",
+   "bbox": [
+    39.7,
+    379.9,
+    495.4,
+    390.7
+   ],
+   "key": "p170-ffc2df31"
+  },
+  {
+   "id": "p170-out-e18",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Pregnancy Every visit Before starting contraception or if pregnancy suspected (nausea/breast tenderness/missed period when using combined oral contraceptive), check for pregnancy 174.",
+   "bbox": [
+    39.7,
+    393.7,
+    777.1,
+    404.5
+   ],
+   "key": "p170-df2449ab"
+  },
+  {
+   "id": "p170-out-e19",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "HIV Every visit Test for HIV 124. If positive, give routine HIV care 126. If negative, consider need for PrEP 119.",
+   "bbox": [
+    39.7,
+    407.4,
+    541.3,
+    418.2
+   ],
+   "key": "p170-f5d02824"
+  },
+  {
+   "id": "p170-out-e20",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Cervical screen When needed If HIV negative: start screening at 25 years, repeat every 10 years 70. If HIV positive: start screening at 25 years, regardless of when ART was started, repeat every 5 years 70.",
+   "bbox": [
+    39.7,
+    421.1,
+    796.5,
+    432.0
+   ],
+   "key": "p170-99c0ffce"
+  },
+  {
+   "id": "p170-out-e21",
+   "page": 170,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the patient starting/on contraception • Educate patient to use contraceptive reliably. Advise to discuss concerns/problems with method and find an alternative, rather than stopping it and risking unwanted pregnancy. • Recommend dual contraception: one method of contraception plus condoms to protect from STIs and HIV. Demonstrate and give male/female condoms. • Discuss risky sexual behaviour. Explain risks of pregnancy and infections. Encourage patient to have 1 partner at a time and if HIV negative, to test for HIV between partners. Advise that partner/s test too. • Educate about the availability of emergency contraception (see above) and termination of pregnancy 175 to prevent unwanted pregnancy. Also educate about PrEP. • Advise patient on pill/implant to tell clinician if starting ART, TB treatment or antiseizure medication as these may interfere with pill/implant effectiveness. • If on pill: if vomits within 2 hours/severe diarrhoea within 12 hours of taking pill, repeat dose as soon as possible. If persistent vomiting/diarrhoea > 24 hours, advise to use condoms or abstain during illness and for 7 days after.",
+   "bbox": [
+    48.2,
+    448.5,
+    791.3,
+    529.7
+   ],
+   "key": "p170-0445d9e9"
+  }
+ ]
+}

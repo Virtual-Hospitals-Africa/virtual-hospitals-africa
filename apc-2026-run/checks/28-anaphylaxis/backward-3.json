@@ -1,0 +1,1257 @@
+{
+ "page": 28,
+ "checker": "backward-3",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized pruritus\" \"finding\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized rash\" \"disorder\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Fish\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Milk\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started'; the timing window is dropped, so any recorded medication exposure counts.",
+   "fix": "Add a recency constraint on the exposure.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check for anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page describes 'itchy, red, raised wheals that appear suddenly and usually disappear within 24 hours'; the transience (within 24 hours) is dropped.",
+   "fix": "Add a qualifier or note for transient (<24 h) wheals if the grammar allows.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'both eyes watery'; 'Watery eye' has no laterality, so one watery eye qualifies.",
+   "fix": "Use (snomed_concept \"Epiphora of bilateral eyes\" \"disorder\") or add a bilateral qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Fish\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Milk\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Peanut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Tree nut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started'; the timing window is dropped, so any recorded medication exposure counts.",
+   "fix": "Add a recency constraint on the exposure.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Insect bite/sting as the exposure is right, but the 'few hours before symptoms started' window is dropped.",
+   "fix": "Add a recency constraint on the bite/sting.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Insect bite/sting as the exposure is right, but the 'few hours before symptoms started' window is dropped.",
+   "fix": "Add a recency constraint on the bite/sting.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(allergy (snomed_concept \"Insect venom\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks whether this exposure 'has caused anaphylaxis before'; an allergy record is broader (any allergic reaction, intolerance) than prior anaphylaxis to it.",
+   "fix": "Require prior anaphylaxis to the agent (e.g. allergy with anaphylaxis reaction, or History of anaphylaxis tied to the agent) rather than any allergy.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Fish\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Milk\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Eggs (edible)\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Peanut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Tree nut\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started' to any food; the timing window is dropped, and footnote 1 lists these foods only as common examples ('include'), so food is narrowed to five items.",
+   "fix": "Add a recency constraint on the exposure (e.g. (< (onset ...) (time_ago N hours))) and add (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\")).",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "verdict": "imprecise",
+   "reason": "Page asks about exposure 'in the few hours before symptoms started'; the timing window is dropped, so any recorded medication exposure counts.",
+   "fix": "Add a recency constraint on the exposure.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Insect bite/sting as the exposure is right, but the 'few hours before symptoms started' window is dropped.",
+   "fix": "Add a recency constraint on the bite/sting.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "imprecise",
+   "reason": "Insect bite/sting as the exposure is right, but the 'few hours before symptoms started' window is dropped.",
+   "fix": "Add a recency constraint on the bite/sting.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized pruritus\" \"finding\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized rash\" \"disorder\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sudden onset of >= 2 of' all four groups; sudden onset is applied only to the skin group, not to this one.",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to the symptom findings in the Q2 branch.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sudden onset of >= 2 of' all four groups; sudden onset is applied only to the skin group, not to this one.",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to the symptom findings in the Q2 branch.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sudden onset of >= 2 of' all four groups; sudden onset is applied only to the skin group, not to this one.",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to the symptom findings in the Q2 branch.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sudden onset of >= 2 of' all four groups; sudden onset is applied only to the skin group, not to this one.",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to the symptom findings in the Q2 branch.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'sudden onset of >= 2 of' all four groups; sudden onset is applied only to the skin group, not to this one.",
+   "fix": "Add (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) to the symptom findings in the Q2 branch.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized pruritus\" \"finding\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized rash\" \"disorder\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose probable anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized pruritus\" \"finding\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page says 'Generalised itch/rash'; the generalised qualifier is dropped, so a localised itch or rash qualifies.",
+   "fix": "(snomed_concept \"Generalized rash\" \"disorder\") + Sudden onset",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose possible anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Asthma\" \"disorder\") possible)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Wrist region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle region structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cubital fossa\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Popliteal fossa structure\" \"body structure\")))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xeroderma\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Eczema\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheal\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "verdict": "imprecise",
+   "reason": "Page describes 'itchy, red, raised wheals that appear suddenly and usually disappear within 24 hours'; the transience (within 24 hours) is dropped.",
+   "fix": "Add a qualifier or note for transient (<24 h) wheals if the grammar allows.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Urticaria\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sneezing\" \"finding\") (qualifier (snomed_concept \"Recurrent\" \"qualifier value\")))) (time_ago 4 weeks))",
+   "verdict": "imprecise",
+   "reason": "Onset more than 4 weeks ago matches '> 4 weeks', but 'most days' (persistence) is dropped, so a symptom that started over 4 weeks ago and occurred once counts.",
+   "fix": "Add a persistent/frequent qualifier if available.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nasal structure\" \"body structure\")))) (time_ago 4 weeks))",
+   "verdict": "imprecise",
+   "reason": "Onset more than 4 weeks ago matches '> 4 weeks', but 'most days' (persistence) is dropped, so a symptom that started over 4 weeks ago and occurred once counts.",
+   "fix": "Add a persistent/frequent qualifier if available.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))) (time_ago 4 weeks))",
+   "verdict": "imprecise",
+   "reason": "Onset more than 4 weeks ago matches '> 4 weeks', but 'most days' (persistence) is dropped, so a symptom that started over 4 weeks ago and occurred once counts.",
+   "fix": "Add a persistent/frequent qualifier if available.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(> (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))) (time_ago 4 weeks))",
+   "verdict": "imprecise",
+   "reason": "Onset more than 4 weeks ago matches '> 4 weeks', but 'most days' (persistence) is dropped, so a symptom that started over 4 weeks ago and occurred once counts.",
+   "fix": "Add a persistent/frequent qualifier if available.",
+   "confidence": "low"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Allergic rhinitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of anaphylaxis\" \"situation\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery eye\" \"finding\"))",
+   "verdict": "imprecise",
+   "reason": "Page says 'both eyes watery'; 'Watery eye' has no laterality, so one watery eye qualifies.",
+   "fix": "Use (snomed_concept \"Epiphora of bilateral eyes\" \"disorder\") or add a bilateral qualifier.",
+   "confidence": "medium"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of bilateral eyes\" \"finding\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "expr": "(diagnosis (snomed_concept \"Allergic conjunctivitis\" \"disorder\") probable)",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: anaphylaxis",
+   "expr": "(active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))",
+   "verdict": "faithful",
+   "reason": "",
+   "fix": "",
+   "confidence": "high"
+  }
+ ],
+ "rules": [
+  {
+   "rule": "Check for anaphylaxis",
+   "verdict": "ok",
+   "problem": "Trigger (possible anaphylaxis) and check_for list cover the red box. Minor: rash/itch lack 'generalised', and food exposure is limited to the five footnote examples.",
+   "severity": "low"
+  },
+  {
+   "rule": "Assess the patient with previous anaphylaxis for other allergy",
+   "verdict": "ok",
+   "problem": "Trigger History of anaphylaxis matches the table heading. Minor: watery eye has no laterality.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis",
+   "verdict": "problem",
+   "problem": "The Q1 branches fire on allergy plus exposure alone, with no symptom and no time window. The page's question assumes symptoms have started and asks about exposure 'in the few hours before'. So a patient with a recorded peanut allergy who has any recorded peanut exposure becomes probable anaphylaxis and Urgent. Allergy is also broader than 'has caused anaphylaxis before', and food is narrowed to the footnote's five examples. The Q2 'sudden onset' is applied only to the skin group. The or/any2 structure for Q2 and Q4 otherwise follows the flowchart, and treating 'Treat as anaphylaxis' as probable is justified.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis",
+   "verdict": "ok",
+   "problem": "A broad pre-screen in the house pattern. Gap: it omits abdominal pain/vomiting and medication/food exposure, so for example a food exposure with difficulty breathing plus vomiting (Q2 yes on the page) does not trigger the check task.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible asthma in previous anaphylaxis",
+   "verdict": "ok",
+   "problem": "'exclude asthma' maps to possible, per the house standard.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable eczema in previous anaphylaxis",
+   "verdict": "ok",
+   "problem": "AND of dry, scaly (at the flexural/wrist/ankle sites) and itchy follows the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable urticaria in previous anaphylaxis",
+   "verdict": "ok",
+   "problem": "Drops 'usually disappear within 24 hours'.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable allergic rhinitis in previous anaphylaxis",
+   "verdict": "ok",
+   "problem": "The onset > 4 weeks direction is correct per the house convention; 'most days' is dropped.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable allergic conjunctivitis in previous anaphylaxis",
+   "verdict": "problem",
+   "problem": "'both eyes watery' is encoded as an unlateralised Watery eye; the itch is correctly bilateral.",
+   "severity": "low"
+  },
+  {
+   "rule": "Urgent: anaphylaxis",
+   "verdict": "ok",
+   "problem": "Urgent is justified by 'Give urgent attention to the patient with possible anaphylaxis'; no explicit escalation on the page.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Most consequential: the probable-anaphylaxis Q1 branches (allergy + exposure) need no symptoms and no 'few hours before' window, so any recorded allergen exposure in a patient with that allergy yields probable anaphylaxis and Urgent; allergy is also broader than 'has caused anaphylaxis before'. Food exposure is narrowed to the footnote's five examples ('include'), and 'generalised' is dropped from itch/rash throughout. The previous-anaphylaxis table rules are largely faithful, with minor losses (bilateral watery eyes, transient wheals, 'most days')."
+}

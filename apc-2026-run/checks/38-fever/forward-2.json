@@ -1,0 +1,310 @@
+{
+ "page": 38,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p38-85d89ea6",
+   "scope": "in_scope",
+   "scope_reason": "trigger: patient with a fever",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Check for urgent fever conditions :: (or (active_condition (snomed_concept \"Fever\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-a439224b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "SBP < 80 and RR >= 30 not in check_for list of the task (only in priority rule)"
+   ],
+   "problem": "Shock is encoded, SBP<80 only in priority rule; footnote definition of shock (pulse>=100, RR>30, confusion, weakness) not encoded.",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "check_for :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-96ad4a30",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page says 'severe abdominal or back pain'; encoded as severe abdominal pain or severe backache, a fair reading.",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (clinical_finding (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(clinical_finding (snomed_concept \"Backache\" \"finding\") (qualifier ... Severe ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-725c1121",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (clinical_finding (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-9f57068b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "red rash (page says purple/red rash; only Purpuric rash encoded)",
+    "Stiff neck/drowsy/confused/rash not directly in the urgent priority rule: depends on meningitis diagnosis being visible to active_condition"
+   ],
+   "problem": "Meningitis probable rule requires fever AND any one of the four findings: right logic. Red (non-purple) rash missing. Urgency reaches the priority rule only indirectly.",
+   "evidence": [
+    "Diagnose probable meningitis from fever page :: (or (clinical_finding (snomed_concept \"Stiff neck\" \"finding\")) (clinical_finding (snomed_concept \"Drowsy\" \"finding\")) (clinical_finding (snomed_concept \"Acute confusion\" \"finding\")) (clinical_finding (snomed_concept \"Purpuric rash\" \"disorder\")))",
+    "Urgent: fever with red-box danger signs :: (active_condition (snomed_concept \"Meningitis\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-1c3b2c00",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (clinical_finding (snomed_concept \"Jaundice\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-3354ef5c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-a92d36c0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Same indirect chaining caveat as meningitis for the priority rule.",
+   "evidence": [
+    "Diagnose probable appendicitis from fever page :: (clinical_finding (snomed_concept \"Tenderness of right lower quadrant of abdomen\" \"finding\"))",
+    "Urgent: fever with red-box danger signs :: (active_condition (snomed_concept \"Appendicitis\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-6b933aad",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (clinical_finding (snomed_concept \"Finding of tendency to bleed\" \"finding\"))",
+    "(clinical_finding (snomed_concept \"Easy bruising\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-921e3bf0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "RR and difficulty breathing both encoded; RR measurement absent from check_for.",
+   "evidence": [
+    "Urgent: fever with red-box danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "(clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-59573bd9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-52091970",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-f26c6d31",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-7584a34b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (glucose thresholds route to p19; no glucose-unit-free representation checked)",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-63360774",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p38-2d9a1b25",
+   "scope": "borderline",
+   "scope_reason": "'now or in the past 3 days' and 'consider malaria' in a malaria area; malaria exposure history probably not representable, and malaria is page 39",
+   "verdict": "missing",
+   "parts_missing": [
+    "fever in past 3 days as time window",
+    "consider malaria possible diagnosis (travel to malaria area in 3 months)"
+   ],
+   "problem": "No malaria rule; past-3-days window not expressed beyond active Fever.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p38-2172e4f3",
+   "scope": "in_scope",
+   "scope_reason": "mpox and diphtheria 'consider' rules; AHR is cross-reference",
+   "verdict": "partial",
+   "parts_missing": [
+    "abacavir hypersensitivity (abacavir use) not encoded",
+    "'unexplained' rash",
+    "pseudomembrane 'bleeds easily'",
+    "'none of above or malaria negative' gating"
+   ],
+   "problem": "Mpox and diphtheria possible rules present and logic matches (rash/lesion AND >=1 of list, temp>38.5 included). Abacavir AHR check absent.",
+   "evidence": [
+    "Diagnose possible mpox from fever page :: (and fever (or Eruption Skin lesion ...) (or Headache Backache ... (> temp 38.5) ...))",
+    "Diagnose possible diphtheria from fever page :: (and Sore throat fever (or Pseudomembrane Nasal / Pharyngeal))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-e536e654",
+   "scope": "in_scope",
+   "scope_reason": "flowchart decision",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Tick bite/tick present encoded; 'small dark brown/black scab' (eschar) not encoded.",
+   "evidence": [
+    "Diagnose probable tick bite fever :: (or (clinical_finding (snomed_concept \"Tick bite\" \"disorder\")) (clinical_finding (snomed_concept \"Infestation caused by Ixodidae\" \"disorder\")) ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-0a04184f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "only the 'likely' conclusion is in scope; the sign list (headache, body pain, rash, lymphadenopathy) is not used, which is acceptable"
+   ],
+   "problem": "Probable diagnosis rule fine. Tick bite fever (probable) not gated on 'none of the urgent/other considerations'.",
+   "evidence": [
+    "Diagnose probable tick bite fever :: (diagnosis (snomed_concept \"South African tick-bite fever\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-17389c5c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "No-tick branch via (no ...) clauses; any of headache/body pain/recent common cold. 'Recent' qualifier on common cold is a doubtful modelling choice.",
+   "evidence": [
+    "Diagnose probable acute viral infection from fever page :: (and fever (no tick bite) (no Ixodidae) (no Argasidae) (or Headache Generalized aches and pains Common cold with Recent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-7ffbcd92",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only (urine dipstick p69, TB p102, HIV p124, discuss/refer)",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p38-d50f2820",
+   "scope": "borderline",
+   "scope_reason": "footnote 1 defines shock likely (SBP<80, pulse>=100, RR>30, confusion/restlessness, weakness); other footnotes are management",
+   "verdict": "missing",
+   "parts_missing": [
+    "pulse >= 100, RR > 30, confusion/restlessness, weakness as shock-likely definition"
+   ],
+   "problem": "Shock is only a raw finding; the footnote's defining criteria are not encoded (SBP and RR are separately in the urgent priority, partly covering it).",
+   "evidence": [],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p38-71e11943",
+  "p38-d008521e"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: fever with red-box danger signs",
+   "problem": "Meningitis and appendicitis enter via active_condition of a system-diagnosed probable condition; stiff neck, drowsy, confusion, purpuric rash and RLQ tenderness are not in the priority rule directly. If system diagnoses do not feed active_condition, those red-box items never trigger Urgent.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable meningitis from fever page",
+   "problem": "'Purple/red rash' only partly encoded: red non-purpuric rash missing; page also lists drowsy/confused as alternatives to neck stiffness, fine.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable tick bite fever / acute viral infection",
+   "problem": "Page applies these only to patients not needing urgent attention and after mpox/diphtheria/malaria considerations; rules are not gated, so they fire alongside urgent signs.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Task: Check for urgent fever conditions",
+   "problem": "check_for lacks SBP<80 and RR>=30 measurements used by the priority rule; no rule for malaria or abacavir AHR.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible diphtheria from fever page",
+   "problem": "'Bleeds easily' feature not encoded and 'mild fever' ignored; low impact.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The main risk is that the Urgent priority rule depends on meningitis and appendicitis diagnoses via active_condition instead of testing their component findings, so several red-box items may not trigger Urgent. Red-box criteria are otherwise well encoded; red rash, shock footnote criteria, malaria, abacavir AHR and non-urgent gating are missing."
+}

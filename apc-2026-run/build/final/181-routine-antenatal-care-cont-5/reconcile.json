@@ -1,0 +1,3 @@
+{"page": 181, "base": "A",
+ "decisions": [],
+ "notes": "Both builds passed and agree completely: 0 conditions each, comment-only .lisp, and all 8 red-box elements marked not encoded with the same categories (6 management_step, 2 figure_or_note). diff.json shows no differences. The page image confirms that the only red box ('Treat the HIV positive patient in labour') holds only medicines, lab orders and pointers, and the rest of the page is advice, treatment and scheduling. The final build uses A's .lisp and provenance. The remaining-questions file merges both builders' clinician questions."}

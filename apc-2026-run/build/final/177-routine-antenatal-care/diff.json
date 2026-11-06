@@ -1,0 +1,293 @@
+{
+ "A": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/A/177-routine-antenatal-care",
+ "B": "/Users/syncytium/Developer/vha-work/apc-2026-full/build/B/177-routine-antenatal-care",
+ "rules_A": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible complete miscarriage (antenatal vaginal bleeding)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible ectopic pregnancy (antenatal vaginal bleeding, os closed)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible incomplete miscarriage (antenatal vaginal bleeding)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible inevitable miscarriage (antenatal vaginal bleeding)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible preterm labour from painful contractions in pregnancy"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible threatened miscarriage (antenatal vaginal bleeding)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable prelabour rupture of membranes (antenatal care)"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable severe pre-eclampsia in pregnancy (antenatal care)"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: pregnant patient with antenatal danger signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check cervical os and products of conception in pregnant patient with vaginal bleeding"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent signs in the pregnant patient (antenatal care)"
+  }
+ ],
+ "rules_B": [
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible complete miscarriage in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible ectopic pregnancy in antenatal patient with vaginal bleeding"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible incomplete miscarriage in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible inevitable miscarriage in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose possible threatened miscarriage in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable eclampsia in antenatal patient with seizures"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable prelabour rupture of membranes in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable preterm labour in antenatal patient"
+  },
+  {
+   "atom": "system_diagnosis_rule",
+   "description": "Diagnose probable severe pre-eclampsia in antenatal patient"
+  },
+  {
+   "atom": "system_priority_evaluation",
+   "description": "Urgent: pregnant patient with antenatal danger signs"
+  },
+  {
+   "atom": "task",
+   "description": "Check for miscarriage signs in pregnant patient with vaginal bleeding"
+  },
+  {
+   "atom": "task",
+   "description": "Check for urgent routine antenatal care conditions"
+  }
+ ],
+ "conditions_A": 95,
+ "conditions_B": 92,
+ "conditions_in_both": 76,
+ "agreement": 0.813,
+ "groups": {
+  "trigger": {
+   "only_A": [
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))"
+   ],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))"
+    }
+   ]
+  },
+  "check_for": {
+   "only_A": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\"))"
+   ],
+   "only_B": [],
+   "both": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fetal movements absent\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painful uterine contractions\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced fetal movement\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery vaginal discharge\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  },
+  "priority_condition": {
+   "only_A": [
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painful uterine contractions\" \"finding\"))"
+   ],
+   "only_B": [
+    "(active_condition (snomed_concept \"Premature labor\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))"
+   ],
+   "both": [
+    "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+    "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+    "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160)",
+    "(active_condition (snomed_concept \"Premature rupture of membranes\" \"disorder\"))",
+    "(active_condition (snomed_concept \"Severe pre-eclampsia\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fetal movements absent\" \"situation\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Reduced fetal movement\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))"
+    }
+   ]
+  },
+  "diagnosis_condition": {
+   "only_A": [
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\"))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervix dilated\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "only_B": [
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))"
+   ],
+   "both": [
+    "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+    "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 140)",
+    "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 160)",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blurring of visual image\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Painful uterine contractions\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Proteinuria\" \"finding\"))",
+    "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Watery vaginal discharge\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cervical os open\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception at uterine os cervix\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Products of conception in vagina\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+    "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Uterine contractions present\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(active_condition (snomed_concept \"Pregnancy\" \"finding\"))",
+     "B": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))"
+    }
+   ]
+  },
+  "diagnosis": {
+   "only_A": [
+    "(diagnosis (snomed_concept \"Premature labor\" \"finding\") possible)"
+   ],
+   "only_B": [
+    "(diagnosis (snomed_concept \"Eclampsia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Premature labor\" \"finding\") probable)"
+   ],
+   "both": [
+    "(diagnosis (snomed_concept \"Complete miscarriage\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Ectopic pregnancy\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Incomplete miscarriage\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Inevitable abortion\" \"disorder\") possible)",
+    "(diagnosis (snomed_concept \"Premature rupture of membranes\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Severe pre-eclampsia\" \"disorder\") probable)",
+    "(diagnosis (snomed_concept \"Threatened abortion\" \"disorder\") possible)"
+   ],
+   "is_a_related": [],
+   "same_concept_different_form": [
+    {
+     "A": "(diagnosis (snomed_concept \"Premature labor\" \"finding\") possible)",
+     "B": "(diagnosis (snomed_concept \"Premature labor\" \"finding\") probable)"
+    }
+   ]
+  },
+  "measured": {
+   "only_A": [],
+   "only_B": [],
+   "both": [],
+   "is_a_related": [],
+   "same_concept_different_form": []
+  }
+ }
+}

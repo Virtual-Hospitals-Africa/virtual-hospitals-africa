@@ -1,0 +1,351 @@
+{
+ "edition": "2026",
+ "page": 55,
+ "lisp_file": "55-breast-symptoms.lisp",
+ "conditions": [
+  {
+   "rule": "Check for breast symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Breast finding\" \"finding\"))",
+   "element_keys": [
+    "p55-fc70855f"
+   ],
+   "quote": "BREAST SYMPTOMS",
+   "confidence": "medium",
+   "note": "\"Breast symptoms\" is not a recorded common symptom; Breast finding (general) is the natural complaint and matches descendants such as Breast lump and Pain of breast."
+  },
+  {
+   "rule": "Check for breast symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Breast lump\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "lump in breast/s",
+   "confidence": "high",
+   "note": "Red-box lump; also the lump in the breastfeeding branch."
+  },
+  {
+   "rule": "Check for breast symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of breast\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "painful lump in breast/s",
+   "confidence": "high",
+   "note": "\"Painful\" lump expressed as Pain of breast alongside Breast lump; also the painful breast/s of the breastfeeding branch."
+  },
+  {
+   "rule": "Check for breast symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "\"Body pain\" encoded as Generalized aches and pains; Muscle pain (a common symptom) was the alternative."
+  },
+  {
+   "rule": "Check for breast symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mother currently breastfeeding\" \"situation\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "Breastfeeding",
+   "confidence": "high",
+   "note": "The flowchart asks \"Is the patient breastfeeding?\"; needed for the mastitis and engorgement/blocked duct rules."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Breast finding\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "breast symptoms",
+   "confidence": "medium",
+   "note": "Page: \"patient with breast symptoms and ...\"."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Exact threshold and direction."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "\"or body pain\"; see check_for note."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Breast lump\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "painful lump in breast/s",
+   "confidence": "high",
+   "note": "\"which may be fluctuant\" is optional on the page, so fluctuance is not required."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of breast\" \"finding\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "painful lump in breast/s",
+   "confidence": "medium",
+   "note": "\"Painful\" part of the lump; no precoordinated painful breast lump concept."
+  },
+  {
+   "rule": "Diagnose probable breast abscess",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abscess of breast\" \"disorder\") probable)",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "breast abscess",
+   "confidence": "high",
+   "note": "Abscess of breast (disorder); \"Breast abscess\" is not an FSN."
+  },
+  {
+   "rule": "Diagnose probable mastitis in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mother currently breastfeeding\" \"situation\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "Breastfeeding",
+   "confidence": "high",
+   "note": "Branch condition."
+  },
+  {
+   "rule": "Diagnose probable mastitis in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of breast\" \"finding\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "painful breast/s",
+   "confidence": "high",
+   "note": "\"with or without lump/s\": lump not required."
+  },
+  {
+   "rule": "Diagnose probable mastitis in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p55-252459e9"
+   ],
+   "quote": "temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Yes branch."
+  },
+  {
+   "rule": "Diagnose probable mastitis in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p55-252459e9"
+   ],
+   "quote": "body pain",
+   "confidence": "medium",
+   "note": "Yes branch."
+  },
+  {
+   "rule": "Diagnose probable mastitis in a breastfeeding patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Mastitis associated with lactation\" \"disorder\") probable)",
+   "element_keys": [
+    "p55-b6f433cc"
+   ],
+   "quote": "Mastitis likely",
+   "confidence": "medium",
+   "note": "Mastitis associated with lactation, since this branch is breastfeeding only; generic \"Mastitis\" is not an FSN."
+  },
+  {
+   "rule": "Diagnose probable breast engorgement in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mother currently breastfeeding\" \"situation\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "Breastfeeding",
+   "confidence": "high",
+   "note": "Branch condition."
+  },
+  {
+   "rule": "Diagnose probable breast engorgement in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of breast\" \"finding\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "painful breast/s",
+   "confidence": "high",
+   "note": "\"with or without lump/s\"."
+  },
+  {
+   "rule": "Diagnose probable breast engorgement in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p55-252459e9",
+    "p55-26b36b9b"
+   ],
+   "quote": "temperature ≥ 38°C or body pain? No",
+   "confidence": "medium",
+   "note": "No branch: temperature below 38°C. Fires only if temperature is measured (routine vital)."
+  },
+  {
+   "rule": "Diagnose probable breast engorgement in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p55-252459e9",
+    "p55-26b36b9b"
+   ],
+   "quote": "temperature ≥ 38°C or body pain? No",
+   "confidence": "medium",
+   "note": "No branch: body pain absent, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable breast engorgement in a breastfeeding patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Milk engorgement of breast\" \"disorder\") probable)",
+   "element_keys": [
+    "p55-26b36b9b"
+   ],
+   "quote": "Engorgement",
+   "confidence": "medium",
+   "note": "Page outcome \"Engorgement/blocked duct likely\" split into two rules with the same evidence."
+  },
+  {
+   "rule": "Diagnose probable blocked milk duct in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Mother currently breastfeeding\" \"situation\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "Breastfeeding",
+   "confidence": "high",
+   "note": "Branch condition."
+  },
+  {
+   "rule": "Diagnose probable blocked milk duct in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of breast\" \"finding\"))",
+   "element_keys": [
+    "p55-f9488df4"
+   ],
+   "quote": "painful breast/s",
+   "confidence": "high",
+   "note": "\"with or without lump/s\"."
+  },
+  {
+   "rule": "Diagnose probable blocked milk duct in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p55-252459e9",
+    "p55-26b36b9b"
+   ],
+   "quote": "temperature ≥ 38°C or body pain? No",
+   "confidence": "medium",
+   "note": "No branch: temperature below 38°C. Fires only if temperature is measured (routine vital)."
+  },
+  {
+   "rule": "Diagnose probable blocked milk duct in a breastfeeding patient",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p55-252459e9",
+    "p55-26b36b9b"
+   ],
+   "quote": "temperature ≥ 38°C or body pain? No",
+   "confidence": "medium",
+   "note": "No branch: body pain absent, as (no ...)."
+  },
+  {
+   "rule": "Diagnose probable blocked milk duct in a breastfeeding patient",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Obstruction of lactiferous duct\" \"disorder\") probable)",
+   "element_keys": [
+    "p55-26b36b9b",
+    "p55-be80fdbc"
+   ],
+   "quote": "blocked duct likely",
+   "confidence": "medium",
+   "note": "Obstruction of lactiferous duct (disorder); second half of the single page outcome."
+  },
+  {
+   "rule": "Urgent: breast symptoms with likely breast abscess",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Abscess of breast\" \"disorder\"))",
+   "element_keys": [
+    "p55-c6a87d0c"
+   ],
+   "quote": "Give urgent attention",
+   "confidence": "high",
+   "note": "Red box names breast abscess as the likely diagnosis for all its criteria, so the priority rule uses the probable diagnosis (gold-standard pattern)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p55-ae17f285",
+   "element_id": "p55-rb1-e02",
+   "text": "Give paracetamol 1g and tramadol 50mg. Refer urgently to surgical unit for incision and drainage.",
+   "reason_category": "management_step",
+   "reason": "Medicines (paracetamol, tramadol) and urgent referral for incision and drainage; no manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Body pain",
+   "decision": "Generalized aches and pains (finding)",
+   "alternatives": "Muscle pain (common symptom, would anchor better); Total body pain syndrome (too specific)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Painful lump in breast",
+   "decision": "and of Breast lump and Pain of breast",
+   "alternatives": "Breast lump with Tender qualifier (tender is not the same as painful); Fluctuant mass (page says only 'may be')",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Engorgement/blocked duct likely",
+   "decision": "two probable rules with identical evidence (Milk engorgement of breast; Obstruction of lactiferous duct)",
+   "alternatives": "one rule for engorgement only; Breast engorgement in pregnancy, the puerperium or lactation (finding)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Mastalgia likely",
+   "decision": "not encoded",
+   "alternatives": "probable diagnosis of Pain of breast (circular: the FSN for mastalgia is the presenting finding itself); Cyclical/Non-cyclical mastalgia (the page does not distinguish)",
+   "confidence": "low"
+  },
+  {
+   "topic": "Warning signs for same-week referral",
+   "decision": "not encoded (referral criteria, no named diagnosis)",
+   "alternatives": "possible breast cancer rule (the page does not name a diagnosis)",
+   "confidence": "medium"
+  }
+ ]
+}

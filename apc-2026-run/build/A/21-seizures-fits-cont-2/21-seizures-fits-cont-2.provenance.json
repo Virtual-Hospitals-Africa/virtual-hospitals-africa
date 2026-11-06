@@ -1,0 +1,930 @@
+{
+ "edition": "2026",
+ "page": 21,
+ "lisp_file": "21-seizures-fits-cont-2.lisp",
+ "conditions": [
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-aa908c15",
+    "p21-2a53d778"
+   ],
+   "quote": "seizure/fit",
+   "confidence": "high",
+   "note": "Seizure is the adult warning sign for a fit; this page is the approach to the patient who had one. Header 'Refer patient same day if any of:' is the box this task checks; the complaint words are in the approach text above it."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "element_keys": [
+    "p21-aa908c15",
+    "p21-2a53d778"
+   ],
+   "quote": "post-fit drowsiness and confusion",
+   "confidence": "medium",
+   "note": "Post-ictal state (warning sign) also identifies a patient who has just had a fit. Header 'Refer patient same day if any of:' is the box this task checks; the complaint words are in the approach text above it."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "headache",
+   "confidence": "medium",
+   "note": "Meningitis bullet; read as one of four alternatives."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck, as used elsewhere in VHA rules."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "Purpuric rash; no separate red rash concept used (Erythematous rash considered, judged too broad)."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "New/different headache",
+   "confidence": "medium",
+   "note": "'New' qualifier; 'different' folded into New (no qualifier for 'different')."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "headache getting worse/more frequent",
+   "confidence": "medium",
+   "note": "'Worsening' qualifier covers getting worse and more frequent."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "Patient with HIV",
+   "confidence": "high",
+   "note": "Known HIV, clinical_finding with Known present."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "no known epilepsy",
+   "confidence": "high",
+   "note": "Checked so its absence can be recorded as (no ...)."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Decreased level of consciousness."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Known diabetes changes the glucose threshold."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Face weakness; asymmetric as Unilateral qualifier, new sudden as Sudden onset."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Limb weakness; asymmetric as Unilateral, new sudden as Sudden onset."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Face numbness with Sudden onset + Unilateral (the 'new sudden asymmetric' applies to numbness too)."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Limb numbness with Sudden onset + Unilateral."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "high",
+   "note": "Difficulty talking."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Visual disturbance."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "overdose",
+   "confidence": "medium",
+   "note": "Overdose (child of Poisoning) covers drug and alcohol overdose."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Substance withdrawal syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "withdrawal",
+   "confidence": "medium",
+   "note": "Substance withdrawal syndrome; Alcohol withdrawal syndrome is a descendant."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-a4e97de2"
+   ],
+   "quote": "Recent head injury",
+   "confidence": "high",
+   "note": "Injury of head with Recent qualifier."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "up to 1 week postpartum",
+   "confidence": "medium",
+   "note": "Postpartum state; the 1-week limit is applied in the priority rule via onset."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "Collapse",
+   "confidence": "high",
+   "note": "No branch: common faint."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "twitching",
+   "confidence": "medium",
+   "note": "Muscle twitch; no 'Twitching' finding."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flushing\" \"disorder\"))",
+   "element_keys": [
+    "p21-043b35ba"
+   ],
+   "quote": "flushing",
+   "confidence": "medium",
+   "note": "Flushing is a disorder in SNOMED."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Prodrome."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Prodrome."
+  },
+  {
+   "rule": "Check for seizure/fit same-day referral conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": "Prodrome."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "seizure/fit",
+   "confidence": "high",
+   "note": "Seizure is the adult warning sign for a fit; this page is the approach to the patient who had one."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "post-fit drowsiness and confusion",
+   "confidence": "medium",
+   "note": "Post-ictal state (warning sign) also identifies a patient who has just had a fit."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Body temperature >= 38 °C."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "headache",
+   "confidence": "low",
+   "note": "Literal 'or' reading of the list: any one item with a fit gives meningitis likely."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "neck stiffness",
+   "confidence": "medium",
+   "note": "One of the list's alternatives."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purpuric rash\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "purple/red rash",
+   "confidence": "medium",
+   "note": "One of the list's alternatives."
+  },
+  {
+   "rule": "Diagnose probable meningitis after a seizure/fit",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Meningitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": "'X likely' -> probable."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6",
+    "p21-2a412755"
+   ],
+   "quote": "New sudden asymmetric weakness or numbness of face,",
+   "confidence": "medium",
+   "note": "Face weakness, Sudden onset + Unilateral."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3a9a3ee6",
+    "p21-2a412755",
+    "p21-116550d6"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "Limb weakness, Sudden onset + Unilateral."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-2a412755"
+   ],
+   "quote": "numbness of face",
+   "confidence": "medium",
+   "note": "Face numbness, Sudden onset + Unilateral."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-2a412755",
+    "p21-116550d6"
+   ],
+   "quote": "numbness of face, arm or leg",
+   "confidence": "medium",
+   "note": "Limb numbness, Sudden onset + Unilateral."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-116550d6",
+    "p21-aea60bd2"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "high",
+   "note": "Difficulty talking; not qualified by 'new sudden' (after the semicolon)."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-aea60bd2",
+    "p21-d6061831"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Visual disturbance."
+  },
+  {
+   "rule": "Diagnose probable stroke after a reported fit",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") probable)",
+   "element_keys": [
+    "p21-1fd67945"
+   ],
+   "quote": "Stroke or TIA likely",
+   "confidence": "medium",
+   "note": "No joint stroke/TIA concept; Cerebrovascular accident (the Focal neurology warning sign) used."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "Collapse",
+   "confidence": "high",
+   "note": "Collapse."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p21-bc92d996"
+   ],
+   "quote": "twitching",
+   "confidence": "medium",
+   "note": "Muscle twitch. 'lasting < 15 seconds' not representable."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flushing\" \"disorder\"))",
+   "element_keys": [
+    "p21-043b35ba"
+   ],
+   "quote": "flushing",
+   "confidence": "medium",
+   "note": "Prodrome item, read as any of."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "dizziness",
+   "confidence": "medium",
+   "note": "Prodrome item, read as any of."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "nausea",
+   "confidence": "medium",
+   "note": "Prodrome item, read as any of."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p21-a9c832aa"
+   ],
+   "quote": "sweating",
+   "confidence": "medium",
+   "note": "Prodrome item, read as any of. 'rapid recovery' not representable."
+  },
+  {
+   "rule": "Diagnose probable common faint after a reported fit",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Vasovagal syncope\" \"finding\") probable)",
+   "element_keys": [
+    "p21-b47bb643"
+   ],
+   "quote": "Common faint likely",
+   "confidence": "medium",
+   "note": "Vasovagal syncope (finding) for common faint; 'likely' -> probable."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "seizure/fit",
+   "confidence": "high",
+   "note": "Seizure is the adult warning sign for a fit; this page is the approach to the patient who had one."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "element_keys": [
+    "p21-2a53d778"
+   ],
+   "quote": "post-fit drowsiness and confusion",
+   "confidence": "medium",
+   "note": "Post-ictal state (warning sign) also identifies a patient who has just had a fit."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Meningitis\" \"disorder\"))",
+   "element_keys": [
+    "p21-f765a7a4"
+   ],
+   "quote": "meningitis likely",
+   "confidence": "high",
+   "note": "References the probable meningitis rule."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "New/different headache",
+   "confidence": "medium",
+   "note": "New qualifier."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-ace014ff"
+   ],
+   "quote": "headache getting worse/more frequent",
+   "confidence": "medium",
+   "note": "Worsening qualifier."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "Patient with HIV",
+   "confidence": "high",
+   "note": "Known HIV."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "element_keys": [
+    "p21-d67a8ac2"
+   ],
+   "quote": "no known epilepsy",
+   "confidence": "high",
+   "note": "Recorded No for known epilepsy."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Decreased level of consciousness."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))) (time_ago 1 hours))",
+   "element_keys": [
+    "p21-0f10f76b"
+   ],
+   "quote": "> 1 hour after fit",
+   "confidence": "medium",
+   "note": "Onset of the seizure at least 1 hour ago; '>' written as '>=' (database accepts only >= / <=)."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "Glucose <3",
+   "confidence": "high",
+   "note": "Blood glucose < 3 mmol/L. 'unable to measure' not representable."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Known diabetes."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p21-cc0f186b"
+   ],
+   "quote": "< 4 if diabetes",
+   "confidence": "high",
+   "note": "Blood glucose < 4 mmol/L, with diabetes."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 11.1)",
+   "element_keys": [
+    "p21-e535ebb9"
+   ],
+   "quote": "Glucose ≥ 11.1",
+   "confidence": "high",
+   "note": "Blood glucose >= 11.1 mmol/L."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Face weakness."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "New sudden asymmetric weakness",
+   "confidence": "medium",
+   "note": "Limb weakness."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Face numbness."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "numbness",
+   "confidence": "medium",
+   "note": "Limb numbness."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "high",
+   "note": "Difficulty talking."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p21-3e262e70"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Visual disturbance."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "BP ≥ 180/130",
+   "confidence": "high",
+   "note": "Systolic >= 180 (or diastolic >= 130, following the BP-pair convention)."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 130)",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "BP ≥ 180/130",
+   "confidence": "medium",
+   "note": "Diastolic >= 130, as the 'or' half of the BP pair."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))) (time_ago 1 hours))",
+   "element_keys": [
+    "p21-f7b593bb"
+   ],
+   "quote": "more than 1 hour after fit has stopped",
+   "confidence": "medium",
+   "note": "Onset of the seizure at least 1 hour ago; approximates 'after fit has stopped'; '>' as '>='."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Overdose\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "overdose",
+   "confidence": "medium",
+   "note": "Overdose."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Substance withdrawal syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p21-bc6e61be"
+   ],
+   "quote": "withdrawal",
+   "confidence": "medium",
+   "note": "Substance withdrawal syndrome."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p21-a4e97de2"
+   ],
+   "quote": "Recent head injury",
+   "confidence": "high",
+   "note": "Injury of head, Recent."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": "Pregnancy."
+  },
+  {
+   "rule": "Urgent: seizure/fit needing same-day referral",
+   "role": "priority_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))) (time_ago 1 weeks))",
+   "element_keys": [
+    "p21-c3b012a2"
+   ],
+   "quote": "up to 1 week postpartum",
+   "confidence": "medium",
+   "note": "Postpartum state with onset within the last week (<=)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p21-2c74f34e",
+   "element_id": "p21-rb1-e03",
+   "text": "Ceftriaxone1 2g IM. Avoid injecting > 1g IM at one injection site. If referral delayed, repeat dose after 12 hours.",
+   "reason_category": "management_step",
+   "reason": "Ceftriaxone dosing for meningitis likely: medicine, not encoded."
+  },
+  {
+   "element_key": "p21-ba976456",
+   "element_id": "p21-rb1-e04",
+   "text": "Paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed and/or ibuprofen2 400mg 8 hourly with/after food as needed. If severe pain, also give tramadol ",
+   "reason_category": "management_step",
+   "reason": "Analgesia (paracetamol/ibuprofen/tramadol): medicine, not encoded."
+  },
+  {
+   "element_key": "p21-8a284497",
+   "element_id": "p21-rb1-e05",
+   "text": "If patient was in malaria area in past 3 months and malaria test3 positive, also give artesunate 2.4mg/kg IM. Patient to reach referral hospital within 6 hours.",
+   "reason_category": "management_step",
+   "reason": "Artesunate if malaria area in past 3 months and malaria test positive, timing to hospital, notification: management added to the meningitis-likely referral, no separate referral criterion."
+  }
+ ],
+ "known_issues": [
+  {
+   "check": "CHECKED FOR BUT NEVER USED AS EVIDENCE",
+   "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "reason": "Gate false positive: the finding is used as (no X) in 'Urgent: seizure/fit needing same-day referral' (HIV and no known epilepsy). Because X carries a qualifier, the rendered (no ...) puts the No value before the qualifier, so the gate's NO_RE (which expects the No value last) does not strip it. Faithful encoding kept."
+  },
+  {
+   "check": "PRIORITY EVALUATION EVIDENCE NOT CHECKED FOR",
+   "s_expression": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Epilepsy\" \"disorder\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))",
+   "reason": "Gate false positive: the finding is used as (no X) in 'Urgent: seizure/fit needing same-day referral' (HIV and no known epilepsy). Because X carries a qualifier, the rendered (no ...) puts the No value before the qualifier, so the gate's NO_RE (which expects the No value last) does not strip it. Faithful encoding kept. The positive form is in the check_for."
+  }
+ ],
+ "judgment_calls": [
+  {
+   "topic": "Meningitis bullet: 'Temperature ≥ 38°C, headache, neck stiffness or purple/red rash'",
+   "decision": "Read literally as any one of the four (with a fit) -> probable meningitis.",
+   "alternatives": "Temperature >= 38 AND any of headache/neck stiffness/rash; or all four. The next bullet (new/worse headache) suggests headache alone was not meant to suffice.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Common faint (No branch)",
+   "decision": "Probable Vasovagal syncope from collapse + muscle twitch + any of flushing/dizziness/nausea/sweating; duration < 15 s and rapid recovery dropped (not representable); not conditioned on seizure being ruled out.",
+   "alternatives": "Leave unencoded; or require (no Seizure), which conflicts with the Seizure trigger.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Timing '> 1 hour after fit'",
+   "decision": "(>= (onset Seizure) (time_ago 1 hours)) for decreased consciousness and for BP >= 180/130.",
+   "alternatives": "Ignore timing (fires earlier than intended).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stroke or TIA likely",
+   "decision": "One probable rule diagnosing Cerebrovascular accident; no joint stroke/TIA concept.",
+   "alternatives": "Second rule for Transient ischemic attack with the same evidence (would diagnose both).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Asymmetric / new sudden",
+   "decision": "Unilateral + Sudden onset qualifiers on weakness and numbness (face and limb).",
+   "alternatives": "Asymmetry qualifier; New qualifier; unqualified findings.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "'Refer patient same day' encoded as Urgent.",
+   "alternatives": "Very urgent / Emergency (Seizure warning sign is already Emergency).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "BP ≥ 180/130",
+   "decision": "Systolic >= 180 OR diastolic >= 130 (BP-pair convention).",
+   "alternatives": "Both required.",
+   "confidence": "medium"
+  }
+ ]
+}

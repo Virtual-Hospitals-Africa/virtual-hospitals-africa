@@ -1,0 +1,243 @@
+{
+ "page": 14,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p14-c9df300e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "gate that symptoms did not improve quickly (minutes) before deciding to treat",
+    "no priority/evaluation output beyond the probable diagnosis (no rule saying 'treat as anaphylaxis' as a priority; cross-ref 28 is only implied by the diagnosis)"
+   ],
+   "problem": "Four decision branches (>=2 body systems; generalised urticaria; hypotension; respiratory distress; severe tongue/lip swelling) are encoded as one probable Anaphylaxis rule, which is right in structure. Weaknesses: the 'improve quickly? yes -> observe' branch is not represented, so transient faint symptoms plus one skin symptom satisfy any2; faint group counted as a body system though on the page only skin, respiratory and GI feed 'Decide when to treat' directly; 'significant' swelling of tongue/lips is encoded with Severe qualifier on both and the any2 skin group also fires on plain tongue/lip swelling; hypotension concept is 'Low blood pressure' (disorder) rather than the finding Hypotension.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (and (clinical_finding (snomed_concept \"Vaccination given\" \"situation\")) (or (any2 (or ...faint) (or ...skin) (or ...resp) (or ...GI)) (clinical_finding Urticaria Generalized) (clinical_finding Low blood pressure) (clinical_finding Respiratory distress) (clinical_finding Swelling Tongue Severe) (clinical_finding Swelling Lip Severe)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-291dfff8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Collapse is a separate box (see p14-cb8e7b23) and not in check_for"
+   ],
+   "problem": "Light-headedness, dizziness, warm, cold, sweating, palpitations, blurring, reduced hearing, pallor all present. 'Pallor reported by onlookers' as 'Pale complexion' acceptable. Dizziness and lightheadedness split correctly. Warm/cold as two concepts ok.",
+   "evidence": [
+    "Check for adverse reaction after vaccination :: (clinical_finding (snomed_concept \"Dizziness\" \"finding\")) ... (snomed_concept \"Pale complexion\" \"finding\")"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-31431995",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Itching, urticaria, swelling of eye/lip/tongue/face/hand/foot (six site-specific rules, eyes as Eye region structure), nasal congestion all encoded. Concern: 'Eyelid'/'Eye region structure' site must resolve; 'Hand'/'Foot' structure meaning hands/feet acceptable. 'Chest structure' style resolution issues not seen here.",
+   "evidence": [
+    "Check... :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Lip structure\" \"body structure\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-b6577256",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Oxygen sats < 92% absent from check_for (present only in anaphylaxis any2 resp group)",
+    "Absent from the pseudoallergic exclusions too"
+   ],
+   "problem": "Resp symptoms are all encoded in check_for and rule. Oxygen saturation < 92% is a measurement, expressible in the language (the rule uses it), but it is not asked for in the task check_for, so the check list and the diagnostic rule disagree. Also not in pseudoallergic 'no' list. 'Wheeze or cough' split correctly. 'Shortness of breath' as Dyspnea fine.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 92)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p14-336295ee",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Nausea, vomiting, diarrhoea and cramps encoded. 'Cramps' as 'Abdominal colic' is slightly narrower than 'Abdominal cramp'; check whether a closer concept exists.",
+   "evidence": [
+    "Check... :: (clinical_finding (snomed_concept \"Abdominal colic\" \"finding\"))"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p14-cb8e7b23",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "Collapse"
+   ],
+   "problem": "'Collapse' is a presenting symptom box pointing to page 15; it is not in check_for, the anaphylaxis rule or the pseudoallergic exclusions. Cross-reference to 15 may legitimately be routing, hence borderline, but the finding itself is a trigger on page.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p14-85985016",
+   "scope": "borderline",
+   "scope_reason": "Flowchart decision on time course (minutes); duration is not clearly representable.",
+   "verdict": "missing",
+   "parts_missing": [
+    "improves quickly -> observe until resolved"
+   ],
+   "problem": "Branch lost; no rule models resolution within minutes, so transient faint symptoms are not distinguished.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p14-0e16ed46",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'2 or more body systems' is encoded with any2 of four groups. Caveat: faint group is the fourth group though the page lists three systems directly feeding this decision.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (any2 (or ...) (or ...) (or ...) (or ...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-1da3ff6f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Generalised urticaria encoded as Urticaria with Generalized qualifier as a separate or-branch.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (clinical_finding (snomed_concept \"Urticaria\" \"disorder\") (qualifier (snomed_concept \"Generalized\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-6178c72d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "hypotension concept precision"
+   ],
+   "problem": "Hypotension encoded as 'Low blood pressure' (disorder) - a disorder-hierarchy concept for an observed sign; Hypotension (finding) would be closer.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (clinical_finding (snomed_concept \"Low blood pressure\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-2211c9d1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'significant' only approximated by Severe qualifier"
+   ],
+   "problem": "Respiratory distress and severe tongue/lip swelling encoded. 'Significant' mapped to 'Severe (severity modifier)'; acceptable but approximation.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after vaccination :: (clinical_finding (snomed_concept \"Respiratory distress\" \"finding\")) ; Swelling Tongue Severe ; Swelling Lip Severe"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-6f74d063",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Monitor 30 minutes: duration not representable",
+    "'otherwise well' only via negation of listed symptoms"
+   ],
+   "problem": "Isolated rash in otherwise well patient is modelled by pseudoallergic rule: Urticaria and no listed symptoms. But exclusions omit Oxygen sat < 92 and Collapse, and 'Generally unwell' is added (not on the page as a symptom, though it matches 'otherwise well').",
+   "evidence": [
+    "Diagnose probable pseudoallergic rash after vaccination :: (and Vaccination given Urticaria (no Urticaria Generalized) (no ...)...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-ca11a418",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Advice to seek urgent care (management, out of scope)",
+    "'If other symptoms: discuss with doctor' is routing"
+   ],
+   "problem": "'Pseudoallergic self-limiting rash likely' encoded as probable 'Non-allergic hypersensitivity reaction'. Concept is a reasonable but generic parent; a pseudoallergic/urticaria-specific concept might fit better. Rule does not require the 30-minute monitoring.",
+   "evidence": [
+    "Diagnose probable pseudoallergic rash after vaccination :: (diagnosis (snomed_concept \"Non-allergic hypersensitivity reaction\" \"disorder\") probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-68b379cb",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable: observation duration 15/30 minutes; severe allergies history could be a check but no duration in language",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p14-32e6d85e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p14-0144d1dd",
+  "p14-bed33a65",
+  "p14-316775ec",
+  "p14-2cbee79c",
+  "p14-e0ebf2fb",
+  "p14-0dd8ad75",
+  "p14-570613b9",
+  "p14-0b6b7ca8",
+  "p14-a3778715",
+  "p14-143e73bd",
+  "p14-84495d00",
+  "p14-2d221de7",
+  "p14-40185850",
+  "p14-524e0c15",
+  "p14-16063b6a"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable anaphylaxis after vaccination",
+   "problem": "Resp group includes SpO2<92 but check_for list lacks it; check list and rule disagree.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable anaphylaxis after vaccination",
+   "problem": "Four groups in any2 include the faint group, and plain tongue/lip swelling (skin group) plus one other group triggers; 'improves quickly' gate absent so transient vasovagal symptoms plus a mild skin symptom yield probable anaphylaxis.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable pseudoallergic rash after vaccination",
+   "problem": "Exclusion list omits SpO2<92 and Collapse; 30-minute monitoring not represented; 'Generally unwell' added without direct page text.",
+   "severity": "medium"
+  },
+  {
+   "rule": "task Check for adverse reaction after vaccination",
+   "problem": "No priority evaluation for the red box 'Treat as anaphylaxis' beyond the diagnosis; Collapse missing from check_for.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check list",
+   "problem": "'Low blood pressure' disorder and 'Abdominal colic' are imprecise concepts for hypotension and cramps.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page's logic is largely captured by one probable anaphylaxis rule and one probable pseudoallergic rash rule, but oxygen saturation <92 is missing from the check list and pseudoallergic exclusions, Collapse is not encoded, and the 'improves quickly' gate is lost, which can over-trigger anaphylaxis. Several SNOMED concepts (Low blood pressure disorder, Abdominal colic, generic Non-allergic hypersensitivity) are approximations."
+}

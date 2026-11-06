@@ -1,0 +1,1812 @@
+{
+ "edition": "2026",
+ "page": 45,
+ "lisp_file": "45-collapse-falls.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the nearest. Sudden-onset qualifier not applied (after the semicolon)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Vocabulary concept; no sudden-onset qualifier (after the semicolon)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6e9f1bb5"
+   ],
+   "quote": "Recent injury",
+   "confidence": "high",
+   "note": "Traumatic injury with Recent qualifier."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p45-a77996df"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page-local \"Shock/SBP < 80\" as an or; footnote 2 shock definition not imported."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "Sudden collapse",
+   "confidence": "high",
+   "note": "Collapse with Sudden onset qualifier."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Plain Itching (as the anaphylaxis gold); \"generalised\" not qualified."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Eruption for rash, as the anaphylaxis gold; \"generalised\" not qualified."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site face."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site tongue."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-adde8c5f"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Red-box item (also an anaphylaxis feature)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Anaphylaxis feature; also used in the pregnancy branch."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication",
+   "confidence": "medium",
+   "note": "Footnote 1: medication. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food",
+   "confidence": "medium",
+   "note": "Footnote 1: food. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect sting."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p45-c1cc432c"
+   ],
+   "quote": "Palpitations",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p45-c1cc432c"
+   ],
+   "quote": "pulse < 50 or irregular",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of syncope\" \"situation\"))",
+   "element_keys": [
+    "p45-55100604"
+   ],
+   "quote": "Family history of collapse",
+   "confidence": "medium",
+   "note": "No \"family history of collapse\" concept; syncope is the nearest."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of sudden death\" \"situation\"))",
+   "element_keys": [
+    "p45-55100604"
+   ],
+   "quote": "Family history of collapse or sudden death",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiogram abnormal\" \"finding\"))",
+   "element_keys": [
+    "p45-0176b604"
+   ],
+   "quote": "Abnormal ECG",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-0176b604"
+   ],
+   "quote": "known heart problem",
+   "confidence": "high",
+   "note": "Heart disease with Known present."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"During exercise\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-87ed6e4d"
+   ],
+   "quote": "Collapse with exercise",
+   "confidence": "medium",
+   "note": "Collapse qualified During exercise; alternative Effort syncope."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p45-bc660f91"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p45-c62013a6"
+   ],
+   "quote": "Seizure",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "element_keys": [
+    "p45-a081ac16"
+   ],
+   "quote": "Collapse following vaccination",
+   "confidence": "medium",
+   "note": "Collapse is already required by the complaint; \"following\" (timing) not modelled."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p45-fd3224fc"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "Vomited blood",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "blood in stool",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "blood in stool",
+   "confidence": "medium",
+   "note": "Melena included as blood in stool (not a descendant of Hematochezia)."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6bb49666"
+   ],
+   "quote": "Severe back",
+   "confidence": "high",
+   "note": "Backache with Severe qualifier."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6bb49666"
+   ],
+   "quote": "Severe back or abdominal pain",
+   "confidence": "high",
+   "note": "Abdominal pain with Severe qualifier."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-986c342b"
+   ],
+   "quote": "if diabetes",
+   "confidence": "high",
+   "note": "Known present form in check_for and evidence."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "missed/overdue period",
+   "confidence": "high",
+   "note": "Covers overdue."
+  },
+  {
+   "rule": "Check for urgent collapse/falls conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "medium",
+   "note": "\"Vaginal bleeding\" has no FSN; vocabulary concept Abnormal vaginal bleeding used."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "element_keys": [
+    "p45-62cabe1c"
+   ],
+   "quote": "breathing very quickly",
+   "confidence": "medium",
+   "note": "Tachypnoea."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-62cabe1c"
+   ],
+   "quote": "deeply",
+   "confidence": "medium",
+   "note": ""
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom; \"before the collapse\" not modelled."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "light-headedness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Check for cause of collapse/falls",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p45-2b385735"
+   ],
+   "quote": "weakness",
+   "confidence": "medium",
+   "note": "Asthenia (general weakness) for prodromal weakness."
+  },
+  {
+   "rule": "Measure postural blood pressure drop after collapse/falls",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Measure postural blood pressure drop after collapse/falls",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Measure postural blood pressure drop after collapse/falls",
+   "role": "Measurement procedure",
+   "expr": "(measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg)",
+   "element_keys": [
+    "p45-ce6c6f0b"
+   ],
+   "quote": "measure BP after lying for 5 minutes and repeat again after standing for 3 minutes",
+   "confidence": "high",
+   "note": "Measure task for the postural systolic drop."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the nearest. Sudden-onset qualifier not applied (after the semicolon)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Vocabulary concept; no sudden-onset qualifier (after the semicolon)."
+  },
+  {
+   "rule": "Collapse/falls: consider stroke",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Cerebrovascular accident\" \"disorder\") possible)",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "consider stroke",
+   "confidence": "high",
+   "note": "possible: \"consider\"."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the nearest. Sudden-onset qualifier not applied (after the semicolon)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Vocabulary concept; no sudden-onset qualifier (after the semicolon)."
+  },
+  {
+   "rule": "Collapse/falls: consider TIA",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Transient ischemic attack\" \"disorder\") possible)",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "TIA",
+   "confidence": "high",
+   "note": "possible: \"consider stroke or TIA\"."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "Sudden collapse",
+   "confidence": "high",
+   "note": "Collapse with Sudden onset qualifier."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Plain Itching (as the anaphylaxis gold); \"generalised\" not qualified."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Eruption for rash, as the anaphylaxis gold; \"generalised\" not qualified."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site face."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site tongue."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication",
+   "confidence": "medium",
+   "note": "Footnote 1: medication. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food",
+   "confidence": "medium",
+   "note": "Footnote 1: food. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect sting."
+  },
+  {
+   "rule": "Collapse/falls: check for possible anaphylaxis",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Anaphylaxis\" \"disorder\") possible)",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "check for anaphylaxis",
+   "confidence": "medium",
+   "note": "possible rule whose only job is to trigger the anaphylaxis page check."
+  },
+  {
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Level of reduction in systolic blood pressure on standing\" \"observable entity\") mmHg) 20)",
+   "element_keys": [
+    "p45-ce6c6f0b"
+   ],
+   "quote": "Does systolic BP drop by ≥ 20",
+   "confidence": "high",
+   "note": ">= 20 mmHg as written; diastolic arm not representable."
+  },
+  {
+   "rule": "Diagnose probable orthostatic hypotension after collapse/falls",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Orthostatic hypotension\" \"disorder\") probable)",
+   "element_keys": [
+    "p45-82aae406"
+   ],
+   "quote": "Orthostatic hypotension likely",
+   "confidence": "high",
+   "note": "probable"
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tachypnea\" \"finding\"))",
+   "element_keys": [
+    "p45-62cabe1c"
+   ],
+   "quote": "breathing very quickly",
+   "confidence": "medium",
+   "note": "Tachypnoea for very quick breathing; \"immediately before or during\" timing not modelled."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessively deep breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-62cabe1c"
+   ],
+   "quote": "deeply",
+   "confidence": "medium",
+   "note": "Excessively deep breathing; timing not modelled."
+  },
+  {
+   "rule": "Diagnose probable hyperventilation after collapse/falls",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Hyperventilation\" \"finding\") probable)",
+   "element_keys": [
+    "p45-0036c82f"
+   ],
+   "quote": "Hyperventilation likely",
+   "confidence": "medium",
+   "note": "probable; Hyperventilation (finding) chosen over Psychogenic hyperventilation (disorder)."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "dizziness",
+   "confidence": "high",
+   "note": "Common symptom; \"before the collapse\" not modelled."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lightheadedness\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "light-headedness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "nausea",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sweating\" \"finding\"))",
+   "element_keys": [
+    "p45-8428e74f"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\"))",
+   "element_keys": [
+    "p45-2b385735"
+   ],
+   "quote": "weakness",
+   "confidence": "medium",
+   "note": "Asthenia (general weakness) for prodromal weakness."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p45-2b385735"
+   ],
+   "quote": "vision changes",
+   "confidence": "medium",
+   "note": "Visual disturbance (same concept as the stroke item)."
+  },
+  {
+   "rule": "Diagnose probable common faint after collapse/falls",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Vasovagal syncope\" \"finding\") probable)",
+   "element_keys": [
+    "p45-2fcc28e5"
+   ],
+   "quote": "Common faint likely",
+   "confidence": "medium",
+   "note": "Common faint = Vasovagal syncope."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\"))",
+   "element_keys": [
+    "p45-1084b7ed"
+   ],
+   "quote": "collapsed",
+   "confidence": "high",
+   "note": "Presenting complaint."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Falls\" \"finding\"))",
+   "element_keys": [
+    "p45-b03b62ce"
+   ],
+   "quote": "COLLAPSE/FALLS",
+   "confidence": "medium",
+   "note": "Falls added alongside collapse: page title names the complaint as Collapse/Falls."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg weakness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face",
+   "confidence": "high",
+   "note": "Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "arm numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "weakness or numbness of face, arm or leg",
+   "confidence": "high",
+   "note": "leg numbness. Sudden onset qualifier for \"new sudden\"; \"asymmetric\" not separately encoded (each concept is a single region)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty talking\" \"finding\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "difficulty speaking",
+   "confidence": "medium",
+   "note": "\"Difficulty speaking\" has no FSN; \"Difficulty talking\" is the nearest. Sudden-onset qualifier not applied (after the semicolon)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p45-da0e5870"
+   ],
+   "quote": "visual disturbance",
+   "confidence": "high",
+   "note": "Vocabulary concept; no sudden-onset qualifier (after the semicolon)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6e9f1bb5"
+   ],
+   "quote": "Recent injury",
+   "confidence": "high",
+   "note": "Traumatic injury with Recent qualifier."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p45-a77996df"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Page-local \"Shock/SBP < 80\" as an or; footnote 2 shock definition not imported."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p45-a77996df"
+   ],
+   "quote": "SBP < 80",
+   "confidence": "high",
+   "note": "Strict < 80 as written."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "Sudden collapse",
+   "confidence": "high",
+   "note": "Collapse with Sudden onset qualifier."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Plain Itching (as the anaphylaxis gold); \"generalised\" not qualified."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "generalised itch/rash",
+   "confidence": "medium",
+   "note": "Eruption for rash, as the anaphylaxis gold; \"generalised\" not qualified."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site face."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "face/tongue swelling",
+   "confidence": "high",
+   "note": "Swelling with finding_site tongue."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wheezing\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "wheeze",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p45-1b2591c4"
+   ],
+   "quote": "vomiting",
+   "confidence": "high",
+   "note": "Anaphylaxis feature."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication",
+   "confidence": "medium",
+   "note": "Footnote 1: medication. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Food\" \"substance\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food",
+   "confidence": "medium",
+   "note": "Footnote 1: food. \"Within the past few hours\" not modelled."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect bite - wound\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect bite."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Insect sting\" \"disorder\"))",
+   "element_keys": [
+    "p45-1b2591c4",
+    "p45-2c192c7f"
+   ],
+   "quote": "exposure to possible allergen1, check for anaphylaxis 28 1Common allergens: medication, food or insect bite/sting",
+   "confidence": "medium",
+   "note": "Footnote 1: insect sting."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Palpitations\" \"finding\"))",
+   "element_keys": [
+    "p45-c1cc432c"
+   ],
+   "quote": "Palpitations",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)",
+   "element_keys": [
+    "p45-c1cc432c"
+   ],
+   "quote": "pulse < 50",
+   "confidence": "high",
+   "note": "Pulse < 50 bpm."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p45-c1cc432c"
+   ],
+   "quote": "pulse < 50 or irregular",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of syncope\" \"situation\"))",
+   "element_keys": [
+    "p45-55100604"
+   ],
+   "quote": "Family history of collapse",
+   "confidence": "medium",
+   "note": "No \"family history of collapse\" concept; syncope is the nearest."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of sudden death\" \"situation\"))",
+   "element_keys": [
+    "p45-55100604"
+   ],
+   "quote": "Family history of collapse or sudden death",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiogram abnormal\" \"finding\"))",
+   "element_keys": [
+    "p45-0176b604"
+   ],
+   "quote": "Abnormal ECG",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-0176b604"
+   ],
+   "quote": "known heart problem",
+   "confidence": "high",
+   "note": "Heart disease with Known present."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p45-bc660f91"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"During exercise\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-87ed6e4d"
+   ],
+   "quote": "Collapse with exercise",
+   "confidence": "medium",
+   "note": "Collapse qualified During exercise; alternative Effort syncope."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p45-c62013a6"
+   ],
+   "quote": "Seizure",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaccination given\" \"situation\"))",
+   "element_keys": [
+    "p45-a081ac16"
+   ],
+   "quote": "Collapse following vaccination",
+   "confidence": "medium",
+   "note": "Collapse is already required by the complaint; \"following\" (timing) not modelled."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p45-fd3224fc"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematemesis\" \"disorder\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "Vomited blood",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hematochezia\" \"finding\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "blood in stool",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Melena\" \"disorder\"))",
+   "element_keys": [
+    "p45-b1f1d792"
+   ],
+   "quote": "blood in stool",
+   "confidence": "medium",
+   "note": "Melena included as blood in stool (not a descendant of Hematochezia)."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p45-adde8c5f"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Stand-alone red-box item."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6bb49666"
+   ],
+   "quote": "Severe back",
+   "confidence": "high",
+   "note": "Backache with Severe qualifier."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-6bb49666"
+   ],
+   "quote": "Severe back or abdominal pain",
+   "confidence": "high",
+   "note": "Abdominal pain with Severe qualifier."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "element_keys": [
+    "p45-986c342b"
+   ],
+   "quote": "Glucose < 3",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p45-986c342b"
+   ],
+   "quote": "if diabetes",
+   "confidence": "high",
+   "note": "Known present form in check_for and evidence."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "element_keys": [
+    "p45-986c342b"
+   ],
+   "quote": "(or < 4 if diabetes)",
+   "confidence": "high",
+   "note": "< 4 with known diabetes."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "Pregnant",
+   "confidence": "high",
+   "note": ""
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "missed/overdue period",
+   "confidence": "high",
+   "note": "Covers overdue."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal pain\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "abdominal pain",
+   "confidence": "high",
+   "note": "Pregnancy branch."
+  },
+  {
+   "rule": "Urgent: collapse/falls with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vaginal bleeding\" \"finding\"))",
+   "element_keys": [
+    "p45-831c4f89"
+   ],
+   "quote": "vaginal bleeding",
+   "confidence": "medium",
+   "note": "\"Vaginal bleeding\" has no FSN; vocabulary concept Abnormal vaginal bleeding used."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p45-32cf9dee",
+   "element_id": "p45-rb1-e19",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management section."
+  },
+  {
+   "element_key": "p45-ae88a240",
+   "element_id": "p45-rb1-e20",
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until SBP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "IV fluid management; no manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Falls as complaint",
+   "decision": "Trigger and priority use (or Collapse Falls); the red-box header says \"collapsed\" but the page title is Collapse/Falls.",
+   "alternatives": "Collapse only.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock/SBP < 80",
+   "decision": "Encoded as (or Shock, SBP < 80) on this page; footnote 2 shock definition not imported as a rule.",
+   "alternatives": "A probable shock rule from footnote 2.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Orthostatic BP drop",
+   "decision": "Systolic drop >= 20 via the observable Level of reduction in systolic blood pressure on standing, plus a measure task; diastolic drop >= 10 has no observable.",
+   "alternatives": "Postural drop in blood pressure (finding) without a threshold.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Sequential No branches",
+   "decision": "Hyperventilation and common faint rules do not require the earlier No answers (as in the gold).",
+   "alternatives": "Negated preconditions.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Sudden collapse + anaphylaxis features",
+   "decision": "Both a branch of the Urgent rule and a possible Anaphylaxis rule to trigger the anaphylaxis page check.",
+   "alternatives": "Only the Urgent branch.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Collapse following vaccination",
+   "decision": "Vaccination given (situation) inside the complaint-anchored Urgent rule.",
+   "alternatives": "Administration of vaccine procedure.",
+   "confidence": "medium"
+  }
+ ]
+}

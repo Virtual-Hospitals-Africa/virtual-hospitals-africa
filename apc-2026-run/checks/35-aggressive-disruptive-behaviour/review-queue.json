@@ -1,0 +1,900 @@
+[
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p35-20e04b0d",
+  "text": "Challenging, insulting or provocative behaviour",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All three parts present: challenging -> 'Challenging behavior'; insulting -> 'Verbally abusive behavior' (closest SNOMED has; no 'insulting' concept); provocative -> 'Provocative behavior'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "insulting is mapped to 'Verbally abusive behavior' (acceptable)"
+    ],
+    "problem": "Three parts mapped (Challenging behavior, Verbally abusive behavior, Provocative behavior); concepts plausible. Insulting-as-verbal-abuse is an approximation. Not checked in SNOMED (tool errored).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All three parts are covered: challenging (Challenging behavior), insulting (Verbally abusive behavior), provocative (Provocative behavior).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p35-9173924e",
+  "text": "Tense posturing like gripping arm rails tightly, clenching fists",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Observed tense posturing / gripping / clenched fists: encoded only as the patient-reported feeling 'Feeling physically tense' (parent 'Feeling tense'), which is a subjective symptom, not an observed posture."
+    ],
+    "problem": "The concept chosen is a feeling the patient reports, whereas the page lists a sign the health worker observes. SNOMED has no precoordinated 'tense posturing' or 'clenched fists' concept, so some approximation is unavoidable, but 'Muscle tension' (finding) or 'Physically threatening behavior' (finding) are closer to an observed sign. Low practical impact: a health worker shown the check list would still tick it.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "tense posturing / gripping arm rails / clenching fists as observed sign"
+    ],
+    "problem": "'Feeling physically tense' is a subjective feeling, not observed tense posturing or clenched fists; weak match. A closer concept (e.g. clenched fist / tense posture) may exist.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "observed tense posturing (gripping arm rails, clenching fists)"
+    ],
+    "problem": "'Feeling physically tense' (parent 'Feeling tense') is a symptom the patient feels and reports. The page describes posturing the clinician observes, so a health worker seeing clenched fists may not record it under this concept. There is no precoordinated SNOMED concept for tense posture or clenched fists; 'Physically threatening behavior' is a possible alternative.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p35-d906a979",
+  "text": "Frequently changing body position, pacing",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both parts present. 'Pacing up and down' is a child of 'Restlessness', so the second is redundant given descendant matching, but harmless.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "frequently changing body position"
+    ],
+    "problem": "Pacing encoded; 'Restlessness' added, which the page does not state (broader than page). Changing body position has no specific concept.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Frequently changing position maps to Restlessness and pacing to Pacing up and down.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p35-6ff7fb2b",
+  "text": "Aggressive acts like pounding walls, throwing objects, hitting",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Physical aggression' (children include 'Hitting other person') covers hitting; 'Destructive behavior' covers pounding walls and throwing objects. Both are children of 'Aggressive behavior'.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "throwing objects",
+     "pounding walls",
+     "hitting as specific acts"
+    ],
+    "problem": "Generalised to Physical aggression and Destructive behavior; reasonable but pounding walls/throwing objects not specific.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Hitting maps to Physical aggression; pounding walls and throwing objects map to Destructive behavior. Both are children of Aggressive behavior.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p35-4d354f63",
+  "text": "Consider involuntary admission if signs of mental illness and refuses treatment/admission and a danger to self, others, own reputation or financial interest/property 158.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "management_step: Involuntary admission decision (signs of mental illness AND refuses treatment AND danger): a management/legal decision referring to p158; contains conditions, but they gate an admission action, not a diagnosis or triage level.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "Involuntary admission consideration is a management step but has a conjunctive criterion (mental illness AND refuses AND danger); no manage tasks per house standard.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Criteria for involuntary admission (mental illness AND refuses AND danger). This is a management or legal decision with a cross-reference to p158, not triage or diagnosis.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p35-2ac9e20a",
+  "text": "Stimulant2 withdrawal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Cause label (stimulant withdrawal) selecting a drug; the page gives no criteria for it, and diagnosis of the cause is on p36.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No diagnosis rule encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Medication-selection branch with no diagnostic criteria; the footnote defines stimulants only.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p35-c67ce43c",
+  "text": "Alcohol withdrawal",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Cause label (alcohol withdrawal) selecting a drug; no criteria on this page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No diagnosis rule encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Medication-selection branch with no diagnostic criteria.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p35-1b58a965",
+  "text": "Seizures",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Cause label (seizures) selecting a drug; no criteria on this page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No diagnosis rule encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Medication-selection branch.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p35-285cf984",
+  "text": "Delirium",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Cause label (delirium) selecting a drug; no criteria on this page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No diagnosis rule encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Medication-selection branch; delirium is handled on p36.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p35-fccbaa9a",
+  "text": "Psychosis",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "flowchart_routing: Cause label (psychosis) selecting a drug; no criteria on this page.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "No diagnosis rule encoded.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "Medication-selection branch.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent aggressive/disruptive behaviour signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says the general 'Angry behaviour'; 'Anger reaction' (192085004) is a narrower child of 'Outbursts of anger', which sits directly under 'Aggressive behavior' and is the closer general concept (no 'Angry behavior' concept exists).",
+    "fix": "(snomed_concept \"Outbursts of anger\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c006",
+  "text": "Check for urgent aggressive/disruptive behaviour signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Label matches the page, but in this SNOMED release 'Provocative behavior' sits under 'Emotional bullying', which is narrower and more specific than the page's 'provocative behaviour' in a clinic setting.",
+    "fix": "Keep it, or use (snomed_concept \"Hostile behavior\" \"finding\") if VHA reads the bullying parent literally.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c007",
+  "text": "Check for urgent aggressive/disruptive behaviour signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page describes an observed sign ('Tense posturing like gripping arm rails tightly, clenching fists'); 'Feeling physically tense' (250070007, under 'Feeling tense' > 'Tension') is a patient-reported feeling, not posture. The page's meaning is body language signalling threat; 'Physically threatening behavior' (284615005, confirmed with exists) is closer; 'Muscle tension' (250069006) is the observed-sign alternative.",
+    "fix": "(snomed_concept \"Physically threatening behavior\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page describes tense posturing (gripping rails, clenching fists), an observed sign; 'Feeling physically tense' is a subjective feeling.",
+    "fix": "No closer concept found by search; keep but flag, or use free-text/observation.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Feeling physically tense' is something the patient reports feeling. The page describes tense posturing that the clinician observes (gripping arm rails, clenching fists). SNOMED has no concept for tense posture.",
+    "fix": "Use (snomed_concept \"Muscle tension\" \"finding\"), or keep it and say in the display text that it means observed posturing such as gripping rails or clenched fists.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c009",
+  "text": "Check for urgent aggressive/disruptive behaviour signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "'Frequently changing body position' is fidgeting/shifting; Restlessness is broader (also covers pacing, duplicating the pacing claim). Closer: none found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c003: 'Anger reaction' is narrower than the page's 'Angry behaviour'; its parent 'Outbursts of anger' (direct child of 'Aggressive behavior') is the closer concept.",
+    "fix": "(snomed_concept \"Outbursts of anger\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Provocative behavior\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Label matches the page, but in this SNOMED release 'Provocative behavior' sits under 'Emotional bullying', which is narrower and more specific than the page's 'provocative behaviour' in a clinic setting.",
+    "fix": "Keep it, or use (snomed_concept \"Hostile behavior\" \"finding\") if VHA reads the bullying parent literally.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c019",
+  "text": "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c007: a subjective 'feeling' concept stands in for the page's observed tense posturing / clenched fists; 'Physically threatening behavior' (284615005) is closer.",
+    "fix": "(snomed_concept \"Physically threatening behavior\" \"finding\")",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c007: subjective feeling vs observed tense posturing.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Feeling physically tense' is something the patient reports feeling. The page describes tense posturing that the clinician observes (gripping arm rails, clenching fists). SNOMED has no concept for tense posture.",
+    "fix": "Use (snomed_concept \"Muscle tension\" \"finding\"), or keep it and say in the display text that it means observed posturing such as gripping rails or clenched fists.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c021",
+  "text": "Urgent: aggressive/disruptive patient with signs of escalating aggression :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c009.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent aggressive/disruptive behaviour signs",
+  "text": "'Feeling physically tense' stands in for the page's observed sign 'tense posturing like gripping arm rails tightly, clenching fists'. It is a subjective feeling (parent 'Feeling tense'), not an observed behaviour. 'Muscle tension' (finding) or 'Physically threatening behavior' (finding) would be closer; neither is exact.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+  "text": "Five of the ten red-box concepts (Anger reaction, Provocative behavior, Verbal aggression, Physical aggression, Destructive behavior) are SNOMED descendants of 'Aggressive behavior', so recording any one of them alone satisfies both arms of the (and ...). The other five (Challenging behavior, Verbally abusive behavior, Feeling physically tense, Restlessness, Pacing up and down) only raise Urgent if 'Aggressive behavior' or 'Disruptive behavior' is also recorded. This follows the house pattern '(and <presenting complaint> (or ...))' and matches the page's 'aggressive/disruptive patient with any of', so it is a note on behaviour, not a defect.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent aggressive/disruptive behaviour signs",
+  "text": "'Pacing up and down' is a child of 'Restlessness'; listing both is redundant under descendant matching. Harmless, and it keeps the page's two words visible in the check list.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(page as a whole)",
+  "text": "No system_diagnosis_rule exists, which is right: the page has no 'X likely' or 'consider X' statements. The cause labels (stimulant/alcohol withdrawal, seizures, delirium, psychosis) only select sedation and carry no criteria here; the conditions that gate sedation choice (> 65 years, substance user, previous olanzapine intolerance) and involuntary admission have no consumer because manage tasks are out of scope by design.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "system_priority_evaluation Urgent",
+  "text": "Requires Aggressive/Disruptive behavior finding AND a sign; matches page. But 'Restlessness' is added without page support and 'Feeling physically tense' is a weak match for tense posturing, risking false triggers.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for",
+  "text": "Task trigger is just the aggressive/disruptive gate; check_for list duplicates priority rule items (consistent). No likely-cause diagnosis rules (stimulant/alcohol withdrawal, seizures, delirium, psychosis) though flowchart names them.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "all",
+  "text": "SNOMED tool (tools/snomed) crashed in this run, so concept existence and closeness could not be verified; concept judgements are by meaning only.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent aggressive/disruptive behaviour signs",
+  "text": "'Feeling physically tense' is a felt symptom. The page lists observed posturing (gripping rails, clenching fists), so clinicians may never record this concept for that sign and the Urgent rule would miss it.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+  "text": "Destructive behavior, Verbal aggression and Physical aggression are descendants of Aggressive behavior, so any of them also satisfies the trigger arm. This is harmless and matches the page's 'any of', but it means the (and trigger …) adds nothing for those three.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: aggressive/disruptive patient with signs of escalating aggression",
+  "text": "Aggressive behavior is itself a recorded warning sign, and it may already carry its own priority level in shared/warning_signs.ts, which this checker may not open. If that level is higher than Urgent, this rule would be redundant or inconsistent with it. Worth confirming.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent aggressive/disruptive behaviour signs",
+  "text": "'Disruptive behavior' is not listed among the known warning signs or common symptoms. A patient recorded only as disruptive may therefore never trigger the task unless it is captured elsewhere.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(whole page)",
+  "text": "Page content beyond the red-box criteria is not encoded: likely-cause diagnoses (stimulant/alcohol withdrawal, seizures, delirium, psychosis) and same-day referral for mentally ill patient; no invented content found.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+    "reason": "The page says 'Angry behaviour', an observed behaviour; 'Anger reaction' (under Outbursts of anger) is a behavioural finding, while 'Feeling angry' is a mood finding; no concept 'Angry behavior' exists, so the page does not fully settle the choice.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+    "reason": "The page says 'Tense posturing like gripping arm rails tightly, clenching fists', i.e. physical tension, which the narrower 'Feeling physically tense' names; both are patient-reported feelings rather than observed posture, so neither is exact.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+    "reason": "The page lists 'insulting' behaviour, which A left uncovered; insults are verbal abuse and no 'insulting' concept exists.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+    "reason": "The page's examples 'pounding walls, throwing objects' are acts against property, which 'Physical aggression' alone does not name; 'Destructive behavior' is a child of Aggressive behavior.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling angry\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anger reaction\" \"finding\"))",
+    "reason": "The page says 'Angry behaviour', an observed behaviour; 'Anger reaction' (under Outbursts of anger) is a behavioural finding, while 'Feeling angry' is a mood finding; no concept 'Angry behavior' exists, so the page does not fully settle the choice.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling tense\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling physically tense\" \"finding\"))",
+    "reason": "The page says 'Tense posturing like gripping arm rails tightly, clenching fists', i.e. physical tension, which the narrower 'Feeling physically tense' names; both are patient-reported feelings rather than observed posture, so neither is exact.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Verbally abusive behavior\" \"finding\"))",
+    "reason": "The page lists 'insulting' behaviour, which A left uncovered; insults are verbal abuse and no 'insulting' concept exists.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "slug": "35-aggressive-disruptive-behaviour",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "only B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Destructive behavior\" \"finding\"))",
+    "reason": "The page's examples 'pounding walls, throwing objects' are acts against property, which 'Physical aggression' alone does not name; 'Destructive behavior' is a child of Aggressive behavior.",
+    "unsettled": false
+   }
+  ]
+ }
+]

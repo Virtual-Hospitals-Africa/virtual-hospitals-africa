@@ -1,0 +1,439 @@
+{
+ "page": 23,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p23-a5357eb9",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (or (clinical_finding Cough) (clinical_finding Difficulty breathing))",
+    "Check for urgent cough or difficulty breathing conditions :: task trigger (or Cough, Difficulty breathing)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-1a1fd5e0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Relies on active_condition of a probable diagnosis feeding the priority rule; orthopnea is a fair mapping of worse on lying flat.",
+   "evidence": [
+    "Diagnose probable heart failure :: (and Orthopnea Swelling of lower limb)",
+    "Urgent: cough or difficulty breathing with red-box signs :: (active_condition Heart failure)",
+    "check_for Orthopnea, Swelling of lower limb"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-b4cfda62",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+    "Urgent: cough or difficulty breathing with red-box signs :: (< (measurement Systolic blood pressure mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-6861e109",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Tight chest is also used as a bronchitis qualifier (see rule-level problems).",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding Wheezing)",
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding Tight chest)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-cc83a21d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-c141d3be",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "oxygen saturation drops to < 87% on exertion (walking 15-20m)",
+    "'at rest' condition on the <92% saturation"
+   ],
+   "problem": "Cyanosis and SpO2 < 92% encoded; the exertional <87% criterion is absent and the 92% threshold is not restricted to rest. Exertional test may be not_representable, but then it should be flagged.",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding Cyanosis)",
+    "Urgent: cough or difficulty breathing with red-box signs :: (< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 92)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-01fd8d09",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Confused mapped to Clouded consciousness (40917007), acceptable.",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: Clouded consciousness / Feeling agitated / Decreased level of consciousness"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-959d4e89",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "volume threshold >= 1 tablespoon"
+   ],
+   "problem": "Any haemoptysis triggers Urgent; page requires a tablespoon or more of fresh blood. Quantity cannot be expressed, so this over-triggers.",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding (snomed_concept \"Hemoptysis\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-668e2972",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Minor: Trachea displaced is tagged disorder but used as clinical_finding; Sudden onset qualifier on Dyspnea is a reasonable proxy for sudden breathlessness.",
+   "evidence": [
+    "Diagnose probable tension pneumothorax :: (and Dyspnea sudden onset, (or Hyperresonance unilateral, Decreased breath sounds unilateral, Chest pain unilateral), Trachea displaced, (or SBP<90, DBP<60))",
+    "Urgent: cough or difficulty breathing with red-box signs :: (active_condition Tension pneumothorax)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-1a01453c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'while talking' mapped to unable to complete a sentence; reasonable.",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: Dyspnea at rest",
+    "Urgent: cough or difficulty breathing with red-box signs :: Unable to complete a sentence in one breath"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-ffc3b65e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (and (Swollen calf unilateral) (Pain in calf unilateral))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-9102a553",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-513f0a6e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-03f55f0d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-1d9fa461",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-10759f4e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-e9ac69ab",
+   "scope": "borderline",
+   "scope_reason": "Management step, but it defines severe pneumonia (2 or more of confusion/decreased consciousness, BP<90/60, RR>=30, age>65) as a criterion set.",
+   "verdict": "missing",
+   "parts_missing": [
+    "severe pneumonia 2-of-4 rule"
+   ],
+   "problem": "No severe pneumonia diagnosis rule exists.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p23-324d1341",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-88004b5f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "strict < 2 weeks boundary"
+   ],
+   "problem": "Branch encoded as (<= onset Cough (time_ago 2 weeks)) plus (no Cough Recurrent). <= includes exactly 2 weeks while the page says < 2 weeks, and chronic rules use >= so exactly 2 weeks falls in both. Direction of the onset comparison is assumed.",
+   "evidence": [
+    "Diagnose probable acute viral infection :: (<= (onset Cough) (time_ago 2 weeks)) (no Cough Recurrent)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p23-ba551fd6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose possible asthma :: (or (>= (onset Cough) (time_ago 2 weeks)) (>= (onset Difficulty breathing) ...) Cough Recurrent, Difficulty breathing Recurrent)",
+    "same chronic-or-recurrent block repeated in nose, COPD, PJP, OSA, lung cancer rules"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-5f9ce05b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Blocked nose mapped to Nasal congestion; Disorder of the nose is generic but fits. Asthma and COPD possible rules have no extra trigger, as the page gives none.",
+   "evidence": [
+    "Diagnose possible nose disorder :: (and chronic-or-recurrent (or Itching finding_site Nasal structure, Nasal congestion, Clearing throat - hawking))",
+    "Diagnose possible asthma ...",
+    "Diagnose possible COPD ..."
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-620b3770",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable acute viral infection :: (no Respiratory crackles) (no Bronchial breathing)",
+    "Diagnose probable pneumonia :: (or Respiratory crackles Bronchial breathing)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-b3d80faf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "fever/chills/body pain cue (soft, acceptable)"
+   ],
+   "problem": "Acute viral infection and acute bronchitis encoded. Bronchitis requires Common cold plus (Tight chest or Chest pain or Productive cough), matching the page. Acute viral rule has no exclusion for bronchitis so both fire; the page treats bronchitis as a sub-case. Tight chest is Urgent in the red box but a non-urgent bronchitis cue here.",
+   "evidence": [
+    "Diagnose probable acute bronchitis :: (and ... (Common cold) (or Tight chest Chest pain Productive cough))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-04553a03",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "The 'any of HIV, >65...' sub-question is management routing.",
+   "evidence": [
+    "Diagnose probable pneumonia :: (and (<= onset Cough 2 weeks) (no Cough Recurrent) (or Respiratory crackles Bronchial breathing))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-6b62b40a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "CD4 < 200 (lab value, not_representable)"
+   ],
+   "problem": "PJP probable needs known HIV + dry cough + dyspnea + chronic block, but CD4 < 200 is dropped, so any HIV-positive patient with dry cough and dyspnea gets probable PJP. Should be flagged not_representable or downgraded to possible.",
+   "evidence": [
+    "Diagnose probable PJP (chronic cough with HIV) :: (and chronic-or-recurrent (HIV infection Known present) (Dry cough) (Dyspnea))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-ec986182",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Persistent' implied by chronic block.",
+   "evidence": [
+    "Diagnose probable obstructive sleep apnoea :: (or Habitual snoring, Poor sleep pattern)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-75e01b32",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable obstructive sleep apnoea (chronic cough page) :: Obstructive sleep apnea syndrome probable"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p23-652e1c50",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'recent' upper respiratory infection not time-bounded"
+   ],
+   "problem": "Chronic or recurrent cough + Upper respiratory infection + (no Difficulty breathing). 'Recent' not encoded. Concept exists (445241004).",
+   "evidence": [
+    "Diagnose probable post-infectious cough :: (and (or (>= onset Cough 2 weeks) Cough Recurrent) (Upper respiratory infection) (no Difficulty breathing))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-81e8590b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "cough most days of 3 months pattern"
+   ],
+   "problem": "Lung cancer possible rule fine. COPD probable uses smoker/ex-smoker + cough onset >= 2 years but omits 'most days of 3 months', so it fires on any 2-year cough in a smoker.",
+   "evidence": [
+    "Diagnose possible lung cancer :: (and chronic-or-recurrent (or Smoker Ex-smoker) Weight decreased)",
+    "Diagnose probable COPD (smoker with cough for 2 years or more) :: (and (or Smoker Ex-smoker) (>= (onset Cough) (time_ago 2 years)))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p23-0d90b567",
+   "scope": "borderline",
+   "scope_reason": "Footnote 1 defines 'shock likely' (SBP<80, pulse >=100, RR>30, confusion/restlessness, weakness); footnotes 2-5 are cannula/antibiotic notes.",
+   "verdict": "missing",
+   "parts_missing": [
+    "shock likely definition"
+   ],
+   "problem": "Shock is used as a finding but no rule derives it from the footnote criteria. Footnote thresholds (pulse >=100, RR>30) differ from the red box (pulse >120, RR>=30).",
+   "evidence": [
+    "Urgent: cough or difficulty breathing with red-box signs :: (clinical_finding Shock)"
+   ],
+   "confidence": "low"
+  }
+ ],
+ "outside_not_logic": [
+  "p23-ae1bbc74",
+  "p23-1128cc7a",
+  "p23-2cff60d9",
+  "p23-f2c32620",
+  "p23-556bdf75",
+  "p23-efe482a5",
+  "p23-36b1eddf",
+  "p23-d00344dc",
+  "p23-6357cc45",
+  "p23-7b93b459",
+  "p23-21128af7",
+  "p23-ee5f365f",
+  "p23-f706014f",
+  "p23-6559e2ac",
+  "p23-307beea4",
+  "p23-7a57c6f2",
+  "p23-173c7994",
+  "p23-9cbaa225"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent priority rule and bronchitis rule",
+   "problem": "Tight chest is Urgent (red box) and also a trigger for acute bronchitis (non-urgent); a patient gets both. Chest pain unqualified is a task-2 check item while unilateral chest pain is task-1.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable PJP",
+   "problem": "CD4 < 200 omitted, so probable overreaches.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable COPD (smoker with cough for 2 years or more)",
+   "problem": "Missing 'most days of 3 months' criterion.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent priority rule",
+   "problem": "Exertional SpO2 < 87% missing; haemoptysis volume dropped (any haemoptysis triggers Urgent); relies on active_condition of Heart failure and Tension pneumothorax, working only if probable diagnoses count as active conditions.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Acute viral / bronchitis / pneumonia rules",
+   "problem": "(<= onset 2 weeks) vs chronic (>= 2 weeks): exactly 2 weeks in both, page says < 2 weeks. Acute viral has no exclusion for bronchitis or pneumonia-type signs beyond crackles.",
+   "severity": "low"
+  },
+  {
+   "rule": "Severe pneumonia (box 1 management)",
+   "problem": "2-of-4 severe pneumonia criteria not encoded as a diagnosis.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red box's criteria are mostly encoded with sound SNOMED concepts, but the Urgent rule drops the exertional SpO2 < 87% criterion and the one-tablespoon haemoptysis volume, and the PJP rule omits CD4 < 200 so it over-calls probable PJP. COPD probable lacks the 3-months-most-days pattern, and tight chest is both Urgent and a bronchitis cue. Severe pneumonia (2-of-4) and the shock footnote definition are not encoded."
+}

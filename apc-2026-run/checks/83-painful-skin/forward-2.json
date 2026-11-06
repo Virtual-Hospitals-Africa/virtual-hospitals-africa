@@ -1,0 +1,272 @@
+{
+ "page": 83,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p83-233eeda6",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing / cross_reference_only: 'Check if the patient needs urgent attention, see p82' is a pointer to another page's triage; the task trigger and check_for list stand in for the box",
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-d868ac51",
+   "scope": "in_scope",
+   "scope_reason": "Boil/abscess likely (presentation: red warm painful lump) plus recurrent-boil sub-branch",
+   "verdict": "partial",
+   "parts_missing": [
+    "fluctuant/pus discharge not encoded (page: 'may be fluctuant... may discharge pus'; rule uses only mass+erythema+warm)",
+    "'Boil' (furuncle) not distinguished from abscess; single abscess concept only",
+    "Presentation-box text is an optional descriptor but 'warm' and 'painful' are required in rule though 'may be' qualifiers apply only to fluctuance/pus - acceptable"
+   ],
+   "problem": "Rule is a reasonable encoding of the lump presentation; fluctuance and pus discharge absent. Rule uses 'Mass of skin' for 'lump'.",
+   "evidence": [
+    "Diagnose probable boil/abscess (painful skin) :: (and (clinical_finding \"Pain of skin\") (clinical_finding \"Mass of skin\") (clinical_finding \"Erythema\") (clinical_finding \"Warm skin\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-9ab10688",
+   "scope": "in_scope",
+   "scope_reason": "Presentation for boil/abscess: red, warm, painful lump, may be fluctuant, may discharge pus",
+   "verdict": "partial",
+   "parts_missing": [
+    "fluctuant",
+    "discharges pus"
+   ],
+   "problem": "Optional features omitted; could be possible-level or check_for items.",
+   "evidence": [
+    "Diagnose probable boil/abscess (painful skin) :: (and ... \"Mass of skin\" \"Erythema\" \"Warm skin\")"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-5122e44b",
+   "scope": "in_scope",
+   "scope_reason": "Red warm swollen skin; branch on borders poorly vs clearly defined",
+   "verdict": "partial",
+   "parts_missing": [
+    "Branch is encoded as two separate rules, fine; but 'red' = Erythema and 'swollen' = Swelling of skin OK. No defect beyond qualifier choice below."
+   ],
+   "problem": "Branch captured by qualifiers on Erythema; the qualifier is attached to Erythema rather than to the swelling/lesion border, which is acceptable. Note the two rules overlap in all other criteria, so differentiation relies solely on qualifier.",
+   "evidence": [
+    "Diagnose probable cellulitis (painful skin) :: Erythema + qualifier \"Poorly defined\"",
+    "Diagnose probable erysipelas (painful skin) :: Erythema + qualifier \"Well defined\" + \"Raised\""
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-9061a0cc",
+   "scope": "in_scope",
+   "scope_reason": "Painful blisters in a band along one side (herpes zoster presentation)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable herpes zoster (painful skin) :: (and (clinical_finding \"Pain of skin\") (clinical_finding \"Blister of skin\" (qualifier \"Zosteriform\") (qualifier \"Unilateral\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-7b4b80fa",
+   "scope": "in_scope",
+   "scope_reason": "Poorly-defined borders (cellulitis)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable cellulitis (painful skin) :: (clinical_finding \"Erythema\" (qualifier \"Poorly defined\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-d5e8fb63",
+   "scope": "in_scope",
+   "scope_reason": "Clearly-defined raised borders (erysipelas)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable erysipelas (painful skin) :: (clinical_finding \"Erythema\" (qualifier \"Well defined\") (qualifier \"Raised\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-30d497d1",
+   "scope": "in_scope",
+   "scope_reason": "Herpes zoster likely (the rest of the element is management)",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Diagnosis encoded; HIV test, aciclovir, advice are management (out of scope). Conditions for aciclovir (<=3 days, at-risk) are management qualifiers.",
+   "evidence": [
+    "Diagnose probable herpes zoster (painful skin)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-54892a94",
+   "scope": "in_scope",
+   "scope_reason": "Cellulitis likely / Erysipelas likely headers",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both encoded as probable. Caveat: the page presents them as alternatives that differ only by border definition; cellulitis rule requires Warm skin and Swelling, which the page's 'Red, warm, swollen skin' root supports.",
+   "evidence": [
+    "Diagnose probable cellulitis (painful skin)",
+    "Diagnose probable erysipelas (painful skin)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-dc3ff445",
+   "scope": "in_scope",
+   "scope_reason": "Recurrent boils branch: painful abscesses in axilla, groin or perineum -> hidradenitis suppurativa likely",
+   "verdict": "partial",
+   "parts_missing": [
+    "Recurrence is encoded only via the 'Recurrent abscess of skin' concept; the page says 'if recurrent boils or abscesses' and 'painful abscesses' - 'Painful' is covered by overall Pain of skin",
+    "No linkage from the recurrent-boil branch to the boil/abscess rule (hidradenitis is a branch of recurrent boil/abscess, rule stands alone)"
+   ],
+   "problem": "Hidradenitis encoded as probable with or over three sites; reasonable. 'Recurrent abscess of skin' with finding_site should be checked: 'Perineal structure' is a plausible but unverified body structure (VHA's own test does not check body sites).",
+   "evidence": [
+    "Diagnose probable hidradenitis suppurativa (painful skin) :: (or (Recurrent abscess of skin / Axillary region structure) ... Inguinal ... Perineal structure)"
+   ],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p83-eec6ae4d",
+   "scope": "borderline",
+   "scope_reason": "Refer-same-day criteria are triage logic; the briefing says 'check tasks and priority evaluations' are expected, but they are referral/management steps ('no manage tasks')",
+   "verdict": "missing",
+   "parts_missing": [
+    "Cellulitis/erysipelas 'Refer same day if' list (BP<90/60, pulse>100, confused, hand/face/scalp, extensive, blisters/grey-black skin, poorly controlled diabetes, recurrent infection, no response in 2 days) and treatment"
+   ],
+   "problem": "No priority_evaluation or rule encodes any refer-same-day criterion on this page; BP<90/60, pulse>100, confusion, blisters etc. are not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-257ddc32",
+   "scope": "borderline",
+   "scope_reason": "Refer-same-day criteria are triage logic; the briefing says 'check tasks and priority evaluations' are expected, but they are referral/management steps ('no manage tasks')",
+   "verdict": "missing",
+   "parts_missing": [
+    "Boil/abscess refer same day: BP<90/60, pulse>100, deep abscess"
+   ],
+   "problem": "No priority_evaluation or rule encodes any refer-same-day criterion on this page; BP<90/60, pulse>100, confusion, blisters etc. are not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-8ca2b995",
+   "scope": "borderline",
+   "scope_reason": "Refer-same-day criteria are triage logic; the briefing says 'check tasks and priority evaluations' are expected, but they are referral/management steps ('no manage tasks')",
+   "verdict": "missing",
+   "parts_missing": [
+    "Boil/abscess refer same day: no response in 2 days"
+   ],
+   "problem": "No priority_evaluation or rule encodes any refer-same-day criterion on this page; BP<90/60, pulse>100, confusion, blisters etc. are not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-b2182804",
+   "scope": "borderline",
+   "scope_reason": "Refer-same-day criteria are triage logic; the briefing says 'check tasks and priority evaluations' are expected, but they are referral/management steps ('no manage tasks')",
+   "verdict": "missing",
+   "parts_missing": [
+    "Herpes zoster refer same day: eye/ear/nose involvement, suspected meningitis, more than one region"
+   ],
+   "problem": "No priority_evaluation or rule encodes any refer-same-day criterion on this page; BP<90/60, pulse>100, confusion, blisters etc. are not encoded.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p83-552fbeac",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-9a63aa3e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-4075f728",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-3a478d27",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-14ab2299",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-223038e8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-7c9fa187",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-61808112",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  },
+  {
+   "element_key": "p83-864c3a88",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: antibiotic/analgesic dosing and conditional treatment (no manage tasks by design)",
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p83-8302e99f",
+  "p83-671daada",
+  "p83-b2f3b480",
+  "p83-cd20a621",
+  "p83-cd006dbc",
+  "p83-ceea7728"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "task 'Check for painful skin conditions'",
+   "problem": "No priority evaluations at all: the page's refer-same-day lists (BP<90/60, pulse>100, confusion, hand/face/scalp, extensive infection, blisters/grey-black skin, poorly controlled diabetes, no response in 2 days, eye/ear/nose, suspected meningitis, >1 body region) are absent. Vitals (BP, pulse) are representable; the red box points to p82 urgent attention but no link or priority rule exists.",
+   "severity": "high"
+  },
+  {
+   "rule": "cellulitis vs erysipelas rules",
+   "problem": "Cellulitis/erysipelas rules are not mutually exclusive with boil/abscess (shared Pain+Erythema+Warm); a patient with red warm lump plus borders could trigger several probable diagnoses. The 'poorly/clearly defined' fork relies solely on a qualifier on Erythema.",
+   "severity": "medium"
+  },
+  {
+   "rule": "boil/abscess",
+   "problem": "Lump features 'may be fluctuant' and 'may discharge pus' not encoded; 'Mass of skin' used for lump.",
+   "severity": "low"
+  },
+  {
+   "rule": "task check_for",
+   "problem": "check_for contains items for hidradenitis sites and blister qualifiers that are used by rules; however 'Pain of skin' is both the task trigger and a required criterion in every rule, so the task cannot fire from the page's distinct presentations (e.g. lump without recorded pain).",
+   "severity": "low"
+  },
+  {
+   "rule": "hidradenitis suppurativa",
+   "problem": "Page says hidradenitis 'likely' for recurrent painful abscesses in the three sites; encoded as probable, OK, but body-site concepts ('Perineal structure', 'Axillary region structure', 'Inguinal region structure') need verification as they resolve in VHA (known gap in VHA's test).",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page's triage logic in the refer-same-day lists (BP < 90/60, pulse > 100, confusion, blisters, meningitis signs and so on) is entirely unencoded; there is no priority evaluation and no link to the p82 urgent-attention check. The five diagnoses (boil/abscess, cellulitis, erysipelas, herpes zoster, hidradenitis suppurativa) are encoded as probable with plausible SNOMED concepts, with only fluctuance/pus omitted. Management steps are out of scope by design."
+}

@@ -1,0 +1,1314 @@
+[
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p39-27daf0aa",
+  "text": "Manage as suspected severe malaria and refer urgently to reach referral hospital within 6 hours:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step: 'manage as suspected severe malaria and refer urgently within 6 hours'. The 'suspected severe malaria' conclusion itself is captured by the possible Complicated malaria rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step: header of management instructions",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Manage as suspected severe malaria' is encoded as a possible Complicated malaria (SNOMED synonym 'severe malaria') with the same red-box criteria. The 6-hour referral is management and out of scope.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p39-f0411a15",
+  "text": "1Check NICD: South African malaria risk map 2024: www.nicd.ac.za/wp-content/uploads/2025/12/National_Risk_Map-02-Dec-2025.pdf. 2If systolic BP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 3Rapid tests may stay positive for up to one month after successful",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Probable Shock rule from SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness"
+    ],
+    "problem": "No rule derives Shock; the priority and complicated-malaria rules only match a 'Shock' finding the health worker records by hand. Pulse >= 100 and restlessness appear nowhere in the file.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "pulse >= 100",
+     "restlessness",
+     "shock-likely definition as a rule"
+    ],
+    "problem": "Shock is only taken as a reported finding; footnote's definition not encoded (SBP<80, RR>30, confusion are covered elsewhere independently).",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "missing",
+    "parts_missing": [
+     "Footnote 2: 'If systolic BP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' has no probable Shock diagnosis rule; Shock appears only as a directly recorded finding. Footnotes 1, 3, 4 and 5 are notes, references or definitions (5 defines impaired immunity for a routing question) and are out of scope."
+    ],
+    "problem": "Every 'X likely' should become a probable rule. The footnote's list is ambiguous (all vs any); a rule such as probable Shock with SBP < 80 plus pulse >= 100 or the other signs would let shock be derived instead of relying on a worker to record 'Shock'.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p39-92ab4ce3",
+  "text": "Suspect malaria if patient in a malaria area1 in the past 3 months and now presents with temperature ≥ 38°C, severe headache, fatigue, shivering episodes, joint/muscle pain, flu-like symptoms, dry cough, nausea and vomiting or diarrhoea.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Vomiting on its own: the page lists 'nausea and vomiting' as one symptom cluster; the rule requires (and Nausea Vomiting), so a traveller with vomiting but no nausea recorded does not reach the symptom branch via this item."
+    ],
+    "problem": "Everything else is encoded with the right concept, direction and rule type (possible). The travel criterion uses 'History of travel with high risk of exposure to communicable disease' with onset within 3 months; SNOMED has no 'malaria area' / 'endemic area' concept, so this is the closest available (the generic 'Foreign travel history finding' would be worse, since many malaria areas are domestic). The nausea-and-vomiting conjunction is stricter than the page's intent and is also inconsistent with the check task's own trigger, which treats nausea and vomiting as separate.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'malaria area' exposure is encoded as generic high-risk travel history, not malaria area; residence in an area is not covered"
+    ],
+    "problem": "All symptom parts present with right logic and 3-month window (<= matches 'within last 3 months' by the briefing convention). Exposure concept is broader than the page's malaria area and implies travel only.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'in a malaria area' covers people living in a malaria area as well as travellers; the only exposure concept is 'History of travel with high risk of exposure to communicable disease', so residents of risk areas never meet the rule (no closer malaria-area concept exists in SNOMED; 'At increased risk of exposure to communicable disease' (finding) is broader and would cover residents)"
+    ],
+    "problem": "Structure is right: possible Malaria = exposure in past 3 months AND any symptom; 'nausea and vomiting' is ANDed and 'or diarrhoea' ORed, which is a reasonable reading. The 3-month window is put on the onset of a 'History of travel' situation, which only works if the worker records when the travel happened rather than when the history was taken. Fever is encoded as measured temperature >= 38 rather than (active_condition Fever) as the briefing recommends; this matches the page's wording but misses a reported, unmeasured fever.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p39-6c5ff2fb",
+  "text": "Any of: > 65 years, pregnant/postpartum, long-term health conditions (e.g. PLHIV, diabetes, TB), impaired immunity5, previous splenectomy?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "age > 65",
+     "pregnant/postpartum",
+     "long-term health conditions (PLHIV, diabetes, TB)",
+     "impaired immunity (cancer, chemotherapy, long-term corticosteroids)",
+     "previous splenectomy"
+    ],
+    "problem": "Not encoded at all. Low weight: the system has no 'refer same day' priority level and the house standard excludes management steps.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "A risk-factor decision (>65, pregnant/postpartum, PLHIV, diabetes, TB, impaired immunity, splenectomy) that routes a confirmed case to 'refer same day' or outpatient treatment; it is management routing, not a diagnosis or a triage priority on this page.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c002",
+  "text": "Check for exposure to a malaria area :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "page says \"severe headache\"; qualifier dropped so any headache triggers",
+    "fix": "add (qualifier Severe) as in c010",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c005",
+  "text": "Check for exposure to a malaria area :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "page says \"dry cough\"; Cough is broader",
+    "fix": "use \"Dry cough\"",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c009",
+  "text": "Check for exposure to a malaria area :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says \"in a malaria area\"; the situation concept covers any travel with communicable-disease risk, not malaria specifically. No malaria-specific exposure/travel concept exists in SNOMED (searched malaria area/exposure/travel/endemic), so this is the closest available.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "page says travel in a malaria area; concept is generic high-risk communicable disease travel, 3-month window absent in check_for",
+    "fix": "accept as closest concept; window handled in diagnosis rule",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'in a malaria area in the past 3 months', which includes people who live in endemic SA districts (Limpopo, Mpumalanga, KZN). 'History of travel with high risk of exposure to communicable disease' covers only travel, and only generic communicable-disease risk, not malaria specifically. No closer SNOMED concept was found (searched 'malaria area', 'endemic', 'travel malaria').",
+    "fix": "Keep the concept for now. Add a remaining-questions note that residents of malaria areas must also be captured, or use a broader exposure/residence form if VHA adds one.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c018",
+  "text": "Check for urgent signs in suspected malaria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"confused\" is already covered by Acute confusion; Clouded consciousness is a near-duplicate, adds nothing from the page",
+    "fix": "drop or keep as synonym only",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Confused' already maps to 'Acute confusion' (c019). 'Clouded consciousness' is a broader disturbance of consciousness, so it duplicates rather than adds to that mapping. It's harmless but redundant.",
+    "fix": "Drop 'Clouded consciousness' or keep it as a synonym with a note. 'Acute confusion' is the faithful concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c025",
+  "text": "Check for urgent signs in suspected malaria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Known diabetes is not itself a danger sign; it only modifies the glucose threshold (<4). As a standalone check_for item it asks for something the page does not ask for",
+    "fix": "remove from check_for; keep only in the glucose AND",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c032",
+  "text": "Diagnose possible malaria :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))) (time_ago 3 months))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Timing (<= onset, 3 months = within the past 3 months) matches the page; the concept is broader than \"malaria area\" and no malaria-specific travel/exposure concept exists in SNOMED.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "concept is any high-risk communicable-disease travel, broader than malaria area; window correctly kept",
+    "fix": "accept as closest concept, confirm no malaria-specific concept",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The concept has the same travel-only problem as c009. The onset window also tests when the 'history of travel' finding began, not when the patient was last in the malaria area. Someone who lives there, or whose exposure began more than 3 months ago but continues, may fail '<= 3 months'. If onset is stamped when the finding is recorded, the window does nothing.",
+    "fix": "Model this as recent presence in a malaria area within 3 months. If that can't be expressed, record the limitation in remaining-questions.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c041",
+  "text": "Diagnose possible malaria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Rule requires Nausea AND Finding of vomiting; the page lists \"nausea and vomiting\" as one symptom in an any-of list, so a patient with vomiting alone (or nausea alone) is wrongly excluded. The trigger of the check task treats them as independent, which is the right reading.",
+    "fix": "Replace (and Nausea Finding of vomiting) with the two findings as separate or-branches.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c042",
+  "text": "Diagnose possible malaria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c041: Finding of vomiting is only counted together with Nausea; the page does not require both.",
+    "fix": "Make (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\")) a direct or-branch.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c048",
+  "text": "Diagnose possible complicated (severe) malaria :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "duplicate of Acute confusion for \"confused\"",
+    "fix": "drop",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c018: redundant with 'Acute confusion' for 'confused'.",
+    "fix": "Drop it or keep it with a note.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c055",
+  "text": "Diagnose possible complicated (severe) malaria :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The threshold and unit (mmol/L) match the page. The observable is 'Blood glucose status', but '(snomed_concept \"Blood glucose concentration\" \"observable entity\")' exists and is closer to a numeric glucose value.",
+    "fix": "Use 'Blood glucose concentration' only if it matches the recorded vital; otherwise keep the house concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c057",
+  "text": "Diagnose possible complicated (severe) malaria :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The threshold and unit (mmol/L) match the page. The observable is 'Blood glucose status', but '(snomed_concept \"Blood glucose concentration\" \"observable entity\")' exists and is closer to a numeric glucose value.",
+    "fix": "Use 'Blood glucose concentration' only if it matches the recorded vital; otherwise keep the house concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c070",
+  "text": "Urgent: suspected malaria with danger signs :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "duplicate of Acute confusion for \"confused\"",
+    "fix": "drop",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "Same as c018: redundant with 'Acute confusion' for 'confused'.",
+    "fix": "Drop it or keep it with a note.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c077",
+  "text": "Urgent: suspected malaria with danger signs :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The threshold and unit (mmol/L) match the page. The observable is 'Blood glucose status', but '(snomed_concept \"Blood glucose concentration\" \"observable entity\")' exists and is closer to a numeric glucose value.",
+    "fix": "Use 'Blood glucose concentration' only if it matches the recorded vital; otherwise keep the house concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c079",
+  "text": "Urgent: suspected malaria with danger signs :: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The threshold and unit (mmol/L) match the page. The observable is 'Blood glucose status', but '(snomed_concept \"Blood glucose concentration\" \"observable entity\")' exists and is closer to a numeric glucose value.",
+    "fix": "Use 'Blood glucose concentration' only if it matches the recorded vital; otherwise keep the house concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected malaria with danger signs / Diagnose possible complicated (severe) malaria",
+  "text": "Footnote 2 defines 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) but no probable Shock rule exists, so the 'Shock' arm of both rules fires only on a hand-recorded Shock finding. Pulse >= 100 and restlessness are absent from the file. SBP < 80 is separately encoded, so the practical gap is the pulse/restlessness/weakness combination.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible malaria",
+  "text": "'Nausea and vomiting' is encoded as (and Nausea Vomiting), stricter than the page's symptom cluster, and inconsistent with the 'Check for exposure to a malaria area' task whose due_to lists Nausea and Finding of vomiting as separate (or) triggers. A traveller presenting with vomiting alone triggers the exposure check but can never be diagnosed as possible malaria through that symptom.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for exposure to a malaria area",
+  "text": "The trigger uses only the Body temperature measurement >= 38 for fever; the briefing says the recorded form of the common symptom is (active_condition (snomed_concept \"Fever\" \"finding\")). A patient recorded with Fever but without a temperature value would not trigger the exposure check (the other listed symptoms still would).",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent signs in suspected malaria",
+  "text": "'Acute confusion' is a SNOMED child of 'Clouded consciousness', so the check list asks the same question twice. Harmless, but the list could drop one or use the parent 'Confusional state' (disorder) for 'confused'.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for exposure to a malaria area",
+  "text": "Trigger is broader than the page: plain Headache, Cough, Nausea and Vomiting each trigger alone, whereas the page says severe headache, dry cough and 'nausea and vomiting' together; check_for lists severe headache and dry cough, so trigger and checklist disagree. Trigger omits shivering, joint pain and influenza-like illness that the page lists.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected malaria with danger signs",
+  "text": "Hb < 7 cannot be expressed, so the danger-sign list is knowingly incomplete; should be recorded as not_representable.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent signs in suspected malaria",
+  "text": "check_for omits measurement criteria (RR > 30, glucose, SBP < 80) that the priority rule uses, so a clinician is not prompted for them. Every check_for item is used by a rule.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible complicated (severe) malaria",
+  "text": "Page names no separate 'possible complicated malaria' diagnosis (box says 'suspected severe malaria'). It duplicates the priority rule's whole criteria list, so the two must be kept in sync. Reasonable but unrequested; Hb < 7 missing. Existence of the 'Complicated malaria' SNOMED concept not verified by me.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(none) footnote 2",
+  "text": "'Shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) has no probable Shock rule, so shock in the red box depends entirely on a worker recording 'Shock'.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible malaria",
+  "text": "Exposure is modelled only as travel history; residents of malaria areas (the page says 'in a malaria area') are not captured. The 3-month window relies on the onset of a history-of-travel situation, which only works if the worker records the travel date.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: suspected malaria with danger signs / Diagnose possible complicated (severe) malaria",
+  "text": "The danger-sign list is copied verbatim into both rules instead of the priority rule referencing (diagnosis Complicated malaria possible); correct now, but the copies can drift apart. The anuria clause relies on a back-dated onset (>= 12 hours ago), which may never be true when anuria is first recorded at triage.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent signs in suspected malaria",
+  "text": "Red-box item \"Hb < 7\" is not encoded anywhere: no measure task, no check_for item, no claim. Haemoglobin is not a routine vital, so the page is telling the health worker to measure it. No haemoglobin observable entity was found in SNOMED (so the threshold cannot be written as a measurement); the closest usable finding is (clinical_finding (snomed_concept \"Hemoglobin below reference range\" \"finding\")), confirmed with exists. Add it to this check_for. (Acute confusion is a descendant of Clouded consciousness, so it is redundant but harmless.)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible malaria",
+  "text": "The and/or shape (exposure within 3 months AND any presenting symptom) follows the page, and possible matches \"Suspect malaria\". But nausea and vomiting are conjoined (c041/c042) where the page lists them as one item of an any-of list; vomiting alone should suffice.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose possible complicated (severe) malaria",
+  "text": "Red-box item \"Hb < 7\" is not encoded anywhere: no measure task, no check_for item, no claim. Haemoglobin is not a routine vital, so the page is telling the health worker to measure it. No haemoglobin observable entity was found in SNOMED (so the threshold cannot be written as a measurement); the closest usable finding is (clinical_finding (snomed_concept \"Hemoglobin below reference range\" \"finding\")), confirmed with exists. Add it as an or-branch. Otherwise the or-list mirrors the red box item by item, \"Complicated malaria\" carries the synonym \"Severe malaria\", and possible matches \"Manage as suspected severe malaria\".",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: suspected malaria with danger signs",
+  "text": "Red-box item \"Hb < 7\" is not encoded anywhere: no measure task, no check_for item, no claim. Haemoglobin is not a routine vital, so the page is telling the health worker to measure it. No haemoglobin observable entity was found in SNOMED (so the threshold cannot be written as a measurement); the closest usable finding is (clinical_finding (snomed_concept \"Hemoglobin below reference range\" \"finding\")), confirmed with exists. A patient with suspected malaria and Hb < 7 (and no other sign) will not be flagged Urgent. Urgent is the right level for \"Give urgent attention ... refer urgently to reach referral hospital within 6 hours\". Also unencoded: footnote 2 says \"If systolic BP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely\", which by the house standard is a probable Shock diagnosis rule that this evaluation could reference; without it \"Shock\" fires only when recorded directly.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for exposure to a malaria area",
+  "text": "Trigger includes plain Headache and Cough (page: severe headache, dry cough); check_for omits muscle pain though trigger has it. Task as framed (screen for exposure) is a reasonable reading of the first box.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent signs in suspected malaria",
+  "text": "Omits Hb < 7 (element p39-733dd29c) from the danger-sign list; includes Known diabetes as a standalone item.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible complicated (severe) malaria",
+  "text": "Omits Hb < 7, which is on the page as a severe-malaria sign. Possible tier matches 'manage as suspected severe malaria'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: suspected malaria with danger signs",
+  "text": "Omits Hb < 7, so a patient with suspected malaria and Hb<7 alone is not made Urgent. Urgent level itself is justified by 'Give urgent attention'.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Check for urgent signs in suspected malaria",
+  "text": "Red-box item 'Hb < 7' is missing. The house standard requires the check_for to include every red-box item. Note that Hb has no g/dL unit in the grammar, so it may need a finding such as severe anaemia, or a remaining-questions entry.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose possible malaria",
+  "text": "'Suspect malaria' maps correctly to possible, and the structure (exposure AND any symptom, with nausea AND vomiting) follows the page. But the exposure condition uses a travel-only concept with an onset window that doesn't capture residents of malaria areas or the timing of exposure. Under-triggering is possible for people who live in endemic areas.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose possible complicated (severe) malaria",
+  "text": "'Hb < 7' from the red box is missing from the OR list. Otherwise faithful: 'suspected severe malaria' maps to possible 'Complicated malaria', and all other red-box items are present.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Urgent: suspected malaria with danger signs",
+  "text": "Urgent is correctly justified by 'Give urgent attention'. The (and possible malaria (or …)) structure matches the house standard. But 'Hb < 7' is missing from the OR list.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "trigger",
+  "text": "A: (active_condition (snomed_concept \"Fever\" \"finding\"))  vs  B: (absent)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "",
+    "reason": "The page's suspicion criterion is 'temperature ≥ 38°C', a measured value already in the trigger; it does not name a reported fever, so the extra Fever trigger is not on the page.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "The page says 'drowsy/confused' without qualification; the app records confusion either as the 'Confusion' warning sign (Acute confusion) or the AVPU 'Confused' level (Clouded consciousness), and both are readings of that word.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "both",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "The page says 'drowsy/confused' without qualification; the app records confusion either as the 'Confusion' warning sign (Acute confusion) or the AVPU 'Confused' level (Clouded consciousness), and both are readings of that word.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis",
+  "text": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Complicated malaria\" \"disorder\") possible)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Complicated malaria\" \"disorder\") possible)",
+    "reason": "The red box says 'Manage as suspected severe malaria', a 'suspect X' statement the scope turns into a possible diagnosis; SNOMED has no Severe malaria, so Complicated malaria (child of Malaria) is the closest.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))) (time_ago 12 hours))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))) (time_ago 12 hours))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Malaria\" \"disorder\") possible)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(diagnosis (snomed_concept \"Malaria\" \"disorder\") possible)",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Black urine\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Black urine\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+    "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "slug": "39-malaria",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "A: (absent)  vs  B: (absent; B used only (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\")))",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+    "reason": "Follows the 'both' decision for 'confused' so the complicated-malaria rule uses the same red-box evidence as the urgent rule.",
+    "unsettled": false
+   }
+  ]
+ }
+]

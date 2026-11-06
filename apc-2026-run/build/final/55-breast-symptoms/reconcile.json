@@ -1,0 +1,19 @@
+{"page": 55, "base": "A",
+ "decisions": [
+  {"role": "check_for / diagnosis_condition", "difference": "A: (Maternal breastfeeding finding)  vs  B: (Mother currently breastfeeding situation), in check_for and in the mastitis, engorgement and blocked-duct rules",
+   "choice": "A", "final_expr": "(clinical_finding (snomed_concept \"Maternal breastfeeding\" \"finding\"))",
+   "reason": "The page asks \"Is the patient breastfeeding?\"; Mother currently breastfeeding sits under Family history with explicit context pertaining to mother (the patient's mother), whereas Maternal breastfeeding is a breast finding about the patient.", "unsettled": false},
+  {"role": "check_for", "difference": "A: (Breast normal)  vs  B: absent",
+   "choice": "A", "final_expr": "(clinical_finding (snomed_concept \"Breast normal\" \"finding\"))",
+   "reason": "\"If breast exam normal, mastalgia likely\" needs the exam finding asked for, as evidence for the mastalgia rule.", "unsettled": false},
+  {"role": "diagnosis_condition", "difference": "A: abscess rule without Breast finding  vs  B: abscess rule with (Breast finding)",
+   "choice": "A", "final_expr": "",
+   "reason": "\"patient with breast symptoms\" is already implied by the required Breast lump and Pain of breast (both are breast findings) and is the task trigger, so B's extra condition adds nothing.", "unsettled": false},
+  {"role": "diagnosis", "difference": "A: (Engorgement of breasts finding)  vs  B: (Milk engorgement of breast disorder)",
+   "choice": "B", "final_expr": "(diagnosis (snomed_concept \"Milk engorgement of breast\" \"disorder\") probable)",
+   "reason": "\"Engorgement ... likely\" is reached only on the \"Breastfeeding and painful breast/s\" branch, so the lactational concept matches the page, as both builders did for mastitis.", "unsettled": false},
+  {"role": "diagnosis / diagnosis_condition", "difference": "A: rule \"Diagnose probable mastalgia\" (Pain of breast probable; no Maternal breastfeeding, Pain of breast, Breast normal)  vs  B: not encoded (circular concept)",
+   "choice": "A", "final_expr": "(diagnosis (snomed_concept \"Pain of breast\" \"finding\") probable)",
+   "reason": "The page says \"If breast exam normal, mastalgia likely\" and the brief makes every \"X likely\" a probable rule; but the only exact SNOMED concept for mastalgia is Pain of breast, which is also its evidence, so whether this diagnosis is useful is left to a clinician.", "unsettled": true}
+ ],
+ "notes": "Both builds passed. Base A (more complete: encodes mastalgia likely). Rule descriptions are A's. The 'Breast normal' and 'no Maternal breastfeeding' only-A diagnosis_condition entries in diff.json belong to the mastalgia rule decision; the 3 only-B breastfeeding entries belong to the breastfeeding-concept decision. Remaining questions merged from both builders."}

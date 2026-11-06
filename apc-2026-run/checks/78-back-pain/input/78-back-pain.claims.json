@@ -1,0 +1,1406 @@
+{
+ "page": 78,
+ "lisp_file": "78-back-pain.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent back pain conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-039cfbc5"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "retention"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary incontinence\" \"finding\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "incontinence"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incontinence of feces\" \"finding\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "incontinence"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of saddle area\" \"finding\"))",
+   "element_keys": [
+    "p78-caaea878"
+   ],
+   "quote": "Numbness of buttocks, perineum"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p78-caaea878"
+   ],
+   "quote": "legs"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p78-5789dfd9"
+   ],
+   "quote": "Leg weakness"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p78-5789dfd9"
+   ],
+   "quote": "difficulty walking"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p78-0cdbb4ab"
+   ],
+   "quote": "Recent injury"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "Sudden onset severe upper abdominal pain"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "element_keys": [
+    "p78-ed0cd35e"
+   ],
+   "quote": "flank pain"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "sudden, severe, one-sided pain"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Radiating pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "radiating to groin"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "confusion"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "male"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "pregnant"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "post menopause"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p78-d8f3fd1b"
+   ],
+   "quote": "Pulsatile abdominal mass"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent back pain conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-0948ac9c"
+   ],
+   "quote": "Known cancer patient"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-039cfbc5"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "element_keys": [
+    "p78-ed0cd35e"
+   ],
+   "quote": "flank pain"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "leucocytes"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "nitrites"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Check urine dipstick in back pain with flank pain",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "If blood"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "lesion/s of skin"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "genitals"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "rectum"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "mouth"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "eyes"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "weight loss"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "night sweats"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "pain progressive"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "previous cancer"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "back surgery"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "osteoporosis"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "oral steroid use"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "HIV"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "IV drug use"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\"))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "deformity"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\"))",
+   "element_keys": [
+    "p78-e0a40c28"
+   ],
+   "quote": "sleep disturbed by pain"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Check for causes of back pain not needing urgent attention",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (qualifier (snomed_concept \"Morning\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-e0a40c28"
+   ],
+   "quote": "morning stiffness lasting > 30 minutes"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-039cfbc5"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "Sudden onset severe upper abdominal pain"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "nausea"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable pancreatitis in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute pancreatitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "pancreatitis likely"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "element_keys": [
+    "p78-ed0cd35e"
+   ],
+   "quote": "flank pain"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "leucocytes"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "nitrites"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "respiratory rate > 30"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "confusion"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "male"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "pregnant"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "post menopause"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable complicated pyelonephritis in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "complicated pyelonephritis likely"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blood in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "If blood"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "sudden, severe, one-sided pain"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Radiating pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Inguinal region structure\" \"body structure\")))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "radiating to groin"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable kidney stone in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Kidney stone\" \"disorder\") probable)",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "kidney stone likely"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-039cfbc5"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulsatile mass of abdomen\" \"finding\"))",
+   "element_keys": [
+    "p78-d8f3fd1b"
+   ],
+   "quote": "Pulsatile abdominal mass"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable abdominal aortic aneurysm in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\") probable)",
+   "element_keys": [
+    "p78-d8f3fd1b"
+   ],
+   "quote": "abdominal aortic aneurysm likely"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "flank pain"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "leucocytes"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "nitrites"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Diagnose probable uncomplicated pyelonephritis in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute pyelonephritis\" \"disorder\") probable)",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "uncomplicated pyelonephritis likely"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "rash"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "lesion/s of skin"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "genitals"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "rectum"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "mouth"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "eyes"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "headache"
+  },
+  {
+   "claim_id": "c084",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "backache"
+  },
+  {
+   "claim_id": "c085",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "body pain"
+  },
+  {
+   "claim_id": "c086",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "swollen lymph nodes"
+  },
+  {
+   "claim_id": "c087",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "temperature > 38.5°C"
+  },
+  {
+   "claim_id": "c088",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "fatigue"
+  },
+  {
+   "claim_id": "c089",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "sore throat"
+  },
+  {
+   "claim_id": "c090",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "nasal congestion"
+  },
+  {
+   "claim_id": "c091",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c092",
+   "rule": "Diagnose possible mpox in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "consider mpox"
+  },
+  {
+   "claim_id": "c093",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c094",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c095",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "weight loss"
+  },
+  {
+   "claim_id": "c096",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "night sweats"
+  },
+  {
+   "claim_id": "c097",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c098",
+   "rule": "Diagnose possible TB in back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p78-db095b14"
+   ],
+   "quote": "Check for TB"
+  },
+  {
+   "claim_id": "c099",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c100",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "cough"
+  },
+  {
+   "claim_id": "c101",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "weight loss"
+  },
+  {
+   "claim_id": "c102",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "night sweats"
+  },
+  {
+   "claim_id": "c103",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-3be01c6f"
+   ],
+   "quote": "fever"
+  },
+  {
+   "claim_id": "c104",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Progressive\" \"qualifier value\"))))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "pain progressive"
+  },
+  {
+   "claim_id": "c105",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "for > 6 weeks"
+  },
+  {
+   "claim_id": "c106",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of malignant neoplasm\" \"situation\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "previous cancer"
+  },
+  {
+   "claim_id": "c107",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of spinal surgery\" \"situation\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "back surgery"
+  },
+  {
+   "claim_id": "c108",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Osteoporosis\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "osteoporosis"
+  },
+  {
+   "claim_id": "c109",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Use of steroids\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "oral steroid use"
+  },
+  {
+   "claim_id": "c110",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "HIV"
+  },
+  {
+   "claim_id": "c111",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intravenous drug user\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "IV drug use"
+  },
+  {
+   "claim_id": "c112",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity of spine\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-6d6f7cfc"
+   ],
+   "quote": "deformity"
+  },
+  {
+   "claim_id": "c113",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sleep pattern disturbance\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-e0a40c28"
+   ],
+   "quote": "sleep disturbed by pain"
+  },
+  {
+   "claim_id": "c114",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff back\" \"finding\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Morning\" \"qualifier value\"))))",
+   "element_keys": [
+    "p78-e0a40c28"
+   ],
+   "quote": "morning stiffness lasting > 30 minutes"
+  },
+  {
+   "claim_id": "c115",
+   "rule": "Diagnose probable mechanical back pain",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Mechanical low back pain\" \"finding\") probable)",
+   "element_keys": [
+    "p78-7ee13543"
+   ],
+   "quote": "Mechanical back pain likely"
+  },
+  {
+   "claim_id": "c116",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p78-039cfbc5"
+   ],
+   "quote": "back pain"
+  },
+  {
+   "claim_id": "c117",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retention of urine\" \"disorder\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "retention"
+  },
+  {
+   "claim_id": "c118",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urinary incontinence\" \"finding\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "incontinence"
+  },
+  {
+   "claim_id": "c119",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incontinence of feces\" \"finding\"))",
+   "element_keys": [
+    "p78-40365d4f"
+   ],
+   "quote": "incontinence"
+  },
+  {
+   "claim_id": "c120",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of saddle area\" \"finding\"))",
+   "element_keys": [
+    "p78-caaea878"
+   ],
+   "quote": "Numbness of buttocks, perineum"
+  },
+  {
+   "claim_id": "c121",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p78-caaea878"
+   ],
+   "quote": "legs"
+  },
+  {
+   "claim_id": "c122",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))",
+   "element_keys": [
+    "p78-5789dfd9"
+   ],
+   "quote": "Leg weakness"
+  },
+  {
+   "claim_id": "c123",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))",
+   "element_keys": [
+    "p78-5789dfd9"
+   ],
+   "quote": "difficulty walking"
+  },
+  {
+   "claim_id": "c124",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p78-0cdbb4ab"
+   ],
+   "quote": "Recent injury"
+  },
+  {
+   "claim_id": "c125",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Acute pancreatitis\" \"disorder\"))",
+   "element_keys": [
+    "p78-c5b771e6"
+   ],
+   "quote": "pancreatitis likely"
+  },
+  {
+   "claim_id": "c126",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flank pain\" \"finding\"))",
+   "element_keys": [
+    "p78-ed0cd35e"
+   ],
+   "quote": "flank pain"
+  },
+  {
+   "claim_id": "c127",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leukocytes in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "leucocytes"
+  },
+  {
+   "claim_id": "c128",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nitrite detected in urine\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "nitrites"
+  },
+  {
+   "claim_id": "c129",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "vomiting"
+  },
+  {
+   "claim_id": "c130",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "SBP < 80"
+  },
+  {
+   "claim_id": "c131",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "pulse ≥ 100"
+  },
+  {
+   "claim_id": "c132",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "respiratory rate > 30"
+  },
+  {
+   "claim_id": "c133",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p78-66beb9a8"
+   ],
+   "quote": "confusion"
+  },
+  {
+   "claim_id": "c134",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "diabetes"
+  },
+  {
+   "claim_id": "c135",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "male"
+  },
+  {
+   "claim_id": "c136",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "pregnant"
+  },
+  {
+   "claim_id": "c137",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))",
+   "element_keys": [
+    "p78-011e92d7"
+   ],
+   "quote": "post menopause"
+  },
+  {
+   "claim_id": "c138",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Kidney stone\" \"disorder\"))",
+   "element_keys": [
+    "p78-4312454b"
+   ],
+   "quote": "kidney stone likely"
+  },
+  {
+   "claim_id": "c139",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Abdominal aortic aneurysm\" \"disorder\"))",
+   "element_keys": [
+    "p78-d8f3fd1b"
+   ],
+   "quote": "abdominal aortic aneurysm likely"
+  },
+  {
+   "claim_id": "c140",
+   "rule": "Urgent: back pain with red box features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p78-0948ac9c"
+   ],
+   "quote": "Known cancer patient"
+  }
+ ]
+}

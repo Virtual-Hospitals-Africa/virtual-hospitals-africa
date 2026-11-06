@@ -1,0 +1,726 @@
+{
+ "edition": "2026",
+ "page": 27,
+ "lisp_file": "27-poisoning-overdose.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "element_keys": [
+    "p27-27a96e18"
+   ],
+   "quote": "suspected poisoning/overdose",
+   "confidence": "high",
+   "note": "Poisoning is the recorded warning sign; Overdose (disorder) is a descendant of Poisoning, so overdose records also match."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "element_keys": [
+    "p27-6cac9bb1"
+   ],
+   "quote": "suicide",
+   "confidence": "high",
+   "note": "Attempted suicide = Suicide attempt (event); \"Attempted suicide\" does not exist."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p27-6cac9bb1"
+   ],
+   "quote": "self-harm",
+   "confidence": "medium",
+   "note": "Attempted self-harm; the event concept covers self-harm acts; no separate \"attempted\" concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p27-d51fb97a"
+   ],
+   "quote": "Decreased level of consciousness",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p27-2483ce63"
+   ],
+   "quote": "Having/just had a seizure",
+   "confidence": "high",
+   "note": "\"Just had\" not separately expressible; a recorded seizure in this encounter counts."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "element_keys": [
+    "p27-54ae997c"
+   ],
+   "quote": "Pupils dilated",
+   "confidence": "high",
+   "note": "Exact concept (Mydriasis absent as FSN)."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "element_keys": [
+    "p27-54ae997c"
+   ],
+   "quote": "pinpoint",
+   "confidence": "high",
+   "note": "\"Pin point pupils\" (finding) is a child of Constricted pupil and matches the page word."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "Confused",
+   "confidence": "medium",
+   "note": "Acute confusion chosen over Clouded consciousness; no plain \"Confusion\" finding."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "VHA vocabulary term for agitation."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "hallucinating",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "element_keys": [
+    "p27-db5e2bec"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "Read as muscle weakness (paired with muscle twitching); Asthenia (general weakness) is the alternative."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p27-db5e2bec"
+   ],
+   "quote": "muscle twitching",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "element_keys": [
+    "p27-47d51c84"
+   ],
+   "quote": "Excessive drooling",
+   "confidence": "medium",
+   "note": "Dribbling from mouth has synonym \"Drooling\"; no \"Drooling\" FSN. \"Excessive\" not expressed separately; Excessive salivation (disorder) was the alternative."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "element_keys": [
+    "p27-47d51c84"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": "Excessive sweating matches \"excessive ... sweating\"."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p27-756940e0"
+   ],
+   "quote": "Persistent vomiting",
+   "confidence": "high",
+   "note": "Exact concept (disorder)."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slow respiration\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "slow/shallow breathing",
+   "confidence": "high",
+   "note": "Slow breathing = Slow respiration (Bradypnea FSN absent)."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shallow breathing\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "slow/shallow breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent poisoning/overdose signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p27-c310d871"
+   ],
+   "quote": "Shock",
+   "confidence": "medium",
+   "note": "Shock half of \"Shock/systolic BP < 80\", encoded as an or with SBP < 80 per the all-pages decision; footnote 1 shock criteria not imported."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "element_keys": [
+    "p27-27a96e18"
+   ],
+   "quote": "suspected poisoning/overdose",
+   "confidence": "high",
+   "note": "Organophosphate logic sits inside the poisoning red box, so suspected poisoning is required alongside the features."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "pinpoint pupils",
+   "confidence": "medium",
+   "note": "Exact concept. Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "excessive drooling",
+   "confidence": "medium",
+   "note": "Drooling synonym; see check_for note."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "sweating",
+   "confidence": "medium",
+   "note": "Excessive drooling/sweating. Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\"))",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "vomiting/diarrhoea",
+   "confidence": "medium",
+   "note": "Common symptom form; any vomiting, not only persistent. Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diarrhea\" \"finding\"))",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "vomiting/diarrhoea",
+   "confidence": "medium",
+   "note": "Common symptom form. Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 60)",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "pulse < 60",
+   "confidence": "medium",
+   "note": "Strict < 60. Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "medium",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention). Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "medium",
+   "note": "BP < 90/60 as systolic < 90 or diastolic < 60 (Will convention). Any single listed feature counts (or-reading of the list)."
+  },
+  {
+   "rule": "Diagnose probable organophosphate poisoning",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Organophosphate poisoning\" \"disorder\") probable)",
+   "element_keys": [
+    "p27-2a1c7693"
+   ],
+   "quote": "organophosphate poisoning likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable. Features joined by or (page lists them without and/or); see judgment calls."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poisoning\" \"disorder\"))",
+   "element_keys": [
+    "p27-27a96e18"
+   ],
+   "quote": "suspected poisoning/overdose",
+   "confidence": "high",
+   "note": "Poisoning is the recorded warning sign; Overdose (disorder) is a descendant of Poisoning, so overdose records also match."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))",
+   "element_keys": [
+    "p27-6cac9bb1"
+   ],
+   "quote": "suicide",
+   "confidence": "high",
+   "note": "Attempted suicide = Suicide attempt (event); \"Attempted suicide\" does not exist."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))",
+   "element_keys": [
+    "p27-6cac9bb1"
+   ],
+   "quote": "self-harm",
+   "confidence": "medium",
+   "note": "Attempted self-harm; the event concept covers self-harm acts; no separate \"attempted\" concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p27-d51fb97a"
+   ],
+   "quote": "Decreased level of consciousness",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "element_keys": [
+    "p27-2483ce63"
+   ],
+   "quote": "Having/just had a seizure",
+   "confidence": "high",
+   "note": "\"Just had\" not separately expressible; a recorded seizure in this encounter counts."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dilated pupil\" \"finding\"))",
+   "element_keys": [
+    "p27-54ae997c"
+   ],
+   "quote": "Pupils dilated",
+   "confidence": "high",
+   "note": "Exact concept (Mydriasis absent as FSN)."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "element_keys": [
+    "p27-54ae997c"
+   ],
+   "quote": "pinpoint",
+   "confidence": "high",
+   "note": "\"Pin point pupils\" (finding) is a child of Constricted pupil and matches the page word."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "Confused",
+   "confidence": "medium",
+   "note": "Acute confusion chosen over Clouded consciousness; no plain \"Confusion\" finding."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "agitated",
+   "confidence": "high",
+   "note": "VHA vocabulary term for agitation."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hallucinations\" \"finding\"))",
+   "element_keys": [
+    "p27-2ff7a448"
+   ],
+   "quote": "hallucinating",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness\" \"finding\"))",
+   "element_keys": [
+    "p27-db5e2bec"
+   ],
+   "quote": "Weakness",
+   "confidence": "medium",
+   "note": "Read as muscle weakness (paired with muscle twitching); Asthenia (general weakness) is the alternative."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle twitch\" \"finding\"))",
+   "element_keys": [
+    "p27-db5e2bec"
+   ],
+   "quote": "muscle twitching",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "element_keys": [
+    "p27-47d51c84"
+   ],
+   "quote": "Excessive drooling",
+   "confidence": "medium",
+   "note": "Dribbling from mouth has synonym \"Drooling\"; no \"Drooling\" FSN. \"Excessive\" not expressed separately; Excessive salivation (disorder) was the alternative."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Excessive sweating\" \"finding\"))",
+   "element_keys": [
+    "p27-47d51c84"
+   ],
+   "quote": "sweating",
+   "confidence": "high",
+   "note": "Excessive sweating matches \"excessive ... sweating\"."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p27-756940e0"
+   ],
+   "quote": "Persistent vomiting",
+   "confidence": "high",
+   "note": "Exact concept (disorder)."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "Difficulty breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "tight chest",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Slow respiration\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "slow/shallow breathing",
+   "confidence": "high",
+   "note": "Slow breathing = Slow respiration (Bradypnea FSN absent)."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shallow breathing\" \"finding\"))",
+   "element_keys": [
+    "p27-507118b0"
+   ],
+   "quote": "slow/shallow breathing",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 12)",
+   "element_keys": [
+    "p27-0d14028b"
+   ],
+   "quote": "Respiratory rate < 12",
+   "confidence": "high",
+   "note": "Strict < 12 bpm as written."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p27-c310d871"
+   ],
+   "quote": "Shock",
+   "confidence": "medium",
+   "note": "Shock half of \"Shock/systolic BP < 80\", encoded as an or with SBP < 80 per the all-pages decision; footnote 1 shock criteria not imported."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p27-c310d871"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": "Strict < 80 as written."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 60)",
+   "element_keys": [
+    "p27-e254c2f0"
+   ],
+   "quote": "Pulse < 60",
+   "confidence": "high",
+   "note": "Strict < 60."
+  },
+  {
+   "rule": "Urgent: suspected poisoning/overdose with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+   "element_keys": [
+    "p27-e254c2f0"
+   ],
+   "quote": ">100",
+   "confidence": "high",
+   "note": "Strict > 100."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p27-88a5552a",
+   "element_id": "p27-rb1-e14",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Management (treatment/procedure/referral); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p27-340616f7",
+   "element_id": "p27-rb1-e15",
+   "text": "First assess and manage airway, breathing, circulation and level of consciousness 16. If oxygen saturation < 94%, give oxygen via face mask or nasal cannula to ",
+   "reason_category": "management_step",
+   "reason": "Management (treatment/procedure/referral); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p27-0f6836c0",
+   "element_id": "p27-rb1-e16",
+   "text": "If shock1/systolic BP < 80, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "reason_category": "management_step",
+   "reason": "Fluid management for shock/SBP < 80; the trigger itself is already in the priority rule."
+  },
+  {
+   "element_key": "p27-d484415a",
+   "element_id": "p27-rb1-e17",
+   "text": "If poison on skin (e.g. pesticides):",
+   "reason_category": "management_step",
+   "reason": "Decontamination for poison on skin; \"poison on skin\" is a management condition, not a triage criterion."
+  },
+  {
+   "element_key": "p27-4bab9192",
+   "element_id": "p27-rb1-e18",
+   "text": "Health worker to wear gloves, apron and surgical mask. If health worker/caregiver has any skin contact or contact with bodily fluids, wash off immediately.",
+   "reason_category": "management_step",
+   "reason": "Management (treatment/procedure/referral); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p27-2d35b113",
+   "element_id": "p27-rb1-e19",
+   "text": "Remove patient's clothes and wash patient with soap and water after emergency care given.",
+   "reason_category": "management_step",
+   "reason": "Management (treatment/procedure/referral); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p27-2c720cc2",
+   "element_id": "p27-rb1-e20",
+   "text": "If poison in eye/s, immediately flush eye/s under running water or sodium chloride 0.9% for at least 20 minutes.",
+   "reason_category": "management_step",
+   "reason": "Eye irrigation for poison in eye."
+  },
+  {
+   "element_key": "p27-9163aefa",
+   "element_id": "p27-rb1-e21",
+   "text": "Ask about amount, type and time of substance ingestion/exposure. Examine tablets, packets/containers of suspected substance. If any of the following oral prepar",
+   "reason_category": "management_step",
+   "reason": "History taking and activated charcoal criteria (toxic dose of listed agents in past hour) are management; toxic dose is not recordable."
+  },
+  {
+   "element_key": "p27-c1cdf7c4",
+   "element_id": "p27-rb1-e23",
+   "text": "If shallow breathing/respiratory rate < 12 and opioid3 overdose suspected, connect bag-valve-mask to oxygen and slowly deliver each breath with patient. Also gi",
+   "reason_category": "management_step",
+   "reason": "Bag-valve-mask and naloxone. \"Opioid overdose suspected\" is a precondition the page gives no evidence for, and no \"Opioid overdose\" FSN exists; shallow breathing / RR < 12 are encoded in the priority rule."
+  },
+  {
+   "element_key": "p27-50e63b39",
+   "element_id": "p27-rb1-e24",
+   "text": "If overdose of > 10g or 200mg/kg of paracetamol or symptomatic and referral delay, give N-acetylcysteine 140mg/kg orally, then 70mg/kg 4 hourly. Avoid giving N-",
+   "reason_category": "management_step",
+   "reason": "N-acetylcysteine for paracetamol overdose; dose thresholds (10g, 200mg/kg) not representable and management only."
+  },
+  {
+   "element_key": "p27-1cf83c31",
+   "element_id": "p27-rb1-e25",
+   "text": "If exposed to carbon monoxide (exhaust fumes), give 100% face mask oxygen.",
+   "reason_category": "management_step",
+   "reason": "Oxygen for carbon monoxide exposure."
+  },
+  {
+   "element_key": "p27-172cf4c6",
+   "element_id": "p27-rb1-e26",
+   "text": "If no response, or overdose/poisoning with other or unknown substance, discuss with specialist or Poisons Information Helpline 200. Notify6 if pesticide, mercur",
+   "reason_category": "management_step",
+   "reason": "Discuss with specialist/PIH and notification."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Organophosphate feature list",
+   "decision": "Read \"If pinpoint pupils, excessive drooling/sweating, excessive secretions, vomiting/diarrhoea, pulse < 60, BP < 90/60\" as any one feature (or), together with suspected poisoning.",
+   "alternatives": "All features required (and), or at least two (any2, not on the page).",
+   "confidence": "low"
+  },
+  {
+   "topic": "Excessive secretions",
+   "decision": "Not encoded: no SNOMED concept for generic excessive secretions.",
+   "alternatives": "Excessive bronchial secretion (finding) - more specific than the page.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Opioid overdose suspected",
+   "decision": "No possible-opioid-overdose rule: the page gives no evidence for the suspicion, and no Opioid overdose FSN exists.",
+   "alternatives": "possible \"Morphinan opioid overdose\" from shallow breathing/RR < 12, which would invert the page logic.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock footnote 1",
+   "decision": "Shock/SBP < 80 encoded as or of Shock (disorder) and SBP < 80; footnote 1 \"shock likely\" criteria not built into a shock rule (all-pages decision: no shared shock definition).",
+   "alternatives": "probable Shock rule from footnote 1.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the red box says; the Poisoning warning sign elsewhere carries Very urgent on its own.",
+   "alternatives": "Very urgent.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Excessive drooling",
+   "decision": "Dribbling from mouth (synonym Drooling).",
+   "alternatives": "Excessive salivation (disorder).",
+   "confidence": "medium"
+  }
+ ]
+}

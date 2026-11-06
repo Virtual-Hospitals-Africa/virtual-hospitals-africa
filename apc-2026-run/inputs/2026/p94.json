@@ -1,0 +1,1156 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 94,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    132.6,
+    263.9,
+    254.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p94-rb1-e01",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer urgently the patient with jaundice and any of:",
+   "bbox": [
+    47.6,
+    137.8,
+    251.9,
+    148.8
+   ],
+   "key": "p94-89a52e77"
+  },
+  {
+   "id": "p94-rb1-e02",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Temperature ≥ 38°C",
+   "bbox": [
+    62.7,
+    148.7,
+    144.3,
+    159.5
+   ],
+   "key": "p94-d3c40686"
+  },
+  {
+   "id": "p94-rb1-e03",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Hb < 12 (woman) or < 13 (man)",
+   "bbox": [
+    62.7,
+    158.7,
+    187.7,
+    169.5
+   ],
+   "key": "p94-d09dc9d7"
+  },
+  {
+   "id": "p94-rb1-e04",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/BP < 80",
+   "bbox": [
+    62.7,
+    168.7,
+    125.9,
+    179.5
+   ],
+   "key": "p94-72fa29d2"
+  },
+  {
+   "id": "p94-rb1-e05",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Severe abdominal pain",
+   "bbox": [
+    62.7,
+    178.7,
+    156.2,
+    189.5
+   ],
+   "key": "p94-e93a548d"
+  },
+  {
+   "id": "p94-rb1-e06",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Drowsy or confused",
+   "bbox": [
+    62.7,
+    188.7,
+    144.3,
+    199.5
+   ],
+   "key": "p94-63218814"
+  },
+  {
+   "id": "p94-rb1-e07",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Easy bruising or bleeding",
+   "bbox": [
+    62.7,
+    198.7,
+    165.0,
+    209.5
+   ],
+   "key": "p94-7bac9aff"
+  },
+  {
+   "id": "p94-rb1-e08",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Pregnant",
+   "bbox": [
+    62.7,
+    208.7,
+    103.2,
+    219.5
+   ],
+   "key": "p94-8e75a1e3"
+  },
+  {
+   "id": "p94-rb1-e09",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Alcohol dependent 165 or recent alcohol binge (≥ 4 drinks2/session)",
+   "bbox": [
+    62.7,
+    218.7,
+    205.3,
+    239.5
+   ],
+   "key": "p94-70e9a876"
+  },
+  {
+   "id": "p94-rb1-e10",
+   "page": 94,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Refer urgently the patient with jaundice and any of:",
+   "section_y": 137.8,
+   "indent": 1,
+   "parent": null,
+   "text": "Using any medication3 or illegal drugs",
+   "bbox": [
+    62.7,
+    238.7,
+    213.1,
+    249.5
+   ],
+   "key": "p94-bd06c9ef"
+  },
+  {
+   "id": "p94-out-e01",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "CHANGES IN SKIN COLOUR",
+   "bbox": [
+    311.4,
+    48.7,
+    530.5,
+    71.0
+   ],
+   "key": "p94-5ed643dc"
+  },
+  {
+   "id": "p94-out-e02",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If diagnosis uncertain, discuss/refer.",
+   "bbox": [
+    351.6,
+    515.4,
+    490.3,
+    526.4
+   ],
+   "key": "p94-48a2d11e"
+  },
+  {
+   "id": "p94-out-e03",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is the skin yellow, too dark, too light or absent of colour?",
+   "bbox": [
+    317.8,
+    90.4,
+    524.1,
+    100.6
+   ],
+   "key": "p94-6aa1434b"
+  },
+  {
+   "id": "p94-out-e04",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yellow skin: jaundice likely Dark patches",
+   "bbox": [
+    100.3,
+    112.2,
+    439.7,
+    123.2
+   ],
+   "key": "p94-354fdabf"
+  },
+  {
+   "id": "p94-out-e05",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Where are patches on body?",
+   "bbox": [
+    363.5,
+    136.3,
+    468.1,
+    146.5
+   ],
+   "key": "p94-3a757725"
+  },
+  {
+   "id": "p94-out-e06",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Lower legs",
+   "bbox": [
+    306.7,
+    159.7,
+    346.1,
+    169.9
+   ],
+   "key": "p94-f5a9e389"
+  },
+  {
+   "id": "p94-out-e07",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Red-brown discolouration.",
+   "bbox": [
+    279.9,
+    183.0,
+    374.8,
+    193.2
+   ],
+   "key": "p94-eb1e00d9"
+  },
+  {
+   "id": "p94-out-e08",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "May have breaks in skin or",
+   "bbox": [
+    280.7,
+    193.0,
+    374.0,
+    203.2
+   ],
+   "key": "p94-522be670"
+  },
+  {
+   "id": "p94-out-e09",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ulcers, spidery veins.",
+   "bbox": [
+    290.9,
+    203.0,
+    361.8,
+    213.2
+   ],
+   "key": "p94-326fce77"
+  },
+  {
+   "id": "p94-out-e10",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© BMJ Best Practice",
+   "bbox": [
+    325.2,
+    326.0,
+    373.1,
+    333.4
+   ],
+   "key": "p94-3e5dce58"
+  },
+  {
+   "id": "p94-out-e11",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Flat, brown patches on",
+   "bbox": [
+    401.7,
+    183.0,
+    487.3,
+    193.2
+   ],
+   "key": "p94-84170a8e"
+  },
+  {
+   "id": "p94-out-e12",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "cheeks, forehead and",
+   "bbox": [
+    404.6,
+    193.0,
+    484.4,
+    203.2
+   ],
+   "key": "p94-bfd2dde3"
+  },
+  {
+   "id": "p94-out-e13",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "upper lip",
+   "bbox": [
+    426.9,
+    203.0,
+    460.1,
+    213.2
+   ],
+   "key": "p94-020ba336"
+  },
+  {
+   "id": "p94-out-e14",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    425.6,
+    285.8,
+    490.3,
+    293.1
+   ],
+   "key": "p94-c61d62e9"
+  },
+  {
+   "id": "p94-out-e15",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Light or dark patches with fine scale. Usually on trunk,",
+   "bbox": [
+    514.1,
+    183.0,
+    612.5,
+    203.2
+   ],
+   "key": "p94-654874ca"
+  },
+  {
+   "id": "p94-out-e16",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "neck and upper arms.",
+   "bbox": [
+    523.6,
+    203.0,
+    601.1,
+    213.2
+   ],
+   "key": "p94-8dc68478"
+  },
+  {
+   "id": "p94-out-e17",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    546.2,
+    293.5,
+    610.9,
+    300.9
+   ],
+   "key": "p94-8d0a87f7"
+  },
+  {
+   "id": "p94-out-e18",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Face",
+   "bbox": [
+    435.3,
+    159.7,
+    451.7,
+    169.9
+   ],
+   "key": "p94-5203c82c"
+  },
+  {
+   "id": "p94-out-e19",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Melasma likely • Hormones and sunlight will worsen melasma:",
+   "bbox": [
+    392.7,
+    306.1,
+    487.1,
+    337.1
+   ],
+   "key": "p94-77029585"
+  },
+  {
+   "id": "p94-out-e20",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Advise to apply",
+   "bbox": [
+    398.4,
+    336.9,
+    461.1,
+    347.1
+   ],
+   "key": "p94-727edd75"
+  },
+  {
+   "id": "p94-out-e21",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "sunscreen daily and avoid sun exposure. - Avoid oral contraceptive,",
+   "bbox": [
+    398.4,
+    346.9,
+    496.0,
+    377.1
+   ],
+   "key": "p94-2df5dbac"
+  },
+  {
+   "id": "p94-out-e22",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "use a different method 170. • Advise patient: - If pregnant, may take",
+   "bbox": [
+    392.7,
+    376.9,
+    489.8,
+    417.1
+   ],
+   "key": "p94-76fcc69b"
+  },
+  {
+   "id": "p94-out-e23",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "up to 1 year after pregnancy to resolve. - Often difficult to",
+   "bbox": [
+    398.4,
+    416.9,
+    482.7,
+    447.1
+   ],
+   "key": "p94-a22f44e0"
+  },
+  {
+   "id": "p94-out-e24",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "treat and may never completely resolve. • If not responding to above and intolerable, refer.",
+   "bbox": [
+    392.7,
+    446.9,
+    482.1,
+    497.1
+   ],
+   "key": "p94-79451a5e"
+  },
+  {
+   "id": "p94-out-e25",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Light patches",
+   "bbox": [
+    577.5,
+    113.0,
+    606.3,
+    133.2
+   ],
+   "key": "p94-8490ac39"
+  },
+  {
+   "id": "p94-out-e26",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patchy",
+   "bbox": [
+    654.2,
+    159.7,
+    678.4,
+    169.9
+   ],
+   "key": "p94-0da30557"
+  },
+  {
+   "id": "p94-out-e27",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Vitiligo likely • Advise to apply sunscreen daily at least 15 minutes before going into sun. • Some sun- exposure is beneficial, but avoid excessive exposure. • Refer to dermatologist.",
+   "bbox": [
+    630.7,
+    273.1,
+    702.4,
+    414.1
+   ],
+   "key": "p94-072c4939"
+  },
+  {
+   "id": "p94-out-e28",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Tinea versicolor likely • Advise to wear cool clothing in hot weather to reduce perspiration. • Apply selenium sulphide 2.5% suspension. Lather on affected areas. Apply once weekly for 3 weeks: leave on overnight then wash off next day. • May take months for colour to return. Absence of scale indicates adequate treatment. • Recurrence is common. Re-treatment may be needed.",
+   "bbox": [
+    512.7,
+    313.8,
+    613.6,
+    494.8
+   ],
+   "key": "p94-f03fdeae"
+  },
+  {
+   "id": "p94-out-e29",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Generalised",
+   "bbox": [
+    739.8,
+    159.7,
+    783.0,
+    169.9
+   ],
+   "key": "p94-e23e3d57"
+  },
+  {
+   "id": "p94-out-e30",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Present from birth.",
+   "bbox": [
+    727.4,
+    183.0,
+    797.4,
+    193.2
+   ],
+   "key": "p94-5b1eaeea"
+  },
+  {
+   "id": "p94-out-e31",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Involves skin, hair",
+   "bbox": [
+    729.5,
+    193.0,
+    795.3,
+    203.2
+   ],
+   "key": "p94-be74604f"
+  },
+  {
+   "id": "p94-out-e32",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "and eyes.",
+   "bbox": [
+    744.4,
+    203.0,
+    778.4,
+    213.2
+   ],
+   "key": "p94-595dfafd"
+  },
+  {
+   "id": "p94-out-e33",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Albinism likely • Advise to avoid sunburn:",
+   "bbox": [
+    720.6,
+    225.5,
+    789.2,
+    256.5
+   ],
+   "key": "p94-212255cd"
+  },
+  {
+   "id": "p94-out-e34",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Avoid sun",
+   "bbox": [
+    726.3,
+    256.3,
+    769.0,
+    266.5
+   ],
+   "key": "p94-3e9ebce1"
+  },
+  {
+   "id": "p94-out-e35",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "exposure, especially between 10am and 3pm. - Apply zinc",
+   "bbox": [
+    726.3,
+    266.3,
+    804.2,
+    306.5
+   ],
+   "key": "p94-9bca0f03"
+  },
+  {
+   "id": "p94-out-e36",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "oxide ointment or sunscreen daily at least 15 minutes before going into sun. Reapply 2 hourly if in the sun. - Use sun hat and",
+   "bbox": [
+    726.3,
+    305.7,
+    802.9,
+    386.5
+   ],
+   "key": "p94-10614bb3"
+  },
+  {
+   "id": "p94-out-e37",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "sunglasses and wear long-sleeves. • Refer to dermatologist and ophthalmologist. • If any skin lesions develop, especially in sun-exposed areas, refer to exclude skin cancer.",
+   "bbox": [
+    720.6,
+    386.3,
+    799.3,
+    486.5
+   ],
+   "key": "p94-574e5e5b"
+  },
+  {
+   "id": "p94-out-e38",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    637.0,
+    252.8,
+    701.7,
+    260.1
+   ],
+   "key": "p94-630e1598"
+  },
+  {
+   "id": "p94-out-e39",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Absence of colour",
+   "bbox": [
+    683.0,
+    113.0,
+    749.6,
+    123.2
+   ],
+   "key": "p94-922901e2"
+  },
+  {
+   "id": "p94-out-e40",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is absence of colour patchy or generalised?",
+   "bbox": [
+    637.3,
+    136.3,
+    795.2,
+    146.5
+   ],
+   "key": "p94-d82e66fb"
+  },
+  {
+   "id": "p94-out-e41",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Trunk",
+   "bbox": [
+    523.1,
+    159.7,
+    543.3,
+    169.9
+   ],
+   "key": "p94-53d45d2b"
+  },
+  {
+   "id": "p94-out-e42",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check Hepatitis A IgM result",
+   "bbox": [
+    98.2,
+    351.0,
+    201.2,
+    361.2
+   ],
+   "key": "p94-0ddbb456"
+  },
+  {
+   "id": "p94-out-e43",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Send blood for ALT, ALP, total bilirubin, full blood count, INR, hepatitis A IgM, HBsAg. • Advise to return if worsens.",
+   "bbox": [
+    59.5,
+    265.0,
+    221.0,
+    295.2
+   ],
+   "key": "p94-a1161d6b"
+  },
+  {
+   "id": "p94-out-e44",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Venous stasis likely • Encourage exercise. • Advise elevating leg when possible and to avoid prolonged standing. • Apply compression bandage from foot to knee. • Assess CVD risk 142. • Give foot care advice 81. • If ulcer 90.",
+   "bbox": [
+    278.3,
+    346.4,
+    367.6,
+    477.4
+   ],
+   "key": "p94-342169a5"
+  },
+  {
+   "id": "p94-out-e45",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Hepatitis A IgM positive Hepatitis",
+   "bbox": [
+    75.6,
+    374.3,
+    256.5,
+    384.5
+   ],
+   "key": "p94-7d40901f"
+  },
+  {
+   "id": "p94-out-e46",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "A IgM negative",
+   "bbox": [
+    222.3,
+    384.3,
+    256.1,
+    404.5
+   ],
+   "key": "p94-ce6b1328"
+  },
+  {
+   "id": "p94-out-e47",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Check HBsAg",
+   "bbox": [
+    226.3,
+    417.7,
+    252.2,
+    437.9
+   ],
+   "key": "p94-d52eec86"
+  },
+  {
+   "id": "p94-out-e48",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "result. If positive,",
+   "bbox": [
+    219.8,
+    437.7,
+    258.6,
+    457.9
+   ],
+   "key": "p94-162a2ed7"
+  },
+  {
+   "id": "p94-out-e49",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "refer.",
+   "bbox": [
+    229.4,
+    457.7,
+    249.1,
+    467.9
+   ],
+   "key": "p94-c0427a0c"
+  },
+  {
+   "id": "p94-out-e50",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient has acute hepatitis A infection • Notify4 within 7 days. • Educate that infection will resolve by itself and no specific treatment needed. Advise strict handwashing, especially before handling food and after using toilet. Avoid alcohol and paracetamol whilst ill. • Check HBsAg result. If positive, refer. • If nausea/vomiting and unable to tolerate fluids, refer.",
+   "bbox": [
+    39.7,
+    396.7,
+    200.3,
+    497.9
+   ],
+   "key": "p94-70ba91e8"
+  },
+  {
+   "id": "p94-out-e51",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review with results within 2 days: Refer if ALT ≥ 200, INR ≥ 1.5, ALP raised out of proportion to",
+   "bbox": [
+    41.1,
+    306.9,
+    260.3,
+    327.9
+   ],
+   "key": "p94-45a78492"
+  },
+  {
+   "id": "p94-out-e52",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ALT, Hb < 12 (woman), Hb < 13 (man) or plts < 150.",
+   "bbox": [
+    56.1,
+    327.7,
+    245.3,
+    337.9
+   ],
+   "key": "p94-fcc7edff"
+  },
+  {
+   "id": "p94-out-e53",
+   "page": 94,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 3If on atazanavir 131. 4Notify via NMC App (download from NICD website/app store) or www.nicd.ac.za/nmc-overview/notification-process.",
+   "bbox": [
+    34.3,
+    535.1,
+    794.4,
+    552.1
+   ],
+   "key": "p94-d3625fac"
+  }
+ ]
+}

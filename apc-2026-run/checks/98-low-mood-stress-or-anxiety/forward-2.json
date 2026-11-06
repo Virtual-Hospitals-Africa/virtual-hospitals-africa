@@ -1,0 +1,125 @@
+{
+ "page": 98,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p98-b70e7b19",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Urgent trigger is suicidal thoughts/behaviour alone; rule additionally requires low mood/stress/anxiety"
+   ],
+   "problem": "The red box says give urgent attention to the patient with suicidal thoughts or behaviour. The priority rule is an AND with depressed mood/stress/anxiety, so a patient recorded only with suicidal thoughts gets no Urgent. Contexts differ on whether that is wanted, but the box itself carries no such condition. The suicide concepts are right.",
+   "evidence": [
+    "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour :: (and (or Depressed mood/Stress/Anxiety) (or Suicidal thoughts/Suicidal behavior))",
+    "Check for urgent low mood, stress or anxiety conditions :: check_for Suicidal thoughts, Suicidal behavior"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p98-eb4428e6",
+   "scope": "in_scope",
+   "scope_reason": "part: generalised anxiety disorder bullet",
+   "verdict": "partial",
+   "parts_missing": [
+    "'impaired function' alternative: page says impaired function/distress (or), rule requires Distress only",
+    "Distress concept is generic; 'Mental distress' may be closer"
+   ],
+   "problem": "Excessive worry >=6 months and >=3 of 6 symptoms (tension, restlessness, irritability, sleep, concentration, tiredness) is encoded correctly as an exhaustive ordered-combination or/any2. Probable rule type is right. Fatigue for tiredness acceptable.",
+   "evidence": [
+    "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page) :: (>= (onset (clinical_finding (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))) (time_ago 6 months)) + (clinical_finding (snomed_concept \"Distress\" \"finding\")) + 4-branch or of Muscle tension/Restlessness/Feeling irritable/Difficulty sleeping+Poor concentration+Fatigue with any2"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p98-eb4428e6",
+   "scope": "in_scope",
+   "scope_reason": "part: PTSD bullet",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Anxiety >1 month, bad experience, >=3 of 4 groups (nightmares/flashbacks, avoidance, on guard/startled, numb/detached) is encoded as exhaustive combinations, probable. Treating nightmares/flashbacks as one group matches the page's single bullet item. Minor: 'Anxiety' onset used as the >1 month anchor and the trauma concept 'Victim of psychological trauma' is an approximation of 'bad experience'.",
+   "evidence": [
+    "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page) :: (>= (onset (clinical_finding (snomed_concept \"Anxiety\" \"finding\"))) (time_ago 1 months)) + Victim of psychological trauma + 2-branch or over (Nightmares|Flashback) + any2(Avoidance, Hypervigilant|Startle, Detached|Derealization)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p98-eb4428e6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: phobia/panic bullet",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Phobia and panic carry only 'discuss/refer', with no 'likely' or 'consider' diagnosis. Borderline: could be a possible-rule; not required.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p98-346bde9a",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Screening question for depression pointing to page 159; no diagnosis stated. Depression/Depressed mood is used only as a task trigger.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p98-758da856",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": "",
+   "parts_missing": [],
+   "problem": "Substance-use screening question with referral to page 165; no 'likely' conclusion. Borderline because it has a quantitative threshold (>=4 drinks) but it leads only to a cross-reference.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p98-3b757a91",
+  "p98-d5070c49",
+  "p98-e7580af9",
+  "p98-ce14956d",
+  "p98-d7ad470b",
+  "p98-ff6d9ce9",
+  "p98-d4e348ad",
+  "p98-47b90a35",
+  "p98-f2fa37a8",
+  "p98-eaead4a0",
+  "p98-e4a37837",
+  "p98-36a20e8e",
+  "p98-05359983",
+  "p98-5bb40d65",
+  "p98-f8557d16",
+  "p98-64643c21",
+  "p98-d33531c5",
+  "p98-afe327bd",
+  "p98-cc5d903c",
+  "p98-1700be03",
+  "p98-1ea380c6",
+  "p98-d7b30ec1"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "problem": "Trigger requires a mood/stress/anxiety finding in addition to suicidality; the red box triggers on suicidality alone.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "problem": "Trigger is any of Depressed mood/Stress/Anxiety, but the page's Anxiety row applies to anxiety; check_for list also includes Distress and Fatigue shared with the diagnosis rule (fine) but Distress concept is generic. 'Impaired function' alternative not in check_for.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable generalised anxiety disorder",
+   "problem": "Distress is mandatory, narrowing the page's 'impaired function/distress' (or).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable post-traumatic stress disorder",
+   "problem": "Onset >1 month anchored on Anxiety finding, which is not the same as the page's linked bad experience duration; acceptable but approximate. Strictly >1 month vs time_ago 1 months inclusive.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The page's logic is encoded well: GAD and PTSD combinatorial criteria are exhaustive and correct. The most consequential issues are the Urgent priority rule requiring a co-occurring mood/stress/anxiety finding that the red box does not state, and the GAD rule requiring Distress when the page allows impaired function or distress. Everything else on the page is management or cross-reference."
+}

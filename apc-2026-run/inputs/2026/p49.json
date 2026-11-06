@@ -1,0 +1,688 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 49,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.7,
+    86.8,
+    806.2,
+    194.0
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p49-rb1-e01",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with face symptoms and any of:",
+   "section_y": 91.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with face symptoms and any of:",
+   "bbox": [
+    285.7,
+    91.8,
+    558.0,
+    103.0
+   ],
+   "key": "p49-b0fd6213"
+  },
+  {
+   "id": "p49-rb1-e02",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with face symptoms and any of:",
+   "section_y": 91.8,
+   "indent": 3,
+   "parent": null,
+   "text": "New sudden asymmetric weakness or numbness of face (with no/minimal forehead involvement), arm or leg; difficulty speaking or visual disturbance: consider stroke or TIA 152.",
+   "bbox": [
+    65.2,
+    102.0,
+    756.0,
+    113.0
+   ],
+   "key": "p49-10a79337"
+  },
+  {
+   "id": "p49-rb1-e03",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with face symptoms and any of:",
+   "section_y": 91.8,
+   "indent": 3,
+   "parent": null,
+   "text": "Sudden face/tongue swelling and any of: difficulty breathing, BP < 90/60, dizziness/collapse, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28.",
+   "bbox": [
+    65.2,
+    112.0,
+    761.7,
+    123.0
+   ],
+   "key": "p49-96a95e1e"
+  },
+  {
+   "id": "p49-rb1-e04",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with face symptoms and any of:",
+   "section_y": 91.8,
+   "indent": 3,
+   "parent": null,
+   "text": "Painful red facial swelling and temperature ≥ 38°C: facial cellulitis likely",
+   "bbox": [
+    65.2,
+    122.0,
+    345.5,
+    133.0
+   ],
+   "key": "p49-b8f347fb"
+  },
+  {
+   "id": "p49-rb1-e05",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with face symptoms and any of:",
+   "section_y": 91.8,
+   "indent": 3,
+   "parent": null,
+   "text": "New swelling of face and blood/protein in urine: kidney disease likely",
+   "bbox": [
+    65.2,
+    132.0,
+    337.5,
+    143.0
+   ],
+   "key": "p49-5eec7b64"
+  },
+  {
+   "id": "p49-rb1-e06",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 147.8,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.4,
+    147.8,
+    157.2,
+    158.8
+   ],
+   "key": "p49-b5aed249"
+  },
+  {
+   "id": "p49-rb1-e07",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "If likely facial cellulitis with whole eyelid swollen, red and painful, orbital cellulitis likely. If delay in transfer, discuss with doctor.",
+   "bbox": [
+    51.4,
+    157.8,
+    543.0,
+    168.8
+   ],
+   "key": "p49-868b3618"
+  },
+  {
+   "id": "p49-rb1-e08",
+   "page": 49,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 147.8,
+   "indent": 1,
+   "parent": null,
+   "text": "If kidney disease likely and pulse > 100 or respiratory rate > 30, give face mask oxygen and furosemide 80mg slow IV, avoid IV fluids. If BP > 150/100, give amlodipine 5mg and furosemide 40mg orally.",
+   "bbox": [
+    51.4,
+    167.8,
+    790.7,
+    188.8
+   ],
+   "key": "p49-a407c0bf"
+  },
+  {
+   "id": "p49-out-e01",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "FACE SYMPTOMS",
+   "bbox": [
+    350.6,
+    48.7,
+    491.3,
+    71.0
+   ],
+   "key": "p49-7599e91e"
+  },
+  {
+   "id": "p49-out-e02",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2Avoid if on RR-TB treatment. 3Common triggers include foods (milk, eggs, nuts, wheat, seafood), medications, insect bites/stings and latex.",
+   "bbox": [
+    34.0,
+    543.3,
+    740.7,
+    551.8
+   ],
+   "key": "p49-9b2a92df"
+  },
+  {
+   "id": "p49-out-e03",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to patient with face symptoms not needing urgent attention • If rash on face 82. • If gum or tooth problem 54. • Manage according to face symptom/s:",
+   "bbox": [
+    272.1,
+    206.0,
+    561.4,
+    247.2
+   ],
+   "key": "p49-a0f5739a"
+  },
+  {
+   "id": "p49-out-e04",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Sudden progressive weakness of one side of face and unable",
+   "bbox": [
+    432.9,
+    262.4,
+    545.4,
+    282.6
+   ],
+   "key": "p49-d78e845f"
+  },
+  {
+   "id": "p49-out-e05",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "to wrinkle forehead or close eye. May have impaired taste",
+   "bbox": [
+    435.1,
+    282.4,
+    543.1,
+    302.6
+   ],
+   "key": "p49-3485bd66"
+  },
+  {
+   "id": "p49-out-e06",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "or dry eye.",
+   "bbox": [
+    468.0,
+    302.4,
+    508.3,
+    312.6
+   ],
+   "key": "p49-8d87cfe1"
+  },
+  {
+   "id": "p49-out-e07",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Swelling of face",
+   "bbox": [
+    653.1,
+    262.4,
+    710.7,
+    272.6
+   ],
+   "key": "p49-e2903deb"
+  },
+  {
+   "id": "p49-out-e08",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Bell’s palsy likely • Give prednisone as soon as possible (within 48 hours of onset): give 60mg daily for 7 days. If no better after 10 days, refer. • Protect eye: - Advise patient not to rub",
+   "bbox": [
+    432.9,
+    327.1,
+    542.1,
+    408.1
+   ],
+   "key": "p49-df9917f7"
+  },
+  {
+   "id": "p49-out-e09",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "eye - Keep eye moist with drops - Cover eye with transparent",
+   "bbox": [
+    438.5,
+    407.9,
+    543.9,
+    438.1
+   ],
+   "key": "p49-4cf4283b"
+  },
+  {
+   "id": "p49-out-e10",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "eye shield during the day - Tape eyelid closed at night • Refer to physiotherapy, if available. • Refer same day if: otitis media, change in hearing, recent head injury, damage to cornea, unsure of diagnosis.",
+   "bbox": [
+    432.9,
+    437.9,
+    541.0,
+    528.1
+   ],
+   "key": "p49-b4e90989"
+  },
+  {
+   "id": "p49-out-e11",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painful swelling of one/both sides of face",
+   "bbox": [
+    719.6,
+    287.9,
+    803.7,
+    308.1
+   ],
+   "key": "p49-b57473e2"
+  },
+  {
+   "id": "p49-out-e12",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "with fever, headache,",
+   "bbox": [
+    722.0,
+    307.9,
+    801.4,
+    318.1
+   ],
+   "key": "p49-1d68615d"
+  },
+  {
+   "id": "p49-out-e13",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "body pain.",
+   "bbox": [
+    741.3,
+    317.9,
+    780.0,
+    328.1
+   ],
+   "key": "p49-984b81fd"
+  },
+  {
+   "id": "p49-out-e14",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Mumps likely • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • Advise patient can return to work after 5 days and symptoms usually resolve within 2 weeks. • Refer if: - Neck stiffness - Painful scrotal",
+   "bbox": [
+    719.2,
+    342.6,
+    801.1,
+    493.5
+   ],
+   "key": "p49-453a35f7"
+  },
+  {
+   "id": "p49-out-e15",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "swelling - Loss of hearing - Abdominal pain.",
+   "bbox": [
+    724.8,
+    493.4,
+    789.8,
+    523.5
+   ],
+   "key": "p49-dcc883ff"
+  },
+  {
+   "id": "p49-out-e16",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Painless swelling of lips/eyes",
+   "bbox": [
+    579.0,
+    287.9,
+    683.6,
+    298.1
+   ],
+   "key": "p49-4e042bff"
+  },
+  {
+   "id": "p49-out-e17",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Angioedema likely • If airway obstruction (snoring, gurgling, noisy breathing), assess airway 16 and manage for anaphylaxis 28. • If no airway obstruction: if urticaria or itch present, give cetirizine 10mg or promethazine 25-50mg IM. • If on enalapril: stop enalapril, never restart and educate patient to avoid it in future. Doctor to review medication. • Help to identify and advise to avoid triggers3. • Monitor until swelling resolves. • If swelling not resolving or no obvious cause, refer same day. • Record in patient’s notes. • Advise to return urgently if difficulty breathing or symptoms worsen.",
+   "bbox": [
+    561.8,
+    312.6,
+    701.4,
+    523.5
+   ],
+   "key": "p49-71f5dc31"
+  },
+  {
+   "id": "p49-out-e18",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Face pain",
+   "bbox": [
+    209.7,
+    262.4,
+    244.4,
+    272.6
+   ],
+   "key": "p49-5b53491f"
+  },
+  {
+   "id": "p49-out-e19",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Pain on one side of face Pain when pushing on forehead/cheeks, headache",
+   "bbox": [
+    73.3,
+    287.9,
+    408.1,
+    298.1
+   ],
+   "key": "p49-b94b1734"
+  },
+  {
+   "id": "p49-out-e20",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "worse on bending forward. Thick nasal/postnasal",
+   "bbox": [
+    223.8,
+    297.9,
+    404.9,
+    308.1
+   ],
+   "key": "p49-22d5162f"
+  },
+  {
+   "id": "p49-out-e21",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "discharge, recent common cold.",
+   "bbox": [
+    254.3,
+    307.9,
+    372.4,
+    318.1
+   ],
+   "key": "p49-b5f403c9"
+  },
+  {
+   "id": "p49-out-e22",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Sinusitis likely • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed for up to 5 days. • Give sodium chloride 0.9% nose drops as needed. • Give oxymetazoline 0.05% 2 drops in each nostril 8 hourly as needed for a maximum of 5 days. Advise against overuse which may worsen blocked nose. • If symptoms ≥ 10 days, temperature ≥ 38°C, purulent nasal discharge, face pain ≥ 3 days, or symptoms worsen after initial improvement of common cold, give amoxicillin 500mg 8 hourly for 5 days. If severe penicillin allergy (history of anaphylaxis, urticaria or angioedema) give instead azithromycin 500mg daily for 3 days. • If recurrent, test for HIV 124. • If poor response to antibiotic, refer. • Refer same day if: - Tooth infection - Swelling over sinus or around eye - Neck stiffness.",
+   "bbox": [
+    212.2,
+    332.6,
+    416.4,
+    533.5
+   ],
+   "key": "p49-fd9260ad"
+  },
+  {
+   "id": "p49-out-e23",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Recurrent",
+   "bbox": [
+    52.9,
+    313.4,
+    90.6,
+    323.5
+   ],
+   "key": "p49-32d3b7f6"
+  },
+  {
+   "id": "p49-out-e24",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "intense, superficial, stabbing pain",
+   "bbox": [
+    45.5,
+    323.4,
+    96.1,
+    353.5
+   ],
+   "key": "p49-d00d187f"
+  },
+  {
+   "id": "p49-out-e25",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Trigeminal neuralgia likely • Give paracetamol 500mg-1g 4-6 hourly (up to 4g in 24 hours) as needed. • If needed, add tramadol 50mg 6 hourly. • Refer.",
+   "bbox": [
+    39.7,
+    368.0,
+    102.2,
+    489.0
+   ],
+   "key": "p49-2ca26b2e"
+  },
+  {
+   "id": "p49-out-e26",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Previous shingles",
+   "bbox": [
+    125.5,
+    313.4,
+    190.4,
+    323.5
+   ],
+   "key": "p49-e3398f9f"
+  },
+  {
+   "id": "p49-out-e27",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "on same side of",
+   "bbox": [
+    128.2,
+    323.4,
+    187.7,
+    333.5
+   ],
+   "key": "p49-d7cba3ba"
+  },
+  {
+   "id": "p49-out-e28",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "face",
+   "bbox": [
+    149.4,
+    333.4,
+    164.5,
+    343.5
+   ],
+   "key": "p49-d9f9729e"
+  },
+  {
+   "id": "p49-out-e29",
+   "page": 49,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Post-herpetic neuralgia likely • Give amitriptyline2 25mg (10mg if ≥ 65 years) at night. If no response, increase by 25mg every 2 weeks, up to 75mg at night. • If pain ≥ 3 months, assess and advise 76. • If poor response, refer.",
+   "bbox": [
+    120.1,
+    358.0,
+    192.7,
+    519.0
+   ],
+   "key": "p49-4559fe88"
+  }
+ ]
+}

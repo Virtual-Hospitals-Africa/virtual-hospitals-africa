@@ -1,0 +1,666 @@
+{
+ "page": 24,
+ "checker": "forward-1",
+ "elements": [
+  {
+   "element_key": "p24-72e73d4c",
+   "scope": "in_scope",
+   "scope_reason": "the red-box trigger frame: chest pain AND any of",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header is encoded as the (and <chest pain> (or ...)) frame of the Urgent priority rule, matching the house pattern. The parallel check_for task is triggered by Chest pain.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (and (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (or ...red-box items...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-aaf154d3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both parts present: RR >= 30 (correct comparator and unit) and Difficulty breathing, OR-ed.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))",
+    "Check for urgent chest pain signs :: (clinical_finding (snomed_concept \"Difficulty breathing\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-cfc52572",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+    "Check for urgent chest pain signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-16c191e4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both parts present, using the two recorded common-symptom concepts.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Nausea\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))",
+    "Check for urgent chest pain signs :: (clinical_finding (snomed_concept \"Nausea\" \"finding\")) / (clinical_finding (snomed_concept \"Finding of vomiting\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-14c4bae1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All six risk factors present with the right concepts; CVD risk > 20% uses a strict > and a measure task records it. 'family history' is read as family history of ischaemic heart disease, which is the page's evident meaning (risk of heart attack).",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Smoker\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "Urgent: chest pain with danger signs :: (> (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %) 20)",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))",
+    "Record known cardiovascular disease risk for chest pain :: (measure (measurement (snomed_concept \"Risk of cardiovascular disease\" \"observable entity\") %))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-96b177f4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All four thresholds present with the right comparators; 'BP >= 180/110' read as either component meeting its threshold, the usual reading of this guide.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (>= (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 180)",
+    "Urgent: chest pain with danger signs :: (>= (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 110)",
+    "Urgent: chest pain with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+    "Urgent: chest pain with danger signs :: (< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-dce602bd",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Pain in centre, pain on the left and discomfort are all present with the New qualifier. Discomfort is not split by site (no SNOMED concept for central/left chest discomfort); the sideless Chest discomfort is the reasonable choice.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Central chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Left sided chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-122f0479",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both parts present. 'Pallor' is encoded as Pallor of skin of face, which is how pallor is assessed at the bedside; SNOMED also has the broader (snomed_concept \"Pale complexion\" \"finding\"). Either is defensible; noting it for the reconciler.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pallor of skin of face\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Sweating\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-02a5e814",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All three parts present with the right comparators (strict > 100 and < 50 as on the page). The pulse measurement concept is \"Pulse, function\"; SNOMED also has (snomed_concept \"Heart rate\" \"observable entity\"). Whichever VHA records as the routine pulse vital must be the one used, which I cannot verify from the inputs allowed here.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pulse irregular\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 100)",
+    "Urgent: chest pain with danger signs :: (< (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 50)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-171e2e0d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Neck, jaw, both shoulders and both arms present. SNOMED has no sideless 'pain radiating to shoulder/arm', so the left/right pairs are the right encoding.",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pain radiating to neck\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pain radiating to jaw\" \"finding\"))",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pain radiating to left shoulder\" \"finding\")) / right shoulder",
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Pain radiating to left arm\" \"finding\")) / right arm"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-cada55f5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: chest pain with danger signs :: (clinical_finding (snomed_concept \"Ischemic heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-2a230247",
+   "scope": "in_scope",
+   "scope_reason": "an instruction to obtain the discriminating test",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as a check task for the three ECG findings the flowchart branches on, triggered by Chest pain. 'Doctor to review' has no check_for permission form in the grammar; it lives in the description only.",
+   "evidence": [
+    "Do an ECG for chest pain (doctor to review) :: (check_for (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-9aa0a923",
+   "scope": "in_scope",
+   "scope_reason": "flowchart decision node",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "The ECG-abnormal branch bypasses the positional question and goes straight to the chest-pain-character box; the rules encode exactly that: ECG abnormal is an alternative to 'none of the positional findings' in both the ACS and stable angina rules.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (or (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")) (and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))) (no (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\"))) (no (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\")))))",
+    "Diagnose probable stable angina in chest pain :: (or (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")) (and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))) (no (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\"))) (no (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-fdde835a",
+   "scope": "in_scope",
+   "scope_reason": "flowchart decision node",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Normal / other abnormality / unavailable / uncertain all route the same way on the page, and the rules treat absence of the three abnormal findings as that branch, so no explicit 'ECG normal' finding is needed. Because ECG-abnormal is itself sufficient for the first disjunct, letting 'no positional findings' suffice regardless of ECG is logically equivalent to the chart.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (or (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")) (and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))) (no (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\"))) (no (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-b49f3f33",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All three abnormalities present and OR-ed.",
+   "evidence": [
+    "Do an ECG for chest pain (doctor to review) :: (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) / (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) / (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))",
+    "Diagnose probable acute coronary syndrome in chest pain :: (or (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")) (and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))) (no (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\"))) (no (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-776bf273",
+   "scope": "in_scope",
+   "scope_reason": "flowchart decision node",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Three parts, three findings. 'Worse on lying down' is encoded as the broader Pain aggravated by position (SNOMED has no chest-pain-worse-lying-down concept; checked 'lying', 'supine', 'aggravated'); 'palpation' as Tenderness of chest wall; 'breathing deeply' as Chest pain on breathing (Pleuritic pain would be an equally good choice). Acceptable approximations.",
+   "evidence": [
+    "Check chest pain character for acute coronary syndrome :: (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) / (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\")) / (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\"))",
+    "Urgent: chest pain worse on lying down, palpation or breathing deeply :: (and (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (or (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\")) (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-eccddb18",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: No branch of the positional question; encoded as the (and (no ...)(no ...)(no ...)) disjunct in the ACS and stable angina rules",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-62898c61",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes branch of the positional question; its 'Manage and refer urgently' column is encoded by the priority rule and the tension pneumothorax / pneumonia rules",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-6d7d6bb9",
+   "scope": "in_scope",
+   "scope_reason": "the ACS-versus-stable-angina discriminator list",
+   "verdict": "partial",
+   "parts_missing": [
+    "Not relieved by rest or sublingual nitrates",
+    "Occurs more often than usual",
+    "with minimal effort (half of 'Occurs at rest or with minimal effort')"
+   ],
+   "problem": "The 'any of' box is encoded as an (or ...) in the ACS rule and as the mirrored (no ...) list in the stable angina rule, but only three of its five items appear. See the per-item verdicts.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (or (clinical_finding (snomed_concept \"Chest pain at rest\" \"finding\")) (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\"))) (>= (onset (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes)) (no (clinical_finding (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-49c54909",
+   "scope": "borderline",
+   "scope_reason": "header that sets a priority level; could be read as pure figure text",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "A header, but it carries the urgency level of the Yes branch. The priority rule gives Urgent to chest pain with any positional finding, which is what the page says. (It also fires on the ECG-abnormal path where the page never asks the question; harmless, since the whole red box is already Urgent.)",
+   "evidence": [
+    "Urgent: chest pain worse on lying down, palpation or breathing deeply :: adult Urgent (and (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (or ...positional findings...))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-8a28711c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: face mask oxygen on the Yes branch",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-515b498b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "with minimal effort"
+   ],
+   "problem": "'Occurs at rest' is encoded with the exact SNOMED concept. 'With minimal effort' is not encoded anywhere; SNOMED has no precoordinated chest-pain-on-minimal-exertion finding (searched 'exertion', 'exertional', 'minimal'), so it would need a qualifier or has to be declared not representable; the file does neither.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (clinical_finding (snomed_concept \"Chest pain at rest\" \"finding\"))",
+    "Check chest pain character for acute coronary syndrome :: (clinical_finding (snomed_concept \"Chest pain at rest\" \"finding\"))",
+    "Diagnose probable stable angina in chest pain :: (no (clinical_finding (snomed_concept \"Chest pain at rest\" \"finding\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-fd721edb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Worse than usual' -> Chest pain + Worsening; 'lasts longer than usual' -> Chest pain + Prolonged. Both qualifier values exist. Reasonable, though 'Prolonged' loses the 'than usual' comparison.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))",
+    "Diagnose probable acute coronary syndrome in chest pain :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Prolonged\" \"qualifier value\")))",
+    "Diagnose probable stable angina in chest pain :: (no (clinical_finding (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))) / (no ... Prolonged ...)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-3a576c94",
+   "scope": "borderline",
+   "scope_reason": "an episode-duration criterion; only approximable through onset, so arguably not_representable",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "The page's criterion is the duration of a pain episode (lasts >= 10 minutes). The language has no episode-duration construct, so the builder used the onset time of the Chest pain finding: 'onset at least 10 minutes ago' in the ACS rule and 'onset within the last 10 minutes' in the stable angina rule. The comparator directions follow the briefing's onset convention, but the semantics are wrong in practice: almost every patient presents more than 10 minutes after the pain began, so the ACS disjunct is nearly always true (making the other four characteristics and the stable-angina exclusion irrelevant) and the stable angina rule, which requires onset within the last 10 minutes, is nearly unreachable. Either this item should be left out with a not_representable note, or the stable angina rule at least should not require it.",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (>= (onset (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))",
+    "Diagnose probable stable angina in chest pain :: (<= (onset (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-bc666c31",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Not encoded in the check_for list, the ACS rule or the stable angina rule. SNOMED has no precoordinated 'chest pain not relieved by rest/nitrates' finding (searched 'relieved', 'nitrate'; only the attribute (snomed_concept \"Relieved by\" \"attribute\") and (snomed_concept \"Relieved\" \"qualifier value\") exist), so it needs a qualifier/attribute form or an explicit not-representable note; the file has neither. Consequence: a known stable-angina patient whose pain is not relieved by nitrates, with none of the other three encoded features, is labelled stable angina instead of ACS.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-4c8f9179",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Not encoded anywhere. SNOMED has (snomed_concept \"Frequent\" \"qualifier value\") and (snomed_concept \"Increased\" \"qualifier value\") which could qualify Chest pain, as Worsening and Prolonged already do. Same consequence as the previous item: the stable angina rule's (no ...) list omits it, so increasing-frequency pain in a known stable-angina patient is labelled stable angina rather than ACS.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-7aed0b2e",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes branch into ACS; encoded as the character (or ...) in the ACS rule",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-9a945014",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: No branch into the stable angina question; encoded as the (no ...) list in the stable angina rule",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-5e24c9c9",
+   "scope": "in_scope",
+   "scope_reason": "flowchart decision node",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Checked for and used in both directions. Putting (no known stable angina) inside the ACS rule's character (or ...) is logically equivalent to the chart (ACS if any characteristic, or if none and not known stable angina).",
+   "evidence": [
+    "Check chest pain character for acute coronary syndrome :: (clinical_finding (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "Diagnose probable stable angina in chest pain :: (clinical_finding (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+    "Diagnose probable acute coronary syndrome in chest pain :: (no (clinical_finding (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-a410cebc",
+   "scope": "in_scope",
+   "scope_reason": "an 'X likely' conclusion with its criteria",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All four page parts are present with existing concepts (sudden breathlessness; more resonant / decreased breath sounds / pain on one side as an OR group with Unilateral qualifiers; deviated trachea) and the rule is a probable diagnosis gated on the Yes branch as the page places it. The page's comma list is read as all-of (and). That is the stricter of two readings; see rule-level problems.",
+   "evidence": [
+    "Diagnose probable tension pneumothorax in chest pain :: (and (or ...positional findings...) (clinical_finding (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) (or (clinical_finding (snomed_concept \"Hyperresonance\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Decreased breath sounds\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\"))) (clinical_finding (snomed_concept \"Left sided chest pain\" \"finding\")) (clinical_finding (snomed_concept \"Right sided chest pain\" \"finding\"))) (clinical_finding (snomed_concept \"Trachea displaced\" \"disorder\")))",
+    "Check for tension pneumothorax or pneumonia in chest pain :: (check_for (clinical_finding (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\"))) ... (clinical_finding (snomed_concept \"Trachea displaced\" \"disorder\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p24-5e84e28f",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: No branch of the stable angina question; encoded as (no known stable angina) in the ACS rule",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-242dd16b",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing: Yes branch of the stable angina question; encoded as known stable angina in the stable angina rule",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-a3901d71",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Not relieved by rest or sublingual nitrates",
+    "Occurs more often than usual",
+    "with minimal effort"
+   ],
+   "problem": "The conclusion is a probable Acute coronary syndrome diagnosis (the right umbrella concept for 'heart attack or unstable angina'; SNOMED has no plain Unstable angina disorder) and 'manage and refer urgently' is an Urgent priority on the active condition, per the house pattern. The rule's structure follows the chart, but its evidence misses three of the page's character items and its >= 10 minutes disjunct is an onset proxy (see p24-3a576c94).",
+   "evidence": [
+    "Diagnose probable acute coronary syndrome in chest pain :: (diagnosis (snomed_concept \"Acute coronary syndrome\" \"disorder\") probable)",
+    "Urgent: probable acute coronary syndrome in chest pain :: (active_condition (snomed_concept \"Acute coronary syndrome\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-f4f574d5",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note: text fragment 'Patient' of the stable angina conclusion; judged under p24-cc976758",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-b7f55ddb",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: oxygen for ACS",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-cc976758",
+   "scope": "in_scope",
+   "scope_reason": "an 'X' conclusion; the page states it as fact rather than 'likely', probable is the right certainty",
+   "verdict": "partial",
+   "parts_missing": [
+    "(no 'Not relieved by rest or sublingual nitrates')",
+    "(no 'Occurs more often than usual')",
+    "(no 'with minimal effort')"
+   ],
+   "problem": "A probable Stable angina rule exists with the right structure (ECG branch, none of the characteristics, known stable angina). It inherits the two missing characteristics, so it will label ACS presentations as stable angina, and its onset-within-10-minutes condition makes it nearly unreachable in practice.",
+   "evidence": [
+    "Diagnose probable stable angina in chest pain :: (diagnosis (snomed_concept \"Stable angina\" \"disorder\") probable) ... (and (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) (or (clinical_finding (snomed_concept \"ST segment elevation\" \"finding\")) (clinical_finding (snomed_concept \"ST segment depression\" \"finding\")) (clinical_finding (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\")) (and (no (clinical_finding (snomed_concept \"Pain aggravated by position\" \"finding\"))) (no (clinical_finding (snomed_concept \"Tenderness of chest wall\" \"finding\"))) (no (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\"))))) (no ...at rest...) (no ...Worsening...) (no ...Prolonged...) (<= (onset (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))) (time_ago 10 minutes)) (clinical_finding (snomed_concept \"Stable angina\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-c36b7029",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: cannula and chest tube for tension pneumothorax",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-7f8c7662",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: aspirin",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-4202ad1e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: IV access",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-302d3863",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only: routine ischaemic heart disease care, page 153",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-74c4a182",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: BP thresholds that gate a specialist discussion, not a triage or diagnostic conclusion",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-a6c40451",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: condition gating nitrate/morphine treatment",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-8fdeb5ee",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: fluids for shock / SBP < 80 (the 'shock likely' definition itself is footnote 5, judged under p24-d45caab9)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-f0cd448d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: isosorbide dinitrate",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-c8926184",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: morphine",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-069676d6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: BP monitoring during morphine",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-e747a4d3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: doctor ECG review; the ECG check task already covers obtaining the ECG",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-4dda70d1",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: amlodipine",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-f39d446e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: specialist discussion and repeat ECG",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-67d96111",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: streptokinase eligibility (ECG findings and <= 6 hours) is a treatment criterion, not a diagnosis",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-ecb7c55a",
+   "scope": "in_scope",
+   "scope_reason": "an 'X likely' conclusion with its criteria",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "All three parts present and AND-ed as the page's 'and' requires: pain worse on breathing deeply (Chest pain on breathing), coughing sputum (Productive cough), temperature >= 38 with the right unit and comparator. The rule is implicitly on the Yes branch because Chest pain on breathing is one of the positional findings.",
+   "evidence": [
+    "Diagnose probable pneumonia in chest pain :: (and (clinical_finding (snomed_concept \"Chest pain on breathing\" \"finding\")) (clinical_finding (snomed_concept \"Productive cough\" \"finding\")) (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-f0dc7bcd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: streptokinase contraindications",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-92d49f7e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: streptokinase dose",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-39d9e0e9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step: BP monitoring during infusion",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p24-d45caab9",
+   "scope": "borderline",
+   "scope_reason": "outside the red box; one footnote carries an 'X likely' with criteria, the rest are definitions or management",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "Footnote 5 is an 'X likely' with explicit criteria: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely.' No probable Shock rule exists ((snomed_concept \"Shock\" \"disorder\") exists). It serves a management gate (fluids), which is why I mark it borderline rather than in_scope. Footnote 1 defines stable angina (handled by the Known present qualifier); footnote 3 defines ST elevation in mm per lead, which the language cannot express; footnotes 2, 4 and 6 are management.",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p24-dffc02f6"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Diagnose probable stable angina in chest pain",
+   "severity": "high",
+   "problem": "Requires (<= (onset Chest pain) (time_ago 10 minutes)), i.e. the pain began within the last 10 minutes. Onset is not episode duration; patients almost never present inside 10 minutes of onset, so the stable angina rule is effectively unreachable and the matching (>= onset 10 minutes) disjunct makes the ACS rule fire for nearly every chest-pain presentation on the ECG-abnormal or no-positional path, regardless of the other four characteristics or known stable angina. The 'Lasts >= 10 minutes' item should be dropped as not representable (or at least removed from the stable angina rule) rather than approximated with onset."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain / Diagnose probable stable angina in chest pain / Check chest pain character for acute coronary syndrome",
+   "severity": "high",
+   "problem": "Two of the five 'Is chest pain/discomfort any of' items are absent from the check_for list and from both diagnosis rules: 'Not relieved by rest or sublingual nitrates' and 'Occurs more often than usual'; 'with minimal effort' is also lost. Because the stable angina rule is the negation of the same list, a known stable-angina patient with either missing feature is diagnosed stable angina where the page says ACS. No remaining-questions note is visible to me, and SNOMED offers Chest pain + (snomed_concept \"Frequent\" \"qualifier value\") or \"Increased\" for the frequency item, and the \"Relieved by\" attribute / \"Relieved\" qualifier for the nitrate item."
+  },
+  {
+   "rule": "Diagnose probable tension pneumothorax in chest pain",
+   "severity": "medium",
+   "problem": "The page's comma list ('sudden breathlessness, more resonant/decreased breath sounds/pain on one side, deviated trachea') is encoded as all-of: sudden dyspnoea AND a unilateral sign AND tracheal deviation. Tracheal deviation is a late sign; if the page means any-of, or sudden breathlessness plus any one sign, the rule under-fires. The reading is defensible but should be flagged for the clinician. 'Pain on one side' is encoded as plain Left/Right sided chest pain, which the red-box 'New left sided chest pain' record will also satisfy; acceptable."
+  },
+  {
+   "rule": "Urgent: probable acute coronary syndrome in chest pain / Urgent: chest pain worse on lying down, palpation or breathing deeply",
+   "severity": "low",
+   "problem": "Both priority rules are justified by the page ('Manage and refer urgently'). The positional one fires regardless of the ECG result, whereas the page only asks the positional question on the ECG-normal branch; harmless because the red box as a whole is Urgent and the danger-signs rule already covers chest pain with any red-box item."
+  },
+  {
+   "rule": "Diagnose probable acute coronary syndrome in chest pain / Diagnose probable stable angina in chest pain / Diagnose probable pneumonia in chest pain",
+   "severity": "low",
+   "problem": "The probable rules use (clinical_finding (snomed_concept \"Chest pain\" \"finding\")) and (>= (measurement \"Body temperature\") 38) as evidence without any check_for for them in this file. Chest pain is a recorded warning sign and temperature a routine vital, so this is presumably allowed by the test, but I cannot confirm it from the inputs allowed here. Likewise the pulse measurement uses \"Pulse, function\" where SNOMED also has \"Heart rate\"; it must match the concept VHA records for the pulse vital."
+  },
+  {
+   "rule": "(none)",
+   "severity": "low",
+   "problem": "Footnote 5's 'shock likely' (SBP < 80, pulse >= 100, RR > 30, confusion/restlessness, weakness) has no probable Shock rule. It gates a management step, so this is a judgment call, but the briefing's rule is every 'X likely' becomes a probable diagnosis."
+  }
+ ],
+ "summary": "The 'Lasts >= 10 minutes' criterion is approximated with the onset time of the Chest pain finding, which makes the ACS rule fire for almost any chest pain on the ECG-abnormal or non-positional path and makes the stable angina rule (onset within the last 10 minutes) practically unreachable. Two of the five ACS character items ('Not relieved by rest or sublingual nitrates', 'Occurs more often than usual') and 'with minimal effort' are not encoded at all, so a known stable-angina patient with those features is labelled stable angina where the page says ACS. The red-box priority rule, the ECG task, the positional question, the pneumonia rule and the tension pneumothorax rule are otherwise complete and use existing SNOMED concepts; the pneumothorax rule's all-of reading of the page's comma list should be confirmed with a clinician."
+}

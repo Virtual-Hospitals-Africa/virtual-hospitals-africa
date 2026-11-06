@@ -1,0 +1,922 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 18,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    498.2
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p18-rb1-e01",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with decreased consciousness:",
+   "bbox": [
+    287.8,
+    91.5,
+    554.1,
+    102.7
+   ],
+   "key": "p18-96f9e0c5"
+  },
+  {
+   "id": "p18-rb1-e02",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": null,
+   "text": "First assess and manage airway, breathing, circulation and level of consciousness 16.",
+   "bbox": [
+    51.2,
+    101.9,
+    388.0,
+    112.7
+   ],
+   "key": "p18-9eb798e9"
+  },
+  {
+   "id": "p18-rb1-e03",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": null,
+   "text": "Identify all injuries and look for cause, undress patient and assess front and back. If injured, use log-roll to turn. Then cover and keep warm.",
+   "bbox": [
+    51.2,
+    111.9,
+    584.8,
+    122.7
+   ],
+   "key": "p18-e25b639c"
+  },
+  {
+   "id": "p18-rb1-e04",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": null,
+   "text": "If seizures 20, if injuries 30, if burns 31.",
+   "bbox": [
+    51.2,
+    121.9,
+    230.9,
+    132.7
+   ],
+   "key": "p18-598ba044"
+  },
+  {
+   "id": "p18-rb1-e05",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": null,
+   "text": "If sudden decreased consciousness and any of: generalised itch/rash, face/tongue swelling, wheeze, difficulty breathing, abdominal pain, vomiting or exposure to possible allergen1, check for anaphylaxis 28.",
+   "bbox": [
+    51.2,
+    131.9,
+    783.1,
+    152.7
+   ],
+   "key": "p18-d32664c5"
+  },
+  {
+   "id": "p18-rb1-e06",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": null,
+   "text": "Check glucose, temperature and pupils:",
+   "bbox": [
+    51.2,
+    151.9,
+    208.0,
+    162.7
+   ],
+   "key": "p18-ca2d773f"
+  },
+  {
+   "id": "p18-rb1-e07",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Glucose",
+   "bbox": [
+    147.5,
+    168.5,
+    177.9,
+    179.3
+   ],
+   "key": "p18-8b5df622"
+  },
+  {
+   "id": "p18-rb1-e08",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Temperature",
+   "bbox": [
+    376.2,
+    168.5,
+    425.1,
+    179.3
+   ],
+   "key": "p18-c41d4bd2"
+  },
+  {
+   "id": "p18-rb1-e09",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Pupils",
+   "bbox": [
+    647.1,
+    168.5,
+    670.1,
+    179.3
+   ],
+   "key": "p18-4ba354dd"
+  },
+  {
+   "id": "p18-rb1-e10",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "< 3 (< 4 if diabetes) or unable to measure",
+   "bbox": [
+    50.2,
+    190.4,
+    124.0,
+    221.4
+   ],
+   "key": "p18-7dcd4ebc"
+  },
+  {
+   "id": "p18-rb1-e11",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "≥ 11.1",
+   "bbox": [
+    201.2,
+    190.4,
+    225.0,
+    201.4
+   ],
+   "key": "p18-53dcef30"
+  },
+  {
+   "id": "p18-rb1-e12",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "≤ 35°C",
+   "bbox": [
+    320.0,
+    190.4,
+    345.2,
+    201.4
+   ],
+   "key": "p18-8f225c71"
+  },
+  {
+   "id": "p18-rb1-e13",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "≥ 38°C",
+   "bbox": [
+    432.2,
+    190.4,
+    457.4,
+    201.4
+   ],
+   "key": "p18-9defb6d2"
+  },
+  {
+   "id": "p18-rb1-e14",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Pinpoint",
+   "bbox": [
+    560.0,
+    190.4,
+    593.3,
+    201.4
+   ],
+   "key": "p18-d5e77db8"
+  },
+  {
+   "id": "p18-rb1-e15",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Both equally dilated",
+   "bbox": [
+    655.0,
+    190.4,
+    706.1,
+    211.4
+   ],
+   "key": "p18-2b37901b"
+  },
+  {
+   "id": "p18-rb1-e16",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Unequal or",
+   "bbox": [
+    740.3,
+    190.4,
+    785.3,
+    201.4
+   ],
+   "key": "p18-494299d1"
+  },
+  {
+   "id": "p18-rb1-e17",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "respond poorly to light",
+   "bbox": [
+    732.1,
+    200.4,
+    793.5,
+    221.4
+   ],
+   "key": "p18-da79fe86"
+  },
+  {
+   "id": "p18-rb1-e18",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Give fluids:",
+   "bbox": [
+    151.0,
+    212.7,
+    200.3,
+    223.5
+   ],
+   "key": "p18-3fef7b82"
+  },
+  {
+   "id": "p18-rb1-e19",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Remove cold/ wet clothing and cover with warm blankets.",
+   "bbox": [
+    299.7,
+    212.7,
+    363.9,
+    253.5
+   ],
+   "key": "p18-9d6cf995"
+  },
+  {
+   "id": "p18-rb1-e20",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Give ceftriaxone6 2g IM for possible meningitis. Avoid injecting > 1g IM at one injection site.",
+   "bbox": [
+    388.0,
+    212.7,
+    502.5,
+    253.5
+   ],
+   "key": "p18-0460a67a"
+  },
+  {
+   "id": "p18-rb1-e21",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Illegal",
+   "bbox": [
+    533.8,
+    212.7,
+    558.8,
+    223.5
+   ],
+   "key": "p18-c9d16d3b"
+  },
+  {
+   "id": "p18-rb1-e22",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Excessive secretions or muscle twitching",
+   "bbox": [
+    591.5,
+    212.7,
+    630.7,
+    253.5
+   ],
+   "key": "p18-4186107e"
+  },
+  {
+   "id": "p18-rb1-e23",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Raise head by 30 degrees.",
+   "bbox": [
+    729.3,
+    220.6,
+    789.5,
+    241.4
+   ],
+   "key": "p18-3bb367dd"
+  },
+  {
+   "id": "p18-rb1-e24",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e18",
+   "text": "If SBP < 80, pulse ≥ 100, respiratory rate > 30, weakness, shock likely. Give sodium chloride 0.9% 20mL/kg bolus and repeat until systolic BP > 80.",
+   "bbox": [
+    156.7,
+    222.7,
+    270.7,
+    283.5
+   ],
+   "key": "p18-de778085"
+  },
+  {
+   "id": "p18-rb1-e25",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "drug use and/or",
+   "bbox": [
+    528.6,
+    222.7,
+    564.1,
+    243.5
+   ],
+   "key": "p18-888a296f"
+  },
+  {
+   "id": "p18-rb1-e26",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Stimulant or other drug overdose likely",
+   "bbox": [
+    655.1,
+    222.6,
+    706.1,
+    263.5
+   ],
+   "key": "p18-78ea2817"
+  },
+  {
+   "id": "p18-rb1-e27",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Give dextrose 10%2 5mL/ kg IV. If known alcohol user, give thiamine 200mg IM before dextrose.",
+   "bbox": [
+    47.9,
+    232.7,
+    120.8,
+    303.5
+   ],
+   "key": "p18-41fcd1e4"
+  },
+  {
+   "id": "p18-rb1-e28",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If injured, keep body straight and tilt to raise head (avoid bending spine).",
+   "bbox": [
+    729.3,
+    240.6,
+    794.5,
+    291.4
+   ],
+   "key": "p18-4c1cf881"
+  },
+  {
+   "id": "p18-rb1-e29",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "respiratory rate < 12",
+   "bbox": [
+    524.6,
+    242.7,
+    568.0,
+    263.5
+   ],
+   "key": "p18-395629c7"
+  },
+  {
+   "id": "p18-rb1-e30",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Warm IV fluids to 40°C (avoid cold fluids).",
+   "bbox": [
+    299.7,
+    252.7,
+    361.9,
+    283.5
+   ],
+   "key": "p18-cc0c165f"
+  },
+  {
+   "id": "p18-rb1-e31",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If patient was in malaria area in past 3 months, manage 39.",
+   "bbox": [
+    388.0,
+    252.7,
+    486.5,
+    283.5
+   ],
+   "key": "p18-6dba96e2"
+  },
+  {
+   "id": "p18-rb1-e32",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Poisoning likely 27.",
+   "bbox": [
+    573.0,
+    274.9,
+    658.4,
+    285.9
+   ],
+   "key": "p18-c7eab6e9"
+  },
+  {
+   "id": "p18-rb1-e33",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e18",
+   "text": "Also give sodium chloride 0.9% 15-20mL/kg 4 IV over the first hour, then 10mL/kg/ hour thereafter.",
+   "bbox": [
+    156.7,
+    282.7,
+    272.2,
+    323.5
+   ],
+   "key": "p18-6585081d"
+  },
+  {
+   "id": "p18-rb1-e34",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If no response or temperature ≤ 32°C, also use a warming device.",
+   "bbox": [
+    299.7,
+    282.7,
+    365.3,
+    333.5
+   ],
+   "key": "p18-ede9f1a8"
+  },
+  {
+   "id": "p18-rb1-e35",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If temperature > 40°C:",
+   "bbox": [
+    388.0,
+    282.7,
+    477.8,
+    293.5
+   ],
+   "key": "p18-3cb6ed83"
+  },
+  {
+   "id": "p18-rb1-e36",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Discuss urgently with referral centre.",
+   "bbox": [
+    729.3,
+    290.6,
+    790.5,
+    321.4
+   ],
+   "key": "p18-6474fcc0"
+  },
+  {
+   "id": "p18-rb1-e37",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e35",
+   "text": "Remove clothing.",
+   "bbox": [
+    393.7,
+    292.7,
+    465.1,
+    303.5
+   ],
+   "key": "p18-a24283b8"
+  },
+  {
+   "id": "p18-rb1-e38",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Recheck glucose after 15 minutes: if still < 3, give further dextrose 10%2 2mL/kg IV.",
+   "bbox": [
+    47.9,
+    302.7,
+    124.4,
+    353.5
+   ],
+   "key": "p18-a96c5dea"
+  },
+  {
+   "id": "p18-rb1-e39",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e35",
+   "text": "Use fan and water spray to cool patient.",
+   "bbox": [
+    393.7,
+    302.7,
+    501.6,
+    323.5
+   ],
+   "key": "p18-fab0b02a"
+  },
+  {
+   "id": "p18-rb1-e40",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e18",
+   "text": "If known kidney/heart disease, discuss fluid volume with doctor.",
+   "bbox": [
+    156.7,
+    322.7,
+    273.8,
+    353.5
+   ],
+   "key": "p18-57036bb4"
+  },
+  {
+   "id": "p18-rb1-e41",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e35",
+   "text": "Apply ice-packs to axillae, groin and neck.",
+   "bbox": [
+    393.7,
+    322.7,
+    498.7,
+    343.5
+   ],
+   "key": "p18-fc9a9bb3"
+  },
+  {
+   "id": "p18-rb1-e42",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Then give dextrose 5%3 or 10% 1L IV 6 hourly.",
+   "bbox": [
+    47.9,
+    352.7,
+    127.5,
+    383.5
+   ],
+   "key": "p18-abb5ddd9"
+  },
+  {
+   "id": "p18-rb1-e43",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e18",
+   "text": "Stop if breathing worsens.",
+   "bbox": [
+    156.7,
+    352.7,
+    261.2,
+    363.5
+   ],
+   "key": "p18-3130a845"
+  },
+  {
+   "id": "p18-rb1-e44",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If known diabetes and referral delay > 2 hours, discuss with referral centre before giving short-acting insulin 0.1units/ kg IM5. Insulin may cause low potassium and heart dysrhythmia; avoid if unable to monitor serum electrolytes.",
+   "bbox": [
+    151.0,
+    362.7,
+    276.9,
+    443.5
+   ],
+   "key": "p18-b532a2f9"
+  },
+  {
+   "id": "p18-rb1-e45",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e42",
+   "text": "Refer urgently.",
+   "bbox": [
+    51.2,
+    452.1,
+    114.5,
+    463.0
+   ],
+   "key": "p18-29f45585"
+  },
+  {
+   "id": "p18-rb1-e46",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e42",
+   "text": "While awaiting transport:",
+   "bbox": [
+    51.2,
+    462.1,
+    153.4,
+    473.0
+   ],
+   "key": "p18-2494c0a4"
+  },
+  {
+   "id": "p18-rb1-e47",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e42",
+   "text": "Check BP, pulse, respiratory rate, oxygen saturation and GCS every 15 minutes. Insert urinary catheter.",
+   "bbox": [
+    56.9,
+    472.1,
+    448.5,
+    483.0
+   ],
+   "key": "p18-b4f467dc"
+  },
+  {
+   "id": "p18-rb1-e48",
+   "page": 18,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with decreased consciousness:",
+   "section_y": 91.5,
+   "indent": 2,
+   "parent": "p18-rb1-e42",
+   "text": "If BP < 90/60, pulse > 100 or < 50, respiratory rate > 20 or < 9, oxygen saturation < 94% or drop in GCS, reassess and manage airway, breathing, circulation and level of consciousness 16.",
+   "bbox": [
+    56.9,
+    482.1,
+    773.9,
+    493.0
+   ],
+   "key": "p18-d2a70d56"
+  },
+  {
+   "id": "p18-out-e01",
+   "page": 18,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "DECREASED CONSCIOUSNESS",
+   "bbox": [
+    298.9,
+    48.5,
+    543.0,
+    70.8
+   ],
+   "key": "p18-cc3018aa"
+  },
+  {
+   "id": "p18-out-e02",
+   "page": 18,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1Common allergens include medication, food or insect bite/sting within the past few hours. 2If dextrose 10% unavailable: mix 1 part dextrose 50% to 4 parts water for injection to make dextrose 10% solution. 3If dextrose 5% not available: add 10mL dextrose 50% to each 100mL of sodium chloride 0.9%. 4Avoid giving > 50mL/kg in the first 4 hours. 5Avoid using insulin needle, use 22-25 gauge needle. 6If severe penicillin allergy (previous anaphylaxis, urticaria or angioedema), discuss with doctor.",
+   "bbox": [
+    34.0,
+    535.3,
+    796.5,
+    551.8
+   ],
+   "key": "p18-8b7b7b44"
+  }
+ ]
+}

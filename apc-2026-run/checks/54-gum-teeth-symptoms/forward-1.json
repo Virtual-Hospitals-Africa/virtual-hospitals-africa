@@ -1,0 +1,259 @@
+{
+  "page": 54,
+  "checker": "forward-1",
+  "elements": [
+    {
+      "element_key": "p54-d516b4e7",
+      "scope": "in_scope",
+      "scope_reason": "Red-box header: defines the trigger (gum/teeth symptoms) and the 'any of' structure of the Urgent priority rule.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as (and <presenting complaint> (or ...)) per the house standard. The presenting complaint is expressed as the abstract SNOMED hierarchy concepts 'Tooth finding' / 'Gingivae finding'; descendants match in due_to, so any recorded tooth or gum finding triggers it. Note 'Dental abscess' (disorder) and 'Dental swelling' (finding) are NOT descendants of either, so a patient recorded with those alone would not trigger the task or the priority rule (low).",
+      "evidence": [
+        "Urgent: gum/teeth symptoms with danger signs :: (and (or (clinical_finding (snomed_concept \"Tooth finding\" \"finding\")) (clinical_finding (snomed_concept \"Gingivae finding\" \"finding\"))) (or ...))",
+        "Check for urgent and likely gum/teeth conditions :: (or (clinical_finding (snomed_concept \"Tooth finding\" \"finding\")) (clinical_finding (snomed_concept \"Gingivae finding\" \"finding\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-5176d624",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion with a threshold and three swelling sites.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "All four parts present with the right logic: temperature >= 38 °C AND (face swelling OR jaw swelling OR swelling next to tooth). Concepts: 'Facial swelling' (finding) for face; Swelling + finding_site 'Jaw region structure' for jaw; Swelling + finding_site 'Tooth, gum, and/or supporting structure' for next to tooth. All exist. Minor: the precoordinated 'Dental swelling' (finding, 162007004) exists and is arguably a closer match for 'swelling next to tooth' than the postcoordinated form, but the postcoordinated form is defensible and matches the gold-standard pattern.",
+      "evidence": [
+        "Urgent: gum/teeth symptoms with danger signs :: (and (>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38) (or (clinical_finding (snomed_concept \"Facial swelling\" \"finding\")) (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Jaw region structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Facial swelling\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Jaw region structure\" \"body structure\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-344aa684",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion, two parts (eat / drink), 'or'.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "",
+      "evidence": [
+        "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Unable to eat\" \"finding\"))",
+        "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Unable to drink\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Unable to eat\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Unable to drink\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-643f0c3e",
+      "scope": "in_scope",
+      "scope_reason": "Red-box criterion, two parts: spontaneous tooth pain (felt without touching tooth/gum) OR tooth pain that wakes the patient at night.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Both parts encoded as Toothache with qualifiers 'Spontaneous' and 'Night time' (both exist as qualifier values), joined by 'or'. No precoordinated tooth-specific concept exists for either ('Spontaneous pain' and 'Night pain' findings exist but are not tooth-specific), so the qualified form is the right choice.",
+      "evidence": [
+        "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\")))",
+        "Urgent: gum/teeth symptoms with danger signs :: (clinical_finding (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-c8879178",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "'Refer urgently.' is the action; it justifies the Urgent level of the priority rule, which is the level used. No separate encoding needed.",
+      "evidence": [
+        "Urgent: gum/teeth symptoms with danger signs :: Urgent"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-9c6fb10b",
+      "scope": "out_of_scope",
+      "scope_reason": "figure_or_note",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Photo credit.",
+      "evidence": [],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-dcca49c9",
+      "scope": "borderline",
+      "scope_reason": "Flowchart header for the non-urgent approach; its screening question ('Is there tooth pain, red or bleeding/enlarged gums? Look in mouth') names the findings the three branches depend on, so it is the natural source of the check_for list.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Tooth pain, red gums, bleeding gums and enlarged gums all appear in the check_for and each is consumed by a diagnosis rule. The 'not needing urgent attention' framing (probable rules fire even when the red box also fires) is consistent with the house standard, which does not gate probable rules on the priority rule.",
+      "evidence": [
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Toothache\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Gingival erythema\" \"disorder\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Bleeding gums\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Gingival enlargement\" \"disorder\"))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p54-c5bb22f4",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch criteria leading to 'Dental caries likely': brown/black staining at gumline, holes, pits, missing teeth.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts (staining / holes-pits / missing teeth) encoded as an 'or', matching the page's comma-or list. 'Staining of tooth' (disorder) exists and fits; 'Tooth discolored' (finding) is an alternative but no closer. Holes/pits encoded as 'Cavity' (morphologic abnormality) at 'Tooth structure': acceptable (the gold standard also wraps a morphologic abnormality in clinical_finding). 'Tooth absent' fits missing teeth. The page's 'brown/black' and 'at gumline' qualifiers are not expressed, but no SNOMED qualifier would add discriminating value here.",
+      "evidence": [
+        "Diagnose probable dental caries (gum/teeth symptoms) :: (or (clinical_finding (snomed_concept \"Staining of tooth\" \"disorder\")) (clinical_finding (snomed_concept \"Cavity\" \"morphologic abnormality\") (finding_site (snomed_concept \"Tooth structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Tooth absent\" \"finding\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Staining of tooth\" \"disorder\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Cavity\" \"morphologic abnormality\") (finding_site (snomed_concept \"Tooth structure\" \"body structure\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Tooth absent\" \"finding\"))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-2c4393c6",
+      "scope": "borderline",
+      "scope_reason": "Continuation of the caries branch: 'May have tooth pain with hot or cold food/drink'. 'May have' makes it a supporting feature rather than a criterion, so reasonable people could leave it out; but it is a discriminating finding the page names for this branch and SNOMED has exact concepts ('Tooth sensitivity to heat' / 'Tooth sensitivity to cold', disorder).",
+      "verdict": "missing",
+      "parts_missing": ["tooth pain with hot food/drink", "tooth pain with cold food/drink"],
+      "problem": "Not in the check_for and not used in the caries rule. Low consequence: the page does not make it necessary or sufficient for the caries conclusion.",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p54-0ec14f4e",
+      "scope": "in_scope",
+      "scope_reason": "'Dental caries likely' conclusion (the two bullets below it are management).",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded as a probable diagnosis of 'Dental caries' (disorder), the exact concept.",
+      "evidence": [
+        "Diagnose probable dental caries (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Dental caries\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-87167443",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch criteria leading to 'Gum problem likely': gums red / bleeding / enlarged.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Three parts as an 'or'. 'Gingival erythema' (disorder), 'Bleeding gums' (finding) and 'Gingival enlargement' (disorder) all exist and are the exact meanings.",
+      "evidence": [
+        "Diagnose probable gum problem (gum/teeth symptoms) :: (or (clinical_finding (snomed_concept \"Gingival erythema\" \"disorder\")) (clinical_finding (snomed_concept \"Bleeding gums\" \"finding\")) (clinical_finding (snomed_concept \"Gingival enlargement\" \"disorder\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-9b793f47",
+      "scope": "in_scope",
+      "scope_reason": "Contains the 'Gum problem likely' conclusion; the remaining bullets (mouth care, medication review for phenytoin/amlodipine, salt-water and chlorhexidine rinses) are management steps and out of scope by design.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "'Gum problem' has no exact SNOMED concept; 'Gingival disease' (disorder) is the right general concept (Gingivitis would be narrower than the page's wording). The medication review (phenytoin/amlodipine causing overgrowth) is a management step, not encoded, which is consistent with the brief.",
+      "evidence": [
+        "Diagnose probable gum problem (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Gingival disease\" \"disorder\") probable)"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-f3dc6e99",
+      "scope": "out_of_scope",
+      "scope_reason": "management_step",
+      "verdict": "",
+      "parts_missing": [],
+      "problem": "Chlorhexidine instructions, paracetamol dosing, and the 'Refer to dentist if' list (no better after 5 days, foul-smelling breath, swollen gums, temperature >= 38 °C, mobile teeth, loss of gum/bone, HIV or diabetes). The referral list is conditional logic, but routine (non-urgent) dentist referral is not a priority level the house standard encodes and there are no manage tasks in this pass. Noted in rule_level_problems as a possible future check_for extension (SNOMED has 'Swollen gums', 'Mobile tooth', 'Halitosis').",
+      "evidence": [],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p54-50b5e5b0",
+      "scope": "in_scope",
+      "scope_reason": "Flowchart branch criteria leading to 'Dental abscess likely': previous/current tooth pain with pus in mouth (continued in p54-7f0f7151).",
+      "verdict": "partial",
+      "parts_missing": ["previous (historical) tooth pain"],
+      "problem": "Two issues. (1) 'Previous/current tooth pain': only a current 'Toothache' is matched; a patient whose tooth pain has settled but who now has pus/swelling would not satisfy the rule. SNOMED has the qualifier value 'Previous' (and 'In the past'), so (or Toothache (Toothache qualifier Previous)) was expressible and would need its own check_for entry. (2) Logic: the page reads 'tooth pain with pus in mouth, swelling next to tooth'. The rule requires toothache AND pus AND swelling. The comma list is ambiguous; the more clinically natural reading is tooth pain with either sign (an abscess that has not pointed shows swelling without visible pus). Requiring all three makes the rule stricter than the page. 'Pus' (morphologic abnormality) at 'Oral cavity structure' is an acceptable rendering of 'pus in mouth'; no precoordinated concept exists.",
+      "evidence": [
+        "Diagnose probable dental abscess (gum/teeth symptoms) :: (and (clinical_finding (snomed_concept \"Toothache\" \"finding\")) (clinical_finding (snomed_concept \"Pus\" \"morphologic abnormality\") (finding_site (snomed_concept \"Oral cavity structure\" \"body structure\"))) (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\"))))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Toothache\" \"finding\"))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Pus\" \"morphologic abnormality\") (finding_site (snomed_concept \"Oral cavity structure\" \"body structure\")))"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "element_key": "p54-7f0f7151",
+      "scope": "in_scope",
+      "scope_reason": "Second half of the abscess branch criteria: swelling next to tooth.",
+      "verdict": "correct",
+      "parts_missing": [],
+      "problem": "Encoded with the same s-expression as the red box's 'swelling next to tooth', so one recorded finding serves both the abscess rule and (with fever) the Urgent rule, which is the right design. Same minor note as p54-5176d624: 'Dental swelling' (finding) is a precoordinated alternative. Whether this part should be 'and'-ed or 'or'-ed with pus is covered under p54-50b5e5b0.",
+      "evidence": [
+        "Diagnose probable dental abscess (gum/teeth symptoms) :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))",
+        "Check for urgent and likely gum/teeth conditions :: (clinical_finding (snomed_concept \"Swelling\" \"finding\") (finding_site (snomed_concept \"Tooth, gum, and/or supporting structure\" \"body structure\")))"
+      ],
+      "confidence": "high"
+    },
+    {
+      "element_key": "p54-e16ade11",
+      "scope": "borderline",
+      "scope_reason": "Contains the 'Dental abscess likely' conclusion (in scope) plus drug management (out of scope). The last two bullets are escalation criteria for a diagnosed abscess ('refer urgently if symptoms worsen, temperature >= 38 °C or no better after 2 days'; 'Refer same day if > 65 years, alcohol/drug misuse, HIV, diabetes'), which is triage logic the page states explicitly; the house standard allows Urgent where the page explicitly escalates, so reasonable people could expect a priority rule anchored on (active_condition Dental abscess).",
+      "verdict": "partial",
+      "parts_missing": [
+        "refer urgently if temperature >= 38 °C with dental abscess (only partly covered: the red box needs fever AND swelling)",
+        "refer urgently if symptoms worsen / no better after 2 days (time-based; expressible with onset comparators only loosely)",
+        "refer same day if > 65 years with dental abscess",
+        "refer same day if alcohol/drug misuse with dental abscess",
+        "refer same day if HIV with dental abscess",
+        "refer same day if diabetes with dental abscess"
+      ],
+      "problem": "The 'Dental abscess likely' conclusion is correctly encoded as probable 'Dental abscess' (disorder). None of the post-diagnosis escalation criteria are encoded. Age > 65, HIV and diabetes are all expressible (age comparison; 'Known present' qualifier on HIV infection / Diabetes mellitus, or active_condition). Low-to-medium consequence given the brief's management exclusion, but 'refer same day' / 'refer urgently' are priority decisions rather than treatment.",
+      "evidence": [
+        "Diagnose probable dental abscess (gum/teeth symptoms) :: (diagnosis (snomed_concept \"Dental abscess\" \"disorder\") probable)"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "outside_not_logic": [
+    "p54-e67aa779",
+    "p54-f6cf110d",
+    "p54-21ff7229",
+    "p54-e7eaae9a",
+    "p54-39d419a6",
+    "p54-80b5d23b"
+  ],
+  "rule_level_problems": [
+    {
+      "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+      "problem": "Requires toothache AND pus in mouth AND swelling next to tooth. The page's 'tooth pain with pus in mouth, swelling next to tooth' is a comma list that more plausibly means tooth pain with either sign; a swollen, unpointed abscess (no visible pus) will never be called probable. Consider (and Toothache (or Pus@Oral cavity Swelling@Tooth/gum)).",
+      "severity": "medium"
+    },
+    {
+      "rule": "Diagnose probable dental abscess (gum/teeth symptoms)",
+      "problem": "'Previous/current tooth pain' is encoded as current Toothache only. SNOMED has the qualifier values 'Previous' and 'In the past', so a (Toothache qualifier Previous) alternative was expressible and would need a matching check_for entry.",
+      "severity": "medium"
+    },
+    {
+      "rule": "(no rule) Dental abscess escalation",
+      "problem": "The page's explicit escalations for a diagnosed abscess ('Refer same day if > 65 years, alcohol/drug misuse, HIV, diabetes'; 'refer urgently if ... temperature >= 38 °C') have no priority evaluation anchored on (active_condition Dental abscess). The red box only covers fever when swelling is also present. Borderline under the no-manage-tasks policy, but these are priority decisions, not treatment.",
+      "severity": "medium"
+    },
+    {
+      "rule": "Check for urgent and likely gum/teeth conditions / Urgent: gum/teeth symptoms with danger signs",
+      "problem": "Trigger is (or 'Tooth finding' 'Gingivae finding'), abstract hierarchy concepts a nurse would not record directly; it works only through descendant matching. 'Dental abscess' (disorder) and 'Dental swelling' (finding) are not descendants of either, so a patient recorded with those as the presenting finding would trigger neither the check task nor the Urgent rule. A broader anchor (e.g. 'Finding of internal part of mouth', the common parent) or a possible pre-screen would close the gap.",
+      "severity": "low"
+    },
+    {
+      "rule": "Check for urgent and likely gum/teeth conditions",
+      "problem": "Supporting feature for caries ('may have tooth pain with hot or cold food/drink') is not checked for although exact concepts exist ('Tooth sensitivity to heat' / 'Tooth sensitivity to cold', disorder). Not a criterion on the page, so low.",
+      "severity": "low"
+    },
+    {
+      "rule": "Urgent: gum/teeth symptoms with danger signs / Diagnose probable dental abscess",
+      "problem": "'Swelling next to tooth' is postcoordinated as Swelling + finding_site 'Tooth, gum, and/or supporting structure'. The precoordinated 'Dental swelling' (finding, 162007004) exists and is a closer single concept. Defensible either way; consistency between the two rules is good.",
+      "severity": "low"
+    }
+  ],
+  "summary": "The red box is fully and correctly encoded: trigger, fever-plus-swelling (three sites), unable to eat/drink, and spontaneous/night tooth pain all match the page with existing concepts, and every check_for item is consumed. The main weakness is the dental abscess rule, which demands toothache AND pus AND swelling where the page's comma list more plausibly means pain with either sign, and which ignores the page's 'previous' tooth pain despite a usable 'Previous' qualifier. The page's post-diagnosis escalations for abscess (same-day referral if > 65, alcohol/drug misuse, HIV, diabetes; urgent if fever) have no priority rule, which is borderline under the no-management policy but is triage logic the page states explicitly."
+}

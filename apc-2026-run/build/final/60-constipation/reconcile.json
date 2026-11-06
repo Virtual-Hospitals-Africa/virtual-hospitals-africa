@@ -1,0 +1,87 @@
+{
+ "page": 60,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: impaction task triggered by (and Constipation (or Bed-ridden, Seen by palliative care service, Chronic constipation with overflow))  vs  B: impaction task triggered by Constipation alone, with the gate findings in its check_for",
+   "choice": "A",
+   "final_expr": "(and (clinical_finding (snomed_concept \"Constipation\" \"finding\")) (or Bed-ridden, Seen by palliative care service, Chronic constipation with overflow))",
+   "reason": "The page says \"If > 65 years, bed-bound/receiving palliative care, or overflow diarrhoea, check for solid immobile bulk of stool in rectum\", so the rectal check is conditional on the gate.",
+   "unsettled": false
+  },
+  {
+   "role": "trigger",
+   "difference": "A: colorectal cancer symptom task triggered by Constipation  vs  B: no such task",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Constipation\" \"finding\"))",
+   "reason": "\"Assess the patient with constipation for colorectal cancer … Ask about common colorectal cancer symptoms\" is an instruction to check every constipated patient.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Obstipation in the urgent task  vs  B: not checked",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Obstipation\" \"disorder\"))",
+   "reason": "It is the evidence for \"No stools … in the past 24 hours\" in the urgent rule (see priority decision), so it must be checked for.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Bed-ridden, Seen by palliative care service, Chronic constipation with overflow in the urgent task  vs  B: in the impaction task",
+   "choice": "A",
+   "final_expr": "(Bed-ridden, Seen by palliative care service, Chronic constipation with overflow in check_for of \"Check for urgent constipation conditions\")",
+   "reason": "Because the impaction task is gated on these findings (\"If > 65 years, bed-bound/receiving palliative care, or overflow diarrhoea, check …\"), they have to be asked about in the always-on constipation task.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: Chronic constipation with overflow (disorder)  vs  B: Spurious diarrhea - overflow (finding)",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "reason": "The page defines overflow diarrhoea as \"prolonged constipation followed by watery stool\"; A's concept is a kind of Chronic constipation and Chronic diarrhea, while B's sits under Incontinence of feces.",
+   "unsettled": false
+  },
+  {
+   "role": "check_for",
+   "difference": "A: colorectal cancer symptoms (Diarrhea, Rectal hemorrhage, Hematochezia, Abdominal discomfort, Abdominal colic, Flatulence symptom, Tenesmus of anus and/or rectum, Unexplained weight loss, Asthenia, Fatigue)  vs  B: none",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Diarrhea\" \"finding\")) (clinical_finding (snomed_concept \"Rectal hemorrhage\" \"disorder\")) (clinical_finding (snomed_concept \"Hematochezia\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal discomfort\" \"finding\")) (clinical_finding (snomed_concept \"Abdominal colic\" \"finding\")) (clinical_finding (snomed_concept \"Flatulence symptom\" \"finding\")) (clinical_finding (snomed_concept \"Tenesmus of anus and/or rectum\" \"finding\")) (clinical_finding (snomed_concept \"Unexplained weight loss\" \"finding\")) (clinical_finding (snomed_concept \"Asthenia\" \"finding\")) (clinical_finding (snomed_concept \"Fatigue\" \"finding\"))",
+   "reason": "The page lists these as the symptoms to \"Ask about\": \"diarrhoea\", \"Rectal bleeding or visible blood in stool\", \"abdominal discomfort including cramps, gas or pain\", \"tenesmus\", \"Unexplained weight loss/weakness/fatigue\".",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (>= (onset Obstipation) (time_ago 24 hours)) plus Constipation  vs  B: (>= (onset Constipation) (time_ago 24 hours))",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Constipation\" \"finding\")) (>= (onset (clinical_finding (snomed_concept \"Obstipation\" \"disorder\"))) (time_ago 24 hours))",
+   "reason": "\"No stools … in the past 24 hours\" describes a complete absence of stool, which Obstipation is closer to than constipation that began 24 hours ago; neither concept says \"no stools\" exactly.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (diagnosis Malignant neoplasm of cecum and/or colon and/or rectum possible)  vs  B: none",
+   "choice": "A",
+   "final_expr": "(diagnosis (snomed_concept \"Malignant neoplasm of cecum and/or colon and/or rectum\" \"disorder\") possible)",
+   "reason": "The section is headed \"Assess the patient with constipation for colorectal cancer\" and ends \"If patient has any of above symptoms, discuss/refer\", which reads as suspecting colorectal cancer, but the page never says \"consider\" or \"likely\".",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: possible colorectal cancer evidence = Constipation and (any listed symptom, incl. Abdominal pain)  vs  B: none",
+   "choice": "A",
+   "final_expr": "(and Constipation (or Diarrhea, Rectal hemorrhage, Hematochezia, Abdominal discomfort, Abdominal colic, Flatulence symptom, Abdominal pain, Tenesmus of anus and/or rectum, Unexplained weight loss, Asthenia, Fatigue))",
+   "reason": "\"If patient has any of above symptoms\" is an or over the listed symptoms, and \"cramps, gas or pain\" includes abdominal pain; follows the diagnosis decision above.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: impaction gate uses Chronic constipation with overflow  vs  B: Spurious diarrhea - overflow",
+   "choice": "A",
+   "final_expr": "(clinical_finding (snomed_concept \"Chronic constipation with overflow\" \"disorder\"))",
+   "reason": "Same as the check_for decision: the page's definition is \"prolonged constipation followed by watery stool\".",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. A was taken as base: it encodes the gated impaction check the page describes and the colorectal cancer assessment section; B left the colorectal section out. Shared choices kept: neither-stools-nor-flatus reading, Unable to break wind, Hard stool + Rectum structure for the rectal bulk, Seen by palliative care service, '> 65 years' and '> 50 years' not representable, Hb/TSH not modelled. B's questions on the Constipation-onset alternative and on whether the colorectal section should be a diagnosis at all are merged into the remaining questions. The urgent task's check_for also carries the impaction gate findings (bed-bound, palliative care, overflow) because the impaction task is gated on them."
+}

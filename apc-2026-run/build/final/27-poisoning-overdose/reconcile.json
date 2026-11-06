@@ -1,0 +1,19 @@
+{"page": 27, "base": "A",
+ "decisions": [
+  {"role": "check_for + priority_condition", "difference": "A: (finding … \"Post-ictal state\" \"finding\")  vs  B: (absent)", "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "reason": "The page says \"Having/just had a seizure\"; Post-ictal state expresses the \"just had\" half alongside Seizure, which both builds have.", "unsettled": false},
+  {"role": "check_for + priority_condition", "difference": "A: (finding … \"Clouded consciousness\" \"finding\")  vs  B: (absent)", "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page word is \"Confused\" and Clouded consciousness carries the SNOMED synonym \"Confused\"; it is kept alongside Acute confusion (in both builds) so either recording fires.", "unsettled": false},
+  {"role": "check_for + priority_condition + diagnosis_condition", "difference": "A: (finding … \"Constricted pupil\" \"finding\")  vs  B: (finding … \"Pin point pupils\" \"finding\")", "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pin point pupils\" \"finding\"))",
+   "reason": "The page says \"pinpoint\" in both the red box and the organophosphate bullet; Pin point pupils exists and is exactly that (A wrongly believed no such concept existed, and Constricted pupil is broader).", "unsettled": false},
+  {"role": "check_for + priority_condition + diagnosis_condition", "difference": "A: (finding … \"Excessive salivation\" \"disorder\")  vs  B: (finding … \"Dribbling from mouth\" \"finding\")", "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dribbling from mouth\" \"finding\"))",
+   "reason": "The page says \"Excessive drooling\"; Dribbling from mouth carries the SNOMED synonym \"Drooling\", the page's word, whereas salivation is a different term; \"excessive\" is unexpressed either way.", "unsettled": false},
+  {"role": "rule descriptions", "difference": "A: \"Check for urgent poisoning/overdose conditions\" / \"Urgent: poisoning/overdose with danger signs\"  vs  B: \"Check for urgent poisoning/overdose signs\" / \"Urgent: suspected poisoning/overdose with danger signs\"", "choice": "A",
+   "final_expr": "",
+   "reason": "Both are page-specific and unique; A's names follow the brief's example pattern (\"Check for urgent X conditions\").", "unsettled": false}
+ ],
+ "notes": "Both builds passed. Base A; the pupil and drooling concepts were swapped to B's in all three rules (check_for, priority, organophosphate diagnosis). Each concept difference in diff.json appears in up to three role groups; they are recorded once here per concept, so the 18 group-level differences (check_for -4/+2, priority -4/+2, diagnosis -2/+2) map to 4 concept decisions. Remaining questions merged from both builders; A's question on Constricted pupil dropped (resolved), a question on drooling concept added. Flowchart from A (rule names match)."}

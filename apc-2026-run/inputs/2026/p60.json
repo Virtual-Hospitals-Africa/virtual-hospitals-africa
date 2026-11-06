@@ -1,0 +1,256 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 60,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.6,
+    806.4,
+    131.6
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p60-rb1-e01",
+   "page": 60,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with constipation and:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with constipation and:",
+   "bbox": [
+    303.9,
+    91.6,
+    538.0,
+    102.7
+   ],
+   "key": "p60-3ea295c1"
+  },
+  {
+   "id": "p60-rb1-e02",
+   "page": 60,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with constipation and:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "No stools or flatus/wind in the past 24 hours with abdominal pain/distension",
+   "bbox": [
+    274.6,
+    101.9,
+    569.2,
+    112.7
+   ],
+   "key": "p60-e3979f69"
+  },
+  {
+   "id": "p60-rb1-e03",
+   "page": 60,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Refer same day.",
+   "section_y": 115.4,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer same day.",
+   "bbox": [
+    221.3,
+    115.4,
+    281.9,
+    126.4
+   ],
+   "key": "p60-4b9a5451"
+  },
+  {
+   "id": "p60-out-e01",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "CONSTIPATION",
+   "bbox": [
+    358.9,
+    48.5,
+    483.0,
+    70.8
+   ],
+   "key": "p60-57233c7b"
+  },
+  {
+   "id": "p60-out-e02",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with constipation not needing urgent attention • Review diet, fluid intake and medication (amitriptyline, schizophrenia treatment, codeine and morphine can cause constipation: discuss with doctor). • Advise that regular use of enemas or laxatives can worsen constipation. • If pregnant, give routine antenatal care 175. Advise that constipation is common during pregnancy and give advice as below. • Check Hb. If < 12 (woman) or < 13(man), anaemia likely 44. • If weakness/tiredness, weight gain, low mood, dry skin or cold intolerance, check TSH. If abnormal, refer to doctor. • If patient is bed-bound or has a life-limiting illness, also give palliative care 191. • If > 65 years, bed-bound/receiving palliative care, or overflow diarrhoea (prolonged constipation followed by watery stool), check for solid immobile bulk of stool in rectum. If present, impaction likely: refer.",
+   "bbox": [
+    51.0,
+    146.3,
+    790.0,
+    237.5
+   ],
+   "key": "p60-76bb003c"
+  },
+  {
+   "id": "p60-out-e03",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise the patient with constipation on behavioural changes • Advise that certain behavioural changes can help reduce the risk of colorectal cancer:",
+   "bbox": [
+    51.0,
+    382.7,
+    543.3,
+    403.7
+   ],
+   "key": "p60-85e3c5b5"
+  },
+  {
+   "id": "p60-out-e04",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Encourage patient at least 30 minutes of brisk physical activity (such as walking) at least 5 days a week. Increase activities of daily living like gardening, housework, walking instead of taking transport, using stairs instead of lifts.",
+   "bbox": [
+    342.6,
+    415.9,
+    474.4,
+    470.0
+   ],
+   "key": "p60-3553d185"
+  },
+  {
+   "id": "p60-out-e05",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If overweight/obese 156.",
+   "bbox": [
+    551.2,
+    433.9,
+    618.9,
+    452.0
+   ],
+   "key": "p60-97db84e3"
+  },
+  {
+   "id": "p60-out-e06",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient drinks alcohol, advise to stop 165.",
+   "bbox": [
+    669.8,
+    429.4,
+    722.2,
+    456.5
+   ],
+   "key": "p60-1432cd44"
+  },
+  {
+   "id": "p60-out-e07",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Advise a high fibre diet (vegetables, fruit, coarse mielie meal, bran and cooked dried prunes), with adequate fluid intake.",
+   "bbox": [
+    49.1,
+    415.9,
+    121.2,
+    470.0
+   ],
+   "key": "p60-63a37d3c"
+  },
+  {
+   "id": "p60-out-e08",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If patient smokes, encourage to stop 164.",
+   "bbox": [
+    210.7,
+    429.4,
+    269.2,
+    456.5
+   ],
+   "key": "p60-1e89f954"
+  },
+  {
+   "id": "p60-out-e09",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Treat the patient with constipation • If no better with diet and exercise, give sennosides A and B 13.5mg at night or lactulose 10-20 mL once daily. If needed, increase sennosides A and B to 2 tablets (up to 4 tablets at night), or increase lactulose to 12 hourly. • If any of: > 65 years old/frail, postpartum woman, spinal disease, severe cognitive impairment, pelvic organ/rectal prolapse after surgery, refer to rehabilitation services for bowel care. • If no response after 1 week of laxative use, or if recent change in bowel habits, weight loss, blood in stool or occult blood positive, or cause uncertain, refer.",
+   "bbox": [
+    51.0,
+    488.4,
+    773.8,
+    539.5
+   ],
+   "key": "p60-3ead8ac8"
+  },
+  {
+   "id": "p60-out-e10",
+   "page": 60,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Assess the patient with constipation for colorectal cancer • Patient has an increased risk of colorectal cancer if > 50 years old and any of: - Previous history of colorectal cancer, polyps, ulcerative colitis, or Crohn's disease - Family history of colorectal cancer in first-degree relative (parent, sibling or child), especially if diagnosed before age 60, or family history of multiple polyps or Lynch syndrome. • Ask about common colorectal cancer symptoms: - Change in bowel habits like constipation, diarrhoea, or change in stool consistency - Rectal bleeding or visible blood in stool - Persistent abdominal discomfort including cramps, gas or pain - A feeling that the bowel does not empty completely after defecation (tenesmus) - Unexplained weight loss/weakness/fatigue. • If patient has any of above symptoms, discuss/refer.",
+   "bbox": [
+    51.0,
+    254.5,
+    701.5,
+    365.6
+   ],
+   "key": "p60-cb8c75ea"
+  }
+ ]
+}

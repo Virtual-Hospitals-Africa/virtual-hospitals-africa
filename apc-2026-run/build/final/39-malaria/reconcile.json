@@ -1,0 +1,207 @@
+{
+ "page": 39,
+ "base": "B",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (active_condition (snomed_concept \"Fever\" \"finding\"))  vs  B: (absent)",
+   "choice": "B",
+   "final_expr": "",
+   "reason": "The page's suspicion criterion is 'temperature ≥ 38°C', a measured value already in the trigger; it does not name a reported fever, so the extra Fever trigger is not on the page.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "both",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page says 'drowsy/confused' without qualification; the app records confusion either as the 'Confusion' warning sign (Acute confusion) or the AVPU 'Confused' level (Clouded consciousness), and both are readings of that word.",
+   "unsettled": false
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "both",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\")) ; (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "The page says 'drowsy/confused' without qualification; the app records confusion either as the 'Confusion' warning sign (Acute confusion) or the AVPU 'Confused' level (Clouded consciousness), and both are readings of that word.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Complicated malaria\" \"disorder\") possible)",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Complicated malaria\" \"disorder\") possible)",
+   "reason": "The red box says 'Manage as suspected severe malaria', a 'suspect X' statement the scope turns into a possible diagnosis; SNOMED has no Severe malaria, so Complicated malaria (child of Malaria) is the closest.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "choice": "B",
+   "final_expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 3)",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "choice": "B",
+   "final_expr": "(< (measurement (snomed_concept \"Blood glucose status\" \"observable entity\") mmol/L) 4)",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "choice": "B",
+   "final_expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "choice": "B",
+   "final_expr": "(> (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))) (time_ago 12 hours))",
+   "choice": "B",
+   "final_expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anuria\" \"finding\"))) (time_ago 12 hours))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Malaria\" \"disorder\") possible)",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Malaria\" \"disorder\") possible)",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Black urine\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Black urine\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Easy bruising\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Jaundice\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Post-ictal state\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "reason": "Evidence of B's 'suspected severe malaria' rule, which is the red-box list 'suspected malaria and any of:' that the page says to manage as suspected severe malaria.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (absent; B used only (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\")))",
+   "choice": "new",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "reason": "Follows the 'both' decision for 'confused' so the complicated-malaria rule uses the same red-box evidence as the urgent rule.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed and agreed on 61 of 64/84 conditions. B was taken as base (it also encodes 'Manage as suspected severe malaria' as possible Complicated malaria). Differences: Fever trigger dropped (unsettled, question for a clinician); 'confused' encoded as both Acute confusion and Clouded consciousness in check_for, urgent rule and complicated-malaria rule; B's task descriptions kept. Remaining questions merged from both builders. Hb < 7 remains not representable (rules fire less often)."
+}

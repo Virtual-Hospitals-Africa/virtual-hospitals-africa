@@ -1,0 +1,837 @@
+{
+ "page": 77,
+ "lisp_file": "77-joint-symptoms.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-7c96c325"
+   ],
+   "quote": "joint symptom/s"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "warm"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "tender"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "swollen"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "limited range of movement"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "extremely painful joint"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "Injury in past 48 hours"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "severe pain/swelling"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\"))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "deformity"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "element_keys": [
+    "p77-2e000362"
+   ],
+   "quote": "Unable to weight-bear"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gout\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "known gout"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of joint of hallux\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "big toe"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of midfoot region of foot\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "midfoot"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "ankle"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "no fever"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\"))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "wound"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\"))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "painless non-itchy skin rash"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "non-itchy"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-c2128b83"
+   ],
+   "quote": "sudden onset of 1-3 warm, extremely painful"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for urgent joint symptom conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p77-c2128b83"
+   ],
+   "quote": "red"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "warm"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "swollen"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "extremely painful joint"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "limited range of movement"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable septic arthritis (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infective arthritis\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "septic arthritis likely"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))) (time_ago 48 hours))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "Injury in past 48 hours"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "severe pain"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "severe pain/swelling"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\"))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "deformity"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable fracture (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Fracture of bone\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "fracture likely"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "joint warm"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "tender"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "swollen"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "unable to do all actions comfortably"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+   "element_keys": [
+    "p77-5f68c027"
+   ],
+   "quote": "Has there been recent injury?"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable sprain/strain (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Sprain of ligament of joint\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-ba5e31c6"
+   ],
+   "quote": "Sprain/strain likely"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "joint warm"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "tender"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "swollen"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "unable to do all actions comfortably"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-5f68c027"
+   ],
+   "quote": "Has there been recent injury?"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p77-695fa732"
+   ],
+   "quote": "Has joint pain lasted ≥ 6 weeks?"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable chronic arthritis (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Chronic arthritis\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-cc21b4c3",
+    "p77-6b2baac4"
+   ],
+   "quote": "Chronic arthritis likely"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "joint warm"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tenderness of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "tender"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "swollen"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))",
+   "element_keys": [
+    "p77-40f0dbf3"
+   ],
+   "quote": "unable to do all actions comfortably"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-5f68c027"
+   ],
+   "quote": "Has there been recent injury?"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p77-695fa732"
+   ],
+   "quote": "Has joint pain lasted ≥ 6 weeks?"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\"))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\"))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (qualifier (snomed_concept \"Painless\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "painless non-itchy skin rash"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "non-itchy"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable gonococcal arthritis (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Gonococcal infection of joint\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-fe22e78f"
+   ],
+   "quote": "Gonococcal arthritis likely"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gout\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "known gout"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of joint of hallux\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "big toe"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of midfoot region of foot\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "midfoot"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "ankle"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "no fever"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "wound"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-5f68c027"
+   ],
+   "quote": "Has there been recent injury?"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\"))) (time_ago 6 weeks))",
+   "element_keys": [
+    "p77-695fa732"
+   ],
+   "quote": "Has joint pain lasted ≥ 6 weeks?"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vaginal discharge\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c066",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Urethral discharge\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "recent genital discharge"
+  },
+  {
+   "claim_id": "c067",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\") (snomed_concept \"No\" \"qualifier value\") (qualifier (snomed_concept \"Painless\" \"qualifier value\"))))",
+   "element_keys": [
+    "p77-a9357b1e"
+   ],
+   "quote": "painless non-itchy skin rash"
+  },
+  {
+   "claim_id": "c068",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint warm\" \"finding\"))",
+   "element_keys": [
+    "p77-c2128b83"
+   ],
+   "quote": "warm"
+  },
+  {
+   "claim_id": "c069",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")) (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-695fa732"
+   ],
+   "quote": "Has joint pain lasted ≥ 6 weeks?"
+  },
+  {
+   "claim_id": "c070",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p77-c2128b83"
+   ],
+   "quote": "red"
+  },
+  {
+   "claim_id": "c071",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\"))",
+   "element_keys": [
+    "p77-6acc2f93"
+   ],
+   "quote": "swollen joints"
+  },
+  {
+   "claim_id": "c072",
+   "rule": "Diagnose probable acute gout (joint symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Acute gout\" \"disorder\") probable)",
+   "element_keys": [
+    "p77-037cf54b"
+   ],
+   "quote": "Acute gout likely"
+  },
+  {
+   "claim_id": "c073",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\"))",
+   "element_keys": [
+    "p77-7c96c325"
+   ],
+   "quote": "joint symptom/s"
+  },
+  {
+   "claim_id": "c074",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Infective arthritis\" \"disorder\"))",
+   "element_keys": [
+    "p77-3f5aea10"
+   ],
+   "quote": "septic arthritis likely"
+  },
+  {
+   "claim_id": "c075",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p77-66f4b3f4"
+   ],
+   "quote": "Temperature ≥ 38°C"
+  },
+  {
+   "claim_id": "c076",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Fracture of bone\" \"disorder\"))",
+   "element_keys": [
+    "p77-e6b01040"
+   ],
+   "quote": "fracture likely"
+  },
+  {
+   "claim_id": "c077",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to weight-bear\" \"finding\"))",
+   "element_keys": [
+    "p77-2e000362"
+   ],
+   "quote": "Unable to weight-bear"
+  },
+  {
+   "claim_id": "c078",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gout\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "known gout"
+  },
+  {
+   "claim_id": "c079",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of joint of hallux\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "big toe"
+  },
+  {
+   "claim_id": "c080",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of midfoot region of foot\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "midfoot"
+  },
+  {
+   "claim_id": "c081",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Ankle joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "ankle"
+  },
+  {
+   "claim_id": "c082",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fever\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "no fever"
+  },
+  {
+   "claim_id": "c083",
+   "rule": "Urgent: joint symptoms with danger signs",
+   "role": "priority_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Wound\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p77-78aa9e3f"
+   ],
+   "quote": "wound"
+  }
+ ]
+}

@@ -1,0 +1,347 @@
+{
+ "page": 29,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p29-2e063dc4",
+   "scope": "borderline",
+   "scope_reason": "Header text, but it is the trigger of the task",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header is the trigger; encoded as task trigger and conjunct of the priority rule.",
+   "evidence": [
+    "task 'Check for urgent bite/sting conditions' :: (or (clinical_finding (snomed_concept \"Bite - wound\" \"disorder\")) (clinical_finding (snomed_concept \"Venomous sting\" \"disorder\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-b4137a46",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Minor: 'even if bite not seen' cannot be encoded; the rule also needs the generic bite trigger conjunct, so a Snake bite finding alone only fires if it is a descendant of Bite - wound (not verified here).",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Snake bite - wound\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-26c10958",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "generalised weakness"
+   ],
+   "problem": "Page says 'Weakness' (general); encoded as Muscle weakness, which is narrower. A generic 'Weakness'/'Asthenia' concept would be closer.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Muscle weakness\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-3a5d9eb0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Structure right (spider AND any of three). 'Cramp' is a broad concept (page says muscle cramps); acceptable but slightly loose.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (and (clinical_finding (snomed_concept \"Spider bite wound\" \"disorder\")) (or Dribbling from mouth | Restlessness | Cramp))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-e59999bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Concept says poisoning due to bite, page says scorpion sting; no closer concept found for sting, acceptable.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Poisoning due to bite of Scorpiones\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-e7a5aa43",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Has drooping eyelids\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-10043674",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "exposure to possible allergen"
+   ],
+   "problem": "Symptom list encoded as a probable Anaphylaxis diagnosis rule and the priority rule uses active_condition Anaphylaxis, which is sound only if a probable diagnosis counts as active. 'Exposure to possible allergen' (medications, new food, insect bite within hours) is not encoded. Dizziness/collapse are split correctly; 'sudden onset' applied via qualifier to every symptom, ok. Priority does not fire directly from the symptoms.",
+   "evidence": [
+    "Diagnose probable anaphylaxis after bite/sting :: (and (or bite sting) (or Generalized pruritus sudden onset ... Diarrhea sudden onset))",
+    "Urgent: bite/sting with danger signs :: (active_condition (snomed_concept \"Anaphylaxis\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-400f0445",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "needing sutures"
+   ],
+   "problem": "'Needing sutures' is dropped; 'deep or large' is encoded as or, which is a reasonable reading, but the Large qualifier on the generic Bite - wound is redundant with the trigger concept and is the only 'large' representation.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Deep bite wound\" \"morphologic abnormality\"))",
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Bite - wound\" \"disorder\") (qualifier (snomed_concept \"Large\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-f136d2d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Speaking' encoded as Difficulty talking; both parts present as separate or-branches.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: Difficulty swallowing",
+    "Urgent: bite/sting with danger signs :: Difficulty talking"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-fe3e8682",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Actively' not distinguished; acceptable.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Bleeding\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-bc84e6a4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Diplopia\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-57e75a52",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Body-site concept is known to fail to resolve in VHA for some sites; verify 'Structure of eye proper' loads.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Toxic effect of venom\" \"disorder\") (finding_site (snomed_concept \"Structure of eye proper\" \"body structure\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-25024e2b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both parts present. Note the measurement is in the priority rule but not in the task check_for list.",
+   "evidence": [
+    "Urgent: bite/sting with danger signs :: (clinical_finding (snomed_concept \"Shock\" \"disorder\"))",
+    "Urgent: bite/sting with danger signs :: (< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-4488079a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-1a82d877",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-41b40e2e",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-e25e6e61",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-63223330",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-60d39895",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-9a3e4cf6",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-f76d946c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-5e19824b",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p29-680f5095",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Prurigo simplex has papular urticaria as a synonym; ok. Page places this under the spider/insect bite branch; rule has no bite/sting trigger but Insect bite reaction implies it.",
+   "evidence": [
+    "Diagnose probable papular urticaria after bite/sting :: (clinical_finding (snomed_concept \"Insect bite reaction\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-309c4bf3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page text 'red, warm painful' encoded as and of all three; reasonable.",
+   "evidence": [
+    "Diagnose probable cellulitis after bite/sting :: (and (or bite sting) Erythema Warm skin Pain of skin)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-c8dad10c",
+   "scope": "borderline",
+   "scope_reason": "Footnote carries 'X likely' logic",
+   "verdict": "missing",
+   "parts_missing": [
+    "shock likely diagnosis rule"
+   ],
+   "problem": "Footnote 2: 'If SBP < 80, pulse >= 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely' is a probable-Shock diagnostic criterion set, with representable parts (SBP, pulse, RR, confusion, restlessness, weakness). No Shock probable diagnosis rule exists; shock only enters as a raw finding.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-db448d6a",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing (rabies PEP decision, drives management only)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p29-298ed22d",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing (rabies PEP decision, management only)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p29-95dce083",
+  "p29-23c7ce46",
+  "p29-edb3be06",
+  "p29-191f23d5",
+  "p29-3128e6a1",
+  "p29-e3fde80d",
+  "p29-07112bdd",
+  "p29-5aba51ae",
+  "p29-d1b17f6a",
+  "p29-35faf264",
+  "p29-3df41211",
+  "p29-e50833d5",
+  "p29-a0d601cb",
+  "p29-ad18bfb0",
+  "p29-176a28c5"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: bite/sting with danger signs",
+   "problem": "Anaphylaxis enters the priority rule only via active_condition Anaphylaxis, fed by a probable diagnosis rule; if probable diagnoses do not count as active, the headline red-box criterion never triggers Urgent. Allergen exposure not encoded.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: bite/sting with danger signs",
+   "problem": "Whole rule is gated on generic Bite - wound / Venomous sting; Snake bite, Spider bite, Scorpiones poisoning may not be descendants, so patients recorded only with the specific concept might miss the trigger.",
+   "severity": "medium"
+  },
+  {
+   "rule": "task check_for",
+   "problem": "Systolic blood pressure measurement is used in the priority rule but absent from check_for; Erythema/Warm skin/Pain of skin are check_for items serving only the non-urgent cellulitis rule.",
+   "severity": "low"
+  },
+  {
+   "rule": "(missing) shock likely",
+   "problem": "Footnote 2 criteria for 'shock likely' not encoded as a probable diagnosis.",
+   "severity": "medium"
+  }
+ ],
+ "summary": "Most red-box criteria are encoded with sensible concepts, but the anaphylaxis criterion reaches the Urgent rule only indirectly through active_condition and omits allergen exposure, and the footnote-2 'shock likely' criteria have no diagnosis rule. Smaller issues: Weakness narrowed to Muscle weakness, 'needing sutures' dropped, and specific bite concepts depend on the generic bite trigger."
+}

@@ -1,0 +1,1115 @@
+{
+ "edition": "2026",
+ "page": 31,
+ "lisp_file": "31-burns.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent burn features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-53beb9c2"
+   ],
+   "quote": "burn/s",
+   "confidence": "high",
+   "note": "Presenting complaint from the red-box header; Burn (disorder) is the recorded warning-sign form and matches its descendants."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p31-06449a03"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p31-06449a03"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "Clouded consciousness is VHA's usual form for confusion (synonym \"confused\"); Acute confusion rejected because the page does not say acute."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrical burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-e71bca1c"
+   ],
+   "quote": "Electric",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-e71bca1c"
+   ],
+   "quote": "chemical burn",
+   "confidence": "high",
+   "note": "Direct concept; also a recorded warning sign."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Full thickness burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-786be6de"
+   ],
+   "quote": "Full-thickness burn",
+   "confidence": "high",
+   "note": "Direct concept; the descriptors (white/black, painless, leathery, dry) are how to recognise it, not separate criteria."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Partial thickness burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "Partial thickness burn",
+   "confidence": "high",
+   "note": "Direct concept, paired with the TBSA bands for > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 10-19 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 20-29 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 30-39 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 40-49 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 50-59 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 60-69 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 70-79 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 80-89 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 90 percent OR more of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of chest wall\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest",
+   "confidence": "high",
+   "note": "Precoordinated site concept plus Circumferential qualifier."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of upper limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest/limbs",
+   "confidence": "high",
+   "note": "\"limbs\" split into upper and lower limb concepts, each with Circumferential qualifier."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of lower limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest/limbs",
+   "confidence": "high",
+   "note": "\"limbs\" split into upper and lower limb concepts, each with Circumferential qualifier."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of face\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "Burn to face",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of hand\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "hand/foot",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of foot\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "hand/foot",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "genitals",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "joint",
+   "confidence": "medium",
+   "note": "No precoordinated \"Burn of joint\"; Burn with finding_site Joint structure (verified body structure)."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of neck\" \"disorder\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "burns to face/neck",
+   "confidence": "high",
+   "note": "Checked for as a sign of inhalation injury."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "hoarse voice",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "stridor",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "black sputum",
+   "confidence": "medium",
+   "note": "No \"Black sputum\" concept; Finding of color of sputum with Black color qualifier."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p31-13d72fb4"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock as the page writes it, OR with SBP < 80 (decision for all pages)."
+  },
+  {
+   "rule": "Check for urgent burn features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cigarette burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-c4a41afb"
+   ],
+   "quote": "cigarette burns",
+   "confidence": "medium",
+   "note": "Only the cigarette-burn cue has a SNOMED concept; specific-shape and repeated/unexplained burns have none."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-53beb9c2"
+   ],
+   "quote": "burn/s",
+   "confidence": "high",
+   "note": "Patient with burn/s, as in the header."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of face\" \"disorder\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "burns to face/neck",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of neck\" \"disorder\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "burns to face/neck",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "difficulty breathing",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "hoarse voice",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "stridor",
+   "confidence": "high",
+   "note": "Listed sign of inhalation injury."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of color of sputum\" \"finding\") (qualifier (snomed_concept \"Black color\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "black sputum",
+   "confidence": "medium",
+   "note": "No \"Black sputum\" concept; Finding of color of sputum with Black color qualifier."
+  },
+  {
+   "rule": "Diagnose probable inhalation injury in patient with burns",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Injury to respiratory system due to inhaled substance\" \"disorder\") probable)",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "Inhalation injury likely",
+   "confidence": "medium",
+   "note": "\"X likely\" -> probable. Generic inhaled-substance injury is the parent of smoke and hot-gas inhalation injury."
+  },
+  {
+   "rule": "Consider abuse in patient with cigarette burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cigarette burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-c4a41afb"
+   ],
+   "quote": "cigarette burns",
+   "confidence": "medium",
+   "note": "Only the cigarette-burn cue has a SNOMED concept; specific-shape and repeated/unexplained burns have none."
+  },
+  {
+   "rule": "Consider abuse in patient with cigarette burns",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Victim of abuse\" \"finding\") possible)",
+   "element_keys": [
+    "p31-c4a41afb"
+   ],
+   "quote": "consider abuse",
+   "confidence": "medium",
+   "note": "\"Consider abuse\" -> possible; Victim of abuse (finding) chosen as the abuse concept."
+  },
+  {
+   "rule": "Consider self-harm in patient with cigarette burns",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cigarette burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-c4a41afb"
+   ],
+   "quote": "cigarette burns",
+   "confidence": "medium",
+   "note": "Only the cigarette-burn cue has a SNOMED concept; specific-shape and repeated/unexplained burns have none."
+  },
+  {
+   "rule": "Consider self-harm in patient with cigarette burns",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Self-injurious behavior\" \"finding\") possible)",
+   "element_keys": [
+    "p31-c4a41afb"
+   ],
+   "quote": "self-harm",
+   "confidence": "medium",
+   "note": "\"Consider ... self-harm\" -> possible; Self-injurious behavior (finding) is the active SNOMED name for self-harm."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-53beb9c2"
+   ],
+   "quote": "burn/s",
+   "confidence": "high",
+   "note": "Patient with burn/s, as in the header."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p31-06449a03"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\"))",
+   "element_keys": [
+    "p31-06449a03"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "Clouded consciousness is VHA's usual form for confusion (synonym \"confused\"); Acute confusion rejected because the page does not say acute."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrical burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-e71bca1c"
+   ],
+   "quote": "Electric",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chemical burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-e71bca1c"
+   ],
+   "quote": "chemical burn",
+   "confidence": "high",
+   "note": "Direct concept; also a recorded warning sign."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Full thickness burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-786be6de"
+   ],
+   "quote": "Full-thickness burn",
+   "confidence": "high",
+   "note": "Direct concept; the descriptors (white/black, painless, leathery, dry) are how to recognise it, not separate criteria."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Partial thickness burn\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "Partial thickness burn",
+   "confidence": "high",
+   "note": "Direct concept, paired with the TBSA bands for > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 10-19 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 20-29 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 30-39 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 40-49 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 50-59 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 60-69 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 70-79 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 80-89 percent of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn any degree involving 90 percent OR more of body surface\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Over 70 percent body burnt\" \"disorder\"))",
+   "element_keys": [
+    "p31-a7ac1df2"
+   ],
+   "quote": "> 10% TBSA",
+   "confidence": "medium",
+   "note": "No % TBSA observable; SNOMED bands of 10% or more used. The 10-19 band includes exactly 10%, so it fires at 10% where the page says > 10%."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Injury to respiratory system due to inhaled substance\" \"disorder\"))",
+   "element_keys": [
+    "p31-6919538e"
+   ],
+   "quote": "Inhalation injury likely",
+   "confidence": "medium",
+   "note": "Red-box item names a likely diagnosis, so the priority rule references the probable diagnosis."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of chest wall\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest",
+   "confidence": "high",
+   "note": "Precoordinated site concept plus Circumferential qualifier."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of upper limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest/limbs",
+   "confidence": "high",
+   "note": "\"limbs\" split into upper and lower limb concepts, each with Circumferential qualifier."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of lower limb\" \"disorder\") (qualifier (snomed_concept \"Circumferential\" \"qualifier value\")))",
+   "element_keys": [
+    "p31-a0dec696"
+   ],
+   "quote": "Circumferential burn of chest/limbs",
+   "confidence": "high",
+   "note": "\"limbs\" split into upper and lower limb concepts, each with Circumferential qualifier."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of face\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "Burn to face",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of hand\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "hand/foot",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of foot\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "hand/foot",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "genitals",
+   "confidence": "high",
+   "note": "Direct concept."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Joint structure\" \"body structure\")))",
+   "element_keys": [
+    "p31-e79d0353"
+   ],
+   "quote": "joint",
+   "confidence": "medium",
+   "note": "No precoordinated \"Burn of joint\"; Burn with finding_site Joint structure (verified body structure)."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 94)",
+   "element_keys": [
+    "p31-8ff8bf8f"
+   ],
+   "quote": "Oxygen saturation < 94%",
+   "confidence": "high",
+   "note": "Routine vital, exact threshold."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38)",
+   "element_keys": [
+    "p31-3ac79df9"
+   ],
+   "quote": "Temperature ≥ 38°C",
+   "confidence": "high",
+   "note": "Routine vital, exact threshold."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p31-13d72fb4"
+   ],
+   "quote": "Shock",
+   "confidence": "high",
+   "note": "Shock as the page writes it, OR with SBP < 80 (decision for all pages)."
+  },
+  {
+   "rule": "Urgent: burns with urgent features",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p31-13d72fb4"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": "Exact threshold and direction."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p31-dd5d2121",
+   "element_id": "p31-rb1-e04",
+   "text": "How to calculate %TBSA of burn",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-3ed861b0",
+   "element_id": "p31-rb1-e09",
+   "text": "Front",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-157e0add",
+   "element_id": "p31-rb1-e10",
+   "text": "Back",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-27ea661c",
+   "element_id": "p31-rb1-e15",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-dd46ed06",
+   "element_id": "p31-rb1-e16",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-da9f4da0",
+   "element_id": "p31-rb1-e17",
+   "text": "Other injury",
+   "reason_category": "no_snomed_concept",
+   "reason": "No SNOMED concept for an injury other than a burn: Traumatic injury and Injury caused by causative force both subsume Burn, so either would make every burn urgent. Rule fires less often than the page intends."
+  },
+  {
+   "element_key": "p31-a165e21f",
+   "element_id": "p31-rb1-e18",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-1a77f82e",
+   "element_id": "p31-rb1-e19",
+   "text": "Assess and manage airway, breathing and circulation 16. Give face mask oxygen if burn > 10% TBSA, inhalation injury, oxygen saturation < 94% or drowsy/confused.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-f625632e",
+   "element_id": "p31-rb1-e20",
+   "text": "Back 18%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-6e387358",
+   "element_id": "p31-rb1-e21",
+   "text": "Front 18%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-c82dfa7b",
+   "element_id": "p31-rb1-e22",
+   "text": "Remove clothing. Cool burn with cool tap water or wet towel/s for 30 minutes. Keep warm with clean, dry sheet.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-4e067d7d",
+   "element_id": "p31-rb1-e23",
+   "text": "Give IV fluids:",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-ddf6c629",
+   "element_id": "p31-rb1-e24",
+   "text": "Insert a large-bore IV line. If % TBSA burnt > 40% or if transport to hospital likely to take more than 45 minutes, insert a second IV line.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-15b51267",
+   "element_id": "p31-rb1-e25",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-800f4bfd",
+   "element_id": "p31-rb1-e26",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-3d7c0be4",
+   "element_id": "p31-rb1-e27",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-bc9a74b1",
+   "element_id": "p31-rb1-e28",
+   "text": "4.5%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-798dad6b",
+   "element_id": "p31-rb1-e29",
+   "text": "If > 10% TBSA:",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-00270aee",
+   "element_id": "p31-rb1-e30",
+   "text": "If shock1/systolic BP < 80, give sodium chloride 0.9% 1L IV rapidly. Repeat until systolic BP > 80.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-743363fd",
+   "element_id": "p31-rb1-e31",
+   "text": "1%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-72e8d62e",
+   "element_id": "p31-rb1-e32",
+   "text": "Also give sodium chloride 0.9% IV 4mL x weight (kg) x % TBSA over 24 hours. Give half this volume in first 8 hours from time of burn. Calculate the hourly volum",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-4a1707af",
+   "element_id": "p31-rb1-e33",
+   "text": "9%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-db0b6d06",
+   "element_id": "p31-rb1-e34",
+   "text": "9%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-7d382df2",
+   "element_id": "p31-rb1-e35",
+   "text": "9%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-79746519",
+   "element_id": "p31-rb1-e36",
+   "text": "9%",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-4b439d55",
+   "element_id": "p31-rb1-e37",
+   "text": "Insert a urinary catheter and document urine output every hour.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-9e591667",
+   "element_id": "p31-rb1-e38",
+   "text": "Give paracetamol 500mg-1g orally 4-6 hourly (max 4g/24 hours). If pain severe, give morphine 3-10mg slow IV2.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-f8ec9f63",
+   "element_id": "p31-rb1-e39",
+   "text": "If other injuries, manage 30.",
+   "reason_category": "cross_reference_only",
+   "reason": "Pointer to the trauma page (30) for other injuries; management."
+  },
+  {
+   "element_key": "p31-fcd562e6",
+   "element_id": "p31-rb1-e40",
+   "text": "Clean and dress burn gently:",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-fe043c49",
+   "element_id": "p31-rb1-e41",
+   "text": "Remove loose/dead skin and clean burn with chlorhexidine 0.05% or sodium chloride 0.9%.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-e1ece3e5",
+   "element_id": "p31-rb1-e42",
+   "text": "If full thickness or > 10% TBSA burn, apply paraffin gauze and cover with plastic wrap.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-f0b31314",
+   "element_id": "p31-rb1-e43",
+   "text": "If hospital transfer delayed > 12 hours, apply paraffin gauze and cover with dry gauze and bandage.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-e098770c",
+   "element_id": "p31-rb1-e44",
+   "text": "If none of above, apply hydrogel burn dressing (e.g. Burnshield®) and cover with bandage. If not available, use a non-adherent dressing or wrap in clean, dry sh",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-2633a01f",
+   "element_id": "p31-rb1-e45",
+   "text": "The patient's open palm (including fingers) represents 1% TBSA.",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-733939d4",
+   "element_id": "p31-rb1-e46",
+   "text": "Give tetanus toxoid 0.5mL IM if none in past 5 years.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p31-d815c7e4",
+   "element_id": "p31-rb1-e47",
+   "text": "Exclude simple redness from calculation.",
+   "reason_category": "figure_or_note",
+   "reason": "Part of the % TBSA rule-of-nines figure; guides how to estimate TBSA, which has no observable in the language."
+  },
+  {
+   "element_key": "p31-fb4a6e65",
+   "element_id": "p31-rb1-e48",
+   "text": "While awaiting transport, monitor BP, pulse, respiratory rate, oxygen saturation, level of consciousness and urine output hourly.",
+   "reason_category": "management_step",
+   "reason": "Management/referral step; no manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "% TBSA > 10",
+   "decision": "Partial thickness burn AND any SNOMED 'Burn any degree involving N percent of body surface' band from 10-19 upward (plus 'Over 70 percent body burnt')",
+   "alternatives": "Mark not_representable (rule fires less often); Partial thickness burn alone (fires more often)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Other injury",
+   "decision": "Not encoded (no_snomed_concept)",
+   "alternatives": "Traumatic injury would match every burn because Burn is_a Traumatic injury",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Circumferential burn of chest/limbs",
+   "decision": "Site-specific burn concepts with Circumferential qualifier",
+   "alternatives": "The warning-sign form Burn + Circumferential (no site), which is broader than the page",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "(or Shock (disorder), SBP < 80) as written; footnote 1 'shock likely' criteria not built into a shock rule",
+   "alternatives": "A probable shock rule from footnote 1",
+   "confidence": "high"
+  },
+  {
+   "topic": "Priority level",
+   "decision": "Urgent, as the page says 'Give urgent attention'",
+   "alternatives": "Emergency/Very urgent for facial, inhalation, chemical and circumferential burns as in warning_signs.ts",
+   "confidence": "medium"
+  }
+ ]
+}

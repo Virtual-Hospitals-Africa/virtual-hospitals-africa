@@ -1,0 +1,464 @@
+{
+ "edition": "2026",
+ "page": 102,
+ "lisp_file": "102-tuberculosis-tb-diagnosis.lisp",
+ "conditions": [
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p102-8d1cf36b"
+   ],
+   "quote": "suspected TB",
+   "confidence": "high",
+   "note": "'Suspected TB' = possible TB diagnosis from the page's TB-symptom/screening rule."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p102-0dc99669"
+   ],
+   "quote": "Breathlessness at rest",
+   "confidence": "medium",
+   "note": "SNOMED 'Dyspnea at rest' for breathlessness at rest."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p102-0dc99669"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "'Breathlessness while talking' approximated by 'Unable to complete a sentence in one breath' (narrower); no SNOMED concept for dyspnoea on talking."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p102-ada0c81e"
+   ],
+   "quote": "Prominent use of breathing muscles",
+   "confidence": "high",
+   "note": "Accessory respiratory muscles used."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p102-ac568a06"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood",
+   "confidence": "medium",
+   "note": "Hemoptysis (recorded warning-sign form); the ≥ 1 tablespoon volume and 'fresh' cannot be expressed, so this fires more often than the page intends."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p102-12ed0574"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Drowsy."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p102-12ed0574"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "'Confused' as Acute confusion (recorded warning-sign form); no plain 'Confusion' finding in SNOMED."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p102-937da012"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p102-010b5c09"
+   ],
+   "quote": "New weakness of arm/leg",
+   "confidence": "high",
+   "note": "Muscle weakness of limb (covers arm or leg) with New qualifier."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p102-56ca0cdf"
+   ],
+   "quote": "Persistent vomiting",
+   "confidence": "high",
+   "note": "Persistent vomiting (warning-sign form)."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p102-3b56083a"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "Unable to walk (the app's mobility assessment 'Stretcher/Immobile' form); 'unaided' not separately expressible."
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p102-d66060d7"
+   ],
+   "quote": "Severe malnutrition",
+   "confidence": "medium",
+   "note": "No general \"severe malnutrition\" FSN for adults; protein-energy malnutrition (Deficiency of macronutrients) + Severe qualifier. (Reconciled: from builder B.)"
+  },
+  {
+   "rule": "Check for urgent suspected TB conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+   "element_keys": [
+    "p102-d66060d7"
+   ],
+   "quote": "wasted",
+   "confidence": "high",
+   "note": "Nutritional wasting (warning-sign form)."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p102-3b97e746"
+   ],
+   "quote": "current cough",
+   "confidence": "high",
+   "note": "Cough (common symptom); 'current' is the encounter's recorded finding."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weight decreased\" \"finding\"))",
+   "element_keys": [
+    "p102-3b97e746"
+   ],
+   "quote": "weight loss",
+   "confidence": "high",
+   "note": "No 'Weight loss' finding; 'Weight decreased' is the active FSN."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "element_keys": [
+    "p102-3b97e746"
+   ],
+   "quote": "drenching night sweats",
+   "confidence": "medium",
+   "note": "Night sweats; 'drenching' not qualified (no concept), so slightly broader."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(active_condition (snomed_concept \"Fever\" \"finding\"))",
+   "element_keys": [
+    "p102-3b97e746"
+   ],
+   "quote": "fever",
+   "confidence": "high",
+   "note": "active_condition Fever per Will's briefing."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Mycobacterium tuberculosis complex\" \"organism\"))",
+   "element_keys": [
+    "p102-688f44a4"
+   ],
+   "quote": "TB contact",
+   "confidence": "medium",
+   "note": "TB contact as exposure to M. tuberculosis complex, mirroring the page-20 exposure pattern; footnote 1 definition (≥1 night, 3 months) not expressible. (Reconciled: from builder B.)"
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Plain X-ray of chest for tuberculosis screening abnormal\" \"finding\"))",
+   "element_keys": [
+    "p102-688f44a4"
+   ],
+   "quote": "Abnormal findings on digital CXR + computer aided detection (CAD) screening",
+   "confidence": "medium",
+   "note": "Plain X-ray of chest for tuberculosis screening abnormal; 'digital' and 'CAD' not expressible."
+  },
+  {
+   "rule": "Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p102-3b97e746"
+   ],
+   "quote": "Check for TB if the patient has any TB symptoms",
+   "confidence": "medium",
+   "note": "'Check for TB' / 'test for TB' read as a possible (suspected) TB diagnosis that triggers the urgent check."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "element_keys": [
+    "p102-8d1cf36b"
+   ],
+   "quote": "suspected TB",
+   "confidence": "high",
+   "note": "'Suspected TB' = possible TB diagnosis from the page's TB-symptom/screening rule."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p102-d73eb0c6"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Routine vital, page threshold ≥ 30."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Pulse, function\" \"observable entity\") bpm) 120)",
+   "element_keys": [
+    "p102-2fbcc260"
+   ],
+   "quote": "Pulse > 120",
+   "confidence": "high",
+   "note": "Routine vital, strictly > 120."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 39)",
+   "element_keys": [
+    "p102-edc01452"
+   ],
+   "quote": "Temperature > 39°C",
+   "confidence": "high",
+   "note": "Routine vital, strictly > 39 °C."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p102-0dc99669"
+   ],
+   "quote": "Breathlessness at rest",
+   "confidence": "medium",
+   "note": "SNOMED 'Dyspnea at rest' for breathlessness at rest."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p102-0dc99669"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "'Breathlessness while talking' approximated by 'Unable to complete a sentence in one breath' (narrower); no SNOMED concept for dyspnoea on talking."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))",
+   "element_keys": [
+    "p102-ada0c81e"
+   ],
+   "quote": "Prominent use of breathing muscles",
+   "confidence": "high",
+   "note": "Accessory respiratory muscles used."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\"))",
+   "element_keys": [
+    "p102-ac568a06"
+   ],
+   "quote": "Coughs up ≥ 1 tablespoon of fresh blood",
+   "confidence": "medium",
+   "note": "Hemoptysis (recorded warning-sign form); the ≥ 1 tablespoon volume and 'fresh' cannot be expressed, so this fires more often than the page intends."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\"))",
+   "element_keys": [
+    "p102-12ed0574"
+   ],
+   "quote": "Drowsy",
+   "confidence": "high",
+   "note": "Drowsy."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p102-12ed0574"
+   ],
+   "quote": "confused",
+   "confidence": "medium",
+   "note": "'Confused' as Acute confusion (recorded warning-sign form); no plain 'Confusion' finding in SNOMED."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stiff neck\" \"finding\"))",
+   "element_keys": [
+    "p102-937da012"
+   ],
+   "quote": "Neck stiffness",
+   "confidence": "high",
+   "note": "Stiff neck."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of limb\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p102-010b5c09"
+   ],
+   "quote": "New weakness of arm/leg",
+   "confidence": "high",
+   "note": "Muscle weakness of limb (covers arm or leg) with New qualifier."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p102-56ca0cdf"
+   ],
+   "quote": "Persistent vomiting",
+   "confidence": "high",
+   "note": "Persistent vomiting (warning-sign form)."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to walk\" \"finding\"))",
+   "element_keys": [
+    "p102-3b56083a"
+   ],
+   "quote": "Unable to walk unaided",
+   "confidence": "medium",
+   "note": "Unable to walk (the app's mobility assessment 'Stretcher/Immobile' form); 'unaided' not separately expressible."
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deficiency of macronutrients\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p102-d66060d7"
+   ],
+   "quote": "Severe malnutrition",
+   "confidence": "medium",
+   "note": "No general \"severe malnutrition\" FSN for adults; protein-energy malnutrition (Deficiency of macronutrients) + Severe qualifier. (Reconciled: from builder B.)"
+  },
+  {
+   "rule": "Urgent: suspected TB with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nutritional wasting\" \"disorder\"))",
+   "element_keys": [
+    "p102-d66060d7"
+   ],
+   "quote": "wasted",
+   "confidence": "high",
+   "note": "Nutritional wasting (warning-sign form)."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p102-a177ff83",
+   "element_id": "p102-rb1-e14",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Management/referral instruction (oxygen, ceftriaxone, refer); no manage tasks in this pass."
+  },
+  {
+   "element_key": "p102-b5f8b47b",
+   "element_id": "p102-rb1-e15",
+   "text": "If breathing difficulty, give face mask oxygen to keep saturation ≥ 92% and ceftriaxone 1g IV2/IM to treat for suspected severe pneumonia.",
+   "reason_category": "management_step",
+   "reason": "Management/referral instruction (oxygen, ceftriaxone, refer); no manage tasks in this pass."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Suspected TB anchor",
+   "decision": "Possible TB diagnosis rule from TB symptoms (cough, weight loss, night sweats, fever), TB contact or abnormal screening CXR; the urgent check task and priority rule key off it.",
+   "alternatives": "Anchor priority directly on cough/fever; rejected because the page's box applies to 'suspected TB'.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Asymptomatic screening groups",
+   "decision": "PLHIV (at diagnosis/re-engagement/yearly/antenatal) and DS-TB in last 2 years not encoded: the timing schedule cannot be expressed and encoding the bare condition would flag TB at every visit.",
+   "alternatives": "(active_condition HIV) or History of tuberculosis as possible-TB evidence; fires far more often than intended.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Lab-result diagnoses",
+   "decision": "TB on urine LAM, MTB detected (NAAT positive/trace), INH-resistant TB and RR-TB diagnoses not encoded: they depend on lab results (NAAT, LAM, DST, CD4) the language cannot record.",
+   "alternatives": "Use 'Rifampicin resistant tuberculosis'/'Isoniazid resistant tuberculosis' disorders as evidence; circular, so not done.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Breathlessness while talking",
+   "decision": "Unable to complete a sentence in one breath",
+   "alternatives": "Difficulty talking (not specific to breathlessness)",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Haemoptysis volume",
+   "decision": "Plain Hemoptysis; ≥ 1 tablespoon / fresh not expressible, so broader than the page.",
+   "alternatives": "Hemoptysis with Fresh qualifier; would not match the recorded warning-sign form.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Unable to walk unaided",
+   "decision": "Unable to walk (matches VHA mobility vital).",
+   "alternatives": "Difficulty walking (over-fires).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Severe malnutrition",
+   "decision": "Deficiency of macronutrients + Severe (reconciled from B; broader than A's Malnutrition (calorie), which is its descendant).",
+   "alternatives": "Malnutrition (calorie) + Severe (calorie-only).",
+   "confidence": "medium"
+  }
+ ]
+}

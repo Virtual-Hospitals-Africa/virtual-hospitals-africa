@@ -1,0 +1,656 @@
+{
+ "page": 98,
+ "lisp_file": "98-low-mood-stress-or-anxiety.lisp",
+ "claims": [
+  {
+   "claim_id": "c001",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "low mood"
+  },
+  {
+   "claim_id": "c002",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "stress"
+  },
+  {
+   "claim_id": "c003",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "anxiety"
+  },
+  {
+   "claim_id": "c004",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p98-b70e7b19"
+   ],
+   "quote": "suicidal thoughts"
+  },
+  {
+   "claim_id": "c005",
+   "rule": "Check for urgent low mood, stress or anxiety conditions",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-b70e7b19"
+   ],
+   "quote": "suicidal thoughts or behaviour"
+  },
+  {
+   "claim_id": "c006",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "low mood"
+  },
+  {
+   "claim_id": "c007",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "stress"
+  },
+  {
+   "claim_id": "c008",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "anxiety"
+  },
+  {
+   "claim_id": "c009",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "excessive worry"
+  },
+  {
+   "claim_id": "c010",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "impaired function/distress"
+  },
+  {
+   "claim_id": "c011",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle tension\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "muscle tension"
+  },
+  {
+   "claim_id": "c012",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "restlessness"
+  },
+  {
+   "claim_id": "c013",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "irritability"
+  },
+  {
+   "claim_id": "c014",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "difficulty sleeping"
+  },
+  {
+   "claim_id": "c015",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "poor concentration"
+  },
+  {
+   "claim_id": "c016",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c017",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "linked to a bad experience"
+  },
+  {
+   "claim_id": "c018",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nightmares\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "nightmares/flashbacks"
+  },
+  {
+   "claim_id": "c019",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flashback due to and following trauma\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "nightmares/flashbacks"
+  },
+  {
+   "claim_id": "c020",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "avoids situations/people"
+  },
+  {
+   "claim_id": "c021",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c022",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c023",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c024",
+   "rule": "Check for generalised anxiety disorder and PTSD features",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c025",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Worried\" \"finding\") (qualifier (snomed_concept \"Excessive\" \"qualifier value\")))) (time_ago 6 months))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "excessive worry causes impaired function/distress for at least 6 months"
+  },
+  {
+   "claim_id": "c026",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distress\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "impaired function/distress"
+  },
+  {
+   "claim_id": "c027",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle tension\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "muscle tension"
+  },
+  {
+   "claim_id": "c028",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "restlessness"
+  },
+  {
+   "claim_id": "c029",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "irritability"
+  },
+  {
+   "claim_id": "c030",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "difficulty sleeping"
+  },
+  {
+   "claim_id": "c031",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "poor concentration"
+  },
+  {
+   "claim_id": "c032",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c033",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Restlessness\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "restlessness"
+  },
+  {
+   "claim_id": "c034",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "irritability"
+  },
+  {
+   "claim_id": "c035",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "difficulty sleeping"
+  },
+  {
+   "claim_id": "c036",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "poor concentration"
+  },
+  {
+   "claim_id": "c037",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c038",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling irritable\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "irritability"
+  },
+  {
+   "claim_id": "c039",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "difficulty sleeping"
+  },
+  {
+   "claim_id": "c040",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "poor concentration"
+  },
+  {
+   "claim_id": "c041",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c042",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty sleeping\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "difficulty sleeping"
+  },
+  {
+   "claim_id": "c043",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Poor concentration\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "poor concentration"
+  },
+  {
+   "claim_id": "c044",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "tiredness"
+  },
+  {
+   "claim_id": "c045",
+   "rule": "Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Generalized anxiety disorder\" \"disorder\") probable)",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "generalised anxiety disorder likely"
+  },
+  {
+   "claim_id": "c046",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(>= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))) (time_ago 1 months))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "anxiety > 1 month"
+  },
+  {
+   "claim_id": "c047",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Victim of psychological trauma\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "linked to a bad experience"
+  },
+  {
+   "claim_id": "c048",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nightmares\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "nightmares/flashbacks"
+  },
+  {
+   "claim_id": "c049",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Flashback due to and following trauma\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "nightmares/flashbacks"
+  },
+  {
+   "claim_id": "c050",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "avoids situations/people"
+  },
+  {
+   "claim_id": "c051",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c052",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c053",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c054",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c055",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avoidance behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "avoids situations/people"
+  },
+  {
+   "claim_id": "c056",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypervigilant behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c057",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Predisposed to startle\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "constantly on guard/easily startled"
+  },
+  {
+   "claim_id": "c058",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Emotionally detached\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c059",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Derealization\" \"finding\"))",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "feels numb/detached from others/surroundings"
+  },
+  {
+   "claim_id": "c060",
+   "rule": "Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Post-traumatic stress disorder\" \"disorder\") probable)",
+   "element_keys": [
+    "p98-eb4428e6"
+   ],
+   "quote": "post-traumatic stress disorder (PTSD) likely"
+  },
+  {
+   "claim_id": "c061",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Depressed mood\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "low mood"
+  },
+  {
+   "claim_id": "c062",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stress\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "stress"
+  },
+  {
+   "claim_id": "c063",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anxiety\" \"finding\"))",
+   "element_keys": [
+    "p98-d5070c49"
+   ],
+   "quote": "anxiety"
+  },
+  {
+   "claim_id": "c064",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))",
+   "element_keys": [
+    "p98-b70e7b19"
+   ],
+   "quote": "suicidal thoughts"
+  },
+  {
+   "claim_id": "c065",
+   "rule": "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal behavior\" \"finding\"))",
+   "element_keys": [
+    "p98-b70e7b19"
+   ],
+   "quote": "suicidal thoughts or behaviour"
+  }
+ ]
+}

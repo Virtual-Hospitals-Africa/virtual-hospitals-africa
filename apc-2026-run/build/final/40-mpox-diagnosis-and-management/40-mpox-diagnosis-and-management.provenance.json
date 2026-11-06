@@ -1,0 +1,2852 @@
+{
+ "edition": "2026",
+ "page": 40,
+ "lisp_file": "40-mpox-diagnosis-and-management.lisp",
+ "conditions": [
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "lesion/s of the skin",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption\" \"morphologic abnormality\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "lesion/s of the skin",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of face\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "face",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "rectum",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "mouth",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "trigger",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "The page has no red-box complaint for suspicion; the natural recorded complaint is a skin/mucosal lesion or rash (not a common symptom - see remaining questions)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "contact of a probable/confirmed mpox case",
+   "confidence": "medium",
+   "note": "Gold-standard exposure pattern with the organism; \"probable/confirmed case\" not distinguishable."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of face\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "face",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of palmar area of hand\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "palms of hands",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site palm skin; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of sole of foot\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "soles of feet",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site sole skin; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "anus",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site anus; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "rectum",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "mouth",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "headache",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "nasal congestion",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "swollen lymph nodes",
+   "confidence": "high",
+   "note": "Lymphadenopathy for swollen lymph nodes."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "body pain",
+   "confidence": "high",
+   "note": "Generalized aches and pains for body pain."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "muscle aches",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "backache",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "severe weakness/tiredness",
+   "confidence": "medium",
+   "note": "Tiredness -> Fatigue with Severe qualifier (severe applies to both)."
+  },
+  {
+   "rule": "Check for mpox exposure, lesion sites and associated symptoms",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "severe weakness/tiredness",
+   "confidence": "medium",
+   "note": "Weakness -> Asthenia (general weakness) with Severe qualifier."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "high",
+   "note": "Red box applies to the patient with suspected mpox; triggered by the possible mpox diagnosis."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p40-5f281b1c"
+   ],
+   "quote": "Shock1/systolic BP < 80",
+   "confidence": "high",
+   "note": "Shock finding, or-ed with SBP < 80 as this page writes it; footnote 1 not built into a shared shock definition."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "VHA vocabulary concept for thirst in dehydration."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = dry mouth."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p40-fac62287"
+   ],
+   "quote": "Unable to pass urine",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p40-fac62287"
+   ],
+   "quote": "Unable to pass urine or stool",
+   "confidence": "medium",
+   "note": "Obstipation (unable to pass stool); no \"unable to pass stool\" concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "difficulty breathing at rest",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "Difficulty breathing while talking -> unable to complete a sentence in one breath."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from anus\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "Severe bleeding",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "pain",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from anus\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "discharge from the anus",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightly retracted foreskin\" \"finding\"))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "Foreskin retracted over glans and unable to reduce to normal position",
+   "confidence": "medium",
+   "note": "Closest concept; \"unable to reduce\" is implied by tight retraction."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "swollen",
+   "confidence": "high",
+   "note": "Swelling at glans penis."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "painful glans",
+   "confidence": "high",
+   "note": "Pain at glans penis."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to swallow\" \"finding\"))",
+   "element_keys": [
+    "p40-bf069dbc"
+   ],
+   "quote": "Unable to swallow",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p40-a8a39df6"
+   ],
+   "quote": "nausea",
+   "confidence": "medium",
+   "note": "Reconciler (from B): page says nausea and vomiting, so nausea is checked as well as persistent vomiting."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p40-a8a39df6"
+   ],
+   "quote": "Persistent nausea and vomiting",
+   "confidence": "medium",
+   "note": "Persistent vomiting (warning sign concept); persistent nausea has no concept and is not required separately."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "irregular pulse",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "swollen legs",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "Eye lesion/s",
+   "confidence": "high",
+   "note": "Lesion of eye."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "vision changes",
+   "confidence": "medium",
+   "note": "Reconciler: Visual disturbance (B) is the VHA vocabulary term (12 uses) for vision changes, over Abnormal vision."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient immunocompromised\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "Immunocompromised",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "HIV not on ART/virologically unsuppressed",
+   "confidence": "medium",
+   "note": "Known HIV and-ed with a raised viral load; \"not on ART\" not representable."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Copies of human immunodeficiency virus ribonucleic acid above reference range\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "virologically unsuppressed",
+   "confidence": "medium",
+   "note": "Viral load above reference range = unsuppressed."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "cancer",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transplant present\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "organ transplant",
+   "confidence": "medium",
+   "note": "Transplant present (any transplant)."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "pregnant",
+   "confidence": "high",
+   "note": "Pregnancy finding."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "hypertension",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic lung disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "chronic lung/",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic disease of skin\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "skin disease",
+   "confidence": "medium",
+   "note": "Chronic disease of skin, known present (\"chronic lung/ skin disease\")."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obesity\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "obesity",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p40-8a7c2bb2"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p40-8a7c2bb2"
+   ],
+   "quote": "confusion",
+   "confidence": "high",
+   "note": "Reconciler (from B): Acute confusion is the VHA Confusion warning-sign concept."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-714a2a87"
+   ],
+   "quote": "Extensive skin lesions",
+   "confidence": "high",
+   "note": "Skin lesion with Extensive qualifier."
+  },
+  {
+   "rule": "Check for urgent mpox danger signs",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p40-8be4b898"
+   ],
+   "quote": "Severe pain",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "trigger",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "high",
+   "note": "Lower half applies to the patient with suspected mpox."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal penetration\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal sex",
+   "confidence": "medium",
+   "note": "Anal penetration (a finding of sexual intercourse) for anal sex."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from anus\" \"disorder\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from anus\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicular eruption\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "crops of vesicles",
+   "confidence": "medium",
+   "note": "\"at different stages of healing\" not representable (fires more often)."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acquired immune deficiency syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "advanced HIV disease",
+   "confidence": "medium",
+   "note": "AIDS used for advanced HIV disease."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "hyperpigmented papules",
+   "confidence": "medium",
+   "note": "Papule of skin and-ed with hyperpigmentation of skin (no precoordinated concept)."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "hyperpigmented papules",
+   "confidence": "medium",
+   "note": "See papule."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "burrows in web spaces or skin folds",
+   "confidence": "medium",
+   "note": "Sites (web spaces/skin folds) not encoded."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "itch worse at night",
+   "confidence": "medium",
+   "note": "Itching with Night time qualifier; \"worse\" not representable."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "new medication",
+   "confidence": "high",
+   "note": "Reconciler (from B): New medication commenced matches \"new medication\" more closely than exposure to a drug."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Conjunctivitis\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "conjunctivitis",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Common symptom for runny nose."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macular eruption\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "flat red rash",
+   "confidence": "medium",
+   "note": "Macular (flat) eruption; red colour and spread from face to body not representable."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "tick bite",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin eschar\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "eschar",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")) (qualifier (snomed_concept \"Dome shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "firm, dome-shaped papules",
+   "confidence": "medium",
+   "note": "Reconciler (from B): Papule of skin with Firm and Dome shape qualifiers."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "central dimple",
+   "confidence": "low",
+   "note": "Reconciler (from B): Skin dimple (finding) is the closest concept to a central dimple (umbilication); no umbilicated-papule concept exists."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful",
+   "confidence": "medium",
+   "note": "Painful lesions -> Pain of skin."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "grouped vesicles",
+   "confidence": "medium",
+   "note": "Vesicle with Grouped qualifier; \"on red base\" not representable; \"especially around mouth or genitals\" is not a restriction."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "red base",
+   "confidence": "medium",
+   "note": "Reconciler (from B): \"on red base\" written as Erythema."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Mouth region structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "vesicles around mouth",
+   "confidence": "high",
+   "note": "Vesicle at mouth region."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of palmar area of hand\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "on palms and soles",
+   "confidence": "high",
+   "note": "Vesicle at palm skin."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "on palms and soles",
+   "confidence": "high",
+   "note": "Vesicle at sole skin."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful blisters in a band on one side of body",
+   "confidence": "medium",
+   "note": "Blister with Unilateral qualifier; \"in a band\" not representable."
+  },
+  {
+   "rule": "Check for proctitis and other causes of rash/lesions in suspected mpox",
+   "role": "check_for",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\"))",
+   "element_keys": [
+    "p40-764be1cb",
+    "p40-ff4a7ec4",
+    "p40-4928d2ff"
+   ],
+   "quote": "honey- coloured crusts especially around mouth and nose",
+   "confidence": "medium",
+   "note": "Honey colour not representable; \"especially around mouth and nose\" is not a restriction."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Monkeypox virus\" \"organism\"))) (time_ago 21 days))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "contact of a probable/confirmed mpox case in the 21 days before symptom onset",
+   "confidence": "medium",
+   "note": "Contact approximated as exposure to monkeypox virus; window measured back from now, not from symptom onset; written as <= per the time-comparison rule."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of face\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "face",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of palmar area of hand\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "palms of hands",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site palm skin; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of sole of foot\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "soles of feet",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site sole skin; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of genitalia\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "genitals",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Anal structure\" \"body structure\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "anus",
+   "confidence": "medium",
+   "note": "Skin lesion with finding_site anus; \"new\" -> New qualifier."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of rectum\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "rectum",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oral lesion\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "mouth",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "eyes",
+   "confidence": "medium",
+   "note": "Site from the list of lesion sites; \"new\" -> New qualifier; \"unexplained\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "headache",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(> (measurement (snomed_concept \"Body temperature\" \"observable entity\") °C) 38.5)",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "temperature > 38.5°C in the last 2 days",
+   "confidence": "medium",
+   "note": "Only a temperature measured now; \"in the last 2 days\" (reported history) is not representable, so this fires less often."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sore throat\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "sore throat",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal congestion\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "nasal congestion",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "swollen lymph nodes",
+   "confidence": "high",
+   "note": "Lymphadenopathy for swollen lymph nodes."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized aches and pains\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "body pain",
+   "confidence": "high",
+   "note": "Generalized aches and pains for body pain."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle pain\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "muscle aches",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Backache\" \"finding\"))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "backache",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fatigue\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "severe weakness/tiredness",
+   "confidence": "medium",
+   "note": "Tiredness -> Fatigue with Severe qualifier (severe applies to both)."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthenia\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "severe weakness/tiredness",
+   "confidence": "medium",
+   "note": "Weakness -> Asthenia (general weakness) with Severe qualifier."
+  },
+  {
+   "rule": "Diagnose possible mpox (contact or new lesions with systemic symptoms)",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-aaab759e"
+   ],
+   "quote": "Suspect mpox",
+   "confidence": "high",
+   "note": "\"Suspect\" -> possible. Monkeypox is the FSN; \"mpox\" is a synonym."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "medium",
+   "note": "Red-box \"likely\" diagnoses are scoped to the box header (patient with suspected mpox) so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "Thirst",
+   "confidence": "medium",
+   "note": "VHA vocabulary concept for thirst in dehydration."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "dry mouth",
+   "confidence": "high",
+   "note": "Xerostomia = dry mouth."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased skin turgor\" \"finding\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "poor skin turgor",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 90)",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(< (measurement (snomed_concept \"Diastolic blood pressure\" \"observable entity\") mmHg) 60)",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "BP < 90/60",
+   "confidence": "high",
+   "note": "BP < 90/60 read as systolic < 90 or diastolic < 60 (Will convention)."
+  },
+  {
+   "rule": "Diagnose probable dehydration in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Dehydration\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from anus\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "Severe bleeding",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "pain",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from anus\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "discharge from the anus",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal penetration\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal sex",
+   "confidence": "medium",
+   "note": "Anal penetration (a finding of sexual intercourse) for anal sex."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from anus\" \"disorder\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from anus\" \"finding\"))",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "anal bleeding/pain/discharge",
+   "confidence": "high",
+   "note": "Lower-half proctitis route."
+  },
+  {
+   "rule": "Diagnose probable proctitis in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Proctitis\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "proctitis likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable; also \"proctitis likely\" in the lower half."
+  },
+  {
+   "rule": "Diagnose probable paraphimosis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "medium",
+   "note": "Red-box \"likely\" diagnoses are scoped to the box header (patient with suspected mpox) so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable paraphimosis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightly retracted foreskin\" \"finding\"))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "Foreskin retracted over glans and unable to reduce to normal position",
+   "confidence": "medium",
+   "note": "Closest concept; \"unable to reduce\" is implied by tight retraction."
+  },
+  {
+   "rule": "Diagnose probable paraphimosis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "swollen",
+   "confidence": "high",
+   "note": "Swelling at glans penis."
+  },
+  {
+   "rule": "Diagnose probable paraphimosis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "painful glans",
+   "confidence": "high",
+   "note": "Pain at glans penis."
+  },
+  {
+   "rule": "Diagnose probable paraphimosis in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Paraphimosis\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "paraphimosis likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable myocarditis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "medium",
+   "note": "Red-box \"likely\" diagnoses are scoped to the box header (patient with suspected mpox) so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable myocarditis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "Chest pain",
+   "confidence": "high",
+   "note": "Warning sign concept."
+  },
+  {
+   "rule": "Diagnose probable myocarditis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pulse irregular\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "irregular pulse",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable myocarditis in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Leg swelling symptom\" \"finding\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "swollen legs",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Diagnose probable myocarditis in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Myocarditis\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "myocarditis likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable corneal infection in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "medium",
+   "note": "Red-box \"likely\" diagnoses are scoped to the box header (patient with suspected mpox) so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable corneal infection in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lesion of eye\" \"disorder\"))",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "Eye lesion/s",
+   "confidence": "high",
+   "note": "Lesion of eye."
+  },
+  {
+   "rule": "Diagnose probable corneal infection in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual disturbance\" \"disorder\"))",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "vision changes",
+   "confidence": "medium",
+   "note": "Reconciler: Visual disturbance, the VHA vocabulary term for vision changes."
+  },
+  {
+   "rule": "Diagnose probable corneal infection in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Corneal infection\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "corneal infection likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable; Corneal infection is an exact FSN."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicular eruption\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "crops of vesicles",
+   "confidence": "medium",
+   "note": "\"at different stages of healing\" not representable (fires more often)."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Lymphadenopathy\" \"disorder\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "no swollen lymph nodes",
+   "confidence": "high",
+   "note": "Absence encoded as (no Lymphadenopathy)."
+  },
+  {
+   "rule": "Diagnose probable chickenpox in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Varicella\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "chickenpox likely",
+   "confidence": "high",
+   "note": "Varicella is the FSN for chickenpox."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acquired immune deficiency syndrome\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "advanced HIV disease",
+   "confidence": "medium",
+   "note": "AIDS used for advanced HIV disease."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "hyperpigmented papules",
+   "confidence": "medium",
+   "note": "Papule of skin and-ed with hyperpigmentation of skin (no precoordinated concept)."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hyperpigmentation of skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "hyperpigmented papules",
+   "confidence": "medium",
+   "note": "See papule."
+  },
+  {
+   "rule": "Diagnose probable papular pruritic eruption in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Papular pruritic eruption of skin due to human immunodeficiency virus infection\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "papular pruritic eruption likely",
+   "confidence": "high",
+   "note": "Exact concept for PPE of HIV."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burrows in skin\" \"disorder\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "burrows in web spaces or skin folds",
+   "confidence": "medium",
+   "note": "Sites (web spaces/skin folds) not encoded."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (qualifier (snomed_concept \"Night time\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "itch worse at night",
+   "confidence": "medium",
+   "note": "Itching with Night time qualifier; \"worse\" not representable."
+  },
+  {
+   "rule": "Diagnose probable scabies in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infestation caused by Sarcoptes scabiei var hominis\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "scabies likely",
+   "confidence": "high",
+   "note": "\"Scabies\" is not an FSN; this is the active concept."
+  },
+  {
+   "rule": "Diagnose probable drug-induced rash in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable drug-induced rash in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable drug-induced rash in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Diagnose probable drug-induced rash in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"New medication commenced\" \"finding\"))) (time_ago 3 months))",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "new medication in past 3 months",
+   "confidence": "high",
+   "note": "Reconciler (from B): onset of new medication within the last 3 months, written with <= as the database requires."
+  },
+  {
+   "rule": "Diagnose probable drug-induced rash in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Eruption caused by drug\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-04cecb06"
+   ],
+   "quote": "drug-induced rash likely",
+   "confidence": "high",
+   "note": "Vocabulary concept used elsewhere in VHA."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch -> (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Conjunctivitis\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "conjunctivitis",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "cough",
+   "confidence": "high",
+   "note": "Common symptom."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "runny nose",
+   "confidence": "high",
+   "note": "Common symptom for runny nose."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Macular eruption\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "flat red rash",
+   "confidence": "medium",
+   "note": "Macular (flat) eruption; red colour and spread from face to body not representable."
+  },
+  {
+   "rule": "Diagnose probable measles in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Measles\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "measles likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))",
+   "element_keys": [
+    "p40-c8e17661"
+   ],
+   "quote": "Generalised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch -> (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tick bite\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "tick bite",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin eschar\" \"disorder\"))",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "eschar",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Diagnose probable tick bite fever in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Spotted fever group rickettsial disease\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-d043ca69"
+   ],
+   "quote": "tick bite fever likely",
+   "confidence": "medium",
+   "note": "SA \"tick bite fever\" covers African tick bite fever and Mediterranean spotted fever; used their common parent rather than African tick bite fever alone."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "medium",
+   "note": "Scope: the differential applies to the patient with suspected mpox (box header of the approach section)."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Localised branch of the flowchart; Localized skin lesion covers rash or lesions."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch written as (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Firm\" \"qualifier value\")) (qualifier (snomed_concept \"Dome shape\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "firm, dome-shaped papules",
+   "confidence": "medium",
+   "note": "Papule of skin with Firm and Dome shape qualifiers."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin dimple\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "central dimple",
+   "confidence": "low",
+   "note": "Skin dimple is the closest concept to a central dimple (umbilication)."
+  },
+  {
+   "rule": "Diagnose probable molluscum contagiosum in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Infection caused by Molluscum contagiosum\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "molluscum contagiosum likely",
+   "confidence": "high",
+   "note": "Probable diagnosis from \"likely\"; the FSN for molluscum contagiosum."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch -> (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful, grouped vesicles",
+   "confidence": "medium",
+   "note": "Painful lesions -> Pain of skin."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (qualifier (snomed_concept \"Grouped\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "grouped vesicles",
+   "confidence": "medium",
+   "note": "Vesicle with Grouped qualifier; \"on red base\" not representable; \"especially around mouth or genitals\" is not a restriction."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "red base",
+   "confidence": "medium",
+   "note": "Reconciler (from B): \"on red base\" written as Erythema, added to A's grouped painful vesicles."
+  },
+  {
+   "rule": "Diagnose probable herpes simplex in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Herpes simplex\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "herpes simplex likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch -> (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful vesicles around mouth",
+   "confidence": "medium",
+   "note": "Painful lesions -> Pain of skin."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Mouth region structure\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "vesicles around mouth",
+   "confidence": "high",
+   "note": "Vesicle at mouth region."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of palmar area of hand\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "on palms and soles",
+   "confidence": "high",
+   "note": "Vesicle at palm skin."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vesicle of skin\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Entire skin of sole of foot\" \"body structure\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "on palms and soles",
+   "confidence": "high",
+   "note": "Vesicle at sole skin."
+  },
+  {
+   "rule": "Diagnose probable hand-foot and mouth disease in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Enteroviral vesicular stomatitis with exanthem\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "hand-foot and mouth disease likely",
+   "confidence": "high",
+   "note": "FSN for hand, foot and mouth disease."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(no (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\") (snomed_concept \"No\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "Non-itchy",
+   "confidence": "high",
+   "note": "Non-itchy branch -> (no Itching)."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of skin\" \"finding\"))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful blisters",
+   "confidence": "medium",
+   "note": "Painful lesions -> Pain of skin."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister of skin\" \"disorder\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "painful blisters in a band on one side of body",
+   "confidence": "medium",
+   "note": "Blister with Unilateral qualifier; \"in a band\" not representable."
+  },
+  {
+   "rule": "Diagnose probable shingles in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Herpes zoster\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-221ce47b"
+   ],
+   "quote": "shingles likely",
+   "confidence": "high",
+   "note": "Herpes zoster is the FSN for shingles."
+  },
+  {
+   "rule": "Diagnose probable impetigo in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-efe1f2c7"
+   ],
+   "quote": "patient with suspected mpox not needing urgent attention",
+   "confidence": "medium",
+   "note": "Lower-half \"likely\" diagnoses are scoped to the suspected-mpox approach so this page does not diagnose them globally."
+  },
+  {
+   "rule": "Diagnose probable impetigo in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Localized skin lesion\" \"disorder\"))",
+   "element_keys": [
+    "p40-4d506fb9"
+   ],
+   "quote": "Localised rash or lesion/s",
+   "confidence": "medium",
+   "note": "Distribution branch of the flowchart."
+  },
+  {
+   "rule": "Diagnose probable impetigo in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching\" \"finding\"))",
+   "element_keys": [
+    "p40-764be1cb"
+   ],
+   "quote": "Itchy",
+   "confidence": "high",
+   "note": "Itchy branch."
+  },
+  {
+   "rule": "Diagnose probable impetigo in suspected mpox",
+   "role": "diagnosis_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Crust on skin\" \"finding\"))",
+   "element_keys": [
+    "p40-764be1cb",
+    "p40-ff4a7ec4",
+    "p40-4928d2ff"
+   ],
+   "quote": "honey- coloured crusts especially around mouth and nose",
+   "confidence": "medium",
+   "note": "Honey colour not representable; \"especially around mouth and nose\" is not a restriction."
+  },
+  {
+   "rule": "Diagnose probable impetigo in suspected mpox",
+   "role": "diagnosis",
+   "expr": "(diagnosis (snomed_concept \"Impetigo\" \"disorder\") probable)",
+   "element_keys": [
+    "p40-4928d2ff"
+   ],
+   "quote": "impetigo likely",
+   "confidence": "high",
+   "note": "\"likely\" -> probable."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(diagnosis (snomed_concept \"Monkeypox\" \"disorder\") possible)",
+   "element_keys": [
+    "p40-51543767"
+   ],
+   "quote": "suspected mpox",
+   "confidence": "high",
+   "note": "Box header: the red box applies to the patient with suspected mpox; uses the possible mpox diagnosis from the \"Suspect mpox if\" rule."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Shock\" \"disorder\"))",
+   "element_keys": [
+    "p40-5f281b1c"
+   ],
+   "quote": "Shock1/systolic BP < 80",
+   "confidence": "high",
+   "note": "Shock finding, or-ed with SBP < 80 as this page writes it; footnote 1 not built into a shared shock definition."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Systolic blood pressure\" \"observable entity\") mmHg) 80)",
+   "element_keys": [
+    "p40-5f281b1c"
+   ],
+   "quote": "systolic BP < 80",
+   "confidence": "high",
+   "note": "Shock/SBP < 80 encoded as this page writes it (or of shock and SBP < 80)."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Dehydration\" \"disorder\"))",
+   "element_keys": [
+    "p40-61ecf908"
+   ],
+   "quote": "dehydration likely",
+   "confidence": "high",
+   "note": "Bullet ends in \"dehydration likely\"; priority uses the probable diagnosis."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to void urine\" \"finding\"))",
+   "element_keys": [
+    "p40-fac62287"
+   ],
+   "quote": "Unable to pass urine",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obstipation\" \"disorder\"))",
+   "element_keys": [
+    "p40-fac62287"
+   ],
+   "quote": "Unable to pass urine or stool",
+   "confidence": "medium",
+   "note": "Obstipation (unable to pass stool); no \"unable to pass stool\" concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(>= (measurement (snomed_concept \"Respiratory rate\" \"observable entity\") bpm) 30)",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "Respiratory rate ≥ 30",
+   "confidence": "high",
+   "note": "Direction and threshold as on the page."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "difficulty breathing at rest",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "while talking",
+   "confidence": "medium",
+   "note": "Difficulty breathing while talking -> unable to complete a sentence in one breath."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(< (measurement (snomed_concept \"Hemoglobin saturation with oxygen\" \"observable entity\") %) 90)",
+   "element_keys": [
+    "p40-acea2d7b"
+   ],
+   "quote": "oxygen saturation < 90%",
+   "confidence": "high",
+   "note": "SpO2 < 90%."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeding from anus\" \"disorder\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "Severe bleeding",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "pain",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Discharge from anus\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-44e9d79d"
+   ],
+   "quote": "discharge from the anus",
+   "confidence": "medium",
+   "note": "\"Severe\" read as applying to bleeding, pain and discharge alike."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Paraphimosis\" \"disorder\"))",
+   "element_keys": [
+    "p40-e21887e9"
+   ],
+   "quote": "paraphimosis likely",
+   "confidence": "high",
+   "note": "Priority uses the probable diagnosis."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to swallow\" \"finding\"))",
+   "element_keys": [
+    "p40-bf069dbc"
+   ],
+   "quote": "Unable to swallow",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))",
+   "element_keys": [
+    "p40-a8a39df6"
+   ],
+   "quote": "nausea",
+   "confidence": "medium",
+   "note": "Reconciler (from B): and-ed with Persistent vomiting for \"Persistent nausea and vomiting\"; no persistent qualifier exists."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))",
+   "element_keys": [
+    "p40-a8a39df6"
+   ],
+   "quote": "Persistent nausea and vomiting",
+   "confidence": "medium",
+   "note": "Persistent vomiting (warning sign concept); persistent nausea has no concept and is not required separately."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Myocarditis\" \"disorder\"))",
+   "element_keys": [
+    "p40-8fae9080"
+   ],
+   "quote": "myocarditis likely",
+   "confidence": "high",
+   "note": "Priority uses the probable diagnosis."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(active_condition (snomed_concept \"Corneal infection\" \"disorder\"))",
+   "element_keys": [
+    "p40-9088ea83"
+   ],
+   "quote": "corneal infection likely",
+   "confidence": "high",
+   "note": "Priority uses the probable diagnosis."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Patient immunocompromised\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "Immunocompromised",
+   "confidence": "high",
+   "note": "Exact concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Human immunodeficiency virus infection\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "HIV not on ART/virologically unsuppressed",
+   "confidence": "medium",
+   "note": "Known HIV and-ed with a raised viral load; \"not on ART\" not representable."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Copies of human immunodeficiency virus ribonucleic acid above reference range\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "virologically unsuppressed",
+   "confidence": "medium",
+   "note": "Viral load above reference range = unsuppressed."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "cancer",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Transplant present\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "organ transplant",
+   "confidence": "medium",
+   "note": "Transplant present (any transplant)."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pregnancy\" \"finding\"))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "pregnant",
+   "confidence": "high",
+   "note": "Pregnancy finding."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "diabetes",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "hypertension",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic lung disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "chronic lung/",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic disease of skin\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "skin disease",
+   "confidence": "medium",
+   "note": "Chronic disease of skin, known present (\"chronic lung/ skin disease\")."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Obesity\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-9af3dbe5"
+   ],
+   "quote": "obesity",
+   "confidence": "high",
+   "note": "Known present."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased level of consciousness\" \"finding\"))",
+   "element_keys": [
+    "p40-8a7c2bb2"
+   ],
+   "quote": "Decreased consciousness",
+   "confidence": "high",
+   "note": "Vocabulary concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute confusion\" \"finding\"))",
+   "element_keys": [
+    "p40-8a7c2bb2"
+   ],
+   "quote": "confusion",
+   "confidence": "high",
+   "note": "Reconciler (from B): Acute confusion is the VHA Confusion warning-sign concept."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Extensive\" \"qualifier value\")))",
+   "element_keys": [
+    "p40-714a2a87"
+   ],
+   "quote": "Extensive skin lesions",
+   "confidence": "high",
+   "note": "Skin lesion with Extensive qualifier."
+  },
+  {
+   "rule": "Urgent: suspected mpox with danger signs",
+   "role": "priority_condition",
+   "expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\"))",
+   "element_keys": [
+    "p40-8be4b898"
+   ],
+   "quote": "Severe pain",
+   "confidence": "high",
+   "note": "Exact concept."
+  }
+ ],
+ "elements_not_encoded": [
+  {
+   "element_key": "p40-24c69ba2",
+   "element_id": "p40-rb1-e16",
+   "text": "Manage and refer urgently:",
+   "reason_category": "management_step",
+   "reason": "Header of the management list."
+  },
+  {
+   "element_key": "p40-4782aeab",
+   "element_id": "p40-rb1-e17",
+   "text": "If oxygen saturation < 90%, give oxygen 1-4L/min via nasal prongs or 6-10L/min via facemask.",
+   "reason_category": "management_step",
+   "reason": "Oxygen therapy; no manage tasks in this pass."
+  },
+  {
+   "element_key": "p40-b9e72a6a",
+   "element_id": "p40-rb1-e18",
+   "text": "If dehydration likely, give oral rehydration solution (ORS) and observe. Encourage small frequent sips. Aim for at least 1-2L in 2 hours. If unable to drink or ",
+   "reason_category": "management_step",
+   "reason": "Rehydration/IV fluids; no manage tasks."
+  },
+  {
+   "element_key": "p40-0071f4fd",
+   "element_id": "p40-rb1-e19",
+   "text": "If severe pain, give morphine 5-10mg IM or diluted morphine 3-10mg slow IV2. Stop if BP drops < 90/60.",
+   "reason_category": "management_step",
+   "reason": "Analgesia; no manage tasks."
+  },
+  {
+   "element_key": "p40-da4c655b",
+   "element_id": "p40-rb1-e20",
+   "text": "If persistent nausea or vomiting, give single dose metoclopramide 10mg oral/IM/IV.",
+   "reason_category": "management_step",
+   "reason": "Antiemetic; no manage tasks."
+  },
+  {
+   "element_key": "p40-20e81e09",
+   "element_id": "p40-rb1-e21",
+   "text": "If paraphimosis likely: if glans blue/black: refer urgently. If not, attempt manual reduction: wrap glans in gauze and apply increasing pressure for 10-15 minut",
+   "reason_category": "management_step",
+   "reason": "Manual reduction/referral; no manage tasks."
+  },
+  {
+   "element_key": "p40-d39a7a2f",
+   "element_id": "p40-rb1-e22",
+   "text": "If unable to pass urine, insert urinary catheter.",
+   "reason_category": "management_step",
+   "reason": "Urinary catheter; no manage tasks."
+  }
+ ],
+ "known_issues": [],
+ "judgment_calls": [
+  {
+   "topic": "Comma lists ending in 'X likely' (dehydration, myocarditis)",
+   "decision": "Any one listed sign suffices (or), gated by suspected mpox.",
+   "alternatives": "All signs required (and), or any2.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Lesion sites in 'Suspect mpox if'",
+   "decision": "Read the parenthesis as the qualifying sites: new lesion of face, palm, sole, genitals, anus, rectum, mouth or eye.",
+   "alternatives": "Treat the sites as examples and accept any new skin lesion.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Scope of page-40 'likely' diagnoses",
+   "decision": "Every probable rule on this page is and-ed with the possible mpox diagnosis, so the page does not diagnose e.g. dehydration from BP < 90/60 or myocarditis from chest pain in every patient.",
+   "alternatives": "Ungated global rules (would fire far more often).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shock",
+   "decision": "Or of the Shock finding and SBP < 80, as written in the box; footnote 1 thresholds not built into a shock rule.",
+   "alternatives": "A probable shock rule from footnote 1.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Trigger for suspecting mpox",
+   "decision": "Task triggered by a recorded skin/mucosal lesion or eruption.",
+   "alternatives": "Trigger on common symptoms (would fire for every cough/headache).",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Time windows",
+   "decision": "Contact within 21 days and new medication within 3 months written as (<= (onset ...) (time_ago ...)); the temperature-in-last-2-days window is not modelled.",
+   "alternatives": "None in the language.",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Molluscum contagiosum",
+   "decision": "Encoded (reconciler, from B): localised non-itchy and firm dome-shaped papule and Skin dimple.",
+   "alternatives": "Not encoding it (builder A), because no umbilicated-papule concept exists.",
+   "confidence": "low"
+  },
+  {
+   "topic": "Reconciliation",
+   "decision": "Final build is A as base with B's Visual disturbance, Acute confusion, nausea, new medication commenced, erythema and molluscum rule; see reconcile.json.",
+   "alternatives": "B as base",
+   "confidence": "medium"
+  }
+ ]
+}

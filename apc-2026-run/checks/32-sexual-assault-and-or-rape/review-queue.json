@@ -1,0 +1,767 @@
+[
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p32-83ced725",
+  "text": "Give urgent attention to the patient who was sexually assaulted and/or raped with any of:",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Red-box header: defines the Urgent priority structure (presenting complaint AND any of the listed items).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "figure_or_note: box header; the 'any of' logic is carried by the criteria and the (or ...) in the priority rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as (and (or Sexual assault, Rape) (or ...red-box items...)) at Urgent, the shape the house standard asks for. Rape is_a Sexual assault in SNOMED, so the inner or is redundant but harmless.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p32-c2e4440c",
+  "text": "Injuries needing attention 30",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as the general concept \"Traumatic injury\" (disorder). The qualifier \"needing attention\" is dropped, so any recorded injury, however trivial, makes the patient Urgent. The language has no clean way to say \"needing attention\" and page 30 owns that judgement, so this is acceptable, but it over-includes.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Needing attention' is approximated by Traumatic injury (any injury); acceptable since the cross-reference (p30) defines the attention criteria, but slightly broad.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "the qualifier 'needing attention': any recorded traumatic injury, including trivial descendants such as a bruise, makes the patient Urgent"
+    ],
+    "problem": "The concept is right but broader than the page. No severity or 'needing attention' qualifier is used. The over-triage is mild.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p32-44367ff7",
+  "text": "If severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, or use of a foreign object, manage and refer urgently to next level of care.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "severe bleeding",
+     "multiple injuries",
+     "severe abdominal pain",
+     "difficulty breathing",
+     "strangled/choked",
+     "use of a foreign object"
+    ],
+    "problem": "None of the six findings (pregnant excepted, which is covered by the header criterion) is checked for or used in any rule, so the system never prompts the nurse to look for them in a sexual-assault patient. The referral action itself is out of scope, but the findings are red-box check items.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": [],
+    "problem": "management_step: the severe bleeding / strangulation / foreign object items are triggers for a management action (refer to next level), not triage or diagnosis; Pregnant is already in the priority rule",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "severe bleeding",
+     "severe abdominal pain",
+     "difficulty breathing",
+     "strangled/choked",
+     "use of a foreign object"
+    ],
+    "problem": "Pregnant is covered by the Pregnancy criterion, and multiple injuries is covered loosely by Traumatic injury. The other five escalating features are absent from the check_for and the priority rule. For example, a man assaulted 4 days ago who was strangled, or one with a foreign object used, would not be Urgent. SNOMED has candidates: 'Assault by strangulation' (event), 'Hemorrhage', 'Sexual assault with penetration of vagina/anus with foreign body' (event), and Dyspnea, which is a common symptom.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p32-23691e73",
+  "text": "• Suspect sexual assault if patient forced into sexual act (excluding penetration) without consent. Suspect rape if intentional penetration of patient's vagina/anus/mouth with any object, without consent. • Ensure a safe space, offer confidentiality, be patient, listen attentively, and record the pa",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible/suspected sexual assault rule",
+     "possible/suspected rape rule"
+    ],
+    "problem": "No possible-diagnosis rule for sexual assault or rape. Low consequence: there is no discriminating finding to put in the evidence that is not the event itself, and the rules fire off the recorded event. The second sentence (safe space, confidentiality) is advice.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "possible 'Sexual assault' rule",
+     "possible 'Rape' rule (penetration of vagina/anus/mouth without consent)"
+    ],
+    "problem": "No diagnosis rule exists, so the event recorded by the health worker is the only entry point to the page. 'Sexual assault' is not a common symptom or warning sign, so the check task fires only if someone records that event directly.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p32-7cd33709",
+  "text": "1Dissolve 250mg ceftriaxone in 0.9mL lidocaine 1% without adrenaline. If severe penicillin allergy (previous angioedema, anaphylaxis, urticaria), omit ceftriaxone and increase azithromycin to 2g. 2Advise no alcohol for 48 hours after last dose. 3Any type of disability, relying daily on care services",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "vulnerability criteria"
+    ],
+    "problem": "Not encoded; only supports management.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "The footnotes define 'vulnerable', which drives reporting and social-work referral, not triage or diagnosis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for urgent sexual assault/rape conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Female\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Female is sex, not a finding of the assault; in check_for it prompts for sex which is a demographic, not a thing to check.",
+    "fix": "Drop Female/Male from check_for or keep only as sex demographics.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c004",
+  "text": "Check for urgent sexual assault/rape conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Male\" \"finding\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c003 for Male.",
+    "fix": "Drop Female/Male from check_for or keep only as sex demographics.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "Sex has no demographic construct in the grammar; Female/Male (finding) is the usable proxy for 'if woman'/'if man'.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c006",
+  "text": "Check for urgent sexual assault/rape conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Page says 'Injuries needing attention' (cross-ref to the Injuries page); the rule fires on any injury, so a trivial graze would make the patient Urgent. No SNOMED qualifier expresses 'needing attention'; the broadening is probably acceptable but should be recorded.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says 'Injuries needing attention' (refers to page 30); 'Traumatic injury' omits the 'needing attention' qualifier.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Traumatic injury\" covers any injury; the page limits this to injuries needing attention (p.30), so minor bruises/abrasions would make every assault Urgent.",
+    "fix": "Add a severity/qualifier (e.g. (qualifier (snomed_concept \"Severe\" \"qualifier value\"))) or accept as a nurse-judgement proxy; no closer SNOMED concept for 'needing attention' found.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c014",
+  "text": "Urgent: sexual assault/rape with urgent features :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 5 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Direction depends on VHA convention: literal reading of <= onset time_ago 5 days is 'more than 5 days ago', opposite of 'within last 5 days'. Briefing says <(onset)(time_ago) means within; confirm against live example.",
+    "fix": "Confirm operator direction against 48-constipation example; if literal, use >= onset (time_ago 5 days).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c015",
+  "text": "Urgent: sexual assault/rape with urgent features :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 5 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same time-direction caveat as c014.",
+    "fix": "Confirm operator direction against 48-constipation example; if literal, use >= onset (time_ago 5 days).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c017",
+  "text": "Urgent: sexual assault/rape with urgent features :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sexual assault\" \"event\"))) (time_ago 3 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same time-direction caveat as c014.",
+    "fix": "Confirm operator direction against 48-constipation example; if literal, use >= onset (time_ago 5 days).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c018",
+  "text": "Urgent: sexual assault/rape with urgent features :: (<= (onset (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rape\" \"event\"))) (time_ago 3 days))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same time-direction caveat as c014.",
+    "fix": "Confirm operator direction against 48-constipation example; if literal, use >= onset (time_ago 5 days).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'within last N days' = onset after time_ago N days; house standard writes '<' for 'within', '<=' is the inclusive equivalent.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c020",
+  "text": "Urgent: sexual assault/rape with urgent features :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Traumatic injury\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "imprecise",
+    "reason": "Same as c006: 'needing attention' is dropped, so any recorded injury makes the patient Urgent; no closer SNOMED concept found.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Any traumatic injury triggers urgent; page requires injuries needing attention (page 30).",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "\"Traumatic injury\" covers any injury; the page limits this to injuries needing attention (p.30), so minor bruises/abrasions would make every assault Urgent.",
+    "fix": "Add a severity/qualifier (e.g. (qualifier (snomed_concept \"Severe\" \"qualifier value\"))) or accept as a nurse-judgement proxy; no closer SNOMED concept for 'needing attention' found.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "The time-window branch (the page's first and most common urgent criterion) only fires if the patient's sex has been recorded as the clinical findings \"Female\" (finding) or \"Male\" (finding). If VHA holds sex as a demographic rather than a recorded finding, neither branch matches and a woman raped yesterday with no other urgent feature is not flagged Urgent. The check_for does list Female/Male, which mitigates this only if the nurse answers those items. Worth confirming how sex is represented before relying on this rule.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent sexual assault/rape conditions",
+  "text": "The check_for omits the red-box findings in the \"manage and refer urgently\" line (severe bleeding, multiple injuries, severe abdominal pain, difficulty breathing, strangled/choked, foreign object). The house standard asks for every red-box item in the check_for; these would need to be consumed by a rule (e.g. added to the Urgent or-list) to satisfy the never-used-as-evidence test.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "The evidence \"Sexual assault\" and \"Rape\" (event) appear only as the task's due_to, not in a check_for. The house constraint 5 says priority-evaluation evidence must be checked for in the same file (constraint 4 explicitly allows a task due_to; constraint 5 does not say). If the test does not accept a task due_to for priority evaluations, this will be reported as PRIORITY EVALUATION ... NOT CHECKED FOR. Also, the task due_to uses the general \"Sexual assault\" which already matches \"Rape\" by descent; harmless redundancy.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "\"Traumatic injury\" (disorder) without any qualifier makes every recorded injury, however minor, an Urgent criterion, whereas the page says \"injuries needing attention\". No clean representation exists; noted so a clinician can decide whether the over-inclusion is acceptable.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent sexual assault/rape conditions",
+  "text": "Task is consistent with the priority rule; every check_for item is used by the priority rule. No problem found beyond the broad Traumatic injury concept.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "Female/Male branches fail silently if sex is not recorded, so a recent assault in a patient with no recorded sex is not caught by the time criterion. Also the Urgent level is justified by the page's red box.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "The escalating features in 'Manage and refer urgently' (severe bleeding, severe abdominal pain, difficulty breathing, strangled/choked, foreign object) are not urgent triggers. A patient outside the 5-day/3-day window who has any of them is not prioritised.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "The time-window criterion relies on onset of the 'Sexual assault'/'Rape' event, so it works only if onset records the assault date rather than the recording time. If onset defaults to the recording time, the 5-day/3-day criterion is always true, and every female or male patient is Urgent. Female/Male are also recorded as clinical findings rather than taken from patient sex.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent sexual assault/rape conditions",
+  "text": "The due_to anchor 'Sexual assault'/'Rape' (event) is neither a common symptom nor a warning sign, and no possible pre-screen rule exists, so the rules fire only if the event is recorded directly.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent sexual assault/rape conditions",
+  "text": "Type and trigger are right and every item in the 'with any of' line is checked for. But the red box has a second tier under 'Manage and refer urgently' ('If severe bleeding, multiple injuries, severe abdominal pain, pregnant, difficulty breathing, strangled/choked, or use of a foreign object, manage and refer urgently to next level of care') and none of those findings except pregnancy is checked for. Minor: Female/Male as check_for findings is a clumsy way to ask the patient's sex, and the trigger events are not recorded common symptoms or warning signs, so the task depends on another page recording 'Sexual assault'/'Rape'.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "Urgent is justified by the box heading, the (and trigger (or ...)) shape is right, and the woman-5-days / man-3-days split is faithfully encoded for both events. What is missing is the box's referral tier: severe bleeding, multiple injuries, severe abdominal pain, difficulty breathing, strangled/choked, use of a foreign object, BP < 90/60 and SpO2 < 95% all mark a patient the page sends urgently to the next level of care, and no rule carries them (only 'pregnant' from that list is covered). Those patients only reach Urgent today if they also happen to meet a first-tier item.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for urgent sexual assault/rape conditions",
+  "text": "check_for lists Female/Male (demographics) and the full urgent list including Traumatic injury, which the page qualifies as needing attention; otherwise the task type and trigger are right.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "Time-window comparison operator direction is doubtful (<= onset vs time_ago); Traumatic injury lacks 'needing attention'; 'Pregnant' is also a manage item but correctly an urgent criterion. Priority Urgent matches the box heading 'Give urgent attention'. Structure and/or is faithful.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Urgent: sexual assault/rape with urgent features",
+  "text": "Urgent level is justified by 'Give urgent attention' and the or-structure (sex-specific time window | pregnant | injury | suicidal/overdose/self harm) matches the page. But (1) 'Traumatic injury' is broader than 'injuries needing attention', so almost any assault with a minor injury triggers Urgent; (2) the time window depends on the assault/rape finding's onset — the briefing says onset is captured when the finding is recorded, so unless the nurse back-dates onset to the assault date, the 5/3-day clause will always be true at presentation and every assault becomes Urgent.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "trigger",
+  "text": "A: (or Victim of sexual aggression (finding), possible dx Victim of sexual aggression, possible dx Victim of rape)  vs  B: (or Sexual assault (event), Rape (event))",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or (clinical_finding (snomed_concept \"Sexual assault\" \"event\")) (clinical_finding (snomed_concept \"Rape\" \"event\")))",
+    "reason": "The header says 'sexually assaulted and/or raped'; B's Sexual assault/Rape concepts are the page's words directly, and A's diagnosis triggers depend on diagnosis rules not taken (below).",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Self-injurious behavior (finding)  vs  B: Intentionally harming self (event)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "reason": "Both fit 'self harm' equally; B's concept is the one VHA's existing vocabulary uses most, so the same idea is written the same way across pages.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "B only: Female (finding), Male (finding)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Female\" \"finding\")) ; (clinical_finding (snomed_concept \"Male\" \"finding\"))",
+    "reason": "The page sets different windows 'if woman' and 'if man'; checking for sex is needed to encode that split.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "priority_condition",
+  "text": "A: one 5-day window for everyone on Victim of sexual aggression, Victim of forced sexual activity and six penetration events  vs  B: Female AND onset <= 5 days, or Male AND onset <= 3 days, on Sexual assault/Rape",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or (and Female (or (<= (onset Sexual assault) (time_ago 5 days)) (<= (onset Rape) (time_ago 5 days)))) (and Male (or (<= (onset Sexual assault) (time_ago 3 days)) (<= (onset Rape) (time_ago 3 days)))))",
+    "reason": "The page says 'within last 5 days if woman or last 3 days if man'; B keeps both numbers, A drops the 3-day window for men.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: complaint part = Victim of sexual aggression / possible diagnoses  vs  B: Sexual assault / Rape events",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(or (clinical_finding (snomed_concept \"Sexual assault\" \"event\")) (clinical_finding (snomed_concept \"Rape\" \"event\")))",
+    "reason": "Follows the trigger decision so the priority rule's complaint matches the task's.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "priority_condition",
+  "text": "A: Self-injurious behavior (finding)  vs  B: Intentionally harming self (event)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding (snomed_concept \"Intentionally harming self\" \"event\"))",
+    "reason": "Same as the check_for decision for 'self harm'.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis_condition",
+  "text": "A only: Victim of forced sexual activity -> possible sexual assault; six 'Sexual assault with ... penetration' events -> possible rape",
+  "detail": [
+   {
+    "choice": "neither",
+    "final": "",
+    "reason": "The 'Suspect sexual assault/rape if …' lines define the complaint from the patient's account; the evidence A uses is itself a recorded sexual assault (the penetration events are descendants of Sexual assault), so the rules restate the trigger rather than add page logic.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "slug": "32-sexual-assault-and-or-rape",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "diagnosis",
+  "text": "A only: possible Victim of sexual aggression (finding), possible Victim of rape (finding)",
+  "detail": [
+   {
+    "choice": "neither",
+    "final": "",
+    "reason": "Dropped with the diagnosis rules above.",
+    "unsettled": true
+   }
+  ]
+ }
+]

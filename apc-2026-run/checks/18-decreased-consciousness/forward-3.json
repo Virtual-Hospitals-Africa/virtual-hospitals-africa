@@ -1,0 +1,549 @@
+{
+ "page": 18,
+ "checker": "forward-3",
+ "elements": [
+  {
+   "element_key": "p18-8b7b7b44",
+   "scope": "in_scope",
+   "scope_reason": "footnote 1 defines 'possible allergen' used by the anaphylaxis criterion",
+   "verdict": "partial",
+   "parts_missing": [
+    "'within the past few hours' time window on allergen exposure not encoded (onset constraint on exposure findings)"
+   ],
+   "problem": "Medication, food, insect bite/sting are all encoded as exposures; the recency window is dropped, so any recorded past exposure satisfies the criterion. Other footnotes (2-6) are drug-preparation notes, out of scope.",
+   "evidence": [
+    "Diagnose possible anaphylaxis with sudden decreased consciousness :: (and (clinical_finding \"Decreased level of consciousness\" (qualifier \"Sudden onset\")) (or Generalized pruritus | Generalized rash | Swelling@Face structure | Swelling@Tongue structure | Wheezing | Difficulty breathing | Abdominal pain | Finding of vomiting | Exposure to Drug or medicament | Exposure to Food | Insect bite - wound | Insect sting))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-96f9e0c5",
+   "scope": "in_scope",
+   "scope_reason": "red-box header -> Urgent priority",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: decreased consciousness :: (system_priority_evaluation adult Urgent (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-9eb798e9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-e25b639c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-598ba044",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-d32664c5",
+   "scope": "in_scope",
+   "scope_reason": "'check for anaphylaxis' -> possible diagnosis",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Sudden-onset qualifier on decreased consciousness kept; 'and any of' correctly an or; itch/rash split into Generalized pruritus / Generalized rash; face/tongue swelling via finding_site. Allergen time window lost (see footnote element).",
+   "evidence": [
+    "Diagnose possible anaphylaxis with sudden decreased consciousness :: (and (clinical_finding \"Decreased level of consciousness\" (qualifier \"Sudden onset\")) (or Generalized pruritus | Generalized rash | Swelling@Face structure | Swelling@Tongue structure | Wheezing | Difficulty breathing | Abdominal pain | Finding of vomiting | Exposure to Drug or medicament | Exposure to Food | Insect bite - wound | Insect sting))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-ca2d773f",
+   "scope": "in_scope",
+   "scope_reason": "instruction to check glucose, temperature, pupils",
+   "verdict": "partial",
+   "parts_missing": [
+    "pupil findings 'unequal' (Anisocoria) and 'respond poorly to light' (e.g. Sluggish pupil movement / Finding of pupil reaction to light) absent from check_for"
+   ],
+   "problem": "Glucose and temperature are routine vitals (no task needed); pinpoint and dilated pupils are checked, but the third pupil branch is not.",
+   "evidence": [
+    "Check for causes of decreased consciousness :: check_for [... \"Pin point pupils\", \"Illicit drug use\", \"Excessive salivation\", \"Excessive bronchial secretion\", \"Muscle twitch\", \"Dilated pupil\"@both pupils]"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-8b5df622",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-c41d4bd2",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-4ba354dd",
+   "scope": "out_of_scope",
+   "scope_reason": "flowchart_routing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-7dcd4ebc",
+   "scope": "borderline",
+   "scope_reason": "glucose < 3 (< 4 if diabetes) branch implies hypoglycaemia but page states no 'X likely'; 'unable to measure' is not_representable",
+   "verdict": "missing",
+   "parts_missing": [
+    "glucose < 3 mmol/L",
+    "< 4 mmol/L if known diabetes",
+    "unable to measure"
+   ],
+   "problem": "No rule (e.g. probable Hypoglycemia) for this branch; only management follows, so omission is defensible under the house standard.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-53dcef30",
+   "scope": "in_scope",
+   "scope_reason": "glucose ≥ 11.1 is the gating condition of the shock-likely criterion",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Encoded as the glucose condition inside the shock rule. No standalone hyperglycaemia rule, but the page names none.",
+   "evidence": [
+    "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1 :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (>= (measurement \"Blood glucose status\" mmol/L) 11.1) (or (< SBP mmHg 80) (>= \"Pulse, function\" bpm 100) (> \"Respiratory rate\" bpm 30) (clinical_finding \"Asthenia\")))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-8f225c71",
+   "scope": "borderline",
+   "scope_reason": "temperature ≤ 35°C implies hypothermia but no 'likely' on page",
+   "verdict": "missing",
+   "parts_missing": [
+    "temperature ≤ 35°C (Hypothermia)"
+   ],
+   "problem": "No rule encodes this branch; only management follows.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-9defb6d2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38 :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (>= (measurement \"Body temperature\" °C) 38))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-d5e77db8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))",
+    "Check for causes of decreased consciousness :: check_for [... \"Pin point pupils\", \"Illicit drug use\", \"Excessive salivation\", \"Excessive bronchial secretion\", \"Muscle twitch\", \"Dilated pupil\"@both pupils]"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-2b37901b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Both equally dilated' approximated by Dilated pupil with finding_site 'Structure of pupil of both eyes'; 'equally' is implicit only.",
+   "evidence": [
+    "Diagnose probable drug overdose with decreased consciousness and dilated pupils :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\")))",
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-494299d1",
+   "scope": "borderline",
+   "scope_reason": "pupil branch with no 'X likely' (implies raised intracranial pressure/structural cause); only management follows",
+   "verdict": "missing",
+   "parts_missing": [
+    "unequal pupils (Anisocoria)"
+   ],
+   "problem": "Not in check_for or any rule.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-da79fe86",
+   "scope": "borderline",
+   "scope_reason": "same branch as 'Unequal or'",
+   "verdict": "missing",
+   "parts_missing": [
+    "pupils respond poorly to light"
+   ],
+   "problem": "Not in check_for or any rule.",
+   "evidence": [],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-3fef7b82",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-9d6cf995",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-0460a67a",
+   "scope": "in_scope",
+   "scope_reason": "'for possible meningitis' -> possible diagnosis",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Ceftriaxone itself is management (out of scope).",
+   "evidence": [
+    "Diagnose possible meningitis with decreased consciousness and temperature ≥ 38 :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (>= (measurement \"Body temperature\" °C) 38))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-c9d16d3b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-4186107e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Excessive secretions' split into Excessive salivation or Excessive bronchial secretion; twitching -> Muscle twitch.",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-3bb367dd",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-78ea2817",
+   "scope": "in_scope",
+   "scope_reason": "'X likely' -> probable",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Uses general 'Overdose' (disorder); 'Psychostimulant overdose' exists but page says 'stimulant or other drug', so the general concept is appropriate.",
+   "evidence": [
+    "Diagnose probable drug overdose with decreased consciousness and dilated pupils :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-de778085",
+   "scope": "in_scope",
+   "scope_reason": "'shock likely' -> probable",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Comma list read as any-of (or); weakness -> Asthenia (checked for); gated by glucose ≥ 11.1 as its column position requires. Bolus management out of scope. Pulse uses 'Pulse, function' observable (exists).",
+   "evidence": [
+    "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1 :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (>= (measurement \"Blood glucose status\" mmol/L) 11.1) (or (< SBP mmHg 80) (>= \"Pulse, function\" bpm 100) (> \"Respiratory rate\" bpm 30) (clinical_finding \"Asthenia\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p18-888a296f",
+   "scope": "in_scope",
+   "scope_reason": "'and/or' -> or",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-41fcd1e4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-4c1cf881",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-395629c7",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-cc0c165f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-6dba96e2",
+   "scope": "borderline",
+   "scope_reason": "'manage 39' is a cross-reference, but fever + malaria-area exposure in 3 months is a diagnostic cue (possible malaria)",
+   "verdict": "missing",
+   "parts_missing": [
+    "temperature ≥ 38°C AND in malaria area in past 3 months -> possible Malaria"
+   ],
+   "problem": "No possible malaria rule or check_for of malaria-area travel.",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p18-c7eab6e9",
+   "scope": "in_scope",
+   "scope_reason": "'X likely' -> probable",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Both inputs to the Poisoning bar are encoded: pinpoint branch and (via the connector from 'Stimulant or other drug overdose likely') the both-dilated branch.",
+   "evidence": [
+    "Diagnose probable poisoning with decreased consciousness :: (and (or (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\")) ... \"Responds to pain\" ... \"Unresponsive\") (or (and (clinical_finding \"Pin point pupils\") (or \"Illicit drug use\" (< \"Respiratory rate\" bpm 12) \"Excessive salivation\" \"Excessive bronchial secretion\" \"Muscle twitch\")) (clinical_finding \"Dilated pupil\" (finding_site \"Structure of pupil of both eyes\"))))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-6585081d",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-ede9f1a8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-3cb6ed83",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-6474fcc0",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-a24283b8",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-a96c5dea",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-fab0b02a",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-57036bb4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-fc9a9bb3",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-abb5ddd9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-3130a845",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-b532a2f9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-29f45585",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-2494c0a4",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-b4f467dc",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p18-d2a70d56",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step (monitoring while awaiting transport; triggers reassessment, not triage)",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p18-cc3018aa"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Check for causes of decreased consciousness",
+   "problem": "Pupil assessment check_for covers pinpoint and both-dilated but omits the third branch (unequal / poorly reactive to light); no rule consumes it, so adding it would also need a rule (none named on page).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible anaphylaxis with sudden decreased consciousness",
+   "problem": "Allergen exposure (footnote 1) has no 'within the past few hours' onset constraint, so any recorded exposure qualifies.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose probable shock with decreased consciousness and glucose ≥ 11.1",
+   "problem": "Page's comma list 'SBP < 80, pulse ≥ 100, RR > 30, weakness' is read as any-of; an all-of or any2 reading is possible, and a single sign (e.g. pulse 100) is a low bar for probable shock. Reasonable but worth confirming.",
+   "severity": "low"
+  },
+  {
+   "rule": "(none)",
+   "problem": "Glucose < 3 (< 4 if diabetes), temperature ≤ 35°C and fever with malaria-area exposure branches have no rules; the page names no 'likely' diagnosis for them, so this is consistent with the house standard but loses implicit hypoglycaemia/hypothermia/malaria logic.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of decreased consciousness (trigger)",
+   "problem": "Trigger includes 'Responds to pain' and 'Unresponsive' but not 'Responds to voice'; relies on descendants of Decreased level of consciousness for other AVPU states.",
+   "severity": "low"
+  }
+ ],
+ "summary": "All named 'likely'/'possible' conclusions (anaphylaxis, shock, meningitis, stimulant/drug overdose, poisoning) are encoded with correct logic, thresholds and rule types, and the Urgent priority matches the red-box header. The main gap is the pupil branch 'unequal or respond poorly to light', absent from check_for and all rules; secondary gaps are the unencoded hypoglycaemia/hypothermia/malaria branches (no 'likely' on page) and the lost 'past few hours' window on allergen exposure."
+}

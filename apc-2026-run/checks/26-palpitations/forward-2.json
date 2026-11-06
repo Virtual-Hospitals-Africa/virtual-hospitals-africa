@@ -1,0 +1,375 @@
+{
+ "page": 26,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p26-aa2dfef1",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Header: trigger is palpitations",
+   "evidence": [
+    "Check for urgent palpitations conditions :: (clinical_finding (snomed_concept \"Palpitations\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (and (clinical_finding (snomed_concept \"Palpitations\" \"finding\")) (or ...))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-496756d0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Syncope\" \"finding\"))",
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Loss of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-e82c9125",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page 'BP >= 180/110' is read as systolic OR diastolic; reasonable. Check tasks list no BP (measurements are not listed there by design).",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: >= Systolic 180 / >= Diastolic 110 / < Systolic 90 / < Diastolic 60 (mmHg)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-4629973a",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Calf swelling and thigh swelling encoded with different concept shapes (Swollen calf vs Swelling+site); acceptable. Calf/thigh pain and swelling all present.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: Pain in calf",
+    "Thigh pain",
+    "Swollen calf",
+    "(Swelling with finding_site Thigh structure)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-bc26b5e3",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Respiratory rate unit written bpm; confirm this is the house unit.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: Difficulty breathing",
+    "(>= Respiratory rate bpm 30)",
+    "(< Hemoglobin saturation with oxygen % 94)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-a12d9250",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Priority rule is not triggered by the 'heart failure likely' conclusion: it only fires on active_condition Heart failure, not on orthopnea + leg swelling (or the probable diagnosis)"
+   ],
+   "problem": "Probable HF diagnosis rule exists and is correct, but the Urgent priority rule has no orthopnea+leg swelling branch; urgency for this box item depends on the diagnosis feeding an active_condition, which is not established.",
+   "evidence": [
+    "Diagnose probable heart failure from palpitations :: (and Palpitations Orthopnea \"Leg swelling symptom\")",
+    "Urgent: palpitations with danger signs :: (active_condition (snomed_concept \"Heart failure\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-c7834187",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: Dizziness",
+    "Lightheadedness"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-a6e92e5c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: Pulse irregular",
+    "(> Pulse, function bpm 150)",
+    "(< Pulse, function bpm 50)"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-850303bb",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Confusion' is not a preferred term in the tool; Clouded consciousness (40917007) is the matching concept. Acceptable.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Clouded consciousness\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-c2e787d2",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Concept 'Blood glucose status' is an observable entity; fine. Diabetes handled as known-present qualifier.",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (< Blood glucose status mmol/L 3)",
+    "Urgent: palpitations with danger signs :: (and Diabetes mellitus [Known present] (< Blood glucose status mmol/L 4))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-547ade55",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "Hb has no unit in the language; correctly absent.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2f958f66",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Weakness/numbness encoded as asymmetry + sudden onset; 'difficulty speaking' as Difficulty talking. 'consider' correctly possible. Stroke and TIA share identical criteria, matching the page's single 'stroke/TIA' item.",
+   "evidence": [
+    "Diagnose possible stroke from palpitations :: (and Palpitations (or Muscle weakness[Sudden onset,Asymmetry] Numbness[Sudden onset,Asymmetry] Difficulty talking[Sudden onset] Visual disturbance[Sudden onset]))",
+    "Diagnose possible TIA from palpitations :: same",
+    "priority: same four branches"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-1746eb86",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: palpitations with danger signs :: (clinical_finding (snomed_concept \"Chest pain\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-b57cf078",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-885c8b9f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2771df4c",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-2cdfc9ef",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-12820836",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Thirst concept is narrow: 'Thirst due to water deprivation' presumes cause; page says plain thirst"
+   ],
+   "problem": "Dehydration likely encoded as probable with 4 findings; thirst concept arguably too specific (consider 'Excessive thirst' or a general Thirst finding).",
+   "evidence": [
+    "Diagnose probable dehydration from palpitations :: (and Palpitations (or Thirst due to water deprivation, Xerostomia, Decreased skin turgor, Decreased urine output))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-07537519",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable dehydration from palpitations :: ... Decreased skin turgor, Decreased urine output ..."
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-554b2c81",
+   "scope": "out_of_scope",
+   "scope_reason": "not_representable",
+   "parts_missing": [],
+   "problem": "Hb and pallor; anaemia likely not encodable (Hb has no unit). Pallor alone is not the criterion.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-8d335f29",
+   "scope": "borderline",
+   "scope_reason": "Pregnancy test positive could be encoded as a finding/diagnosis, and 'woman of childbearing potential' as a check; nothing in the rules. Arguably management/cross-reference.",
+   "verdict": "missing",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "low"
+  },
+  {
+   "element_key": "p26-0b237fcc",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "missing",
+   "parts_missing": [
+    "Fever (temp >= 38 C) conclusion: no check_for or probable/possible fever rule; temperature only appears inside the thyroid/electrolyte exclusion (< 38)"
+   ],
+   "problem": "'Check for fever' is in the page flow but the rules never encode temperature >= 38 as a finding or check. The < 38 test is only used to gate thyroid/electrolyte.",
+   "evidence": [
+    "thyroid: (< (measurement Body temperature \u00b0C) 38)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-b734420c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'None of the above' also requires no anaemia, no pregnancy, no QT-prolonging medication (not representable), no fever 'branch' beyond temp < 38"
+   ],
+   "problem": "Thyroid and electrolyte possible rules gate on temp < 38 and absence of dehydration signs only. Fires for any palpitations patient with a recorded temp < 38 and none of four dehydration signs, which over-triggers vs. page's 'none of the above'. Also depends on temp being recorded.",
+   "evidence": [
+    "Diagnose possible thyroid disorder from palpitations :: (and Palpitations (< Body temperature 38) (no Thirst...) (no Xerostomia) (no Decreased skin turgor) (no Decreased urine output))",
+    "Diagnose possible electrolyte imbalance from palpitations :: same"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p26-627627d9",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-6438e9f2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "Cardiology referral if heart disease/fainting/family history is management.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-1840727f",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p26-c15da811",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [],
+   "confidence": "high"
+  }
+ ],
+ "outside_not_logic": [
+  "p26-69890eed",
+  "p26-3c301571",
+  "p26-5ec1a727",
+  "p26-0c31a454",
+  "p26-76d455e3",
+  "p26-e172c137",
+  "p26-970e558c",
+  "p26-5b3a3cd9",
+  "p26-b91151ab",
+  "p26-9498010c",
+  "p26-fa0da578",
+  "p26-2495ecd2",
+  "p26-4d998ebd",
+  "p26-a461875d",
+  "p26-ae623d86",
+  "p26-5a3d597d",
+  "p26-9170d8df",
+  "p26-b5b50c22",
+  "p26-56387c6b",
+  "p26-a65157ba",
+  "p26-4ce98263",
+  "p26-eebf59df",
+  "p26-bf4aaad8",
+  "p26-86554096"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: palpitations with danger signs",
+   "problem": "Heart-failure-likely box item has no direct trigger (orthopnea + leg swelling); relies on active_condition Heart failure, so a patient meeting the page's HF-likely criteria may not get Urgent.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose possible thyroid disorder / electrolyte imbalance from palpitations",
+   "problem": "'None of the above' only approximated by temp < 38 and absent dehydration signs; anaemia, pregnancy and QT medication exclusions not representable; fires broadly and also on the Urgent patients (no exclusion of danger signs).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Check for causes of palpitations",
+   "problem": "No fever (temp >= 38) item or rule; check list covers only dehydration findings, though page lists fever, dehydration, anaemia, pregnancy and medication.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable dehydration from palpitations",
+   "problem": "'Thirst due to water deprivation' is narrower than plain thirst on the page.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for urgent palpitations conditions",
+   "problem": "Check list includes Orthopnea, Leg swelling symptom and Difficulty breathing, all used; no unused check_for items found. Check list and priority rule agree.",
+   "severity": "low"
+  }
+ ],
+ "summary": "Red-box criteria are encoded accurately, including all four BP, pulse, glucose and stroke/TIA branches, with Hb correctly omitted. Most consequential: the 'heart failure likely' item does not directly trigger the Urgent priority rule (only active_condition Heart failure does). The thyroid/electrolyte rules approximate 'none of the above' loosely, and no fever rule exists."
+}

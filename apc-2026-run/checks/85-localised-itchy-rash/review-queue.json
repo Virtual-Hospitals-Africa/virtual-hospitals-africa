@@ -1,0 +1,1746 @@
+[
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-74f00f0f",
+  "text": "LOCALISED ITCHY RASH",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "'Localised itchy rash' encoded as Pruritic rash (disorder); 'localised' not expressed, acceptable. Note Pruritic rash is not a recorded common symptom/warning sign, so the task depends on it being recorded elsewhere.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p85-31ec2960",
+  "text": "• If rash on scalp 95. • If very itchy, small red bumps and burrows in webspaces of fingers, axillae, waist or genitals, scabies likely 84. • If patches of dry, scaly, itchy skin on wrists, ankles, inside elbows or behind knees, eczema likely 84. • If dark coloured round macules (flat spots) that oc",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "Scabies (part 2): 'small' red bumps is encoded as Papule of skin + Red color only; the Small qualifier is not applied (Papule is inherently small, so low importance).",
+     "Eczema (part 3): 'patches' is not encoded; 'dry, scaly, itchy skin' at the four sites is encoded as Scaly skin + Dry at each site ANDed with Pruritic rash. Acceptable.",
+     "Fixed drug eruption (part 4): 'often start as itchy patches with red edges' is descriptive/optional and not encoded. Acceptable."
+    ],
+    "problem": "All three diagnoses are encoded as probable rules with the right concepts and the right and/or structure. Scabies: Itching+Severe AND red papule AND (burrows at webspace of hand OR axilla OR waist OR genitals) follows the page. Eczema: Pruritic rash AND (dry scaly skin at wrist OR ankle OR antecubital OR popliteal) follows the page. Fixed drug eruption: dark round macule AND exposure to Drug or medicament follows the page; 'anywhere on body' is correctly left without a site. 'Infestation caused by Sarcoptes scabiei var hominis' is the SNOMED FSN for scabies.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "scalp rash routing to page 95 (cross-reference only)",
+     "'after ingestion' timing of drug exposure"
+    ],
+    "problem": "Four bullets. (1) Scabies: very itchy + small red bumps + burrows at webspaces of fingers/axillae/waist/genitals: encoded correctly (Severe itching, red papule, or over 4 burrow sites); 'small' not captured, minor. (2) Eczema: encoded as Pruritic rash AND dry scaly skin at wrist/ankle/antecubital/popliteal; correct, with the 'patches' wording unrepresented. (3) Fixed drug eruption: dark round macule AND exposure to drug; the 'after ingestion' timing and itchy red-edged start are not captured; acceptable. (4) 'If rash on scalp 95' is a routing cross-reference with no rule or check (flowchart_routing, acceptable). Scabies rule also lacks the Pruritic rash anchor the others have, harmless since Severe itching is stronger.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "(b) scabies: 'small' (bumps) not encoded"
+    ],
+    "problem": "(a) out of scope, correctly omitted. (b) scabies: severe itching AND red papule AND burrows at webspaces of fingers / axillae / waist / genitals: correct except 'small'. Reading the sites as applying to burrows only is defensible. (c) eczema: Pruritic rash AND dry scaly skin at wrist / ankle / antecubital / popliteal: correct. (d) FDE: dark round macule AND exposure to drug: correct ('anywhere on body' needs no site; 'often start as itchy patches with red edges' is optional and reasonably omitted; 'ingestion' is generalised to exposure).",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-b830f8f1",
+  "text": "Are there red itchy bumps that may have blistered or healed with darkening of skin?",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "The Yes branch is encoded as the insect bites rule (Pruritic rash AND red papule). 'May have blistered or healed with darkening' is optional in the decision and is correctly used only in the papular urticaria sub-rule (Blister of skin OR Post-inflammatory hyperpigmentation), both of which are in check_for.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [],
+    "problem": "Decision node 'red itchy bumps that may have blistered or healed with darkening'. The Yes branch (insect bites / papular urticaria / impetigo) is encoded via Pruritic rash + Red papule, with Blister and Post-inflammatory hyperpigmentation discriminating papular urticaria. The No branch (check site) has no explicit encoding; it is only implicit. Because the insect-bite rule has no exclusion of the No branch, flowchart gating is lost.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as Pruritic rash + red Papule of skin, the evidence base of the insect bites, papular urticaria and impetigo rules. The 'No' outcome is not used to gate the No-branch rules (see rule-level problems).",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-4dff8a25",
+  "text": "Head, face, trunk or limbs",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Site branch header. The psoriasis, pityriasis rosea and tinea corporis rules are not restricted to head/face/trunk/limbs, which is acceptable: the page's distinction is only against 'Feet', and the tinea pedis rule is fully site-anchored.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "No site gate on psoriasis / pityriasis rosea / tinea corporis rules"
+    ],
+    "problem": "The tinea corporis rule can fire on an annular scaly lesion on the feet, alongside tinea pedis.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p85-c2cf49c3",
+  "text": "Ask where rash started and how it progressed. Look at distribution of rash, check for raised edges, check nails",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "'check nails': no nail finding in check_for (SNOMED has 'Pitting of nails' disorder / 'Psoriatic nail pitting' disorder).",
+     "'where rash started and how it progressed': sequence of onset between two findings is not representable in the language."
+    ],
+    "problem": "'Check for raised edges' is reflected in the Raised qualifier on the psoriasis and tinea corporis findings. Nails are not checked for anywhere.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "partial",
+    "parts_missing": [
+     "nails (pitted nails, for psoriasis) not in check_for",
+     "where the rash started and how it progressed (herald patch then spread) not captured as a sequence"
+    ],
+    "problem": "Raised edges are captured (Skin lesion +Annular +Raised). Nails are never checked.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-df9c6601",
+  "text": "Feet",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Site branch header; realised by the foot finding_sites in the tinea pedis rule.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Feet are expressed through the finding_sites in the tinea pedis rule.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-6cfd3324",
+  "text": "Tinea pedis (athlete's foot) likely Tinea corporis (ringworm) likely",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both encoded as probable diagnoses with the exact SNOMED disorders.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "clear centre",
+     "slow-growing"
+    ],
+    "problem": "Tinea pedis likely and tinea corporis likely are both encoded as probable. Tinea corporis: page describes slow-growing lesions with raised edges / ring of scale and clear centre; encoded as (annular raised skin lesion) OR (annular scaly skin). The OR is permissive: a pityriasis rosea herald patch (annular, scaly) also triggers tinea corporis. 'Clear in centre' and 'slow-growing' not encoded. Tinea corporis is in the head/face/trunk/limbs branch, but no site restriction exists (not representable cleanly). Tinea pedis: cracks OR peeling OR scale between toes OR thickened scale on soles/heels/borders: matches page with correct OR logic.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Both are probable rules with the correct concepts; criteria are judged on their own elements.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-fdc2add4",
+  "text": "Usually occurs in crops",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'Usually occurs in crops' is a descriptive caption of insect bites, not a criterion. Not encoded, and need not be.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'Usually occurs in crops' is a descriptive note; not representable as a criterion.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "crops / grouped lesions not in check_for or the insect bites rule"
+    ],
+    "problem": "Not encoded. It is a 'usually', so leaving it out is defensible, but it is the page's only positive discriminator for insect bites beyond red itchy bumps.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-f7df4bb9",
+  "text": "Insect bites likely • Advise to reduce exposure to insects: treat pets, use bed nets, wash bedding, use insect repellents, clear away puddles of water around house. • Advise to avoid scratching. • Apply calamine lotion as needed. • If severe itch, give chlorphenamine 4mg at night/ up to 6-8 hourly f",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Insect bites: probable 'Insect bite - wound' from Pruritic rash + red papule. Papular urticaria: probable 'Prurigo simplex' (SNOMED synonym 'Papular urticaria' confirmed; child of Pruritic rash) from red papule AND (Blister of skin OR Post-inflammatory hyperpigmentation), matching 'blisters/heals with darkened skin'. Impetigo: probable from red papule AND Crust on skin + Yellow color. All evidence is in check_for or is the task due_to. Minor note: a patient meeting the papular urticaria or impetigo rule also meets the insect bites rule, which mirrors the page's nesting and is acceptable.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "exclusion of insect bites when papular urticaria or impetigo applies"
+    ],
+    "problem": "Insect bites likely: encoded as probable 'Insect bite - wound' with Pruritic rash + red papule. Papular urticaria likely if blisters/healed with darkened skin: encoded as probable 'Prurigo simplex' (SNOMED synonym match for papular urticaria; acceptable). Impetigo if yellow crusts: encoded. Problems: papular urticaria and impetigo are refinements ('if blisters ... instead of insect bite'), but the insect bite rule still fires alongside them with no exclusion, so all three can co-occur; the page is hierarchical. Insect bite rule is also the unconditional base for any itchy red papule, broader than the page's decision node. Impetigo 'Crust on skin' + 'Yellow color' is reasonable. HIV test and treatment are management (out).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "All three probable rules are present and gated by the Yes-branch findings. Prurigo simplex carries 'Papular urticaria' as a synonym, so it is the right concept. The 'severe itch' in the management bullet is a management condition, not diagnostic.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-e0f6cd59",
+  "text": "Psoriasis likely • Refer/discuss all patients with specialist. • While awaiting appointment: - Test for HIV 124. - Apply liquor picis carbonis (LPC)",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as probable Psoriasis.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "pitted nails (optional 'may have')"
+    ],
+    "problem": "Psoriasis likely: encoded as well-defined raised skin plaque AND silver scaly skin. Correct as far as page's key criteria. Not encoded: predilection sites (knees, elbows, lower back, scalp) and pitted nails (page says 'may have', optional), and 'covered with' implies scale ON the plaque, not enforced. Management items out of scope.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Conclusion: psoriasis likely (management out of scope)",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p85-b4fda3c2",
+  "text": "Slow-growing lesion/s with raised edges/ring of scale, clear in centre",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'slow-growing' is not encoded (growth rate is not representable; could not be expressed with onset comparisons either).",
+     "'clear in centre' is not separately encoded; it is implied by Annular shape, which is acceptable."
+    ],
+    "problem": "Raised edges and ring of scale are encoded as two alternative findings (Skin lesion + Annular + Raised; Scaly skin + Annular), ORed, which matches the page's 'raised edges/ring of scale'. Both are in check_for.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "clear centre",
+     "slow-growing"
+    ],
+    "problem": "Slow-growing lesion with raised edges/ring of scale, clear in centre: raised annular lesion or annular scale encoded; slow growth and clear centre missing.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "clear in centre (central clearing)",
+     "slow-growing"
+    ],
+    "problem": "Encoded as (or annular raised Skin lesion, annular Scaly skin). Without central clearing, a single annular scaly finding is enough for probable tinea corporis. A pityriasis rosea herald patch or annular psoriasis recorded that way would also trigger it.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-c40ba95b",
+  "text": "with silvery scale. Often on knees, elbows, lower back, scalp. May have",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Silvery scale is encoded as Scaly skin + Silver color, ANDed with the plaque finding. The 'often on' sites are optional and correctly not required.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "typical sites",
+     "pitted nails"
+    ],
+    "problem": "'with silvery scale. Often on knees, elbows, lower back, scalp. May have pitted nails': silvery scale encoded; sites and pitted nails not encoded (optional).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Silvery scale is encoded as a separate Scaly skin +Silver color finding rather than as scale on the plaque. Acceptable. The 'often' sites are not required, and leaving them out is defensible.",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-98a3006c",
+  "text": "pitted nails",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Pitting of nails (disorder) / Psoriatic nail pitting (disorder) not in check_for and not used by the psoriasis rule"
+    ],
+    "problem": "No nail finding anywhere in the file.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [],
+    "problem": "'May have pitted nails' is an optional supporting feature of psoriasis; page also says 'check nails'. Not encoded anywhere. Low importance since optional.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Pitting of nails as an alternative / supporting finding"
+    ],
+    "problem": "Not checked for or used. With the page also saying 'check nails', it could be an or-alternative to silvery scale or a check item.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-5b539f20",
+  "text": "• Advise to keep skin clean, to dry well and avoid sharing towels. • Apply clotrimazole 1% cream 3 times a day (twice a day if on feet). Continue for 2 weeks after rash cleared (at least 4 weeks for tinea pedis). • If surrounding skin red/warm/swollen or if yellow crusts 93. • If extensive or recurr",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "'surrounding skin red/warm/swollen' (secondary bacterial infection signal) not in check_for; 'yellow crusts' is checked for but only used in the impetigo rule under the insect-bite branch."
+    ],
+    "problem": "Not encoded; low importance because page 93 presumably carries its own rules for these signs.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": null,
+    "problem": "not triage/diagnostic logic",
+    "confidence": null
+   },
+   {
+    "checker": "forward-3",
+    "scope": "out_of_scope",
+    "verdict": "",
+    "parts_missing": [],
+    "problem": "'If surrounding skin red/warm/swollen or yellow crusts -> 93' is a criterion that routes to another page, and the HIV / diabetes testing and referral are management steps. None of this needs encoding here.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "low",
+  "ref": "p85-112e4ac8",
+  "text": "Pityriasis rosea likely • Reassure that rash will resolve within 2 months. • For itch: - Give chlorphenamine 4mg at night for up to",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Encoded as probable Pityriasis rosea (the criteria problem is reported under p85-91fe3d10).",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "scale on herald patch and on oval patches",
+     "onset sequence (within 2 weeks)"
+    ],
+    "problem": "Pityriasis rosea likely: encoded as (large annular lesion on chest or back) AND (multiple small oval lesion). Missing: scale (fine scale in centre; smaller oval SCALY patches) and the ordering (herald patch first, followed within 2 weeks), and Christmas tree pattern. 'Oval shaped lesion' is not a scaly concept, so a non-scaly oval lesion qualifies. Herald patch rule overlaps heavily with the tinea corporis rule since both accept an annular lesion.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "correct",
+    "parts_missing": [],
+    "problem": "Conclusion: pityriasis rosea likely (management out of scope)",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "medium",
+  "ref": "p85-5642f4ff",
+  "text": "with fine scale in centre. Typically followed within",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'fine scale in centre' of the herald patch is not encoded (low importance; qualifier-level detail).",
+     "'typically followed within 2 weeks' is a sequence between two findings, which the language cannot express (not_representable); the AND of herald patch with secondary patches is the closest approximation."
+    ],
+    "problem": "The temporal relation is not representable. The scale detail is omitted.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "fine scale in centre"
+    ],
+    "problem": "'with fine scale in centre' not encoded for the herald patch (Scaly skin absent from the herald patch criterion).",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "fine scale in centre of herald patch",
+     "temporal sequence (secondary patches follow the herald patch)"
+    ],
+    "problem": "The herald patch is encoded as a large annular skin lesion with no scale, the feature that separates it from other annular lesions. The sequence is lost.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-91fe3d10",
+  "text": "2 weeks by smaller, oval, scaly patches. May have",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "in_scope",
+    "verdict": "error",
+    "parts_missing": [
+     "'scaly' is not encoded on the secondary patches"
+    ],
+    "problem": "Wrong concept: 'Oval shaped lesion' (finding, 129734009) is a child of 'Radiographic lesion shape finding' under 'Radiologic finding'. It is an imaging descriptor, not a skin finding, so it does not mean what the page says and a nurse would not record it on examination of a rash. SNOMED has no 'Oval' qualifier value; the closest skin-domain encoding is a Skin lesion / Scaly skin finding with Multiple + Small qualifiers (dropping 'oval'), or Macule of skin with Multiple + Small. 'Scaly' is also dropped.",
+    "confidence": "high"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "scaly",
+     "within 2 weeks of herald patch"
+    ],
+    "problem": "Within 2 weeks followed by smaller oval scaly patches: encoded as multiple small oval lesions; scaly and timing not encoded.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "in_scope",
+    "verdict": "partial",
+    "parts_missing": [
+     "'scaly' on the oval patches",
+     "'within 2 weeks' timing"
+    ],
+    "problem": "Encoded as Oval shaped lesion +Multiple +Small without scale. Timing is arguably expressible with onset / time_ago but is not attempted.",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-a0845543",
+  "text": "Christmas tree pattern",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'May have Christmas tree pattern' is an optional distribution pattern with no SNOMED concept; not encoded, acceptably.",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Photo-annotation text 'Christmas tree pattern on back' is a descriptive note; no matching concept encoded, acceptable.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Christmas tree distribution on back"
+    ],
+    "problem": "Not encoded. Defensible as optional; no obvious SNOMED concept.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "element",
+  "priority": "high",
+  "ref": "p85-a6686283",
+  "text": "on back",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "Continuation of the Christmas tree pattern note ('on back').",
+    "confidence": "medium"
+   },
+   {
+    "checker": "forward-2",
+    "scope": "out_of_scope",
+    "verdict": null,
+    "parts_missing": null,
+    "problem": "'on back' belongs to the Christmas tree pattern note; descriptive only.",
+    "confidence": "low"
+   },
+   {
+    "checker": "forward-3",
+    "scope": "borderline",
+    "verdict": "missing",
+    "parts_missing": [
+     "Christmas tree pattern on back"
+    ],
+    "problem": "As for p85-a0845543.",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c001",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "Page title is the presenting complaint; 'localised' is not expressible as a trigger distinction and the general concept is the house preference.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Localised' is dropped: Pruritic rash is not localised, so the trigger can't tell this page from the generalised itchy rash page and all ten rules here can fire for a generalised rash. SNOMED has no 'localised pruritic rash'; 'Localized eruption of skin' (disorder) exists but loses 'itchy'.",
+    "fix": "Keep Pruritic rash but record the gap, or add a Localized eruption of skin check/anchor",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c003",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'small' is implied by papule; red qualifier matches 'red bumps'.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'small red bumps'; the 'Small' qualifier is dropped.",
+    "fix": "Add (qualifier (snomed_concept \"Small\" \"qualifier value\")), or keep it unqualified so the check_for item matches the insect-bites rule",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c019",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of chest\" \"body structure\")) (qualifier (snomed_concept \"Large\" \"qualifier value\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'one large ring on chest' (herald patch); the 'fine scale in centre' detail is dropped but the shape and site are right.",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page says ONE large ring (single herald patch); count not encoded, and \"large\" is inferred from the page wording only.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'With fine scale in centre' is not encoded; minor.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c020",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of back\" \"body structure\")) (qualifier (snomed_concept \"Large\" \"qualifier value\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c019, back site.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'With fine scale in centre' is not encoded; minor.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c021",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oval shaped lesion\" \"finding\") (qualifier (snomed_concept \"Multiple\" \"qualifier value\")) (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "wrong",
+    "reason": "'Oval shaped lesion' is a radiology concept (parent 'Radiographic lesion shape finding' under 'Radiologic finding'), not a skin finding; and the page's 'scaly' is dropped.",
+    "fix": "(clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Ovoid shape\" \"qualifier value\")) (qualifier (snomed_concept \"Multiple\" \"qualifier value\")) (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Page: herald patch followed WITHIN 2 WEEKS by smaller oval SCALY patches; timing window and scale dropped (concept is just oval lesion).",
+    "fix": "Add scaly skin qualifier/second finding; timing cannot be encoded, note it",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'smaller, oval, scaly patches' 'typically followed within 2 weeks' after the herald patch. 'Scaly' is dropped, and so is the time link to the herald patch.",
+    "fix": "Add the Scaly skin qualifier or finding; note the 2-week sequence in the remaining questions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c022",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'lesion/s with raised edges ... clear in centre' is a raised annular lesion; 'slow-growing' is dropped.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Quote is only \"raised edges\"; \"Annular shape\" comes from \"ring\" in the next phrase, not from this quote.",
+    "fix": "Cite \"lesion/s with raised edges/ring of scale\" as one phrase",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'Slow-growing lesion/s with raised edges ... clear in centre'. 'Clear in centre' (central clearing) and 'slow-growing' are dropped. A raised annular lesion alone is broader than the page.",
+    "fix": "Add a central-clearing qualifier if one exists; otherwise record the loss",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c023",
+  "text": "Check for localised itchy rash conditions :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Ring of scale, clear in centre': 'clear in centre' is dropped, and an annular scale with no site matches the herald patch of pityriasis rosea ('one large ring ... with fine scale').",
+    "fix": "Record central clearing as an extra conjunct or in the remaining questions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c031",
+  "text": "Diagnose probable scabies (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Papule of skin\" \"disorder\") (qualifier (snomed_concept \"Red color\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'small red bumps'; the 'Small' qualifier is dropped.",
+    "fix": "Add (qualifier (snomed_concept \"Small\" \"qualifier value\")), or keep it unqualified so the check_for item matches the insect-bites rule",
+    "confidence": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c037",
+  "text": "Diagnose probable eczema (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pruritic rash\" \"disorder\"))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "\"Itchy skin\" is closer to Itching of skin than Pruritic rash (a rash disorder); trigger-level concept reused.",
+    "fix": "(snomed_concept \"Itching of skin\" \"finding\")",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c053",
+  "text": "Diagnose probable papular urticaria (localised itchy rash) :: (diagnosis (snomed_concept \"Prurigo simplex\" \"disorder\") probable)",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "SNOMED lists 'papular urticaria' as a synonym of Prurigo simplex; no concept named papular urticaria exists.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Prurigo simplex matched only as a synonym of papular urticaria; \"Idiopathic micropapular urticaria\" is a different concept. Acceptable but indirect.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c061",
+  "text": "Diagnose probable pityriasis rosea (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of chest\" \"body structure\")) (qualifier (snomed_concept \"Large\" \"qualifier value\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c019: single herald patch not distinguished.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'With fine scale in centre' is not encoded; minor.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c062",
+  "text": "Diagnose probable pityriasis rosea (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure of back\" \"body structure\")) (qualifier (snomed_concept \"Large\" \"qualifier value\")) (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c019, back site.",
+    "fix": "",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "faithful",
+    "reason": "'With fine scale in centre' is not encoded; minor.",
+    "fix": "",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "high",
+  "ref": "c063",
+  "text": "Diagnose probable pityriasis rosea (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oval shaped lesion\" \"finding\") (qualifier (snomed_concept \"Multiple\" \"qualifier value\")) (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "wrong",
+    "reason": "Same radiology concept as c021: 'Oval shaped lesion' is a 'Radiographic lesion shape finding', not a skin finding; 'scaly' dropped.",
+    "fix": "(clinical_finding (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Ovoid shape\" \"qualifier value\")) (qualifier (snomed_concept \"Multiple\" \"qualifier value\")) (qualifier (snomed_concept \"Small\" \"qualifier value\")))",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c021: oval scaly patches within 2 weeks; window and scale dropped.",
+    "fix": "As c021",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'smaller, oval, scaly patches' 'typically followed within 2 weeks' after the herald patch. 'Scaly' is dropped, and so is the time link to the herald patch.",
+    "fix": "Add the Scaly skin qualifier or finding; note the 2-week sequence in the remaining questions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "medium",
+  "ref": "c065",
+  "text": "Diagnose probable tinea corporis (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Skin lesion\" \"disorder\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")) (qualifier (snomed_concept \"Raised\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "'slow-growing' is dropped; shape and raised edge are the page's discriminators.",
+    "fix": "",
+    "confidence": "medium"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "imprecise",
+    "reason": "Same as c022: annular shape not in the quoted \"raised edges\"; slow-growing also dropped.",
+    "fix": "As c022",
+    "confidence": "low"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "The page says 'Slow-growing lesion/s with raised edges ... clear in centre'. 'Clear in centre' (central clearing) and 'slow-growing' are dropped. A raised annular lesion alone is broader than the page.",
+    "fix": "Add a central-clearing qualifier if one exists; otherwise record the loss",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "claim",
+  "priority": "low",
+  "ref": "c066",
+  "text": "Diagnose probable tinea corporis (localised itchy rash) :: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Scaly skin\" \"finding\") (qualifier (snomed_concept \"Annular shape\" \"qualifier value\")))",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-2",
+    "verdict": "faithful",
+    "reason": "",
+    "fix": "",
+    "confidence": "high"
+   },
+   {
+    "checker": "backward-3",
+    "verdict": "imprecise",
+    "reason": "'Ring of scale, clear in centre': 'clear in centre' is dropped, and an annular scale with no site matches the herald patch of pityriasis rosea ('one large ring ... with fine scale').",
+    "fix": "Record central clearing as an extra conjunct or in the remaining questions",
+    "confidence": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "high",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "'Oval shaped lesion' (finding) is a radiology concept (parent: Radiographic lesion shape finding, under Radiologic finding), not a skin examination finding. The secondary-patch criterion therefore uses a concept that does not mean what the page says, and the rule can only fire if a nurse records an imaging descriptor. Also 'scaly' is dropped from the secondary patches.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "high"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for localised itchy rash conditions (task due_to)",
+  "text": "The task is anchored to (clinical_finding (snomed_concept \"Pruritic rash\" \"disorder\")), which is not one of the common symptoms or warning signs listed in the house briefing. Unless the system records 'Pruritic rash' or a descendant on presentation, the check_for never runs, and the four rules that also use Pruritic rash as evidence (eczema, insect bites, papular urticaria, impetigo) never fire. 'Insect bite - wound' is a listed common symptom but is only used as a diagnosis, not a trigger. I cannot see the VHA repo to confirm what is recorded; flagging for the reconciler.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "The rule ANDs the herald patch with the secondary oval patches. The page describes a sequence ('typically followed within 2 weeks'), so a patient presenting during the herald-patch-only phase gets no diagnosis. The sequence is not representable; an AND is a defensible reading but a clinician may prefer the herald patch alone to be sufficient.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for localised itchy rash conditions (check_for)",
+  "text": "No nail finding despite the page's 'check nails' instruction and 'may have pitted nails' for psoriasis. 'Pitting of nails' (disorder) exists in SNOMED. Optional feature, so low.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable scabies (localised itchy rash)",
+  "text": "'small red bumps' encoded without the Small qualifier (Papule of skin + Red color). Papules are by definition small, so this is cosmetic.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea corporis (localised itchy rash)",
+  "text": "'Slow-growing' is not encoded and is not representable; the rule fires on any annular raised lesion or annular scale. Acceptable but noted for the clinician.",
+  "detail": [
+   {
+    "checker": "forward-1",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable insect bites / papular urticaria / impetigo",
+  "text": "Page is hierarchical (insect bites by default; papular urticaria if blisters/darkening; impetigo if yellow crusts), but all three rules share the same base and fire together with no exclusion; insect bites cannot be told from the other two.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea corporis",
+  "text": "Permissive OR on annular raised lesion or annular scaly skin; also fires on a pityriasis rosea herald patch and any annular lesion. No clear-centre or slow-growth criterion and no site restriction.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea",
+  "text": "Omits scale on both herald patch and oval patches; 'Oval shaped lesion' is non-scaly, so the key discriminator versus other oval lesions is lost.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable scabies",
+  "text": "Does not include Pruritic rash anchor as the other itch rules do; harmless given Severe itching. Also 'small' red bumps unrepresented.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "task check_for list",
+  "text": "Task trigger is 'Pruritic rash' disorder; the page title is 'localised itchy rash' with no localisation concept, so scalp routing (95) and flowchart No branch are not represented. Pruritic rash is not in the common-symptom list, so the task may not fire in practice.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "(no priority evaluation)",
+  "text": "Red box only cross-references page 82; absence of a priority rule is appropriate.",
+  "detail": [
+   {
+    "checker": "forward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable insect bites (localised itchy rash)",
+  "text": "Evidence (Pruritic rash + red papule) is a subset of the scabies picture (severe itching + red papule + burrows), and the task anchor makes Pruritic rash likely to be recorded. Every scabies patient will also get 'Insect bites probable'. On the page, scabies is a separate pre-flowchart exit (-> 84), not a Yes-branch case. No (no Burrows in skin) or similar exclusion is present.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea corporis (localised itchy rash)",
+  "text": "A bare 'or' of single findings with no presenting-complaint anchor, no site gate (head/face/trunk/limbs) and no central clearing. 'Scaly skin + Annular shape' alone gives probable tinea corporis, including on the feet, where it co-fires with tinea pedis, and for an annular scaly herald patch.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "Scale is dropped from both the herald patch (fine scale in centre) and the secondary oval patches, and the herald-then-eruption sequence (within 2 weeks) is lost. The rule rests on a large annular lesion on chest/back plus multiple small oval lesions.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Flowchart Yes/No branch (all No-branch rules)",
+  "text": "The exclusivity of the 'red itchy bumps' Yes branch versus the 'No: check site' branch is not represented. Psoriasis, pityriasis rosea and the tinea rules can co-fire with insect bites, papular urticaria and impetigo. Lower impact because the evidence sets mostly differ.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Anchoring across rules",
+  "text": "Pruritic rash is in the evidence for eczema, insect bites, papular urticaria and impetigo, but not for scabies, FDE, psoriasis, pityriasis rosea or the tinea rules, so those fire without the presenting complaint. Pruritic rash is also not a recorded common symptom or warning sign, so the check_for task may never trigger. This needs a note in remaining-questions.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for localised itchy rash conditions",
+  "text": "The page says 'check nails' and offers pitted nails for psoriasis, but nails are not in check_for (Pitting of nails (disorder) exists). Otherwise every check_for item is consumed by a rule, and every probable-rule evidence item is in the check_for or the task due_to.",
+  "detail": [
+   {
+    "checker": "forward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable insect bites (localised itchy rash)",
+  "text": "Page reaches 'Insect bites likely' only after the scabies / eczema / fixed drug eruption checks have been passed. The rule's evidence (itchy + red papules) is a strict subset of the scabies rule's evidence, so every scabies presentation also gets 'insect bites probable'. Consider excluding burrows, e.g. (not (clinical_finding (snomed_concept \"Burrows in skin\" \"disorder\"))) or (not (active_condition scabies)).",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "Second conjunct uses 'Oval shaped lesion', a radiology concept, so the rule cannot fire from a skin exam; replace with Scaly skin + Ovoid shape + Multiple + Small. Also the 'and' demands the later oval patches as well as the herald patch, while the page says they 'typically' follow within 2 weeks, so a patient seen with the herald patch alone never gets the diagnosis; an 'or' (or herald patch alone) is closer to the page.",
+  "detail": [
+   {
+    "checker": "backward-1",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for localised itchy rash conditions",
+  "text": "Red box (check urgent attention, p82) is not encoded as a priority/referral rule; check_for is a flat list of all page findings, which is acceptable for the checklist but the urgent-attention link is lost.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable insect bites (localised itchy rash)",
+  "text": "Fires on any pruritic red papule, so it co-fires with scabies, impetigo and papular urticaria; page only places it under the 'red itchy bumps' Yes branch ('usually occurs in crops' not encoded).",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable impetigo (localised itchy rash)",
+  "text": "Page says only 'If yellow crusts, impetigo likely'; rule also requires pruritic rash and red papule (context of the insect-bite branch), narrowing it.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "Oval lesions lack 'scaly' and the 'within 2 weeks' sequence; herald patch not distinguished as a single lesion, so it overlaps with tinea corporis rule.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea corporis (localised itchy rash)",
+  "text": "Annular shape inferred from raised edges; 'slow-growing' dropped; or-structure means a herald patch (annular, scaly) also triggers it.",
+  "detail": [
+   {
+    "checker": "backward-2",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Check for localised itchy rash conditions",
+  "text": "The trigger Pruritic rash drops 'localised' and isn't a recorded common symptom, so a generalised itchy rash also fires this page. The red box is only a cross-reference to page 82, so it rightly has no priority rule. The scalp (95) and nails (97) cross-references aren't modelled, which is acceptable. The check_for items cover every discriminating finding on the page.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable insect bites (localised itchy rash)",
+  "text": "The evidence is only Pruritic rash + red papule, which is the bare 'Yes' answer. It doesn't use the defining part of the question ('may have blistered or healed with darkening') or 'usually occurs in crops'. So every scabies picture (very itchy red bumps) and any red papular itchy rash also yields probable insect bites. Over-broad.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable pityriasis rosea (localised itchy rash)",
+  "text": "The secondary patches lose 'scaly' and the 'within 2 weeks' sequence after the herald patch. The herald patch loses 'fine scale in centre'.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "low"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "rule",
+  "priority": "medium",
+  "ref": "Diagnose probable tinea corporis (localised itchy rash)",
+  "text": "An OR of two weakened findings with 'clear in centre' and 'slow-growing' dropped, and no site gating. 'Annular scaly skin' alone can be satisfied by a pityriasis rosea herald patch, so it over-fires.",
+  "detail": [
+   {
+    "checker": "backward-3",
+    "severity": "medium"
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: (Papule of skin + Red color)  vs  B: (Papule of skin)",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding Papule of skin (qualifier Red color))",
+    "reason": "The page says \"small red bumps\" (scabies) and \"red itchy bumps\" (insect bites); A keeps \"red\", and the qualifier passes the checks.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Burrow (morphologic abnormality) at Skin structure of interdigital web of hand / axilla / waist / genitals  vs  B: Burrows in skin (disorder) at Structure of interdigital web of hand / same sites",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding Burrows in skin (finding_site Structure of interdigital web of hand | Axillary region structure | Structure of waist region of trunk | Genital structure))",
+    "reason": "Both say \"burrows in webspaces of fingers, axillae, waist or genitals\"; B uses a recordable clinical-finding concept, whereas A wraps a morphologic abnormality as a clinical finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Scaly skin + Dry at wrist/ankle/antecubital/Popliteal fossa  vs  B: Xeroderma + Scaly skin at wrist/ankle/antecubital/Popliteal region",
+  "detail": [
+   {
+    "choice": "A",
+    "final": "(clinical_finding Scaly skin (qualifier Dry) (finding_site Wrist region structure | Ankle region structure | Antecubital region structure | Popliteal fossa structure))",
+    "reason": "\"Patches of dry, scaly, itchy skin on wrists, ankles…\" puts dryness and scaliness on the same patch at the site; B allows dry skin anywhere plus scaly skin at the site.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Macule (morphologic abnormality) + Dark color + Round shape  vs  B: Macule of skin (disorder) + Round shape, and a separate Hyperpigmentation of skin",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding Macule of skin (qualifier Dark color) (qualifier Round shape))",
+    "reason": "\"Dark coloured round macules\" describes one lesion; B's clinical-finding concept carries A's single-finding colour and shape qualifiers.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "medium",
+  "ref": "check_for",
+  "text": "A: Hyperpigmentation of skin  vs  B: Post-inflammatory hyperpigmentation (papular urticaria / insect-bite branch)",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding Post-inflammatory hyperpigmentation)",
+    "reason": "The page says the bumps \"healed with darkening of skin\" / \"heals with darkened skin\", i.e. darkening after a lesion; B's concept says that, and it keeps this finding apart from the fixed-drug-eruption macules.",
+    "unsettled": true
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Skin lesion + Large + Annular at Anterior chest wall structure / Structure of posterior region of trunk  vs  B: Skin lesion + Annular at Skin structure of chest / Skin structure of back",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding Skin lesion (qualifier Large) (qualifier Annular shape) (finding_site Skin structure of chest | Skin structure of back))",
+    "reason": "\"One large ring on chest/back\": A's Large qualifier keeps \"large\", and B's skin sites name chest/back skin directly.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Scaly skin + Multiple + Small  vs  B: Oval shaped lesion + Multiple",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding Oval shaped lesion (qualifier Multiple) (qualifier Small))",
+    "reason": "\"Smaller, oval, scaly patches\": B's concept carries \"oval\" and A's Small qualifier carries \"smaller\"; \"scaly\" is lost in either single finding.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Fissure (morphologic abnormality), Peeling, Scaly skin at Skin structure of interdigital web of foot  vs  B: Fissure in skin (disorder), Peeling, Scaly skin at Structure of interdigital web of foot",
+  "detail": [
+   {
+    "choice": "B",
+    "final": "(clinical_finding Fissure in skin | Peeling of skin | Scaly skin (finding_site Structure of interdigital web of foot))",
+    "reason": "\"Cracks, peeling or scaly lesions between toes\": B's Fissure in skin is a clinical-finding concept, and its web site matches the hand webspace site chosen for scabies.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "check_for",
+  "text": "A: Scaly skin + Thickened at sole / Heel structure / Skin structure of border of foot  vs  B: Thickening of skin and Scaly skin at sole / Skin structure of heel / Skin structure of lateral border of foot",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "(clinical_finding Scaly skin (qualifier Thickened) (finding_site Skin structure of sole of foot | Skin structure of heel | Skin structure of border of foot))",
+    "reason": "\"Thickened scaly skin on soles/heels/sides of feet\": A's single finding and \"border of foot\" (both sides) follow the wording; B's lateral border covers only one side; B's heel-skin site is the more exact one.",
+    "unsettled": false
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "slug": "85-localised-itchy-rash",
+  "kind": "build_disagreement",
+  "priority": "low",
+  "ref": "diagnosis_condition",
+  "text": "Same differences as check_for, inside the scabies, eczema, fixed drug eruption, insect bites, papular urticaria, impetigo, pityriasis rosea and tinea pedis rules (B: eczema also requires Xeroderma; B: FDE requires Hyperpigmentation of skin; B: tinea pedis pairs Thickening of skin and Scaly skin with and)",
+  "detail": [
+   {
+    "choice": "new",
+    "final": "each rule uses the final check_for findings above, with A's rule structure",
+    "reason": "The diagnosis rules follow the same page wording as the check_for items, so each resolves as above; the rule logic (and/or nesting) was the same in both builds apart from these findings.",
+    "unsettled": false
+   }
+  ]
+ }
+]

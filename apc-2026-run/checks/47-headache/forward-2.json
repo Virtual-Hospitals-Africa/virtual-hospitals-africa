@@ -1,0 +1,488 @@
+{
+ "page": 47,
+ "checker": "forward-2",
+ "elements": [
+  {
+   "element_key": "p47-537e59c7",
+   "scope": "out_of_scope",
+   "scope_reason": "figure_or_note",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "Header only",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-24edc0aa",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Page text can be read as sudden severe (headache or dizziness); both encoded with both qualifiers, which is the right reading.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding Headache (qualifier \"Sudden onset\") (qualifier \"Severe (severity modifier)\"))",
+    "Urgent: headache with red-box danger signs :: (clinical_finding Dizziness ... Sudden onset ... Severe)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-5dac6f21",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Onset direction matches briefing convention (within last week). 'Postpartum' is modelled via onset of the state, acceptable.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (and (or Pregnancy (<= (onset Postpartum state) (time_ago 1 weeks))) (or (>= SBP 140) (>= DBP 90)))",
+    "check_for :: Pregnancy; Postpartum state"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-ec13b7ac",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Decreased level of consciousness\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-2bf1f17b",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'more frequent' (increasing frequency) is approximated by the static concept 'Frequent headache'"
+   ],
+   "problem": "Concept 'Frequent headache' means frequent, not becoming more frequent; best available, so low-severity.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (and (Headache + Worsening) (Frequent headache))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-70cc9737",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'and not pregnant' is not encoded, but harmless: pregnant patients are already Urgent at the lower 140/90 threshold.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (>= SBP 180) ; (>= DBP 110)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-961a59c0",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Persistent nausea (only vomiting encoded; no nausea in the urgent rule or its check_for)"
+   ],
+   "problem": "Page says 'Persistent nausea/vomiting'. Only 'Persistent vomiting' is encoded. Nausea alone with persistence is not caught.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Persistent vomiting\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-c873b15d",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Wakes up during night' is a generic nocturnal waking finding, not 'headache that wakes patient'; any night waking triggers Urgent. Over-triggering risk.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Wakes up during night\" \"finding\"))",
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Morning headache\" \"finding\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-0c149e18",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'asymmetric' (one-sided) not representable"
+   ],
+   "problem": "Weakness/numbness face, arm, leg with Sudden onset encoded; stroke and TIA both as possible. Asymmetry dropped; 'Difficulty talking' has no Sudden onset, defensible as the page's wording is ambiguous.",
+   "evidence": [
+    "Diagnose possible stroke in headache :: (or Weakness of face muscles+Sudden onset ... Difficulty talking)",
+    "Diagnose possible TIA in headache :: same or-group"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-942c02e8",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding Seizure (qualifier \"First episode\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-569bae21",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'red' rash (only purpuric)"
+   ],
+   "problem": "Meningitis probable rule has stiff neck, drowsy, confused (plus Clouded consciousness extra), purpuric rash. 'Purple/red rash' is narrowed to purpuric. The urgent rule reaches this only through active_condition Meningitis (diagnosis chaining), which works if the engine chains; no direct stiff-neck branch in the urgent rule.",
+   "evidence": [
+    "Diagnose probable meningitis in headache :: (and Headache (or Stiff neck, Drowsy, Clouded consciousness, Acute confusion, Purpuric rash))",
+    "Urgent: headache with red-box danger signs :: (active_condition (snomed_concept \"Meningitis\" \"disorder\"))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-91f48468",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding Injury of head (qualifier \"Recent\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-6d185854",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "error",
+   "parts_missing": [],
+   "problem": "Encoded as chronic persistent headache AND (finding (snomed_concept 'Procedure' 'procedure') (snomed_concept 'Highly active antiretroviral therapy' 'procedure')). The finding form with a root 'Procedure' concept is an unusual construction that may not parse/evaluate as 'on ART' (not a clinical_finding or history of treatment; gold uses clinical_finding/active_condition/manage). 'Since starting ART' temporal link lost; and HAART is not a suitable stand-in for ART status, so false negatives are likely.",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (and (clinical_finding Headache (qualifier \"Chronic persistent\")) (finding (snomed_concept \"Procedure\" \"procedure\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\")))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-29de8394",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding Abnormal vision (qualifier \"New\"))",
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Pain in eye\" \"finding\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-5e0dd336",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Urgent: headache with red-box danger signs :: (clinical_finding (snomed_concept \"Anisocoria\" \"disorder\"))"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-f427b4a2",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "Header",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-35a34080",
+   "scope": "out_of_scope",
+   "scope_reason": "management_step",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "Ceftriaxone/analgesia management; the temperature >= 38 trigger is only a management condition.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-dac037d9",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "'malaria likely' needs a malaria-area travel history (not representable) and has no rule; borderline if Will wants a possible-malaria rule on fever alone.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-4509b4fe",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Branch condition used in viral, tick bite fever rules only; not used as a gate for sinusitis/migraine.",
+   "evidence": [
+    "Diagnose probable tick bite fever / possible acute viral infection :: (or (and (active_condition Fever) Generalized aches and pains) (Common cold + Recent))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-12196c85",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "headache worse on bending forward (in next fragment)"
+   ],
+   "problem": "Cold + any of thick discharge / tenderness encoded as 'and' with 'or' correctly. 'Thick' qualifier on discharge is a reasonable proxy.",
+   "evidence": [
+    "Diagnose probable sinusitis in headache :: (and Headache Common cold+Recent (or Nasal discharge+Thick, Posterior rhinorrhea+Thick, Tenderness forehead, Tenderness cheek))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-3a0b65bf",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "headache worse on bending forward"
+   ],
+   "problem": "Pain on pushing forehead/cheeks encoded; bending forward not.",
+   "evidence": [
+    "Diagnose probable sinusitis in headache :: Tenderness+Forehead structure / Cheek structure"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-eef9c1a5",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "gate: only if 'No' to fever/cold question"
+   ],
+   "problem": "Migraine rule requires Throbbing headache + Recurrent and any of nausea/photophobia/phonophobia but has no negation of the fever/body pain or recent cold branch, so it can fire alongside sinusitis/viral rules.",
+   "evidence": [
+    "Diagnose probable migraine in headache :: (and (Throbbing headache + Recurrent) (or Nausea Photophobia Phonophobia))"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-17444a17",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "disabling",
+    "resolves completely within 72 hours"
+   ],
+   "problem": "Duration and disability not encoded (duration not obviously representable); 'light/noise sensitivity' correctly two findings.",
+   "evidence": [
+    "Diagnose probable migraine in headache :: Photophobia, Phonophobia"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-83c09572",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Migraine likely = probable migraine rule; management bullets out of scope.",
+   "evidence": [
+    "Diagnose probable migraine in headache"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-a386bc67",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Sinusitis likely = probable sinusitis rule; antibiotic criteria are management.",
+   "evidence": [
+    "Diagnose probable sinusitis in headache"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-71e24623",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "malaria likely (malaria-area travel; no rule)",
+    "tick present (only 'Tick bite' finding)"
+   ],
+   "problem": "Tick bite fever rule exists; but it is gated on (fever+aches or cold) AND tick bite, whereas the page's tick/malaria checks hang off 'No' to sinusitis, so the recent-cold-without-sinus-signs path is intended. Roughly matches. Malaria not encoded. Concept 'African tick bite fever' fine.",
+   "evidence": [
+    "Diagnose probable tick bite fever in headache :: (and Headache (or (and Fever Generalized aches and pains) Common cold) Tick bite)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-3784fc42",
+   "scope": "out_of_scope",
+   "scope_reason": "cross_reference_only",
+   "verdict": null,
+   "parts_missing": [],
+   "problem": "Check BP >= 140/90 refers to page 148; BP is only used in the urgent rule thresholds (180/110, pregnancy 140/90), so non-urgent BP >= 140/90 routing is not present, consistent with a cross-reference.",
+   "evidence": [],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-b1c981c6",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "age > 50 years (no age comparison in the language, not_representable)"
+   ],
+   "problem": "GCA rule fires on 'Temporal headache' for any adult, not only > 50. Tension criteria: 'Tightness' + 'Generalized headache' encoded; 'pressure-like' not.",
+   "evidence": [
+    "Diagnose probable giant cell arteritis in headache :: (clinical_finding (snomed_concept 'Temporal headache' 'finding'))",
+    "Diagnose probable tension headache in headache :: (or Tightness sensation+Head structure, Generalized headache)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-534c194c",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "Patient > 50 years"
+   ],
+   "problem": "GCA probable with only temporal headache; age criterion absent, no Headache clause (fine given concept).",
+   "evidence": [
+    "Diagnose probable giant cell arteritis in headache"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-0b74d2a4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "",
+   "evidence": [
+    "Diagnose probable tension headache in headache"
+   ],
+   "confidence": "high"
+  },
+  {
+   "element_key": "p47-6ee7523f",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "Muscular neck pain likely encoded with 'Myofascial neck pain'; a finding rather than a disorder as diagnosis; acceptable.",
+   "evidence": [
+    "Diagnose probable muscular neck pain in headache :: (diagnosis (snomed_concept 'Myofascial neck pain' 'finding') probable)"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-b3e697d4",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "correct",
+   "parts_missing": [],
+   "problem": "'Constant aching pain, tender neck muscles' as 'and'; matches.",
+   "evidence": [
+    "Diagnose probable muscular neck pain :: Aching pain+Continuous; Tenderness + Skeletal muscle structure of neck"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "element_key": "p47-725fbe7e",
+   "scope": "in_scope",
+   "scope_reason": "",
+   "verdict": "partial",
+   "parts_missing": [
+    "'none of above' also excludes malaria likely (not encoded)"
+   ],
+   "problem": "'Acute viral infection' encoded as 'possible' not 'probable'. The page says 'treat as', and it is the default branch; possible is defensible. Logic for 'none of above' reasonable. Rule also requires the fever/cold gate, matching the page.",
+   "evidence": [
+    "Diagnose possible acute viral infection in headache :: (and Headache (or (and Fever aches) cold) (or (no cold) (and (no each sinusitis sign))) (no Tick bite))"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "outside_not_logic": [
+  "p47-d61c86bb",
+  "p47-146580d4",
+  "p47-889d0b5d",
+  "p47-0cc4d5f0",
+  "p47-d2739a2c",
+  "p47-c2b88d56",
+  "p47-981443e0",
+  "p47-e3edaec5",
+  "p47-80352fef",
+  "p47-550f2d39",
+  "p47-d6c7fbd4",
+  "p47-729b6fd9",
+  "p47-b4e8e49e",
+  "p47-c098fa07",
+  "p47-db418138",
+  "p47-9fe1dd63",
+  "p47-1d1b1934",
+  "p47-384e4f74"
+ ],
+ "rule_level_problems": [
+  {
+   "rule": "Urgent: headache with red-box danger signs",
+   "problem": "Persistent-ART branch uses an unusual (finding Procedure HAART) construction and may not evaluate; verify it parses against the VHA grammar.",
+   "severity": "high"
+  },
+  {
+   "rule": "Diagnose probable giant cell arteritis in headache",
+   "problem": "Fires on temporal headache alone; the page requires age > 50 as well. Over-diagnoses in young adults (not_representable but unflagged).",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose probable migraine in headache",
+   "problem": "No exclusion of the fever/body pain or recent-cold branch; omits 72h resolution and disability.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Urgent: headache with red-box danger signs",
+   "problem": "'Persistent nausea' missing, only vomiting; 'Wakes up during night' triggers on any night waking.",
+   "severity": "medium"
+  },
+  {
+   "rule": "Diagnose possible stroke / TIA in headache",
+   "problem": "Identical criteria for both; asymmetry dropped. Matches page ('consider stroke or TIA'), but the 'Difficulty talking' lacks Sudden onset.",
+   "severity": "low"
+  },
+  {
+   "rule": "Check for causes of headache not needing urgent attention",
+   "problem": "check_for omits Fever and Tick-bite-related absence checks is fine, but Fever (used in tick bite fever and viral rules) is not in check_for; Throbbing headache's qualifiers fine. Pregnancy checks fine.",
+   "severity": "low"
+  },
+  {
+   "rule": "(no rule)",
+   "problem": "Malaria likely (fever now or past 3 days and malaria area) has no diagnosis rule; travel history not representable.",
+   "severity": "low"
+  },
+  {
+   "rule": "Diagnose possible acute viral infection in headache",
+   "problem": "Mixed level: page says 'treat as', encoded possible; acceptable but the 'none of above' does not exclude malaria.",
+   "severity": "low"
+  }
+ ],
+ "summary": "The red-box urgent criteria are largely captured in one Urgent priority rule with sound qualifiers, but the persistent-headache-since-ART branch uses an odd finding-of-Procedure construction that is likely to fail, persistent nausea is missing, and 'purple/red rash' is narrowed to purpuric. Diagnosis rules are broadly right but giant cell arteritis lacks the age > 50 criterion and migraine lacks the no-fever/cold gate, 72 hour and disabling criteria; malaria likely is not encoded."
+}

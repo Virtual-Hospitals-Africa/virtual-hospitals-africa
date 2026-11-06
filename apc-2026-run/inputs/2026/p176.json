@@ -1,0 +1,724 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 176,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    710.3,
+    459.3,
+    807.9,
+    530.6
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p176-rb1-e01",
+   "page": 176,
+   "box": 1,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    753.1,
+    465.2,
+    765.1,
+    475.4
+   ],
+   "key": "p176-575802ba"
+  },
+  {
+   "id": "p176-rb1-e02",
+   "page": 176,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": null,
+   "section_y": -1,
+   "indent": 1,
+   "parent": null,
+   "text": "Manage urgently 182.",
+   "bbox": [
+    717.5,
+    475.2,
+    787.8,
+    495.4
+   ],
+   "key": "p176-878dbb2d"
+  },
+  {
+   "id": "p176-rb1-e03",
+   "page": 176,
+   "box": 1,
+   "kind_hint": "unclassified",
+   "section": null,
+   "section_y": -1,
+   "indent": 1,
+   "parent": null,
+   "text": "If adnexal mass, ectopic pregnancy likely. Refer urgently.",
+   "bbox": [
+    717.5,
+    495.2,
+    798.6,
+    525.4
+   ],
+   "key": "p176-956dd68e"
+  },
+  {
+   "id": "p176-out-e01",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1A clinician may refuse to provide TOP services, provided they refer the patient to a provider who will conduct the TOP. Non-clinical staff may not refuse to provide care to a patient requesting a TOP. 2Avoid ibuprofen if pre-eclampsia, peptic ulcer, asthma, hypertension, heart failure, kidney disease.",
+   "bbox": [
+    34.0,
+    535.3,
+    806.8,
+    551.8
+   ],
+   "key": "p176-41155bc8"
+  },
+  {
+   "id": "p176-out-e02",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No to both • Reassure patient she is no longer pregnant. Explain that urine pregnancy test can remain positive for up to 2 months after a TOP. • Advise patient she can become pregnant within 2 weeks following TOP and to avoid intercourse for 7 days after TOP. Offer reliable contraception 170. • Assess patient's mental health. If patient been unable to stop worrying in the past 2 weeks, or felt stress/anxiety/low mood 98.",
+   "bbox": [
+    39.7,
+    485.0,
+    594.3,
+    525.2
+   ],
+   "key": "p176-e2d4c06b"
+  },
+  {
+   "id": "p176-out-e03",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review the patient who had a TOP within the past 14 days Are there any of: adnexal mass (closed cervix and small uterus), guarding/rebound abdominal tenderness, foul-smelling discharge, temperature ≥ 38˚C, SBP < 80, pulse ≥ 100, Hb < 6 or respiratory rate ≥ 30?",
+   "bbox": [
+    44.8,
+    428.8,
+    797.1,
+    449.9
+   ],
+   "key": "p176-53fe09d9"
+  },
+  {
+   "id": "p176-out-e04",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes to either, incomplete TOP likely.",
+   "bbox": [
+    611.3,
+    485.0,
+    695.8,
+    505.2
+   ],
+   "key": "p176-e29f46d0"
+  },
+  {
+   "id": "p176-out-e05",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to next level",
+   "bbox": [
+    620.6,
+    505.0,
+    690.6,
+    515.2
+   ],
+   "key": "p176-5f3307f7"
+  },
+  {
+   "id": "p176-out-e06",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "of care.",
+   "bbox": [
+    640.4,
+    515.0,
+    666.7,
+    525.2
+   ],
+   "key": "p176-1731c8d4"
+  },
+  {
+   "id": "p176-out-e07",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No. Is there an enlarged uterus or open cervical os with bleeding/products of conception visible?",
+   "bbox": [
+    190.2,
+    462.3,
+    545.5,
+    472.5
+   ],
+   "key": "p176-d30fcc84"
+  },
+  {
+   "id": "p176-out-e08",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "MANAGE THE PATIENT REQUESTING A TERMINATION OF PREGNANCY (TOP)",
+   "bbox": [
+    114.3,
+    48.4,
+    728.6,
+    70.7
+   ],
+   "key": "p176-4ced1945"
+  },
+  {
+   "id": "p176-out-e09",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Gestation ≥ 12 weeks and 1 day -",
+   "bbox": [
+    696.1,
+    134.7,
+    739.3,
+    164.9
+   ],
+   "key": "p176-9054b5ef"
+  },
+  {
+   "id": "p176-out-e10",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "20 weeks:",
+   "bbox": [
+    699.0,
+    164.7,
+    734.4,
+    174.9
+   ],
+   "key": "p176-7f677285"
+  },
+  {
+   "id": "p176-out-e11",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No. Arrange TOP booking as soon as possible (within 2 weeks) according to gestation",
+   "bbox": [
+    233.7,
+    112.0,
+    545.4,
+    122.2
+   ],
+   "key": "p176-d04483bc"
+  },
+  {
+   "id": "p176-out-e12",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes: Offer choice of medical TOP or surgical TOP with manual vacuum aspiration (MVA) • Check Hb and rapid rhesus antibody (Rh). Also test for HIV 124 and do a cervical screen if needed 70. • If not already done, use ultrasound to determine gestational age. If ultrasound not available, estimate gestational age by dates and examination. If dates and examination disagree or uterus felt abdominally or patient is obese, refer for ultrasound. • If gestational age determined by ultrasound and/or dates and examination agree, manage further: Book assessment",
+   "bbox": [
+    146.0,
+    157.1,
+    739.7,
+    207.5
+   ],
+   "key": "p176-0f430963"
+  },
+  {
+   "id": "p176-out-e13",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "for TOP as",
+   "bbox": [
+    698.7,
+    207.3,
+    736.7,
+    217.5
+   ],
+   "key": "p176-547f20fd"
+  },
+  {
+   "id": "p176-out-e14",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "soon as possible",
+   "bbox": [
+    701.6,
+    217.3,
+    733.8,
+    237.5
+   ],
+   "key": "p176-e86fc66f"
+  },
+  {
+   "id": "p176-out-e15",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(before 20 weeks) at a facility offering 2nd",
+   "bbox": [
+    694.1,
+    237.3,
+    741.3,
+    277.5
+   ],
+   "key": "p176-bfbac899"
+  },
+  {
+   "id": "p176-out-e16",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "trimester",
+   "bbox": [
+    700.2,
+    277.3,
+    735.1,
+    287.5
+   ],
+   "key": "p176-3b5f051a"
+  },
+  {
+   "id": "p176-out-e17",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TOP.",
+   "bbox": [
+    709.1,
+    287.3,
+    724.2,
+    297.5
+   ],
+   "key": "p176-85f5b4f9"
+  },
+  {
+   "id": "p176-out-e18",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes",
+   "bbox": [
+    774.0,
+    112.0,
+    786.0,
+    122.2
+   ],
+   "key": "p176-1e45b976"
+  },
+  {
+   "id": "p176-out-e19",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to next level of care for further TOP assessment.",
+   "bbox": [
+    758.2,
+    134.7,
+    802.8,
+    184.9
+   ],
+   "key": "p176-ba1d726e"
+  },
+  {
+   "id": "p176-out-e20",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Does patient have any of: heart disease, hypertension, asthma, diabetes, anaemia, bleeding disorder, epilepsy, substance abuse or large fibroids?",
+   "bbox": [
+    157.4,
+    89.5,
+    684.5,
+    99.7
+   ],
+   "key": "p176-87d3cf55"
+  },
+  {
+   "id": "p176-out-e21",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• For pain, give paracetamol 500mg-1g 4-6 hourly (max 4g/24 hours) once cramping starts and ibuprofen2 400mg 8 hourly with/after food up to 3 days. • Advise to return immediately if any of: heavy bleeding (2 pads soaked within 2 hours), fever, persistent/worsening abdominal pain or foul-smelling discharge. Refer. • Follow up within 14 days. Advise patient pregnancy is possible within 2 weeks following TOP and to avoid intercourse for 7 days after TOP.",
+   "bbox": [
+    95.0,
+    386.6,
+    675.0,
+    417.4
+   ],
+   "key": "p176-15825c2f"
+  },
+  {
+   "id": "p176-out-e22",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Gestation ≤ 12 weeks and 0 days. Is current facility a 24 hour maternity unit and/or are staff appropriately trained to offer TOP1?",
+   "bbox": [
+    126.0,
+    134.5,
+    589.3,
+    144.8
+   ],
+   "key": "p176-34144e5c"
+  },
+  {
+   "id": "p176-out-e23",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to a facility",
+   "bbox": [
+    43.2,
+    179.8,
+    75.0,
+    200.0
+   ],
+   "key": "p176-6c37c147"
+  },
+  {
+   "id": "p176-out-e24",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "offering",
+   "bbox": [
+    43.7,
+    199.8,
+    74.5,
+    210.0
+   ],
+   "key": "p176-9f008439"
+  },
+  {
+   "id": "p176-out-e25",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1st trimester",
+   "bbox": [
+    41.6,
+    209.8,
+    76.6,
+    230.0
+   ],
+   "key": "p176-927c8198"
+  },
+  {
+   "id": "p176-out-e26",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TOP.",
+   "bbox": [
+    50.6,
+    229.8,
+    65.7,
+    240.0
+   ],
+   "key": "p176-4737c1e3"
+  },
+  {
+   "id": "p176-out-e27",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient consents to medical TOP Patient consents to surgical",
+   "bbox": [
+    266.0,
+    219.6,
+    676.8,
+    229.8
+   ],
+   "key": "p176-c0ea0427"
+  },
+  {
+   "id": "p176-out-e28",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "TOP/MVA • If MVA/resuscitation equipment not available, refer to another facility for surgical TOP. • Give single dose misoprostol 400mcg vaginally 3 hours before procedure. • For pain during MVA: - Give morphine 0.1mg/",
+   "bbox": [
+    573.5,
+    229.6,
+    676.2,
+    339.8
+   ],
+   "key": "p176-a21116f2"
+  },
+  {
+   "id": "p176-out-e29",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "kg IM 30 minutes before procedure (max 10 mg).",
+   "bbox": [
+    584.9,
+    339.6,
+    675.8,
+    359.8
+   ],
+   "key": "p176-2a105d0d"
+  },
+  {
+   "id": "p176-out-e30",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If ≤ 9 weeks • Give single dose mifepristone 200mg orally. • Then give single dose misoprostol 800mcg sublingual to take at home after 24-48 hours: • Explain that abdominal cramping and bleeding (with products of conception) occur 2-4 hours after taking misoprostol dose and can continue (on and off) for up to a month. • If no or minimal bleeding within 4 hours advise to return to facility:",
+   "bbox": [
+    95.0,
+    242.1,
+    331.8,
+    332.3
+   ],
+   "key": "p176-e86c2863"
+  },
+  {
+   "id": "p176-out-e31",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If > 9 weeks • If MVA/resuscitation equipment not available, refer to another facility for supervised medical TOP. • If MVA/resuscitation equipment available, offer supervised medical TOP:",
+   "bbox": [
+    348.7,
+    242.1,
+    551.3,
+    292.3
+   ],
+   "key": "p176-a2bd4b9b"
+  },
+  {
+   "id": "p176-out-e32",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "- Give single dose mifepristone 200mg orally. - Advise to return to facility early morning within",
+   "bbox": [
+    354.3,
+    291.5,
+    533.6,
+    312.3
+   ],
+   "key": "p176-ea4a9e0a"
+  },
+  {
+   "id": "p176-out-e33",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "48 hours for supervised misoprostol dose. - Give single dose misoprostol 800mcg sublingual",
+   "bbox": [
+    354.3,
+    312.1,
+    547.4,
+    332.3
+   ],
+   "key": "p176-153e83ae"
+  },
+  {
+   "id": "p176-out-e34",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "and observe patient at the facility:",
+   "bbox": [
+    360.0,
+    332.1,
+    485.0,
+    342.3
+   ],
+   "key": "p176-e786c4ce"
+  },
+  {
+   "id": "p176-out-e35",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "If no or minimal bleeding within 4 hours, give second dose misoprostol 400mcg orally or",
+   "bbox": [
+    158.3,
+    354.0,
+    493.8,
+    364.9
+   ],
+   "key": "p176-25b473f5"
+  },
+  {
+   "id": "p176-out-e36",
+   "page": 176,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "vaginally. If no or minimal bleeding after 4 hours of second dose, refer for ultrasound.",
+   "bbox": [
+    169.7,
+    364.7,
+    482.3,
+    374.9
+   ],
+   "key": "p176-8a36facd"
+  }
+ ]
+}

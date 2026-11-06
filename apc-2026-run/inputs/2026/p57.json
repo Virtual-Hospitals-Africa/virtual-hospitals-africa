@@ -1,0 +1,526 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 57,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 1,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    86.5,
+    806.4,
+    239.7
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p57-rb1-e01",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "bbox": [
+    281.8,
+    91.6,
+    560.1,
+    102.7
+   ],
+   "key": "p57-510665c9"
+  },
+  {
+   "id": "p57-rb1-e02",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 4,
+   "parent": null,
+   "text": "Headache 47",
+   "bbox": [
+    68.2,
+    102.4,
+    132.3,
+    113.2
+   ],
+   "key": "p57-78e24a64"
+  },
+  {
+   "id": "p57-rb1-e03",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Guarding or rigidity during peri-umbilical percussion: peritonitis likely",
+   "bbox": [
+    303.5,
+    102.2,
+    469.1,
+    123.0
+   ],
+   "key": "p57-3fc8ea6c"
+  },
+  {
+   "id": "p57-rb1-e04",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Jaundice",
+   "bbox": [
+    519.8,
+    102.2,
+    559.4,
+    113.0
+   ],
+   "key": "p57-03fceff2"
+  },
+  {
+   "id": "p57-rb1-e05",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 4,
+   "parent": null,
+   "text": "Chest pain 24",
+   "bbox": [
+    68.2,
+    112.4,
+    134.5,
+    123.2
+   ],
+   "key": "p57-4e798f8c"
+  },
+  {
+   "id": "p57-rb1-e06",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Abdominal pain/distension and no stools or flatus/wind",
+   "bbox": [
+    519.8,
+    112.2,
+    738.4,
+    123.0
+   ],
+   "key": "p57-438bba70"
+  },
+  {
+   "id": "p57-rb1-e07",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 4,
+   "parent": null,
+   "text": "If patient has watery diarrhoea (with or without vomiting) and has been in cholera outbreak area in past 5 days, cholera likely 59",
+   "bbox": [
+    68.2,
+    122.4,
+    261.1,
+    153.2
+   ],
+   "key": "p57-5155aebb"
+  },
+  {
+   "id": "p57-rb1-e08",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Pain in right lower abdomen: appendicitis likely",
+   "bbox": [
+    303.5,
+    122.0,
+    492.6,
+    133.0
+   ],
+   "key": "p57-b20ca69a"
+  },
+  {
+   "id": "p57-rb1-e09",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Drowsy/confused/rapid deep breathing",
+   "bbox": [
+    519.8,
+    122.2,
+    677.0,
+    133.0
+   ],
+   "key": "p57-28d6da11"
+  },
+  {
+   "id": "p57-rb1-e10",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Sudden severe upper abdominal pain spreading to back: pancreatitis likely",
+   "bbox": [
+    303.5,
+    132.2,
+    495.1,
+    153.0
+   ],
+   "key": "p57-ce1c3234"
+  },
+  {
+   "id": "p57-rb1-e11",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "If sudden nausea/vomiting and any of: generalised itch/rash, face/tongue swelling, wheeze, difficulty breathing, BP < 90/60, dizziness/collapse or exposure to possible allergen2, check for anaphylaxis 28",
+   "bbox": [
+    519.8,
+    132.2,
+    765.4,
+    173.0
+   ],
+   "key": "p57-2bd4707a"
+  },
+  {
+   "id": "p57-rb1-e12",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 4,
+   "parent": null,
+   "text": "Neck stiffness, drowsy/confused or purple/red rash: meningitis likely",
+   "bbox": [
+    68.2,
+    152.4,
+    251.4,
+    173.2
+   ],
+   "key": "p57-709a8fcd"
+  },
+  {
+   "id": "p57-rb1-e13",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/SBP < 80",
+   "bbox": [
+    303.5,
+    152.2,
+    371.3,
+    163.0
+   ],
+   "key": "p57-ac86afd4"
+  },
+  {
+   "id": "p57-rb1-e14",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "criterion",
+   "section": "Give urgent attention to the patient with nausea/vomiting and any of:",
+   "section_y": 91.6,
+   "indent": 1,
+   "parent": null,
+   "text": "Vomiting blood",
+   "bbox": [
+    303.5,
+    162.2,
+    368.8,
+    173.0
+   ],
+   "key": "p57-e428d0d0"
+  },
+  {
+   "id": "p57-rb1-e15",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 173.5,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    173.5,
+    157.1,
+    184.5
+   ],
+   "key": "p57-197f6811"
+  },
+  {
+   "id": "p57-rb1-e16",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 173.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock, SBP < 80 or pancreatitis likely, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    183.5,
+    713.1,
+    194.5
+   ],
+   "key": "p57-7d0dc892"
+  },
+  {
+   "id": "p57-rb1-e17",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 173.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If meningitis likely, give ceftriaxone 2g IV3/IM. Avoid injecting > 1g IM at one injection site.",
+   "bbox": [
+    51.2,
+    193.5,
+    408.6,
+    204.5
+   ],
+   "key": "p57-6e61b3c5"
+  },
+  {
+   "id": "p57-rb1-e18",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 173.5,
+   "indent": 1,
+   "parent": null,
+   "text": "If pain severe, give morphine 5-10mg IM, repeat 4-6 hourly until patient referred, or give diluted morphine4 3-10mg slow IV: start with 3mL IV over 3 minutes. If needed, give another 1mL/ minute until pain improved, up to 10mL. Stop if BP < 90/60.",
+   "bbox": [
+    51.2,
+    203.7,
+    778.5,
+    224.5
+   ],
+   "key": "p57-8f4db89a"
+  },
+  {
+   "id": "p57-rb1-e19",
+   "page": 57,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 173.5,
+   "indent": 1,
+   "parent": null,
+   "text": "Check fingerprick glucose. If glucose < 3 (< 4 if diabetes) or ≥ 11.1 19.",
+   "bbox": [
+    51.2,
+    223.7,
+    330.6,
+    234.5
+   ],
+   "key": "p57-219d45a3"
+  },
+  {
+   "id": "p57-out-e01",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "NAUSEA/VOMITING",
+   "bbox": [
+    340.3,
+    48.7,
+    501.6,
+    71.0
+   ],
+   "key": "p57-7ed9d1f3"
+  },
+  {
+   "id": "p57-out-e02",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes Gastroenteritis likely • If nausea/vomiting, give metoclopramide 10mg 8 hourly as needed for up to 5 days. • Give oral rehydration solution. • If diarrhoea, give loperamide 4mg initially, then 2mg after each loose stool if needed, up to maximum dose per weight6. • If abdominal cramps are distressing, give hyoscine butylbromide 10mg 6 hourly for up to 3 days. • Advise patient to drink lots of fluids, eat small frequent meals as able and avoid fatty food. • Advise patient to return if symptoms worsen, vomiting > 3 days or not tolerating oral fluids.",
+   "bbox": [
+    39.7,
+    380.7,
+    247.7,
+    520.9
+   ],
+   "key": "p57-d2474310"
+  },
+  {
+   "id": "p57-out-e03",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with nausea/vomiting not needing urgent attention • If thirst, dry mouth or poor skin turgor, dehydration likely, give single dose metoclopramide 10mg orally/IM/IV. Then give oral rehydration solution and observe: encourage small frequent sips. Aim for 1-2L in first 2 hours. If vomits, wait 10 minutes and try again more slowly. • If unable to drink or no better after 2 hours, give sodium chloride 0.9% 500mL IV over 30 minutes and refer. • Exclude pregnancy 174. If pregnant, reassure that nausea/vomiting is common in first trimester. Encourage to eat smaller meals more frequently and drink fluids regularly. • If associated dizziness 46. • Review medication: NSAIDs (e.g. ibuprofen), metformin, contraceptives, hormone therapy, chemotherapy and morphine can cause nausea/vomiting. Discuss with doctor. If on DS-TB medication 108, RR-TB medication 117 or ART 131. • Screen for alcohol/drug use: in the past year, has patient: drunk ≥ 4 drinks5/session, used illegal drugs or misused prescription or over-the-counter medications? If yes to any 165.",
+   "bbox": [
+    51.0,
+    253.1,
+    778.9,
+    344.2
+   ],
+   "key": "p57-7e405c9a"
+  },
+  {
+   "id": "p57-out-e04",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is there recent onset vomiting with cramping abdominal pain, diarrhoea, loss of appetite, body pain or fever?",
+   "bbox": [
+    221.6,
+    357.4,
+    620.3,
+    367.6
+   ],
+   "key": "p57-04c948c5"
+  },
+  {
+   "id": "p57-out-e05",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No • Assess for stress and anxiety 98. • If patient has a life limiting illness, give palliative care 191. • Discuss/refer if: - Nausea/vomiting",
+   "bbox": [
+    703.0,
+    414.0,
+    786.8,
+    494.2
+   ],
+   "key": "p57-af66fb01"
+  },
+  {
+   "id": "p57-out-e06",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "persists > 2 weeks. - Uncertain of diagnosis.",
+   "bbox": [
+    708.7,
+    494.0,
+    796.8,
+    514.2
+   ],
+   "key": "p57-2aec0ef4"
+  },
+  {
+   "id": "p57-out-e07",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Yes. Dyspepsia (heartburn) likely • Advise to stop NSAIDS (e.g. ibuprofen/aspirin). If smoking, encourage to stop 164. Avoid fizzy drinks, fatty/ late night meals. • Limit alcohol/caffeine/spicy food. Eat small frequent meals. Sleep on left side with upper body elevated. • If BMI ≥ 25 and waist circumference ≥ 80cm (woman) or ≥ 94cm (man), gastro-oesophageal reflux disease likely. Assess and manage overweight/obesity 156. • Discuss/refer if any of: Hb < 12 (woman) or < 13 (man), blood in vomit or black, sticky, tar-like stool (melaena), difficulty or pain with swallowing, persistent vomiting, unintentional weight loss, recurrent symptoms with: > 50 years, history of previous gastric surgery, family history of stomach/oesophageal cancer. • Give omeprazole 20mg daily for 14 days. Avoid if on atazanavir/ritonavir. Discuss with specialist. • Advise to return if no better after 7 days. Refer.",
+   "bbox": [
+    265.0,
+    413.2,
+    682.8,
+    524.2
+   ],
+   "key": "p57-d05267f8"
+  },
+  {
+   "id": "p57-out-e08",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No Does patient have epigastric pain which is worse with eating, hunger or lying down/bending forward?",
+   "bbox": [
+    346.1,
+    380.7,
+    721.1,
+    400.9
+   ],
+   "key": "p57-1a890083"
+  },
+  {
+   "id": "p57-out-e09",
+   "page": 57,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Medication, food or insect bite/sting within the past few hours. 3Do not mix Ringer's lactate and IV ceftriaxone. 4Dilute 10mg morphine with 9mL sodium chloride 0.9%. 5One drink is 1 tot of spirits, or 1 small glass (125mL) of wine or 1 can/bottle (330mL) of beer. 6Maximum dose: 10mg (34-39kg), 12mg (40-46kg), 14mg (47-53kg), 16mg (≥ 54kg).",
+   "bbox": [
+    34.0,
+    535.3,
+    792.2,
+    551.8
+   ],
+   "key": "p57-1d7a9ee9"
+  }
+ ]
+}

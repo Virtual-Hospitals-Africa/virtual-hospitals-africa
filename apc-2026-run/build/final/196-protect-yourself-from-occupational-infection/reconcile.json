@@ -1,0 +1,79 @@
+{
+ "page": 196,
+ "base": "A",
+ "decisions": [
+  {
+   "role": "trigger",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "reason": "The header says 'a sharps injury or splash to eye/mouth/nose/broken skin', so the splash branch must be represented; A's event concept is the only resolvable stand-in, though broader than the page's routes.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))  vs  B: (absent)",
+   "choice": "A",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Exposure to blood and/or body fluid\" \"event\"))",
+   "reason": "The header says 'a sharps injury or splash to eye/mouth/nose/broken skin', so the splash branch must be represented; A's event concept is the only resolvable stand-in, though broader than the page's routes.",
+   "unsettled": true
+  },
+  {
+   "role": "check_for",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "reason": "The box lists 'Blood-stained fluid/tissue' as an exposure; B's Serosanguinous fluid (blood-stained serous fluid) is the closest resolvable substance, whereas A left the item out.",
+   "unsettled": true
+  },
+  {
+   "role": "priority_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Serosanguinous fluid\" \"substance\"))",
+   "reason": "The box lists 'Blood-stained fluid/tissue' as an exposure; B's Serosanguinous fluid (blood-stained serous fluid) is the closest resolvable substance, whereas A left the item out.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis",
+   "difference": "A: (absent)  vs  B: (diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "choice": "B",
+   "final_expr": "(diagnosis (snomed_concept \"Tuberculosis\" \"disorder\") possible)",
+   "reason": "The page says 'Identify patients with possible TB promptly: The patient has TB symptoms1', which is 'possible X' wording that the scope decision encodes as a possible diagnosis rule.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cough\" \"finding\"))",
+   "reason": "Footnote 1 lists 'cough' as a TB symptom; whether '≥ 2 weeks' also applies to cough is not settled by the page, so the plain reading (duration on fever only) is kept.",
+   "unsettled": true
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+   "choice": "B",
+   "final_expr": "(>= (onset (active_condition (snomed_concept \"Fever\" \"finding\"))) (time_ago 2 weeks))",
+   "reason": "Footnote 1: 'fever ≥ 2 weeks', written with >= as the page says and the database requires.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unexplained weight loss\" \"finding\"))",
+   "reason": "Footnote 1: 'unexplained weight loss', an exact concept.",
+   "unsettled": false
+  },
+  {
+   "role": "diagnosis_condition",
+   "difference": "A: (absent)  vs  B: (finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "choice": "B",
+   "final_expr": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Night sweats\" \"finding\"))",
+   "reason": "Footnote 1: 'drenching night sweats'; no 'drenching' qualifier exists, so plain Night sweats (broader) is used.",
+   "unsettled": false
+  }
+ ],
+ "notes": "Both builds passed. Base A (keeps the splash branch via the 'Exposure to blood and/or body fluid' event stand-in); added B's Serosanguinous fluid for 'Blood-stained fluid' in both check_for and priority rule, and B's possible-TB rule from footnote 1. Rule descriptions are A's for the task and priority evaluation and B's for the TB rule. Both builders' remaining questions were merged; none was resolved by the merge."
+}

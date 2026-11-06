@@ -1,0 +1,643 @@
+{
+ "pdf": "APC 2026 E-book.pdf",
+ "page": 88,
+ "page_size": [
+  841.9,
+  595.3
+ ],
+ "red_boxes": 2,
+ "boxes": [
+  {
+   "box": 1,
+   "rect": [
+    35.5,
+    138.6,
+    806.4,
+    246.4
+   ]
+  },
+  {
+   "box": 2,
+   "rect": [
+    35.5,
+    480.2,
+    171.7,
+    521.5
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "id": "p88-rb1-e01",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 0,
+   "parent": null,
+   "text": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "bbox": [
+    118.9,
+    143.7,
+    442.2,
+    154.8
+   ],
+   "key": "p88-334ac29c"
+  },
+  {
+   "id": "p88-rb1-e02",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Face or tongue swelling",
+   "bbox": [
+    85.4,
+    154.3,
+    181.8,
+    165.1
+   ],
+   "key": "p88-40291ed0"
+  },
+  {
+   "id": "p88-rb1-e03",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Vomiting or diarrhoea",
+   "bbox": [
+    215.8,
+    154.3,
+    305.6,
+    165.1
+   ],
+   "key": "p88-3779cb99"
+  },
+  {
+   "id": "p88-rb1-e04",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Difficulty breathing",
+   "bbox": [
+    85.4,
+    164.3,
+    165.2,
+    175.1
+   ],
+   "key": "p88-0ca0ca79"
+  },
+  {
+   "id": "p88-rb1-e05",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Involves mouth, eyes or genitals",
+   "bbox": [
+    215.8,
+    164.3,
+    344.1,
+    175.1
+   ],
+   "key": "p88-a9857857"
+  },
+  {
+   "id": "p88-rb1-e06",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Shock1/SBP < 80",
+   "bbox": [
+    85.4,
+    174.3,
+    153.2,
+    185.1
+   ],
+   "key": "p88-bd495cd6"
+  },
+  {
+   "id": "p88-rb1-e07",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Blisters, peeling or raw areas",
+   "bbox": [
+    215.8,
+    174.3,
+    329.7,
+    185.1
+   ],
+   "key": "p88-1570c1bb"
+  },
+  {
+   "id": "p88-rb1-e08",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Temperature ≥ 38°C",
+   "bbox": [
+    85.4,
+    184.3,
+    167.1,
+    195.1
+   ],
+   "key": "p88-8929310a"
+  },
+  {
+   "id": "p88-rb1-e09",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Jaundice",
+   "bbox": [
+    215.8,
+    184.3,
+    255.4,
+    195.1
+   ],
+   "key": "p88-89afec2a"
+  },
+  {
+   "id": "p88-rb1-e10",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Abdominal pain",
+   "bbox": [
+    85.4,
+    194.3,
+    152.4,
+    205.1
+   ],
+   "key": "p88-0bca0bd7"
+  },
+  {
+   "id": "p88-rb1-e11",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 1,
+   "parent": null,
+   "text": "Unwell, malaise, fatigue, body pain",
+   "bbox": [
+    215.8,
+    194.3,
+    354.4,
+    205.1
+   ],
+   "key": "p88-a3d28c37"
+  },
+  {
+   "id": "p88-rb1-e12",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "other",
+   "section": "Give urgent attention to the patient with a drug rash and any markers of severity:",
+   "section_y": 143.7,
+   "indent": 0,
+   "parent": null,
+   "text": "© University of Cape Town",
+   "bbox": [
+    616.5,
+    197.2,
+    686.2,
+    205.0
+   ],
+   "key": "p88-a88fa50e"
+  },
+  {
+   "id": "p88-rb1-e13",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "header",
+   "section": "Manage and refer urgently:",
+   "section_y": 210.0,
+   "indent": 0,
+   "parent": null,
+   "text": "Manage and refer urgently:",
+   "bbox": [
+    51.2,
+    210.0,
+    160.4,
+    221.2
+   ],
+   "key": "p88-8d8d29eb"
+  },
+  {
+   "id": "p88-rb1-e14",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 210.0,
+   "indent": 1,
+   "parent": null,
+   "text": "Stop all medication. If peeling or raw skin, also manage as for burns before referral 31.",
+   "bbox": [
+    51.2,
+    220.4,
+    395.5,
+    231.2
+   ],
+   "key": "p88-5661a9fa"
+  },
+  {
+   "id": "p88-rb1-e15",
+   "page": 88,
+   "box": 1,
+   "kind_hint": "management",
+   "section": "Manage and refer urgently:",
+   "section_y": 210.0,
+   "indent": 1,
+   "parent": null,
+   "text": "If shock/SBP < 80, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 80. Continue 1L 6 hourly. Stop if breathing worsens.",
+   "bbox": [
+    51.2,
+    230.4,
+    631.5,
+    241.2
+   ],
+   "key": "p88-28526348"
+  },
+  {
+   "id": "p88-rb2-e01",
+   "page": 88,
+   "box": 2,
+   "kind_hint": "other",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Stop all medication. Give urgent attention as above.",
+   "bbox": [
+    65.7,
+    485.5,
+    143.5,
+    516.3
+   ],
+   "key": "p88-76bde8ba"
+  },
+  {
+   "id": "p88-out-e01",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "DRUG RASH",
+   "bbox": [
+    371.8,
+    48.7,
+    470.1,
+    71.0
+   ],
+   "key": "p88-d05141f4"
+  },
+  {
+   "id": "p88-out-e02",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• A drug rash can be caused by any medication: antibiotics, antiseizure medication, ART (efavirenz, abacavir), TB medication, co-trimoxazole, TB preventive treatment (TPT), allopurinol, NSAIDs (like ibuprofen). • Suspect a drug rash in a patient with a generalised rash which appeared within 3 months of starting a new medication.",
+   "bbox": [
+    51.0,
+    89.7,
+    506.9,
+    119.9
+   ],
+   "key": "p88-42170e13"
+  },
+  {
+   "id": "p88-out-e03",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "1If SBP < 80, pulse ≥ 100, respiratory rate > 30, confusion/restlessness, weakness, shock likely. 2Markers of severity: face/tongue swelling, difficulty breathing, BP < 90/60, temperature ≥ 38°C, abdominal pain, vomiting/diarrhoea, involves mouth/eyes/genitals, blisters/ peeling/raw areas, jaundice, unwell/malaise/fatigue/body pain.",
+   "bbox": [
+    34.0,
+    535.0,
+    802.6,
+    552.0
+   ],
+   "key": "p88-1d382f6c"
+  },
+  {
+   "id": "p88-out-e04",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Approach to the patient with a drug rash not needing urgent attention",
+   "bbox": [
+    281.3,
+    265.0,
+    560.7,
+    276.0
+   ],
+   "key": "p88-e91e278e"
+  },
+  {
+   "id": "p88-out-e05",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Is patient on ART, TB medication, co-trimoxazole or TPT?",
+   "bbox": [
+    318.8,
+    275.8,
+    523.2,
+    286.0
+   ],
+   "key": "p88-20b9380c"
+  },
+  {
+   "id": "p88-out-e06",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Refer to doctor/discuss with MIC hotline 200 whether to continue, change or stop medication: • If on ART: - Continue unless on abacavir, and abacavir hypersensitivity reaction (AHR) likely 131. - If on nevirapine or efavirenz, doctor to switch ART 132. • If itch, give chlorphenamine 4mg at night, or 8 hourly for up to 5 days. • Check ALT and eosinophil count. • Advise to return urgently if rash worsens or markers of severity1 occur.",
+   "bbox": [
+    119.1,
+    326.3,
+    504.0,
+    397.1
+   ],
+   "key": "p88-ee41c9c5"
+  },
+  {
+   "id": "p88-out-e07",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Review patient and result within 24 hours:",
+   "bbox": [
+    242.5,
+    411.4,
+    409.5,
+    422.4
+   ],
+   "key": "p88-9283fec9"
+  },
+  {
+   "id": "p88-out-e08",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient unwell",
+   "bbox": [
+    77.5,
+    437.7,
+    131.7,
+    447.9
+   ],
+   "key": "p88-2de05f3f"
+  },
+  {
+   "id": "p88-out-e09",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "or markers of",
+   "bbox": [
+    79.8,
+    447.7,
+    129.5,
+    457.9
+   ],
+   "key": "p88-a011c656"
+  },
+  {
+   "id": "p88-out-e10",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "severity2",
+   "bbox": [
+    88.1,
+    457.6,
+    119.1,
+    467.9
+   ],
+   "key": "p88-be4629a4"
+  },
+  {
+   "id": "p88-out-e11",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "ALT or eosinophil count raised (as reported by the laboratory)",
+   "bbox": [
+    208.5,
+    463.1,
+    321.7,
+    483.3
+   ],
+   "key": "p88-12a9224f"
+  },
+  {
+   "id": "p88-out-e12",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Discuss with MIC hotline/specialist.",
+   "bbox": [
+    232.4,
+    498.6,
+    298.6,
+    518.8
+   ],
+   "key": "p88-5ac55bf2"
+  },
+  {
+   "id": "p88-out-e13",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Both ALT and eosinophil count not raised",
+   "bbox": [
+    411.6,
+    463.1,
+    562.2,
+    473.3
+   ],
+   "key": "p88-9a669763"
+  },
+  {
+   "id": "p88-out-e14",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "(as reported by the laboratory)",
+   "bbox": [
+    430.8,
+    473.1,
+    542.9,
+    483.3
+   ],
+   "key": "p88-6166b73d"
+  },
+  {
+   "id": "p88-out-e15",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "No Yes",
+   "bbox": [
+    320.0,
+    301.3,
+    728.9,
+    311.5
+   ],
+   "key": "p88-35f51225"
+  },
+  {
+   "id": "p88-out-e16",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Discuss with doctor whether to stop or change medication. • If itchy, give chlorphenamine 4mg at night, or up to 8 hourly for up to 5 days. • If dark coloured round flat spots that occur anywhere on body following ingestion of a medication and often start as itchy patches with red edges, fixed drug eruption likely: apply hydrocortisone 1% to affected areas daily for 5 days. • If extensive, refer.",
+   "bbox": [
+    656.2,
+    326.8,
+    788.8,
+    467.0
+   ],
+   "key": "p88-efd9acf6"
+  },
+  {
+   "id": "p88-out-e17",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "Patient well and no markers of severity2",
+   "bbox": [
+    330.6,
+    437.6,
+    474.8,
+    447.9
+   ],
+   "key": "p88-bb88bc10"
+  },
+  {
+   "id": "p88-out-e18",
+   "page": 88,
+   "box": 0,
+   "kind_hint": "outside",
+   "section": null,
+   "section_y": -1,
+   "indent": 0,
+   "parent": null,
+   "text": "• Advise to return urgently if markers of severity2 occur. • Advise to return if rash persists ≥ 2 weeks: discuss/refer.",
+   "bbox": [
+    469.2,
+    498.5,
+    676.8,
+    518.8
+   ],
+   "key": "p88-c814a368"
+  }
+ ]
+}
