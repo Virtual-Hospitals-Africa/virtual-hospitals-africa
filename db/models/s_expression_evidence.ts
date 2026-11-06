@@ -41,8 +41,8 @@ export function* allPositiveEvidenceToLookFor(node: QueryableEvidenceNode): Gene
   for (const evidence of allEvidenceToLookFor(node)) {
     yield (
       'existence' in evidence && evidence.existence === 'No'
-        ? { ...evidence, existence: 'Yes'}
-        :  evidence
+        ? { ...evidence, existence: 'Yes', value_snomed_concept: null }
+        : evidence
     )
   }
 }
