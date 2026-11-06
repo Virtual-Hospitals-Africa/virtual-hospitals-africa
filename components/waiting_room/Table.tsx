@@ -3,12 +3,14 @@ import capitalize from '../../util/capitalize.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import PriorityBadge from '../PriorityBadge.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { Person, PersonData } from '../library/Person.tsx'
-import Table, { TableColumn } from '../library/Table.tsx'
+import { Person } from '../library/Person.tsx'
+import Table, {
+  ColumnWithContents,
+  columnsWithSomeNonNullValue,
+  TableCellInnerContents,
+  TableColumn,
+} from '../library/Table.tsx'
 import Card from '../library/Card.tsx'
-import { ActionButton } from '../library/ActionButton.tsx'
-import { LocalTime } from '../../islands/LocalTime.tsx'
-import { ComponentChildren } from 'preact'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
@@ -105,63 +107,26 @@ function WaitingRoomEmptyState({ can_register_patients }: { can_register_patient
   )
 }
 
-function isEmptyCellValue(value: unknown): boolean {
-  return value == null || value === false || (Array.isArray(value) && value.length === 0)
-}
-
-function getCellValue(
-  column: TableColumn<RenderedWaitingRoom>,
-  row: RenderedWaitingRoom,
-  index: number,
-  rows: RenderedWaitingRoom[],
-): unknown {
-  const data = column.data as unknown
-  if (typeof data === 'function') {
-    return (data as (row: RenderedWaitingRoom, index: number, rows: RenderedWaitingRoom[]) => unknown)(row, index, rows)
-  }
-  return row[data as keyof RenderedWaitingRoom]
-}
-
-function renderCellContents(column: TableColumn<RenderedWaitingRoom>, value: unknown): ComponentChildren {
-  if (typeof value === 'string') return value
-  if (column.type === 'date') {
-    return <LocalTime timestamp={value as Date} expected_time_range='any' />
-  }
-  if (column.type === 'person') {
-    return [value].flat().map((person) => (
-      <Person key={(person as PersonData).id || (person as PersonData).name} person={person as PersonData} />
-    ))
-  }
-  return value as ComponentChildren
-}
-
 function WaitingRoomCard(
-  { row, index, rows }: {
+  { row, row_index, columns_with_contents }: {
     row: RenderedWaitingRoom
-    index: number
-    rows: RenderedWaitingRoom[]
+    row_index: number
+    columns_with_contents: ColumnWithContents<RenderedWaitingRoom>[]
   },
 ) {
   return (
     <Card orientation='vertical'>
       <div className='flex flex-col gap-2'>
-        {columns.filter((column) => column.type !== 'actions').map((column) => {
-          const raw = getCellValue(column, row, index, rows)
-          const value = isEmptyCellValue(raw) ? column.fallback : raw
-          if (isEmptyCellValue(value)) return null
-          return (
-            <div key={column.label} className='flex flex-col'>
-              <span className='text-xs text-gray-500'>{column.label}</span>
-              <div className='text-sm text-gray-900'>{renderCellContents(column, value)}</div>
-            </div>
-          )
-        })}
+        {columns_with_contents.filter((column) => column.type !== 'actions').map((column) => (
+          <div key={column.label} className='flex flex-col'>
+            <span className='text-xs text-gray-500'>{column.label}</span>
+            <TableCellInnerContents row={row} row_index={row_index} column={column} />
+          </div>
+        ))}
       </div>
-      {row.actions.length > 0 && (
-        <div className='flex flex-col gap-1'>
-          {row.actions.map((action) => <ActionButton key={action.text} action={action} />)}
-        </div>
-      )}
+      {columns_with_contents.filter((column) => column.type === 'actions').map((column) => (
+        <TableCellInnerContents key={column.label} row={row} row_index={row_index} column={column} />
+      ))}
     </Card>
   )
 }
@@ -176,6 +141,8 @@ export default function WaitingRoomTable(
     return <WaitingRoomEmptyState can_register_patients={can_register_patients} />
   }
 
+  const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows: waiting_room })]
+
   return (
     <>
       <Table
@@ -186,12 +153,12 @@ export default function WaitingRoomTable(
         EmptyState={() => <WaitingRoomEmptyState can_register_patients={can_register_patients} />}
       />
       <div className='flex flex-col gap-3 md:hidden'>
-        {waiting_room.map((row, index) => (
+        {waiting_room.map((row, row_index) => (
           <WaitingRoomCard
             key={row.patient_encounter_id}
             row={row}
-            index={index}
-            rows={waiting_room}
+            row_index={row_index}
+            columns_with_contents={columns_with_contents}
           />
         ))}
       </div>
