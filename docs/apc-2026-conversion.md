@@ -11,12 +11,30 @@ The clinical red boxes of APC 2026 are written here as VHA rules in VHA's s-expr
 | Check | Result |
 |---|---|
 | Compiles and seeds into VHA | Yes, after a one-line fix to a VHA bug: VHA can't re-read rules that use `(no X)`, meaning "the patient does not have X" |
-| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those look like real defects in our rules. The other 167 rest on our gate reading Will's constraints more loosely than his test does, and none has been checked one by one. |
+| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those look like real defects in our rules ("Three possible defects", below). The other 167 rest on our gate reading Will's constraints more loosely than his test does, and none has been checked one by one. |
 | VHA's other non-web tests | 8 test files fail, because their fixtures expect 2023 rules; one of them is the rules dry-run test. VHA `main` passes all of them. |
 | Clinician review | None |
 | Run against a patient case | Not by us |
 
 We also found five issues in VHA's code and setup ("What we found in VHA"), and we have six questions ("Our questions for Will"). The main ones: is this the direction Will wants, and which reading of the 170 flagged expressions is right?
+
+## Three possible defects, for Will and Tony to review together
+
+These are the only places where Will's test points to a likely error in our rules rather than a difference of reading. Each rule needs a finding recorded as absent (`(no X)`), but no task on the page ever asks about that finding. On these pages X is only a trigger: it is recorded when the patient presents with it. Its absence is never recorded, so each rule may never fire.
+
+| Page | Rule | Needs | Where X appears instead |
+|---|---|---|---|
+| p34, self-harm or suicide | "Diagnose probable low risk of self-harm or suicide" | `(no (clinical_finding (snomed_concept "Suicide attempt" "event")))` | as a trigger of the page's tasks, and in the priority evaluation "Urgent: attempted/considered self-harm or suicide" |
+| p34, self-harm or suicide | the same rule | `(no (clinical_finding (snomed_concept "Intentionally harming self" "event")))` | the same |
+| p23, cough or difficulty breathing | "Diagnose probable post-infectious cough" | `(no (clinical_finding (snomed_concept "Difficulty breathing" "finding")))` | as a trigger of the page's tasks, and in onset comparisons in other diagnosis rules |
+
+Possible fixes, to decide together:
+
+- add X to a check-for task on the page, so "None of the above" can record its absence;
+- rewrite the rule so it doesn't need `(no X)`;
+- or decide that an unrecorded X should count as absent, which VHA's rules don't do today.
+
+The rules are in `s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp` and `23-cough-or-difficulty-breathing.lisp`, and each page's review page shows them beside the red box.
 
 ## What we did
 
