@@ -1,4 +1,0 @@
-# hygiene's repo-wide ripgrep patterns (VHA hygiene.sh at 6e2cc0e82), run with rg 15.2.0 over every file that ships in apc-2026-run/ plus this document, with ignore files off (stricter than CI). 2026-11-05, Tony's laptop.
-node:-scheme imports: 0 hits
-inline import(: 0 hits (.ts/.tsx)
-camelCase const, without hygiene's allowances: 1 hit, builder-pack/anchors/vitals.ts:104 (= memoize(...), which hygiene allows as a function creator)

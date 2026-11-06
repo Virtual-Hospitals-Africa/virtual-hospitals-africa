@@ -1,6 +1,0 @@
-Task compile:s_expressions deno task script ./s_expression/compile.ts
-Task script ./scripts/run_script.sh "./s_expression/compile.ts"
-Task run:trusted DENO_TLS_CA_STORE=system deno run -A --unstable-temporal --env --unsafely-ignore-certificate-errors "./s_expression/compile.ts"
-DANGER: TLS certificate validation is disabled for all hostnames
-
-✓ All files processed successfully

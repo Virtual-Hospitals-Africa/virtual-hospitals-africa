@@ -1,5 +1,0 @@
-{
- "check": "TASKS_LISP :: no task checks for a finding that is already part of its own due_to",
- "count": 0,
- "values": []
-}

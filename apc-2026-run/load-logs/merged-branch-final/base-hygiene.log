@@ -1,2 +1,0 @@
-[0m[32mTask[0m [0m[36mhygiene[0m ./scripts/code-quality/hygiene.sh
-/Users/syncytium/Developer/vha-main-base/./scripts/code-quality/hygiene.sh: line 5: rule_no_camel_case: unbound variable

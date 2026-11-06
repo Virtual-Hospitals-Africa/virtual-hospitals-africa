@@ -1,3 +1,0 @@
-{"page": 170, "base": "A",
- "decisions": [],
- "notes": "Both builds passed and agree on every condition (9/9, agreement 1.0); diff.json lists no differences in any role. The rule descriptions and rule types are identical. The two builds differ only in comment wording, list formatting and provenance notes. The final build is A's .lisp and provenance unchanged. The remaining-questions file merges both builders' notes, SNOMED searches and clinician questions. The page's reading that 'when using combined oral contraceptive' applies to all three signs is carried as a clinician question; both builders chose it independently."}

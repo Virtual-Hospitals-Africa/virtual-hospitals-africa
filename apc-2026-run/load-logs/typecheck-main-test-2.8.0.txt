@@ -1,3 +1,0 @@
-# Deno 2.8.0: deno check of VHA main's own test/shared/compiled_s_expressions.test.ts at 211b16110 (clean export, run 2026-11-05; checked under a temporary file name)
-Check test/shared/compiled_s_expressions.test.ts
-# exit code: 0
