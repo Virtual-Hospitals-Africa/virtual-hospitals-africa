@@ -13,6 +13,7 @@ import { isDateLike } from '../../util/date.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { assertUnreachable } from '../../util/assertUnreachable.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
+import Card from './Card.tsx'
 
 type Showable =
   | string[]
@@ -83,6 +84,7 @@ type TableProps<T extends Row> = {
     has_next_page: boolean
   }
   EmptyState(): JSX.Element
+  appearing_as?: 'table' | 'cards'
 }
 
 function TableCellX<T extends Row>({ column, children }: { column: ColumnWithContents<T>; children: ComponentChildren }) {
@@ -318,6 +320,33 @@ function* columnsWithSomeNonNullValue<T extends Row>(
   }
 }
 
+function CardWithContents<T extends Row>(
+  { row, row_index, columns }: {
+    row: T
+    row_index: number
+    columns: ColumnWithContents<T>[]
+  },
+) {
+  return (
+    <Card className='border-1'>
+      <div className='grid grid-cols-2'>
+        
+        {columns.map((column) => (
+          <>
+            <span>{column.label}</span>
+            <TableCellInnerContents
+              row={row}
+              row_index={row_index}
+              column={column}
+            />
+          </>
+        ))}
+      </div>
+      
+    </Card>
+  )
+}
+
 export default function Table<T extends Row>(
   { id, columns, rows, className, EmptyState, pagination, tableClassName }: TableProps<T>,
 ): JSX.Element {
@@ -326,47 +355,64 @@ export default function Table<T extends Row>(
   }
 
   const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows })]
+  console.log({columns_with_contents})
 
-  const table = (
-    <div
-      id={id}
-      className={cls(
-        className,
-        'overflow-x-auto w-full',
-      )}
-    >
-      <div className='inline-block min-w-full pt-2 align-middle'>
-        <table
-          className={cls(
-            'min-w-full divide-y divide-gray-300 overflow-hidden shadow outline-1 -outline-offset-1 outline-gray-200 sm:rounded-lg',
-            tableClassName,
-          )}
-        >
-          <TableHeader columns={columns_with_contents} />
-          <tbody className='divide-y divide-gray-200 bg-white'>
-            {rows.map((row, row_index) => (
-              <TableRow
-                key={row.id}
-                row={row}
-                row_index={row_index}
-                columns={columns_with_contents}
-              />
-            ))}
-          </tbody>
-        </table>
+  
+
+  const table_or_cards = (
+    <>
+      <div className='flex flex-col gap-2 md:hidden'>
+        {rows.map((row, row_index) => (
+          <CardWithContents
+            key={row.id}
+            row={row}
+            row_index={row_index}
+            columns={columns_with_contents}
+          />
+        ))}
       </div>
-    </div>
+      <div
+        id={id}
+        className={cls(
+          className,
+          'overflow-x-auto w-full hidden md:block',
+        )}
+      >
+        <div className='inline-block min-w-full pt-2 align-middle'>
+          <table
+            className={cls(
+              'min-w-full divide-y divide-gray-300 overflow-hidden shadow outline-1 -outline-offset-1 outline-gray-200 sm:rounded-lg',
+              tableClassName,
+            )}
+          >
+            <TableHeader columns={columns_with_contents} />
+            <tbody className='divide-y divide-gray-200 bg-white'>
+              {rows.map((row, row_index) => (
+                <TableRow
+                  key={row.id}
+                  row={row}
+                  row_index={row_index}
+                  columns={columns_with_contents}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+    
   )
 
-  if (!pagination) return table
+  if (!pagination) return table_or_cards
 
   return (
     <>
-      {table}
+      {table_or_cards}
       <Pagination
         page={pagination.page}
         has_next_page={pagination.has_next_page}
       />
     </>
   )
+  
 }
