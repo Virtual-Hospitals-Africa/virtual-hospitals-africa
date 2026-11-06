@@ -41,7 +41,7 @@ Run A2 was added beyond the plan, because Run A could not get past type-checking
 | DIAGNOSIS RULES: evidence is checked for | 213 | 206 are `(no X)` forms (50 of them also recorded known issues); 7 are `measure` task items |
 | SNOMED concepts valid (3 checks), no task checks its own trigger, one file per page | 0 | Pass |
 
-**All 240 failures were predicted.** Each is a case the vha-work gate listed in advance as a place where Will's test is stricter than the gate, or a known issue recorded on that page. None is unexplained. Counted by page and expression, as the test keys its waivers, they are 170 distinct cases (see `RUN-REPORT.md`, "What the test result means"). With waivers, the test passed all 8 cases (12 Deno steps) in the loader run, under Deno 2.7.5 with `--no-check` (`../will-test.log`).
+**All 240 failures were predicted.** Each is a case the vha-work gate listed in advance as a place where Will's test and the gate differ, or a known issue recorded on that page. None is unexplained. Counted by page and expression, as the test keys its waivers, they are 170 distinct cases (see `RUN-REPORT.md`, "What the test result means"). With waivers, the test passed all 8 cases (12 Deno steps) in the loader run, under Deno 2.7.5 with `--no-check` (`../will-test.log`).
 
 *Edited on 2026-11-05 by the vha-work-1 session for consistency with the run report: case counts, the log path, and wording.*
 

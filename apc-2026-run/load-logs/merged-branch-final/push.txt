@@ -56,3 +56,21 @@ apc-2026-conversion: remote 8d799289e equals local head: MATCH
 main: unchanged (6c2299673, which has moved on from our base 6e2cc0e82 since the branch was built)
 aws: unchanged (ec8cba0c2)
 pull requests from apc-2026-conversion: 0 (gh api GET)
+
+## v2 (2026-11-06, not yet pushed)
+Local branch apc-2026-conversion-v2 (~/Developer/vha-apc2026), built at Tony's choice ("New branch, clean history")
+to credit Will on the PR #1310 commit. Same base 6e2cc0e82. The PR commit is authored by Will Weiss
+<will.weiss1230@gmail.com>, with Tony as co-author and no Claude line; its tree equals 53aceb1ee. Our commits were
+replayed unchanged (the tree after them equals 8d799289e), then one new commit re-syncs the run folder and doc.
+Mapping, apc-2026-conversion -> apc-2026-conversion-v2:
+  53aceb1ee -> 85d2c9341  Will Weiss | Bring in PR #1310 (APC adult page review briefing and test), resolved against main
+  36aa35d98 -> 10783f2fe  Tony DeFazio | Fix (no X) round trip in inverseSExpression
+  339d99a2c -> 72e2337bc  Tony DeFazio | Replace apc-adult rules with an AI-built first pass from APC 2026
+  f74d52593 -> b39d7cde4  Tony DeFazio | Test: check every APC 2026 page (empty the not-yet-reviewed list)
+  dec5ac09c -> 490957960  Tony DeFazio | Keep the run folder out of checks and images
+  4c416cfd2 -> d197bbbf4  Tony DeFazio | Our run folder: the APC 2026 conversion's record (apc-2026-run/)
+  2cbebfd41 -> b22920b1a  Tony DeFazio | Document the APC 2026 conversion (docs/apc-2026-conversion.md)
+  45c159387 -> 5a953d07e  Tony DeFazio | Run folder and document: finished-branch logs and review fixes
+  8d799289e -> 1b19c2b16  Tony DeFazio | Document: the three possible rule defects, for review with Will
+  (new)     -> 9ba4e3ac7  Tony DeFazio | Run folder and document: v2 wording fixes and the first push's record
+v2 head: 9ba4e3ac73d3a360ea3ffed2251dcd8bf6e4bea5. Pushing waits for Tony's review and his separate go.

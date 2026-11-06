@@ -11,28 +11,37 @@ The clinical red boxes of APC 2026 are written here as VHA rules in VHA's s-expr
 | Check | Result |
 |---|---|
 | Compiles and seeds into VHA | Yes, after a one-line fix to a VHA bug: VHA can't re-read rules that use `(no X)`, meaning "the patient does not have X" |
-| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those look like real defects in our rules ("Three possible defects", below). The other 167 rest on our gate reading Will's constraints more loosely than his test does, and none has been checked one by one. |
-| VHA's other non-web tests | 8 test files fail, because their fixtures expect 2023 rules; one of them is the rules dry-run test. VHA `main` passes all of them. |
+| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those are possible defects in our rules, and whether VHA can evaluate `(no X)` at all is an open question ("Three flagged cases", below). The other 167 rest on our gate reading Will's constraints more loosely than his test does, and none has been checked one by one. |
+| VHA's other non-web tests | 8 test files fail, apparently because their fixtures expect 2023 rules (judged from the failure messages); one of them is the rules dry-run test. VHA `main` passes all of them. |
 | Clinician review | None |
 | Run against a patient case | Not by us |
 
-We also found five issues in VHA's code and setup ("What we found in VHA"), and we have six questions ("Our questions for Will"). The main ones: is this the direction Will wants, and which reading of the 170 flagged expressions is right?
+We also found five issues in VHA's code and setup ("What we found in VHA"), and we have seven questions ("Our questions for Will"). The main ones: is this the direction Will wants, whether VHA can evaluate `(no X)` at all, and which reading of the 170 flagged expressions is right?
 
-## Three possible defects, for Will and Tony to review together
+## Three flagged cases, and an open question about `(no X)`, for Will and Tony
 
-These are the only places where Will's test points to a likely error in our rules rather than a difference of reading. Each rule needs a finding recorded as absent (`(no X)`), but no task on the page ever asks about that finding. On these pages X is only a trigger: it is recorded when the patient presents with it. Its absence is never recorded, so each rule may never fire.
+Will's test flags 3 expressions in 2 rules where no task **on the same page** checks for the finding the rule needs to be absent:
 
-| Page | Rule | Needs | Where X appears instead |
+| Page | Rule | Needs | Where the absence could still be recorded |
 |---|---|---|---|
-| p34, self-harm or suicide | "Diagnose probable low risk of self-harm or suicide" | `(no (clinical_finding (snomed_concept "Suicide attempt" "event")))` | as a trigger of the page's tasks, and in the priority evaluation "Urgent: attempted/considered self-harm or suicide" |
-| p34, self-harm or suicide | the same rule | `(no (clinical_finding (snomed_concept "Intentionally harming self" "event")))` | the same |
-| p23, cough or difficulty breathing | "Diagnose probable post-infectious cough" | `(no (clinical_finding (snomed_concept "Difficulty breathing" "finding")))` | as a trigger of the page's tasks, and in onset comparisons in other diagnosis rules |
+| p34, self-harm or suicide | "Diagnose probable low risk of self-harm or suicide" | `(no (clinical_finding (snomed_concept "Suicide attempt" "event")))` | the poisoning page's task (p27) checks for it |
+| p34, self-harm or suicide | the same rule | `(no (clinical_finding (snomed_concept "Intentionally harming self" "event")))` | the poisoning (p27) and sexual-assault (p32) pages' tasks check for it |
+| p23, cough or difficulty breathing | "Diagnose probable post-infectious cough" | `(no (clinical_finding (snomed_concept "Difficulty breathing" "finding")))` | the initial-assessment task (p11), which fires for every patient, checks for it, as do about 20 other pages |
 
-Possible fixes, to decide together:
+Findings are stored per patient, not per page, so an absence recorded on another page may reach these rules. That makes these 3 possible defects, not confirmed ones. On p34, the rule would work only for patients who went through one of those other pages.
 
-- add X to a check-for task on the page, so "None of the above" can record its absence;
-- rewrite the rule so it doesn't need `(no X)`;
-- or decide that an unrecorded X should count as absent, which VHA's rules don't do today.
+**A wider question, which may matter more.** As far as we can read VHA's code at `6e2cc0e82`, we're not sure a rule that needs `(no X)` can fire at all:
+- rules are looked up only when a new positive finding arrives (`db/models/rules.ts`, `getApplicableBasedOnNewRecords`: "Skipped: no positive findings");
+- only a positive finding can satisfy a rule's condition (`db/models/due_to.ts`: "Only a positive finding can satisfy a due_to").
+
+If that reading is right, a rule made only of `(no …)` conditions, like p34's low-risk rule, is never evaluated. Any rule that needs `(no X)` may also never be satisfied, however the absence is recorded. That would affect all 146 rules here that use `(no X)`, not just these 3. We haven't run it in the app. It's a question for Will (below).
+
+Possible fixes for the 3, once that question is answered:
+
+- add X to a check-for task on the page, so "None of the above" can record its absence there;
+- rewrite the rule so it doesn't need `(no X)`.
+
+Treating an unrecorded X as absent isn't offered as a fix. On p34 it would diagnose "At low risk for suicide" without anyone having asked about an attempt.
 
 The rules are in `s_expression/rules/apc-adult/34-self-harm-or-suicide.lisp` and `23-cough-or-difficulty-breathing.lisp`, and each page's review page shows them beside the red box.
 
@@ -104,7 +113,7 @@ Our case for it: when a health worker presses "None of the above" for a group of
 
 Nobody has checked the first condition for each of the 143, and nobody has tested the mechanism in the app.
 
-**3 look like real defects.** In the 3 cases where no task on the page checks for X, the app may never record `(no X)`, so the rule may never fire. Two are on p34, where the low-risk self-harm rule needs `(no Suicide attempt)` and `(no Intentionally harming self)`. The third is on p23, where post-infectious cough needs `(no Difficulty breathing)`.
+**3 possible defects.** In 3 cases no task on the same page checks for X: two on p34, where the low-risk self-harm rule needs `(no Suicide attempt)` and `(no Intentionally harming self)`, and one on p23, where post-infectious cough needs `(no Difficulty breathing)`. Tasks on other pages do check for these, so the absence may still be recorded. See "Three flagged cases, and an open question about `(no X)`" above, including whether VHA evaluates `(no X)` at all.
 
 The onset subjects and measured items weren't looked at one by one. They were accepted as kinds, because the test can't see them: its evidence helper skips onset comparisons, and it has a TODO for measured items.
 
@@ -136,7 +145,7 @@ None of these flags has been adjudicated. Most of the 95 condition flags came fr
 
 **Flowchart routing goes unchecked.** "If no, go to …" arrows aren't page elements. So neither the gate's coverage check nor any checker can flag a missing or wrong branch on the 70 flowchart pages. Only a person's review can catch these.
 
-**The gate passed the 3 possible defects above**, which Will's test catches. A builder can also get past the gate by declaring an exception with a reason. The builders declared 40, all blaming our tooling: 36 for a gate bug in recognizing qualified `(no X)` forms, fixed on 2026-11-05, and 4 for an onset gap fixed the day before. The gate needs none of them now, though the build records still list them. Will's test still flags 31 of the 40, among the 170. That's why the next step is our own review, not a clinician's sign-off.
+**The gate passed the 3 flagged cases above**, which Will's test catches, because it counts X used as a task's trigger, as well as a check for X, as covering `(no X)`. A builder can also get past the gate by declaring an exception with a reason. The builders declared 40, all blaming our tooling: 36 for a gate bug in recognizing qualified `(no X)` forms, fixed on 2026-11-05, and 4 for an onset gap fixed the day before. The gate needs none of them now, though the build records still list them. Will's test still flags 31 of the 40, among the 170. That's why the next step is our own review, not a clinician's sign-off.
 
 **Compared with Will's 2023 rules.** On the 46 pages that have a 2023 rule file, 53% of Will's 2023 conditions (697 of 1,327) appear exactly in the 2026 build. Another 14% are related through SNOMED, and 33% have no match. This measures agreement, not correctness: the two sets encode different editions, the builders saw VHA's existing SNOMED terms, and no clinician has judged either set. Pages whose red box changed in substance match more often (54%) than pages whose red box is unchanged or changed only in numbers, wording or position (42%), so edition changes don't explain the mismatches. This is a rough grouping, since conditions cluster by page. Each review page's "Edition context" tab shows its page's comparison; the run report has the detail.
 
@@ -155,7 +164,7 @@ Line numbers are at `main` `6e2cc0e82`.
 
 ## What's on this branch
 
-This branch starts from VHA `main` at `6e2cc0e82`, with Will's PR #1310 (`pack-adult-fable`, head `936ef54e4`) brought in as one commit, credited to Will. (vha-guards, the tool we push through, refuses merge commits.) It replaces an earlier branch, `apc-2026-conversion`, whose copy of that commit credited Tony and Claude but not Will; the code is the same. The run logs cite commit hashes from before the branch was rebuilt; `apc-2026-run/load-logs/merged-branch-final/push.txt` maps them.
+This branch starts from VHA `main` at `6e2cc0e82`, with Will's PR #1310 (`pack-adult-fable`, head `936ef54e4`) brought in as one commit, credited to Will. (vha-guards, the tool we push through, refuses merge commits.) It replaces an earlier branch, `apc-2026-conversion`, whose copy of that commit credited Tony and Claude but not Will; the code is the same. The run logs cite commit hashes from earlier builds of this branch; `apc-2026-run/load-logs/merged-branch-final/push.txt` maps them to the first pushed branch, whose commits this branch repeats in the same order with the same content.
 
 | Commit | What it changes |
 |---|---|
@@ -174,7 +183,7 @@ VHA's CI runs only on a pull request into `main`, so pushing this branch runs no
 - `deno check`, `deno fmt --check` and `deno lint` pass on both.
 - VHA's non-web tests: on `main`, 83 top-level tests pass (2 ignored). On this branch, 74 pass and 9 fail:
   - Will's test: its 3 coverage checks, above.
-  - 7 model test files fail 17 cases, because their fixtures use 2023 rules: `additional_tasks`, `due_to`, `patient_findings_insert`, `patient_findings_with_modifiers`, `snomed_warning_signs`, `system_diagnosis_rules` and `system_priority_evaluations`, all in `test/models/`. Examples are constipation onset ≥ 24 hours, the insect-bite tasks, fever leading to probable meningitis, and the "Check for Anaphylaxis" task.
+  - 7 model test files fail 17 cases, apparently because their fixtures use 2023 rules (judged from the failure messages; no run isolated the cause): `additional_tasks`, `due_to`, `patient_findings_insert`, `patient_findings_with_modifiers`, `snomed_warning_signs`, `system_diagnosis_rules` and `system_priority_evaluations`, all in `test/models/`. Examples are constipation onset ≥ 24 hours, the insect-bite tasks, fever leading to probable meningitis, and the "Check for Anaphylaxis" task.
   - `test/models/rules_dry_run.test.ts` crashes as it loads, because its fixture looks up the 2023 task "Check for Anaphylaxis". None of its 19 cases ran.
 
 These tests cover VHA's code (due_to matching, findings with modifiers, priority evaluations, diagnosis rules, the rules dry run) using 2023 rules as fixtures. Until the fixtures move to 2026 content, or those rules are kept, that code goes untested on this branch.
@@ -185,10 +194,11 @@ We didn't run the web tests, the migration tests or the Docker image build. `den
 
 1. **Direction.** Is this the approach you want before we put more work into it?
 2. **The 170 flagged expressions.** Should the priority and diagnosis checks treat `(no X)` the way the tasks check already does, on the "None of the above" argument? Or should they keep demanding `(no X)` itself? And should onset subjects and measured items count as uses? The kinds are in the table under "What Will's test makes of it".
-3. **The `(no X)` fix.** Is the one-line change to `inverseSExpression` the right fix?
-4. **Time comparisons.** Should the database accept `>` and `<`, or should rules keep to `>=` and `<=` and the briefing say so?
-5. **Deno.** Which version is canonical: `runtime.txt` (2.7.5) or CI (2.8.0)?
-6. **Things keyed to 2023 page numbers.** How would you like these handled?
+3. **Can VHA evaluate `(no X)`?** Rules are looked up only from new positive findings, and only a positive finding satisfies a condition. Does a rule that needs `(no X)` ever fire? (See "Three flagged cases, and an open question about `(no X)`".)
+4. **The `(no X)` fix.** Is the one-line change to `inverseSExpression` the right fix?
+5. **Time comparisons.** Should the database accept `>` and `<`, or should rules keep to `>=` and `<=` and the briefing say so?
+6. **Deno.** Which version is canonical: `runtime.txt` (2.7.5) or CI (2.8.0)?
+7. **Things keyed to 2023 page numbers.** How would you like these handled?
    - `APC_PAGES_NOT_YET_REVIEWED`;
    - the APC table of contents in `shared/pack-adult.ts`, used for page links and the Notion script;
    - the 141 "Display medical guidance" tasks, which a health worker sees on the triage screen labeled "APC 2023" with 2023 page links, beside the 2026 rules;

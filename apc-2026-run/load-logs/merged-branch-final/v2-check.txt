@@ -1,0 +1,66 @@
+# v2 check of apc-2026-conversion-v2 (local; not pushed), 2026-11-06 07:39 EST, Mac mini
+# head 9ba4e3ac73d3a360ea3ffed2251dcd8bf6e4bea5; base 6e2cc0e82; run folder synced to vha-work bfe07bb
+
+## Commits (newest first)
+9ba4e3ac7 Tony DeFazio | Run folder and document: v2 wording fixes and the first push's record
+1b19c2b16 Tony DeFazio | Document: the three possible rule defects, for review with Will
+5a953d07e Tony DeFazio | Run folder and document: finished-branch logs and review fixes
+b22920b1a Tony DeFazio | Document the APC 2026 conversion (docs/apc-2026-conversion.md)
+d197bbbf4 Tony DeFazio | Our run folder: the APC 2026 conversion's record (apc-2026-run/)
+490957960 Tony DeFazio | Keep the run folder out of checks and images
+b39d7cde4 Tony DeFazio | Test: check every APC 2026 page (empty the not-yet-reviewed list)
+72e2337bc Tony DeFazio | Replace apc-adult rules with an AI-built first pass from APC 2026
+10783f2fe Tony DeFazio | Fix (no X) round trip in inverseSExpression
+85d2c9341 Will Weiss | Bring in PR #1310 (APC adult page review briefing and test), resolved against main
+
+## git diff --stat 8d799289e HEAD (the pushed apc-2026-conversion head)
+ apc-2026-run/RUN-REPORT.md                         | 16 +++---
+ .../merged-branch-final/final-sync-check.txt       | 35 +++++++++++++
+ .../load-logs/merged-branch-final/push.txt         | 58 ++++++++++++++++++++++
+ apc-2026-run/tools/setup_check.sh                  | 16 +++++-
+ docs/apc-2026-conversion.md                        |  6 +--
+ 5 files changed, 119 insertions(+), 12 deletions(-)
+Only apc-2026-run/ and docs/ differ, so no code or rules changed and the test suite was not rerun.
+
+## Static checks
+deno 2.8.0 (stable, release, aarch64-apple-darwin)
+deno check: exit 0
+deno fmt --check: exit 0 (Checked 1532 files)
+deno lint: exit 0 (Checked 1536 files)
+check log mentions apc-2026-run: 0
+fmt log mentions apc-2026-run: 0
+lint log mentions apc-2026-run: 0
+test-pattern files under apc-2026-run: 0
+
+## hygiene.sh repo-wide patterns, by hand
+scanned 3023 text files under apc-2026-run/ and docs/ (Python re, hygiene.sh patterns; ripgrep is not installed on the mini)
+  camelCase const declarations (.ts/.tsx): 0
+  node:-scheme imports (any file): 0
+  inline import( (.ts/.tsx): 0
+  hits: none
+
+## sh vha-guards/tools/push --dry-run apc-2026-conversion-v2 (vha-guards 631deba)
+vha-guards audit: OK (15 checks)
+push: commits going out to apc-2026-conversion-v2, and who is credited:
+  9ba4e3ac7  author: Tony DeFazio  | Run folder and document: v2 wording fixes and the first push's record
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  1b19c2b16  author: Tony DeFazio  | Document: the three possible rule defects, for review with Will
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  5a953d07e  author: Tony DeFazio  | Run folder and document: finished-branch logs and review fixes
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  b22920b1a  author: Tony DeFazio  | Document the APC 2026 conversion (docs/apc-2026-conversion.md)
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  d197bbbf4  author: Tony DeFazio  | Our run folder: the APC 2026 conversion's record (apc-2026-run/)
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  490957960  author: Tony DeFazio  | Keep the run folder out of checks and images
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  b39d7cde4  author: Tony DeFazio  | Test: check every APC 2026 page (empty the not-yet-reviewed list)
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  72e2337bc  author: Tony DeFazio  | Replace apc-adult rules with an AI-built first pass from APC 2026
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  10783f2fe  author: Tony DeFazio  | Fix (no X) round trip in inverseSExpression
+          co-authors: Claude Opus 5.5 <noreply@anthropic.com>
+  85d2c9341  author: Will Weiss  | Bring in PR #1310 (APC adult page review briefing and test), resolved against main
+          co-authors: Tony DeFazio <tony.defazio@gmail.com>
+push: dry run, every check passed; nothing pushed.
+dry-run exit: 0
