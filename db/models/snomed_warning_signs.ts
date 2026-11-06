@@ -34,6 +34,7 @@ type SearchTerms = {
   within one of them is dropped, however well it otherwise matches.
 */
 export const snomed_warning_signs = base({
+  verbose: true,
   top_level_table: 'snomed_concept_finding_like',
   baseQuery(trx: TrxOrDbOrQueryCreator, { age_determination, pregnancy, finding_site, excluding_structures, ...terms }: SearchTerms) {
     const predefined_within_chosen = sql<boolean>`predefined_within_chosen.descendant_id is not null`
