@@ -1,0 +1,58 @@
+# Push of apc-2026-conversion to Virtual-Hospitals-Africa/virtual-hospitals-africa
+# 2026-11-05 23:09:16 EST, from the Mac mini, through vha-guards/tools/push (guards installed 2026-11-05)
+# Tony's go: relayed by the laptop session ("Push to vha"), then confirmed in the mini session after he
+# installed the guards and set the push URL. New branch only; no force, no pull request, main and aws untouched.
+
+## History change before the push
+The guards refuse merge commits, so the merge of PR #1310 (27e650144) was replaced, at Tony's choice, by one
+plain commit carrying its resolved changes (53aceb1ee), and our commits were replayed on top through the
+guard hooks. The final tree is byte-identical to the previous head 12e937568 (kept locally as
+apc-2026-conversion-with-merge). Earlier logs in this folder cite the old hashes; the mapping is:
+  27e650144 -> 53aceb1ee  Bring in PR #1310 (APC adult page review briefing and test), resolved against main
+  e37dfd30f -> 36aa35d98  Fix (no X) round trip in inverseSExpression
+  7cb2d668c -> 339d99a2c  Replace apc-adult rules with an AI-built first pass from APC 2026
+  b2d429ac2 -> f74d52593  Test: check every APC 2026 page (empty the not-yet-reviewed list)
+  8893758c2 -> dec5ac09c  Keep the run folder out of checks and images
+  eb5331478 -> 4c416cfd2  Our run folder: the APC 2026 conversion's record (apc-2026-run/)
+  4bfd5f089 -> 2cbebfd41  Document the APC 2026 conversion (docs/apc-2026-conversion.md)
+  c7417b304 -> 45c159387  Run folder and document: finished-branch logs and review fixes
+  12e937568 -> 8d799289e  Document: the three possible rule defects, for review with Will
+
+## Pushed commits (newest first), on VHA main 6e2cc0e82
+8d799289e7aa800516aa2575870a53e4520106bc Document: the three possible rule defects, for review with Will
+45c159387120a82265670e77aa129bc46ba69d11 Run folder and document: finished-branch logs and review fixes
+2cbebfd4173e3eea873ce5a90acdd1858c3ce240 Document the APC 2026 conversion (docs/apc-2026-conversion.md)
+4c416cfd282eab69caf9e83c40da5f7ac3140172 Our run folder: the APC 2026 conversion's record (apc-2026-run/)
+dec5ac09caf5e7d1825d25a337582b32e52a0bf9 Keep the run folder out of checks and images
+f74d525930549a6a9b6d5cb245deb67b6f530710 Test: check every APC 2026 page (empty the not-yet-reviewed list)
+339d99a2c41fc1532a59d783e9288dc6d7007e46 Replace apc-adult rules with an AI-built first pass from APC 2026
+36aa35d983e68cccdfd6d33f38c5dde0f1a8055f Fix (no X) round trip in inverseSExpression
+53aceb1ee7a17ec7a5c3dda191d52e44195909b8 Bring in PR #1310 (APC adult page review briefing and test), resolved against main
+
+## Remote before the push (git ls-remote)
+ec8cba0c2a204bea22616544848681542c9e76f6	refs/heads/aws
+6c22996733b8277b0838b70c2e0c7252f280543c	refs/heads/main
+(no apc-2026-conversion branch)
+
+## Guards push output (exit 0)
+vha-guards audit: OK (15 checks)
+Uploading LFS objects: 100% (16/16), 5.3 GB | 0 B/s, done.
+remote: 
+remote: Create a pull request for 'apc-2026-conversion' on GitHub by visiting:        
+remote:      https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/pull/new/apc-2026-conversion        
+remote: 
+remote: GitHub found 3 vulnerabilities on Virtual-Hospitals-Africa/virtual-hospitals-africa's default branch (3 high). To find out more, visit:        
+remote:      https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/security/dependabot        
+remote: 
+To https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa.git
+ * [new branch]          HEAD -> apc-2026-conversion
+
+## Remote after the push (git ls-remote, read-only)
+8d799289e7aa800516aa2575870a53e4520106bc	refs/heads/apc-2026-conversion
+ec8cba0c2a204bea22616544848681542c9e76f6	refs/heads/aws
+6c22996733b8277b0838b70c2e0c7252f280543c	refs/heads/main
+
+apc-2026-conversion: remote 8d799289e equals local head: MATCH
+main: unchanged (6c2299673, which has moved on from our base 6e2cc0e82 since the branch was built)
+aws: unchanged (ec8cba0c2)
+pull requests from apc-2026-conversion: 0 (gh api GET)

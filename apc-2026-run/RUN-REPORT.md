@@ -8,7 +8,7 @@ The builders followed Will's PR #1310 briefing. This run added the rest of the p
 
 The set compiles and seeds into a private local copy of VHA's database, with a one-line fix to a VHA bug in `inverseSExpression` applied during the load (see "VHA findings from the run"). Without the fix, Will's test can't load the rules at all.
 
-Will's PR #1310 test, run as VHA's CI would (Deno 2.8.0, type-checking on) with that fix and no known-issue waivers, passes 5 of its 8 test cases. The other 3, its coverage checks, flag 170 cases on 37 pages. Our gate accepts every one of them; they are where his test is stricter than our gate, in three kinds: 146 `(no X)` evidence, 15 onset subjects and 9 measured items. Most look like gaps in the test, but at least 3 may be real defects in the rules. Nothing else fails. An earlier run, under Deno 2.7.5 with type-checking off and those cases waived, passed all 8 (see "What the test result means").
+Will's PR #1310 test, run as VHA's CI would (Deno 2.8.0, type-checking on) with that fix and no known-issue waivers, passes 5 of its 8 test cases. The other 3, its coverage checks, flag 170 cases on 37 pages. Our gate accepts every one of them; they are where his test and our gate read his briefing differently, in three kinds: 146 `(no X)` evidence, 15 onset subjects and 9 measured items. 3 may be real defects in the rules; the other 167 rest on our gate's looser reading and haven't been checked one by one. On the full branch, 8 of VHA's other test files also fail, because their fixtures expect 2023 rules (see `docs/apc-2026-conversion.md`). An earlier run, under Deno 2.7.5 with type-checking off and those cases waived, passed all 8 (see "What the test result means").
 
 The checkers' agreement is moderate, and agreement between AI models is not evidence that the rules are clinically right. All three checkers called 71% of conditions faithful to the page, and 60% of the in-scope page elements correctly encoded. Most errors they found were flagged by only one of the three.
 
@@ -33,7 +33,7 @@ The checkers' agreement is moderate, and agreement between AI models is not evid
 | SNOMED concepts | 1,190 distinct; all resolve in the 2025-12-01 International release (note below) |
 | Automated gate | 83 of 83 pages pass with no findings, after a bug in the gate was fixed on 2026-11-05 (see "Limits") |
 | Compile and seed | Pass, in a private copy of VHA (main at `211b16110`) with the `(no X)` fix applied during the load |
-| Will's PR #1310 test | With no waivers: 5 of 8 test cases pass (Deno counts 8 cases as 12 steps, with the 4 groups), and the 3 coverage checks flag 170 cases where his test is stricter than our gate. The loader run, with waivers: all 8 pass |
+| Will's PR #1310 test | With no waivers: 5 of 8 test cases pass (Deno counts 8 cases as 12 steps, with the 4 groups), and the 3 coverage checks flag 170 cases where his test and our gate read his briefing differently. The loader run, with waivers: all 8 pass |
 | Review queue | 5,708 items for a person to decide: 615 high, 3,083 medium, 2,010 low (what goes in it: "How each page was made") |
 | Cost | $797 at API list prices: 756 agent runs, 27 in a three-page shakedown and 729 in the main run |
 
@@ -62,7 +62,7 @@ The no-waiver run is the informative one: it shows exactly what Will's test make
 
 (The checks list 240 failures. Counted the way the test keys its waivers, by page and expression, that is 15 + 11 + 145 cases; one `(no X)` case appears in two checks, so 170 in all.)
 
-Every case is of one of the three kinds where his test is stricter than our gate (see "Where Will's test is stricter than our gate" under "VHA findings from the run"). That sorts them; it doesn't show the rules are right. In 143 of the 146 `(no X)` cases the same page checks for X; Will's own task check states that principle ("a rule keying off of the finding's absence still relies on us having checked for it"), though the two checks that flag these cases don't apply it. In the other 3, X is only a task trigger and is never checked for, so the rule may never fire: two on p34 (the low-risk self-harm rule needs `(no Suicide attempt)` and `(no Intentionally harming self)`) and one on p23 (post-infectious cough needs `(no Difficulty breathing)`). Those 3 may be real defects. The test's other five checks pass:
+Every case is of one of the three kinds where his test and our gate read his briefing differently (see "Where Will's test and our gate differ" under "VHA findings from the run"). That sorts them; it doesn't show the rules are right. In 143 of the 146 `(no X)` cases the same page checks for X; Will's own task check states that principle ("a rule keying off of the finding's absence still relies on us having checked for it"), though the two checks that flag these cases don't apply it. In the other 3, X is only a task trigger and is never checked for, so the rule may never fire: two on p34 (the low-risk self-harm rule needs `(no Suicide attempt)` and `(no Intentionally harming self)`) and one on p23 (post-infectious cough needs `(no Difficulty breathing)`). Those 3 may be real defects. The test's other five checks pass:
 
 - the self-reference check;
 - the one-file-per-page check;
@@ -83,7 +83,7 @@ Line numbers are at main `211b16110`.
 |---|---|---|---|
 | `(no X)` round trip | `shared/s_expression_inverse.ts:39–40` | Any rule containing `(no X)` crashes whatever loads the compiled rules | Fixed it for the load only |
 | Time comparisons | migration `20260905021111` | `>` and `<` are rejected | Wrote `>=` and `<=` |
-| Where the test is stricter than our gate | the three coverage checks | 170 cases flagged, 3 of them possible rule defects | Listed for Will to decide |
+| Where the test and our gate differ | the three coverage checks | 170 cases flagged, 3 of them possible rule defects | Listed for Will to decide |
 | `not` unsupported | `allEvidenceToLookFor` | Throws "Not supported" | Used `(no X)` instead |
 | Attribute values not SNOMED-checked | `shared/s_expression_concepts.ts:21–23` | Two unresolved 2023 names pass the test | Our gate checks them |
 | Deno version mismatch | `runtime.txt` vs CI and the app Dockerfiles | 2.7.5 vs 2.8.0; the test fails to type-check under 2.7.5 and passes under 2.8.0 | Reran under 2.8.0 |
@@ -94,7 +94,7 @@ Line numbers are at main `211b16110`.
    - The fix is one line: pass `value_snomed_concept: null` alongside `existence: 'Yes'`. Our loader applies it during the load and reverts it afterward. Without it, Will's test can't load the 2026 rules at all. With it, the test's `(no X)` case (a checked-for finding counts as used if a rule uses `(no X)`) passes.
    - Our loader first used `undefined`, which doesn't type-check (TS2322); the loader run's `--no-check` hid that. It now uses `null`.
 2. **Time comparisons.** The database's check accepts only `>=` and `<=` in time comparisons, though the rule language allows `>` and `<`. Will's briefing teaches `(< (onset …) (time_ago 3 days))`, which the check rejects. Because only inclusive comparisons (`>=`, `<=`) are allowed, a boundary value can satisfy two rules meant to exclude each other. On p24, exactly 10 minutes counts toward both acute coronary syndrome and stable angina.
-3. **Where Will's test is stricter than our gate.** These are all 170 cases his test flags. Will may intend them; they're listed so he can decide. (In one way the test is looser: since it never sees onset subjects, it never requires a finding used only inside an onset comparison to be checked for.)
+3. **Where Will's test and our gate differ.** These are all 170 cases his test flags. For `(no X)` evidence his test applies his briefing's exact-match rule as written, and our gate reads it more loosely; his briefing itself allows `(no X)` in the other direction. Will may intend them; they're listed so he can decide. (In one way the test is looser: since it never sees onset subjects, it never requires a finding used only inside an onset comparison to be checked for.)
    - **`(no X)` evidence.** In the priority-evaluation and probable-diagnosis checks, a finding counts as covered only if the same file checks for it, or uses it in a task's `due_to`, as the exact expression. A check for X doesn't cover `(no X)`. Our gate accepts it. 146 cases.
    - **Onset subjects.** The subject of an onset comparison isn't counted as evidence (`allEvidenceToLookFor`, `db/models/s_expression_evidence.ts`). Our gate counts it. 15 cases.
    - **Measured items.** Items of a `measure` task aren't counted as checked for; the test has a TODO for this. Our gate counts them. 9 cases.
@@ -126,7 +126,7 @@ Notes on each stage:
   - VHA's parser, the SNOMED release and the database's limits;
   - provenance: every condition cites a page element and a verbatim quote;
   - element coverage: every page element is encoded or declared out of scope;
-  - our reading of Will's six constraints (see "Where Will's test is stricter than our gate" under "VHA findings from the run" for where it differs).
+  - our reading of Will's six constraints (see "Where Will's test and our gate differ" under "VHA findings from the run").
 - **Checkers.** Each was instructed not to look at the others' work or the builders' notes. Each read a copy of the rules with the comments removed.
 - **File names.** Page to rules is `forward-*.json` in `checks/<page>/`; rules to page is `backward-*.json`. A condition is a `claim` in the scorecard and queue files.
 - **The review queue holds six kinds of item:**
@@ -163,7 +163,7 @@ Counted per item rather than per vote, agreement is weaker:
 - **Elements.** All three checkers called 956 elements in scope; they all called 576 of those (60%) encoded correctly. All three called 1,461 elements out of scope. For 44 of these the build had encoded the element anyway, so they are queued.
 - **Conditions.** All three called 4,430 of the 6,224 conditions (71%) faithful.
 - **Checkers differ.** The three page-to-rules checkers called between 65% and 82% of their in-scope elements correct.
-- **Most error votes came from a single checker.** Of the 95 conditions with a wrong or unsupported vote, 87 got one from only one checker. Which errors surfaced depended on which model looked. So the error count is a lower bound: a condition all three called faithful has not been shown correct.
+- **Most error votes came from a single checker.** Of the 95 conditions with a wrong or unsupported vote, 87 got one from only one checker. Which errors surfaced depended on which model looked. That fits false alarms and misses by the other two equally well, and none of the flags has been adjudicated. A condition all three called faithful has not been shown correct either.
 
 Common weak spots:
 
@@ -219,7 +219,7 @@ Each review page has an "Edition context" tab with that page's comparison. It li
   - The remaining-questions files for the 11 affected pages (p14, p21, p24, p34, p53, p64, p77, p78, p89, p90 and p130) describe the bug as their builders saw it; each now carries a dated note that it is fixed.
 - **Four conditions on p28 changed after the checkers read them.** A script repaired their time comparators (`>` to `>=`). One review-queue item covers them. p28's remaining-questions file now says so; the loader run's waiver reasons still describe `>`.
 - **The loader run's tooling had two gaps.** It ran Will's test under Deno 2.7.5 with `--no-check`, and its `(no X)` fix used `undefined`, which doesn't type-check. Both are fixed: `tools/load_into_vha.sh` now runs the test as VHA's CI does (Deno 2.8.0, type-checking on, `null` in the fix), excuses nothing unless run with `--waive`, and saves the full list of flagged cases. A test run of the updated loader on the build Mac reproduced the no-waiver result exactly: 5 of 8 test cases, and 170 cases on 37 pages (`load-logs/loader-test/`).
-- **The load shows the set compiles, seeds, and meets Will's test except where his test is stricter than our gate.** It does not show that the app behaves correctly with these rules.
+- **The load shows the set compiles, seeds, and meets Will's test except where his test and our gate differ.** It does not show that the app behaves correctly with these rules.
 - **The logs in `load-logs/` are from 2026-11-05:** the loader run (seed, compile, test with waivers, gate) and the no-waiver rerun (`load-logs/rerun-no-waivers/`). The 2026-11-04 logs were overwritten. The rule files have not changed since the 2026-11-04 run.
 - **The review pages have been tested in headless Chrome, and by eye in Chrome on one page.** Export was tested only in headless Chrome.
 

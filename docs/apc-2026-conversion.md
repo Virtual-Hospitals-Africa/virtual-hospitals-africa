@@ -155,11 +155,11 @@ Line numbers are at `main` `6e2cc0e82`.
 
 ## What's on this branch
 
-This branch starts from VHA `main` at `6e2cc0e82`, with Will's PR #1310 (`pack-adult-fable`, head `936ef54e4`) merged in.
+This branch starts from VHA `main` at `6e2cc0e82`, with Will's PR #1310 (`pack-adult-fable`, head `936ef54e4`) brought in as one commit, credited to Will. (vha-guards, the tool we push through, refuses merge commits.) It replaces an earlier branch, `apc-2026-conversion`, whose copy of that commit credited Tony and Claude but not Will; the code is the same. The run logs cite commit hashes from before the branch was rebuilt; `apc-2026-run/load-logs/merged-branch-final/push.txt` maps them.
 
 | Commit | What it changes |
 |---|---|
-| Merge of PR #1310 | Will's test, briefing and anaphylaxis example, plus the PR's changes to the compiled rule files. One hunk of the test conflicted with `main`, in the priority-evaluation check: we kept `main`'s handling of `active_condition` findings and added the PR's known-issue check. Everything else merged cleanly, including `main`'s three finding-site checks. |
+| PR #1310, credited to Will | Will's test, briefing and anaphylaxis example, plus the PR's changes to the compiled rule files, resolved against `main`. One hunk of the test conflicted, in the priority-evaluation check: we kept `main`'s handling of `active_condition` findings and added the PR's known-issue check. Everything else applied cleanly, including `main`'s three finding-site checks. |
 | The `(no X)` fix | the one line in `shared/s_expression_inverse.ts` described above. It comes before the rules, so every commit loads. |
 | The 2026 rules | `s_expression/rules/apc-adult/`: 83 rule files, with their remaining-questions and flowchart files. A README there says they are an AI-built first pass, not clinically reviewed. They replace the 2023 set: 53 rule files, an `.xlisp` draft, and PR #1310's two anaphylaxis notes, which stay in git history. The commit includes the three files VHA compiles from the rules (`s_expression/tasks.ts`, `system_priority_evaluations.ts`, `system_diagnosis_rules.ts`), so a fresh checkout runs the 2026 rules without compiling first. |
 | Test: check every page | empties `APC_PAGES_NOT_YET_REVIEWED` in Will's test, with a comment saying why. The list holds 2023 page numbers, which match 37 unrelated 2026 pages, 21 of them among the flagged pages. Left as it is, the test would skip those pages and hide 85 of the 170 flagged expressions. Emptying it is not a claim that any page has been reviewed. `APC_KNOWN_ISSUES` stays empty. |
@@ -218,7 +218,7 @@ Decisions stay in your browser until you export them. Send the exported file to 
 | Rules, flowchart notes, remaining questions | `s_expression/rules/apc-adult/`. The copy in `apc-2026-run/ruleset/apc-adult-2026/` is the snapshot as built; edit only `s_expression/rules/apc-adult/`. |
 | Both builds and the reconcile records (the remaining-questions files cite `reconcile.json` and builders A and B) | [`apc-2026-run/build/`](../apc-2026-run/build/) |
 | Each page's six checker reports, scorecard and review queue | `apc-2026-run/checks/<page>-<slug>/`, for example [`checks/24-chest-pain/`](../apc-2026-run/checks/24-chest-pain/) |
-| Compile, seed and test logs, and the gate's output | [`apc-2026-run/load-logs/`](../apc-2026-run/load-logs/); this branch's runs are in `merged-branch-final/` (the finished branch, with the merge's conflict resolution) and `merged-branch/` (its first four commits) |
+| Compile, seed and test logs, and the gate's output | [`apc-2026-run/load-logs/`](../apc-2026-run/load-logs/); this branch's runs are in `merged-branch-final/` (the finished branch, with how the PR's one conflict was resolved) and `merged-branch/` (its first four commits) |
 | Every method choice | [`apc-2026-run/DECISIONS.md`](../apc-2026-run/DECISIONS.md) |
 | The full report: figures, limits, what Will's test made of it | [`apc-2026-run/RUN-REPORT.md`](../apc-2026-run/RUN-REPORT.md) |
 
