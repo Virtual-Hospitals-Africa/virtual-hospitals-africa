@@ -11,7 +11,7 @@ The clinical red boxes of APC 2026 are written here as VHA rules in VHA's s-expr
 | Check | Result |
 |---|---|
 | Compiles and seeds into VHA | Yes, after a one-line fix to a VHA bug: VHA can't re-read rules that use `(no X)`, meaning "the patient does not have X" |
-| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those look like real defects in our rules. The other 167 rest on a looser reading of the briefing than the test's, and none has been checked one by one. |
+| Will's integrity test for the rules (`test/shared/compiled_s_expressions.test.ts`), with nothing excused | 8 of its 11 test cases pass. The other 3 flag 170 rule expressions. 3 of those look like real defects in our rules. The other 167 rest on our gate reading Will's constraints more loosely than his test does, and none has been checked one by one. |
 | VHA's other non-web tests | 8 test files fail, because their fixtures expect 2023 rules; one of them is the rules dry-run test. VHA `main` passes all of them. |
 | Clinician review | None |
 | Run against a patient case | Not by us |
@@ -90,9 +90,9 @@ Nobody has checked the first condition for each of the 143, and nobody has teste
 
 The onset subjects and measured items weren't looked at one by one. They were accepted as kinds, because the test can't see them: its evidence helper skips onset comparisons, and it has a TODO for measured items.
 
-The full list is in [`apc-2026-run/load-logs/merged-branch/`](../apc-2026-run/load-logs/merged-branch/). It is identical to the list from an earlier run on PR #1310's test file before the merge ([`apc-2026-run/load-logs/loader-test/`](../apc-2026-run/load-logs/loader-test/)). An earlier run still, under Deno 2.7.5 with type-checking off, passed every check with 247 waivers. Those covered all 170 plus 77 expressions that weren't flagged.
+The full list is in [`apc-2026-run/load-logs/merged-branch-final/`](../apc-2026-run/load-logs/merged-branch-final/). It is identical to the list from an earlier run on PR #1310's test file before the merge ([`apc-2026-run/load-logs/loader-test/`](../apc-2026-run/load-logs/loader-test/)). An earlier run still, under Deno 2.7.5 with type-checking off, passed every check with 247 waivers. Those covered all 170 plus 77 expressions that weren't flagged.
 
-**Our gate's verdict doesn't depend on VHA's bug.** The gate first ran against VHA code without the one-line fix, and its `(no X)` matching relied on how the unfixed code writes `(no X)`. With the fix applied, that version would have flagged the 146 too. We changed the gate to read both forms. Rerun against fixed VHA code, it finds nothing on any page, and it lists the same differences from Will's test (`load-logs/gate-fixed-nox-fix.json`).
+**Our gate's verdict doesn't depend on VHA's bug.** The gate first ran against VHA code without the one-line fix, and its `(no X)` matching relied on how the unfixed code writes `(no X)`. With the fix applied, that version would have flagged the 146 too. We changed the gate to read both forms. Rerun against fixed VHA code, it finds nothing on any page, and it lists the same differences from Will's test ([`apc-2026-run/load-logs/gate-fixed-nox-fix.json`](../apc-2026-run/load-logs/gate-fixed-nox-fix.json)).
 
 **SNOMED attribute values aren't tested.** The 2026 set has 460 finding-site values, on 43 pages. Will's test can't fail on any of them, because its SNOMED check looks up an attribute's type, not its value (see "What we found in VHA"). `main`'s three finding-site checks cover the files in `s_expression/finding_site_findings/`, not values inside rules. Our gate checked the values against the 2025-12-01 release.
 
@@ -120,7 +120,7 @@ None of these flags has been adjudicated. Most of the 95 condition flags came fr
 
 **The gate passed the 3 possible defects above**, which Will's test catches. A builder can also get past the gate by declaring an exception with a reason. The builders declared 40, all blaming our tooling: 36 for a gate bug in recognizing qualified `(no X)` forms, fixed on 2026-11-05, and 4 for an onset gap fixed the day before. The gate needs none of them now, though the build records still list them. Will's test still flags 31 of the 40, among the 170. That's why the next step is our own review, not a clinician's sign-off.
 
-**Compared with Will's 2023 rules.** On the 46 pages that have a 2023 rule file, 53% of Will's 2023 conditions (697 of 1,327) appear exactly in the 2026 build. Another 14% are related through SNOMED, and 33% have no match. This measures agreement, not correctness: the two sets encode different editions, the builders saw VHA's existing SNOMED terms, and no clinician has judged either set. Pages whose red box changed in substance match more often (54%) than pages whose red box is unchanged (42%), so edition changes don't explain the mismatches. Each review page's "Edition context" tab shows its page's comparison; the run report has the detail.
+**Compared with Will's 2023 rules.** On the 46 pages that have a 2023 rule file, 53% of Will's 2023 conditions (697 of 1,327) appear exactly in the 2026 build. Another 14% are related through SNOMED, and 33% have no match. This measures agreement, not correctness: the two sets encode different editions, the builders saw VHA's existing SNOMED terms, and no clinician has judged either set. Pages whose red box changed in substance match more often (54%) than pages whose red box is unchanged or changed only in numbers, wording or position (42%), so edition changes don't explain the mismatches. This is a rough grouping, since conditions cluster by page. Each review page's "Edition context" tab shows its page's comparison; the run report has the detail.
 
 ## What we found in VHA
 
@@ -146,12 +146,12 @@ This branch starts from VHA `main` at `6e2cc0e82`, with Will's PR #1310 (`pack-a
 | The 2026 rules | `s_expression/rules/apc-adult/`: 83 rule files, with their remaining-questions and flowchart files. A README there says they are an AI-built first pass, not clinically reviewed. They replace the 2023 set: 53 rule files, an `.xlisp` draft, and PR #1310's two anaphylaxis notes, which stay in git history. The commit includes the three files VHA compiles from the rules (`s_expression/tasks.ts`, `system_priority_evaluations.ts`, `system_diagnosis_rules.ts`), so a fresh checkout runs the 2026 rules without compiling first. |
 | Test: check every page | empties `APC_PAGES_NOT_YET_REVIEWED` in Will's test, with a comment saying why. The list holds 2023 page numbers, which match 37 unrelated 2026 pages, 21 of them among the flagged pages. Left as it is, the test would skip those pages and hide 85 of the 170 flagged expressions. Emptying it is not a claim that any page has been reviewed. `APC_KNOWN_ISSUES` stays empty. |
 | Keep the run folder out of checks and images | `deno.json` excludes `apc-2026-run/` from formatting, linting and type-checking, and `.dockerignore` keeps it out of Docker images. The folder holds no file Deno treats as a test. |
-| Our run folder | `apc-2026-run/`: review pages, checker reports, both builds, logs, the run report, method notes and the tools we used (about 100 MB). `build/` and the `*.log` files (about 1,400 files) are force-added despite VHA's `.gitignore`. |
+| Our run folder | `apc-2026-run/`: review pages, checker reports, both builds, logs, the run report, method notes and the tools we used (about 110 MB). `build/` and the `*.log` files (about 1,400 files) are force-added despite VHA's `.gitignore`. |
 | This document | `docs/apc-2026-conversion.md` |
 
 ### What will fail
 
-VHA's CI runs only on a pull request into `main`, so pushing this branch runs nothing. We ran the pull-request checks locally on `main` and on this branch's first four commits, before the run folder, the `deno.json` change and this document were added. Those runs will be repeated on the finished branch.
+VHA's CI runs only on a pull request into `main`, so pushing this branch runs nothing. We ran the pull-request checks locally on `main` and on the finished branch, with all of the commits above. They match an earlier run on the branch's first four commits, and `deno test` discovered nothing in `apc-2026-run/`.
 
 - `deno check`, `deno fmt --check` and `deno lint` pass on both.
 - VHA's non-web tests: on `main`, 83 top-level tests pass (2 ignored). On this branch, 74 pass and 9 fail:
@@ -161,7 +161,7 @@ VHA's CI runs only on a pull request into `main`, so pushing this branch runs no
 
 These tests cover VHA's code (due_to matching, findings with modifiers, priority evaluations, diagnosis rules, the rules dry run) using 2023 rules as fixtures. Until the fixtures move to 2026 content, or those rules are kept, that code goes untested on this branch.
 
-We didn't run the web tests, the migration tests or the Docker image build. `deno task hygiene` needs bash 4, which our test machine lacks, so we ran its ripgrep patterns over the run folder by hand: they find nothing. The test runs used a local development database, not CI's fresh one, so compare `main` and this branch with each other, not with CI.
+We didn't run the web tests, the migration tests or the Docker image build. `deno task hygiene` needs bash 4 and ripgrep, which our test machine lacks. So we ran its three repo-wide patterns by hand over everything in `apc-2026-run/` and `docs/`: they find nothing hygiene doesn't allow (`load-logs/hygiene-rg-final.txt`). (Hygiene doesn't read `deno.json`, so in CI it will scan the run folder's 8 `.ts` files.) The test runs used a local development database, not CI's fresh one, so compare `main` and this branch with each other, not with CI.
 
 ## Our questions for Will
 
@@ -200,7 +200,7 @@ Decisions stay in your browser until you export them. Send the exported file to 
 | Rules, flowchart notes, remaining questions | `s_expression/rules/apc-adult/`. The copy in `apc-2026-run/ruleset/apc-adult-2026/` is the snapshot as built; edit only `s_expression/rules/apc-adult/`. |
 | Both builds and the reconcile records (the remaining-questions files cite `reconcile.json` and builders A and B) | [`apc-2026-run/build/`](../apc-2026-run/build/) |
 | Each page's six checker reports, scorecard and review queue | `apc-2026-run/checks/<page>-<slug>/`, for example [`checks/24-chest-pain/`](../apc-2026-run/checks/24-chest-pain/) |
-| Compile, seed and test logs, and the gate's output | [`apc-2026-run/load-logs/`](../apc-2026-run/load-logs/); this branch's runs are in `merged-branch/` |
+| Compile, seed and test logs, and the gate's output | [`apc-2026-run/load-logs/`](../apc-2026-run/load-logs/); this branch's runs are in `merged-branch-final/` (the finished branch, with the merge's conflict resolution) and `merged-branch/` (its first four commits) |
 | Every method choice | [`apc-2026-run/DECISIONS.md`](../apc-2026-run/DECISIONS.md) |
 | The full report: figures, limits, what Will's test made of it | [`apc-2026-run/RUN-REPORT.md`](../apc-2026-run/RUN-REPORT.md) |
 

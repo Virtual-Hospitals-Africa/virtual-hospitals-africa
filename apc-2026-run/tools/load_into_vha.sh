@@ -85,8 +85,8 @@ EOF
 # 2b. VHA bug, patched only for the duration of this load and reverted on exit: inverseSExpression
 # writes (no X) as (no (finding ... X (snomed_concept "No" ...))), keeping the internal "No" value,
 # and re-reading that fails no_finding's assert ("Attempt to overwrite value_snomed_concept with (no)").
-# VHA's own compiled rules contain no (no X), so the path was never exercised. Our gate runs against the
-# unpatched file, so the patch must not outlive the load.
+# VHA's own compiled rules contain no (no X), so the path was never exercised. The patch must not outlive the load;
+# since 2026-11-05 our gate reads (no X) with or without the fix.
 INV=shared/s_expression_inverse.ts
 trap 'git checkout -- "$INV"; rm -rf "$SHIM"' EXIT
 "$PY" -I - "$INV" <<'EOF'

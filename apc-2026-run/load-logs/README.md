@@ -16,8 +16,10 @@ Copied from the build Mac's `ruleset/.check/` on 2026-11-05. They come from the 
 | `loader-test/` | A test run of the updated loader (`tools/load_into_vha.sh`, 2026-11-05): Deno 2.8.0, type-checking on, nothing excused. `will-test-cases.json` lists the 170 flagged cases; `will-test-dumps/` has each check's full list |
 | `typecheck-pr1310-test.txt` | `deno check` on the edited test file; regenerated 2026-11-05, not saved by the run |
 | `typecheck-main-test-2.7.5.txt`, `typecheck-main-test-2.8.0.txt` | `deno check` on VHA main's own copy of the test (at `211b16110`): TS2488 at line 189 under 2.7.5, clean under 2.8.0 |
+| `merged-branch-final/` | The finished branch, on the mini (2026-11-05): all the commits, including the run folder, the `deno.json`/`.dockerignore` exclusions and the document. Same figures as `merged-branch/`; `deno test` discovered nothing in `apc-2026-run/`. Has `commits.txt`, `conflict-resolution.txt` (the merge's one hand-resolved hunk) and a hand run of hygiene's patterns. Its own README explains the runs |
 | `merged-branch/` | The real branch, built on the mini (2026-11-05): VHA main `6e2cc0e82` + PR #1310 merged (test conflict resolved by hand) + the `(no X)` fix + the 2026 rules. Seed, Will's merged test (8 of 11 pass, the same 170 cases), and VHA's non-web tests on the branch and on main. Its own README explains the runs |
 | `typecheck-pr1310-unedited-2.7.5.txt` | `deno check` under 2.7.5 on PR #1310's test file, unedited: TS2488 at line 249, exit 1 |
+| `hygiene-rg-final.txt` | VHA's hygiene patterns, run with ripgrep over every file that ships in `apc-2026-run/` and the document: nothing hygiene doesn't allow |
 | `run-cost.txt` | Agent runs and cost; regenerated 2026-11-05 from the run's transcripts |
 
 Notes:

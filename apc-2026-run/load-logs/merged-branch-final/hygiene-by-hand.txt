@@ -1,0 +1,7 @@
+# hygiene.sh's repo-wide rules, run by hand with Python's re (ripgrep is not installed on the mini).
+# Same patterns as scripts/code-quality/hygiene.sh; scope: apc-2026-run/ and docs/ only.
+# Caveat: real rg also skips files matching .gitignore (e.g. apc-2026-run/build/, *.log); this scan includes them.
+# Rules limited to test/, components/, islands/, util/, shared/ don't reach these folders.
+
+
+# totals: {'camelCase const (.ts/.tsx)': 0, "node:-scheme import (any file)": 0, 'inline import( (.ts/.tsx)': 0}
