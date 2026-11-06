@@ -183,12 +183,21 @@ describe('s_expression', () => {
     })
     it('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
       const checked_for_but_never_used_as_evidence = await collect(checkedForButNeverUsedAsEvidence())
-      // Deno.writeFileSync(
-      //   './checked_for_but_never_used_as_evidence.json',
-      //   new TextEncoder().encode(humanReadableJson(checked_for_but_never_used_as_evidence)),
-      // )
 
-      assertArrayEmpty(checked_for_but_never_used_as_evidence)
+      if (checked_for_but_never_used_as_evidence.length) {
+        const findings_by_file_path = groupBy(checked_for_but_never_used_as_evidence, (finding) => finding.file_path)
+        const file_path_error_messages = Array.from(findings_by_file_path, ([file_path, findings_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(findings_in_file, (finding) => finding.description),
+            ([description, findings_with_description]) => [
+              `\t${description}`,
+              ...findings_with_description.map((finding) => `\t\t${finding.never_used_as_evidence}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(['Findings we checked for that are not used as part of any system_diagnosis_rule or system_priority_evaluation', ...file_path_error_messages].join('\n\n'))
+      }
 
       async function* checkedForButNeverUsedAsEvidence() {
         const task_nodes: { file_path: string; task_node: Lang['task'] }[] = []
@@ -278,7 +287,7 @@ describe('s_expression', () => {
       assertArrayEmpty(not_found)
     })
 
-    it.only('leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines', async () => {
+    it('leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines', async () => {
       const system_diagnosis_rules = SYSTEM_DIAGNOSIS_RULES_LISP.map((s_expression) => parseWithSchema(s_expression, system_diagnosis_rule))
 
       const all_probable_diagnoses = compactMap(system_diagnosis_rules, (system_diagnosis_rule) => {
@@ -289,6 +298,7 @@ describe('s_expression', () => {
       const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(
         systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals(),
       )
+
       if (rules_without_corresponding_check_for_system_diagnosis_rule.length) {
         const rules_by_file_path = groupBy(rules_without_corresponding_check_for_system_diagnosis_rule, (rule) => rule.file_path)
         const file_path_error_messages = Array.from(rules_by_file_path, ([file_path, rules_in_file]) => {
@@ -301,9 +311,8 @@ describe('s_expression', () => {
           )
           return [file_path, ...description_error_messages.flat()].join('\n')
         })
-        throw new Error(file_path_error_messages.join('\n\n'))
+        throw new Error(['Findings needed as evidence that we did not check_for', ...file_path_error_messages].join('\n\n'))
       }
-      assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
 
       async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals() {
         for await (const { file_path, system_priority_evaluations, tasks } of correspondingAPCRules()) {
@@ -365,7 +374,21 @@ describe('s_expression', () => {
 
     it('leverages findings we check for in TASKS_LISP based on the apc adult guidelines', async () => {
       const rules_without_corresponding_check_for = await collect(probableSystemDiagnosisRulesWithNoCheckFor())
-      assertArrayEmpty(rules_without_corresponding_check_for)
+
+      if (rules_without_corresponding_check_for.length) {
+        const rules_by_file_path = groupBy(rules_without_corresponding_check_for, (rule) => rule.file_path)
+        const file_path_error_messages = Array.from(rules_by_file_path, ([file_path, rules_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(rules_in_file, (rule) => rule.description),
+            ([description, rules_with_description]) => [
+              `\t${description}`,
+              ...rules_with_description.map((rule) => `\t\t${rule.didnt_check_for}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(['Findings needed as evidence that we did not check_for', ...file_path_error_messages].join('\n\n'))
+      }
 
       async function* probableSystemDiagnosisRulesWithNoCheckFor() {
         for await (const { file_path, system_diagnosis_rules, tasks } of correspondingAPCRules()) {
