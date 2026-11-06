@@ -37,7 +37,7 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'finding': {
       if (node.existence === 'No') {
-        return `(no ${inverseSExpression({ ...node, existence: 'Yes' })})`
+        return `(no ${inverseSExpression({ ...node, existence: 'Yes', value_snomed_concept: null })})`
       }
       if (node.specific_snomed_concept && node.specific_snomed_concept.name === ALLERGIC_CONDITION.name) {
         if (node.attributes.length) {
