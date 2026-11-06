@@ -151,6 +151,6 @@
     "@types/html": "npm:@types/html@latest",
     "rollup": "npm:rollup@4.53.0"
   },
-  "exclude": ["**/_fresh/*"],
+  "exclude": ["**/_fresh/*", "apc-2026-run/"],
   "nodeModulesDir": "manual"
 }
