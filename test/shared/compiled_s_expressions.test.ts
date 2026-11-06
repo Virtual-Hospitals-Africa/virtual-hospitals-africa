@@ -18,7 +18,7 @@ import { parseFindingSiteFindingsLispFile, parseLispFile, walkDirectory } from '
 import { FINDING_SITE_FINDINGS_LISP } from '../../s_expression/finding_site_findings.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { allEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
+import { allEvidenceToLookFor, allPositiveEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
 import { isCheckFor } from '../../db/models/additional_tasks.ts'
@@ -28,6 +28,7 @@ import { conceptDoesNotExist } from '../../db/models/snomed_concept_exists.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { COMMON_SYMPTOMS } from '../../shared/common_symptoms.ts'
 import { Maybe, Yielded } from '../../types.ts'
+import { groupBy } from '../../util/groupBy.ts'
 
 function* nodesAndConceptsTasks() {
   for (const s_expression of TASKS_LISP) {
@@ -81,7 +82,7 @@ function* allFindingsToLookFor(rule: Lang['system_priority_evaluation' | 'system
         yield evidence.measurement
         break
       default: {
-        yield evidence
+        yield { ...evidence, existence: 'Yes' as const }
         break
       }
     }
@@ -277,7 +278,7 @@ describe('s_expression', () => {
       assertArrayEmpty(not_found)
     })
 
-    it('leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines', async () => {
+    it.only('leverages findings we check for in TASKS_LISP or things that we can diagnose as probable based on the apc adult guidelines', async () => {
       const system_diagnosis_rules = SYSTEM_DIAGNOSIS_RULES_LISP.map((s_expression) => parseWithSchema(s_expression, system_diagnosis_rule))
 
       const all_probable_diagnoses = compactMap(system_diagnosis_rules, (system_diagnosis_rule) => {
@@ -288,12 +289,29 @@ describe('s_expression', () => {
       const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(
         systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals(),
       )
+      if (rules_without_corresponding_check_for_system_diagnosis_rule.length) {
+        const x = groupBy(rules_without_corresponding_check_for_system_diagnosis_rule, r => r.file_path)
+        const top_level: string[] = []
+        for (const [y, z] of x.entries()) {
+          const error_messages = [
+            `${y}`,
+          ]
+          for (const [a, b] of groupBy(z, m => m.description)) {
+            error_messages.push(`\t${a}`)
+            for (const c of b) {
+              error_messages.push(`\t\t${c.didnt_check_for}`)
+            }
+          }
+          top_level.push(error_messages.join('\n'))
+        }
+        throw new Error(top_level.join('\n\n'))
+      }
       assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
 
       async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals() {
         for await (const { file_path, system_priority_evaluations, tasks } of correspondingAPCRules()) {
           const all_checking_for = new Set(tasks.flatMap((task_node) => {
-            const due_to = allEvidenceToLookFor(task_node.due_to).map(inverseSExpression)
+            const due_to = allPositiveEvidenceToLookFor(task_node.due_to).map(inverseSExpression)
             // TODO  || isMeasurements(task_node.to_be_done)?
             const checking_for = isCheckFor(task_node.to_be_done) ? task_node.to_be_done.value.map(inverseSExpression) : []
 
