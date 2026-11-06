@@ -105,11 +105,11 @@ function WaitingRoomEmptyState({ can_register_patients }: { can_register_patient
   )
 }
 
-function isEmptyValue(value: unknown): boolean {
+function isEmptyCellValue(value: unknown): boolean {
   return value == null || value === false || (Array.isArray(value) && value.length === 0)
 }
 
-function cellValue(
+function getCellValue(
   column: TableColumn<RenderedWaitingRoom>,
   row: RenderedWaitingRoom,
   index: number,
@@ -122,7 +122,7 @@ function cellValue(
   return row[data as keyof RenderedWaitingRoom]
 }
 
-function renderCellValue(column: TableColumn<RenderedWaitingRoom>, value: unknown): ComponentChildren {
+function renderCellContents(column: TableColumn<RenderedWaitingRoom>, value: unknown): ComponentChildren {
   if (typeof value === 'string') return value
   if (column.type === 'date') {
     return <LocalTime timestamp={value as Date} expected_time_range='any' />
@@ -146,14 +146,13 @@ function WaitingRoomCard(
     <Card orientation='vertical'>
       <div className='flex flex-col gap-2'>
         {columns.filter((column) => column.type !== 'actions').map((column) => {
-          const raw = cellValue(column, row, index, rows)
-          const value = isEmptyValue(raw) ? column.fallback : raw
-          console.log('value', value, 'raw', raw, 'column', column.label)
-          if (isEmptyValue(value)) return null
+          const raw = getCellValue(column, row, index, rows)
+          const value = isEmptyCellValue(raw) ? column.fallback : raw
+          if (isEmptyCellValue(value)) return null
           return (
             <div key={column.label} className='flex flex-col'>
               <span className='text-xs text-gray-500'>{column.label}</span>
-              <div className='text-sm text-gray-900'>{renderCellValue(column, value)}</div>
+              <div className='text-sm text-gray-900'>{renderCellContents(column, value)}</div>
             </div>
           )
         })}
