@@ -2,7 +2,7 @@ import { JSX } from 'preact/compat/jsx-dev-runtime'
 import { ComponentChild, ComponentChildren, TargetedSubmitEvent } from 'preact'
 import { ButtonsContainer } from '../islands/form/buttons.tsx'
 import capitalize from '../util/capitalize.ts'
-import PatientDrawerV4 from './drawer-v4/DrawerV4.tsx'
+
 import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
@@ -11,6 +11,7 @@ import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, Rendere
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
 import { StepsSidebar } from './library/sidebar/Steps.tsx'
+import { PatientDrawerV4 } from '../islands/Drawer.tsx'
 
 export function OpenEncounterWorkflowLayout({
   id,
