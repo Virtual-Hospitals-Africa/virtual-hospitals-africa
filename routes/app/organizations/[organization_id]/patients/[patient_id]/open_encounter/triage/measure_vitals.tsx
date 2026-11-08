@@ -88,7 +88,7 @@ export const handler = postHandler(
     } = ctx.state
 
     assert(patient_age_determination, `Age unknown`)
-    const completed_procedure = completedProcedure(ctx)
+    const completed_procedure = await completedProcedure(ctx)
 
     // Prepare measurements for bulk insert
     const measurements_to_insert = compact(

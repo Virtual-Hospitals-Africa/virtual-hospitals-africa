@@ -3238,7 +3238,7 @@ export type WorkflowPostState = {
   workflow_step_snomed_concept: SnomedConcept | null
   workflow_status: WorkflowStatus
   previously_completed_step: boolean
-  previously_completed_procedures: PreviouslyCompletedProcedures
+  previously_completed_procedures_promise: Promise<Result<PreviouslyCompletedProcedures>>
   encounter_employee_presence: EncounterEmployeePresence
   patient_encounter_employee_id: string
 }

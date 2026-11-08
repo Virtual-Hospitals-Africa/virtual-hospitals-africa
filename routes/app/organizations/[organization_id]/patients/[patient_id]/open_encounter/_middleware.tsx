@@ -65,6 +65,8 @@ import { patient_evaluation_scores } from '../../../../../../../db/models/patien
 import { employees_presence } from '../../../../../../../db/models/employees_presence.ts'
 import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServer.ts'
 import { nearest_organizations } from '../../../../../../../db/models/nearest_organizations.ts'
+import { combineMutatively } from '../../../../../../../util/combine.ts'
+import { asResultAsync } from '../../../../../../../util/asResult.ts'
 
 export function completeLastStep(
   { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowPostContext,
@@ -189,7 +191,7 @@ export function getWorkflowStatus(
   return workflow_status
 }
 
-export const workflowHandler = timeMiddlewareCallNext(async function workflowHandlerInner(
+export const workflowHandler = timeMiddlewareCallNext(function workflowHandlerInner(
   ctx: OpenEncounterContext,
 ) {
   const { trx, encounter, encounter_employee_presence } = ctx.state
@@ -212,13 +214,15 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     step,
   )
 
-  const previously_completed_procedures = await patient_procedures.previouslyCompleted(
-    trx,
-    {
-      patient_encounter_id,
-      workflow_snomed_concept,
-      workflow_step_snomed_concept,
-    },
+  const previously_completed_procedures_promise = asResultAsync(() =>
+    patient_procedures.previouslyCompleted(
+      trx,
+      {
+        patient_encounter_id,
+        workflow_snomed_concept,
+        workflow_step_snomed_concept,
+      },
+    )
   )
 
   const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
@@ -230,7 +234,7 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     step,
     workflow_status,
     previously_completed_step,
-    previously_completed_procedures,
+    previously_completed_procedures_promise,
     encounter_employee_presence,
     patient_encounter_employee_id,
     workflow_step_snomed_concept,
@@ -487,9 +491,8 @@ export function OpenEncounterWorkflowPage<
     ctx: OpenEncounterWorkflowPostContext,
   ) {
     const additional_fetches = await fetchWorkflowGetState(ctx)
-    Object.assign(ctx.state, additional_fetches)
-    const get_ctx = ctx as unknown as OpenEncounterWorkflowGetContext
-    const rendered = await render(get_ctx as unknown as LoggedInHealthWorkerContext<State>)
+    combineMutatively(ctx.state, additional_fetches) satisfies OpenEncounterWorkflowGetState
+    const rendered = await render(ctx as unknown as LoggedInHealthWorkerContext<State>)
 
     if (rendered instanceof Response) {
       return rendered
@@ -509,7 +512,7 @@ export function OpenEncounterWorkflowPage<
 
     return (
       <OpenEncounterWorkflowLayoutCtx
-        ctx={get_ctx}
+        ctx={ctx as unknown as OpenEncounterWorkflowGetContext}
         next_step_text={next_step_text}
         buttons={buttons}
       >
@@ -569,14 +572,22 @@ export function nextRouteAfterCompletingWorkflow(
   return success(success_message, next_route)
 }
 
-export function completedProcedure(
-  ctx: OpenEncounterWorkflowPostContext,
+// Takes just the state it reads, not a context, because Fresh's Context is invariant in its state
+// (see the note above `Render`), so e.g. a TriageContext is not an OpenEncounterWorkflowPostContext.
+export async function completedProcedure(
+  ctx: {
+    state: Pick<WorkflowPostState, 'workflow_step_snomed_concept' | 'previously_completed_procedures_promise'>
+  },
 ) {
-  const { workflow_step_snomed_concept, previously_completed_procedures } = ctx.state
+  const { workflow_step_snomed_concept, previously_completed_procedures_promise } = ctx.state
+  const previously_completed_procedures = await previously_completed_procedures_promise
+  if (!previously_completed_procedures.success) {
+    throw previously_completed_procedures.error
+  }
 
   const previously_completed_procedure_record_id = workflow_step_snomed_concept
-    ? previously_completed_procedures.workflow_step_record_id
-    : previously_completed_procedures.workflow_record_id
+    ? previously_completed_procedures.value.workflow_step_record_id
+    : previously_completed_procedures.value.workflow_record_id
 
   if (previously_completed_procedure_record_id) {
     return {
@@ -586,11 +597,11 @@ export function completedProcedure(
   return null
 }
 
-export function createProcedureIfNotAlreadyCompleted(
+export async function createProcedureIfNotAlreadyCompleted(
   ctx: OpenEncounterWorkflowPostContext,
 ) {
-  const completed_procedure = completedProcedure(ctx)
-  if (completed_procedure) return Promise.resolve(completed_procedure)
+  const completed_procedure = await completedProcedure(ctx)
+  if (completed_procedure) return completed_procedure
 
   const procedure_snomed_concept = ctx.state.workflow_step_snomed_concept ||
     ctx.state.workflow_snomed_concept

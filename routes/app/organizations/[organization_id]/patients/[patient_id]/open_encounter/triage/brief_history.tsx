@@ -134,7 +134,7 @@ export const handler = postHandler(
       patient_age_determination,
     } = ctx.state
 
-    const completed_procedure = completedProcedure(ctx)
+    const completed_procedure = await completedProcedure(ctx)
     const most_recent_findings = await mostRecentRecords(ctx)
 
     const findings_to_insert: InsertableFindingBase[] = []

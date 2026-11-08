@@ -43,7 +43,7 @@ export const handler = postHandler(
       workflow_step_snomed_concept,
     } = ctx.state
 
-    const completed_procedure = completedProcedure(ctx)
+    const completed_procedure = await completedProcedure(ctx)
 
     const measurements_to_insert = compact(
       entries(form_values.measurements).map(([vital, measurement]) => {

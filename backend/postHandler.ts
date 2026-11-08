@@ -19,7 +19,6 @@ export function postHandler<
     form_values: z.infer<Schema>,
   ) => Response | Promise<Response>,
 ) {
-  // assert(schema.description, 'All schemas must include a description')
   return {
     async POST(ctx: Ctx) {
       const record = await requestAsRecord(ctx.req, ctx.params)
