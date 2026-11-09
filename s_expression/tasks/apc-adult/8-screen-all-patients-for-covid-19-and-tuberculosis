@@ -1,0 +1,51 @@
+;;Page 8 – Screen all patients for Covid 19 and Tuberculosis
+"Screen for Covid 19 symptoms"
+	(task
+		(clinical_finding (snomed_concept “Infection screening” (procedure) "Coronavirus infection” (disorder))
+		(adult
+		(check_for
+			(clinical_finding (snomed_concept “Dyspnea” (finding))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding))
+			(clinical_finding (snomed_concept “Cough” (finding))
+			(clinical_finding (snomed_concept “Sore throat” (finding))
+			(clinical_finding (snomed_concept “Headache” (finding))
+			(clinical_finding (snomed_concept “Nasal congestion” (finding))
+			(clinical_finding (snomed_concept “Nasal discharge” (finding))
+			(clinical_finding (snomed_concept “Loss of sense of smell” (finding))
+			(clinical_finding (snomed_concept “Taste sense altered” (finding))
+			(clinical_finding (snomed_concept “Asthma” (disorder))
+			(clinical_finding (snomed_concept “Chronic cough” (finding) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding)) “Chronic” (qualifier value) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Chronic obstructive pulmonary disease” (disorder))
+			(clinical_finding (snomed_concept “Chronic cough” (finding) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding) “Chronic” (qualifier value) “Worsening” (qualifier value))
+		)
+	)
+)
+;;Page 8 – Screen all patients for Covid 19 and Tuberculosis
+"Screen for Tuberculosis symptoms"
+	(task
+		(clinical_finding (snomed_concept “Tuberculosis screening” (procedure))
+		(adult
+		(check_for
+			(clinical_finding (snomed_concept “Cough” (finding))
+			(clinical_finding (snomed_concept “Unexplained weight loss” (finding))
+			(>measurement (clinical_finding (snomed_concept “Body weight” (observable entity) “kilogram” (qualifier value) “In” (attribute) “month” (qualifier value) 1))
+			(clinical_finding (snomed_concept “Night sweats” (finding))
+			(clinical_finding (snomed_concept “Hyperhidrosis” (disorder))
+			(clinical_finding (snomed_concept “Fever” (finding))
+		)
+	)
+;;Page 8 – Screen all patients for Covid 19 and Tuberculosis
+"Screen for patient who can benefit from Tuberculosis prevention therapy"
+	(task
+		(clinical_finding (snomed_concept “Indication for” (attribute) “Administration of prophylactic antituberculosis agent” (procedure))
+		(adult
+		(check_for
+			(clinical_finding (snomed_concept “Person exposed to disease” (person))
+			(clinical_finding (snomed_concept “Human immunodeficiency virus detected” (finding))
+			(clinical_finding (snomed_concept “Human immunodeficiency virus complicating pregnancy childbirth and the puerperium” (disorder))
+			(clinical_finding (snomed_concept “Pneumoconiosis caused by silica” (disorder))
+		)
+	)
+)
