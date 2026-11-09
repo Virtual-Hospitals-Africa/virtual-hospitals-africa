@@ -481,7 +481,7 @@ export const additional_tasks = {
 
     The DONE relations are a record of who answered the task and when. Nothing downstream
     relies on them: a check_for task shows as complete once every finding it asks about has
-    a record, and the diagnosis rules learn of the task from the task_description_completed
+    a record, and the diagnosis rules learn of the task from the completed_task_descriptions
     on the FindingsAdded the answering submission dispatches.
   */
   async markTaskDone(

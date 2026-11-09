@@ -151,14 +151,6 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
     >
       <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3'>
         <h2 className='text-lg font-bold text-gray-900'>Follow ups to check for</h2>
-        <button
-          type='button'
-          aria-label='Dismiss follow ups'
-          className='rounded-md p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500'
-          onClick={onDismiss}
-        >
-          <XMarkIcon className='h-5 w-5' />
-        </button>
       </div>
       <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
         {groups.map((group) => (

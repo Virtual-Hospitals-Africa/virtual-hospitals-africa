@@ -1,6 +1,6 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { accumulateFollowUps, FollowUpGroup, indicatedDiagnosisFollowUp } from '../../../islands/WarningSigns/follow_ups.ts'
+import { accumulateFollowUps, FollowUpGroup, indicatedDiagnosisFollowUp, noneOfTheAboveRequest } from '../../../islands/WarningSigns/follow_ups.ts'
 import { ApplicableRuleEffectSystemDiagnosisRule, EnteredFinding, FindingToCheckFor, RulesDryRun } from '../../../types.ts'
 import { DiagnosisCertainty } from '../../../db.d.ts'
 
@@ -126,6 +126,36 @@ describe('islands/WarningSigns/follow_ups.ts', () => {
       assertEquals(follow_up.due_to, {
         s_expression: '(diagnosis (snomed_concept "Anaphylaxis" "disorder") probable)',
         display: 'Anaphylaxis Diagnosis: Probable diagnosis',
+      })
+    })
+  })
+
+  describe('noneOfTheAboveRequest', () => {
+    const check_for_tasks = (name: string, ...task_ids: string[]): FindingToCheckFor => ({ ...check_for(name), task_ids })
+
+    it('is null when there are no follow ups', () => {
+      assertEquals(noneOfTheAboveRequest([], []), null)
+    })
+
+    it('answers every task in the one request, listing a finding two tasks ask about once', () => {
+      const groups: FollowUpGroup[] = [
+        {
+          key: 'insect-bite',
+          due_to: insect_bite,
+          findings_to_check_for: [
+            check_for_tasks('Stridor', 'Check for Anaphylaxis', 'Check for Sepsis'),
+            check_for_tasks('Diplopia', 'Check for Anaphylaxis'),
+          ],
+        },
+        {
+          key: 'nose-bleed',
+          due_to: nose_bleed,
+          findings_to_check_for: [check_for_tasks('Stridor', 'Check for Anaphylaxis', 'Check for Sepsis')],
+        },
+      ]
+      assertEquals(noneOfTheAboveRequest(groups, []), {
+        completed_task_descriptions: ['Check for Anaphylaxis', 'Check for Sepsis'],
+        s_expressions: `(${check_for('Stridor').s_expression} ${check_for('Diplopia').s_expression})`,
       })
     })
   })

@@ -37,7 +37,7 @@ import {
   indicatedDiagnosisFollowUp,
   indicatedDiagnosisNode,
   isUnanswered,
-  noneOfTheAboveRequests,
+  noneOfTheAboveRequest,
 } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
@@ -400,8 +400,8 @@ export default function WarningSignsInnerContent({
     const answered = new Set(follow_ups_needed.value.map((group) => group.key))
 
     try {
-      // One after another so a finding checked for by two tasks is only recorded once
-      for (const request of noneOfTheAboveRequests(follow_ups_needed.value, checked_signs.value)) {
+      const request = noneOfTheAboveRequest(follow_ups_needed.value, checked_signs.value)
+      if (request) {
         const response = await fetch(none_of_the_above_findings_route, {
           method: 'POST',
           headers: { 'content-type': 'application/json', accept: 'application/json' },
