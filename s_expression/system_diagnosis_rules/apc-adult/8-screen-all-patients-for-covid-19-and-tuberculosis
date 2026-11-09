@@ -1,0 +1,34 @@
+;;Page 8 – Screen all patients for Covid 19 and Tuberculosis 
+(system_diagnosis_rule
+	"Coronavirus likely"
+	(probable
+	(clinical_finding (snomed_concept "Coronavirus infection” (disorder))
+	(adult
+		(clinical_finding (snomed_concept “Dyspnea” (finding))
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding))
+		(clinical_finding (snomed_concept “Cough” (finding))
+		(clinical_finding (snomed_concept “Sore throat” (finding))
+		(clinical_finding (snomed_concept “Headache” (finding))
+		(clinical_finding (snomed_concept “Nasal congestion” (finding))
+		(clinical_finding (snomed_concept “Nasal discharge” (finding))
+		(clinical_finding (snomed_concept “Loss of sense of smell” (finding))
+		(clinical_finding (snomed_concept “Taste sense altered” (finding))
+		)
+	)
+)
+;;Page 8 – Screen all patients for Covid 19 and Tuberculosis 
+(system_diagnosis_rule
+	"Tuberculosis likely"
+	(probable
+	(clinical_finding (snomed_concept “Tuberculosis" (disorder))
+	(adult
+		(clinical_finding (snomed_concept “Cough” (finding))
+		(clinical_finding (snomed_concept “Unexplained weight loss” (finding))
+		OR
+		(>measurement (clinical_finding (snomed_concept “Body weight” (observable entity) “kilogram” (qualifier value) “In” (attribute) “month” (qualifier value) 1))
+		(clinical_finding (snomed_concept “Night sweats” (finding))
+		(clinical_finding (snomed_concept “Hyperhidrosis” (disorder))
+		(clinical_finding (snomed_concept “Fever” (finding))
+		)
+	)
+)
