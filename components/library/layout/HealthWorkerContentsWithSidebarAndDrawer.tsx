@@ -9,6 +9,7 @@ export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   sidebar: ComponentChild
   avatar_url?: HeaderProps['avatar_url']
   mobile_account?: HeaderProps['mobile_account']
+  mobile_header_action?: HeaderProps['mobile_header_action']
   footer: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
@@ -21,6 +22,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
     sidebar,
     avatar_url,
     mobile_account,
+    mobile_header_action,
     footer,
     drawer,
     children,
@@ -38,6 +40,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
             variant='home page'
             avatar_url={avatar_url}
             mobile_account={mobile_account}
+            mobile_header_action={mobile_header_action}
           />
           <div className='flex-1 flex flex-col overflow-y-auto'>
             {children}
