@@ -104,6 +104,14 @@ describeParallel('triage/warning_signs', () => {
         // Outside the workflow's form, so that the panels' inputs are never submitted with it
         assertEquals($('form #drawer-side-panels').length, 0)
         assertEquals($('#patient-drawer').length, 1)
+        assertEquals($('#patient-drawer-priority').length, 1)
+        assertEquals($('#patient-drawer-sheet-toggle').length, 1)
+        assertEquals($('#patient-drawer-sheet-toggle').attr('aria-expanded'), 'false')
+        assertEquals($('#patient-drawer-sheet-toggle').attr('aria-controls'), 'patient-drawer')
+        assertEquals($('#patient-drawer #patient-drawer-sheet-toggle').length, 0)
+        const drawer_class = $('#patient-drawer').attr('class') || ''
+        assert(drawer_class.includes('w-60'))
+        assert(drawer_class.includes('xl:w-84'))
       },
     )
 

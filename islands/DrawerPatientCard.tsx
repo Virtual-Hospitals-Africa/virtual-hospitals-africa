@@ -18,7 +18,7 @@ export type PriorityEscalation = {
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker
 }
 
-const PRIORITY_UPDATE_EVENT = 'priority-update-event'
+export const PRIORITY_UPDATE_EVENT = 'priority-update-event'
 
 export function priorityUpdate(
   detail: PriorityEscalation,
@@ -29,7 +29,7 @@ export function priorityUpdate(
 
 // Patient's drawer card component with avatar, name, DOB, and triage
 export function DrawerPatientCard(
-  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital, refer_route, onClick }: {
+  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital, refer_route }: {
     patient: RenderedPatient
     organization_id: string
     priority: RenderedPatientEncounter['priority']
@@ -37,7 +37,6 @@ export function DrawerPatientCard(
     escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
     nearest_hospital: RenderedOrganization | null
     refer_route: string
-    onClick(): void
   },
 ) {
   const open_escalation_modal = useSignal(false)
@@ -83,7 +82,6 @@ export function DrawerPatientCard(
         'sticky top-0 z-10 box-border flex items-start gap-2 w-full px-3 py-2',
         priority_color.bg,
       )}
-      onClick={onClick}
     >
       <Tag
         className='flex flex-col justify-between gap-1 relative min-w-0 flex-1'

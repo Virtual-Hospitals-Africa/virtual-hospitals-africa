@@ -1,5 +1,5 @@
 // import { assert } from 'std/assert/assert.ts'
-import { ComponentChildren } from 'preact'
+import { ComponentChild, ComponentChildren } from 'preact'
 import { LogoWithFullText } from './Logo.tsx'
 import { Maybe } from '../../types.ts'
 import { RenderedNotification } from '../../types.ts'
@@ -17,6 +17,7 @@ export type HeaderProps = {
     description: string
     profile_href: string
   }
+  mobile_header_action?: ComponentChild
   notifications?: RenderedNotification[]
 }
 
@@ -74,7 +75,7 @@ function MobileHomeHeader(
 }
 
 export function Header(
-  { title, variant, avatar_url, mobile_account /*, notifications */ }: HeaderProps,
+  { title, variant, avatar_url, mobile_account, mobile_header_action /*, notifications */ }: HeaderProps,
 ) {
   if (variant === 'just logo') return <HeaderWithoutNav />
   const right = null
@@ -87,13 +88,23 @@ export function Header(
   //   )
   //   : null
 
+  const uses_mobile_home_header = variant === 'home page' && avatar_url !== undefined && !!mobile_account
+  const show_mobile_header_tools = !uses_mobile_home_header && (!!mobile_account || !!mobile_header_action)
   const desktop_header = (
     <HeaderBase>
-      <HeaderLeft title={title} />
+      <div className={show_mobile_header_tools ? 'min-w-0' : undefined}>
+        <HeaderLeft title={title} />
+      </div>
+      {show_mobile_header_tools && (
+        <div className='ml-auto flex shrink-0 items-center gap-2 pr-4 md:hidden'>
+          {mobile_header_action}
+          {mobile_account && <MobileAccountDrawer {...mobile_account} />}
+        </div>
+      )}
       {right}
     </HeaderBase>
   )
-  if (variant !== 'home page' || avatar_url === undefined || !mobile_account) return desktop_header
+  if (!uses_mobile_home_header) return desktop_header
 
   return (
     <>
