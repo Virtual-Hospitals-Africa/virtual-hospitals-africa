@@ -75,7 +75,7 @@ function warningSignsReferer({ triageRoute }: Setup) {
 
 function postNoneOfTheAbove(
   { nurse, openEncounterRoute }: Setup,
-  body: { task_description: string; s_expressions: string },
+  body: { completed_task_descriptions: string[]; s_expressions: string },
   { referer }: { referer: string | null },
 ) {
   const headers: Record<string, string> = { Accept: 'application/json' }
@@ -89,7 +89,7 @@ function postNoneOfTheAbove(
 
 async function postNoneOfTheAboveOk(
   setup: Setup,
-  body: { task_description: string; s_expressions: string },
+  body: { completed_task_descriptions: string[]; s_expressions: string },
   opts: { referer: string },
 ): Promise<{ success: true; records: { id: string; s_expression: string }[] }> {
   const response = await postNoneOfTheAbove(setup, body, opts)
@@ -125,7 +125,7 @@ async function expect400(response_promise: Promise<Response>) {
 type FindingsAddedData = {
   procedure_id?: string
   records: { id: string; existence: string }[]
-  task_description_completed?: string
+  completed_task_descriptions?: string[]
 }
 
 function findingsAddedNamingTheTask(patient_encounter_id: string) {
@@ -138,7 +138,7 @@ function findingsAddedNamingTheTask(patient_encounter_id: string) {
     .then((events) =>
       events
         .map((event) => ({ id: event.id, data: event.data as FindingsAddedData }))
-        .filter((event) => event.data.task_description_completed === CHECK_FOR_ANAPHYLAXIS)
+        .filter((event) => event.data.completed_task_descriptions?.includes(CHECK_FOR_ANAPHYLAXIS))
     )
 }
 
@@ -206,7 +206,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
 
         const { records } = await postNoneOfTheAboveOk(
           setup,
-          { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray(s_expressions) },
+          { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray(s_expressions) },
           { referer: warningSignsReferer(setup) },
         )
 
@@ -238,7 +238,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
 
       const { records } = await postNoneOfTheAboveOk(
         setup,
-        { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray(s_expressions) },
+        { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray(s_expressions) },
         { referer: warningSignsReferer(setup) },
       )
 
@@ -287,7 +287,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
 
       const first = await postNoneOfTheAboveOk(
         setup,
-        { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray(s_expressions) },
+        { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray(s_expressions) },
         { referer },
       )
       assertEquals(first.records.length, s_expressions.length)
@@ -296,7 +296,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       // A second click, plus the insect bite already recorded as Yes on the warning signs page
       const second = await postNoneOfTheAboveOk(
         setup,
-        { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray([...s_expressions, INSECT_BITE]) },
+        { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray([...s_expressions, INSECT_BITE]) },
         { referer },
       )
       assertEquals(second.records, [])
@@ -341,7 +341,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       const s_expressions = uncheckedAnaphylaxisSExpressions(['Peanut', 'Itching'])
       await postNoneOfTheAboveOk(
         setup,
-        { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray(s_expressions) },
+        { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray(s_expressions) },
         { referer: warningSignsReferer(setup) },
       )
       await events.allProcessedForEncounter(db, { patient_encounter_id })
@@ -362,7 +362,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       const s_expressions = uncheckedAnaphylaxisSExpressions(['Peanut', 'Itching'])
       await postNoneOfTheAboveOk(
         setup,
-        { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray(s_expressions) },
+        { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray(s_expressions) },
         { referer: warningSignsReferer(setup) },
       )
       await events.allProcessedForEncounter(db, { patient_encounter_id })
@@ -380,14 +380,14 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
     itParallel('responds 400 when the referer is missing', async () => {
       const setup = await setupWithPossibleAnaphylaxis()
       await expect400(
-        postNoneOfTheAbove(setup, { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray([DIZZINESS]) }, { referer: null }),
+        postNoneOfTheAbove(setup, { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray([DIZZINESS]) }, { referer: null }),
       )
     })
 
     itParallel('responds 400 when an s_expression is not positive', async () => {
       const setup = await setupWithPossibleAnaphylaxis()
       await expect400(
-        postNoneOfTheAbove(setup, { task_description: CHECK_FOR_ANAPHYLAXIS, s_expressions: asLispArray([NO_COUGH]) }, {
+        postNoneOfTheAbove(setup, { completed_task_descriptions: [CHECK_FOR_ANAPHYLAXIS], s_expressions: asLispArray([NO_COUGH]) }, {
           referer: warningSignsReferer(setup),
         }),
       )
@@ -398,7 +398,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       const link_task = TASKS.find((task) => !isCheckFor(task.to_be_done))
       assert(link_task)
       await expect400(
-        postNoneOfTheAbove(setup, { task_description: link_task.description, s_expressions: asLispArray([DIZZINESS]) }, {
+        postNoneOfTheAbove(setup, { completed_task_descriptions: [link_task.description], s_expressions: asLispArray([DIZZINESS]) }, {
           referer: warningSignsReferer(setup),
         }),
       )

@@ -218,7 +218,7 @@ export const system_diagnosis_rules = {
   },
   /*
     Rules a possible diagnosis out once the health worker has answered the check_for task it
-    prompted. The task is named on the FindingsAdded of the submission that answered it, as
+    prompted. The tasks are named on the FindingsAdded of the submission that answered them, as
     when none of the remaining findings apply from the warning signs page. Nothing is ruled
     out while the latest diagnosis of the concept is anything but possible: a probable or
     definite diagnosis, whether inserted by this run's rules or by an earlier submission,
@@ -229,9 +229,22 @@ export const system_diagnosis_rules = {
     input: RuleRunnerInput,
     positive_diagnoses: InsertDiagnosisResult[],
   ): Promise<string> {
-    const { task_description_completed } = input
-    if (!task_description_completed) return 'No task completed'
+    const { completed_task_descriptions } = input
+    if (!completed_task_descriptions?.length) return 'No task completed'
 
+    // One after another, as they share the transaction
+    const messages: string[] = []
+    for (const task_description_completed of completed_task_descriptions) {
+      messages.push(await system_diagnosis_rules.insertImprobableForTask(trx, input, positive_diagnoses, task_description_completed))
+    }
+    return messages.join('\n')
+  },
+  async insertImprobableForTask(
+    trx: TrxOrDb,
+    input: RuleRunnerInput,
+    positive_diagnoses: InsertDiagnosisResult[],
+    task_description_completed: string,
+  ): Promise<string> {
     const task = getTaskById(task_description_completed)
     const { due_to } = task
     if (!(due_to.atom === 'diagnosis' && due_to.certainty_qualifier === 'possible')) {
@@ -301,7 +314,7 @@ export const system_diagnosis_rules = {
       ? rules_result
       : 'No new system diagnoses to insert'
 
-    if (!input.task_description_completed) return positive_message
+    if (!input.completed_task_descriptions?.length) return positive_message
 
     const improbable_message = await system_diagnosis_rules.insertImprobable(trx, input, inserted_diagnoses)
     return `${positive_message}\n${improbable_message}`

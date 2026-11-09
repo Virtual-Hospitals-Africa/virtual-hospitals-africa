@@ -26,7 +26,7 @@ describeParallel('triage/route_patient', () => {
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
-  itParallel.skip(
+  itParallel.only(
     'routes to the referral placed page after referring an anaphylaxis case, creating a notification for another health worker',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Itching" "finding"))'

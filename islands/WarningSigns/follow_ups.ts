@@ -160,28 +160,26 @@ export function isUnanswered(checked_signs: CheckedWarningSign[], finding: Findi
 }
 
 /*
-  One request per task with follow ups still unanswered, listing the positive findings the
-  backend will record as negatives. A finding checked for by two tasks is sent with both.
-  The backend records nothing for a finding that has since gained a record, so posting the
-  requests one after another never records the same finding twice.
+  The one request answering every task with follow ups still unanswered, listing the positive
+  findings the backend will record as negatives. A finding checked for by two tasks is listed
+  once and counts towards both. Null when nothing is left unanswered.
 */
-export function noneOfTheAboveRequests(
+export function noneOfTheAboveRequest(
   groups: FollowUpGroup[],
   checked_signs: CheckedWarningSign[],
-): NoneOfTheAboveFindingsPostBody[] {
-  const by_task = new Map<string, Set<string>>()
+): NoneOfTheAboveFindingsPostBody | null {
+  const completed_task_descriptions = new Set<string>()
+  const s_expressions = new Set<string>()
   for (const group of groups) {
     for (const finding of group.findings_to_check_for) {
       if (!isUnanswered(checked_signs, finding)) continue
-      for (const task_id of finding.task_ids) {
-        const s_expressions = by_task.get(task_id) || new Set<string>()
-        s_expressions.add(finding.s_expression)
-        by_task.set(task_id, s_expressions)
-      }
+      s_expressions.add(finding.s_expression)
+      for (const task_id of finding.task_ids) completed_task_descriptions.add(task_id)
     }
   }
-  return [...by_task.entries()].map(([task_description, s_expressions]) => ({
-    task_description,
+  if (!completed_task_descriptions.size) return null
+  return {
+    completed_task_descriptions: [...completed_task_descriptions],
     s_expressions: `(${[...s_expressions].join(' ')})`,
-  }))
+  }
 }

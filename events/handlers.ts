@@ -128,9 +128,9 @@ export const EVENTS = {
     },
   ),
   /*
-    Records made by one submission. task_description_completed names the task the health worker
+    Records made by one submission. completed_task_descriptions names the tasks the health worker
     said they were done with in making them, as when none of a check_for task's findings apply,
-    so that the diagnosis rules can rule the possible diagnosis behind the task out.
+    so that the diagnosis rules can rule the possible diagnoses behind the tasks out.
   */
   FindingsAdded: defineEvent(
     z.object({
@@ -142,7 +142,7 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      task_description_completed: task_description_validator.optional(),
+      completed_task_descriptions: task_description_validator.array().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {
@@ -182,7 +182,7 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
       patient_encounter_id: z.string().uuid(),
       record_id: z.string().uuid(),
-      task_description_completed: z.never().optional(),
+      completed_task_descriptions: z.never().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, { data: { record_id, ...data } }) {

@@ -3153,9 +3153,9 @@ export type NewRecordsToConsider = {
     id: string
     existence: 'Yes' | 'No' | 'Unknown'
   }[]
-  // The task the health worker said they were done with when these records were made, as when
-  // none of a check_for task's findings apply. EvaluationAdded never carries one.
-  task_description_completed?: string
+  // The tasks the health worker said they were done with when these records were made, as when
+  // none of a check_for task's findings apply. EvaluationAdded never carries any.
+  completed_task_descriptions?: string[]
 }
 
 export type NewRecordsToConsiderWithSatisfyingDueToIds = NewRecordsToConsider

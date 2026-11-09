@@ -24,12 +24,12 @@ import { exists } from '../../util/exists.ts'
   runners need only be told which records are new.
 */
 function asRuleRunnerInput(
-  { patient_id, patient_encounter_id, procedure_id, records, task_description_completed }: {
+  { patient_id, patient_encounter_id, procedure_id, records, completed_task_descriptions }: {
     patient_id: string
     patient_encounter_id: string
     procedure_id?: string
     records: InsertedRecord[]
-    task_description_completed?: string
+    completed_task_descriptions?: string[]
   },
 ): RuleRunnerInput & { procedure_id?: string } {
   return {
@@ -40,7 +40,7 @@ function asRuleRunnerInput(
     patient_age_determination: 'adult',
     procedure_id,
     records,
-    task_description_completed,
+    completed_task_descriptions,
   }
 }
 
@@ -648,7 +648,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           procedure_id: inserted_additional_task_findings.procedure_id,
           records: inserted_additional_task_findings.findings,
-          task_description_completed: 'Check for Anaphylaxis',
+          completed_task_descriptions: ['Check for Anaphylaxis'],
         }),
       )
       assert(
@@ -664,7 +664,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           procedure_id: inserted_additional_task_findings.procedure_id,
           records: [],
-          task_description_completed: 'Check for Anaphylaxis',
+          completed_task_descriptions: ['Check for Anaphylaxis'],
         }),
       )
       assert(repeated_result.endsWith('Anaphylaxis is improbable, so not ruled out by task "Check for Anaphylaxis"'), repeated_result)
