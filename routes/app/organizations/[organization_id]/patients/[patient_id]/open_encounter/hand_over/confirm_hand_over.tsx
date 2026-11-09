@@ -3,7 +3,7 @@ import { success } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { isManage } from '../../../../../../../../shared/tasks.ts'
@@ -21,7 +21,7 @@ const HandOverConfirmHandOverSchema = z.object({})
 
 export const handler = postHandler(
   HandOverConfirmHandOverSchema,
-  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, _form_values) => {
     const { trx, encounter, organization_id, organization_pathname, organization_employment, patient, patient_id, patient_encounter_id } = ctx.state
     await completeLastStep(ctx)
     // TODO actually put something in the db to retrieve here
@@ -71,7 +71,7 @@ export const handler = postHandler(
 )
 
 async function HandOverConfirmHandOverPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const { trx, health_worker_id, encounter, organization_employment, organization_id } = ctx.state
 

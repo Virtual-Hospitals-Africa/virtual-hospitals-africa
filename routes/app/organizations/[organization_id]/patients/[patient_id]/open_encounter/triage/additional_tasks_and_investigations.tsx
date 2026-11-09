@@ -74,7 +74,8 @@ export const handler = postHandler(
     } = ctx.state
 
     assert(patient_age_determination)
-    const completed_procedure = completedProcedure(ctx)
+
+    const completed_procedure = await completedProcedure(ctx)
 
     const { response, inserted } = await promiseProps({
       response: completeAndProceedToNextStep(ctx),

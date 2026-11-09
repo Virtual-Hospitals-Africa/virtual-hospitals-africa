@@ -1,9 +1,9 @@
-import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 
 export const handler = {
   // deno-lint-ignore require-await
-  async POST(ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowPostContext) {
     const completing_step = completeAndProceedToNextStep(ctx)
     return completing_step
   },
@@ -32,7 +32,7 @@ export default OpenEncounterWorkflowPage(
 // import { assert } from 'std/assert/assert.ts'
 
 // function searchByHref<T>(
-//   ctx: OpenEncounterWorkflowContext<T>,
+//   ctx: OpenEncounterWorkflowPostContext<T>,
 //   search_by: string,
 // ) {
 //   return hrefFromCtx(ctx, (url) => {
@@ -40,7 +40,7 @@ export default OpenEncounterWorkflowPage(
 //   })
 // }
 
-// function getView(ctx: OpenEncounterWorkflowContext) {
+// function getView(ctx: OpenEncounterWorkflowPostContext) {
 //   const search_by = ctx.url.searchParams.get('search_by')
 //   const organization_href = searchByHref(ctx, 'organizations')
 //   assertOrRedirect(search_by, organization_href)
@@ -85,7 +85,7 @@ export default OpenEncounterWorkflowPage(
 // })
 
 // export const handler = {
-//   async POST(ctx: OpenEncounterWorkflowContext) {
+//   async POST(ctx: OpenEncounterWorkflowPostContext) {
 //     const req = ctx.req
 //     const { trx, encounter, encounter_employee_presence, patient } = ctx.state
 //     const { completing_step, made_request } = await promiseProps({
@@ -129,7 +129,7 @@ export default OpenEncounterWorkflowPage(
 
 // // TODO support initial search
 // export function RequestReviewPage(
-//   ctx: OpenEncounterWorkflowContext,
+//   ctx: OpenEncounterWorkflowPostContext,
 // ) {
 //   const { patient } = ctx.state
 //   assert(completedRegistration(patient))

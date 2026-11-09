@@ -6,7 +6,7 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
-import { TaskGroup, TriageContext, UpdateShape } from '../../../../../../../../types.ts'
+import { TaskGroup, TriageContext, TriageGetContext, UpdateShape } from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
 import { completeLastStep } from '../_middleware.tsx'
@@ -127,7 +127,7 @@ async function managePatientTaskGroups(
 }
 
 export async function PatientTriageRoutePatientPage(
-  ctx: TriageContext,
+  ctx: TriageGetContext,
 ) {
   const {
     trx,

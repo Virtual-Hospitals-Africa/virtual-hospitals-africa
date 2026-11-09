@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { sex, string_or_number_as_string, varchar255 } from '../../../../../../../../util/validators.ts'
@@ -44,7 +44,7 @@ export const PatientRegistrationPersonalSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationPersonalSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, form_values) => {
     const { response } = await promiseProps({
       upserting_patient: patients.upsert(ctx.state.trx, {
         id: ctx.state.patient.id,
@@ -58,7 +58,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function PatientRegistrationPersonalPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   return (
     <PersonalSection

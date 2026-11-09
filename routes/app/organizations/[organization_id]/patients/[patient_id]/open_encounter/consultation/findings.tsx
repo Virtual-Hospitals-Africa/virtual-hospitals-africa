@@ -2,12 +2,12 @@ import { RecordPanel } from '../../../../../../../../components/library/RecordPa
 import { now } from '../../../../../../../../db/helpers.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { patient_record_providers } from '../../../../../../../../db/models/patient_record_providers.ts'
-import { OpenEncounterWorkflowContext, RenderedFindingRelativeToHealthWorker } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPostContext, RenderedFindingRelativeToHealthWorker } from '../../../../../../../../types.ts'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 
 export const handler = {
   // deno-lint-ignore require-await
-  async POST(ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowPostContext) {
     const completing_step = completeAndProceedToNextStep(ctx)
     return completing_step
   },

@@ -1,5 +1,5 @@
 import { OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 // import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 // import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
@@ -58,7 +58,7 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 
 // export const handler = postHandler(
 //   EmergencyEscalationReasonsSchema,
-//   async (ctx: OpenEncounterWorkflowContext, form_values) => {
+//   async (ctx: OpenEncounterWorkflowPostContext, form_values) => {
 //     const {
 //       trx,
 //       workflow,
@@ -191,7 +191,7 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 // )
 
 // function getAllFindingsReportedPreviouslyOnThisPage(
-//   ctx: OpenEncounterWorkflowContext,
+//   ctx: OpenEncounterWorkflowPostContext,
 // ) {
 //   const { trx, patient_id, patient_encounter_id } = ctx.state
 //   const completed_procedure = completedProcedure(ctx)
@@ -266,7 +266,7 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 // }
 
 // export async function EmergencyEscalationReasonPage(
-//   ctx: OpenEncounterWorkflowContext,
+//   ctx: OpenEncounterWorkflowPostContext,
 // ) {
 //   assertAllPriorStepsCompleted(ctx, {
 //     attempting_to_complete_workflow: false,
@@ -299,7 +299,7 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 // }
 
 // deno-lint-ignore require-await
-export async function EmergencyEscalationReasonPage(_ctx: OpenEncounterWorkflowContext) {
+export async function EmergencyEscalationReasonPage(_ctx: OpenEncounterWorkflowPostContext) {
   return <div>TODO: Emergency Reason</div>
 }
 

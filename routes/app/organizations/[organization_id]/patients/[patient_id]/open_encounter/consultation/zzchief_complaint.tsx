@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { patient_chief_complaints } from '../../../../../../../../db/models/patient_chief_complaints.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -15,7 +15,7 @@ const PatientChiefComplaintSchema = z.object({
 
 export const handler = postHandler(
   PatientChiefComplaintSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_chief_complaints.upsertOne(ctx.state.trx, {
@@ -31,7 +31,7 @@ export const handler = postHandler(
 )
 
 export async function ChiefComplaintPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const chief_complaint = await patient_chief_complaints.getEncounter(
     ctx.state.trx,

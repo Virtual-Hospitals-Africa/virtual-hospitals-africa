@@ -75,7 +75,7 @@ export const handler = postHandler(
 
     assert(workflow_step_snomed_concept)
 
-    const completed_procedure = completedProcedure(ctx)
+    const completed_procedure = await completedProcedure(ctx)
 
     for (const s_expression of none_of_these.s_expressions) {
       assertOr400(s_expression.existence === 'Yes', 'Send the unchecked signs as positive findings, they are recorded as absent here')
@@ -167,12 +167,12 @@ export const handler = postHandler(
   },
 )
 
-function getAllFindingsReportedPreviouslyOnThisPage(
+async function getAllFindingsReportedPreviouslyOnThisPage(
   ctx: TriageContext,
 ) {
   const { trx, patient_id, patient_encounter_id } = ctx.state
-  const completed_procedure = completedProcedure(ctx)
-  if (!completed_procedure) return Promise.resolve([])
+  const completed_procedure = await completedProcedure(ctx)
+  if (!completed_procedure) return []
   return patient_findings_with_modifiers.findAll(trx, {
     patient_id,
     patient_encounter_id,

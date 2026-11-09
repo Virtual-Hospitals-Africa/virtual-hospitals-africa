@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { patient_emergency_contacts } from '../../../../../../../../db/models/patient_emergency_contacts.ts'
 import { patient_address } from '../../../../../../../../db/models/patient_address.ts'
@@ -23,7 +23,7 @@ export const PatientRegistrationContactsSchema = z.object({
 export const handler = postHandler(
   PatientRegistrationContactsSchema,
   async (
-    ctx: OpenEncounterWorkflowContext,
+    ctx: OpenEncounterWorkflowPostContext,
     { google_maps_place_id, phone_number, emergency_contacts },
   ) => {
     await Promise.all([
@@ -55,7 +55,7 @@ export const handler = postHandler(
 )
 
 export async function PatientRegistrationContactsPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const address = await patient_address.getByPatientId(ctx.state.trx, {
     patient_id: ctx.state.patient.id,

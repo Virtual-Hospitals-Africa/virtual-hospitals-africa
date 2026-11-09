@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 // import { patient_symptoms } from '../../../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../../../islands/symptoms/Section.tsx'
 // import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
@@ -30,7 +30,7 @@ const PatientSymptomSchema = z.object({
 export const handler = postHandler(
   PatientSymptomSchema,
   // deno-lint-ignore require-await
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, form_values) => {
     // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     if ('done' in form_values) {
@@ -56,7 +56,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function SymptomsPage(
-  _ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowPostContext,
 ) {
   // const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
   //   patient_encounter_id: ctx.state.encounter.patient_encounter_id,

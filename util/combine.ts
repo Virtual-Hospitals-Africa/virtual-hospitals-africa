@@ -1,4 +1,5 @@
 import { assertArrayNonEmpty } from './arraySize.ts'
+import keys from './keys.ts'
 
 type OverlappingKeys<X, Y> = Extract<keyof X, keyof Y>
 
@@ -22,6 +23,28 @@ export function combine<
     console
   }
   return clone
+}
+
+export function combineMutatively<
+  X extends object,
+  Y extends object,
+>(x: X, y: OverlappingKeys<X, Y> extends never ? Y : never, opts?: { allow_collision_if_identical?: boolean }): X & Y {
+  const edited = x as X & Y
+  for (const key of keys(y)) {
+    if (key in x) {
+      if (!opts?.allow_collision_if_identical) {
+        throw new Error(`Name collision ${String(key)}`)
+      }
+      // deno-lint-ignore no-explicit-any
+      if ((x as any)[key] !== (y as any)[key]) {
+        throw new Error(`Name collision ${String(key)} with nonidentical values`)
+      }
+    }
+    Object.assign(edited, {
+      [key]: y[key],
+    })
+  }
+  return edited
 }
 
 export function combineAll(objects: Record<string, string>[]): Record<string, string> {

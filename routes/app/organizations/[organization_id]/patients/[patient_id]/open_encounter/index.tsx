@@ -1,9 +1,9 @@
 import { firstIncompleteStepStatus, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
 import redirect from '../../../../../../../util/redirect.ts'
-import { OpenEncounterContext, OpenEncounterWorkflowContext } from '../../../../../../../types.ts'
+import { OpenEncounterContext, OpenEncounterWorkflowPostContext } from '../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../util/asNames.ts'
 
-export function redirectToFirstIncompleteStep<T>(ctx: OpenEncounterContext<T> | OpenEncounterWorkflowContext<T>, opts?: { warning_message: string }) {
+export function redirectToFirstIncompleteStep<T>(ctx: OpenEncounterContext<T> | OpenEncounterWorkflowPostContext<T>, opts?: { warning_message: string }) {
   const workflow = ctx.state.encounter.status.patient_presence.current_workflow
   if (!workflow) {
     return redirect('/app', {

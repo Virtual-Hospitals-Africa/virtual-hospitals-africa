@@ -1,9 +1,9 @@
-import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 
 export const handler = {
   // deno-lint-ignore require-await
-  async POST(ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowPostContext) {
     const completing_step = completeAndProceedToNextStep(ctx)
     return completing_step
   },
@@ -64,7 +64,7 @@ export default OpenEncounterWorkflowPage(
 // }
 
 // export const handler = {
-//   async POST(ctx: OpenEncounterWorkflowContext) {
+//   async POST(ctx: OpenEncounterWorkflowPostContext) {
 //     const req = ctx.req
 //     const data = await parseRequestAsserts(
 //       req,

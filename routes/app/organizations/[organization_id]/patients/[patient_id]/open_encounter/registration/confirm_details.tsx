@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { patient_registration } from '../../../../../../../../db/models/patient_registration.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -9,13 +9,13 @@ export const PatientRegistrationConfirmDetailsSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationConfirmDetailsSchema,
-  (ctx: OpenEncounterWorkflowContext) => {
+  (ctx: OpenEncounterWorkflowPostContext) => {
     return completeAndProceedToNextStep(ctx)
   },
 )
 
 export async function PatientRegistrationConfirmPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const patient_registration_summary = await patient_registration
     .getSummaryById(
