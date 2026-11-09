@@ -1,0 +1,160 @@
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Bruising and blood in urine"
+	(urgent_referral
+		(clinical_finding ( snomed_concept “Contusion” (disorder))
+		(clinical_finding ( snomed_concept “Blood in urine” (finding))
+			(adult
+					(clinical_finding ( snomed_concept “Urgent referral” (procedure))
+					(clinical_finding ( snomed_concept “Closed wound” (disorder))
+					(clinical_finding ( snomed_concept “Injury of internal organ” (disorder))
+					(clinical_finding ( snomed_concept “Contusion” (disorder))
+					(clinical_finding ( snomed_concept “Blood in urine” (finding))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Wound"
+	(urgent_referral
+		(clinical_finding ( snomed_concept “Wound” (disorder))
+		(clinical_finding ( snomed_concept “Urgent referral” (procedure))
+			(adult
+					(clinical_finding ( snomed_concept “Ineffective tissue perfusion” (finding) “Below” (qualifier value))
+					(clinical_finding ( snomed_concept “Cold skin” (finding))
+					(clinical_finding ( snomed_concept “Pale discoloration of entire skin of body” (finding))
+					(clinical_finding ( snomed_concept “Numbness” (finding))
+					(clinical_finding ( snomed_concept “Absent pulse” (finding))
+					(clinical_finding ( snomed_concept “Bleeding” (finding) “Excessive” (qualifier value))
+					(clinical_finding ( snomed_concept “Bleeding” (finding) “Pulsatile” (qualifier value))
+					(clinical_finding ( snomed_concept “Penetrating wound” (disorder) “Head structure” (body structure))
+					(clinical_finding ( snomed_concept “Penetrating wound” (disorder) “Neck structure” (body structure))
+					(clinical_finding ( snomed_concept “Penetrating wound” (disorder) “Thoracic structure” (body structure))
+					(clinical_finding ( snomed_concept “Penetrating wound’ (disorder) “Entire abdomen” (body structure))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Fracture"
+	(urgent_referral
+		(clinical_finding ( snomed_concept “Fracture of bone” (disorder))
+		(clinical_finding ( snomed_concept “Urgent referral” (procedure)) “In” (attribute) “24 hours” (qualifier value))
+			(adult
+					(clinical_finding ( snomed_concept “Ineffective tissue perfusion” (finding) “Below” (qualifier value))
+					(clinical_finding ( snomed_concept “Cold skin” (finding))
+					(clinical_finding ( snomed_concept “Pale discoloration of entire skin of body” (finding))
+					(clinical_finding ( snomed_concept “Numbness” (finding))
+					(clinical_finding ( snomed_concept “Absent pulse” (finding))
+					(clinical_finding ( snomed_concept “Increased pain” (finding))
+					(clinical_finding ( snomed_concept “Increased muscle tone” (finding))
+					(clinical_finding ( snomed_concept “Numbness of limbs” (finding))
+					(clinical_finding ( snomed_concept “Fracture of femur” (disorder) “Suspected” (qualifier value))
+					(clinical_finding ( snomed_concept “Fracture of pelvis” (disorder) “Suspected” (qualifier value))
+					(clinical_finding ( snomed_concept “Fracture of vertebral column” (disorder) “Suspected” (qualifier value))
+					(clinical_finding ( snomed_concept “Muscle weakness” (finding) “Below” (qualifier value))
+					(clinical_finding ( snomed_concept “Fracture of bone” (disorder) 
+“Below” (qualifier value))
+					(clinical_finding ( snomed_concept “Numbness” (finding) “Fracture of bone” (disorder) “Below” (qualifier value))
+					(clinical_finding ( snomed_concept “Open fracture” (disorder))
+					(>clinical_finding ( snomed_concept “Fracture of rib” (disorder) 2))
+					(clinical_finding ( snomed_concept “Deformity” (finding) “Severe” (severity modifier) (qualifier value))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Head injury "
+	(urgent_referral
+		(clinical_finding ( snomed_concept “Injury of head” (disorder))
+		(clinical_finding ( snomed_concept “Urgent referral” (procedure))
+			(adult
+					(clinical_finding ( snomed_concept “Loss of consciousness” (finding))
+					(clinical_finding ( snomed_concept “Seizure” (finding))
+					(clinical_finding ( snomed_concept “Headache” (finding) “Severe” (severity modifier) (qualifier value))
+					(clinical_finding ( snomed_concept “Amnesia” (finding))
+					(clinical_finding ( snomed_concept “Fracture of skull” (disorder) “Suspected” (qualifier value))
+					(clinical_finding ( snomed_concept “Contusion of eye’ (disorder) “Structure of both eyes” (body structure))
+					(clinical_finding ( snomed_concept “Contusion of ear” (disorder) “Both ears” (body structure))
+					(clinical_finding ( snomed_concept “Blood in ear canal” (finding) “Tympanic membrane structure” (body structure) “Behind” (qualifier value))
+					(clinical_finding ( snomed_concept “Traumatic epistaxis” (disorder))
+					(clinical_finding ( snomed_concept “Bleeding from ear” (disorder))
+					(clinical_finding ( snomed_concept “Cerebrospinal fluid otorrhea” 
+(disorder))
+					(clinical_finding ( snomed_concept “Cerebrospinal fluid rhinorrhea” (disorder))
+					(clinical_finding ( snomed_concept “Anisocoria” (disorder))
+					(clinical_finding ( snomed_concept “Finding of pupil reaction to light’ (finding) “Bad” (qualifier value))
+					(clinical_finding ( snomed_concept “Muscle weakness of limb” (finding))
+					(clinical_finding ( snomed_concept “Numbness of limbs” (finding))
+					(>=(clinical_finding ( snomed_concept “ Vomiting” (disorder) 2))
+					(>=(clinical_finding ( snomed_concept “Traumatic or non-traumatic injury” (disorder) “Other” (qualifier value) 1))
+					(clinical_finding ( snomed_concept “Intoxication” (disorder))
+					(clinical_finding ( snomed_concept “Alcohol intoxication” (disorder))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Concussion likely"
+	(probable 
+		(clinical_finding ( snomed_concept “Concussion injury of brain” (disorder))
+			(adult
+						(clinical_finding ( snomed_concept “Headache” (finding) “Mild” (qualifier value))
+						(clinical_finding ( snomed_concept “Dizziness” (finding))
+						(clinical_finding ( snomed_concept “Clouded consciousness” (finding))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Wound non-urgent"
+	(referral
+		(clinical_finding ( snomed_concept “Wound” (disorder) “Non-urgent” (qualifier value)
+		(clinical_finding ( snomed_concept “Patient referral’ (procedure))
+			(adult
+					(clinical_finding ( snomed_concept “Closure of skin wound” (procedure) “Difficult” (qualifier value))
+					(clinical_finding ( snomed_concept “Muscle weakness” (finding) “Below” (qualifier value) “Traumatic or non-traumatic injury” (disorder))
+					(clinical_finding ( snomed_concept “Numbness” (finding) “Below” (qualifier value) “Traumatic or non-traumatic injury” (disorder))
+					(clinical_finding ( snomed_concept “Skin loss exposing muscle or bone” (finding))
+					(clinical_finding ( snomed_concept “Avulsion - injury” (disorder)) 
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+	"Fracture non-urgent"
+	(referral
+		(clinical_finding ( snomed_concept “Fracture of bone” (disorder) “Non-urgent” (qualifier value))
+		(clinical_finding ( snomed_concept “Patient referral (procedure) “In” (attribute) “24 hours” (qualifier value))
+			(adult
+					(clinical_finding ( snomed_concept “Pregnancy” (finding))
+					(clinical_finding ( snomed_concept “Blood coagulation disorder” (disorder) “Known” (qualifier value))
+					(clinical_finding ( snomed_concept “Anticoagulant therapy” (procedure))
+					(clinical_finding ( snomed_concept “Motor vehicle accident with ejection of person from vehicle” (event))
+					(clinical_finding ( snomed_concept “Motor vehicle on road in collision with another motor vehicle” (event))
+					(clinical_finding ( snomed_concept “Motor vehicle on road in collision with pedestrian” (event))
+					(> (clinical_finding ( snomed_concept “Fall from high place” (event) “meter” (qualifier value) 3))
+					(clinical_finding ( snomed_concept “Assault” (event))
+					(clinical_finding ( snomed_concept “Abuse” (event))
+		)
+	)
+)
+;; Page 18 – The injured patient
+(system_diagnosis_rule
+"Head injury non urgent"
+(referral
+(clinical_finding ( snomed_concept “Injury of head” (disorder) “Non-urgent” (qualifier value))
+(clinical_finding ( snomed_concept “Patient referral (procedure) “In” (attribute) “24 hours” (qualifier value))
+(adult
+(clinical_finding ( snomed_concept “Pregnancy” (finding))
+(clinical_finding ( snomed_concept “Blood coagulation disorder” (disorder) “Known” (qualifier value))
+(clinical_finding ( snomed_concept “Anticoagulant therapy” (procedure))
+(clinical_finding ( snomed_concept “Motor vehicle accident with ejection of person from vehicle” (event))
+(clinical_finding ( snomed_concept “Motor vehicle on road in collision with another motor vehicle” (event))
+(clinical_finding ( snomed_concept “Motor vehicle on road in collision with pedestrian” (event))
+(> (clinical_finding ( snomed_concept “Fall from high place” (event) “meter” (qualifier value) 3))
+(clinical_finding ( snomed_concept “Assault” (event))
+(clinical_finding ( snomed_concept “Abuse” (event))
+		)
+	)
+)
