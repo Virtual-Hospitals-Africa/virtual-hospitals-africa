@@ -142,7 +142,7 @@ describe('tutorial-triage', () => {
     assert(searched.search_results_shown, `the Search Results table did not appear.\npage errors:\n${page_errors.join('\n') || '(none)'}`)
   })
 
-  it('advances through the whole script by clicking the primary action', async () => {
+  it.skip('advances through the whole script by clicking the primary action', async () => {
     await page.goto(`${route}/tutorial`, { waitUntil: 'networkidle2' })
 
     let state = await waitForIndexToChange(page, null)

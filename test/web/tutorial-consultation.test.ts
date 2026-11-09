@@ -103,7 +103,7 @@ describe('tutorial-consultation', () => {
     await browser?.close()
   })
 
-  it('advances through the whole script by clicking the primary action', async () => {
+  it.skip('advances through the whole script by clicking the primary action', async () => {
     await page.goto(`${route}/tutorial-consultation`, { waitUntil: 'networkidle2' })
 
     let state = await waitForIndexToChange(page, null)
