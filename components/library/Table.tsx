@@ -79,6 +79,7 @@ type TableProps<T extends Row> = {
   rows: T[]
   className?: string
   tableClassName?: string
+  cardOrientation?: 'vertical' | 'horizontal'
   pagination?: {
     page: number
     has_next_page: boolean
@@ -320,20 +321,33 @@ function* columnsWithSomeNonNullValue<T extends Row>(
   }
 }
 
+function CardFieldLabel({ column }: { column: { label: string } }) {
+  return <span className='text-sm'>{column.label}</span>
+}
+
+function CardFieldHasContent<T extends Row>(
+  column: ColumnWithContents<T>,
+  row_index: number,
+): boolean {
+  const value = column.cell_contents[row_index]
+  return value != null && value !== false && value !== '' && (!Array.isArray(value) || value.length > 0)
+}
+
 function CardWithContents<T extends Row>(
-  { row, row_index, columns }: {
+  { row, row_index, columns, orientation }: {
     row: T
     row_index: number
     columns: ColumnWithContents<T>[]
+    orientation: 'vertical' | 'horizontal'
   },
 ) {
   return (
-    <Card className='border-1'>
-      <div className='grid grid-cols-2'>
-        
-        {columns.map((column) => (
+    <Card className='border-1' orientation={orientation}>
+      <div className='grid grid-cols-[max-content_max-content] justify-center gap-2'>
+
+        {columns.filter((column) => column.type !== 'actions' && CardFieldHasContent(column, row_index)).map((column) => (
           <>
-            <span>{column.label}</span>
+            <CardFieldLabel column={column} />
             <TableCellInnerContents
               row={row}
               row_index={row_index}
@@ -342,13 +356,24 @@ function CardWithContents<T extends Row>(
           </>
         ))}
       </div>
-      
+      {columns.filter((column) => column.type === 'actions').map((column) => (
+        <div
+          key={column.label}
+          className='mt-3 flex justify-center'
+        >
+          <TableCellInnerContents
+            row={row}
+            row_index={row_index}
+            column={column}
+          />
+        </div>
+      ))}
     </Card>
   )
 }
 
 export default function Table<T extends Row>(
-  { id, columns, rows, className, EmptyState, pagination, tableClassName }: TableProps<T>,
+  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical' }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />
@@ -368,6 +393,7 @@ export default function Table<T extends Row>(
             row={row}
             row_index={row_index}
             columns={columns_with_contents}
+            orientation={cardOrientation}
           />
         ))}
       </div>
