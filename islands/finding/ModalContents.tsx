@@ -208,11 +208,6 @@ export function FindingModalContents(
         </DialogTitle>
       </div>
       <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
-        <OnsetRow
-          onset_required={metadata.onset_required}
-          dates={dates.value}
-          onChange={(value) => dates.value = value}
-        />
         <PainLevelSelect
           value={pain_level.value}
           onChange={(value) => pain_level.value = value}
@@ -225,6 +220,11 @@ export function FindingModalContents(
           search_within={search_within_finding_site}
           value={finding_sites.value}
           onChange={(value) => finding_sites.value = value}
+        />
+        <OnsetRow
+          onset_required={metadata.onset_required}
+          dates={dates.value}
+          onChange={(value) => dates.value = value}
         />
       </div>
 
@@ -248,7 +248,7 @@ export function FindingModalContents(
           type='submit'
           left_icon={<PaperAirplaneIcon className='h-4 w-4' />}
         >
-          Save to Record
+          Save
         </Button>
       </div>
     </form>

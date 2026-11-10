@@ -13,6 +13,7 @@ export function CheckboxInput({
   disabled,
   readonly,
   className,
+  label_className,
   // inputClassName,
   value,
 }:
@@ -22,6 +23,7 @@ export function CheckboxInput({
   >
   & {
     label: string
+    label_className?: string
     checked?: boolean
     onInput?: JSX.GenericEventHandler<HTMLInputElement>
     value?: string
@@ -44,7 +46,7 @@ export function CheckboxInput({
         onBlur={onBlur}
         value={value}
       />
-      <span className='text-sm font-medium text-gray-600'>
+      <span className={label_className ?? 'text-sm font-medium text-gray-600'}>
         {label}
         {required && <span className='text-gray-600'>*</span>}
       </span>

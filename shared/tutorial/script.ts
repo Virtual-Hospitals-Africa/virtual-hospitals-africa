@@ -183,7 +183,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'wait_click',
     target: TUTORIAL_TARGETS.FINDING_MODAL_SAVE,
-    text: 'Checking a sign opens its details, where onset, severity and body site can be added. Click "Save to Record".',
+    text: 'Checking a sign opens its details, where onset, severity and body site can be added. Click "Save".',
     position: 'top-left',
   },
   {
