@@ -68,7 +68,7 @@ export type TableColumn<T extends Row> =
       })
   )
 
-type ColumnWithContents<T extends Row> = TableColumn<T> & {
+export type ColumnWithContents<T extends Row> = TableColumn<T> & {
   cell_contents: unknown[]
 }
 
@@ -179,7 +179,7 @@ function TableCellActions<T extends Row>({ column, row }: { column: ColumnWithCo
   )
 }
 
-function TableCellInnerContents<T extends Row>(
+export function TableCellInnerContents<T extends Row>(
   { row, row_index, column }: {
     row: T
     row_index: number
@@ -277,7 +277,7 @@ function TableHeader<T extends Row>(
   )
 }
 
-function* columnsWithSomeNonNullValue<T extends Row>(
+export function* columnsWithSomeNonNullValue<T extends Row>(
   { columns, rows }: Pick<TableProps<T>, 'columns' | 'rows'>,
 ): Generator<ColumnWithContents<T>> {
   for (const column of columns) {
