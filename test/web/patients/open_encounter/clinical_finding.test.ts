@@ -6,6 +6,7 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
 import { asWarningSignsAdult, setupTriageNewPatient } from './triage/_setup.ts'
 import { patient_findings } from '../../../../db/models/patient_findings.ts'
+import { patient_medications_self_reported } from '../../../../db/models/patient_medications_self_reported.ts'
 import { events } from '../../../../db/models/events.ts'
 import { assertMatches } from '../../../../util/assertMatches.ts'
 import asFormData from '../../../../util/asFormData.ts'
@@ -16,6 +17,10 @@ import { z } from 'zod'
 import { route } from '../../../_route.ts'
 
 const COUGH = '(clinical_finding (snomed_concept "Cough" "finding"))'
+const CETIRIZINE_TABLETS = '(medication (snomed_concept "Product containing only cetirizine" "medicinal product") ' +
+  '(form (snomed_concept "Tablet" "basic dose form")) (strength 10 "mg") (dosage 1 "tablet") ' +
+  '(frequency (snomed_concept "Once daily" "qualifier value")) (duration 5 "days") (notes "Taken at night"))'
+const AMOXICILLIN = '(medication (snomed_concept "Product containing only amoxicillin" "medicinal product"))'
 const NO_COUGH = '(clinical_finding (snomed_concept "Cough" "finding") (snomed_concept "No" "qualifier value"))'
 
 type Setup = Awaited<ReturnType<typeof setupTriageNewPatient>>
@@ -147,6 +152,85 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
 
       const still_valid = await patient_findings.findAll(db, { patient_id })
       assertEquals(still_valid.map((finding) => finding.id), [second_finding_id])
+    })
+
+    itParallel('saves the medications the patient is taking due to the finding, which are not themselves returned as findings', async () => {
+      const setup = await setupTriageNewPatient({ patient_demographics: {} })
+      const { patient_id, triageRoute } = setup
+      const finding_id = generateUUID()
+
+      await postClinicalFindingOk(
+        setup,
+        { finding_id, s_expression: COUGH, medication_s_expressions: [CETIRIZINE_TABLETS, AMOXICILLIN] },
+        { referer: `${route}${triageRoute('warning_signs')}` },
+      )
+
+      const findings = await patient_findings.findAll(db, { patient_id })
+      assertEquals(findings.map((finding) => finding.id), [finding_id])
+
+      const medications = await patient_medications_self_reported.findAll(db, { patient_id })
+      assertEquals(new Set(medications.map((medication) => medication.s_expression)), new Set([CETIRIZINE_TABLETS, AMOXICILLIN]))
+      assertEquals(medications.map((medication) => medication.due_to), [
+        { finding_id, name: 'Cough' },
+        { finding_id, name: 'Cough' },
+      ])
+    })
+
+    itParallel('alters the medications of an altered finding, leaving those resubmitted with its replacement', async () => {
+      const setup = await setupTriageNewPatient({ patient_demographics: {} })
+      const { patient_id, triageRoute } = setup
+      const referer = `${route}${triageRoute('warning_signs')}`
+      const first_finding_id = generateUUID()
+      const second_finding_id = generateUUID()
+
+      await postClinicalFindingOk(
+        setup,
+        { finding_id: first_finding_id, s_expression: COUGH, medication_s_expressions: [CETIRIZINE_TABLETS, AMOXICILLIN] },
+        { referer },
+      )
+      await postClinicalFindingOk(
+        setup,
+        { finding_id: second_finding_id, s_expression: COUGH, medication_s_expressions: [AMOXICILLIN], altered_record_id: first_finding_id },
+        { referer },
+      )
+
+      const medications = await patient_medications_self_reported.findAll(db, { patient_id })
+      assertMatches(medications, [{ s_expression: AMOXICILLIN, due_to: { finding_id: second_finding_id } }])
+
+      const every_medication = await patient_medications_self_reported.findAll(db, { patient_id, include_invalid: true })
+      assertEquals(every_medication.length, 3)
+    })
+
+    itParallel('marks the medications of a finding entered in error along with it', async () => {
+      const setup = await setupTriageNewPatient({ patient_demographics: {} })
+      const { nurse, patient_id, triageRoute, openEncounterRoute } = setup
+      const referer = `${route}${triageRoute('warning_signs')}`
+      const finding_id = generateUUID()
+
+      await postClinicalFindingOk(setup, { finding_id, s_expression: COUGH, medication_s_expressions: [CETIRIZINE_TABLETS] }, { referer })
+      assertEquals((await patient_medications_self_reported.findAll(db, { patient_id })).length, 1)
+
+      const response = await nurse.fetch(openEncounterRoute(`clinical_finding/${finding_id}/mark_as_error`), {
+        method: 'POST',
+        headers: { Accept: 'application/json', Referer: referer },
+      })
+      assertEquals(await response.json(), { success: true })
+
+      assertEquals(await patient_findings.findAll(db, { patient_id }), [])
+      assertEquals(await patient_medications_self_reported.findAll(db, { patient_id }), [])
+    })
+
+    itParallel('saves nothing when a medication is not a valid (medication) s-expression', async () => {
+      const setup = await setupTriageNewPatient({ patient_demographics: {} })
+      const { patient_id, triageRoute } = setup
+      const response = await postClinicalFinding(
+        setup,
+        { finding_id: generateUUID(), s_expression: COUGH, medication_s_expressions: ['(medication (snomed_concept "Cough" "finding"))'] },
+        { referer: `${route}${triageRoute('warning_signs')}` },
+      )
+      await response.body?.cancel()
+      assert(response.status >= 400, `Expected an error status, got ${response.status}`)
+      assertEquals(await patient_findings.findAll(db, { patient_id }), [])
     })
 
     itParallel('responds 400 when the referer is missing', async () => {

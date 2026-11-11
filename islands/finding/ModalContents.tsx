@@ -11,6 +11,7 @@ import { attribute, finding_site as finding_site_schema, Lang, SnomedConceptAttr
 import { assert } from 'std/assert/assert.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
+import { Medications } from './Medications.tsx'
 import compact from '../../util/compact.ts'
 import { PAIN_LEVELS, PainLevel } from '../../shared/pain_levels.ts'
 import { exists } from '../../util/exists.ts'
@@ -182,8 +183,12 @@ export function FindingModalContents(
     onChange?.(entered_finding.value)
   })
 
+  // Medications are not part of the finding's s_expression: each is recorded as its own finding,
+  // taken due to this one. They are left out of onChange, which is for what the rules can see.
+  const medication_s_expressions = useSignal<string[]>(entered.medication_s_expressions ?? [])
+
   function handleSave() {
-    onSave(entered_finding.value)
+    onSave({ ...entered_finding.value, medication_s_expressions: medication_s_expressions.value })
   }
 
   return (
@@ -225,6 +230,10 @@ export function FindingModalContents(
           onset_required={metadata.onset_required}
           dates={dates.value}
           onChange={(value) => dates.value = value}
+        />
+        <Medications
+          initial={entered.medication_s_expressions ?? []}
+          onChange={(value) => medication_s_expressions.value = value}
         />
       </div>
 

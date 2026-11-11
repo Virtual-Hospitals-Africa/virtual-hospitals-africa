@@ -170,11 +170,14 @@ export async function setupTriage({
     Responds with the id the record was given.
   */
   async function postClinicalFinding(
-    { s_expression, priority_level }: Pick<WarningSignInput, 's_expression' | 'priority_level'>,
+    { s_expression, priority_level, medication_s_expressions }: Pick<WarningSignInput, 's_expression' | 'priority_level'> & {
+      // The medications taken due to the finding, as entered in the modal
+      medication_s_expressions?: string[]
+    },
     { referer_step = 'warning_signs' }: { referer_step?: keyof TriageSteps } = {},
   ): Promise<string> {
     const finding_id = generateUUID()
-    const body: ClinicalFindingPostBody = { finding_id, s_expression, priority_level }
+    const body: ClinicalFindingPostBody = { finding_id, s_expression, priority_level, medication_s_expressions }
     const response = await nurse.fetch(openEncounterRoute('clinical_finding'), {
       method: 'POST',
       body: asFormData(body),

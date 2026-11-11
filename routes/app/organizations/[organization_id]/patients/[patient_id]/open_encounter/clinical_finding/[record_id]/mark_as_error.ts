@@ -4,7 +4,8 @@ import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { workflowStepFromReferer } from '../../../../../../../../../backend/workflowStepFromReferer.ts'
 import type { OpenEncounterContext } from '../../../../../../../../../types.ts'
 import { patient_procedures } from '../../../../../../../../../db/models/patient_procedures.ts'
-import { markFindingEnteredInError } from '../../../../../../../../../db/models/patient_records_base.ts'
+import { markEnteredInError, markFindingEnteredInError } from '../../../../../../../../../db/models/patient_records_base.ts'
+import { patient_medications_self_reported } from '../../../../../../../../../db/models/patient_medications_self_reported.ts'
 import { events } from '../../../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../../../shared/workflow.ts'
 import { assertOr400 } from '../../../../../../../../../util/assertOr.ts'
@@ -54,6 +55,19 @@ export const handler = postHandler(
       record_id,
     })
     assertOr400(marked, `No valid finding ${record_id} in this patient's open encounter`)
+
+    // A medication is only ever taken due to some finding, so retracting the finding retracts
+    // the medications the patient was reported to be taking on account of it
+    const medication_ids = await patient_medications_self_reported.idsDueTo(trx, { finding_ids: [record_id] })
+    if (medication_ids.length) {
+      await markEnteredInError(trx, {
+        patient_id,
+        patient_encounter_id,
+        employment_id,
+        procedure_id: procedure.id,
+        altered_record_ids: medication_ids,
+      })
+    }
 
     await events.insert(trx, {
       type: 'SingleFindingMarkedAsError',

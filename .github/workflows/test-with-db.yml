@@ -22,7 +22,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned rather than ubuntu-latest: Ubuntu 26.04 ships a pg_restore that begins by setting
+    # transaction_timeout, which the Postgres 15 service below does not know, failing the restore
+    # of the snomed dump. Move to a newer runner together with a newer postgis image.
+    runs-on: ubuntu-24.04
 
     services:
       postgres:

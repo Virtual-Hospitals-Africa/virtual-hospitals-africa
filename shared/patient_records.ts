@@ -23,7 +23,21 @@ import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang, ToBeDone } from './s_expression_schemas.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
-import { ATTRIBUTE, CAUSATIVE_AGENT, EVENT, FINDING_SITE, MEASUREMENT_FINDING } from './snomed_concepts.ts'
+import {
+  ATTRIBUTE,
+  CAUSATIVE_AGENT,
+  DOSAGE,
+  DURATION,
+  EVENT,
+  FINDING_SITE,
+  FREQUENCY,
+  HAS_MANUFACTURED_DOSE_FORM,
+  HAS_STRENGTH,
+  MEASUREMENT_FINDING,
+  ROUTE_OF_ADMINISTRATION,
+  TAKING_MEDICATION,
+} from './snomed_concepts.ts'
+import { medicationDisplay } from './medication_s_expression.ts'
 import { SnomedCategory } from '../db.d.ts'
 import last from '../util/last.ts'
 import words from '../util/words.ts'
@@ -318,6 +332,47 @@ const ROOT_ATTRIBUTE_SNOMED_CONCEPT_NAMES = new Set([
   EVENT.name,
 ])
 
+/*
+  A medication the patient is taking reads as the medication does everywhere else, e.g.
+  "10mg cetirizine tablet, 1 tablet once daily for 5 days", rather than as its medicinal
+  product followed by "Taking medication". See shared/medication_s_expression.ts
+*/
+function medicationRecordDisplay(
+  record: WithProperRecordValue<DisplayableRecord> & {
+    attributes?: Array<WithProperRecordValue<DisplayableRecord>>
+  },
+): string {
+  const attributes = record.attributes || []
+
+  function concept(attribute_name: string) {
+    const value = attributes.find((attribute) => attribute.specific_snomed_concept_name === attribute_name)?.value
+    return value?.type === 'snomed_concept' ? { name: value.name, category: value.category } : null
+  }
+
+  function measurements(attribute_name: string) {
+    return compact(attributes.map((attribute) =>
+      attribute.specific_snomed_concept_name === attribute_name && attribute.value?.type === 'measurement' &&
+      { value: String(attribute.value.value), units: attribute.value.units }
+    ))
+  }
+
+  return medicationDisplay({
+    snomed_concept: {
+      name: record.specific_snomed_concept_name,
+      category: record.specific_snomed_concept_category,
+    },
+    form: concept(HAS_MANUFACTURED_DOSE_FORM.name),
+    route: concept(ROUTE_OF_ADMINISTRATION.name),
+    strengths: measurements(HAS_STRENGTH.name),
+    dosage: measurements(DOSAGE.name).find(() => true) ?? null,
+    frequency: concept(FREQUENCY.name),
+    duration: measurements(DURATION.name).find(() => true) ?? null,
+    started: null,
+    medication_id: null,
+    notes: null,
+  }).full
+}
+
 function buildDisplays(
   record: WithProperRecordValue<DisplayableRecord> & {
     attributes?: Array<WithProperRecordValue<DisplayableRecord> & { displays: RecordDisplays }>
@@ -327,6 +382,11 @@ function buildDisplays(
   const {
     qualifiers = [],
   } = record
+
+  if (record.root_snomed_concept_name === TAKING_MEDICATION.name) {
+    const full = medicationRecordDisplay(record)
+    return { value: null, finding: full, full }
+  }
 
   // assert(qualifiers.length <= 1, 'qualifiers.length <= 1')
   for (const qualifier of qualifiers) {
@@ -416,6 +476,8 @@ export function divideQualifiersAndAddDisplay<
       assertOneOf(attribute.value.type, [
         'event' as const,
         'snomed_concept' as const,
+        // The strength, dosage and duration of a medication
+        'measurement' as const,
       ])
     }
   })
