@@ -36,6 +36,7 @@ import { normalForm, parseArrayWithSchema } from '../../../../../shared/s_expres
 import { insertable_finding_base } from '../../../../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../../../../shared/s_expression_inverse.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import { patient_medications_self_reported } from '../../../../../db/models/patient_medications_self_reported.ts'
 import { patient_findings_with_modifiers } from '../../../../../db/models/patient_findings_with_modifiers.ts'
 import { findingSitesWithPriorRecords } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
 
@@ -229,6 +230,35 @@ describeParallel('triage/warning_signs', () => {
           existing_record: { id: record_id, existence: 'Yes' },
         })
         assertEquals(ear.signs.find((sign) => sign.name === 'Tinnitus')!.existing_record, undefined)
+      },
+    )
+
+    itParallel(
+      'hands the island the medications taken due to a finding, which are not signs to resubmit and survive the page being submitted',
+      async () => {
+        const { patient_id, getStep, postStep, postClinicalFinding } = await setupTriageNewPatient({
+          patient_demographics: {},
+        })
+        const cetirizine = '(medication (snomed_concept "Product containing only cetirizine" "medicinal product") ' +
+          '(dosage 1 "tablet") (frequency (snomed_concept "Once daily" "qualifier value")))'
+
+        const cough_id = await postClinicalFinding({
+          s_expression: '(clinical_finding (snomed_concept "Cough" "finding"))',
+          priority_level: 'Non-urgent',
+          medication_s_expressions: [cetirizine],
+        })
+
+        const $ = await getStep('warning_signs')
+        assert(islandStateStrings($).has(cetirizine), 'The medication should be handed to the island with the finding it is taken due to')
+
+        // Only the cough is a finding of the page: the medication is neither a sign nor a record to resubmit
+        const form = scrapedWarningSignsForm($)
+        assertEquals(form.saved_record_ids, [cough_id])
+        await postStep({ warning_signs: form })
+
+        assertMatches(await patient_medications_self_reported.findAll(db, { patient_id }), [
+          { s_expression: cetirizine, due_to: { finding_id: cough_id, name: 'Cough' } },
+        ])
       },
     )
 

@@ -19,7 +19,8 @@ import {
   WarningSignWithMaybeRecord,
 } from '../../../../../../../../types.ts'
 import { normalForm } from '../../../../../../../../shared/s_expression.ts'
-import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
+import { asNormalFormSExpression, insertableFindingFullDisplay } from '../../../../../../../../shared/patient_records.ts'
+import { patient_medications_self_reported } from '../../../../../../../../db/models/patient_medications_self_reported.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
@@ -338,6 +339,34 @@ function* signsMatchedWithPriorRecords(
   }
 }
 
+/*
+  A sign whose record is a positive finding carries the medications the patient said they are
+  taking due to it, so that reopening the finding shows them. They are part of what was entered
+  (existing_record.augmented), alongside the finding's own s_expression.
+*/
+function withMedicationsTakenDueTo(
+  sign: WarningSignWithMaybeRecord,
+  medication_s_expressions_by_finding_id: Map<string, string[]>,
+): WarningSignWithMaybeRecord {
+  const { existing_record } = sign
+  if (existing_record?.existence !== 'Yes') return sign
+  const medication_s_expressions = medication_s_expressions_by_finding_id.get(existing_record.id)
+  if (!medication_s_expressions) return sign
+
+  const augmented = existing_record.augmented ?? {
+    s_expression: sign.clinical_finding_s_expression,
+    display: insertableFindingFullDisplay(sign.clinical_finding_s_expression),
+    priority: sign.priority,
+  }
+  return {
+    ...sign,
+    existing_record: {
+      ...existing_record,
+      augmented: { ...augmented, medication_s_expressions },
+    },
+  }
+}
+
 function getBriefHistory(
   { state: { trx, patient_id, encounter, health_worker_id } }: TriageContext,
 ) {
@@ -357,20 +386,38 @@ export async function TriageWarningSignsPage(
 ) {
   const {
     prior_findings,
+    medications,
     warning_signs_for_patient,
     brief_history,
   } = await promiseProps({
     prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
+    medications: patient_medications_self_reported.findAll(ctx.state.trx, {
+      patient_id: ctx.state.patient_id,
+      patient_encounter_id: ctx.state.patient_encounter_id,
+    }),
     warning_signs_for_patient: getWarningSignsForPatient(ctx.state.trx, ctx.state.patient_id, ctx.state.patient_age_determination),
     brief_history: getBriefHistory(ctx),
   })
 
-  const warning_signs = signsMatchedWithPriorRecords(
+  const medication_s_expressions_by_finding_id = new Map<string, string[]>()
+  for (const medication of medications) {
+    const { finding_id } = medication.due_to
+    medication_s_expressions_by_finding_id.set(finding_id, [
+      ...(medication_s_expressions_by_finding_id.get(finding_id) ?? []),
+      medication.s_expression,
+    ])
+  }
+  const withMedications = (sign: WarningSignWithMaybeRecord) => withMedicationsTakenDueTo(sign, medication_s_expressions_by_finding_id)
+
+  const warning_signs = Array.from(signsMatchedWithPriorRecords(
     prior_findings,
     warning_signs_for_patient,
     COMMON_SYMPTOMS,
-  )
-  const finding_sites = findingSitesWithPriorRecords(prior_findings, ctx.state.patient_age_determination)
+  )).map(withMedications)
+  const finding_sites = findingSitesWithPriorRecords(prior_findings, ctx.state.patient_age_determination).map((site) => ({
+    ...site,
+    signs: site.signs.map(withMedications),
+  }))
 
   const warning_signs_search_params = new URLSearchParams()
   warning_signs_search_params.set('age_determination', exists(ctx.state.patient_age_determination))
@@ -384,7 +431,7 @@ export async function TriageWarningSignsPage(
       post_route={`${ctx.state.open_encounter_pathname}/clinical_finding`}
       rules_dry_run_route={`${ctx.state.open_encounter_pathname}/rules_dry_run`}
       none_of_the_above_findings_route={`${ctx.state.open_encounter_pathname}/none_of_the_above_findings`}
-      warning_signs={Array.from(warning_signs)}
+      warning_signs={warning_signs}
       finding_sites={finding_sites}
     />
   )

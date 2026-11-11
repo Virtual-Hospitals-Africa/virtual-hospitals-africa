@@ -11,6 +11,7 @@ import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { patient_history } from '../../db/models/patient_history.ts'
+import { patient_medications_self_reported } from '../../db/models/patient_medications_self_reported.ts'
 import { ALLERGIC_CONDITION, PROCEDURE } from '../../shared/snomed_concepts.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 
@@ -178,6 +179,29 @@ describeParallel('db/models/patient_history.ts', () => {
         medication.specific_snomed_concept_id,
         HISTORY_OF_INSULIN_THERAPY,
       )
+    })
+
+    itParallel('pulls in the medications the patient said they are taking due to a finding', async () => {
+      const ctx = await setup()
+      const { findings } = await insertHistoryFinding(ctx, '(clinical_finding (snomed_concept "Cough" "finding"))')
+      const cough = findings.find(() => true)
+      assert(cough)
+      const { id } = await patient_medications_self_reported.insertOne(db, {
+        patient_id: ctx.patient_id,
+        patient_encounter_id: ctx.encounter.patient_encounter_id,
+        finding_id: cough.id,
+        medication_s_expression: '(medication (snomed_concept "Product containing only cetirizine" "medicinal product") ' +
+          '(form (snomed_concept "Tablet" "basic dose form")) (strength 10 "mg") (dosage 1 "tablet") ' +
+          '(frequency (snomed_concept "Once daily" "qualifier value")) (duration 5 "days"))',
+      })
+
+      const history = await getHistory(ctx)
+
+      assertEquals(history.medications.length, 1)
+      const [medication] = history.medications
+      assertEquals(medication.id, id)
+      assertEquals(medication.type, 'finding')
+      assertEquals(medication.displays.full, '10mg cetirizine tablet, 1 tablet once daily for 5 days')
     })
 
     itParallel('pulls in prescriptions as procedures', async () => {

@@ -1182,6 +1182,11 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
+export interface PatientMedications {
+  id: string
+  medication_id: string | null
+}
+
 export interface PatientPrescriptionMedications {
   id: string
   medication_id: string
@@ -1256,6 +1261,7 @@ export interface PatientRecordRelations {
 export interface PatientRecords {
   created_at: Generated<Timestamp>
   id: Generated<string>
+  notes: string | null
   patient_encounter_id: string
   patient_id: string
   root_snomed_concept_id: Int8
@@ -2027,6 +2033,7 @@ export interface DB {
   patient_insurance: PatientInsurance
   patient_kin: PatientKin
   patient_measurements: PatientMeasurements
+  patient_medications: PatientMedications
   patient_prescription_medication_schedules: PatientPrescriptionMedicationSchedules
   patient_prescription_medications: PatientPrescriptionMedications
   patient_prescription_redemption_codes: PatientPrescriptionRedemptionCodes

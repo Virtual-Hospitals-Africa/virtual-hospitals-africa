@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact'
 import type { EnteredFinding, Maybe, Priority } from '../types.ts'
 import { NoFindings } from '../components/drawer-v4/NoFindings.tsx'
 import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
@@ -12,6 +13,8 @@ type Selected = {
   description?: Maybe<string>
   priority?: Maybe<Priority>
   entered?: Maybe<EnteredFinding>
+  // What to show in the chip when it is more than text, e.g. a medication with the icon of its form
+  chip?: ComponentChildren
 }
 
 export function SelectedChip<Item extends Selected>({ item, click_action, onClick }: {
@@ -27,7 +30,7 @@ export function SelectedChip<Item extends Selected>({ item, click_action, onClic
       })}
       onClick={onClick}
     >
-      {item.entered?.display || item.display_name || item.display || item.name}
+      {item.chip || item.entered?.display || item.display_name || item.display || item.name}
       {click_action === 'edit' ? <PencilIcon className='-ml-1.5 -mr-2.5 p-0.5' /> : <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />}
     </button>
   )

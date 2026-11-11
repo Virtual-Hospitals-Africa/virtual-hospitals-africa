@@ -10,10 +10,12 @@ import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
 import { ClinicalFindingSchema } from '../../../../../../../shared/clinical_finding_post.ts'
+import { patient_medications_self_reported } from '../../../../../../../db/models/patient_medications_self_reported.ts'
+import { pMap } from '../../../../../../../util/inParallel.ts'
 
 export const handler = postHandler(
   ClinicalFindingSchema,
-  async (ctx: OpenEncounterContext, { finding_id, s_expression, priority_level, altered_record_id }) => {
+  async (ctx: OpenEncounterContext, { finding_id, s_expression, medication_s_expressions = [], priority_level, altered_record_id }) => {
     const {
       trx,
       patient_id,
@@ -68,13 +70,26 @@ export const handler = postHandler(
     )
     assert(records.length === 1 && records.every(({ id }) => id === finding_id))
 
+    // The medications the patient is taking due to this finding. The finding must exist first:
+    // each medication is related to it and is entered under the same procedure.
+    await pMap(medication_s_expressions, (medication_s_expression) =>
+      patient_medications_self_reported.insertOne(trx, {
+        patient_id,
+        patient_encounter_id,
+        finding_id,
+        medication_s_expression,
+      }))
+
     if (altered_record_id) {
+      // The medications taken due to the altered finding are resubmitted with its replacement,
+      // so those of the altered finding are altered along with it
+      const altered_medication_ids = await patient_medications_self_reported.idsDueTo(trx, { finding_ids: [altered_record_id] })
       await markAltered(trx, {
         patient_id,
         employment_id,
         patient_encounter_id,
         procedure_id,
-        altered_record_ids: [altered_record_id],
+        altered_record_ids: [altered_record_id, ...altered_medication_ids],
       })
     }
 

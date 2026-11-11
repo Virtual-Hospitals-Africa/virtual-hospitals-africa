@@ -62,11 +62,13 @@ export const patient_history = {
       }).then((records) => hydrateFindings(records as SearchResult<typeof patient_findings>[]))
     }
 
-    // Medications the patient reports taking (history findings) plus medications
-    // we've prescribed (rendered as procedures) — see RenderedMedicationHistoryItem.
+    // Medications the patient reports taking (history findings, and the medications they said
+    // they are taking due to some finding) plus medications we've prescribed (rendered as
+    // procedures) — see RenderedMedicationHistoryItem.
     async function medications() {
-      const [reported, prescribed] = await Promise.all([
+      const [reported, self_reported, prescribed] = await Promise.all([
         findingsUnder(HISTORY_OF_DRUG_THERAPY.id),
+        patient_findings.findAll(trx, { patient_id, self_reported_medications: 'only' }).then(hydrateFindings),
         patient_prescriptions.findAll(trx, { patient_id }).then((records) =>
           patient_record_providers.hydrateIntermediateRecords(trx, {
             records,
@@ -75,7 +77,7 @@ export const patient_history = {
           })
         ),
       ])
-      return [...reported, ...prescribed]
+      return [...reported, ...self_reported, ...prescribed]
     }
 
     return promiseProps({

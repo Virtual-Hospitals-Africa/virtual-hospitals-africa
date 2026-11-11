@@ -46,6 +46,12 @@ import { buildPriorityEvaluation, dueToHypotheticalRelation } from '../../shared
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { priorityUpdate } from '../DrawerPatientCard.tsx'
 
+// The medications taken due to a finding are saved with it, so a change to them alone is a change to save
+function sameMedications(a: EnteredFinding, b: EnteredFinding) {
+  const [a_medications, b_medications] = [a, b].map((entered) => entered.medication_s_expressions ?? [])
+  return a_medications.length === b_medications.length && a_medications.every((medication, index) => medication === b_medications[index])
+}
+
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = insertableFindingFullDisplay(s_expression)
   return { s_expression, priority, display }
@@ -268,7 +274,7 @@ export default function WarningSignsInnerContent({
       assert(!edited)
 
       // Reopening a saved sign and saving it as it was makes no new record
-      if (savedRecordId(sign) && sign.entered.s_expression === finding.s_expression) {
+      if (savedRecordId(sign) && sign.entered.s_expression === finding.s_expression && sameMedications(sign.entered, finding)) {
         return edited = { ...sign, entered: finding }
       }
 
@@ -280,6 +286,7 @@ export default function WarningSignsInnerContent({
       const to_post: ClinicalFindingPostBody = {
         finding_id: as_finding_id,
         s_expression: finding.s_expression,
+        medication_s_expressions: finding.medication_s_expressions,
         priority_level: finding.priority,
         altered_record_id,
       }

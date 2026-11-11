@@ -1,5 +1,5 @@
 import { AgeDetermination, Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalBoolean, literalJsonArray, literalString } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalBoolean, literalJsonArray, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { sql } from 'kysely'
@@ -41,6 +41,9 @@ export type PatientFindingsSearch = PatientRecordsSearch & {
   // s_expression?: string | Lang['finding']
   not_measurements?: boolean
   include_negative?: boolean
+  // Self-reported medications (see patient_medications_self_reported.ts) are left out unless
+  // this asks for only them
+  self_reported_medications?: 'only'
 }
 
 export type IntermediateFinding = QueryResult<typeof patient_findings.baseQuery>
@@ -535,6 +538,28 @@ export const patient_findings = base({
         'patient_findings.procedure_id',
         'procedures_aggregated.id',
       )
+      // A self-reported medication is also a patient_findings row, but it is not a (typical)
+      // finding, so it is only returned when asked for specifically
+      .leftJoin(
+        'patient_medications as self_reported_medications',
+        'self_reported_medications.id',
+        'patient_findings.id',
+      )
+      .$if(opts?.self_reported_medications !== 'only', (qb) => qb.where('self_reported_medications.id', 'is', null))
+      .$if(opts?.self_reported_medications === 'only', (qb) =>
+        qb.where('self_reported_medications.id', 'is not', null)
+          // A medication is always being taken due to some other finding
+          .where((eb) =>
+            eb.exists(
+              eb.selectFrom('patient_record_relations as medication_due_to_relations')
+                .innerJoin('patient_records as medication_due_to_relation_records', (join) =>
+                  join.onRef('medication_due_to_relation_records.id', '=', 'medication_due_to_relations.id')
+                    .on('medication_due_to_relation_records.specific_snomed_concept_id', '=', DUE_TO.id))
+                .innerJoin('patient_findings as medication_due_to_findings', 'medication_due_to_findings.id', 'medication_due_to_relations.destination_id')
+                .whereRef('medication_due_to_relations.source_id', '=', 'patient_findings.id')
+                .select(success_true),
+            )
+          ))
       .select((eb) => [
         literalString('finding').$castTo<'finding'>().as('type'),
         'patient_findings.patient_encounter_employee_id',
