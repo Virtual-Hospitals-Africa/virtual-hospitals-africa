@@ -1,4 +1,5 @@
 import { computed, Signal, useSignal } from '@preact/signals'
+import cls from '../../util/cls.ts'
 import { useEffect, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
@@ -177,7 +178,15 @@ export default function WarningSignsInnerContent({
     fetchFollowUps(finding.s_expression)
   }
 
-  const table_signs_to_display = computed(() => signsToDisplay({ search_results: search_results.value, finding_site: finding_site.value, warning_signs }))
+  // The field's query is what decides search mode. search_results can still hold a
+  // response from a query that has since been cleared.
+  const table_signs_to_display = computed(() =>
+    signsToDisplay({
+      search_results: snomed_warning_signs_async_search.search.query.trim() ? search_results.value : null,
+      finding_site: finding_site.value,
+      warning_signs,
+    })
+  )
 
   const table_signs_with_checked = computed(() => table_signs_to_display.value.map((sign) => findChecked(checked_signs.value, sign) || sign))
 
@@ -211,11 +220,6 @@ export default function WarningSignsInnerContent({
       just_checked: true,
       sign: checked_sign,
       metadata: asFindingModalMetadata(sign),
-    }
-
-    if (search_results.value) {
-      search_results.value = null
-      snomed_warning_signs_async_search.setQuery('')
     }
   }
 
@@ -421,19 +425,21 @@ export default function WarningSignsInnerContent({
   }
 
   return (
-    <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs' ref={root}>
-      <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
-        <div className='flex gap-2 items-stretch'>
-          <Search
-            id='warning-signs-search'
-            placeholder='Chief complaint'
-            data-searchroute={snomed_warning_signs_async_search.search_route}
-            options={snomed_warning_signs_async_search.results}
-            onQuery={snomed_warning_signs_async_search.setQuery}
-            loading_options={snomed_warning_signs_async_search.loading}
-            do_not_render_built_in_options
-            is_async
-          />
+    <div className='flex flex-col gap-2 md:gap-1.25 2xl:gap-4 w-full max-md:pt-3' id='warning-signs' ref={root}>
+      <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1 max-md:top-auto max-md:bottom-0 max-md:order-1 max-md:flex-col-reverse max-md:gap-2 max-md:border-t max-md:border-gray-200 max-md:pt-3 max-md:pb-2'>
+        <div className='flex min-w-0 items-stretch gap-2 max-md:h-12'>
+          <div className='min-w-0 flex-1'>
+            <Search
+              id='warning-signs-search'
+              placeholder='Chief complaint'
+              data-searchroute={snomed_warning_signs_async_search.search_route}
+              options={snomed_warning_signs_async_search.results}
+              onQuery={snomed_warning_signs_async_search.setQuery}
+              loading_options={snomed_warning_signs_async_search.loading}
+              do_not_render_built_in_options
+              is_async
+            />
+          </div>
           {finding_sites.length > 0 && (
             <FindingSiteFilter
               finding_sites={finding_sites}
@@ -442,11 +448,18 @@ export default function WarningSignsInnerContent({
             />
           )}
         </div>
-        <SelectedChips
-          id='warning-signs-selected-chips'
-          items={checked_signs.value}
-          onEdit={onOpenDetails}
-        />
+        <div className={cls('flex flex-col gap-1 max-md:gap-1.5', !checked_signs.value.length && 'max-md:hidden')}>
+          {!!checked_signs.value.length && (
+            <p className='md:hidden text-xs font-semibold leading-4 text-indigo-700'>
+              {checked_signs.value.length} selected
+            </p>
+          )}
+          <SelectedChips
+            id='warning-signs-selected-chips'
+            items={checked_signs.value}
+            onEdit={onOpenDetails}
+          />
+        </div>
       </div>
       {grouped.value.size === 0 && (
         <EmptyState
@@ -461,6 +474,7 @@ export default function WarningSignsInnerContent({
           onCheck={onCheck}
           onOpenDetails={onOpenDetails}
           key={config.category}
+          start_expanded={config.category === 'Search Results' || config.category === finding_site.value?.label}
           signs={grouped.value.get(config.category) || []}
         />
       ))}

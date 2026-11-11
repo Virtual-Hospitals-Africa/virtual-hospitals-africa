@@ -1,3 +1,5 @@
+import { useSignal } from '@preact/signals'
+import { ChevronDownIcon, ChevronRightIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import cls from '../../util/cls.ts'
 import { priorityColors } from '../../shared/priorities.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
@@ -8,18 +10,24 @@ export function WarningSignsPriorityTable({
   priority,
   category,
   signs,
+  start_expanded = false,
   onCheck,
   onOpenDetails,
 }: CategoryConfig & {
   signs: ToggleableWarningSign[]
+  // Search results and a chosen finding site open immediately. Other categories start collapsed on mobile.
+  start_expanded?: boolean
   onCheck: OnToggle
   onOpenDetails(sign: CheckedWarningSign): void
 }) {
+  const expanded = useSignal(start_expanded)
   if (!signs.length) return null
   const colors = priorityColors(priority)
   const category_attribute = hyphenate(category)
   // deno-lint-ignore no-explicit-any
   const has_subcategories = signs.some((s) => (s as any).subcategory != null)
+  // max-md:hidden! beats the grid display below md. At md and up the body stays visible either way.
+  const collapsed_on_mobile = !expanded.value && 'max-md:hidden!'
 
   return (
     <div
@@ -27,24 +35,39 @@ export function WarningSignsPriorityTable({
       id={`priority-table-${category_attribute}`}
       data-category={category}
     >
-      <h2 className={cls('py-1 2xl:py-3 flex items-center justify-center text-lg font-semibold uppercase', colors.text, colors.bg)}>
+      <h2
+        className={cls(
+          'relative py-1 2xl:py-3 flex items-center justify-center text-lg font-semibold uppercase max-md:h-12 max-md:px-8 max-md:py-0',
+          colors.text,
+          colors.bg,
+        )}
+      >
         {category}
+        <button
+          type='button'
+          className='md:hidden absolute inset-0 flex items-center justify-end pr-3'
+          aria-expanded={expanded.value}
+          aria-label={`${expanded.value ? 'Collapse' : 'Expand'} ${category}`}
+          onClick={() => expanded.value = !expanded.value}
+        >
+          {expanded.value ? <ChevronDownIcon /> : <ChevronRightIcon />}
+        </button>
       </h2>
       {has_subcategories
         ? (
-          <div className='bg-white divide-y divide-gray-100'>
+          <div className={cls('bg-white divide-y divide-gray-100', collapsed_on_mobile)}>
             {EMERGENCY_SUBCATEGORY_ORDER.map((subcategory) => {
               // deno-lint-ignore no-explicit-any
               const subcategory_signs = signs.filter((s) => (s as any).subcategory === subcategory)
               if (!subcategory_signs.length) return null
               return (
-                <div key={subcategory} data-subcategory={subcategory} className='flex items-start px-1'>
-                  <div className='w-36 2xl:w-48 shrink-0 py-2 2xl:py-3'>
+                <div key={subcategory} data-subcategory={subcategory} className='flex flex-col md:flex-row items-start px-3 md:px-1'>
+                  <div className='w-full md:w-36 2xl:w-48 md:shrink-0 py-2 2xl:py-3 max-md:pb-0'>
                     <span className='text-xs 2xl:text-sm font-semibold uppercase underline text-gray-700'>
                       {subcategory}
                     </span>
                   </div>
-                  <div className='grid grid-cols-4 flex-1'>
+                  <div className='grid grid-cols-1 md:grid-cols-4 flex-1'>
                     {subcategory_signs.map((sign) => (
                       <KeyedWarningSignCheckbox
                         key={uniqueIdentifier(sign)}
@@ -60,7 +83,10 @@ export function WarningSignsPriorityTable({
           </div>
         )
         : (
-          <div id={`priority-grid-${category_attribute}`} className='grid grid-cols-5 bg-white px-1 2xl:gap-4'>
+          <div
+            id={`priority-grid-${category_attribute}`}
+            className={cls('grid grid-cols-1 bg-white px-3 md:grid-cols-5 md:px-1 2xl:gap-4', collapsed_on_mobile)}
+          >
             {signs.map((sign) => (
               <KeyedWarningSignCheckbox
                 key={uniqueIdentifier(sign)}

@@ -23,6 +23,7 @@ export function FindingSiteFilter({ finding_sites, selected, onSelect }: {
   // by a number we guessed. What that width is the labels below decide.
   const button_class = cls(
     'flex items-center gap-2 h-full rounded-md px-3 py-1.5 text-sm font-medium outline -outline-offset-1 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600',
+    'max-md:h-12 max-md:w-12 max-md:shrink-0 max-md:justify-center max-md:px-0 max-md:gap-0',
     selected ? 'bg-indigo-50 text-indigo-700 outline-indigo-300' : 'bg-white text-gray-600 outline-gray-300',
   )
 
@@ -33,19 +34,20 @@ export function FindingSiteFilter({ finding_sites, selected, onSelect }: {
           <PopoverButton title='Filter by body site' className={button_class}>
             <FindingSiteIcon label={shown} className='size-5 shrink-0' aria-hidden='true' />
             <span className='grid'>
-              <span className='col-start-1 row-start-1 text-left'>{shown}</span>
+              <span className='col-start-1 row-start-1 text-left max-md:sr-only'>{shown}</span>
               {
                 /* Every label stacked in the one grid cell, measured but never drawn, widening the
-                  button to the longest of them. font-semibold is the heaviest a row is drawn in. */
+                  button to the longest of them. font-semibold is the heaviest a row is drawn in.
+                  Hidden below md so the closed button stays an icon and the search field can shrink. */
               }
-              <span aria-hidden='true' className='col-start-1 row-start-1 h-0 overflow-hidden font-semibold'>
+              <span aria-hidden='true' className='col-start-1 row-start-1 h-0 overflow-hidden font-semibold max-md:hidden'>
                 {labels.map((label) => <span key={label} className='block'>{label}</span>)}
               </span>
             </span>
           </PopoverButton>
           <PopoverPanel
             anchor='bottom end'
-            className='z-20 mt-1 w-[var(--button-width)] max-h-80 overflow-y-auto rounded-md bg-white p-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none'
+            className='z-20 mt-1 w-[var(--button-width)] max-md:w-64! max-h-80 overflow-y-auto rounded-md bg-white p-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none'
           >
             {/* Clears the filter: the page goes back to the warning signs, sited anywhere on the body */}
             <button
