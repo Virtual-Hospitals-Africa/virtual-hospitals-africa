@@ -322,7 +322,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 }
 
 function CardFieldLabel({ column }: { column: { label: string } }) {
-  return <span className='text-sm'>{column.label}</span>
+  return <span className='text-sm font-medium text-gray-900'>{column.label}</span>
 }
 
 function CardFieldHasContent<T extends Row>(
@@ -343,17 +343,18 @@ function CardWithContents<T extends Row>(
 ) {
   return (
     <Card className='border-1' orientation={orientation}>
-      <div className='grid grid-cols-[max-content_max-content] justify-center gap-2'>
-
+      <div className='divide-y divide-gray-100'>
         {columns.filter((column) => column.type !== 'actions' && CardFieldHasContent(column, row_index)).map((column) => (
-          <>
+          <div key={column.label} className='grid grid-cols-3 gap-4 py-2'>
             <CardFieldLabel column={column} />
-            <TableCellInnerContents
-              row={row}
-              row_index={row_index}
-              column={column}
-            />
-          </>
+            <div className='col-span-2 [&>div]:!text-gray-700'>
+              <TableCellInnerContents
+                row={row}
+                row_index={row_index}
+                column={column}
+              />
+            </div>
+          </div>
         ))}
       </div>
       {columns.filter((column) => column.type === 'actions').map((column) => (
