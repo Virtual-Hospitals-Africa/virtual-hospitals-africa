@@ -13,6 +13,7 @@ import { isDateLike } from '../../util/date.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { assertUnreachable } from '../../util/assertUnreachable.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
+import Card from './Card.tsx'
 
 type Showable =
   | string[]
@@ -78,11 +79,13 @@ type TableProps<T extends Row> = {
   rows: T[]
   className?: string
   tableClassName?: string
+  cardOrientation?: 'vertical' | 'horizontal'
   pagination?: {
     page: number
     has_next_page: boolean
   }
   EmptyState(): JSX.Element
+  appearing_as?: 'table' | 'cards'
 }
 
 function TableCellX<T extends Row>({ column, children }: { column: ColumnWithContents<T>; children: ComponentChildren }) {
@@ -318,55 +321,125 @@ function* columnsWithSomeNonNullValue<T extends Row>(
   }
 }
 
+function CardFieldLabel({ column }: { column: { label: string } }) {
+  return <span className='text-sm font-medium text-gray-900'>{column.label}</span>
+}
+
+function CardFieldHasContent<T extends Row>(
+  column: ColumnWithContents<T>,
+  row_index: number,
+): boolean {
+  const value = column.cell_contents[row_index]
+  return value != null && value !== false && value !== '' && (!Array.isArray(value) || value.length > 0)
+}
+
+function CardWithContents<T extends Row>(
+  { row, row_index, columns, orientation }: {
+    row: T
+    row_index: number
+    columns: ColumnWithContents<T>[]
+    orientation: 'vertical' | 'horizontal'
+  },
+) {
+  return (
+    <Card className='border-1' orientation={orientation}>
+      <div className='divide-y divide-gray-100'>
+        {columns.filter((column) => column.type !== 'actions' && CardFieldHasContent(column, row_index)).map((column) => (
+          <div key={column.label} className='grid grid-cols-3 gap-4 py-2'>
+            <CardFieldLabel column={column} />
+            <div className='col-span-2 [&>div]:!text-gray-700'>
+              <TableCellInnerContents
+                row={row}
+                row_index={row_index}
+                column={column}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      {columns.filter((column) => column.type === 'actions').map((column) => (
+        <div
+          key={column.label}
+          className='mt-3 flex justify-center [&>div]:w-full [&_button]:w-full [&_button]:justify-center [&_button]:bg-indigo-600 [&_button]:text-white [&_button]:font-semibold [&_button]:rounded-lg [&_button]:!px-4 [&_button]:!py-2'
+        >
+          <TableCellInnerContents
+            row={row}
+            row_index={row_index}
+            column={column}
+          />
+        </div>
+      ))}
+    </Card>
+  )
+}
+
 export default function Table<T extends Row>(
-  { id, columns, rows, className, EmptyState, pagination, tableClassName }: TableProps<T>,
+  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical' }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />
   }
 
   const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows })]
+  console.log({columns_with_contents})
 
-  const table = (
-    <div
-      id={id}
-      className={cls(
-        className,
-        'overflow-x-auto w-full',
-      )}
-    >
-      <div className='inline-block min-w-full pt-2 align-middle'>
-        <table
-          className={cls(
-            'min-w-full divide-y divide-gray-300 overflow-hidden shadow outline-1 -outline-offset-1 outline-gray-200 sm:rounded-lg',
-            tableClassName,
-          )}
-        >
-          <TableHeader columns={columns_with_contents} />
-          <tbody className='divide-y divide-gray-200 bg-white'>
-            {rows.map((row, row_index) => (
-              <TableRow
-                key={row.id}
-                row={row}
-                row_index={row_index}
-                columns={columns_with_contents}
-              />
-            ))}
-          </tbody>
-        </table>
+  
+
+  const table_or_cards = (
+    <>
+      <div className='flex flex-col gap-2 md:hidden'>
+        {rows.map((row, row_index) => (
+          <CardWithContents
+            key={row.id}
+            row={row}
+            row_index={row_index}
+            columns={columns_with_contents}
+            orientation={cardOrientation}
+          />
+        ))}
       </div>
-    </div>
+      <div
+        id={id}
+        className={cls(
+          className,
+          'overflow-x-auto w-full hidden md:block',
+        )}
+      >
+        <div className='inline-block min-w-full pt-2 align-middle'>
+          <table
+            className={cls(
+              'min-w-full divide-y divide-gray-300 overflow-hidden shadow outline-1 -outline-offset-1 outline-gray-200 sm:rounded-lg',
+              tableClassName,
+            )}
+          >
+            <TableHeader columns={columns_with_contents} />
+            <tbody className='divide-y divide-gray-200 bg-white'>
+              {rows.map((row, row_index) => (
+                <TableRow
+                  key={row.id}
+                  row={row}
+                  row_index={row_index}
+                  columns={columns_with_contents}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+    
   )
 
-  if (!pagination) return table
+  if (!pagination) return table_or_cards
 
   return (
     <>
-      {table}
+      {table_or_cards}
       <Pagination
         page={pagination.page}
         has_next_page={pagination.has_next_page}
       />
     </>
   )
+  
 }
