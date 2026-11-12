@@ -360,7 +360,7 @@ function CardWithContents<T extends Row>(
       {columns.filter((column) => column.type === 'actions').map((column) => (
         <div
           key={column.label}
-          className='mt-3 flex justify-center'
+          className='mt-3 flex justify-center [&>div]:w-full [&_button]:w-full [&_button]:justify-center [&_button]:bg-indigo-600 [&_button]:text-white [&_button]:font-semibold [&_button]:rounded-lg [&_button]:!px-4 [&_button]:!py-2'
         >
           <TableCellInnerContents
             row={row}
