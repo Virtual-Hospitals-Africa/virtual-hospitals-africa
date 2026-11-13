@@ -19,7 +19,16 @@ import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CheckedWarningSign, findChecked, sameSign, signsToDisplay, tableCategories, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import {
+  CheckedWarningSign,
+  findChecked,
+  sameSign,
+  shouldClearSearchAfterSave,
+  signsToDisplay,
+  tableCategories,
+  ToggleableWarningSign,
+  uniqueIdentifier,
+} from './shared.ts'
 import { FindingSiteFilter } from './FindingSiteFilter.tsx'
 import { savedRecordId, warningSignsFormValues } from './form_values.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
@@ -155,6 +164,20 @@ export default function WarningSignsInnerContent({
   if (expansion_view_key.value !== expansion_view) {
     expansion_view_key.value = expansion_view
     expanded_category.value = undefined
+  }
+
+  // Search keeps the input text itself. This remounts it once a save has blanked the hook query,
+  // so the field and the results leave search mode on the same render.
+  const search_input_key = useSignal(0)
+  const search_clear_query = useSignal<null | string>(null)
+  // A save's response runs after later renders, so it has to read the query as it is now.
+  const search_query_now = useRef(snomed_warning_signs_async_search.search.query)
+  search_query_now.current = snomed_warning_signs_async_search.search.query
+  if (search_clear_query.value !== null && !search_query_now.current.trim()) {
+    search_clear_query.value = null
+    search_input_key.value++
+  } else if (search_clear_query.value !== null && search_query_now.current !== search_clear_query.value) {
+    search_clear_query.value = null
   }
 
   const root = useRef<HTMLDivElement>(null)
@@ -295,6 +318,16 @@ export default function WarningSignsInnerContent({
       })
   }
 
+  /*
+    The input remounts only after the hook query it is clearing has actually gone blank.
+    Until then the results stay, and a newer query typed over it cancels the clear.
+  */
+  function clearSearchAfterSuccessfulSave(query_at_save: string) {
+    if (!shouldClearSearchAfterSave(query_at_save, search_query_now.current)) return
+    search_clear_query.value = query_at_save
+    snomed_warning_signs_async_search.setQuery('')
+  }
+
   function updateSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
     const active_modal_sign = active_modal.value!.sign
     const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal_sign)
@@ -306,6 +339,8 @@ export default function WarningSignsInnerContent({
       return
     }
 
+    const query_at_save = search_query_now.current
+    let saved_without_post = false
     let edited: CheckedWarningSign
     checked_signs.value = checked_signs.value.map((sign) => {
       if (!isActiveSign(sign)) return sign
@@ -313,6 +348,7 @@ export default function WarningSignsInnerContent({
 
       // Reopening a saved sign and saving it as it was makes no new record
       if (savedRecordId(sign) && sign.entered.s_expression === finding.s_expression) {
+        saved_without_post = true
         return edited = { ...sign, entered: finding }
       }
 
@@ -336,6 +372,7 @@ export default function WarningSignsInnerContent({
           if (!response.ok) throw new Error(`clinical_finding responded ${response.status}: ${await response.text()}`)
           const json = await response.json()
           assert(json.success)
+          clearSearchAfterSuccessfulSave(query_at_save)
           checked_signs.value = checked_signs.value.map((sign) => {
             if (!isActiveSign(sign)) return sign
             if (!sign.saving) return sign
@@ -366,6 +403,7 @@ export default function WarningSignsInnerContent({
       }
     })
     assert(edited!)
+    if (saved_without_post) clearSearchAfterSuccessfulSave(query_at_save)
   }
 
   function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
@@ -525,6 +563,7 @@ export default function WarningSignsInnerContent({
         <div className='flex min-w-0 items-stretch gap-2 max-md:h-12'>
           <div className='min-w-0 flex-1 max-md:[&_input]:h-12 max-md:[&_input]:rounded-md max-md:[&_input]:border-0 max-md:[&_input]:px-3 max-md:[&_input]:shadow-[inset_0_0_0_1.5px_#111827] max-md:[&_input]:text-[14px] max-md:[&_input]:leading-[24px] max-md:[&_input]:outline-none! max-md:[&_input]:focus:shadow-[inset_0_0_0_1.5px_#4338ca] max-md:[&_input]:focus:outline-none!'>
             <Search
+              key={search_input_key.value}
               id='warning-signs-search'
               placeholder='Chief complaint'
               data-searchroute={snomed_warning_signs_async_search.search_route}
