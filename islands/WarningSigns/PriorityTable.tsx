@@ -26,9 +26,50 @@ export function WarningSignsPriorityTable({
   const category_attribute = hyphenate(category)
   // deno-lint-ignore no-explicit-any
   const has_subcategories = signs.some((s) => (s as any).subcategory != null)
-  // max-md:hidden! beats the grid display below md. At md and up the body stays visible either way.
-  const collapsed_on_mobile = !expanded && 'max-md:hidden!'
-  const mobile_body_scroll = expanded && 'max-md:min-h-0 max-md:flex-1 max-md:overflow-y-auto max-md:py-1'
+  const body = has_subcategories
+    ? (
+      <div className='bg-white divide-y divide-gray-100 max-md:py-1'>
+        {EMERGENCY_SUBCATEGORY_ORDER.map((subcategory) => {
+          // deno-lint-ignore no-explicit-any
+          const subcategory_signs = signs.filter((s) => (s as any).subcategory === subcategory)
+          if (!subcategory_signs.length) return null
+          return (
+            <div key={subcategory} data-subcategory={subcategory} className='flex flex-col md:flex-row items-start px-3 md:px-1'>
+              <div className='w-full md:w-36 2xl:w-48 md:shrink-0 py-2 2xl:py-3 max-md:pb-0'>
+                <span className='text-xs 2xl:text-sm font-semibold uppercase underline text-gray-700'>
+                  {subcategory}
+                </span>
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-4 flex-1'>
+                {subcategory_signs.map((sign) => (
+                  <KeyedWarningSignCheckbox
+                    key={uniqueIdentifier(sign)}
+                    sign={sign}
+                    onCheck={onCheck}
+                    onOpenDetails={onOpenDetails}
+                  />
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+    : (
+      <div
+        id={`priority-grid-${category_attribute}`}
+        className='grid grid-cols-1 bg-white px-3 max-md:py-1 md:grid-cols-5 md:px-1 2xl:gap-4'
+      >
+        {signs.map((sign) => (
+          <KeyedWarningSignCheckbox
+            key={uniqueIdentifier(sign)}
+            sign={sign}
+            onCheck={onCheck}
+            onOpenDetails={onOpenDetails}
+          />
+        ))}
+      </div>
+    )
 
   return (
     <div
@@ -59,50 +100,20 @@ export function WarningSignsPriorityTable({
           {expanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </button>
       </h2>
-      {has_subcategories
-        ? (
-          <div className={cls('bg-white divide-y divide-gray-100', collapsed_on_mobile, mobile_body_scroll)}>
-            {EMERGENCY_SUBCATEGORY_ORDER.map((subcategory) => {
-              // deno-lint-ignore no-explicit-any
-              const subcategory_signs = signs.filter((s) => (s as any).subcategory === subcategory)
-              if (!subcategory_signs.length) return null
-              return (
-                <div key={subcategory} data-subcategory={subcategory} className='flex flex-col md:flex-row items-start px-3 md:px-1'>
-                  <div className='w-full md:w-36 2xl:w-48 md:shrink-0 py-2 2xl:py-3 max-md:pb-0'>
-                    <span className='text-xs 2xl:text-sm font-semibold uppercase underline text-gray-700'>
-                      {subcategory}
-                    </span>
-                  </div>
-                  <div className='grid grid-cols-1 md:grid-cols-4 flex-1'>
-                    {subcategory_signs.map((sign) => (
-                      <KeyedWarningSignCheckbox
-                        key={uniqueIdentifier(sign)}
-                        sign={sign}
-                        onCheck={onCheck}
-                        onOpenDetails={onOpenDetails}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )
-        : (
-          <div
-            id={`priority-grid-${category_attribute}`}
-            className={cls('grid grid-cols-1 bg-white px-3 md:grid-cols-5 md:px-1 2xl:gap-4', collapsed_on_mobile, mobile_body_scroll)}
-          >
-            {signs.map((sign) => (
-              <KeyedWarningSignCheckbox
-                key={uniqueIdentifier(sign)}
-                sign={sign}
-                onCheck={onCheck}
-                onOpenDetails={onOpenDetails}
-              />
-            ))}
-          </div>
+      <div
+        data-category-body
+        className={cls(
+          'max-md:grid max-md:grid-rows-[0fr] max-md:transition-[grid-template-rows] max-md:duration-300 max-md:ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+          expanded && 'max-md:grid-rows-[1fr] max-md:min-h-0 max-md:flex-1',
+          'md:contents',
         )}
+      >
+        <div className='max-md:min-h-0 max-md:overflow-hidden md:contents'>
+          <div className={cls(expanded && 'max-md:h-full max-md:overflow-y-auto')}>
+            {body}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

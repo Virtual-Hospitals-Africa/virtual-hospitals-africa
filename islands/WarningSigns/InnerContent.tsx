@@ -47,6 +47,36 @@ import { buildPriorityEvaluation, dueToHypotheticalRelation } from '../../shared
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { priorityUpdate } from '../DrawerPatientCard.tsx'
 
+const SLIDE_MS = 300
+const SLIDE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)'
+
+function mobileMotion() {
+  return globalThis.matchMedia('(max-width: 767px)').matches &&
+    !globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function scrollParent(el: HTMLElement): HTMLElement | null {
+  let node = el.parentElement
+  while (node) {
+    const overflow = getComputedStyle(node).overflowY
+    if (overflow === 'auto' || overflow === 'scroll') return node
+    node = node.parentElement
+  }
+  return null
+}
+
+// Slides an element from where it was on screen to its layout position after the accordion changes.
+function slideFrom(el: HTMLElement | null, first: DOMRect | undefined) {
+  if (!el || !first) return
+  el.getAnimations().forEach((animation) => animation.cancel())
+  const dy = first.top - el.getBoundingClientRect().top
+  if (Math.abs(dy) < 1) return
+  el.animate(
+    [{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }],
+    { duration: SLIDE_MS, easing: SLIDE_EASING },
+  )
+}
+
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = insertableFindingFullDisplay(s_expression)
   return { s_expression, priority, display }
@@ -128,6 +158,7 @@ export default function WarningSignsInnerContent({
   }
 
   const root = useRef<HTMLDivElement>(null)
+  const slide_timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /*
     Only follow ups still unanswered hold up the page. Ones being saved, whether a checked
@@ -402,6 +433,41 @@ export default function WarningSignsInnerContent({
     })
   }
 
+  function onToggleExpanded(category: string, is_open: boolean) {
+    const next = is_open ? null : category
+    const current = typeof expanded_category.value === 'string' ? expanded_category.value : null
+    if (slide_timer.current) {
+      clearTimeout(slide_timer.current)
+      slide_timer.current = null
+    }
+    if (mobileMotion() && current && next && current !== next) {
+      slideCategory(current, null)
+      slide_timer.current = globalThis.setTimeout(() => slideCategory(next, next), SLIDE_MS)
+      return
+    }
+    slideCategory(category, next)
+  }
+
+  function slideCategory(category: string, next: string | null) {
+    const root_el = root.current
+    if (!root_el || !mobileMotion()) {
+      expanded_category.value = next
+      return
+    }
+    const card = root_el.querySelector(`[data-category="${category}"]`) as HTMLElement | null
+    const toolbar = root_el.querySelector('#warning-signs-toolbar') as HTMLElement | null
+    const first_card = card?.getBoundingClientRect()
+    const first_toolbar = toolbar?.getBoundingClientRect()
+    expanded_category.value = next
+    requestAnimationFrame(() => {
+      const scroller = card ? scrollParent(card) : null
+      // The content scroller sits under the workflow nav. Resetting it parks the opened category there.
+      if (scroller && next) scroller.scrollTop = 0
+      slideFrom(card, first_card)
+      slideFrom(toolbar, first_toolbar)
+    })
+  }
+
   /*
     The panel closes at once, leaving a spinner in its place. The groups answered stay in
     follow_ups_needed until their negatives are recorded, so a failure reopens the panel,
@@ -509,7 +575,7 @@ export default function WarningSignsInnerContent({
             onOpenDetails={onOpenDetails}
             key={config.category}
             expanded={expanded}
-            onToggleExpanded={() => expanded_category.value = expanded ? null : config.category}
+            onToggleExpanded={() => onToggleExpanded(config.category, expanded)}
             signs={grouped.value.get(config.category) || []}
           />
         )
