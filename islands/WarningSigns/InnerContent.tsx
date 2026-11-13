@@ -117,6 +117,15 @@ export default function WarningSignsInnerContent({
 
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
   const none_of_the_above_saving = useSignal(false)
+  // undefined follows the category that should open on its own (search results, or a chosen finding site).
+  // null keeps every category collapsed. A category name is the one open on mobile.
+  const expanded_category = useSignal<string | null | undefined>(undefined)
+  const expansion_view = `${snomed_warning_signs_async_search.search.query}|${finding_site.value?.label ?? ''}`
+  const expansion_view_key = useSignal(expansion_view)
+  if (expansion_view_key.value !== expansion_view) {
+    expansion_view_key.value = expansion_view
+    expanded_category.value = undefined
+  }
 
   const root = useRef<HTMLDivElement>(null)
 
@@ -425,10 +434,30 @@ export default function WarningSignsInnerContent({
   }
 
   return (
-    <div className='flex flex-col gap-2 md:gap-1.25 2xl:gap-4 w-full max-md:pt-3' id='warning-signs' ref={root}>
-      <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1 max-md:top-auto max-md:bottom-0 max-md:order-1 max-md:flex-col-reverse max-md:gap-2 max-md:border-t max-md:border-gray-200 max-md:pt-3 max-md:pb-2'>
+    <div
+      className={cls(
+        'flex flex-col gap-2 md:gap-1.25 2xl:gap-4 w-full',
+        // Fills the triage content pane so an open category can scroll above the search row.
+        'max-md:min-h-0 max-md:flex-1 max-md:bg-white',
+        'max-md:[&:has([data-expanded=true])>.priority-table:not([data-expanded=true])]:hidden',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:order-1',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:mt-auto',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:flex-col-reverse',
+      )}
+      id='warning-signs'
+      ref={root}
+    >
+      <div
+        id='warning-signs-toolbar'
+        className={cls(
+          'sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1',
+          'max-md:static! max-md:z-auto max-md:shrink-0 max-md:gap-1.5 max-md:bg-transparent max-md:p-0',
+          // Focus on the chief-complaint field, not the finding-site button, pins this row under the list.
+          'max-md:has-[input:focus]:order-1 max-md:has-[input:focus]:mt-auto max-md:has-[input:focus]:flex-col-reverse',
+        )}
+      >
         <div className='flex min-w-0 items-stretch gap-2 max-md:h-12'>
-          <div className='min-w-0 flex-1'>
+          <div className='min-w-0 flex-1 max-md:[&_input]:h-12 max-md:[&_input]:rounded-md max-md:[&_input]:border-0 max-md:[&_input]:px-3 max-md:[&_input]:shadow-[inset_0_0_0_1.5px_#111827] max-md:[&_input]:text-[14px] max-md:[&_input]:leading-[24px] max-md:[&_input]:outline-none! max-md:[&_input]:focus:shadow-[inset_0_0_0_1.5px_#4338ca] max-md:[&_input]:focus:outline-none!'>
             <Search
               id='warning-signs-search'
               placeholder='Chief complaint'
@@ -448,17 +477,19 @@ export default function WarningSignsInnerContent({
             />
           )}
         </div>
-        <div className={cls('flex flex-col gap-1 max-md:gap-1.5', !checked_signs.value.length && 'max-md:hidden')}>
-          {!!checked_signs.value.length && (
-            <p className='md:hidden text-xs font-semibold leading-4 text-indigo-700'>
-              {checked_signs.value.length} selected
+        <div className='flex flex-col gap-1 max-md:gap-1.5'>
+          {!checked_signs.value.length && (
+            <p className='md:hidden text-[12px] font-normal leading-[16px] text-gray-500'>
+              No findings selected
             </p>
           )}
-          <SelectedChips
-            id='warning-signs-selected-chips'
-            items={checked_signs.value}
-            onEdit={onOpenDetails}
-          />
+          <div className={cls(!checked_signs.value.length && 'max-md:hidden')}>
+            <SelectedChips
+              id='warning-signs-selected-chips'
+              items={checked_signs.value}
+              onEdit={onOpenDetails}
+            />
+          </div>
         </div>
       </div>
       {grouped.value.size === 0 && (
@@ -468,16 +499,21 @@ export default function WarningSignsInnerContent({
           icon={<MagnifyingGlassIcon className='h-5 w-5' />}
         />
       )}
-      {categories.value.map((config) => (
-        <WarningSignsPriorityTable
-          {...config}
-          onCheck={onCheck}
-          onOpenDetails={onOpenDetails}
-          key={config.category}
-          start_expanded={config.category === 'Search Results' || config.category === finding_site.value?.label}
-          signs={grouped.value.get(config.category) || []}
-        />
-      ))}
+      {categories.value.map((config) => {
+        const start_expanded = config.category === 'Search Results' || config.category === finding_site.value?.label
+        const expanded = expanded_category.value === undefined ? start_expanded : expanded_category.value === config.category
+        return (
+          <WarningSignsPriorityTable
+            {...config}
+            onCheck={onCheck}
+            onOpenDetails={onOpenDetails}
+            key={config.category}
+            expanded={expanded}
+            onToggleExpanded={() => expanded_category.value = expanded ? null : config.category}
+            signs={grouped.value.get(config.category) || []}
+          />
+        )
+      })}
       <WarningSignsHiddenInputs form_values={form_values.value} />
       <FindingModal
         finding={active_modal.value && {

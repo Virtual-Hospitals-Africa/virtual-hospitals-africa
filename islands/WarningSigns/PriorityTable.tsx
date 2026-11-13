@@ -1,4 +1,3 @@
-import { useSignal } from '@preact/signals'
 import { ChevronDownIcon, ChevronRightIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import cls from '../../util/cls.ts'
 import { priorityColors } from '../../shared/priorities.ts'
@@ -10,34 +9,41 @@ export function WarningSignsPriorityTable({
   priority,
   category,
   signs,
-  start_expanded = false,
+  expanded,
+  onToggleExpanded,
   onCheck,
   onOpenDetails,
 }: CategoryConfig & {
   signs: ToggleableWarningSign[]
-  // Search results and a chosen finding site open immediately. Other categories start collapsed on mobile.
-  start_expanded?: boolean
+  // One category is open at a time on mobile. At md and up the body stays visible either way.
+  expanded: boolean
+  onToggleExpanded(): void
   onCheck: OnToggle
   onOpenDetails(sign: CheckedWarningSign): void
 }) {
-  const expanded = useSignal(start_expanded)
   if (!signs.length) return null
   const colors = priorityColors(priority)
   const category_attribute = hyphenate(category)
   // deno-lint-ignore no-explicit-any
   const has_subcategories = signs.some((s) => (s as any).subcategory != null)
   // max-md:hidden! beats the grid display below md. At md and up the body stays visible either way.
-  const collapsed_on_mobile = !expanded.value && 'max-md:hidden!'
+  const collapsed_on_mobile = !expanded && 'max-md:hidden!'
+  const mobile_body_scroll = expanded && 'max-md:min-h-0 max-md:flex-1 max-md:overflow-y-auto max-md:py-1'
 
   return (
     <div
-      className={cls('priority-table w-full overflow-hidden rounded-xl border', colors.border)}
+      className={cls(
+        'priority-table w-full overflow-hidden rounded-xl border',
+        colors.border,
+        expanded && 'max-md:flex max-md:min-h-0 max-md:flex-1 max-md:flex-col',
+      )}
       id={`priority-table-${category_attribute}`}
       data-category={category}
+      data-expanded={expanded ? 'true' : 'false'}
     >
       <h2
         className={cls(
-          'relative py-1 2xl:py-3 flex items-center justify-center text-lg font-semibold uppercase max-md:h-12 max-md:px-8 max-md:py-0',
+          'relative py-1 2xl:py-3 flex items-center justify-center text-lg font-semibold uppercase max-md:h-12 max-md:shrink-0 max-md:px-8 max-md:py-0 max-md:text-[16px] max-md:leading-[24px]',
           colors.text,
           colors.bg,
         )}
@@ -46,16 +52,16 @@ export function WarningSignsPriorityTable({
         <button
           type='button'
           className='md:hidden absolute inset-0 flex items-center justify-end pr-3'
-          aria-expanded={expanded.value}
-          aria-label={`${expanded.value ? 'Collapse' : 'Expand'} ${category}`}
-          onClick={() => expanded.value = !expanded.value}
+          aria-expanded={expanded}
+          aria-label={`${expanded ? 'Collapse' : 'Expand'} ${category}`}
+          onClick={onToggleExpanded}
         >
-          {expanded.value ? <ChevronDownIcon /> : <ChevronRightIcon />}
+          {expanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </button>
       </h2>
       {has_subcategories
         ? (
-          <div className={cls('bg-white divide-y divide-gray-100', collapsed_on_mobile)}>
+          <div className={cls('bg-white divide-y divide-gray-100', collapsed_on_mobile, mobile_body_scroll)}>
             {EMERGENCY_SUBCATEGORY_ORDER.map((subcategory) => {
               // deno-lint-ignore no-explicit-any
               const subcategory_signs = signs.filter((s) => (s as any).subcategory === subcategory)
@@ -85,7 +91,7 @@ export function WarningSignsPriorityTable({
         : (
           <div
             id={`priority-grid-${category_attribute}`}
-            className={cls('grid grid-cols-1 bg-white px-3 md:grid-cols-5 md:px-1 2xl:gap-4', collapsed_on_mobile)}
+            className={cls('grid grid-cols-1 bg-white px-3 md:grid-cols-5 md:px-1 2xl:gap-4', collapsed_on_mobile, mobile_body_scroll)}
           >
             {signs.map((sign) => (
               <KeyedWarningSignCheckbox

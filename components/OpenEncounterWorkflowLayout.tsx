@@ -14,6 +14,7 @@ import cls from '../util/cls.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { EmergencyCallButton } from '../islands/EmergencyCallButton.tsx'
 import { StepsSidebar, WorkflowStepsMobileNav } from './library/sidebar/Steps.tsx'
+import { PhoneIcon } from './library/icons/heroicons/outline.tsx'
 
 const MOBILE_EMERGENCY_FORM_ID = 'mobile-start-emergency-escalation'
 
@@ -66,6 +67,7 @@ export function OpenEncounterWorkflowLayout({
 } & PatientDrawerV4Props): JSX.Element {
   const account = employee ? employeeDisplay(employee) : null
   const emergency_action = employee ? `/app/organizations/${employee.organization_id}/patients/start-emergency-escalation` : null
+  const triage_mobile = workflow === 'triage'
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       url={url}
@@ -80,14 +82,27 @@ export function OpenEncounterWorkflowLayout({
         : undefined}
       mobile_header_action={emergency_action
         ? (
-          <form
-            id={MOBILE_EMERGENCY_FORM_ID}
-            method='POST'
-            action={emergency_action}
-            className='hidden'
-          />
+          <>
+            <form
+              id={MOBILE_EMERGENCY_FORM_ID}
+              method='POST'
+              action={emergency_action}
+              className='hidden'
+            />
+            {triage_mobile && (
+              <button
+                type='submit'
+                form={MOBILE_EMERGENCY_FORM_ID}
+                aria-label='Emergency'
+                className='flex size-9 items-center justify-center text-green-600'
+              >
+                <PhoneIcon className='size-6' />
+              </button>
+            )}
+          </>
         )
         : undefined}
+      compact_mobile={triage_mobile}
       sidebar={
         <StepsSidebar
           url={url}
@@ -125,6 +140,7 @@ export function OpenEncounterWorkflowLayout({
           params={params}
           nav_links={nav_links}
           steps_completed={steps_completed}
+          compact={triage_mobile}
         />
       )}
       <ContainerTag
@@ -132,20 +148,27 @@ export function OpenEncounterWorkflowLayout({
         id={id}
         className={cls(
           'h-full flex flex-col max-md:h-auto max-md:min-h-0 max-md:flex-1',
+          triage_mobile && 'max-md:bg-white',
           // Reserves the collapsed sheet so the workflow actions stay above it.
           workflow !== 'registration' && 'max-md:pb-[calc(4.625rem+env(safe-area-inset-bottom))]',
         )}
       >
-        <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
+        <div
+          className={cls(
+            'px-4 flex-1 overflow-y-auto flex flex-col gap-8',
+            triage_mobile && 'max-md:min-w-0 max-md:bg-white max-md:px-2! max-md:pt-4 max-md:pb-2',
+          )}
+        >
           {children}
         </div>
         <ButtonsContainer
           className={cls(
             'h-16 mt-auto flex flex-row items-center',
-            emergency_action && 'max-md:gap-2! max-md:px-4!',
+            emergency_action && !triage_mobile && 'max-md:gap-2! max-md:px-4!',
+            triage_mobile && 'max-md:h-auto! max-md:border-0! max-md:bg-transparent! max-md:px-2 max-md:pt-0 max-md:pb-2',
           )}
         >
-          {emergency_action && (
+          {emergency_action && !triage_mobile && (
             <div className='md:hidden [&_button]:px-3!'>
               <EmergencyCallButton form={MOBILE_EMERGENCY_FORM_ID} />
             </div>
@@ -158,15 +181,27 @@ export function OpenEncounterWorkflowLayout({
               onSubmit={onSubmit}
               className={cls(
                 'primary-form-submit-button',
-                emergency_action && 'max-md:px-3!',
+                emergency_action && !triage_mobile && 'max-md:px-3!',
+                triage_mobile &&
+                  'max-md:h-9! max-md:w-full max-md:rounded-md! max-md:bg-indigo-700! max-md:px-4 max-md:text-[14px]! max-md:font-medium max-md:leading-5!',
               )}
             >
-              {next_step_text || (
-                <span className='flex gap-2 items-center'>
-                  Next
-                  <ArrowRightIcon />
-                </span>
-              )}
+              {next_step_text || (triage_mobile
+                ? (
+                  <>
+                    <span className='max-md:hidden flex gap-2 items-center'>
+                      Next
+                      <ArrowRightIcon />
+                    </span>
+                    <span className='md:hidden'>Next →</span>
+                  </>
+                )
+                : (
+                  <span className='flex gap-2 items-center'>
+                    Next
+                    <ArrowRightIcon />
+                  </span>
+                ))}
             </Button>
           )}
         </ButtonsContainer>
