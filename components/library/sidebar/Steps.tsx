@@ -133,7 +133,7 @@ export function StepsSidebar(
 }
 
 export function WorkflowStepsMobileNav(
-  { nav_links, steps_completed, url, route, params }: StepsSidebarProps,
+  { nav_links, steps_completed, url, route, params, compact = false }: StepsSidebarProps & { compact?: boolean },
 ) {
   const steps = describeWorkflowSteps(nav_links, steps_completed)
   const active_step = matchActiveLink(steps, route ?? '')
@@ -141,34 +141,55 @@ export function WorkflowStepsMobileNav(
     <ScrollActiveTabIntoView
       key={active_step?.step}
       aria-label='Workflow steps'
-      className='w-full min-w-0 shrink-0 overflow-x-auto border-b border-gray-200 bg-white md:hidden'
+      className={cls(
+        'w-full min-w-0 shrink-0 md:hidden',
+        compact ? 'mt-4 overflow-x-hidden bg-white' : 'overflow-x-auto border-b border-gray-200 bg-white',
+      )}
     >
-      <ul className='flex w-full items-stretch gap-x-1 px-0 py-2'>
+      <ul className={cls('flex w-full items-stretch', compact ? 'gap-1.5' : 'gap-x-1 px-0 py-2')}>
         {steps.map((link) => {
           const active = link === active_step
           const Icon = STEP_ICONS[link.step] ?? DEFAULT_STEP_ICON
+          const label = link.title.replaceAll(' & ', '\u00A0& ')
           return (
-            <li key={link.step} className='flex min-w-min flex-1'>
+            <li key={link.step} className={cls('flex flex-1', compact ? 'min-w-0' : 'min-w-min')}>
               <a
                 href={hrefForStep(link.route, params, url)}
                 aria-current={active ? 'page' : undefined}
                 className={cls(
-                  'group flex h-full w-full min-w-min flex-col items-center gap-1 px-0 text-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
-                  active ? 'font-medium text-indigo-700' : 'text-gray-500 hover:text-gray-700',
+                  'group flex h-full w-full flex-col items-center text-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+                  compact ? 'min-w-0 gap-1 pb-0.5 text-indigo-700' : 'min-w-min gap-1 px-0',
+                  !compact && (active ? 'font-medium text-indigo-700' : 'text-gray-500 hover:text-gray-700'),
+                  compact && (active ? 'opacity-100' : 'opacity-60'),
                 )}
               >
-                {link.completed && !active ? <ProgressIcons.Check active={active} className='size-5' /> : (
+                {link.completed && !active && !compact ? <ProgressIcons.Check active={active} className='size-5' /> : (
                   <Icon
-                    className={cls('size-5', active ? 'text-indigo-600' : 'text-gray-400')}
+                    className={cls(
+                      'size-5',
+                      compact && 'text-indigo-700',
+                      !compact && active && 'text-indigo-600',
+                      !compact && !active && 'text-gray-400',
+                    )}
                     aria-hidden='true'
                   />
                 )}
-                {/* Keep "&" with the previous word so it wraps as "Height &" / "Weight". */}
-                <span className='text-[11px] leading-tight'>{link.title.replaceAll(' & ', '\u00A0& ')}</span>
-                <span
-                  aria-hidden='true'
-                  className={cls('mt-auto h-1 w-full rounded-full', active ? 'bg-indigo-600' : 'bg-transparent')}
-                />
+                {compact
+                  ? (
+                    <span className='text-[10px] font-bold leading-[12px]'>
+                      {label.split(' ').map((line) => <span key={line} className='block'>{line}</span>)}
+                    </span>
+                  )
+                  : (
+                    // Keep "&" with the previous word so it wraps as "Height &" / "Weight".
+                    <span className='text-[11px] leading-tight'>{label}</span>
+                  )}
+                {!compact && (
+                  <span
+                    aria-hidden='true'
+                    className={cls('mt-auto h-1 w-full rounded-full', active ? 'bg-indigo-600' : 'bg-transparent')}
+                  />
+                )}
               </a>
             </li>
           )

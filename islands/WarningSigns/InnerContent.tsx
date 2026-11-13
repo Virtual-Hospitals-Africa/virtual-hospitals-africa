@@ -1,4 +1,5 @@
 import { computed, Signal, useSignal } from '@preact/signals'
+import cls from '../../util/cls.ts'
 import { useEffect, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
@@ -18,7 +19,16 @@ import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CheckedWarningSign, findChecked, sameSign, signsToDisplay, tableCategories, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import {
+  CheckedWarningSign,
+  findChecked,
+  sameSign,
+  shouldClearSearchAfterSave,
+  signsToDisplay,
+  tableCategories,
+  ToggleableWarningSign,
+  uniqueIdentifier,
+} from './shared.ts'
 import { FindingSiteFilter } from './FindingSiteFilter.tsx'
 import { savedRecordId, warningSignsFormValues } from './form_values.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
@@ -45,6 +55,36 @@ import { higherPriority } from '../../shared/priorities.ts'
 import { buildPriorityEvaluation, dueToHypotheticalRelation } from '../../shared/priority_evaluation.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { priorityUpdate } from '../DrawerPatientCard.tsx'
+
+const SLIDE_MS = 300
+const SLIDE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)'
+
+function mobileMotion() {
+  return globalThis.matchMedia('(max-width: 767px)').matches &&
+    !globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function scrollParent(el: HTMLElement): HTMLElement | null {
+  let node = el.parentElement
+  while (node) {
+    const overflow = getComputedStyle(node).overflowY
+    if (overflow === 'auto' || overflow === 'scroll') return node
+    node = node.parentElement
+  }
+  return null
+}
+
+// Slides an element from where it was on screen to its layout position after the accordion changes.
+function slideFrom(el: HTMLElement | null, first: DOMRect | undefined) {
+  if (!el || !first) return
+  el.getAnimations().forEach((animation) => animation.cancel())
+  const dy = first.top - el.getBoundingClientRect().top
+  if (Math.abs(dy) < 1) return
+  el.animate(
+    [{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }],
+    { duration: SLIDE_MS, easing: SLIDE_EASING },
+  )
+}
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = insertableFindingFullDisplay(s_expression)
@@ -116,8 +156,32 @@ export default function WarningSignsInnerContent({
 
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
   const none_of_the_above_saving = useSignal(false)
+  // undefined follows the category that should open on its own (search results, or a chosen finding site).
+  // null keeps every category collapsed. A category name is the one open on mobile.
+  const expanded_category = useSignal<string | null | undefined>(undefined)
+  const expansion_view = `${snomed_warning_signs_async_search.search.query}|${finding_site.value?.label ?? ''}`
+  const expansion_view_key = useSignal(expansion_view)
+  if (expansion_view_key.value !== expansion_view) {
+    expansion_view_key.value = expansion_view
+    expanded_category.value = undefined
+  }
+
+  // Search keeps the input text itself. This remounts it once a save has blanked the hook query,
+  // so the field and the results leave search mode on the same render.
+  const search_input_key = useSignal(0)
+  const search_clear_query = useSignal<null | string>(null)
+  // A save's response runs after later renders, so it has to read the query as it is now.
+  const search_query_now = useRef(snomed_warning_signs_async_search.search.query)
+  search_query_now.current = snomed_warning_signs_async_search.search.query
+  if (search_clear_query.value !== null && !search_query_now.current.trim()) {
+    search_clear_query.value = null
+    search_input_key.value++
+  } else if (search_clear_query.value !== null && search_query_now.current !== search_clear_query.value) {
+    search_clear_query.value = null
+  }
 
   const root = useRef<HTMLDivElement>(null)
+  const slide_timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /*
     Only follow ups still unanswered hold up the page. Ones being saved, whether a checked
@@ -177,7 +241,15 @@ export default function WarningSignsInnerContent({
     fetchFollowUps(finding.s_expression)
   }
 
-  const table_signs_to_display = computed(() => signsToDisplay({ search_results: search_results.value, finding_site: finding_site.value, warning_signs }))
+  // The field's query is what decides search mode. search_results can still hold a
+  // response from a query that has since been cleared.
+  const table_signs_to_display = computed(() =>
+    signsToDisplay({
+      search_results: snomed_warning_signs_async_search.search.query.trim() ? search_results.value : null,
+      finding_site: finding_site.value,
+      warning_signs,
+    })
+  )
 
   const table_signs_with_checked = computed(() => table_signs_to_display.value.map((sign) => findChecked(checked_signs.value, sign) || sign))
 
@@ -211,11 +283,6 @@ export default function WarningSignsInnerContent({
       just_checked: true,
       sign: checked_sign,
       metadata: asFindingModalMetadata(sign),
-    }
-
-    if (search_results.value) {
-      search_results.value = null
-      snomed_warning_signs_async_search.setQuery('')
     }
   }
 
@@ -251,6 +318,16 @@ export default function WarningSignsInnerContent({
       })
   }
 
+  /*
+    The input remounts only after the hook query it is clearing has actually gone blank.
+    Until then the results stay, and a newer query typed over it cancels the clear.
+  */
+  function clearSearchAfterSuccessfulSave(query_at_save: string) {
+    if (!shouldClearSearchAfterSave(query_at_save, search_query_now.current)) return
+    search_clear_query.value = query_at_save
+    snomed_warning_signs_async_search.setQuery('')
+  }
+
   function updateSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
     const active_modal_sign = active_modal.value!.sign
     const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal_sign)
@@ -262,6 +339,8 @@ export default function WarningSignsInnerContent({
       return
     }
 
+    const query_at_save = search_query_now.current
+    let saved_without_post = false
     let edited: CheckedWarningSign
     checked_signs.value = checked_signs.value.map((sign) => {
       if (!isActiveSign(sign)) return sign
@@ -269,6 +348,7 @@ export default function WarningSignsInnerContent({
 
       // Reopening a saved sign and saving it as it was makes no new record
       if (savedRecordId(sign) && sign.entered.s_expression === finding.s_expression) {
+        saved_without_post = true
         return edited = { ...sign, entered: finding }
       }
 
@@ -292,6 +372,7 @@ export default function WarningSignsInnerContent({
           if (!response.ok) throw new Error(`clinical_finding responded ${response.status}: ${await response.text()}`)
           const json = await response.json()
           assert(json.success)
+          clearSearchAfterSuccessfulSave(query_at_save)
           checked_signs.value = checked_signs.value.map((sign) => {
             if (!isActiveSign(sign)) return sign
             if (!sign.saving) return sign
@@ -322,6 +403,7 @@ export default function WarningSignsInnerContent({
       }
     })
     assert(edited!)
+    if (saved_without_post) clearSearchAfterSuccessfulSave(query_at_save)
   }
 
   function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
@@ -389,6 +471,41 @@ export default function WarningSignsInnerContent({
     })
   }
 
+  function onToggleExpanded(category: string, is_open: boolean) {
+    const next = is_open ? null : category
+    const current = typeof expanded_category.value === 'string' ? expanded_category.value : null
+    if (slide_timer.current) {
+      clearTimeout(slide_timer.current)
+      slide_timer.current = null
+    }
+    if (mobileMotion() && current && next && current !== next) {
+      slideCategory(current, null)
+      slide_timer.current = globalThis.setTimeout(() => slideCategory(next, next), SLIDE_MS)
+      return
+    }
+    slideCategory(category, next)
+  }
+
+  function slideCategory(category: string, next: string | null) {
+    const root_el = root.current
+    if (!root_el || !mobileMotion()) {
+      expanded_category.value = next
+      return
+    }
+    const card = root_el.querySelector(`[data-category="${category}"]`) as HTMLElement | null
+    const toolbar = root_el.querySelector('#warning-signs-toolbar') as HTMLElement | null
+    const first_card = card?.getBoundingClientRect()
+    const first_toolbar = toolbar?.getBoundingClientRect()
+    expanded_category.value = next
+    requestAnimationFrame(() => {
+      const scroller = card ? scrollParent(card) : null
+      // The content scroller sits under the workflow nav. Resetting it parks the opened category there.
+      if (scroller && next) scroller.scrollTop = 0
+      slideFrom(card, first_card)
+      slideFrom(toolbar, first_toolbar)
+    })
+  }
+
   /*
     The panel closes at once, leaving a spinner in its place. The groups answered stay in
     follow_ups_needed until their negatives are recorded, so a failure reopens the panel,
@@ -421,19 +538,42 @@ export default function WarningSignsInnerContent({
   }
 
   return (
-    <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs' ref={root}>
-      <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
-        <div className='flex gap-2 items-stretch'>
-          <Search
-            id='warning-signs-search'
-            placeholder='Chief complaint'
-            data-searchroute={snomed_warning_signs_async_search.search_route}
-            options={snomed_warning_signs_async_search.results}
-            onQuery={snomed_warning_signs_async_search.setQuery}
-            loading_options={snomed_warning_signs_async_search.loading}
-            do_not_render_built_in_options
-            is_async
-          />
+    <div
+      className={cls(
+        'flex flex-col gap-2 md:gap-1.25 2xl:gap-4 w-full',
+        // Fills the triage content pane so an open category can scroll above the search row.
+        'max-md:min-h-0 max-md:flex-1 max-md:bg-white',
+        'max-md:[&:has([data-expanded=true])>.priority-table:not([data-expanded=true])]:hidden',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:order-1',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:mt-auto',
+        'max-md:[&:has([data-expanded=true])>#warning-signs-toolbar]:flex-col-reverse',
+      )}
+      id='warning-signs'
+      ref={root}
+    >
+      <div
+        id='warning-signs-toolbar'
+        className={cls(
+          'sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1',
+          'max-md:static! max-md:z-auto max-md:shrink-0 max-md:gap-1.5 max-md:bg-transparent max-md:p-0',
+          // Focus on the chief-complaint field, not the finding-site button, pins this row under the list.
+          'max-md:has-[input:focus]:order-1 max-md:has-[input:focus]:mt-auto max-md:has-[input:focus]:flex-col-reverse',
+        )}
+      >
+        <div className='flex min-w-0 items-stretch gap-2 max-md:h-12'>
+          <div className='min-w-0 flex-1 max-md:[&_input]:h-12 max-md:[&_input]:rounded-md max-md:[&_input]:border-0 max-md:[&_input]:px-3 max-md:[&_input]:shadow-[inset_0_0_0_1.5px_#111827] max-md:[&_input]:text-[14px] max-md:[&_input]:leading-[24px] max-md:[&_input]:outline-none! max-md:[&_input]:focus:shadow-[inset_0_0_0_1.5px_#4338ca] max-md:[&_input]:focus:outline-none!'>
+            <Search
+              key={search_input_key.value}
+              id='warning-signs-search'
+              placeholder='Chief complaint'
+              data-searchroute={snomed_warning_signs_async_search.search_route}
+              options={snomed_warning_signs_async_search.results}
+              onQuery={snomed_warning_signs_async_search.setQuery}
+              loading_options={snomed_warning_signs_async_search.loading}
+              do_not_render_built_in_options
+              is_async
+            />
+          </div>
           {finding_sites.length > 0 && (
             <FindingSiteFilter
               finding_sites={finding_sites}
@@ -442,11 +582,20 @@ export default function WarningSignsInnerContent({
             />
           )}
         </div>
-        <SelectedChips
-          id='warning-signs-selected-chips'
-          items={checked_signs.value}
-          onEdit={onOpenDetails}
-        />
+        <div className='flex flex-col gap-1 max-md:gap-1.5'>
+          {!checked_signs.value.length && (
+            <p className='md:hidden text-[12px] font-normal leading-[16px] text-gray-500'>
+              No findings selected
+            </p>
+          )}
+          <div className={cls(!checked_signs.value.length && 'max-md:hidden')}>
+            <SelectedChips
+              id='warning-signs-selected-chips'
+              items={checked_signs.value}
+              onEdit={onOpenDetails}
+            />
+          </div>
+        </div>
       </div>
       {grouped.value.size === 0 && (
         <EmptyState
@@ -455,15 +604,21 @@ export default function WarningSignsInnerContent({
           icon={<MagnifyingGlassIcon className='h-5 w-5' />}
         />
       )}
-      {categories.value.map((config) => (
-        <WarningSignsPriorityTable
-          {...config}
-          onCheck={onCheck}
-          onOpenDetails={onOpenDetails}
-          key={config.category}
-          signs={grouped.value.get(config.category) || []}
-        />
-      ))}
+      {categories.value.map((config) => {
+        const start_expanded = config.category === 'Search Results' || config.category === finding_site.value?.label
+        const expanded = expanded_category.value === undefined ? start_expanded : expanded_category.value === config.category
+        return (
+          <WarningSignsPriorityTable
+            {...config}
+            onCheck={onCheck}
+            onOpenDetails={onOpenDetails}
+            key={config.category}
+            expanded={expanded}
+            onToggleExpanded={() => onToggleExpanded(config.category, expanded)}
+            signs={grouped.value.get(config.category) || []}
+          />
+        )
+      })}
       <WarningSignsHiddenInputs form_values={form_values.value} />
       <FindingModal
         finding={active_modal.value && {

@@ -10,7 +10,7 @@ import { Maybe, Priority, RenderedEmployeeWithPresenceAndSeniority, RenderedOrga
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { ReferPostBody, ReferPostResponse } from '../../shared/refer_post.ts'
 import { ReferralRecipients } from '../referral/ReferralRecipients.tsx'
-import { SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
+import { SIDE_PANEL_BACKDROP_CLASS, SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
 import cls from '../../util/cls.ts'
 
 type PriorityEscalationPanelProps = {
@@ -41,7 +41,7 @@ function EscalationCandidateRow(
   const seniority_label = seniorityLabel(candidate)
 
   return (
-    <span className='flex items-center gap-3'>
+    <span className='flex items-center gap-3 max-md:min-w-0 max-md:w-full'>
       <div className='relative'>
         <Avatar
           src={display.avatar_url}
@@ -49,8 +49,8 @@ function EscalationCandidateRow(
         />
         <OnlineIndicator online={candidate.at_work} />
       </div>
-      <span className='flex flex-col text-left'>
-        <span className='flex items-center gap-2 font-medium text-gray-900 text-md'>
+      <span className='flex flex-col text-left max-md:min-w-0 max-md:flex-1 max-md:break-words'>
+        <span className='flex items-center gap-2 font-medium text-gray-900 text-md max-md:flex-wrap'>
           {display.display_name}
           {seniority_label && <Badge content={seniority_label} color='purple' round='md' />}
         </span>
@@ -63,18 +63,22 @@ function EscalationCandidateRow(
 }
 
 const ACTION_CARD_CLASS =
-  'w-full text-left cursor-pointer rounded-lg border-2 border-gray-300 bg-white px-4 py-3 shadow-sm hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600'
+  'w-full text-left cursor-pointer rounded-lg border-2 border-gray-300 bg-white px-4 py-3 shadow-sm hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 max-md:min-w-0'
 
 const SELECTED_ACTION_CARD_CLASS =
-  'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-3 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600'
+  'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-3 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 max-md:min-w-0'
 
 /*
-  Not a modal: appears as a panel just above the follow-ups panel
+  Not a modal on desktop: appears as a panel just above the follow-ups panel
   (islands/WarningSigns/FollowUpsPanel.tsx), so both can be visible together.
 
   Both portal into the shared column left of the patient drawer, which owns the
   position and width (components/library/layout/side_panels.ts). That column
   also keeps this panel's inputs outside the workflow's form.
+
+  Below md the column is the dialog frame. This panel fills it on its own.
+  When follow-ups is open too, it keeps only the height of its content and
+  leaves the rest of the frame to that panel (static/styles.css).
 */
 export function PriorityEscalationPanel(
   { priority, open, escalation_candidates, nearest_hospital, refer_route, onClose }: PriorityEscalationPanelProps,
@@ -142,125 +146,134 @@ export function PriorityEscalationPanel(
   }
 
   return createPortal(
-    <div
-      id='priority-escalation-panel'
-      className={cls(SIDE_PANEL_CLASS, 'shrink-0', SIDE_PANEL_ORDER.priority_escalation)}
-    >
-      <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3'>
-        <h2 className='text-lg font-bold text-gray-900'>Priority Escalation</h2>
-        <button
-          type='button'
-          aria-label='Dismiss priority escalation'
-          className='rounded-md p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500'
-          onClick={handleClose}
-        >
-          <XMarkIcon className='h-5 w-5' />
-        </button>
-      </div>
-      <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
-        <div className='text-sm text-gray-900'>
-          Priority: {priority}
-        </div>
-        {referral.value
-          ? (
-            <div className='flex flex-col gap-3'>
-              <span className='font-semibold text-gray-900'>
-                Referral status
-              </span>
-              <ReferralRecipients
-                referral_id={referral.value.referral_id}
-                recipients={referral.value.recipients}
-              />
-            </div>
-          )
-          : (
-            <>
-              {senior_provider && (
-                <button
-                  type='button'
-                  className={isSelected({ type: 'colleague', health_worker_id: senior_provider.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
-                  onClick={() => selected.value = { type: 'colleague', health_worker_id: senior_provider.id }}
-                >
-                  <span className='flex flex-col gap-3'>
-                    <span className='font-semibold text-gray-900'>
-                      Senior Health Care Professional
-                    </span>
-                    <EscalationCandidateRow candidate={senior_provider} />
-                  </span>
-                </button>
-              )}
-              {nearest_hospital && (
-                <button
-                  type='button'
-                  className={isSelected({ type: 'nearest_hospital', organization_id: nearest_hospital.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
-                  onClick={() => selected.value = { type: 'nearest_hospital', organization_id: nearest_hospital.id }}
-                >
-                  <span className='flex items-center gap-3'>
-                    <BuildingOffice2Icon className='h-8 w-8 text-indigo-600' />
-                    <span className='flex flex-col text-left'>
-                      <span className='font-semibold text-gray-900'>
-                        Nearest Hospital
-                      </span>
-                      <span className='text-sm text-gray-900'>
-                        {nearest_hospital.name}
-                      </span>
-                      {nearest_hospital.formatted_address && (
-                        <span className='text-sm text-gray-500'>
-                          {nearest_hospital.formatted_address}
-                        </span>
-                      )}
-                    </span>
-                  </span>
-                </button>
-              )}
-              {!!remaining_candidates.length && (
-                <details className='group rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm'>
-                  <summary className='flex items-center gap-1.5 py-1 cursor-pointer text-sm font-medium text-gray-900 list-none [&::-webkit-details-marker]:hidden'>
-                    <ChevronDownIcon className='w-4 h-4 transition-transform group-open:rotate-180' />
-                    More people at this facility
-                  </summary>
-                  <div className='flex flex-col gap-2 pt-3'>
-                    {remaining_candidates.map((candidate) => (
-                      <button
-                        key={candidate.employee_id}
-                        type='button'
-                        className={isSelected({ type: 'colleague', health_worker_id: candidate.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
-                        onClick={() => selected.value = { type: 'colleague', health_worker_id: candidate.id }}
-                      >
-                        <EscalationCandidateRow candidate={candidate} />
-                      </button>
-                    ))}
-                  </div>
-                </details>
-              )}
-            </>
-          )}
-        {error.value && (
-          <div className='text-sm text-red-600'>
-            {error.value}
-          </div>
-        )}
-      </div>
-      <div className='shrink-0 flex gap-3 justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
-        <Button
-          variant='tertiary'
-          type='button'
-          onClick={handleClose}
-        >
-          Close
-        </Button>
-        {!referral.value && (
-          <Button
-            variant='primary'
+    <>
+      <div className={SIDE_PANEL_BACKDROP_CLASS} aria-hidden='true' />
+      <div
+        id='priority-escalation-panel'
+        role='dialog'
+        aria-labelledby='priority-escalation-panel-title'
+        className={cls(SIDE_PANEL_CLASS, 'shrink-0', SIDE_PANEL_ORDER.priority_escalation)}
+      >
+        <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3 max-md:relative max-md:justify-center max-md:px-6 max-md:pt-8 max-md:pb-4'>
+          <h2 id='priority-escalation-panel-title' className='text-lg font-bold text-gray-900 max-md:px-8 max-md:text-center max-md:text-xl max-md:leading-7'>
+            Priority Escalation
+          </h2>
+          <button
             type='button'
-            disabled={!selected.value || submitting.value}
-            onClick={handleRefer}
+            aria-label='Dismiss priority escalation'
+            className='rounded-md p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 max-md:absolute max-md:right-3 max-md:top-3'
+            onClick={handleClose}
           >
-            Refer
+            <XMarkIcon className='h-5 w-5' />
+          </button>
+        </div>
+        <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4 max-md:min-w-0 max-md:flex-auto max-md:overflow-x-hidden max-md:px-6 max-md:pb-4'>
+          <div className='text-sm text-gray-900'>
+            Priority: {priority}
+          </div>
+          {referral.value
+            ? (
+              <div className='flex flex-col gap-3'>
+                <span className='font-semibold text-gray-900'>
+                  Referral status
+                </span>
+                <ReferralRecipients
+                  referral_id={referral.value.referral_id}
+                  recipients={referral.value.recipients}
+                />
+              </div>
+            )
+            : (
+              <>
+                {senior_provider && (
+                  <button
+                    type='button'
+                    className={isSelected({ type: 'colleague', health_worker_id: senior_provider.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
+                    onClick={() => selected.value = { type: 'colleague', health_worker_id: senior_provider.id }}
+                  >
+                    <span className='flex flex-col gap-3'>
+                      <span className='font-semibold text-gray-900'>
+                        Senior Health Care Professional
+                      </span>
+                      <EscalationCandidateRow candidate={senior_provider} />
+                    </span>
+                  </button>
+                )}
+                {nearest_hospital && (
+                  <button
+                    type='button'
+                    className={isSelected({ type: 'nearest_hospital', organization_id: nearest_hospital.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
+                    onClick={() => selected.value = { type: 'nearest_hospital', organization_id: nearest_hospital.id }}
+                  >
+                    <span className='flex items-center gap-3 max-md:w-full max-md:min-w-0 max-md:items-start'>
+                      <BuildingOffice2Icon className='h-8 w-8 text-indigo-600 max-md:shrink-0' />
+                      <span className='flex flex-col text-left max-md:min-w-0 max-md:flex-1 max-md:break-words'>
+                        <span className='font-semibold text-gray-900'>
+                          Nearest Hospital
+                        </span>
+                        <span className='text-sm text-gray-900'>
+                          {nearest_hospital.name}
+                        </span>
+                        {nearest_hospital.formatted_address && (
+                          <span className='text-sm text-gray-500'>
+                            {nearest_hospital.formatted_address}
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                  </button>
+                )}
+                {!!remaining_candidates.length && (
+                  <details className='group rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm max-md:min-w-0'>
+                    <summary className='flex items-center gap-1.5 py-1 cursor-pointer text-sm font-medium text-gray-900 list-none [&::-webkit-details-marker]:hidden'>
+                      <ChevronDownIcon className='w-4 h-4 transition-transform group-open:rotate-180' />
+                      More people at this facility
+                    </summary>
+                    <div className='flex flex-col gap-2 pt-3'>
+                      {remaining_candidates.map((candidate) => (
+                        <button
+                          key={candidate.employee_id}
+                          type='button'
+                          className={isSelected({ type: 'colleague', health_worker_id: candidate.id }) ? SELECTED_ACTION_CARD_CLASS : ACTION_CARD_CLASS}
+                          onClick={() => selected.value = { type: 'colleague', health_worker_id: candidate.id }}
+                        >
+                          <EscalationCandidateRow candidate={candidate} />
+                        </button>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </>
+            )}
+          {error.value && (
+            <div className='text-sm text-red-600'>
+              {error.value}
+            </div>
+          )}
+        </div>
+        <div className='shrink-0 flex gap-3 justify-end px-5 pb-4 pt-2 border-t border-gray-100 max-md:px-6 max-md:py-4'>
+          <Button
+            variant='tertiary'
+            type='button'
+            className='max-md:h-11 max-md:flex-1'
+            onClick={handleClose}
+          >
+            Close
           </Button>
-        )}
+          {!referral.value && (
+            <Button
+              variant='primary'
+              type='button'
+              className='max-md:h-11 max-md:flex-1'
+              disabled={!selected.value || submitting.value}
+              onClick={handleRefer}
+            >
+              Refer
+            </Button>
+          )}
+        </div>
       </div>
-    </div>,
+    </>,
     host,
   )
 }
