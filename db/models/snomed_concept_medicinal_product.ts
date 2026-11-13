@@ -1,12 +1,12 @@
 import { ExpressionBuilder, sql } from 'kysely'
-import type { MedicinalProductOption, MedicinalProductSearchResult, TrxOrDbOrQueryCreator } from '../../types.ts'
+import type { MedicinalProductOption, MedicinalProductOptionIngredient, MedicinalProductSearchResult, TrxOrDbOrQueryCreator } from '../../types.ts'
 import type { DB, SnomedCategory, SnomedInferredCanonicalNameAndCategory, SnomedRelationship } from '../../db.d.ts'
 import { base } from './_base.ts'
-import { asText, jsonArrayFrom, jsonObjectFrom } from '../helpers.ts'
+import { asText, greatest, isSimilarWord, jsonArrayFrom, jsonObjectFrom, wordSimilarity } from '../helpers.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
 import compact from '../../util/compact.ts'
-import { activeIngredientsDisplay, MedicationMeasurement } from '../../shared/medication_s_expression.ts'
+import { activeIngredientsDisplay } from '../../shared/medication_s_expression.ts'
 import {
   HAS_ACTIVE_INGREDIENT,
   HAS_BASIC_DOSE_FORM,
@@ -23,9 +23,13 @@ import {
   HAS_PRESENTATION_STRENGTH_NUMERATOR_VALUE,
   HAS_UNIT_OF_PRESENTATION,
 } from '../../shared/snomed_concepts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import z from 'zod'
+import { positive_decimal, positive_integer } from '../../util/validators.ts'
 
 type SearchTerms = {
-  search: string
+  search?: string
 }
 
 /*
@@ -40,14 +44,8 @@ type SearchTerms = {
   brands of a generic result. A trade name registered in several forms is returned once.
 */
 function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
-  assertOr400(search && search.trim().length >= 2, 'Must be searching for a term of at least 2 characters')
-  const term = search.trim()
-
-  // Kysely has no builders for the trigram word similarity operator and function
-  const substance_term_matches = sql<boolean>`${term} <% snomed_description.term`
-  const substance_term_similarity = sql<number>`word_similarity(${term}, snomed_description.term)`
-  const trade_name_matches = sql<boolean>`${term} <% medications.trade_name`
-  const trade_name_similarity = sql<number>`word_similarity(${term}, medications.trade_name)`
+  assertOr400(!search || search.trim().length >= 2, 'Must be searching for a term of at least 2 characters')
+  const term = search?.trim()
 
   return trx
     .with('matching_substances', (qb) =>
@@ -55,11 +53,13 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
         .innerJoin('snomed_inferred_canonical_name_and_category as substance', 'substance.id', 'snomed_description.concept_id')
         .where('substance.category', '=', 'substance')
         .where('snomed_description.active', '=', true)
-        .where(substance_term_matches)
         .groupBy('snomed_description.concept_id')
+        .$if(!!term, qb => qb.where((eb) => isSimilarWord(eb.ref('snomed_description.term'), term!)))
         .select((eb) => [
           'snomed_description.concept_id as id',
-          eb.fn.max(substance_term_similarity).as('similarity'),
+          eb.fn.max(
+            wordSimilarity(eb.ref('snomed_description.term'), term ?? 'N/A'),
+          ).as('similarity'),
         ]))
     .with('generics', (qb) =>
       qb.selectFrom('matching_substances')
@@ -89,7 +89,14 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
           join.onRef('product.id', '=', 'medications.snomed_concept_id')
             .on('product.category', '=', 'medicinal product'))
         .leftJoin('generics', 'generics.id', 'medications.snomed_concept_id')
-        .where((eb) => eb.or([trade_name_matches, eb('generics.id', 'is not', null)]))
+        .where((eb) =>
+          term ? 
+            eb.or([
+              isSimilarWord(eb.ref('medications.trade_name'), term),
+              eb('generics.id', 'is not', null),
+            ])
+          : sql<boolean>`false`
+        )
         .distinctOn('medications.trade_name')
         .orderBy('medications.trade_name')
         .orderBy('medications.id')
@@ -98,10 +105,14 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
           'medications.trade_name',
           'product.id as snomed_concept_id',
           'product.name as medicinal_product_name',
-          eb.fn<number>('greatest', [
-            eb.case().when(trade_name_matches).then(trade_name_similarity).else(0).end(),
+          greatest(
+            eb.case()
+              .when(isSimilarWord(eb.ref('medications.trade_name'), term ?? 'N/A'))
+              .then(wordSimilarity(eb.ref('medications.trade_name'), term ?? 'N/A'))
+              .else(0)
+              .end(),
             eb.fn.coalesce('generics.similarity', eb.lit(0)),
-          ]).as('similarity'),
+          ).as('similarity'),
           eb.fn.coalesce('generics.ingredient_count', eb.lit(1)).as('ingredient_count'),
         ]))
     .selectFrom((eb) =>
@@ -153,6 +164,7 @@ function formatResult(row: SearchRow): MedicinalProductSearchResult {
     },
     medication_id: row.medication_id,
     brand_name: row.brand_name,
+    similarity: row.similarity,
   }
 }
 
@@ -177,7 +189,7 @@ function unitDisplay(snomed_unit_name: string) {
 
 // SNOMED concrete values are spelled "#500"
 function concreteNumber(value: string) {
-  return value.replace(/^#/, '')
+  return positive_decimal.parse(value.replace(/^#/, '')).toNumber()
 }
 
 type ClinicalDrugTables = DB & { clinical_drug: SnomedInferredCanonicalNameAndCategory }
@@ -226,26 +238,21 @@ function optionsQuery(
   trx: TrxOrDbOrQueryCreator,
   medicinal_product: { snomed_concept_id: string } | { name: string },
 ) {
-  const clinical_drugs = trx
+  return trx
     .selectFrom('snomed_concept_active_descendants_realized as descendants')
     .innerJoin('snomed_inferred_canonical_name_and_category as clinical_drug', (join) =>
       join.onRef('clinical_drug.id', '=', 'descendants.descendant_id')
         .on('clinical_drug.category', '=', 'clinical drug'))
-
-  // A medication's s-expression names its medicinal product, so it can be looked up by name too
-  const of_medicinal_product = 'snomed_concept_id' in medicinal_product
-    ? clinical_drugs.where('descendants.ancestor_id', '=', medicinal_product.snomed_concept_id)
-    : clinical_drugs.where(
-      'descendants.ancestor_id',
-      '=',
-      (eb) =>
-        eb.selectFrom('snomed_inferred_canonical_name_and_category as named')
-          .where('named.name', '=', medicinal_product.name)
-          .where('named.category', '=', 'medicinal product')
-          .select('named.id'),
+    .where(
+      'descendants.ancestor_id', 
+      '=', 
+      'snomed_concept_id' in medicinal_product 
+        ? medicinal_product.snomed_concept_id
+        : eb => eb.selectFrom('snomed_inferred_canonical_name_and_category as named')
+            .where('named.name', '=', medicinal_product.name)
+            .where('named.category', '=', 'medicinal product')
+            .select('named.id')
     )
-
-  return of_medicinal_product
     .select((eb) => [
       asText(eb, 'clinical_drug.id').as('clinical_drug_id'),
       'clinical_drug.name as clinical_drug_name',
@@ -267,7 +274,9 @@ function optionsQuery(
           .where('ingredient.type_id', '=', HAS_PRECISE_ACTIVE_INGREDIENT.id)
           .where('ingredient.active', '=', true)
           .select((eb_ingredient) => [
+            asText(eb_ingredient, 'substance.id').as('substance_id'),
             'substance.name as substance_name',
+            'substance.category as substance_category',
             eb_ingredient.fn.coalesce(
               strengthValue(eb_ingredient, HAS_PRESENTATION_STRENGTH_NUMERATOR_VALUE),
               strengthValue(eb_ingredient, HAS_CONCENTRATION_STRENGTH_NUMERATOR_VALUE),
@@ -290,14 +299,19 @@ function optionsQuery(
             ).as('denominator_unit_category'),
           ])
           .orderBy('substance.name'),
-      ).as('strengths'),
+      ).as('ingredients'),
     ])
     .orderBy('clinical_drug.name')
 }
 
+const RATE_DENOMINATOR_UNITS = new Set(['hour'])
+
 type OptionRow = Awaited<ReturnType<ReturnType<typeof optionsQuery>['executeTakeFirstOrThrow']>>
 
-type CompleteStrength = {
+type CompleteIngredient = {
+  substance_id: string
+  substance_name: string
+  substance_category: SnomedCategory
   numerator_value: string
   numerator_unit: string
   denominator_value: string
@@ -310,12 +324,56 @@ type CompleteStrength = {
   "50 milligram / 1 Milliliter" is a strength of 50mg/mL, taken a mL at a time.
 */
 function asOption(row: OptionRow): MedicinalProductOption {
-  const strengths = compact(row.strengths.map((strength): CompleteStrength | null => {
-    const { numerator_value, numerator_unit, denominator_value, denominator_unit, denominator_unit_category } = strength
-    if (!numerator_value || !numerator_unit || !denominator_value || !denominator_unit || !denominator_unit_category) return null
-    return { numerator_value, numerator_unit, denominator_value, denominator_unit, denominator_unit_category }
-  }))
-  const liquid = strengths.find((strength) => strength.denominator_unit_category !== 'unit of presentation')
+  const ingredients = row.ingredients.map((ingredient): CompleteIngredient => {
+    const {
+      substance_id,
+      substance_name,
+      substance_category,
+      numerator_value,
+      numerator_unit,
+      denominator_value,
+      denominator_unit,
+      denominator_unit_category,
+    } = ingredient
+
+    assert(numerator_value, `Ingredient ${ingredient.substance_id} needs ${numerator_value}`)
+    assert(numerator_unit, `Ingredient ${ingredient.substance_id} needs ${numerator_unit}`)
+    assert(denominator_value, `Ingredient ${ingredient.substance_id} needs ${denominator_value}`)
+    assert(denominator_unit, `Ingredient ${ingredient.substance_id} needs ${denominator_unit}`)
+    assert(denominator_unit_category, `Ingredient ${ingredient.substance_id} needs ${denominator_unit_category}`)
+    return {
+      substance_id,
+      substance_name,
+      substance_category,
+      numerator_value,
+      numerator_unit,
+      denominator_value,
+      denominator_unit,
+      denominator_unit_category,
+    }
+  })
+  // Dosed by measure (mL, g) when strength is a concentration, but not by time when it is a release rate,
+  // as in a patch's "2.5 milligram / 24 hour": that is dosed by the patch
+  const liquid = ingredients.find((ingredient) =>
+    ingredient.denominator_unit_category !== 'unit of presentation' && !RATE_DENOMINATOR_UNITS.has(ingredient.denominator_unit.toLowerCase())
+  )
+  const dosage_units = liquid ? unitDisplay(liquid.denominator_unit) : row.unit_of_presentation?.toLowerCase() ?? null
+
+  const [first_ingredient, ...other_ingredients] = ingredients
+  const first_ingredient_denominator_units = first_ingredient.denominator_unit
+  const first_ingredient_denominator_value = concreteNumber(first_ingredient.denominator_value)
+  if (first_ingredient_denominator_value !== 1) {
+    assertEquals(first_ingredient_denominator_units, 'hour')
+  } else {
+    assertEquals(unitDisplay(first_ingredient_denominator_units), dosage_units)
+  }
+  
+  for (const other_ingredient of other_ingredients) {
+    const other_ingredient_denominator_units = other_ingredient.denominator_unit
+    const other_ingredient_denominator_value = concreteNumber(other_ingredient.denominator_value)
+    assertEquals(first_ingredient_denominator_units, other_ingredient_denominator_units)
+    assertEquals(first_ingredient_denominator_value, other_ingredient_denominator_value)
+  }
 
   return {
     clinical_drug: {
@@ -325,18 +383,19 @@ function asOption(row: OptionRow): MedicinalProductOption {
     },
     form: row.form,
     route: row.route,
-    strengths: strengths.map((strength): MedicationMeasurement => {
-      const numerator_unit = unitDisplay(strength.numerator_unit)
-      if (strength.denominator_unit_category === 'unit of presentation') {
-        return { value: concreteNumber(strength.numerator_value), units: numerator_unit }
+    ingredients: ingredients.map((ingredient): MedicinalProductOptionIngredient => ({
+      snomed_concept_id: ingredient.substance_id,
+      name: ingredient.substance_name,
+      category: ingredient.substance_category,
+      strength: { 
+        value: concreteNumber(ingredient.numerator_value),
+        units: unitDisplay(ingredient.numerator_unit)
       }
-      const denominator_value = concreteNumber(strength.denominator_value)
-      return {
-        value: concreteNumber(strength.numerator_value),
-        units: compact([numerator_unit, '/', denominator_value !== '1' && denominator_value, unitDisplay(strength.denominator_unit)]).join(''),
-      }
-    }),
-    dosage_units: liquid ? unitDisplay(liquid.denominator_unit) : row.unit_of_presentation?.toLowerCase() ?? null,
+    })),
+    dosage_units,
+    per_time: first_ingredient_denominator_units === 'hour' 
+      ? { value: positive_integer.parse(first_ingredient_denominator_value), units: first_ingredient_denominator_units }
+      : null
   }
 }
 
@@ -355,7 +414,7 @@ async function options(
 }
 
 export const snomed_concept_medicinal_product = base({
-  top_level_table: 'snomed_concept',
+  top_level_table: 'results' as unknown as 'snomed_concept',
   baseQuery,
   formatResult,
   options,

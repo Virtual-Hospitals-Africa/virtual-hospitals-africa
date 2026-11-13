@@ -1,8 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { ClinicalFindingSchema } from '../../shared/clinical_finding_post.ts'
-import { Medication, medicationDisplay, medicationToSExpression, parseMedicationSExpression } from '../../shared/medication_s_expression.ts'
+import { Medication, medication, medicationDisplay, medicationToSExpression, parseMedicationSExpression } from '../../shared/medication_s_expression.ts'
 
 const CETIRIZINE = '(snomed_concept "Product containing only cetirizine" "medicinal product")'
 
@@ -14,6 +13,7 @@ const FULL = `(medication ${CETIRIZINE} ` +
   '(frequency (snomed_concept "Once daily" "qualifier value")) ' +
   '(duration 5 "days") ' +
   '(started "2026-11-01") ' +
+  '(taken_for (snomed_concept "Seasonal allergic rhinitis" "disorder")) ' +
   '(medication_id "0b9e4f0e-7c1b-4d0f-9d0a-1f2e3d4c5b6a") ' +
   '(notes "Taken at night"))'
 
@@ -41,6 +41,7 @@ describe('shared/medication_s_expression.ts', () => {
         frequency: null,
         duration: null,
         started: null,
+        taken_for: null,
         medication_id: null,
         notes: null,
       })
@@ -51,11 +52,12 @@ describe('shared/medication_s_expression.ts', () => {
         snomed_concept: { name: 'Product containing only cetirizine', category: 'medicinal product' },
         form: { name: 'Tablet', category: 'basic dose form' },
         route: { name: 'Oral', category: 'intended site' },
-        strengths: [{ value: '10', units: 'mg' }],
-        dosage: { value: '1', units: 'tablet' },
+        strengths: [{ value: 10, units: 'mg' }],
+        dosage: { value: 1, units: 'tablet' },
         frequency: { name: 'Once daily', category: 'qualifier value' },
-        duration: { value: '5', units: 'days' },
+        duration: { value: 5, units: 'days' },
         started: '2026-11-01',
+        taken_for: { name: 'Seasonal allergic rhinitis', category: 'disorder' },
         medication_id: '0b9e4f0e-7c1b-4d0f-9d0a-1f2e3d4c5b6a',
         notes: 'Taken at night',
       })
@@ -66,8 +68,8 @@ describe('shared/medication_s_expression.ts', () => {
         '(medication (snomed_concept "Product containing only amoxicillin and clavulanic acid" "medicinal product") ' +
           '(dosage 0.5 "tablet") (strength 500 "mg") (strength 125 "mg"))',
       )
-      assertEquals(medication.strengths, [{ value: '500', units: 'mg' }, { value: '125', units: 'mg' }])
-      assertEquals(medication.dosage, { value: '0.5', units: 'tablet' })
+      assertEquals(medication.strengths, [{ value: 500, units: 'mg' }, { value: 125, units: 'mg' }])
+      assertEquals(medication.dosage, { value: 0.5, units: 'tablet' })
     })
 
     it('rejects what is not a medication', () => {
@@ -129,19 +131,13 @@ describe('shared/medication_s_expression.ts', () => {
     })
   })
 
-  describe('ClinicalFindingSchema', () => {
-    const finding = {
-      finding_id: '0b9e4f0e-7c1b-4d0f-9d0a-1f2e3d4c5b6a',
-      s_expression: '(clinical_finding (snomed_concept "Cough" "finding"))',
-    }
-
-    it('parses medication_s_expressions into medications', () => {
-      const { medication_s_expressions } = ClinicalFindingSchema.parse({ ...finding, medication_s_expressions: [FULL] })
-      assertEquals(medication_s_expressions, [parsed(FULL)])
+  describe('medication, the zod schema a form field of medications is validated with', () => {
+    it('parses s-expressions into medications', () => {
+      assertEquals(medication.array().parse([FULL]), [parsed(FULL)])
     })
 
     it('rejects a medication that does not parse, saying why', () => {
-      const result = ClinicalFindingSchema.safeParse({ ...finding, medication_s_expressions: ['(medication (snomed_concept "Cough" "finding"))'] })
+      const result = medication.array().safeParse(['(medication (snomed_concept "Cough" "finding"))'])
       assert(!result.success)
       assertEquals(result.error.issues.map((issue) => issue.message), ['A medication must be a medicinal product'])
     })

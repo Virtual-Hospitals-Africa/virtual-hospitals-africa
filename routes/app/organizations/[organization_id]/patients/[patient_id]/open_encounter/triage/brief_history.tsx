@@ -24,6 +24,9 @@ import { insertable_finding_base, InsertableFindingBase } from '../../../../../.
 import { snomed_concept_finding_like } from '../../../../../../../../db/models/snomed_concept_finding_like.ts'
 import { patient_records_any_top_level } from '../../../../../../../../db/models/patient_records_any_top_level.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
+import { medication } from '../../../../../../../../shared/medication_s_expression.ts'
+import { patient_medications_self_reported } from '../../../../../../../../db/models/patient_medications_self_reported.ts'
+import { pMap } from '../../../../../../../../util/inParallel.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -65,6 +68,8 @@ export const TriageBriefHistorySchema = z.object({
   common_conditions: CommonConditionSchema,
   additional_chronic_conditions: AllergiesSchema.optional(),
   allergies: AllergiesSchema.optional(),
+  // The medications the patient says they are taking. See shared/medication_s_expression.ts
+  medication_s_expressions: medication.array().optional(),
 })
 
 function mostRecentRecords({ state }: TriageContext) {
@@ -96,6 +101,20 @@ function existingAllergies({ state }: TriageContext) {
   return patient_findings.findAll(trx, {
     patient_id,
     s_expression: '(allergy)',
+  }).then((records) =>
+    patient_record_providers.hydrateIntermediateRecords(trx, {
+      records,
+      encounter,
+      health_worker_id,
+    })
+  )
+}
+
+function existingMedications({ state }: TriageContext) {
+  const { trx, encounter, patient_id, health_worker_id } = state
+  return patient_findings.findAll(trx, {
+    patient_id,
+    self_reported_medications: 'only',
   }).then((records) =>
     patient_record_providers.hydrateIntermediateRecords(trx, {
       records,
@@ -181,7 +200,7 @@ export const handler = postHandler(
 
     const { response, insert_result } = await promiseProps({
       response: completeAndProceedToNextStep(ctx),
-      insert_result: insertFindings(),
+      insert_result: insertFindingsThenMedications(),
       _mark_altered: markAlteredRecords(),
     })
 
@@ -222,6 +241,30 @@ export const handler = postHandler(
       })
     }
 
+    /*
+      Medications go in after the findings: one taken for a condition is related to the record
+      of that condition, which may be among the findings just inserted. They are recorded under
+      the same procedure as the findings, as part of the same history taking.
+    */
+    async function insertFindingsThenMedications() {
+      const insert_result = await insertFindings()
+      const medications = form_values.medication_s_expressions || []
+      if (!medications.length) return insert_result
+
+      const procedure_id = insert_result?.procedure_id ?? completed_procedure?.procedure_id
+      assert(procedure_id, 'Either findings were just inserted under a procedure or one was completed before')
+
+      await pMap(medications, (medication_s_expression) =>
+        patient_medications_self_reported.insertOne(trx, {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id,
+          procedure_id,
+          medication_s_expression,
+        }))
+      return insert_result
+    }
+
     function markAlteredRecords() {
       if (!completed_procedure) {
         assertOr400(
@@ -254,10 +297,11 @@ export async function TriageBriefHistoryPage(
 
   assert(completedPersonal(patient))
 
-  const { most_recent_findings, additional_chronic_conditions, existing_allergies } = await promiseProps({
+  const { most_recent_findings, additional_chronic_conditions, existing_allergies, existing_medications } = await promiseProps({
     most_recent_findings: mostRecentRecords(ctx),
     additional_chronic_conditions: additionalChronicConditions(ctx),
     existing_allergies: existingAllergies(ctx),
+    existing_medications: existingMedications(ctx),
   })
 
   return (
@@ -265,6 +309,7 @@ export async function TriageBriefHistoryPage(
       most_recent_findings={most_recent_findings}
       additional_chronic_conditions={additional_chronic_conditions}
       existing_allergies={existing_allergies}
+      existing_medications={existing_medications}
       sex={patient.sex}
       organization_id={organization_employment.id}
     />

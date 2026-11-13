@@ -1,4 +1,4 @@
-import { TimeUnit } from './shared.ts'
+import { TimeUnit } from '../../types.ts'
 
 export function normalizeTimeUnit(unit: string): TimeUnit {
   unit = unit.toLowerCase()

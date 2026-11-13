@@ -13,14 +13,14 @@ type Selected = {
   description?: Maybe<string>
   priority?: Maybe<Priority>
   entered?: Maybe<EnteredFinding>
-  // What to show in the chip when it is more than text, e.g. a medication with the icon of its form
-  chip?: ComponentChildren
 }
 
-export function SelectedChip<Item extends Selected>({ item, click_action, onClick }: {
+export function SelectedChip<Item extends Selected>({ item, click_action, onClick, children }: {
   item: Item
   click_action: 'remove' | 'edit'
   onClick(): void
+  // What to show in the chip when it is more than the item's text, e.g. a medication with the icon of its form
+  children?: ComponentChildren
 }) {
   return (
     <button
@@ -30,7 +30,7 @@ export function SelectedChip<Item extends Selected>({ item, click_action, onClic
       })}
       onClick={onClick}
     >
-      {item.chip || item.entered?.display || item.display_name || item.display || item.name}
+      {children || item.entered?.display || item.display_name || item.display || item.name}
       {click_action === 'edit' ? <PencilIcon className='-ml-1.5 -mr-2.5 p-0.5' /> : <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />}
     </button>
   )

@@ -181,15 +181,14 @@ describeParallel('db/models/patient_history.ts', () => {
       )
     })
 
-    itParallel('pulls in the medications the patient said they are taking due to a finding', async () => {
+    itParallel('pulls in the medications the patient said they are taking', async () => {
       const ctx = await setup()
-      const { findings } = await insertHistoryFinding(ctx, '(clinical_finding (snomed_concept "Cough" "finding"))')
-      const cough = findings.find(() => true)
-      assert(cough)
+      const { procedure_id } = await insertHistoryFinding(ctx, '(clinical_finding (snomed_concept "Cough" "finding"))')
       const { id } = await patient_medications_self_reported.insertOne(db, {
         patient_id: ctx.patient_id,
         patient_encounter_id: ctx.encounter.patient_encounter_id,
-        finding_id: cough.id,
+        patient_encounter_employee_id: ctx.encounter.employee.patient_encounter_employee_id,
+        procedure_id,
         medication_s_expression: '(medication (snomed_concept "Product containing only cetirizine" "medicinal product") ' +
           '(form (snomed_concept "Tablet" "basic dose form")) (strength 10 "mg") (dosage 1 "tablet") ' +
           '(frequency (snomed_concept "Once daily" "qualifier value")) (duration 5 "days"))',

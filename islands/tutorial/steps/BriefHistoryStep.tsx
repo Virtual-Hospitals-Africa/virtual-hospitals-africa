@@ -22,6 +22,7 @@ export function BriefHistoryStep({ sex }: Props) {
         most_recent_findings={TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS}
         additional_chronic_conditions={[]}
         existing_allergies={TUTORIAL_BRIEF_HISTORY_ALLERGIES}
+        existing_medications={[]}
         sex={sex}
         organization_id='tutorial-org'
       />

@@ -13,29 +13,29 @@ const PARENTERAL = { name: 'Parenteral', category: 'intended site' as const }
 function option(
   form: MedicinalProductOption['form'],
   route: MedicinalProductOption['route'],
-  strength: string,
+  strength: number,
   dosage_units: string,
 ): MedicinalProductOption {
   return {
     clinical_drug: { snomed_concept_id: '1', name: `${strength}mg ${form?.name}`, category: 'clinical drug' },
     form,
     route,
-    strengths: [{ value: strength, units: 'mg' }],
+    ingredients: [{ snomed_concept_id: '2', name: 'amoxicillin', category: 'substance', strength: { value: strength, units: 'mg' } }],
     dosage_units,
   }
 }
 
 // Like amoxicillin: several forms, the tablets and capsules oral, the powder injected
 const SEVERAL_FORMS = [
-  option(TABLET, ORAL, '500', 'tablet'),
-  option(TABLET, ORAL, '875', 'tablet'),
-  option(CAPSULE, ORAL, '250', 'capsule'),
-  option(CAPSULE, ORAL, '500', 'capsule'),
-  option(POWDER, PARENTERAL, '250', 'vial'),
+  option(TABLET, ORAL, 500, 'tablet'),
+  option(TABLET, ORAL, 875, 'tablet'),
+  option(CAPSULE, ORAL, 250, 'capsule'),
+  option(CAPSULE, ORAL, 500, 'capsule'),
+  option(POWDER, PARENTERAL, 250, 'vial'),
 ]
 
 // Like cetirizine tablets only: nothing to choose
-const ONE_OPTION = [option(TABLET, ORAL, '10', 'tablet')]
+const ONE_OPTION = [option(TABLET, ORAL, 10, 'tablet')]
 
 const NOTHING_CHOSEN = { form: null, strength: null, route: null }
 
@@ -49,6 +49,7 @@ function medication(overrides: Partial<Medication> = {}): Medication {
     frequency: null,
     duration: null,
     started: null,
+    taken_for: null,
     medication_id: null,
     notes: null,
     ...overrides,
@@ -60,10 +61,10 @@ describe('shared/medication_options.ts', () => {
     it('implies everything when the medicinal product comes only one way', () => {
       assertEquals(medicationChoices(ONE_OPTION, NOTHING_CHOSEN), {
         forms: [TABLET],
-        strengths: [[{ value: '10', units: 'mg' }]],
+        strengths: [[{ value: 10, units: 'mg' }]],
         routes: [ORAL],
         form: TABLET,
-        strength: [{ value: '10', units: 'mg' }],
+        strength: [{ value: 10, units: 'mg' }],
         route: ORAL,
         dosage_units: 'tablet',
       })
@@ -72,7 +73,7 @@ describe('shared/medication_options.ts', () => {
     it('offers every form, strength and route when nothing is chosen, with nothing in effect', () => {
       const choices = medicationChoices(SEVERAL_FORMS, NOTHING_CHOSEN)
       assertEquals(choices.forms, [TABLET, CAPSULE, POWDER])
-      assertEquals(choices.strengths.map(([strength]) => strength.value), ['500', '875', '250'])
+      assertEquals(choices.strengths.map(([strength]) => strength.value), [500, 875, 250])
       assertEquals(choices.routes, [ORAL, PARENTERAL])
       assertEquals([choices.form, choices.strength, choices.route, choices.dosage_units], [null, null, null, null])
     })
@@ -80,7 +81,7 @@ describe('shared/medication_options.ts', () => {
     it('narrows the strengths and route to those of the chosen form', () => {
       const choices = medicationChoices(SEVERAL_FORMS, { ...NOTHING_CHOSEN, form: 'Tablet' })
       assertEquals(choices.form, TABLET)
-      assertEquals(choices.strengths.map(([strength]) => strength.value), ['500', '875'])
+      assertEquals(choices.strengths.map(([strength]) => strength.value), [500, 875])
       assertEquals(choices.routes, [ORAL])
       assertEquals(choices.route, ORAL, 'A tablet is only taken orally, so the route is implied')
       assertEquals(choices.dosage_units, 'tablet')
@@ -88,7 +89,7 @@ describe('shared/medication_options.ts', () => {
 
     it('implies the strength and route of a form that comes in one strength', () => {
       const choices = medicationChoices(SEVERAL_FORMS, { ...NOTHING_CHOSEN, form: 'Powder' })
-      assertEquals(choices.strength, [{ value: '250', units: 'mg' }])
+      assertEquals(choices.strength, [{ value: 250, units: 'mg' }])
       assertEquals(choices.route, PARENTERAL)
       assertEquals(choices.dosage_units, 'vial')
     })
@@ -113,25 +114,25 @@ describe('shared/medication_options.ts', () => {
 
   describe('withoutImplied', () => {
     it('drops what the medicinal product implies', () => {
-      const entered = medication({ form: TABLET, route: ORAL, strengths: [{ value: '10', units: 'mg' }] })
+      const entered = medication({ form: TABLET, route: ORAL, strengths: [{ value: 10, units: 'mg' }] })
       assertEquals(withoutImplied(entered, ONE_OPTION), medication())
     })
 
     it('keeps what was a choice, dropping only the route implied by the chosen form', () => {
-      const entered = medication({ form: TABLET, route: ORAL, strengths: [{ value: '500', units: 'mg' }] })
-      assertEquals(withoutImplied(entered, SEVERAL_FORMS), medication({ form: TABLET, strengths: [{ value: '500', units: 'mg' }] }))
+      const entered = medication({ form: TABLET, route: ORAL, strengths: [{ value: 500, units: 'mg' }] })
+      assertEquals(withoutImplied(entered, SEVERAL_FORMS), medication({ form: TABLET, strengths: [{ value: 500, units: 'mg' }] }))
     })
   })
 
   describe('withImplied', () => {
     it('fills in what the medicinal product implies', () => {
-      assertEquals(withImplied(medication(), ONE_OPTION), medication({ form: TABLET, route: ORAL, strengths: [{ value: '10', units: 'mg' }] }))
+      assertEquals(withImplied(medication(), ONE_OPTION), medication({ form: TABLET, route: ORAL, strengths: [{ value: 10, units: 'mg' }] }))
     })
 
     it('fills in the route implied by the recorded form, and is the inverse of withoutImplied', () => {
-      const recorded = medication({ form: TABLET, strengths: [{ value: '500', units: 'mg' }] })
+      const recorded = medication({ form: TABLET, strengths: [{ value: 500, units: 'mg' }] })
       const in_full = withImplied(recorded, SEVERAL_FORMS)
-      assertEquals(in_full, medication({ form: TABLET, route: ORAL, strengths: [{ value: '500', units: 'mg' }] }))
+      assertEquals(in_full, medication({ form: TABLET, route: ORAL, strengths: [{ value: 500, units: 'mg' }] }))
       assertEquals(withoutImplied(in_full, SEVERAL_FORMS), recorded)
     })
 

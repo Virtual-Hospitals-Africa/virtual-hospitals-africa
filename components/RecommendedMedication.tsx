@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import { PrescriptionFrequencies } from '../shared/prescription.ts'
-import type { TimeSpecification } from '../backend/recommended_doses/shared.ts'
+import type { TimeSpecification } from '../types.ts'
 import type { AppliedDose } from '../shared/recommended_doses.ts'
 import { AwareCircle } from './library/Aware.tsx'
 

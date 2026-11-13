@@ -31,6 +31,11 @@ export function strengthsKey(strengths: MedicationMeasurement[]): string {
   return strengths.map(({ value, units }) => `${value}${units}`).join('/')
 }
 
+// What a medication records as its strength: that of each ingredient, in the options' ingredient order
+function strengthsOf(option: MedicinalProductOption): MedicationMeasurement[] {
+  return option.ingredients.map((ingredient) => ingredient.strength)
+}
+
 function distinct<T>(items: T[], key: (item: T) => string): T[] {
   const seen = new Set<string>()
   return items.filter((item) => {
@@ -76,9 +81,9 @@ export function medicationChoices(options: MedicinalProductOption[], chosen: Cho
   const form = forms.length === 1 ? forms.find(() => true)! : forms.find((candidate) => candidate.name === chosen.form) ?? null
   const of_form = form ? options.filter((option) => option.form?.name === form.name) : options
 
-  const strengths = distinct(of_form.map((option) => option.strengths).filter((option_strengths) => option_strengths.length), strengthsKey)
+  const strengths = distinct(of_form.map(strengthsOf).filter((option_strengths) => option_strengths.length), strengthsKey)
   const strength = strengths.length === 1 ? strengths.find(() => true)! : strengths.find((candidate) => strengthsKey(candidate) === chosen.strength) ?? null
-  const of_strength = strength ? of_form.filter((option) => strengthsKey(option.strengths) === strengthsKey(strength)) : of_form
+  const of_strength = strength ? of_form.filter((option) => strengthsKey(strengthsOf(option)) === strengthsKey(strength)) : of_form
 
   const routes = distinct(of_strength.map((option) => option.route).filter(present), (route) => route.name)
   const route = routes.length === 1 ? routes.find(() => true)! : routes.find((candidate) => candidate.name === chosen.route) ?? null

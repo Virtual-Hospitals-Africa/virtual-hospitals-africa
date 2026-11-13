@@ -711,3 +711,24 @@ export function idSelection(
 ): ['=' | 'in', IdSelectable] {
   return isString(id_selectable) || isExpression(id_selectable) ? ['=', id_selectable] : ['in', id_selectable]
 }
+
+export function greatest(
+  first: Expression<number>,
+  ...rest: Expression<number>[]
+): RawBuilder<number> {
+  return sql<number>`greatest(${sql.join([first, ...rest])})`
+}
+
+export function isSimilarWord(
+  ew: ExpressionWrapper<any, any, string>,
+  term: string,
+) {
+  return sql<boolean>`${term} <% ${ew}`
+}
+
+export function wordSimilarity(
+  ew: ExpressionWrapper<any, any, string>,
+  term: string,
+) {
+  return sql<number>`word_similarity(${term}, ${ew})`
+}

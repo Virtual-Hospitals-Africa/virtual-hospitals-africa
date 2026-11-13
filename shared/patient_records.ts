@@ -352,7 +352,7 @@ function medicationRecordDisplay(
   function measurements(attribute_name: string) {
     return compact(attributes.map((attribute) =>
       attribute.specific_snomed_concept_name === attribute_name && attribute.value?.type === 'measurement' &&
-      { value: String(attribute.value.value), units: attribute.value.units }
+      { value: Number(attribute.value.value), units: attribute.value.units }
     ))
   }
 
@@ -368,6 +368,7 @@ function medicationRecordDisplay(
     frequency: concept(FREQUENCY.name),
     duration: measurements(DURATION.name).find(() => true) ?? null,
     started: null,
+    taken_for: null,
     medication_id: null,
     notes: null,
   }).full

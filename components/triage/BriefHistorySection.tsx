@@ -7,6 +7,7 @@ import { AdditionalChronicConditionsMultiSelect } from '../../islands/triage/Add
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
 import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
 import { AllergiesMultiSelect } from '../../islands/triage/AllergiesMultiSelect.tsx'
+import { MedicationsSelfReported } from '../../islands/triage/MedicationsSelfReported.tsx'
 import { COMMON_CONDITIONS, CommonCondition } from '../../shared/brief_history.ts'
 import type {
   Existence,
@@ -44,10 +45,11 @@ export function CommonConditionRow(
 }
 
 export function BriefHistorySection(
-  { most_recent_findings, additional_chronic_conditions, existing_allergies, sex, organization_id }: {
+  { most_recent_findings, additional_chronic_conditions, existing_allergies, existing_medications, sex, organization_id }: {
     most_recent_findings: MostRecentBriefHistoryFindings
     additional_chronic_conditions: RenderedFindingRelativeToHealthWorker[]
     existing_allergies: RenderedFindingRelativeToHealthWorker[]
+    existing_medications: RenderedFindingRelativeToHealthWorker[]
     sex: Sex
     organization_id: string
   },
@@ -68,6 +70,14 @@ export function BriefHistorySection(
       <AdditionalChronicConditionsMultiSelect existing_conditions={additional_chronic_conditions} organization_id={organization_id} />
       <AllergiesMultiSelect
         existing_allergies={existing_allergies}
+        organization_id={organization_id}
+      />
+      <MedicationsSelfReported
+        existing_medications={existing_medications}
+        existing_conditions={additional_chronic_conditions.map((condition) => ({
+          name: condition.specific_snomed_concept_name,
+          category: condition.specific_snomed_concept_category,
+        }))}
         organization_id={organization_id}
       />
     </div>

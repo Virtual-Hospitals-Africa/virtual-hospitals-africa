@@ -1,18 +1,23 @@
 import { Signal, useComputed, useSignal, useSignalEffect } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
-import { assert } from 'std/assert/assert.ts'
+import z from 'zod'
 import AsyncSearch from '../AsyncSearch.tsx'
+import { MostRecentRecord } from '../MostRecentRecord.tsx'
 import { Button } from '../../components/library/Button.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { Label } from '../../components/library/Label.tsx'
 import { PlusIcon, XMarkIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import { medicationFormIcon } from '../../components/library/icons/medication_forms.tsx'
 import { Select } from '../form/inputs/select.tsx'
 import { TextInput } from '../form/inputs/text.tsx'
 import { DateInput } from '../form/inputs/date.tsx'
 import { TextArea } from '../form/inputs/textarea.tsx'
-import type { MedicinalProductOption, MedicinalProductSearchResult } from '../../types.ts'
-import { DURATION_UNITS, Medication, medicationDisplay, medicationToSExpression, parseMedicationSExpression } from '../../shared/medication_s_expression.ts'
+import type { MedicinalProductOption, MedicinalProductSearchResult, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import { DURATION_UNITS, Medication, medicationDisplay, MedicationSnomedConcept, medicationToSExpression } from '../../shared/medication_s_expression.ts'
 import { MEDICATION_FREQUENCIES, medicationChoices, strengthsKey, withImplied, withoutImplied } from '../../shared/medication_options.ts'
+import { COMMON_CONDITIONS } from '../../shared/brief_history.ts'
 import { DOSAGES } from '../../shared/prescription.ts'
+import { snomed_category } from '../../util/validators.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import compact from '../../util/compact.ts'
@@ -68,6 +73,39 @@ function useOptions(medicinal_product_name: string): Signal<MedicinalProductOpti
 }
 
 /*
+  A condition the patient has, which a medication may be taken for. A medication can only be
+  for a condition on record, so these are the conditions the brief history page is recording:
+  the common conditions answered Yes, and the additional chronic conditions, whether recorded
+  before or selected just now. Those live in other inputs of the page's form, so they are read
+  from it.
+*/
+type TakenForOption = MedicationSnomedConcept & { label: string }
+
+const SelectedConditions = z.array(z.object({ name: z.string(), category: snomed_category }))
+
+function conditionsOnPage(existing_conditions: MedicationSnomedConcept[]): TakenForOption[] {
+  if (typeof document === 'undefined') return []
+
+  const common: TakenForOption[] = COMMON_CONDITIONS
+    .filter((condition) => document.querySelector<HTMLInputElement>(`input[name="common_conditions.${condition.key}.existence"][value="Yes"]`)?.checked)
+    .map((condition) => ({ name: condition.name, category: condition.category, label: condition.label }))
+
+  // The multi select writes what is selected into one hidden input as a JSON array
+  const selected_json = document.querySelector<HTMLInputElement>('input[type="hidden"][name="additional_chronic_conditions"]')?.value
+  const selected = SelectedConditions.safeParse(selected_json?.startsWith('[') ? JSON.parse(selected_json) : [])
+  const additional = [...existing_conditions, ...(selected.success ? selected.data : [])]
+    .map(({ name, category }) => ({ name, category, label: name }))
+
+  const seen = new Set<string>()
+  return [...common, ...additional].filter(({ name, category }) => {
+    const key = `${category}:${name}`
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+/*
   A medication in the search box. Straight from the search it has no medication yet: it is
   picked, and what the health worker enters in the panel makes it one.
 */
@@ -75,7 +113,6 @@ type AddedMedication = {
   id: string
   name: string
   medication: Medication
-  chip: preact.ComponentChildren
 }
 
 type Picked = {
@@ -108,12 +145,16 @@ function MedicationPill({ medication }: { medication: Medication }) {
   )
 }
 
+function SelectedMedication({ item }: { item: SearchItem }) {
+  // Only added medications stay selected: a pick is taken straight back out and opened in the panel
+  return isAdded(item) ? <MedicationPill medication={item.medication} /> : <span>{item.name}</span>
+}
+
 function asAdded(medication: Medication): AddedMedication {
   return {
     id: crypto.randomUUID(),
     name: medicationDisplay(medication).short,
     medication,
-    chip: <MedicationPill medication={medication} />,
   }
 }
 
@@ -135,8 +176,9 @@ function pluralize(units: string, value: string) {
   The details of a picked medication. A detail the medicinal product leaves no choice about
   (its only form, say) is shown, not asked, and not recorded. Everything asked is optional.
 */
-function MedicationPanel({ picked, onChange, onAdd, onRemove }: {
+function MedicationPanel({ picked, existing_conditions, onChange, onAdd, onRemove }: {
   picked: Picked
+  existing_conditions: MedicationSnomedConcept[]
   // Called with the medication as currently entered: once shown and again on every edit
   onChange(medication: Medication): void
   onAdd(medication: Medication): void
@@ -151,24 +193,37 @@ function MedicationPanel({ picked, onChange, onAdd, onRemove }: {
   const duration = useSignal<number | string>('')
   const duration_units = useSignal<string>('days')
   const started = useSignal('')
+  const taken_for = useSignal('')
   const notes = useSignal('')
   const collapsing = useSignal(false)
+
+  // The conditions are in other inputs of the form, so they are read again whenever one changes
+  const conditions = useSignal<TakenForOption[]>([])
+  const readConditions = () => conditions.value = conditionsOnPage(existing_conditions)
+  useEffect(() => {
+    readConditions()
+    document.addEventListener('change', readConditions)
+    return () => document.removeEventListener('change', readConditions)
+  }, [])
 
   const choices = useComputed(() => medicationChoices(options.value ?? [], { form: form.value, strength: strength.value, route: route.value }))
   const dosage_units = useComputed(() => choices.value.dosage_units ?? 'dose')
 
   const medication = useComputed((): Medication => {
     const frequency_concept = MEDICATION_FREQUENCIES.find((concept) => concept.name === frequency.value)
+    // A condition since answered No or removed is no longer one the medication can be taken for
+    const taken_for_condition = conditions.value.find((condition) => condition.name === taken_for.value)
     const duration_value = String(duration.value).trim()
     const entered: Medication = {
       snomed_concept: { name: picked.medicinal_product_name, category: 'medicinal product' },
       form: choices.value.form,
       route: choices.value.route,
       strengths: choices.value.strength ?? [],
-      dosage: dosage.value ? { value: dosage.value, units: dosage_units.value } : null,
+      dosage: dosage.value ? { value: parseFloat(dosage.value), units: dosage_units.value } : null,
       frequency: frequency_concept ? { name: frequency_concept.name, category: frequency_concept.category } : null,
-      duration: /^\d+$/.test(duration_value) && parseInt(duration_value) > 0 ? { value: duration_value, units: duration_units.value } : null,
+      duration: /^\d+$/.test(duration_value) && parseInt(duration_value) > 0 ? { value: parseInt(duration_value), units: duration_units.value } : null,
       started: started.value || null,
+      taken_for: taken_for_condition ? { name: taken_for_condition.name, category: taken_for_condition.category } : null,
       medication_id: picked.medication_id,
       notes: notes.value.trim() || null,
     }
@@ -179,7 +234,7 @@ function MedicationPanel({ picked, onChange, onAdd, onRemove }: {
     onChange(medication.value)
   })
 
-  // Brought into view when picked, as the modal may be scrolled such that it is out of sight
+  // Brought into view when picked, as it may open below the fold
   const panel_ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     panel_ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -198,8 +253,8 @@ function MedicationPanel({ picked, onChange, onAdd, onRemove }: {
       ref={panel_ref}
       id='medication-panel'
       className={cls(
-        'flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 origin-top transition-all ease-in',
-        collapsing.value ? 'max-h-0 scale-y-0 opacity-0 overflow-hidden !p-0 !border-0' : 'max-h-[60rem] opacity-100',
+        'mt-2 flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 origin-top transition-all ease-in',
+        collapsing.value ? 'max-h-0 scale-y-0 opacity-0 overflow-hidden !p-0 !border-0' : 'max-h-[70rem] opacity-100',
       )}
       style={{ transitionDuration: `${COLLAPSE_MILLISECONDS}ms` }}
     >
@@ -298,6 +353,20 @@ function MedicationPanel({ picked, onChange, onAdd, onRemove }: {
       </div>
 
       <DateInput name={null} label='Start date' signal={started} max={new Date().toISOString().slice(0, 10)} />
+
+      <Select
+        id='medication-panel-taken-for'
+        name={null}
+        label='Taken for'
+        disabled={!conditions.value.length}
+        onChange={(event) => taken_for.value = event.currentTarget.value}
+      >
+        <option value=''>{conditions.value.length ? 'Select condition' : 'No conditions recorded above'}</option>
+        {conditions.value.map((condition) => (
+          <option key={condition.name} value={condition.name} selected={taken_for.value === condition.name}>{condition.label}</option>
+        ))}
+      </Select>
+
       <TextArea name={null} label='Notes' signal={notes} rows={2} />
 
       <div className='flex justify-end'>
@@ -325,21 +394,21 @@ function asPicked(result: MedicinalProductSearchResult): Picked {
 }
 
 /*
-  The medications a patient is taking due to the finding. Searching picks a medication, opening a
-  panel below the search box for its details; adding it collapses the panel into a pill in the
-  search box, where more can be searched for. A medication still in the panel when the finding
-  is saved is saved as entered so far: the health worker picked it, so it is not dropped.
+  The medications a patient says they are taking. Searching picks a medication, opening a panel
+  below the search box for its details; adding it collapses the panel into a pill in the search
+  box, where more can be searched for. A medication still in the panel when the page is
+  submitted is submitted as entered so far: the health worker picked it, so it is not dropped.
+
+  Submitted as medication_s_expressions, a JSON array of (medication ...) s-expressions,
+  see shared/medication_s_expression.ts. Medications recorded before are listed, not resubmitted.
 */
-export function Medications({ initial, onChange }: {
-  // (medication ...) s-expressions, see shared/medication_s_expression.ts
-  initial: string[]
-  onChange(medication_s_expressions: string[]): void
+export function MedicationsSelfReported({ existing_medications, existing_conditions, organization_id }: {
+  existing_medications: RenderedFindingRelativeToHealthWorker[]
+  // The additional chronic conditions already on record, which a medication may be taken for
+  existing_conditions: MedicationSnomedConcept[]
+  organization_id: string
 }) {
-  const items = useSignal<SearchItem[]>(initial.map((medication_s_expression) => {
-    const parsed = parseMedicationSExpression(medication_s_expression)
-    assert(parsed.ok, parsed.ok ? '' : parsed.error)
-    return asAdded(parsed.value)
-  }))
+  const items = useSignal<SearchItem[]>([])
   const picked = useSignal<Picked | null>(null)
   const in_panel = useSignal<Medication | null>(null)
 
@@ -353,27 +422,33 @@ export function Medications({ initial, onChange }: {
     in_panel.value = null
   })
 
-  useSignalEffect(() => {
+  const medication_s_expressions = useComputed(() => {
     const added = items.value.filter(isAdded).map((item) => item.medication)
-    onChange(compact([...added, in_panel.value]).map(medicationToSExpression))
+    return compact([...added, in_panel.value]).map(medicationToSExpression)
   })
 
+  const placeholder = existing_medications.length ? 'No new medications selected' : 'No medications selected'
+
   return (
-    <div className='flex flex-col gap-2' id='finding-medications'>
-      <h3 className='text-sm font-semibold text-gray-900'>Medications</h3>
-      <AsyncSearch<SearchItem>
-        multi
-        search_route={search_route}
-        signal={items}
-        placeholder='Search for a medication...'
-        option_description_field='description'
-        skip_blank_search
-      />
+    <div id='medications-self-reported'>
+      <Label label='Medications'>
+        <AsyncSearch<SearchItem>
+          multi
+          skip_blank_search
+          search_route={search_route}
+          placeholder={placeholder}
+          signal={items}
+          option_description_field='description'
+          SelectedContent={SelectedMedication}
+        />
+      </Label>
+      {medication_s_expressions.value.length > 0 && <HiddenInput name='medication_s_expressions' value={medication_s_expressions.value} />}
       {picked.value && (
         <MedicationPanel
           // A panel per pick, so picking another medication starts from blank
           key={`${picked.value.medicinal_product_name}:${picked.value.medication_id}`}
           picked={picked.value}
+          existing_conditions={existing_conditions}
           onChange={(medication) => in_panel.value = medication}
           onAdd={(medication) => {
             items.value = [...items.value, asAdded(medication)]
@@ -385,6 +460,11 @@ export function Medications({ initial, onChange }: {
             in_panel.value = null
           }}
         />
+      )}
+      {existing_medications.length > 0 && (
+        <div class='pl-1 pt-2 flex flex-col gap-2'>
+          {existing_medications.map((medication) => <MostRecentRecord key={medication.id} record={medication} organization_id={organization_id} />)}
+        </div>
       )}
     </div>
   )

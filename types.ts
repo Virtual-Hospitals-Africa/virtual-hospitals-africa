@@ -2709,6 +2709,11 @@ export type MedicinalProductSearchResult = {
   snomed_concept: RenderedSnomedConcept
   medication_id: string | null
   brand_name: string | null
+  similarity?: any
+}
+
+export type MedicinalProductOptionIngredient = RenderedSnomedConcept & {
+  strength: MedicationMeasurement
 }
 
 // One precise form of a medicinal product, from a clinical drug descended from it
@@ -2716,13 +2721,14 @@ export type MedicinalProductOption = {
   clinical_drug: RenderedSnomedConcept
   form: { name: string; category: SnomedCategory } | null
   route: { name: string; category: SnomedCategory } | null
-  // One per active ingredient, ordered by the ingredient's name
-  strengths: MedicationMeasurement[]
+  // The active ingredients, ordered by name, each with its own strength in this clinical drug
+  ingredients: MedicinalProductOptionIngredient[]
   // What a single dose is counted in, e.g. "tablet" or "mL"
   dosage_units: string | null
+  per_time?: ExactTimeSpecification | null
 }
 
-// A medication the patient told us they are taking on account of some finding.
+// A medication the patient told us they are taking.
 // See db/models/patient_medications_self_reported.ts
 export type RenderedSelfReportedMedication = {
   id: string
@@ -2734,9 +2740,11 @@ export type RenderedSelfReportedMedication = {
   display: MedicationDisplay
   // The trade name of the manufactured medication, when one was picked
   brand_name: string | null
-  due_to: {
-    finding_id: string
+  // The record of the condition the patient takes it for, when they said and it still stands
+  due_to: null | {
+    record_id: string
     name: string
+    category: SnomedCategory
   }
 }
 
@@ -2906,9 +2914,6 @@ export type EnteredFinding = {
   s_expression: string
   display: string
   priority?: Maybe<Priority>
-  // The medications the patient is taking due to this finding, each a (medication ...)
-  // s-expression in normal form. See shared/medication_s_expression.ts
-  medication_s_expressions?: string[]
 }
 
 export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | FindingSiteSign | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
@@ -3438,6 +3443,19 @@ export type RecommendedMedicineGroup = {
     form_route: string
     options: RecommendedMedicineOption[]
   }[]
+}
+
+export type PerSize = 'kg' | 'm2' | { kg: number }
+
+export type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
+
+export type TimeSpecification = {
+  value: number | [min: number, max: number]
+  units: TimeUnit
+}
+
+export type ExactTimeSpecification = TimeSpecification & {
+  value: number
 }
 
 export type RecommendedMedicineOptionWithPermissions = {

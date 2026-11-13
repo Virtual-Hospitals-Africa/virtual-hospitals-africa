@@ -21,12 +21,16 @@ import { Maybe } from '../types.ts'
     (frequency (snomed_concept "Once daily" "qualifier value"))
     (duration 5 "days")
     (started "2026-11-01")
+    (taken_for (snomed_concept "Seasonal allergic rhinitis" "disorder"))
     (medication_id "0b9e4f0e-...")
     (notes "Taken at night"))
 
   Only the medicinal product is required. Everything after it is optional and may appear in any
   order; form, route and strength are omitted when the medicinal product implies them.
   strength may repeat, once per active ingredient, in the order the product names them.
+  taken_for names what the patient has that they take the medication for: a condition they are
+  recorded as having. It is not an attribute of the medication but a "Due to" relation to the
+  record of that condition.
 */
 
 export type MedicationSnomedConcept = {
@@ -35,21 +39,25 @@ export type MedicationSnomedConcept = {
 }
 
 export type MedicationMeasurement = {
-  // A positive decimal, kept as the string the user entered
-  value: string
+  // A positive number
+  value: number
   units: string
 }
+
+export type MedicationStrength = MedicationMeasurement
 
 export type Medication = {
   snomed_concept: MedicationSnomedConcept
   form: MedicationSnomedConcept | null
   route: MedicationSnomedConcept | null
-  strengths: MedicationMeasurement[]
+  strengths: MedicationStrength[]
   dosage: MedicationMeasurement | null
   frequency: MedicationSnomedConcept | null
   duration: MedicationMeasurement | null
   // YYYY-MM-DD
   started: string | null
+  // The condition the patient takes it for, when they said
+  taken_for: MedicationSnomedConcept | null
   // The manufactured (brand) medication, medications.id, when one was picked
   medication_id: string | null
   notes: string | null
@@ -86,12 +94,15 @@ function parseSnomedConcept(tree: Maybe<Tree>): Parsed<MedicationSnomedConcept> 
 
 function parseMeasurement(atom: string, args: Tree[]): Parsed<MedicationMeasurement> {
   const [value_tree, units_tree, ...rest] = args
-  const value = leaf(value_tree)
+  const value_string = leaf(value_tree)
   const measurement_units = leaf(units_tree)
-  if (!value || !positive_decimal.test(value) || !(parseFloat(value) > 0) || !measurement_units || !units.test(measurement_units) || rest.length) {
+  if (
+    !value_string || !positive_decimal.test(value_string) || !(parseFloat(value_string) > 0) || !measurement_units ||
+    !units.test(measurement_units) || rest.length
+  ) {
     return fail(`Expected (${atom} <positive number> "<units>")`)
   }
-  return ok({ value, units: measurement_units })
+  return ok({ value: parseFloat(value_string), units: measurement_units })
 }
 
 function parseString(atom: string, args: Tree[], pattern?: RegExp): Parsed<string> {
@@ -126,6 +137,7 @@ export function parseMedicationSExpression(expression: string): Parsed<Medicatio
     frequency: null,
     duration: null,
     started: null,
+    taken_for: null,
     medication_id: null,
     notes: null,
   }
@@ -142,7 +154,8 @@ export function parseMedicationSExpression(expression: string): Parsed<Medicatio
     switch (child_atom) {
       case 'form':
       case 'route':
-      case 'frequency': {
+      case 'frequency':
+      case 'taken_for': {
         const [concept_tree, ...extra] = args
         const concept = parseSnomedConcept(concept_tree)
         if (!concept.ok) return concept
@@ -212,6 +225,7 @@ export function medicationToSExpression(medication: Medication): string {
     medication.frequency && `(frequency ${conceptToString(medication.frequency)})`,
     medication.duration && measurementToString('duration', medication.duration),
     medication.started && `(started ${quote(medication.started)})`,
+    medication.taken_for && `(taken_for ${conceptToString(medication.taken_for)})`,
     medication.medication_id && `(medication_id ${quote(medication.medication_id)})`,
     medication.notes && `(notes ${quote(medication.notes)})`,
   ])
@@ -243,7 +257,7 @@ function measurementDisplay({ value, units }: MedicationMeasurement, separator =
 
 function pluralized({ value, units }: MedicationMeasurement): string {
   const singular = units.replace(/s$/, '')
-  return `${value} ${parseFloat(value) === 1 ? singular : singular + 's'}`
+  return `${value} ${value === 1 ? singular : singular + 's'}`
 }
 
 export type MedicationDisplay = {
