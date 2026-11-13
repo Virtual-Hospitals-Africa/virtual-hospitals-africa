@@ -10,7 +10,7 @@ import { Maybe, Priority, RenderedEmployeeWithPresenceAndSeniority, RenderedOrga
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { ReferPostBody, ReferPostResponse } from '../../shared/refer_post.ts'
 import { ReferralRecipients } from '../referral/ReferralRecipients.tsx'
-import { SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
+import { SIDE_PANEL_BACKDROP_CLASS, SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
 import cls from '../../util/cls.ts'
 
 type PriorityEscalationPanelProps = {
@@ -76,8 +76,9 @@ const SELECTED_ACTION_CARD_CLASS =
   position and width (components/library/layout/side_panels.ts). That column
   also keeps this panel's inputs outside the workflow's form.
 
-  Below md that column is only the sliver left of the desktop drawer, so the
-  panel is taken out of it and shown as a dialog over the page.
+  Below md the column is the dialog frame. This panel fills it on its own.
+  When follow-ups is open too, it keeps only the height of its content and
+  leaves the rest of the frame to that panel (static/styles.css).
 */
 export function PriorityEscalationPanel(
   { priority, open, escalation_candidates, nearest_hospital, refer_route, onClose }: PriorityEscalationPanelProps,
@@ -146,18 +147,12 @@ export function PriorityEscalationPanel(
 
   return createPortal(
     <>
-      <div className='pointer-events-auto fixed inset-0 z-40 bg-gray-500/75 md:hidden' aria-hidden='true' />
+      <div className={SIDE_PANEL_BACKDROP_CLASS} aria-hidden='true' />
       <div
         id='priority-escalation-panel'
         role='dialog'
         aria-labelledby='priority-escalation-panel-title'
-        className={cls(
-          SIDE_PANEL_CLASS,
-          'shrink-0',
-          SIDE_PANEL_ORDER.priority_escalation,
-          'max-md:fixed! max-md:inset-x-4! max-md:z-50 max-md:h-auto! max-md:w-[calc(100vw-2rem)]! max-md:max-w-none! max-md:overflow-hidden',
-          'max-md:top-[max(1.5rem,env(safe-area-inset-top))]! max-md:bottom-[max(1.5rem,env(safe-area-inset-bottom))]!',
-        )}
+        className={cls(SIDE_PANEL_CLASS, 'shrink-0', SIDE_PANEL_ORDER.priority_escalation)}
       >
         <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3 max-md:relative max-md:justify-center max-md:px-6 max-md:pt-8 max-md:pb-4'>
           <h2 id='priority-escalation-panel-title' className='text-lg font-bold text-gray-900 max-md:px-8 max-md:text-center max-md:text-xl max-md:leading-7'>
@@ -172,7 +167,7 @@ export function PriorityEscalationPanel(
             <XMarkIcon className='h-5 w-5' />
           </button>
         </div>
-        <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4 max-md:min-w-0 max-md:flex-1 max-md:overflow-x-hidden max-md:px-6 max-md:pb-4'>
+        <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4 max-md:min-w-0 max-md:flex-auto max-md:overflow-x-hidden max-md:px-6 max-md:pb-4'>
           <div className='text-sm text-gray-900'>
             Priority: {priority}
           </div>
