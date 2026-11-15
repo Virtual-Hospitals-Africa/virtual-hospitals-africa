@@ -24,7 +24,7 @@ import { pMap } from '../../util/inParallel.ts'
 import entries from '../../util/entries.ts'
 
 type Display = {
-  display_name: string
+  display: string
   description: string
   avatar_url?: Maybe<string>
 }
@@ -116,37 +116,37 @@ const TARGET_DISPLAYS = {
   },
   organization(entity: RenderedOrganization): Display {
     return {
-      display_name: entity.name,
+      display: entity.name,
       description: entity.formatted_address!,
     }
   },
   role(entity: string): Display {
     return {
-      display_name: `All ${pluralize(entity, 2)}`,
+      display: `All ${pluralize(entity, 2)}`,
       description: 'Profession',
     }
   },
   organization_category(entity: string): Display {
     return {
-      display_name: `All ${pluralize(entity, 2)}`,
+      display: `All ${pluralize(entity, 2)}`,
       description: 'Facility Category',
     }
   },
   locality(entity: string): Display {
     return {
-      display_name: entity,
+      display: entity,
       description: 'City / Town',
     }
   },
   administrative_area_level_1(entity: string): Display {
     return {
-      display_name: entity,
+      display: entity,
       description: 'Province',
     }
   },
   administrative_area_level_2(entity: string): Display {
     return {
-      display_name: entity,
+      display: entity,
       description: 'District',
     }
   },

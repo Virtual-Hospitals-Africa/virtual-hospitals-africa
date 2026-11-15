@@ -25,7 +25,7 @@ export const handler = postHandler(
 
     // const patient_name = preferredName(encounter.patient, 'patient')
 
-    const { display_name } = employeeDisplay(employee)
+    const { display } = employeeDisplay(employee)
 
     const patient_link = selfUrl() + `/app/patients/${patient_id}`
 
@@ -39,7 +39,7 @@ export const handler = postHandler(
     )
 
     const google_meet = await google_client.createGoogleMeet({
-      summary: `${consultation_text} with ${display_name}`,
+      summary: `${consultation_text} with ${display}`,
       description: `Concerning patient ${patient_link}`,
     })
 

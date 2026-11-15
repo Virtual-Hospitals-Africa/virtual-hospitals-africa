@@ -9,5 +9,5 @@ export const handler = () => new Response('TODO')
 // }
 
 // export default ExaminationPage((ctx) => {
-//   return <p>TODO {ctx.state.current_examination!.display_name}</p>
+//   return <p>TODO {ctx.state.current_examination!.display}</p>
 // })

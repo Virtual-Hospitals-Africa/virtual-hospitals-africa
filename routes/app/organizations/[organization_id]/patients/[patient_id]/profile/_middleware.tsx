@@ -125,7 +125,7 @@ export const PatientProfilePage = (
                           title={`View details of Dr. ${primary_doctor.name}`}
                           className='text-blue-600 hover:underline'
                         >
-                          {employeeDisplay(primary_doctor).display_name}
+                          {employeeDisplay(primary_doctor).display}
                         </a>
                       )}
                       {nearest_organization && (

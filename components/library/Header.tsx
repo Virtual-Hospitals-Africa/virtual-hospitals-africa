@@ -13,7 +13,7 @@ export type HeaderProps = {
   avatar_url?: Maybe<string>
   mobile_account?: {
     avatar_url: Maybe<string>
-    display_name: string
+    display: string
     description: string
     profile_href: string
   }

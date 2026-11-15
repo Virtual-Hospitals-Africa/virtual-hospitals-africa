@@ -6,7 +6,7 @@ export function BaseOption<
   T extends {
     id?: string
     name?: Maybe<string>
-    display_name?: Maybe<string>
+    display?: Maybe<string>
     description?: Maybe<string> | Maybe<Array<string>>
     avatar_url?: Maybe<string>
   },
@@ -36,7 +36,7 @@ export function BaseOption<
   const name = option_name_field
     // deno-lint-ignore no-explicit-any
     ? (option as any)[option_name_field]
-    : option.display_name || option.name
+    : option.display || option.name
 
   const description = option_description_field
     // deno-lint-ignore no-explicit-any

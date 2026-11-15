@@ -60,7 +60,7 @@ export function healthWorkerDisplayInner({
     assert(role === 'doctor')
     return {
       avatar_url,
-      display_name: 'Dr. ' + health_worker_name,
+      display: 'Dr. ' + health_worker_name,
       description: is_admin ? `${specialty}, Administrator` : specialty,
     }
   }
@@ -69,7 +69,7 @@ export function healthWorkerDisplayInner({
     if (role === 'admin') {
       return {
         avatar_url,
-        display_name: health_worker_name,
+        display: health_worker_name,
         description: 'Administrator',
       }
     }
@@ -78,7 +78,7 @@ export function healthWorkerDisplayInner({
     if (role === 'receptionist') {
       return {
         avatar_url,
-        display_name: health_worker_name,
+        display: health_worker_name,
         description: 'Administrator',
       }
     }
@@ -88,7 +88,7 @@ export function healthWorkerDisplayInner({
     // For nurses, administrator goes in front
     return {
       avatar_url,
-      display_name: health_worker_name,
+      display: health_worker_name,
       description: `Administrator, ${specialty} nurse`,
     }
   }
@@ -100,7 +100,7 @@ export function healthWorkerDisplayInner({
     assert(!specialty)
     return {
       avatar_url,
-      display_name: health_worker_name,
+      display: health_worker_name,
       description: 'Receptionist',
     }
   }
@@ -108,7 +108,7 @@ export function healthWorkerDisplayInner({
   if (role === 'pharmacist') {
     return {
       avatar_url,
-      display_name: health_worker_name,
+      display: health_worker_name,
       description: 'Pharmacist',
     }
   }
@@ -118,7 +118,7 @@ export function healthWorkerDisplayInner({
 
   return {
     avatar_url,
-    display_name: health_worker_name,
+    display: health_worker_name,
     description: `${specialty} nurse`,
   }
 }
