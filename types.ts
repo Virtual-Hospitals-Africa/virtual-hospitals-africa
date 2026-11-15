@@ -3398,6 +3398,19 @@ export type RecommendedMedicineOptionWithPermissions = {
   permissions: TaskPermissions
 }
 
+export type PerSize = 'kg' | 'm2' | { kg: number }
+
+export type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
+
+export type TimeSpecification = {
+  value: number | [min: number, max: number]
+  units: TimeUnit
+}
+
+export type ExactTimeSpecification = TimeSpecification & {
+  value: number
+}
+
 export type MedicineGroupWithPermissions = {
   name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
