@@ -1,4 +1,4 @@
-identifier	display_name	consultation_step	slug	path	order
+identifier	display	consultation_step	slug	path	order
 head_to_toe_assessment_general	Head-to-toe Assessment (General)	general_assessments	general	/general_assessments/general	1
 head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	general_assessments	skin	/general_assessments/skin	2
 head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	general_assessments	head_and_neck	/general_assessments/head_and_neck	3

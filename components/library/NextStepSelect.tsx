@@ -25,7 +25,7 @@ export function NextStepSelect(
     onSelect(next_step: TriageRoutePatientNextStep): void
   },
 ) {
-  const staff = new Intl.ListFormat('en').format(to_be_notified.map(employeeDisplay).map((e) => e.display_name)) || 'staff'
+  const staff = new Intl.ListFormat('en').format(to_be_notified.map(employeeDisplay).map((e) => e.display)) || 'staff'
   const no_approval_needed = tasks_with_permissions.filter((task) => task.permissions.type === 'no_approval_needed')
 
   const recommended = (

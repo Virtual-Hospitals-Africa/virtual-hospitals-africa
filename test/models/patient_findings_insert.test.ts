@@ -24,7 +24,7 @@ const BITE_WOUND_S_EXPRESSION = normalForm('(clinical_finding (snomed_concept "B
 const COUGH_S_EXPRESSION = normalForm('(clinical_finding (snomed_concept "Cough" "finding"))')
 const CONSTIPATION_FINDING = normalForm('(clinical_finding (snomed_concept "Constipation" "finding"))')
 const FEVER_S_EXPRESSION = normalForm('(clinical_finding (snomed_concept "Fever" "finding"))')
-const CONSTIPATION_ONSET_S_EXPRESSION = `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`
+const CONSTIPATION_ONSET_S_EXPRESSION = `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`
 const LOW_RESPIRATORY_RATE_S_EXPRESSION = `(< (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 9)`
 
 const RESPIRATORY_RATE_8 = `(= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 8)`

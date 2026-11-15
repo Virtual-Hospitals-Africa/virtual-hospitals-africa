@@ -24,7 +24,7 @@ function hasId(value: unknown): value is { id: string } {
 export type OptionLike = {
   id?: string
   name?: Maybe<string>
-  display_name?: Maybe<string>
+  display?: Maybe<string>
 }
 
 export type SearchPropsCommon<
@@ -63,6 +63,8 @@ export type SearchPropsCommon<
   placeholder?: string
   skip_blank_search?: boolean
   include_hidden_input_fields?: string[]
+  // For a multi search, what to show in the chip of a selected item when it is more than its text
+  SelectedContent?(props: { item: T }): JSX.Element
 }
 
 type SearchOptionsProps<T> = {
@@ -132,6 +134,7 @@ export default function Search<
   placeholder = '',
   skip_blank_search,
   include_hidden_input_fields,
+  SelectedContent,
   ...props
 }: SearchProps<T>) {
   if (multi) {
@@ -157,7 +160,7 @@ export default function Search<
   const add_option = {
     id: just_name ? query : 'add' as const,
     name: query,
-    display_name: formatDisplay(query),
+    display: formatDisplay(query),
   } as unknown as T
   const all_options = [...options]
   if (
@@ -253,7 +256,9 @@ export default function Search<
                         selected,
                       )
                     }}
-                  />
+                  >
+                    {SelectedContent && <SelectedContent item={selected} />}
+                  </SelectedChip>
                 ))}
                 <ComboboxInput
                   ref={input_ref}

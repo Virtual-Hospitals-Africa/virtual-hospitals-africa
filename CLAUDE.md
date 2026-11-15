@@ -36,6 +36,7 @@ deno task db:codegen               # Regenerate db.d.ts types
 - **Runtime**: Deno 2.8.0 (not Node.js)
 - **Frontend**: Fresh 2 + Preact + Signals, Tailwind
 - **Database**: PostgreSQL 16 + Kysely
+- **Queries**: Write queries with the Kysely query builder (`selectFrom`, `innerJoin`, `where`, `eb.fn`, `with`, `unionAll`, `distinctOn`...). Only drop into raw `` sql`...` `` for the piece Kysely has no builder for (e.g. the trigram `<%` operator or `word_similarity`), and keep that fragment as small as possible rather than writing the whole query in it.
 - **Naming**: `snake_case` for data, `camelCase` for functions, `PascalCase` for types
 - **Testing**: Database-first (only mock `external-clients/`)
 - **Migrations**: OK to modify existing migrations (no live users yet)

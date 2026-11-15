@@ -43,7 +43,8 @@ export async function up(db: Kysely<DB>) {
             col.references('snomed_concept.id').onDelete(
               'cascade',
             ),
-        ),
+        )
+        .addColumn('notes', 'text'),
   )
 
   await createPointerTable(
@@ -83,8 +84,19 @@ export async function up(db: Kysely<DB>) {
           'cascade',
         )))
 
+  // A medication the patient is taking or should be taking. The same id is also in
+  // patient_findings when self-reported (the patient told us they are taking it) or, in future,
+  // patient_evaluations (a clinician believes they should be taking it).
+  // medication_id is the specific manufactured (brand) medication, when known.
+  await createPointerTable(db, 'patient_medications', {
+    references: 'patient_records',
+    primary_key_type: 'uuid',
+  }, (qb) => qb.addColumn('medication_id', 'uuid', (col) => col.references('medications.id').onDelete('cascade')))
+
+  // Measurements point at patient_records, not patient_findings, so that an attribute of a record
+  // (e.g. the dosage of a medication) can be a measurement without itself being a finding.
   await createPointerTable(db, 'patient_measurements', {
-    references: 'patient_findings',
+    references: 'patient_records',
     primary_key_type: 'uuid',
   }, (qb) =>
     qb.addColumn('value', 'decimal', (col) => col.notNull())
@@ -336,6 +348,7 @@ export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_finding_media_images').execute()
   await db.schema.dropTable('patient_symptoms').execute()
   await db.schema.dropTable('patient_measurements').execute()
+  await db.schema.dropTable('patient_medications').execute()
   await db.schema.dropTable('patient_chief_complaints').execute()
   await db.schema.dropTable('patient_findings').execute()
   await db.schema.dropTable('patient_procedures').execute()

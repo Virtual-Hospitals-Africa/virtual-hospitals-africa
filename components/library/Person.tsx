@@ -16,10 +16,10 @@ export type PersonData =
   & (
     {
       name: string
-      display_name?: Maybe<string>
+      display?: Maybe<string>
     } | {
       name?: Maybe<string>
-      display_name: string
+      display: string
     }
   )
 
@@ -59,7 +59,7 @@ export function Person(
       )}
       <div className={cls('flex flex-col', bold && 'font-bold')}>
         <div className='person-name text-xs'>
-          {person.display_name || person.name}
+          {person.display || person.name}
         </div>
         {person.description && (
           <div className='font-normal capitalize text-xs text-gray-500'>

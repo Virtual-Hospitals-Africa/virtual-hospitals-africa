@@ -36,6 +36,7 @@ import type { WarningSignKey } from './shared/warning_signs.ts'
 import type { Decimal } from './util/decimal.ts'
 import type { Lang, QueryableEvidenceNode } from './shared/s_expression_schemas.ts'
 import type { PrescriptionFrequency } from './shared/prescription.ts'
+import type { MedicationDisplay, MedicationMeasurement } from './shared/medication_s_expression.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { TriageRoutePatientNextStep } from './shared/triage_route_patient.ts'
 import { AppliedDose, Medicine, ParsedPatientCase } from './shared/recommended_doses.ts'
@@ -2049,7 +2050,7 @@ export type RenderedPatientExamination = {
   examination_identifier: string
   consultation_step: string
   slug: string
-  display_name: string
+  display: string
   completed: SqlBool | null
   skipped: SqlBool | null
   ordered: SqlBool | null
@@ -2212,7 +2213,7 @@ export type RenderedMessageThreadParticipant = {
   participant_id: string
   avatar_url?: Maybe<string>
   href: string
-  display_name: string
+  display: string
   description: string | string[]
   is_me: SqlBool
   is_system?: false
@@ -2220,7 +2221,7 @@ export type RenderedMessageThreadParticipant = {
 export type RenderedMessageSender = RenderedMessageThreadParticipant | {
   is_system: true
   participant_type: 'system'
-  display_name: 'System'
+  display: 'System'
   participant_id?: never
   avatar_url?: never
   href?: never
@@ -2266,7 +2267,7 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
 }
 
 export type HealthWorkerDisplay = {
-  display_name: string
+  display: string
   description: string
   avatar_url: string | null
 }
@@ -2330,7 +2331,7 @@ export type RenderedMessageTargets = {
       id?: string
       target_type: TargetType
       target_category: MessageTargetCategory
-      display_name: string
+      display: string
       description: string
       avatar_url?: Maybe<string>
     }
@@ -2346,7 +2347,7 @@ export type RenderedMessageDraftConcerning = {
   table_name: 'patient' | 'patient_record'
   target_uuid?: string | null
   target_value?: unknown | null
-  display_name?: string
+  display?: string
 }
 
 export type RenderedMessageDraft = {
@@ -2657,7 +2658,7 @@ export type RenderedFullSnomedConcept = {
 
 export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: RecordValueSnomedConcept | RecordValueEvent
+  value: RecordValueSnomedConcept | RecordValueEvent | RecordValueMeasurement
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }
@@ -2694,6 +2695,59 @@ export type RecordValueLink = {
 
 export type RenderedMedicationSchedule = MedicationSchedule & {
   medication_dose_id: string
+}
+
+// A result of searching for a medication a patient might be taking: either a medicinal product
+// named by its active ingredients, or a manufactured (brand) medication of one.
+// See db/models/snomed_concept_medicinal_product.ts
+export type MedicinalProductSearchResult = {
+  id: string
+  // The full name as in "Product containing only ..."
+  name: string
+  // How we display it as in "Amoxicillin"
+  display: string
+  // The active ingredients, when name is the brand name
+  ingredients: RenderedSnomedConcept[]
+  brands: {
+    medication_id: string
+    name: string
+  }[]
+}
+
+export type MedicinalProductOptionIngredient = RenderedSnomedConcept & {
+  strength: MedicationMeasurement
+}
+
+// One precise form of a medicinal product, from a clinical drug descended from it
+export type MedicinalProductOption = {
+  clinical_drug: RenderedSnomedConcept
+  form: { name: string; category: SnomedCategory } | null
+  route: { name: string; category: SnomedCategory } | null
+  // The active ingredients, ordered by name, each with its own strength in this clinical drug
+  ingredients: MedicinalProductOptionIngredient[]
+  // What a single dose is counted in, e.g. "tablet" or "mL"
+  dosage_units: string | null
+  per_time?: ExactTimeSpecification | null
+}
+
+// A medication the patient told us they are taking.
+// See db/models/patient_medications_self_reported.ts
+export type RenderedSelfReportedMedication = {
+  id: string
+  patient_id: string
+  patient_encounter_id: string
+  created_at: Date
+  // The (medication ...) s-expression in normal form, see shared/medication_s_expression.ts
+  s_expression: string
+  display: MedicationDisplay
+  // The trade name of the manufactured medication, when one was picked
+  brand_name: string | null
+  // The record of the condition the patient takes it for, when they said and it still stands
+  due_to: null | {
+    record_id: string
+    name: string
+    category: SnomedCategory
+  }
 }
 
 export type RecordValue =
@@ -3391,6 +3445,19 @@ export type RecommendedMedicineGroup = {
     form_route: string
     options: RecommendedMedicineOption[]
   }[]
+}
+
+export type PerSize = 'kg' | 'm2' | { kg: number }
+
+export type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
+
+export type TimeSpecification = {
+  value: number | [min: number, max: number]
+  units: TimeUnit
+}
+
+export type ExactTimeSpecification = TimeSpecification & {
+  value: number
 }
 
 export type RecommendedMedicineOptionWithPermissions = {

@@ -469,8 +469,8 @@ function attribute(
 }
 
 // The cutoff datetime that a time_ago duration refers to, evaluated at query
-// time. Duration units are already plural lowercase, so they drop straight
-// into a Postgres interval.
+// time. Duration units are singular lowercase ('hour'), which Postgres accepts
+// as-is in an interval.
 function timeAgoCutoff({ value, units }: EventTimeComparison['duration']) {
   return sql<Date>`now() - ${`${value} ${units}`}::interval`
 }

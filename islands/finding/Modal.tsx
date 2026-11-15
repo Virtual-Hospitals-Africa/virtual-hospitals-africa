@@ -20,8 +20,9 @@ export function FindingModal(
   { finding, selected_finding_site, onSave, onChange, onClose }: FindingModalProps,
 ) {
   return (
-    <Transition.Root show={finding !== null} as={Fragment}>
-      <Dialog className='relative z-50' onClose={onClose}>
+    <Transition.Root show={!!finding} as={Fragment}>
+      {/* Dismissal (outsid e click / Escape) is a no-op; the modal closes only via its own buttons */}
+      <Dialog className='relative z-50' onClose={() => {}}>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'

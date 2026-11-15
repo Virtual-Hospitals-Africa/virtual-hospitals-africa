@@ -43,7 +43,7 @@ export function HealthWorkerHomePageLayout({
       avatar_url={account.avatar_url}
       mobile_account={{
         avatar_url: account.avatar_url,
-        display_name: account.display_name,
+        display: account.display,
         description: account.description,
         profile_href: tutorial ? '#' : `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
       }}

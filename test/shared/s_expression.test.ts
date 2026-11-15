@@ -103,7 +103,7 @@ describe('shared/s_expression.ts', () => {
 
   it('parses an event time comparison whose onset subject is an active_condition', () => {
     const parsed = parseExpressionExpectingAtom(
-      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`,
       '>=',
     )
     assert(parsed.type === 'event_time_comparison')
@@ -127,11 +127,11 @@ describe('shared/s_expression.ts', () => {
           possible: false,
         },
       },
-      duration: { value: 24, units: 'hours' },
+      duration: { value: 24, units: 'hour' },
     })
     assertEquals(
       inverseSExpression(parsed),
-      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`,
     )
   })
 

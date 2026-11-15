@@ -88,7 +88,7 @@ export const handler = function generalAssessmentsHandler() {
 //         const active = assessment.examination_identifier ===
 //           ctx.state.current_assessment.examination_identifier
 //         return {
-//           tab: assessment.display_name,
+//           tab: assessment.display,
 //           href: assessment.href,
 //           active,
 //           leftIcon: <Progress {...assessment} active={active} />,

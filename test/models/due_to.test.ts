@@ -10,7 +10,7 @@ import { normalForm } from '../../shared/s_expression.ts'
 
 // Seeded via the system_priority_evaluation "Urgent: constipation lasting over
 // 24 hours with abdominal pain"
-const CONSTIPATION_ONSET_S_EXPRESSION = `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`
+const CONSTIPATION_ONSET_S_EXPRESSION = `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`
 
 const BITE_WOUND_S_EXPRESSION = normalForm('(clinical_finding (snomed_concept "Bite - wound" "disorder"))')
 

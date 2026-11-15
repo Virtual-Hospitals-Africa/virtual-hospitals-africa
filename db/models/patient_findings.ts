@@ -41,6 +41,9 @@ export type PatientFindingsSearch = PatientRecordsSearch & {
   // s_expression?: string | Lang['finding']
   not_measurements?: boolean
   include_negative?: boolean
+  // Self-reported medications (see patient_medications_self_reported.ts) are left out unless
+  // this asks for only them
+  self_reported_medications?: 'only'
 }
 
 export type IntermediateFinding = QueryResult<typeof patient_findings.baseQuery>
@@ -535,6 +538,15 @@ export const patient_findings = base({
         'patient_findings.procedure_id',
         'procedures_aggregated.id',
       )
+      // A self-reported medication is also a patient_findings row, but it is not a (typical)
+      // finding, so it is only returned when asked for specifically
+      .leftJoin(
+        'patient_medications as self_reported_medications',
+        'self_reported_medications.id',
+        'patient_findings.id',
+      )
+      .$if(opts?.self_reported_medications !== 'only', (qb) => qb.where('self_reported_medications.id', 'is', null))
+      .$if(opts?.self_reported_medications === 'only', (qb) => qb.where('self_reported_medications.id', 'is not', null))
       .select((eb) => [
         literalString('finding').$castTo<'finding'>().as('type'),
         'patient_findings.patient_encounter_employee_id',

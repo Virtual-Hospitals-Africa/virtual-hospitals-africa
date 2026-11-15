@@ -19,6 +19,7 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { brief_history } from '../../../../../db/models/brief_history.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
+import { patient_medications_self_reported } from '../../../../../db/models/patient_medications_self_reported.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
@@ -584,6 +585,50 @@ describeParallel('triage/brief_history', () => {
   })
 
   describeParallel('POST', () => {
+    itParallel(
+      'records the medications the patient says they are taking, relating one to the condition it is taken for, and lists them on returning to the page',
+      async () => {
+        const metformin_for_diabetes = '(medication (snomed_concept "Product containing only metformin" "medicinal product") ' +
+          '(dosage 1 "tablet") (frequency (snomed_concept "Twice a day" "qualifier value")) ' +
+          '(taken_for (snomed_concept "Diabetes mellitus" "disorder")))'
+        const cetirizine = '(medication (snomed_concept "Product containing only cetirizine" "medicinal product"))'
+
+        const { patient_id, getStep } = await setupTriageNewPatient({
+          patient_demographics: randomDemographics('ZA', 'female'),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
+          brief_history: {
+            common_conditions: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
+            medication_s_expressions: [metformin_for_diabetes, cetirizine],
+          },
+        })
+
+        // The medications are not findings of the page like the conditions are
+        const findings = await patient_findings.findAll(db, { patient_id, include_negative: true })
+        assertEquals(findings.filter((finding) => finding.specific_snomed_concept_category === 'medicinal product'), [])
+        const diabetes = findings.find((finding) => finding.specific_snomed_concept_name === 'Diabetes mellitus')!
+
+        const medications = sortBy(await patient_medications_self_reported.findAll(db, { patient_id }), (medication) => medication.display.name)
+        assertMatches(medications, [
+          { s_expression: cetirizine, due_to: null },
+          { s_expression: metformin_for_diabetes, due_to: { record_id: diabetes.id, name: 'Diabetes mellitus', category: 'disorder' } },
+        ])
+
+        // Recorded under the same procedure as the conditions
+        const as_findings = await patient_findings.findAll(db, { patient_id, self_reported_medications: 'only' })
+        assertEquals(new Set(as_findings.map((finding) => finding.as_part_of_procedure?.id)), new Set([diabetes.as_part_of_procedure?.id]))
+
+        const $ = await getStep('brief_history')
+        const listed = $('#medications-self-reported').text()
+        assertIncludes(listed, 'metformin, 1 tablet twice a day')
+        assertIncludes(listed, 'cetirizine')
+        // Listed, not resubmitted
+        assertEquals($('input[name="medication_s_expressions"]').length, 0)
+      },
+    )
+
     itParallel(
       'inserts positive & negative findings, redirecting to the measure_vitals page',
       async () => {
