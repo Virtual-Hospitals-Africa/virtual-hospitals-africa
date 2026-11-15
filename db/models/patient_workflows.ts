@@ -56,7 +56,7 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
       },
       other_employee
         ? {
-          text: `Leave ${objectPronoun(patient)} with ${employeeDisplay(other_employee).display_name}`,
+          text: `Leave ${objectPronoun(patient)} with ${employeeDisplay(other_employee).display}`,
           href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/leave-with-another`,
           method: 'POST',
         }

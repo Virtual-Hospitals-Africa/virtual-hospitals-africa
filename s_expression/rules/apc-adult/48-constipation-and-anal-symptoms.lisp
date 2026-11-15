@@ -31,9 +31,9 @@
   (and
     (or
       (>= (onset (active_condition (snomed_concept "Constipation" "finding")))
-          (time_ago 24 hours))
+          (time_ago 24 hour))
       (>= (onset (active_condition (snomed_concept "Unable to break wind" "finding")))
-          (time_ago 24 hours))
+          (time_ago 24 hour))
     )
     (or
       (active_condition (snomed_concept "Abdominal pain" "finding"))

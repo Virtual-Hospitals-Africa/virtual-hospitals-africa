@@ -11,7 +11,7 @@ const FULL = `(medication ${CETIRIZINE} ` +
   '(strength 10 "mg") ' +
   '(dosage 1 "tablet") ' +
   '(frequency (snomed_concept "Once daily" "qualifier value")) ' +
-  '(duration 5 "days") ' +
+  '(duration 5 "day") ' +
   '(started "2026-11-01") ' +
   '(taken_for (snomed_concept "Seasonal allergic rhinitis" "disorder")) ' +
   '(medication_id "0b9e4f0e-7c1b-4d0f-9d0a-1f2e3d4c5b6a") ' +
@@ -55,7 +55,7 @@ describe('shared/medication_s_expression.ts', () => {
         strengths: [{ value: 10, units: 'mg' }],
         dosage: { value: 1, units: 'tablet' },
         frequency: { name: 'Once daily', category: 'qualifier value' },
-        duration: { value: 5, units: 'days' },
+        duration: { value: 5, units: 'day' },
         started: '2026-11-01',
         taken_for: { name: 'Seasonal allergic rhinitis', category: 'disorder' },
         medication_id: '0b9e4f0e-7c1b-4d0f-9d0a-1f2e3d4c5b6a',
@@ -121,7 +121,7 @@ describe('shared/medication_s_expression.ts', () => {
     it('names every active ingredient and strength of a combination, and pluralizes', () => {
       const medication = parsed(
         '(medication (snomed_concept "Product containing only amoxicillin and clavulanic acid" "medicinal product") ' +
-          '(strength 500 "mg") (strength 125 "mg") (dosage 2 "tablet") (duration 1 "weeks"))',
+          '(strength 500 "mg") (strength 125 "mg") (dosage 2 "tablet") (duration 1 "week"))',
       )
       assertEquals(medicationDisplay(medication).full, '500mg/125mg amoxicillin + clavulanic acid, 2 tablets for 1 week')
     })

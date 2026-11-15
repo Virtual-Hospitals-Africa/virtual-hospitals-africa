@@ -20,51 +20,52 @@ describeParallel('db/models/snomed_concept_medicinal_product.ts', () => {
   describeParallel('search', () => {
     itParallel('finds medicinal products by active ingredient, single ingredient products first, named by their ingredients', async () => {
       const { results } = await snomed_concept_medicinal_product.search(db, { search: 'cetirizine' }, { rows_per_page: 50 })
-      const generics = results.filter((result) => !result.brand_name)
-      const [first] = generics
-      assertEquals(first, {
+      const [first] = results
+      assertMatches(first, {
         id: ONLY_CETIRIZINE,
-        name: 'Cetirizine',
-        description: null,
-        snomed_concept: {
-          snomed_concept_id: ONLY_CETIRIZINE,
-          name: 'Product containing only cetirizine',
-          category: 'medicinal product',
-        },
-        medication_id: null,
-        brand_name: null,
-        similarity: 1,
+        name: 'Product containing only cetirizine',
+        display: 'Cetirizine',
+        ingredients: [{ name: 'Cetirizine', category: 'substance' }],
       })
-      assert(generics.some((result) => result.name === 'Cetirizine + pseudoephedrine'))
-      assert(generics.every((result) => result.snomed_concept.name.startsWith('Product containing only ')))
+      assert(results.some((result) => result.display === 'Cetirizine + pseudoephedrine'))
+      assert(results.every((result) => result.name.startsWith('Product containing only ')))
+      const ids = results.map((result) => result.id)
+      assertEquals(ids.length, new Set(ids).size, 'Each medicinal product is expected once')
     })
 
     itParallel('matches on the start of an ingredient name', async () => {
       const { results } = await snomed_concept_medicinal_product.search(db, { search: 'amoxi' })
       const [first] = results
-      assertMatches(first, { id: ONLY_AMOXICILLIN, name: 'Amoxicillin' })
+      assertMatches(first, { id: ONLY_AMOXICILLIN, display: 'Amoxicillin' })
     })
 
-    itParallel('includes brands of the matching products, with the active ingredients as their description', async () => {
+    itParallel('lists all the brands of a product when the medicine itself matched', async () => {
       const { results } = await snomed_concept_medicinal_product.search(db, { search: 'cetirizine' }, { rows_per_page: 200 })
-      const brands = results.filter((result) => result.brand_name)
-      assert(brands.length, 'Expected at least one brand of cetirizine')
-      for (const brand of brands) {
-        assertEquals(brand.name, brand.brand_name)
-        assertEquals(brand.id, brand.medication_id)
-        assert(brand.description)
-        assertEquals(brand.snomed_concept.category, 'medicinal product')
+      const cetirizine = results.find((result) => result.id === ONLY_CETIRIZINE)
+      assert(cetirizine?.brands.length, 'Expected at least one brand of cetirizine')
+      for (const brand of cetirizine.brands) {
+        assert(brand.medication_id)
+        assert(brand.name)
       }
-      const brand_names = brands.map((brand) => brand.brand_name)
+      const brand_names = cetirizine.brands.map((brand) => brand.name)
       assertEquals(brand_names.length, new Set(brand_names).size, 'Each trade name is expected once')
     })
 
-    itParallel('finds a brand by its trade name', async () => {
+    itParallel('returns the medicinal product, with only the matching brands, when only a brand matched', async () => {
       const { results } = await snomed_concept_medicinal_product.search(db, { search: 'zyrtec' })
       const [first] = results
-      assert(first.brand_name?.toLowerCase().includes('zyrtec'), `Expected a Zyrtec brand first, got ${first.name}`)
-      assertEquals(first.description, 'Cetirizine')
-      assertEquals(first.snomed_concept.snomed_concept_id, ONLY_CETIRIZINE)
+      assertMatches(first, { id: ONLY_CETIRIZINE, name: 'Product containing only cetirizine', display: 'Cetirizine' })
+      assert(first.brands.length, 'Expected the Zyrtec brand')
+      for (const brand of first.brands) {
+        assert(brand.name.toLowerCase().includes('zyrtec'), `Expected only Zyrtec brands, got ${brand.name}`)
+      }
+      const ids = results.map((result) => result.id)
+      assertEquals(ids.length, new Set(ids).size, 'Each medicinal product is expected once')
+    })
+
+    itParallel('finds a product once even when its medicine and a brand both match', async () => {
+      const { results } = await snomed_concept_medicinal_product.search(db, { search: 'cetirizine' }, { rows_per_page: 200 })
+      assertEquals(results.filter((result) => result.id === ONLY_CETIRIZINE).length, 1)
     })
 
     itParallel('rejects a search too short to be meaningful', async () => {

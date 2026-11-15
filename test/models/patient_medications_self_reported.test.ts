@@ -24,7 +24,7 @@ const FULL_CETIRIZINE = `(medication ${CETIRIZINE} ` +
   '(strength 10 "mg") ' +
   '(dosage 1 "tablet") ' +
   '(frequency (snomed_concept "Once daily" "qualifier value")) ' +
-  '(duration 5 "days") ' +
+  '(duration 5 "day") ' +
   '(started "2026-11-01") ' +
   '(notes "Taken at night, says \\"it helps\\""))'
 const METFORMIN_FOR_DIABETES = `(medication ${METFORMIN} (taken_for (snomed_concept "Diabetes mellitus" "disorder")))`

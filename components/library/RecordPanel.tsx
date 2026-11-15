@@ -85,7 +85,7 @@ export function RecordPanel(
                   <>
                     <UserIcon className='w-4 h-4 text-indigo-700' />
                     <p className='text-sm font-medium text-gray-900'>
-                      {employeeDisplay(record.provider).display_name}
+                      {employeeDisplay(record.provider).display}
                     </p>
                   </>
                 )

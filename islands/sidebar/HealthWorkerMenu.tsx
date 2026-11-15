@@ -6,7 +6,7 @@ import { useSidebarCollapsed } from './useSidebarCollapsed.tsx'
 
 export function SidebarHealthWorkerMenu(
   { menu_items, ...person }: {
-    display_name: string
+    display: string
     avatar_url: string | null
     description: string
     menu_items?: Array<{ label: string; href: string }>

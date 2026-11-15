@@ -2050,7 +2050,7 @@ export type RenderedPatientExamination = {
   examination_identifier: string
   consultation_step: string
   slug: string
-  display_name: string
+  display: string
   completed: SqlBool | null
   skipped: SqlBool | null
   ordered: SqlBool | null
@@ -2213,7 +2213,7 @@ export type RenderedMessageThreadParticipant = {
   participant_id: string
   avatar_url?: Maybe<string>
   href: string
-  display_name: string
+  display: string
   description: string | string[]
   is_me: SqlBool
   is_system?: false
@@ -2221,7 +2221,7 @@ export type RenderedMessageThreadParticipant = {
 export type RenderedMessageSender = RenderedMessageThreadParticipant | {
   is_system: true
   participant_type: 'system'
-  display_name: 'System'
+  display: 'System'
   participant_id?: never
   avatar_url?: never
   href?: never
@@ -2267,7 +2267,7 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
 }
 
 export type HealthWorkerDisplay = {
-  display_name: string
+  display: string
   description: string
   avatar_url: string | null
 }
@@ -2331,7 +2331,7 @@ export type RenderedMessageTargets = {
       id?: string
       target_type: TargetType
       target_category: MessageTargetCategory
-      display_name: string
+      display: string
       description: string
       avatar_url?: Maybe<string>
     }
@@ -2347,7 +2347,7 @@ export type RenderedMessageDraftConcerning = {
   table_name: 'patient' | 'patient_record'
   target_uuid?: string | null
   target_value?: unknown | null
-  display_name?: string
+  display?: string
 }
 
 export type RenderedMessageDraft = {
@@ -2702,14 +2702,16 @@ export type RenderedMedicationSchedule = MedicationSchedule & {
 // See db/models/snomed_concept_medicinal_product.ts
 export type MedicinalProductSearchResult = {
   id: string
-  // The brand name when there is one, otherwise the active ingredients
+  // The full name as in "Product containing only ..."
   name: string
+  // How we display it as in "Amoxicillin"
+  display: string
   // The active ingredients, when name is the brand name
-  description: string | null
-  snomed_concept: RenderedSnomedConcept
-  medication_id: string | null
-  brand_name: string | null
-  similarity?: any
+  ingredients: RenderedSnomedConcept[]
+  brands: {
+    medication_id: string
+    name: string
+  }[]
 }
 
 export type MedicinalProductOptionIngredient = RenderedSnomedConcept & {

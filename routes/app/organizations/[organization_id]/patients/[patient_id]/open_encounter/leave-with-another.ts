@@ -31,7 +31,7 @@ export const handler = postHandler(
       .execute()
 
     const next_url = success(
-      `${encounter.patient.name} was left with ${employeeDisplay(other_employee).display_name}`,
+      `${encounter.patient.name} was left with ${employeeDisplay(other_employee).display}`,
       replaceParams(
         `/app/organizations/:organization_id/waiting_room`,
         params,

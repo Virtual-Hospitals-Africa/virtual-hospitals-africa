@@ -3,9 +3,9 @@ import type { MedicinalProductOption, MedicinalProductOptionIngredient, Medicina
 import type { DB, SnomedCategory, SnomedInferredCanonicalNameAndCategory, SnomedRelationship } from '../../db.d.ts'
 import { base } from './_base.ts'
 import { asText, greatest, isSimilarWord, jsonArrayFrom, jsonObjectFrom, wordSimilarity } from '../helpers.ts'
+import { SERVER_COUNTRY } from './countries.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
-import compact from '../../util/compact.ts'
 import { activeIngredientsDisplay } from '../../shared/medication_s_expression.ts'
 import {
   HAS_ACTIVE_INGREDIENT,
@@ -25,27 +25,42 @@ import {
 } from '../../shared/snomed_concepts.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import z from 'zod'
 import { positive_decimal, positive_integer } from '../../util/validators.ts'
 
 type SearchTerms = {
   search?: string
+  all_countries?: boolean
 }
 
 /*
   Searches the medications a patient might say they are taking.
 
-  A medicinal product is named for its active ingredients ("Product containing only cetirizine"),
-  so the search is against the names of substances, returning the products that contain only the
-  matching substances. Those are the generic results.
+  Always returns the SNOMED medicinal product, once, never a brand. A medicinal product is named for
+  its active ingredients ("Product containing only cetirizine"), so a product matches when the
+  search matches the name of a substance it contains only.
 
   The medications table holds manufactured (brand) medications, each linked to its medicinal
-  product. Brand results are the trade names that either match the search themselves or are
-  brands of a generic result. A trade name registered in several forms is returned once.
+  product. A product also matches when the search matches the trade name of one of its brands.
+  Its brands[] are then:
+    - all of its brands, when the medicine itself matched
+    - only the brands that matched, when the medicine did not (the search was only for a brand)
+  A trade name registered in several forms is listed once.
+
+  Unless all_countries is set, only brands with a medication_availabilities row in SERVER_COUNTRY
+  count, both for matching a product by its trade name and for listing its brands[].
 */
-function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, { search, all_countries }: SearchTerms) {
   assertOr400(!search || search.trim().length >= 2, 'Must be searching for a term of at least 2 characters')
   const term = search?.trim()
+
+  // Unless searching all countries, only the brands registered for sale in the server's country
+  const brandIsAvailable = (eb: ExpressionBuilder<DB, 'medications'>) =>
+    all_countries ? eb.lit(true) : eb.exists(
+      eb.selectFrom('medication_availabilities')
+        .whereRef('medication_availabilities.medication_id', '=', 'medications.id')
+        .where('medication_availabilities.country', '=', SERVER_COUNTRY)
+        .select(sql.lit(1).as('available')),
+    )
 
   return trx
     .with('matching_substances', (qb) =>
@@ -54,7 +69,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
         .where('substance.category', '=', 'substance')
         .where('snomed_description.active', '=', true)
         .groupBy('snomed_description.concept_id')
-        .$if(!!term, qb => qb.where((eb) => isSimilarWord(eb.ref('snomed_description.term'), term!)))
+        .$if(!!term, (qb) => qb.where((eb) => isSimilarWord(eb.ref('snomed_description.term'), term!)))
         .select((eb) => [
           'snomed_description.concept_id as id',
           eb.fn.max(
@@ -74,97 +89,86 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { search }: SearchTerms) {
         .groupBy(['product.id', 'product.name'])
         .select((eb) => [
           'product.id',
-          'product.name',
           eb.fn.max('matching_substances.similarity').as('similarity'),
-          eb.selectFrom('snomed_relationship as ingredients')
-            .whereRef('ingredients.source_id', '=', 'product.id')
-            .where('ingredients.type_id', '=', HAS_ACTIVE_INGREDIENT.id)
-            .where('ingredients.active', '=', true)
-            .select((eb_ingredients) => eb_ingredients.cast<number>(eb_ingredients.fn.countAll(), 'integer').as('count'))
-            .as('ingredient_count'),
         ]))
-    .with('brands', (qb) =>
+    // The brands whose trade name matches the search
+    .with('matching_brands', (qb) =>
       qb.selectFrom('medications')
         .innerJoin('snomed_inferred_canonical_name_and_category as product', (join) =>
           join.onRef('product.id', '=', 'medications.snomed_concept_id')
             .on('product.category', '=', 'medicinal product'))
-        .leftJoin('generics', 'generics.id', 'medications.snomed_concept_id')
-        .where((eb) =>
-          term ? 
-            eb.or([
-              isSimilarWord(eb.ref('medications.trade_name'), term),
-              eb('generics.id', 'is not', null),
-            ])
-          : sql<boolean>`false`
-        )
-        .distinctOn('medications.trade_name')
-        .orderBy('medications.trade_name')
-        .orderBy('medications.id')
+        .where(brandIsAvailable)
+        .where((eb) => term ? isSimilarWord(eb.ref('medications.trade_name'), term) : sql<boolean>`false`)
+        .groupBy('product.id')
         .select((eb) => [
-          'medications.id',
-          'medications.trade_name',
-          'product.id as snomed_concept_id',
-          'product.name as medicinal_product_name',
-          greatest(
-            eb.case()
-              .when(isSimilarWord(eb.ref('medications.trade_name'), term ?? 'N/A'))
-              .then(wordSimilarity(eb.ref('medications.trade_name'), term ?? 'N/A'))
-              .else(0)
-              .end(),
-            eb.fn.coalesce('generics.similarity', eb.lit(0)),
-          ).as('similarity'),
-          eb.fn.coalesce('generics.ingredient_count', eb.lit(1)).as('ingredient_count'),
+          'product.id',
+          eb.fn.max(wordSimilarity(eb.ref('medications.trade_name'), term ?? 'N/A')).as('similarity'),
         ]))
-    .selectFrom((eb) =>
-      eb.selectFrom('generics')
-        .select((eb_generics) => [
-          asText(eb_generics, 'generics.id').as('id'),
-          asText(eb_generics, 'generics.id').as('snomed_concept_id'),
-          'generics.name as medicinal_product_name',
-          eb_generics.cast<string | null>(eb_generics.lit(null), 'uuid').as('medication_id'),
-          eb_generics.cast<string | null>(eb_generics.lit(null), 'text').as('brand_name'),
-          eb_generics.fn.coalesce('generics.ingredient_count', eb_generics.lit(1)).as('ingredient_count'),
-          eb_generics.fn.coalesce('generics.similarity', eb_generics.lit(0)).as('similarity'),
-        ])
-        .unionAll(
-          eb.selectFrom('brands')
-            .select((eb_brands) => [
-              asText(eb_brands, 'brands.id').as('id'),
-              asText(eb_brands, 'brands.snomed_concept_id').as('snomed_concept_id'),
-              'brands.medicinal_product_name',
-              eb_brands.cast<string | null>('brands.id', 'uuid').as('medication_id'),
-              eb_brands.cast<string | null>('brands.trade_name', 'text').as('brand_name'),
-              eb_brands.fn.coalesce('brands.ingredient_count', eb_brands.lit(1)).as('ingredient_count'),
-              eb_brands.fn.coalesce('brands.similarity', eb_brands.lit(0)).as('similarity'),
-            ]),
-        )
-        .as('results')
-    )
-    .selectAll('results')
-    .orderBy('results.similarity', 'desc')
-    // Generic before brand, and the fewest ingredients first
-    .orderBy((eb) => eb('results.brand_name', 'is not', null), 'asc')
-    .orderBy('results.ingredient_count', 'asc')
-    .orderBy((eb) => eb.fn.coalesce('results.brand_name', 'results.medicinal_product_name'), 'asc')
-    .orderBy('results.id', 'asc')
+    .with('matching_products', (qb) =>
+      qb.selectFrom('generics')
+        .select('generics.id')
+        .union(qb.selectFrom('matching_brands').select('matching_brands.id')))
+    .selectFrom('matching_products')
+    .innerJoin('snomed_inferred_canonical_name_and_category as product', 'product.id', 'matching_products.id')
+    .leftJoin('generics', 'generics.id', 'product.id')
+    .leftJoin('matching_brands', 'matching_brands.id', 'product.id')
+    .select((eb) => [
+      asText(eb, 'product.id').as('id'),
+      'product.name',
+      greatest(
+        eb.fn.coalesce('generics.similarity', eb.lit(0)),
+        eb.fn.coalesce('matching_brands.similarity', eb.lit(0)),
+      ).as('similarity'),
+      eb.selectFrom('snomed_relationship as ingredient_count')
+        .whereRef('ingredient_count.source_id', '=', 'product.id')
+        .where('ingredient_count.type_id', '=', HAS_ACTIVE_INGREDIENT.id)
+        .where('ingredient_count.active', '=', true)
+        .select((eb_count) => eb_count.cast<number>(eb_count.fn.countAll(), 'integer').as('count'))
+        .as('ingredient_count'),
+      jsonArrayFrom(
+        eb.selectFrom('snomed_relationship as has_active_ingredient')
+          .innerJoin('snomed_inferred_canonical_name_and_category as substance', 'substance.id', 'has_active_ingredient.destination_id')
+          .whereRef('has_active_ingredient.source_id', '=', 'product.id')
+          .where('has_active_ingredient.type_id', '=', HAS_ACTIVE_INGREDIENT.id)
+          .where('has_active_ingredient.active', '=', true)
+          .select((eb_ingredient) => [
+            asText(eb_ingredient, 'substance.id').as('snomed_concept_id'),
+            'substance.name',
+            'substance.category',
+          ])
+          .orderBy('substance.name'),
+      ).as('ingredients'),
+      // All the brands when the medicine matched, otherwise only the brands that did
+      jsonArrayFrom(
+        eb.selectFrom('medications')
+          .whereRef('medications.snomed_concept_id', '=', 'product.id')
+          .where(brandIsAvailable)
+          .where((eb_brand) =>
+            eb_brand.or([
+              eb_brand('generics.id', 'is not', null),
+              term ? isSimilarWord(eb_brand.ref('medications.trade_name'), term) : sql<boolean>`false`,
+            ])
+          )
+          .distinctOn('medications.trade_name')
+          .select(['medications.id as medication_id', 'medications.trade_name as name'])
+          .orderBy('medications.trade_name')
+          .orderBy('medications.id'),
+      ).as('brands'),
+    ])
+    .orderBy('similarity', 'desc')
+    // The fewest ingredients first
+    .orderBy('ingredient_count', 'asc')
+    .orderBy('product.name', 'asc')
+    .orderBy('product.id', 'asc')
 }
 
 type SearchRow = Awaited<ReturnType<ReturnType<typeof baseQuery>['executeTakeFirstOrThrow']>>
 
-function formatResult(row: SearchRow): MedicinalProductSearchResult {
-  const ingredients = capitalize(activeIngredientsDisplay(row.medicinal_product_name), { just_first: true })
+function formatResult({ name, ...row }: SearchRow): MedicinalProductSearchResult {
   return {
-    id: row.id,
-    name: row.brand_name ?? ingredients,
-    description: row.brand_name ? ingredients : null,
-    snomed_concept: {
-      snomed_concept_id: row.snomed_concept_id,
-      name: row.medicinal_product_name,
-      category: 'medicinal product',
-    },
-    medication_id: row.medication_id,
-    brand_name: row.brand_name,
-    similarity: row.similarity,
+    name,
+    display: capitalize(activeIngredientsDisplay(name), { just_first: true }),
+    ...row,
   }
 }
 
@@ -244,14 +248,15 @@ function optionsQuery(
       join.onRef('clinical_drug.id', '=', 'descendants.descendant_id')
         .on('clinical_drug.category', '=', 'clinical drug'))
     .where(
-      'descendants.ancestor_id', 
-      '=', 
-      'snomed_concept_id' in medicinal_product 
+      'descendants.ancestor_id',
+      '=',
+      'snomed_concept_id' in medicinal_product
         ? medicinal_product.snomed_concept_id
-        : eb => eb.selectFrom('snomed_inferred_canonical_name_and_category as named')
+        : (eb) =>
+          eb.selectFrom('snomed_inferred_canonical_name_and_category as named')
             .where('named.name', '=', medicinal_product.name)
             .where('named.category', '=', 'medicinal product')
-            .select('named.id')
+            .select('named.id'),
     )
     .select((eb) => [
       asText(eb, 'clinical_drug.id').as('clinical_drug_id'),
@@ -367,7 +372,7 @@ function asOption(row: OptionRow): MedicinalProductOption {
   } else {
     assertEquals(unitDisplay(first_ingredient_denominator_units), dosage_units)
   }
-  
+
   for (const other_ingredient of other_ingredients) {
     const other_ingredient_denominator_units = other_ingredient.denominator_unit
     const other_ingredient_denominator_value = concreteNumber(other_ingredient.denominator_value)
@@ -387,15 +392,15 @@ function asOption(row: OptionRow): MedicinalProductOption {
       snomed_concept_id: ingredient.substance_id,
       name: ingredient.substance_name,
       category: ingredient.substance_category,
-      strength: { 
+      strength: {
         value: concreteNumber(ingredient.numerator_value),
-        units: unitDisplay(ingredient.numerator_unit)
-      }
+        units: unitDisplay(ingredient.numerator_unit),
+      },
     })),
     dosage_units,
-    per_time: first_ingredient_denominator_units === 'hour' 
+    per_time: first_ingredient_denominator_units === 'hour'
       ? { value: positive_integer.parse(first_ingredient_denominator_value), units: first_ingredient_denominator_units }
-      : null
+      : null,
   }
 }
 
@@ -414,7 +419,7 @@ async function options(
 }
 
 export const snomed_concept_medicinal_product = base({
-  top_level_table: 'results' as unknown as 'snomed_concept',
+  top_level_table: 'product' as unknown as 'snomed_concept',
   baseQuery,
   formatResult,
   options,

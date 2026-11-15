@@ -460,7 +460,7 @@ export interface Events {
 
 export interface Examinations {
   consultation_step: string
-  display_name: string
+  display: string
   identifier: string
   order: number
   path: string

@@ -7,7 +7,7 @@ import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
 import { asExistence } from './existence.ts'
-import { AgeDetermination, Coordinates, Existence, Maybe, NonNullableProperty } from '../types.ts'
+import { AgeDetermination, Coordinates, ExactTimeSpecification, Existence, Maybe, NonNullableProperty } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory, WarningSignPriority } from '../db.d.ts'
 import {
@@ -31,10 +31,7 @@ export type SnomedConcept = {
   category: SnomedCategory
 }
 
-type Duration = {
-  value: number
-  units: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years'
-}
+type Duration = ExactTimeSpecification
 
 export type EventValue = {
   atom: 'event'
@@ -169,6 +166,23 @@ type QueryableSingleBaseLang =
     active_condition: {
       snomed_concept: Lang['snomed_concept']
       possible: boolean
+    }
+    taking_medication: {
+      snomed_concept: Lang['snomed_concept']
+      form: Lang['snomed_concept'] | null
+      route: Lang['snomed_concept'] | null
+      strength: MedicationStrength | null
+      // The patient_record uuid of the condition the patient takes it for
+      taken_for: string | null
+      schedules: {
+        frequency: Lang['snomed_concept'] | null
+        dosage: { value: number; units: string } | null
+        duration: Duration | null
+        start: string | null
+      }[]
+      // The manufactured (brand) medication, medications.id, when one was picked
+      medication_id: string | null
+      notes: string | null
     }
   }
   & {
@@ -491,13 +505,13 @@ export const no_finding: z.ZodType<Lang['finding']> = z.lazy(() =>
 ).describe('no_finding')
 
 const time_unit = z.enum([
-  'seconds',
-  'minutes',
-  'hours',
-  'days',
-  'weeks',
-  'months',
-  'years',
+  'second',
+  'minute',
+  'hour',
+  'day',
+  'week',
+  'month',
+  'year',
 ])
 
 export const time_ago: z.ZodType<Lang['time_ago']> = z.lazy(() =>

@@ -194,7 +194,7 @@ describeParallel(
         //   'notification_type': 'patient_encounter_immediate_triage',
         //   'title': 'Immediate Triage Requested',
         //   'description': `${
-        //     employeeDisplay(receptionist_employee).display_name
+        //     employeeDisplay(receptionist_employee).display
         //   } has requested immediate triage for a patient`,
         //   'avatar_url': '/images/heroicons/24/solid/exclamation-triangle.svg',
         //   'seen_at': null,

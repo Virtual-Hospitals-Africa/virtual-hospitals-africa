@@ -9,7 +9,7 @@ import { assert } from 'std/assert/assert.ts'
 describe('shared/rules.ts', () => {
   it('returns a single event_time_comparison insert for an onset comparison of an active_condition', () => {
     const parsed = parseWithSchema(
-      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`,
       comparator,
     )
     const inserts = dueToInsert(parsed)
@@ -17,10 +17,10 @@ describe('shared/rules.ts', () => {
     assert(inserts[0].type === 'event_time_comparison')
     const { duration, ...rest } = inserts[0]
     assertEquals(duration.value, 24)
-    assertEquals(duration.units, 'hours')
+    assertEquals(duration.units, 'hour')
     assertEquals(rest, {
       type: 'event_time_comparison',
-      s_expression: `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      s_expression: `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`,
       event_snomed_concept: { atom: 'snomed_concept', name: 'Time of onset', category: 'observable entity' },
       root_snomed_concept: null,
       specific_snomed_concept: { atom: 'snomed_concept', name: 'Constipation', category: 'finding' },
@@ -32,7 +32,7 @@ describe('shared/rules.ts', () => {
 
   it('returns a single event_time_comparison insert for an onset comparison of a clinical_finding', () => {
     const parsed = parseWithSchema(
-      `(>= (onset (clinical_finding (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      `(>= (onset (clinical_finding (snomed_concept "Constipation" "finding"))) (time_ago 24 hour))`,
       comparator,
     )
     const inserts = dueToInsert(parsed)

@@ -130,7 +130,7 @@ function renderedMessage(
     sender: is_from_system
       ? {
         is_system: true as const,
-        display_name: 'System',
+        display: 'System',
         participant_type: 'system' as const,
       }
       : rendered_participants.find((p) => p.participant_id === sender_participant_id)!,

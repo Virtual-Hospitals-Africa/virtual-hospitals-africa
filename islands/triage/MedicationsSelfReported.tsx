@@ -191,7 +191,7 @@ function MedicationPanel({ picked, existing_conditions, onChange, onAdd, onRemov
   const dosage = useSignal('')
   const frequency = useSignal('')
   const duration = useSignal<number | string>('')
-  const duration_units = useSignal<string>('days')
+  const duration_units = useSignal<string>('day')
   const started = useSignal('')
   const taken_for = useSignal('')
   const notes = useSignal('')
@@ -348,7 +348,11 @@ function MedicationPanel({ picked, existing_conditions, onChange, onAdd, onRemov
           label={null}
           onChange={(event) => duration_units.value = event.currentTarget.value}
         >
-          {DURATION_UNITS.map((units) => <option key={units} value={units} selected={duration_units.value === units}>{capitalize(units)}</option>)}
+          {DURATION_UNITS.map((units) => (
+            <option key={units} value={units} selected={duration_units.value === units}>
+              {capitalize(String(duration.value).trim() === '1' ? units : `${units}s`)}
+            </option>
+          ))}
         </Select>
       </div>
 
@@ -384,13 +388,8 @@ function MedicationPanel({ picked, existing_conditions, onChange, onAdd, onRemov
   )
 }
 
-function asPicked(result: MedicinalProductSearchResult): Picked {
-  return {
-    name: result.name,
-    description: result.description,
-    medicinal_product_name: result.snomed_concept.name,
-    medication_id: result.medication_id,
-  }
+type EnteredMedication = MedicinalProductSearchResult & {
+  medication_id?: string
 }
 
 /*
@@ -408,7 +407,7 @@ export function MedicationsSelfReported({ existing_medications, existing_conditi
   existing_conditions: MedicationSnomedConcept[]
   organization_id: string
 }) {
-  const items = useSignal<SearchItem[]>([])
+  const items = useSignal<MedicinalProductSearchResult[]>([])
   const picked = useSignal<Picked | null>(null)
   const in_panel = useSignal<Medication | null>(null)
 
@@ -432,14 +431,30 @@ export function MedicationsSelfReported({ existing_medications, existing_conditi
   return (
     <div id='medications-self-reported'>
       <Label label='Medications'>
-        <AsyncSearch<SearchItem>
+        <AsyncSearch<MedicinalProductSearchResult>
           multi
           skip_blank_search
           search_route={search_route}
           placeholder={placeholder}
           signal={items}
-          option_description_field='description'
           SelectedContent={SelectedMedication}
+          Option={({ option, selected }) => {
+            console.log({ option })
+            return (
+              <div className='flex flex-row gap-2'>
+                <div className='flex flex-col'>
+                  <div className={cls('text-base', selected && 'font-bold')}>
+                    {option.display}
+                  </div>
+                  {!!option.brands.length && (
+                    <ul class='flex gap-1 flex-wrap'>
+                      {option.brands.map((brand) => <div key={brand.medication_id}>{brand.name}</div>)}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )
+          }}
         />
       </Label>
       {medication_s_expressions.value.length > 0 && <HiddenInput name='medication_s_expressions' value={medication_s_expressions.value} />}

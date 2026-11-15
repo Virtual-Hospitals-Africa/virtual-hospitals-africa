@@ -9,7 +9,7 @@ type Selected = {
   id?: string
   name?: Maybe<string>
   display?: Maybe<string>
-  display_name?: Maybe<string>
+  display?: Maybe<string>
   description?: Maybe<string>
   priority?: Maybe<Priority>
   entered?: Maybe<EnteredFinding>
@@ -30,7 +30,7 @@ export function SelectedChip<Item extends Selected>({ item, click_action, onClic
       })}
       onClick={onClick}
     >
-      {children || item.entered?.display || item.display_name || item.display || item.name}
+      {children || item.entered?.display || item.display || item.display || item.name}
       {click_action === 'edit' ? <PencilIcon className='-ml-1.5 -mr-2.5 p-0.5' /> : <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />}
     </button>
   )

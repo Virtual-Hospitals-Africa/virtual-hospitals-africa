@@ -36,10 +36,10 @@ export function ManagePatientGroup({
   const tasks = group.tasks.filter(isManage)
   if (!tasks.length) return null
 
-  const nurse_display_name = primary_care_nurse ? employeeDisplay(primary_care_nurse).display_name : null
+  const nurse_display = primary_care_nurse ? employeeDisplay(primary_care_nurse).display : null
   const referral_complete_task = {
     ...referral_complete_task_base,
-    description: nurse_display_name ? `${referral_complete_description} – ${nurse_display_name}` : referral_complete_description,
+    description: nurse_display ? `${referral_complete_description} – ${nurse_display}` : referral_complete_description,
   }
 
   const [tasks_i_can_do, _tasks_for_another] = partition(tasks, (task) => {

@@ -9,7 +9,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn('root_snomed_concept_id', 'bigint', (col) => col.references('snomed_concept.id').onDelete('cascade'))
       .addColumn('specific_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
       .addColumn('comparator', sql`comparator`, (col) => col.notNull().check(sql`comparator != '=' AND comparator != '>' AND comparator != '<'`))
-      // time-ago space: a rule's (time_ago 24 hours), applied in queries as now() - duration
+      // time-ago space: a rule's (time_ago 24 hour), applied in queries as now() - duration
       .addColumn('duration', sql`interval`, (col) => col.notNull()))
 
   await db.schema.createIndex('due_to_event_time_comparisons_specific_snomed_concept_id_idx')
