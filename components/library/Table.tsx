@@ -399,9 +399,7 @@ export default function Table<T extends Row>(
   }
 
   const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows })]
-  console.log({columns_with_contents})
-
-  
+  console.log({ columns_with_contents })
 
   const table_or_cards = (
     <>
@@ -445,7 +443,6 @@ export default function Table<T extends Row>(
         </div>
       </div>
     </>
-    
   )
 
   if (!pagination) return table_or_cards
@@ -459,5 +456,4 @@ export default function Table<T extends Row>(
       />
     </>
   )
-  
 }
