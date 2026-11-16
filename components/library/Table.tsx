@@ -44,6 +44,8 @@ type RowCallback<T extends Row, V> = (row: T, index: number, rows: T[]) => V
 export type TableColumn<T extends Row> =
   & {
     label: string
+    card_primary?: boolean
+    no_avatar?: boolean
     cellClassName?: string
     tdClassName?: string | ((row: T) => string)
     headerClassName?: string
@@ -118,14 +120,14 @@ function TableCellDate<T extends Row>({ column, value }: { column: ColumnWithCon
   )
 }
 
-function TableCellPerson<T extends Row>({ value }: { value: unknown }) {
+function TableCellPerson<T extends Row>({ value, no_avatar }: { value: unknown; no_avatar?: boolean }) {
   if (!value) return null
   const people = [value].flat() as unknown as PersonData[]
   if (arrayIsEmpty(people)) return null
   people.forEach(assertPersonLike)
   return (
     <div className='flex flex-col gap-1'>
-      {people.map((person) => <Person key={person.id || person.name} person={person} />)}
+      {people.map((person) => <Person key={person.id || person.name} person={person} no_avatar={no_avatar} />)}
     </div>
   )
 }
@@ -200,7 +202,7 @@ function TableCellInnerContents<T extends Row>(
     case 'actions':
       return <TableCellActions column={column} row={row} />
     case 'person':
-      return <TableCellPerson value={value} />
+      return <TableCellPerson value={value} no_avatar={column.no_avatar} />
     case 'content':
     case undefined:
       return <TableCellContent column={column} value={value} />
@@ -343,8 +345,24 @@ function CardWithContents<T extends Row>(
 ) {
   return (
     <Card className='border-1' orientation={orientation}>
+      {columns.filter((column) => column.type !== 'actions' && column.card_primary && CardFieldHasContent(column, row_index)).length > 0 && (
+        <div className='flex flex-col items-center rounded-md bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 [&_div]:!text-sm [&_div]:!font-semibold [&_div]:!text-indigo-900'>
+          {columns.filter((column) => column.type !== 'actions' && column.card_primary && CardFieldHasContent(column, row_index)).map((column) => (
+            column.type === 'person'
+              ? <Person key={column.label} person={column.cell_contents[row_index] as PersonData} no_avatar={column.no_avatar} layout='row' />
+              : (
+                <TableCellInnerContents
+                  key={column.label}
+                  row={row}
+                  row_index={row_index}
+                  column={column}
+                />
+              )
+          ))}
+        </div>
+      )}
       <div className='divide-y divide-gray-100'>
-        {columns.filter((column) => column.type !== 'actions' && CardFieldHasContent(column, row_index)).map((column) => (
+        {columns.filter((column) => column.type !== 'actions' && !column.card_primary && CardFieldHasContent(column, row_index)).map((column) => (
           <div key={column.label} className='grid grid-cols-3 gap-4 py-2'>
             <CardFieldLabel column={column} />
             <div className='col-span-2 [&>div]:!text-gray-700'>

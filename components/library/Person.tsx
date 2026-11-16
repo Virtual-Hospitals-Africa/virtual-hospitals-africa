@@ -31,12 +31,13 @@ export function assertPersonLike(
 }
 
 export function Person(
-  { person, bold, size = 'md', no_avatar, className }: {
+  { person, bold, size = 'md', no_avatar, className, layout = 'column' }: {
     person: PersonData
     bold?: boolean
     size?: 'md' | 'lg' | 'sm'
     no_avatar?: boolean
     className?: string
+    layout?: 'column' | 'row'
   },
 ): JSX.Element {
   const Component = person.href ? 'a' : 'div'
@@ -57,7 +58,7 @@ export function Person(
           className='mr-1'
         />
       )}
-      <div className={cls('flex flex-col', bold && 'font-bold')}>
+      <div className={cls('flex', layout === 'row' ? 'flex-row items-baseline gap-2' : 'flex-col', bold && 'font-bold')}>
         <div className='person-name text-xs'>
           {person.display_name || person.name}
         </div>
