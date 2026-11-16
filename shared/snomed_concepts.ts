@@ -756,3 +756,123 @@ export const BODY_MASS_INDEX = asConcept({
   name: 'Body mass index',
   category: 'observable entity' as const,
 })
+export const TAKING_MEDICATION = asConcept({
+  id: '129019007',
+  name: 'Taking medication',
+  category: 'observable entity' as const,
+})
+export const ROUTE_OF_ADMINISTRATION = asConcept({
+  id: '410675002',
+  name: 'Route of administration',
+  category: 'attribute' as const,
+})
+export const DOSAGE = asConcept({
+  id: '260911001',
+  name: 'Dosage',
+  category: 'attribute' as const,
+})
+export const FREQUENCY = asConcept({
+  id: '260864003',
+  name: 'Frequency',
+  category: 'attribute' as const,
+})
+export const DURATION = asConcept({
+  id: '103335007',
+  name: 'Duration',
+  category: 'attribute' as const,
+})
+export const HAS_STRENGTH = asConcept({
+  id: '411117005',
+  name: 'Has strength',
+  category: 'attribute' as const,
+})
+export const DATE_TREATMENT_STARTED = asConcept({
+  id: '413946009',
+  name: 'Date treatment started',
+  category: 'observable entity' as const,
+})
+export const ONCE_DAILY = asConcept({
+  id: '229797004',
+  name: 'Once daily',
+  category: 'qualifier value' as const,
+})
+export const TWICE_A_DAY = asConcept({
+  id: '229799001',
+  name: 'Twice a day',
+  category: 'qualifier value' as const,
+})
+export const THREE_TIMES_DAILY = asConcept({
+  id: '229798009',
+  name: 'Three times daily',
+  category: 'qualifier value' as const,
+})
+export const FOUR_TIMES_DAILY = asConcept({
+  id: '307439001',
+  name: 'Four times daily',
+  category: 'qualifier value' as const,
+})
+export const EVERY_MORNING = asConcept({
+  id: '307472001',
+  name: 'Every morning',
+  category: 'qualifier value' as const,
+})
+export const EVERY_EVENING = asConcept({
+  id: '307473006',
+  name: 'Every evening',
+  category: 'qualifier value' as const,
+})
+export const ONCE_A_DAY_AT_BEDTIME = asConcept({
+  id: '396142006',
+  name: 'Once a day, at bedtime',
+  category: 'qualifier value' as const,
+})
+export const ONCE_A_WEEK = asConcept({
+  id: '225769003',
+  name: 'Once a week',
+  category: 'qualifier value' as const,
+})
+export const ONCE_MONTHLY = asConcept({
+  id: '307450003',
+  name: 'Once monthly',
+  category: 'qualifier value' as const,
+})
+export const AS_REQUIRED = asConcept({
+  id: '225761000',
+  name: 'As required',
+  category: 'qualifier value' as const,
+})
+export const HAS_BASIC_DOSE_FORM = asConcept({
+  id: '736476002',
+  name: 'Has basic dose form',
+  category: 'attribute' as const,
+})
+export const HAS_DOSE_FORM_INTENDED_SITE = asConcept({
+  id: '736474004',
+  name: 'Has dose form intended site',
+  category: 'attribute' as const,
+})
+export const HAS_UNIT_OF_PRESENTATION = asConcept({
+  id: '763032000',
+  name: 'Has unit of presentation',
+  category: 'attribute' as const,
+})
+export const HAS_PRESENTATION_STRENGTH_NUMERATOR_VALUE = asConcept({
+  id: '1142135004',
+  name: 'Has presentation strength numerator value',
+  category: 'attribute' as const,
+})
+export const HAS_PRESENTATION_STRENGTH_NUMERATOR_UNIT = asConcept({
+  id: '732945000',
+  name: 'Has presentation strength numerator unit',
+  category: 'attribute' as const,
+})
+export const HAS_PRESENTATION_STRENGTH_DENOMINATOR_VALUE = asConcept({
+  id: '1142136003',
+  name: 'Has presentation strength denominator value',
+  category: 'attribute' as const,
+})
+export const HAS_PRESENTATION_STRENGTH_DENOMINATOR_UNIT = asConcept({
+  id: '732947008',
+  name: 'Has presentation strength denominator unit',
+  category: 'attribute' as const,
+})
