@@ -33,7 +33,7 @@ flowchart TD
 
 | Node | Modelled as | Rule |
 |---|---|---|
-| Red box (danger signs) | Known HIV infection **and** any of RR ≥ 30, pulse ≥ 120, dyspnoea at rest / unable to complete a sentence, unable to walk / dependent for walking, drowsy, acute confusion / clouded consciousness, seizure, haemoptysis, aggressive behaviour, feeling agitated, stiff neck, sudden-onset muscle weakness / numbness / visual disturbance | `Check for HIV: danger signs before starting ART`; `Urgent: HIV danger signs before starting ART` |
+| Red box (danger signs) | Known HIV infection **and** any of RR ≥ 30, pulse ≥ 120, dyspnoea at rest / unable to complete a sentence, unable to walk / dependent for walking, drowsy, acute confusion / clouded consciousness, seizure, haemoptysis, aggressive behaviour, feeling agitated, stiff neck, sudden-onset muscle weakness / numbness / visual disturbance | `Check for HIV: danger signs before starting ART`; `Urgent: HIV danger signs before starting ART: <bullet>` |
 | Q1 = No → Q2 = Yes → "Exclude TB" | Known HIV **and** not known with TB **and** any of cough, weight decreased, night sweats, fever, chest pain, bloodstained sputum → `possible` Tuberculosis | `Check for HIV: TB symptoms and signs of meningitis before starting ART`; `Diagnose possible TB in HIV patient before starting ART` |
 | Q6: signs of meningitis → "refer urgently" | Known HIV **and** severe headache **and** (stiff neck or vomiting) → Urgent | `Urgent: HIV with signs of meningitis before starting ART` |
 | Q1 = Yes, Q3, Q8 (ART timing in known TB) | ART timing only (management) | not encoded |

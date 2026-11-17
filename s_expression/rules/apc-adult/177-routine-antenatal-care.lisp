@@ -159,38 +159,139 @@
         (clinical_finding (snomed_concept "Products of conception in vagina" "finding")))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: pregnant patient with antenatal danger signs"
+  "Urgent: pregnant patient with seizure"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Pregnancy" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Seizure" "finding"))
-      (clinical_finding (snomed_concept "Bleeding from vagina" "finding"))
-      (active_condition (snomed_concept "Severe pre-eclampsia" "disorder"))
-      ;; "BP >= 160/110 without proteinuria: treat as severe hypertension" (no SNOMED concept for severe hypertension)
-      (and
-        (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 160)
-            (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
-        (no (clinical_finding (snomed_concept "Proteinuria" "finding")))
-      )
-      (active_condition (snomed_concept "Premature labor" "finding"))
-      (active_condition (snomed_concept "Premature rupture of membranes" "disorder"))
-      (and
-        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-        (or (clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-            (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))))
-      )
-      (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-      (and
-        (clinical_finding (snomed_concept "Swollen calf" "finding"))
-        (clinical_finding (snomed_concept "Pain in calf" "finding"))
-      )
-      (clinical_finding (snomed_concept "Reduced fetal movement" "finding"))
-      (clinical_finding (snomed_concept "Fetal movements absent" "situation"))
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-    )
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with bleeding from vagina"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Bleeding from vagina" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with severe pre-eclampsia"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (active_condition (snomed_concept "Severe pre-eclampsia" "disorder"))
+  )
+)
+;; "BP >= 160/110 without proteinuria: treat as severe hypertension" (no SNOMED concept for severe hypertension)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with systolic blood pressure ≥ 160 mmHg or diastolic blood pressure ≥ 110 mmHg and no proteinuria"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 160)
+        (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (no (clinical_finding (snomed_concept "Proteinuria" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with premature labor"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (active_condition (snomed_concept "Premature labor" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with premature rupture of membranes"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (active_condition (snomed_concept "Premature rupture of membranes" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with body temperature ≥ 38 °C and backache (severe) or abdominal pain (severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+    (or (clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+        (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with difficulty breathing"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with swollen calf and pain in calf"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Swollen calf" "finding"))
+    (clinical_finding (snomed_concept "Pain in calf" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with reduced fetal movement"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Reduced fetal movement" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with fetal movements absent"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Fetal movements absent" "situation"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with shock"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: pregnant patient with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
   )
 )

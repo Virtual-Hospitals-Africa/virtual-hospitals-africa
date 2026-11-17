@@ -7,7 +7,7 @@
 - **Trigger.** Both tasks and every rule are anchored on `(clinical_finding Palpitations)`.
   Palpitations is not a recorded common symptom or warning sign, so these rules only fire once the
   complaint is recorded as a finding.
-- **Red box → one `Urgent` priority rule** (`Urgent: palpitations with danger signs`),
+- **Red box → one `Urgent` priority rule** (`Urgent: palpitations with <bullet>`),
   `(and Palpitations (or …))`. The page does not escalate any item, so nothing is `Very urgent` or
   `Emergency` here (chest pain keeps its own warning-sign level elsewhere).
 - **BP ≥ 180/110 or < 90/60**: systolic ≥ 180 or diastolic ≥ 110; systolic < 90 or diastolic < 60

@@ -86,16 +86,33 @@
     (clinical_finding (snomed_concept "Pulsatile mass of abdomen" "finding"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA"
+  "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA: acute lower limb ischemia"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Peripheral vascular disease" "disorder"))
-    (or
-      (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
-      (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))
-      (active_condition (snomed_concept "Ruptured abdominal aortic aneurysm" "disorder"))
-    )
+    (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA: critical lower limb ischemia"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Peripheral vascular disease" "disorder"))
+    (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: peripheral vascular disease with acute/critical limb ischaemia or ruptured AAA: ruptured abdominal aortic aneurysm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Peripheral vascular disease" "disorder"))
+    (active_condition (snomed_concept "Ruptured abdominal aortic aneurysm" "disorder"))
   )
 )

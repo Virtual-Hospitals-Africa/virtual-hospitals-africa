@@ -218,51 +218,198 @@
     (>= (measurement (snomed_concept "Waist circumference" "observable entity") cm) 80)
   )
 )
+
 (system_priority_evaluation
-  "Urgent: nausea/vomiting with danger signs"
+  "Urgent: nausea/vomiting with headache"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Nausea" "finding"))
         (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
-    (or
-      (clinical_finding (snomed_concept "Headache" "finding"))
-      (clinical_finding (snomed_concept "Chest pain" "finding"))
-      (active_condition (snomed_concept "Cholera" "disorder"))
-      (active_condition (snomed_concept "Meningitis" "disorder"))
-      (active_condition (snomed_concept "Peritonitis" "disorder"))
-      (active_condition (snomed_concept "Acute appendicitis" "disorder"))
-      (active_condition (snomed_concept "Acute pancreatitis" "disorder"))
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      (clinical_finding (snomed_concept "Hematemesis" "disorder"))
-      (clinical_finding (snomed_concept "Jaundice" "finding"))
-      (and
-        (or (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-            (clinical_finding (snomed_concept "Distension of abdomen" "finding")))
-        (or (clinical_finding (snomed_concept "Obstipation" "disorder"))
-            (and (clinical_finding (snomed_concept "Constipation" "finding"))
-                 (no (clinical_finding (snomed_concept "Passing flatus" "finding"))))))
-      (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Acute confusion" "finding"))
-      (clinical_finding (snomed_concept "Kussmaul's respiration" "finding"))
-      (and
-        (or (clinical_finding (snomed_concept "Nausea" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-            (clinical_finding (snomed_concept "Finding of vomiting" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
-        (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
-            (clinical_finding (snomed_concept "Generalized rash" "disorder"))
-            (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
-            (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
-            (clinical_finding (snomed_concept "Wheezing" "finding"))
-            (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-            (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-            (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-            (clinical_finding (snomed_concept "Dizziness" "finding"))
-            (clinical_finding (snomed_concept "Collapse" "finding"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-            (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-            (clinical_finding (snomed_concept "Insect sting" "disorder"))))
-    )
+    (clinical_finding (snomed_concept "Headache" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with chest pain"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with cholera"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (active_condition (snomed_concept "Cholera" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with meningitis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (active_condition (snomed_concept "Meningitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with peritonitis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (active_condition (snomed_concept "Peritonitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with acute appendicitis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (active_condition (snomed_concept "Acute appendicitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with acute pancreatitis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (active_condition (snomed_concept "Acute pancreatitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with shock"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with hematemesis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Hematemesis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with jaundice"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with abdominal pain or distension of abdomen and obstipation or constipation and no passing flatus"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (or (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+        (clinical_finding (snomed_concept "Distension of abdomen" "finding")))
+    (or (clinical_finding (snomed_concept "Obstipation" "disorder"))
+        (and (clinical_finding (snomed_concept "Constipation" "finding"))
+             (no (clinical_finding (snomed_concept "Passing flatus" "finding")))))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with drowsy"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with acute confusion"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with kussmaul's respiration"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (clinical_finding (snomed_concept "Kussmaul's respiration" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: nausea/vomiting with nausea (sudden onset) or finding of vomiting (sudden onset) and generalized pruritus …"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Nausea" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+    (or (clinical_finding (snomed_concept "Nausea" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder"))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
+        (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Insect sting" "disorder")))
   )
 )

@@ -30,7 +30,7 @@ flowchart TD
 | What prompts the questions | A recorded skin lesion, eruption, or face/genital/rectal/oral/eye lesion | `Check for mpox exposure, lesion sites and associated symptoms` |
 | Suspect mpox (S) | Exposure to monkeypox virus within 21 days, **or** (new lesion at a listed site **and** any listed symptom) | `Diagnose possible mpox (contact or new lesions with systemic symptoms)` |
 | Red box (RB) questions | Checked when mpox is possible | `Check for urgent mpox danger signs` |
-| RB = Yes | Possible mpox **and** any red-box item; "X likely" items through their probable rules | `Urgent: suspected mpox with danger signs`, plus `Diagnose probable dehydration/proctitis/paraphimosis/myocarditis/corneal infection in suspected mpox` |
+| RB = Yes | Possible mpox **and** any red-box item; "X likely" items through their probable rules | `Urgent: suspected mpox with <bullet>`, plus `Diagnose probable dehydration/proctitis/paraphimosis/myocarditis/corneal infection in suspected mpox` |
 | Approach questions | Checked when mpox is possible | `Check for proctitis and other causes of rash/lesions in suspected mpox` |
 | Proctitis (PR) | Anal penetration **and** anal bleeding/pain/discharge (or a severe red-box anal symptom) | `Diagnose probable proctitis in suspected mpox` |
 | Generalised + itchy (G1) | Generalized rash **and** Itching **and** the specific signs | `… chickenpox …`, `… papular pruritic eruption …`, `… scabies …`, `… drug-induced rash …` |

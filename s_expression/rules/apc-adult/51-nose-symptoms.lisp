@@ -3,7 +3,10 @@
   "Check for urgent nose symptom conditions"
   adult
   ;; "nose symptoms": general concept; Nasal discharge, Nasal congestion and Bleeding from nose are descendants
-  (clinical_finding (snomed_concept "Nose finding" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Nose finding" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))
+  )
   (check_for
     (clinical_finding (snomed_concept "Injury of head" "disorder"))
     (clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")) (qualifier (snomed_concept "Watery" "qualifier value")))
@@ -13,7 +16,10 @@
   "Check for causes of nose symptoms"
   adult
   ;; "nose symptoms": general concept; Nasal discharge, Nasal congestion and Bleeding from nose are descendants
-  (clinical_finding (snomed_concept "Nose finding" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Nose finding" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))
+  )
   (check_for
     ;; The page's symptom columns: Blocked/runny nose, Bleeding nose
     (clinical_finding (snomed_concept "Nasal congestion" "finding"))

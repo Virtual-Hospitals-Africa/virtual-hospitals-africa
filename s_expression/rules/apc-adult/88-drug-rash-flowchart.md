@@ -35,8 +35,8 @@ jaundice, unwell/malaise/fatigue/body pain.
 | Suspect drug rash | Generalised rash **and** a new medication commenced within the last 3 months | `Suspect drug rash: generalised rash after new medication` (possible) |
 | (what makes us look for markers of severity) | Drug rash recorded, or suspected by the rule above | `Check for drug rash markers of severity` |
 | New medication question | Asked whenever a generalised rash is recorded, so the suspect rule can fire | `Check for new medication in generalised rash` |
-| Any marker of severity (red box) | Drug rash **and** any red-box item; shock written as Shock **or** SBP < 80 | `Urgent: drug rash with markers of severity` |
-| Review: "Patient unwell or markers of severity²" → Box 2 "Give urgent attention as above" | Same urgent rule; footnote 2 adds BP < 90/60 (systolic < 90 or diastolic < 60), which the red box does not list | `Urgent: drug rash with markers of severity` |
+| Any marker of severity (red box) | Drug rash **and** any red-box item; shock written as Shock **or** SBP < 80 | `Urgent: drug rash with <bullet>` |
+| Review: "Patient unwell or markers of severity²" → Box 2 "Give urgent attention as above" | Same urgent rule; footnote 2 adds BP < 90/60 (systolic < 90 or diastolic < 60), which the red box does not list | `Urgent: drug rash with <bullet>` |
 | On ART/TB medication/co-trimoxazole/TPT? | Not modelled: the branch only routes management (refer, MIC hotline, switch ART) | — |
 | AHR likely (131) | Cross-reference to page 131, not modelled here | — |
 | ALT or eosinophil count raised | Not representable (no lab-value unit or observable in the language); routing to MIC hotline is management | — |

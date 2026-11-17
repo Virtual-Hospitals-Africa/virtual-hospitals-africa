@@ -157,6 +157,7 @@
     )
   )
 )
+
 (system_priority_evaluation
   "Urgent: injured patient with bruising and blood in urine"
   adult
@@ -166,79 +167,484 @@
     (clinical_finding (snomed_concept "Blood in urine" "finding"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: injured patient with wound danger signs"
+  "Urgent: injured patient with wound danger signs: limb ischemia"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Wound" "disorder"))
-    (or (clinical_finding (snomed_concept "Limb ischemia" "disorder"))
-        (clinical_finding (snomed_concept "Cold extremity" "finding"))
-        (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
-        (clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))
-        (clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Excessive" "qualifier value")))
-        (clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Pulsatile" "qualifier value")))
-        (clinical_finding (snomed_concept "Penetrating wound" "disorder") (finding_site (snomed_concept "Head structure" "body structure")))
-        (clinical_finding (snomed_concept "Penetrating wound of neck" "disorder"))
-        (clinical_finding (snomed_concept "Penetrating wound" "disorder") (finding_site (snomed_concept "Thoracic structure" "body structure")))
-        (clinical_finding (snomed_concept "Penetrating wound of abdomen" "disorder"))
-    )
+    (clinical_finding (snomed_concept "Limb ischemia" "disorder"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: injured patient with fracture danger signs"
+  "Urgent: injured patient with wound danger signs: cold extremity"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Cold extremity" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: numbness of limbs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: peripheral pulse absent"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: bleeding (excessive)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Excessive" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: bleeding (pulsatile)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Pulsatile" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: penetrating wound (site: head structure)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Penetrating wound" "disorder") (finding_site (snomed_concept "Head structure" "body structure")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: penetrating wound of neck"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Penetrating wound of neck" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: penetrating wound (site: thoracic structure)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Penetrating wound" "disorder") (finding_site (snomed_concept "Thoracic structure" "body structure")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with wound danger signs: penetrating wound of abdomen"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Wound" "disorder"))
+    (clinical_finding (snomed_concept "Penetrating wound of abdomen" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: limb ischemia"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
-    (or (clinical_finding (snomed_concept "Limb ischemia" "disorder"))
-        (clinical_finding (snomed_concept "Cold extremity" "finding"))
-        (clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))
-        (clinical_finding (snomed_concept "Pain in limb" "finding") (qualifier (snomed_concept "Increasing" "qualifier value")))
-        (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
-        (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
-        (clinical_finding (snomed_concept "Fracture of femur" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of pelvis" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of vertebral column" "disorder"))
-        (clinical_finding (snomed_concept "Fracture, open" "morphologic abnormality"))
-        (clinical_finding (snomed_concept "Fracture of three ribs" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of four ribs" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of five ribs" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of six ribs" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of seven ribs" "disorder"))
-        (clinical_finding (snomed_concept "Fracture of eight OR more ribs" "disorder"))
-        (clinical_finding (snomed_concept "Deformity" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-    )
+    (clinical_finding (snomed_concept "Limb ischemia" "disorder"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: injured patient with head injury danger signs"
+  "Urgent: injured patient with fracture danger signs: cold extremity"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Cold extremity" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: peripheral pulse absent"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: pain in limb (increasing)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Pain in limb" "finding") (qualifier (snomed_concept "Increasing" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: numbness of limbs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: muscle weakness of limb"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of femur"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of femur" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of pelvis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of pelvis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of vertebral column"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of vertebral column" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture, open"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture, open" "morphologic abnormality"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of three ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of three ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of four ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of four ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of five ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of five ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of six ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of six ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of seven ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of seven ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: fracture of eight OR more ribs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of eight OR more ribs" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with fracture danger signs: deformity (severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Fracture of bone" "disorder"))
+    (clinical_finding (snomed_concept "Deformity" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: loss of consciousness"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Injury of head" "disorder"))
-    (or (clinical_finding (snomed_concept "Loss of consciousness" "finding"))
-        (clinical_finding (snomed_concept "Seizure" "finding"))
-        (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (clinical_finding (snomed_concept "Amnesia" "finding"))
-        (clinical_finding (snomed_concept "Fracture of skull" "disorder"))
-        (clinical_finding (snomed_concept "Ecchymosis of periorbital region" "disorder"))
-        (clinical_finding (snomed_concept "Ecchymosis of postauricular region" "finding"))
-        (clinical_finding (snomed_concept "Hematotympanum" "disorder"))
-        (clinical_finding (snomed_concept "Bleeding from nose" "finding"))
-        (clinical_finding (snomed_concept "Bleeding from ear" "disorder"))
-        (clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))
-        (clinical_finding (snomed_concept "Ear discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))
-        (clinical_finding (snomed_concept "Anisocoria" "disorder"))
-        (clinical_finding (snomed_concept "Sluggish pupil movement" "finding"))
-        (clinical_finding (snomed_concept "No pupillary reaction to light" "finding"))
-        (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
-        (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
-        ;; "Vomiting >= 2 times": the count cannot be expressed; any vomiting is used (see remaining questions)
-        (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-        (clinical_finding (snomed_concept "Multiple injuries" "disorder"))
-        (clinical_finding (snomed_concept "Intoxication" "disorder"))
-        (clinical_finding (snomed_concept "Alcohol intoxication" "disorder"))
-    )
+    (clinical_finding (snomed_concept "Loss of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: seizure"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: headache (severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: amnesia"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Amnesia" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: fracture of skull"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Fracture of skull" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: ecchymosis of periorbital region"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Ecchymosis of periorbital region" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: ecchymosis of postauricular region"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Ecchymosis of postauricular region" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: hematotympanum"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Hematotympanum" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: bleeding from nose"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Bleeding from nose" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: bleeding from ear"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Bleeding from ear" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: nasal discharge (clear)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: ear discharge (clear)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Ear discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: anisocoria"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Anisocoria" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: sluggish pupil movement"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Sluggish pupil movement" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: no pupillary reaction to light"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "No pupillary reaction to light" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: muscle weakness of limb"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: numbness of limbs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+  )
+)
+;; "Vomiting >= 2 times": the count cannot be expressed; any vomiting is used (see remaining questions)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: finding of vomiting"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: multiple injuries"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Multiple injuries" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: intoxication"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Intoxication" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: injured patient with head injury danger signs: alcohol intoxication"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept "Alcohol intoxication" "disorder"))
   )
 )

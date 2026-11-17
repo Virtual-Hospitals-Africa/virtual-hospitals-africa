@@ -20,7 +20,7 @@
   )
 )
 (system_priority_evaluation
-  "Urgent: HIV PEP, exposure to infectious fluid or bleeding human bite"
+  "Urgent: HIV PEP, exposure to infectious fluid"
   adult
   Urgent
   (or
@@ -34,7 +34,15 @@
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Vaginal secretion" "substance"))
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Seminal fluid" "substance"))
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Breast milk" "substance"))
-    (and (clinical_finding (snomed_concept "Human bite - wound" "disorder"))
-         (clinical_finding (snomed_concept "Bleeding" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: HIV PEP, bleeding human bite"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Human bite - wound" "disorder"))
+    (clinical_finding (snomed_concept "Bleeding" "finding"))
   )
 )

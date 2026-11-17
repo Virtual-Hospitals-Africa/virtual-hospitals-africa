@@ -72,14 +72,31 @@
     (no (clinical_finding (snomed_concept "Does not communicate" "finding")))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: attempted/considered self-harm or suicide"
+  "Urgent: attempted/considered self-harm or suicide: suicide attempt"
   adult
   Urgent
-  ;; Box header: urgent attention for every patient who attempted/considered self-harm or suicide
-  (or (clinical_finding (snomed_concept "Suicide attempt" "event"))
-      (clinical_finding (snomed_concept "Intentionally harming self" "event"))
-      (clinical_finding (snomed_concept "Thoughts of self harm" "finding"))
-      (active_condition (snomed_concept "High suicide risk" "finding"))
-  )
+  (clinical_finding (snomed_concept "Suicide attempt" "event"))
+)
+
+(system_priority_evaluation
+  "Urgent: attempted/considered self-harm or suicide: intentionally harming self"
+  adult
+  Urgent
+  (clinical_finding (snomed_concept "Intentionally harming self" "event"))
+)
+
+(system_priority_evaluation
+  "Urgent: attempted/considered self-harm or suicide: thoughts of self harm"
+  adult
+  Urgent
+  (clinical_finding (snomed_concept "Thoughts of self harm" "finding"))
+)
+
+(system_priority_evaluation
+  "Urgent: attempted/considered self-harm or suicide: high suicide risk"
+  adult
+  Urgent
+  (active_condition (snomed_concept "High suicide risk" "finding"))
 )

@@ -27,11 +27,11 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint "joint symptom/s" | `Pain of joint` (finding) | trigger of `Check for urgent joint symptom conditions` |
-| RB: septic arthritis likely | warm **and** swollen **and** severe joint pain **and** limitation of joint movement ("short history" and "single" joint not modelled) | `Diagnose probable septic arthritis (joint symptoms)` → `Urgent: joint symptoms with danger signs` |
-| RB: Temperature ≥ 38°C | body temperature ≥ 38 °C | `Urgent: joint symptoms with danger signs` |
-| RB: fracture likely | traumatic injury with onset ≤ 48 hours ago **and** any of severe joint pain, severe joint swelling, deformity | `Diagnose probable fracture (joint symptoms)` → `Urgent: joint symptoms with danger signs` |
-| RB: unable to weight-bear | `Unable to weight-bear` | `Urgent: joint symptoms with danger signs` |
-| RB: acute gout likely (known gout) | known gout **and** joint pain at big toe joint, midfoot or ankle joint **and** no fever **and** no wound (surgery/injection into joint not modelled) | inline in `Urgent: joint symptoms with danger signs`; also first branch of `Diagnose probable acute gout (joint symptoms)` |
+| RB: septic arthritis likely | warm **and** swollen **and** severe joint pain **and** limitation of joint movement ("short history" and "single" joint not modelled) | `Diagnose probable septic arthritis (joint symptoms)` → `Urgent: joint symptoms with <bullet>` |
+| RB: Temperature ≥ 38°C | body temperature ≥ 38 °C | `Urgent: joint symptoms with <bullet>` |
+| RB: fracture likely | traumatic injury with onset ≤ 48 hours ago **and** any of severe joint pain, severe joint swelling, deformity | `Diagnose probable fracture (joint symptoms)` → `Urgent: joint symptoms with <bullet>` |
+| RB: unable to weight-bear | `Unable to weight-bear` | `Urgent: joint symptoms with <bullet>` |
+| RB: acute gout likely (known gout) | known gout **and** joint pain at big toe joint, midfoot or ankle joint **and** no fever **and** no wound (surgery/injection into joint not modelled) | inline in `Urgent: joint symptoms with <bullet>`; also first branch of `Diagnose probable acute gout (joint symptoms)` |
 | Q1 = Yes | any of joint warm, tenderness of joint, joint swelling, limitation of joint movement | shared gate in the sprain, chronic arthritis and gonococcal rules (the gout rule's own criteria already include warm and swollen) |
 | Q1 = No → Joint problem unlikely | routing to other pages only | not encoded (flowchart_routing / cross_reference_only) |
 | Q2 = Yes → Sprain/strain likely | Q1 gate **and** traumatic injury | `Diagnose probable sprain/strain (joint symptoms)` |

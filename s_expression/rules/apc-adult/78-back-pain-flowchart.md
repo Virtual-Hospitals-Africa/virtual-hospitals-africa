@@ -31,7 +31,7 @@ flowchart TD
 | Flank pain, leucocytes/nitrites and a complicating factor | `probable` Acute pyelonephritis (no SNOMED concept for "complicated"); urgency written from the criteria themselves | `Diagnose probable complicated pyelonephritis in back pain` |
 | Flank pain, blood, sudden severe one-sided pain radiating to groin | `probable` Kidney stone | `Diagnose probable kidney stone in back pain` |
 | Pulsatile abdominal mass | `probable` Abdominal aortic aneurysm | `Diagnose probable abdominal aortic aneurysm in back pain` |
-| Red box = Yes | Backache **and** any red-box item | `Urgent: back pain with red box features` |
+| Red box = Yes | Backache **and** any red-box item | `Urgent: back pain with <bullet>` |
 | Uncomplicated pyelonephritis | `probable` Acute pyelonephritis from flank pain and leucocytes/nitrites | `Diagnose probable uncomplicated pyelonephritis in back pain` |
 | Consider mpox | `possible` Monkeypox | `Diagnose possible mpox in back pain` |
 | Q1 = Yes → Check for TB | `possible` Tuberculosis | `Diagnose possible TB in back pain` |

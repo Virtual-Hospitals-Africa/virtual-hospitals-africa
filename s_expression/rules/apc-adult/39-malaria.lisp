@@ -105,32 +105,194 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: suspected malaria with danger signs"
+  "Urgent: suspected malaria with decreased level of consciousness"
   adult
   Urgent
   (and
     (diagnosis (snomed_concept "Malaria" "disorder") possible)
-    (or (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-        (clinical_finding (snomed_concept "Drowsy" "finding"))
-        (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-        (clinical_finding (snomed_concept "Acute confusion" "finding"))
-        (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-        (clinical_finding (snomed_concept "Seizure" "finding"))
-        (clinical_finding (snomed_concept "Post-ictal state" "finding"))
-        (clinical_finding (snomed_concept "Asthenia" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
-        (and (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-             (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4))
-        (clinical_finding (snomed_concept "Shock" "disorder"))
-        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-        (clinical_finding (snomed_concept "Jaundice" "finding"))
-        (clinical_finding (snomed_concept "Bleeds easily" "finding"))
-        (clinical_finding (snomed_concept "Easy bruising" "finding"))
-        (clinical_finding (snomed_concept "Black urine" "finding"))
-        (>= (onset (clinical_finding (snomed_concept "Anuria" "finding"))) (time_ago 12 hours))
-        (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
-    )
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with drowsy"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with clouded consciousness"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with acute confusion"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with respiratory rate > 30 bpm"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with difficulty breathing"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with seizure"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with post-ictal state"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Post-ictal state" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with asthenia (severe)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Asthenia" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with blood glucose status < 3 mmol/L"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with diabetes mellitus (known present) and blood glucose status < 4 mmol/L"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with shock"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with jaundice"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with bleeds easily"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Bleeds easily" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with easy bruising"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Easy bruising" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with black urine"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Black urine" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with onset of anuria ≥ 12 hours ago"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (>= (onset (clinical_finding (snomed_concept "Anuria" "finding"))) (time_ago 12 hours))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected malaria with persistent vomiting"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Malaria" "disorder") possible)
+    (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
   )
 )

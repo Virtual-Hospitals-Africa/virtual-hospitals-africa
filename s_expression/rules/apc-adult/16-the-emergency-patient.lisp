@@ -105,15 +105,22 @@
   )
 )
 (system_priority_evaluation
-  "Emergency: emergency patient with airway, breathing, circulation or consciousness compromise"
+  "Emergency: emergency patient with airway obstructed (snoring, gurgling, noisy breathing)"
   adult
   Emergency
   (or
-    ;; Airway obstructed (snoring, gurgling, noisy breathing)
     (clinical_finding (snomed_concept "Respiratory obstruction" "disorder"))
     (clinical_finding (snomed_concept "Snoring" "finding"))
     (clinical_finding (snomed_concept "Gurgling" "finding"))
     (clinical_finding (snomed_concept "Noisy respiration" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Emergency: emergency patient with breathing compromise"
+  adult
+  Emergency
+  (or
     ;; Breathing: "If difficulty breathing or oxygen saturation < 94%"
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 94)
@@ -121,27 +128,51 @@
     (clinical_finding (snomed_concept "Blue lips" "finding"))
     (clinical_finding (snomed_concept "Blue tongue" "finding"))
     (active_condition (snomed_concept "Tension pneumothorax" "disorder"))
-    ;; Circulation: pulse < 50 and unstable
-    (and (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
-         (or (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-             (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-             (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-             (clinical_finding (snomed_concept "Chest pain" "finding"))
-             ;; acute heart failure, or its footnote 3 features (leg swelling with breathlessness worse lying down/with effort)
-             (clinical_finding (snomed_concept "Acute heart failure" "disorder"))
-             (and (clinical_finding (snomed_concept "Swelling of lower limb" "finding"))
-                  (or (clinical_finding (snomed_concept "Orthopnea" "finding"))
-                      (clinical_finding (snomed_concept "Dyspnea on exertion" "finding"))
-                  )
-             )
-         )
+  )
+)
+
+;; Circulation: pulse < 50 and unstable
+(system_priority_evaluation
+  "Emergency: emergency patient with pulse < 50 and unstable"
+  adult
+  Emergency
+  (and
+    (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
+    (or
+      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+      (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+      (clinical_finding (snomed_concept "Chest pain" "finding"))
+      ;; acute heart failure, or its footnote 3 features (leg swelling with breathlessness worse lying down/with effort)
+      (clinical_finding (snomed_concept "Acute heart failure" "disorder"))
+      (and (clinical_finding (snomed_concept "Swelling of lower limb" "finding"))
+           (or (clinical_finding (snomed_concept "Orthopnea" "finding"))
+               (clinical_finding (snomed_concept "Dyspnea on exertion" "finding"))
+           )
+      )
     )
-    ;; Circulation: shock/SBP < 80, pulse >= 100 or heavy bleeding
+  )
+)
+
+;; Circulation: shock/SBP < 80, pulse >= 100 or heavy bleeding
+(system_priority_evaluation
+  "Emergency: emergency patient with shock, SBP < 80, pulse >= 100 or severe bleeding"
+  adult
+  Emergency
+  (or
     (active_condition (snomed_concept "Shock" "disorder"))
     (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
     (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
     (clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-    ;; Level of consciousness: GCS <= 8
+  )
+)
+
+;; Level of consciousness: GCS <= 8
+(system_priority_evaluation
+  "Emergency: emergency patient with Glasgow coma scale 8 or less"
+  adult
+  Emergency
+  (or
     (clinical_finding (snomed_concept "Glasgow coma scale, 3" "finding"))
     (clinical_finding (snomed_concept "Glasgow coma scale, 4" "finding"))
     (clinical_finding (snomed_concept "Glasgow coma scale, 5" "finding"))

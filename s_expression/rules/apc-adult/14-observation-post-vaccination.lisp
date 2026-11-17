@@ -39,7 +39,6 @@
     (clinical_finding (snomed_concept "Diarrhea" "finding"))
     (clinical_finding (snomed_concept "Abdominal colic" "finding"))
 
-    (clinical_finding (snomed_concept "Low blood pressure" "disorder"))
     (clinical_finding (snomed_concept "Respiratory distress" "finding"))
     (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
     (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Lip structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
@@ -106,7 +105,7 @@
       ;; No. Generalised urticaria involving the whole body?
       (clinical_finding (snomed_concept "Urticaria" "disorder") (qualifier (snomed_concept "Generalized" "qualifier value")))
       ;; No. Serious or life-threatening, even if only single body system?
-      (clinical_finding (snomed_concept "Low blood pressure" "disorder"))
+      (active_condition (snomed_concept "Low blood pressure" "disorder"))
       (clinical_finding (snomed_concept "Respiratory distress" "finding"))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Lip structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
@@ -154,7 +153,9 @@
     (no (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
     (no (clinical_finding (snomed_concept "Diarrhea" "finding")))
     (no (clinical_finding (snomed_concept "Abdominal colic" "finding")))
-    (no (clinical_finding (snomed_concept "Low blood pressure" "disorder")))
+    ;; No low blood pressure: BP measured and not below 90/60
+    (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+    (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
     (no (clinical_finding (snomed_concept "Respiratory distress" "finding")))
     (no (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))))
     (no (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Lip structure" "body structure")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))))

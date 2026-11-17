@@ -209,16 +209,33 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm"
+  "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm: irreducible inguinal hernia"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Groin mass" "finding"))
-    (or
-      (active_condition (snomed_concept "Irreducible inguinal hernia" "disorder"))
-      (active_condition (snomed_concept "Strangulated inguinal hernia" "disorder"))
-      (active_condition (snomed_concept "Aneurysm" "disorder"))
-    )
+    (active_condition (snomed_concept "Irreducible inguinal hernia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm: strangulated inguinal hernia"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Groin mass" "finding"))
+    (active_condition (snomed_concept "Strangulated inguinal hernia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm: aneurysm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Groin mass" "finding"))
+    (active_condition (snomed_concept "Aneurysm" "disorder"))
   )
 )

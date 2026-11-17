@@ -147,52 +147,276 @@
   )
 )
 ;; Red box. Hb < 8 is not representable (no Hb observable or unit).
+;; Faint or loss of consciousness
 (system_priority_evaluation
-  "Urgent: palpitations with danger signs"
+  "Urgent: palpitations with syncope"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Palpitations" "finding"))
-    (or
-      ;; Faint or loss of consciousness
-      (clinical_finding (snomed_concept "Syncope" "finding"))
-      (clinical_finding (snomed_concept "Loss of consciousness" "finding"))
-      ;; Dizziness or light-headedness
-      (clinical_finding (snomed_concept "Dizziness" "finding"))
-      (clinical_finding (snomed_concept "Lightheadedness" "finding"))
-      ;; Confusion
-      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-      ;; Chest pain
-      (clinical_finding (snomed_concept "Chest pain" "finding"))
-      ;; BP >= 180/110 or < 90/60
-      (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
-      (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-      (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-      ;; Pulse irregular, > 150 or < 50
-      (clinical_finding (snomed_concept "Pulse irregular" "finding"))
-      (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 150)
-      (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
-      ;; Fingerprick glucose < 3 (< 4 if diabetes)
-      (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
-      (and (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-           (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4))
-      ;; Calf or thigh pain and/or swelling
-      (clinical_finding (snomed_concept "Pain in calf" "finding"))
-      (clinical_finding (snomed_concept "Thigh pain" "finding"))
-      (clinical_finding (snomed_concept "Swollen calf" "finding"))
-      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Thigh structure" "body structure")))
-      ;; Difficulty breathing, respiratory rate >= 30 or oxygen saturation < 94%
-      (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-      (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-      (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 94)
-      ;; Difficulty breathing worse on lying flat and leg swelling, heart failure likely
-      (active_condition (snomed_concept "Heart failure" "disorder"))
-      ;; New sudden asymmetric weakness or numbness, difficulty speaking or visual disturbance (stroke/TIA)
-      (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-      (clinical_finding (snomed_concept "Difficulty talking" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-    )
+    (clinical_finding (snomed_concept "Syncope" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with loss of consciousness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Loss of consciousness" "finding"))
+  )
+)
+;; Dizziness or light-headedness
+(system_priority_evaluation
+  "Urgent: palpitations with dizziness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Dizziness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with lightheadedness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Lightheadedness" "finding"))
+  )
+)
+;; Confusion
+(system_priority_evaluation
+  "Urgent: palpitations with clouded consciousness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+  )
+)
+;; Chest pain
+(system_priority_evaluation
+  "Urgent: palpitations with chest pain"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+;; BP >= 180/110 or < 90/60
+(system_priority_evaluation
+  "Urgent: palpitations with systolic blood pressure ≥ 180 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with diastolic blood pressure ≥ 110 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with systolic blood pressure < 90 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with diastolic blood pressure < 60 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+  )
+)
+;; Pulse irregular, > 150 or < 50
+(system_priority_evaluation
+  "Urgent: palpitations with pulse irregular"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Pulse irregular" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with pulse, function > 150 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 150)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with pulse, function < 50 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
+  )
+)
+;; Fingerprick glucose < 3 (< 4 if diabetes)
+
+(system_priority_evaluation
+  "Urgent: palpitations with blood glucose status < 3 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with diabetes mellitus (known present) and blood glucose status < 4 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4)
+  )
+)
+;; Calf or thigh pain and/or swelling
+(system_priority_evaluation
+  "Urgent: palpitations with pain in calf"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Pain in calf" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with thigh pain"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Thigh pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with swollen calf"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Swollen calf" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with swelling (site: thigh structure)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Thigh structure" "body structure")))
+  )
+)
+;; Difficulty breathing, respiratory rate >= 30 or oxygen saturation < 94%
+(system_priority_evaluation
+  "Urgent: palpitations with difficulty breathing"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with respiratory rate ≥ 30 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with hemoglobin saturation with oxygen < 94 %"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 94)
+  )
+)
+;; Difficulty breathing worse on lying flat and leg swelling, heart failure likely
+(system_priority_evaluation
+  "Urgent: palpitations with heart failure"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (active_condition (snomed_concept "Heart failure" "disorder"))
+  )
+)
+;; New sudden asymmetric weakness or numbness, difficulty speaking or visual disturbance (stroke/TIA)
+
+(system_priority_evaluation
+  "Urgent: palpitations with muscle weakness (sudden onset, asymmetry)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with numbness (sudden onset, asymmetry)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Numbness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with difficulty talking (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Difficulty talking" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: palpitations with visual disturbance (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Palpitations" "finding"))
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
   )
 )

@@ -2,7 +2,10 @@
 (task
   "Check for urgent foot symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
+  )
   (check_for
     ;; Unable to bear weight following injury: fracture likely
     (clinical_finding (snomed_concept "Unable to weight-bear" "finding"))
@@ -25,7 +28,10 @@
 (task
   "Check for causes of foot symptoms not needing urgent attention"
   adult
-  (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
+  )
   (check_for
     ;; Tinea pedis: cracks/peeling/scaly lesions between toes, or thickened scaly skin on soles/heels/sides of feet
     (clinical_finding (snomed_concept "Fissure in skin" "disorder") (finding_site (snomed_concept "Structure of interdigital space of foot" "body structure")))
@@ -149,12 +155,42 @@
   (and (clinical_finding (snomed_concept "Deformity of foot" "finding"))
        (clinical_finding (snomed_concept "Bony swelling of toe joint" "finding") (finding_site (snomed_concept "First metatarsophalangeal joint structure" "body structure"))))
 )
+
 (system_priority_evaluation
-  "Urgent: foot symptoms with fracture or limb ischaemia"
+  "Urgent: foot symptoms with fracture or limb ischaemia: fracture of bone"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Finding of foot region" "finding"))
-       (or (active_condition (snomed_concept "Fracture of bone" "disorder"))
-           (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
-           (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))))
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Fracture of bone" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: foot symptoms with fracture or limb ischaemia: acute lower limb ischemia"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: foot symptoms with fracture or limb ischaemia: critical lower limb ischemia"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of foot region" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))
+  )
 )

@@ -6,7 +6,7 @@ Final build, reconciled from builders A and B (base B; see `reconcile.json`).
 
 - **Trigger.** Every task and rule hangs off `Chest pain` (finding), the VHA warning sign. The
   red box header says "chest pain", so `Chest discomfort` is not a trigger.
-- **Red box → `Urgent: chest pain with danger signs`**, `(and Chest pain (or …))` over every item.
+- **Red box → `Urgent: chest pain with <bullet>`**, `(and Chest pain (or …))` over every item.
   BP ≥ 180/110 = systolic ≥ 180 or diastolic ≥ 110; BP < 90/60 = systolic < 90 or diastolic < 60
   (Will's convention). Pulse > 100 / < 50 and RR ≥ 30 are routine vitals. "Severe pain" = chest
   pain qualified Severe. "Shoulder/s" and "arm/s" are split into left and right radiation concepts.

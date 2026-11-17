@@ -163,17 +163,83 @@
       (clinical_finding (snomed_concept "Skin nodule" "disorder"))
       (clinical_finding (snomed_concept "Comedone" "disorder")))
 )
+
 (system_priority_evaluation
-  "Urgent: mole needing same-week referral (skin lump/s)"
+  "Urgent: mole needing same-week referral (skin lump/s): irregular outline of pigmented skin lesion"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
-       (or (clinical_finding (snomed_concept "Irregular outline of pigmented skin lesion" "disorder"))
-           (clinical_finding (snomed_concept "Mixed color of pigmented skin lesion" "disorder"))
-           (clinical_finding (snomed_concept "Change in skin lesion" "finding"))
-           (clinical_finding (snomed_concept "Changing shape of pigmented skin lesion" "disorder"))
-           (clinical_finding (snomed_concept "Changing color of pigmented skin lesion" "disorder"))
-           (> (measurement (snomed_concept "Lesion size, largest dimension" "observable entity") mm) 6)
-           (clinical_finding (snomed_concept "Bleeds easily" "finding"))
-           (clinical_finding (snomed_concept "Itching of pigmented skin lesion" "disorder"))))
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Irregular outline of pigmented skin lesion" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): mixed color of pigmented skin lesion"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Mixed color of pigmented skin lesion" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): change in skin lesion"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Change in skin lesion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): changing shape of pigmented skin lesion"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Changing shape of pigmented skin lesion" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): changing color of pigmented skin lesion"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Changing color of pigmented skin lesion" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): lesion size, largest dimension > 6 mm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (> (measurement (snomed_concept "Lesion size, largest dimension" "observable entity") mm) 6)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): bleeds easily"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Bleeds easily" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mole needing same-week referral (skin lump/s): itching of pigmented skin lesion"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Melanocytic nevus" "disorder"))
+    (clinical_finding (snomed_concept "Itching of pigmented skin lesion" "disorder"))
+  )
 )

@@ -63,26 +63,85 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: complications within 14 days of a termination of pregnancy"
+  "Urgent: complications within 14 days of a termination of pregnancy: mass of uterine adnexa and cervical os closed and small uterus"
   adult
   Urgent
-  ;; Red box: Yes to any of the review question's items -> "Manage urgently 182". Hb < 6 is not representable.
   (and
     (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
-    (or
-      (and
-        (clinical_finding (snomed_concept "Mass of uterine adnexa" "finding"))
-        (clinical_finding (snomed_concept "Cervical os closed" "finding"))
-        (clinical_finding (snomed_concept "Small uterus" "finding"))
-      )
-      (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
-      (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
-      (clinical_finding (snomed_concept "Offensive vaginal discharge" "finding"))
-      (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-      (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-    )
+    (clinical_finding (snomed_concept "Mass of uterine adnexa" "finding"))
+    (clinical_finding (snomed_concept "Cervical os closed" "finding"))
+    (clinical_finding (snomed_concept "Small uterus" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: abdominal guarding"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: rebound tenderness"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: offensive vaginal discharge"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (clinical_finding (snomed_concept "Offensive vaginal discharge" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: body temperature ≥ 38 °C"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: pulse, function ≥ 100 bpm"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: complications within 14 days of a termination of pregnancy: respiratory rate ≥ 30 bpm"
+  adult
+  Urgent
+  (and
+    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))) (time_ago 14 days))
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
   )
 )

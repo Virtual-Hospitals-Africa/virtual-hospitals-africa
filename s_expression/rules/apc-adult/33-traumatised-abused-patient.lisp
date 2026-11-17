@@ -89,26 +89,82 @@
         (clinical_finding (snomed_concept "Anxiety" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))))
   )
 )
+;; Sexual assault/rape within last 5 days if woman or last 3 days if man
 (system_priority_evaluation
-  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk"
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: female and onset of victim of forced sexual activity ≤ 5 days ago"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
         (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
-    (or
-      ;; Sexual assault/rape within last 5 days if woman or last 3 days if man
-      (and (clinical_finding (snomed_concept "Female" "finding"))
-           (<= (onset (clinical_finding (snomed_concept "Victim of forced sexual activity" "finding"))) (time_ago 5 days)))
-      (and (clinical_finding (snomed_concept "Male" "finding"))
-           (<= (onset (clinical_finding (snomed_concept "Victim of forced sexual activity" "finding"))) (time_ago 3 days)))
-      ;; Injuries needing attention
-      (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
-      ;; Suicidal thoughts/plans, overdose or self harm
-      (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
-      (clinical_finding (snomed_concept "Planning suicide" "finding"))
-      (clinical_finding (snomed_concept "Overdose" "disorder"))
-      (clinical_finding (snomed_concept "Self-injurious behavior" "finding"))
-    )
+    (clinical_finding (snomed_concept "Female" "finding"))
+    (<= (onset (clinical_finding (snomed_concept "Victim of forced sexual activity" "finding"))) (time_ago 5 days))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: male and onset of victim of forced sexual activity ≤ 3 days ago"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Male" "finding"))
+    (<= (onset (clinical_finding (snomed_concept "Victim of forced sexual activity" "finding"))) (time_ago 3 days))
+  )
+)
+;; Injuries needing attention
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: traumatic injury"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
+  )
+)
+;; Suicidal thoughts/plans, overdose or self harm
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: suicidal thoughts"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: planning suicide"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Planning suicide" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: overdose"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Overdose" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: traumatised/abused patient with recent sexual assault, injuries or suicide risk: self-injurious behavior"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Victim of abuse" "finding"))
+        (clinical_finding (snomed_concept "Victim of psychological trauma" "finding")))
+    (clinical_finding (snomed_concept "Self-injurious behavior" "finding"))
   )
 )

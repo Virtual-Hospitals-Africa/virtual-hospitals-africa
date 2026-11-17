@@ -10,7 +10,7 @@
   difficulty and pain on swallowing ("Ask about swallowing problems"), which constraint 3 would
   forbid if they were in its own `due_to`. Side effect: a patient presenting only with a
   swallowing problem is not walked through the Assess box (white patches, pseudomembrane, tonsils).
-- **Red box → `Urgent: throat symptoms with danger signs`.** "Refer urgently" means `Urgent`, not
+- **Red box → `Urgent: throat symptoms with <bullet>`.** "Refer urgently" means `Urgent`, not
   Emergency. This page doesn't escalate further. A recorded `Upper respiratory tract obstruction`
   also matches the existing Emergency warning sign `Respiratory obstruction` by descent.
 - **"Red swelling blocking airway"** is encoded as `(and Pharyngeal swelling, Upper respiratory

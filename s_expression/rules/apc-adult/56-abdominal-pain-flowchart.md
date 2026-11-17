@@ -39,7 +39,7 @@ flowchart TD
 | Sudden severe upper pain to back + N/V | `Upper abdominal pain` + Sudden onset + Severe, radiating to the back (lumbar or left/right thoracic radiation), and nausea or vomiting | `Diagnose probable pancreatitis from abdominal pain` |
 | Guarding/rigidity + T ≥ 38 °C + abnormal vaginal discharge | (guarding or rigidity) and temperature ≥ 38 and `Vaginal discharge problem` | `Diagnose probable infection from abdominal pain with guarding, fever and vaginal discharge` (`Infectious disease`); its evidence is inlined in the priority rule |
 | Sudden abdominal pain + anaphylaxis features | sudden-onset abdominal pain and any of the listed features or exposures | `Diagnose possible anaphylaxis from sudden abdominal pain` (feeds page 28/20 anaphylaxis check) and a branch of the priority rule |
-| Red box = Yes | `(and Abdominal pain (or …))` | `Urgent: abdominal pain with red-box signs` |
+| Red box = Yes | `(and Abdominal pain (or …))` | `Urgent: abdominal pain with <bullet>` |
 | Gastroenteritis likely | `Abdominal colic` and any of vomiting, diarrhoea, loss of appetite, generalised aches, fever | `Diagnose probable gastroenteritis from abdominal pain` |
 | Dysmenorrhoea likely | `Abdominal colic` at lower abdomen, qualifier `During menstruation` | `Diagnose probable dysmenorrhoea from abdominal pain` |
 | Abnormal discharge or cervical excitation → LAP syndrome | Not encoded: no SNOMED concept for LAP syndrome (routing to page 64) | – |

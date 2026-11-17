@@ -228,54 +228,200 @@
 
 ;; Red box: "Give urgent attention to the patient with abdominal pain and any of:"
 (system_priority_evaluation
-  "Urgent: abdominal pain with red-box signs"
+  "Urgent: abdominal pain with chest pain"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Chest pain" "finding"))
-      (and (clinical_finding (snomed_concept "Pregnancy" "finding"))
-           (clinical_finding (snomed_concept "Bleeding from vagina" "finding")))
-      (clinical_finding (snomed_concept "Postpartum state" "finding"))
-      (clinical_finding (snomed_concept "Miscarriage" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
-      (clinical_finding (snomed_concept "Unable to void urine" "finding"))
-      (clinical_finding (snomed_concept "Jaundice" "finding"))
-      (clinical_finding (snomed_concept "Abdominal mass" "finding"))
-      (clinical_finding (snomed_concept "Mass of pelvic structure" "finding"))
-      (active_condition (snomed_concept "Abdominal aortic aneurysm" "disorder"))
-      (active_condition (snomed_concept "Appendicitis" "disorder"))
-      (active_condition (snomed_concept "Peritonitis" "disorder"))
-      (active_condition (snomed_concept "Cholecystitis" "disorder"))
-      (active_condition (snomed_concept "Pancreatitis" "disorder"))
-      ;; "No stools or flatus/wind for past 24 hours"
-      (and (>= (onset (clinical_finding (snomed_concept "Obstipation" "disorder"))) (time_ago 24 hours))
-           (>= (onset (clinical_finding (snomed_concept "Unable to break wind" "finding"))) (time_ago 24 hours)))
-      ;; "If sudden abdominal pain and any of ... check for anaphylaxis"
-      (and
-        (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
-            (clinical_finding (snomed_concept "Generalized rash" "disorder"))
-            (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
-            (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
-            (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-            (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-            (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-            (clinical_finding (snomed_concept "Dizziness" "finding"))
-            (clinical_finding (snomed_concept "Collapse" "finding"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-            (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-            (clinical_finding (snomed_concept "Insect sting" "disorder"))))
-      ;; "guarding/rigidity ... with temperature >= 38°C and abnormal vaginal discharge, infection likely":
-      ;; evidence inlined, because (active_condition Infectious disease) would match any infection
-      (and
-        (or (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
-            (clinical_finding (snomed_concept "Abdominal rigidity" "finding")))
-        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-        (clinical_finding (snomed_concept "Vaginal discharge problem" "finding")))
-    )
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with pregnancy and bleeding from vagina"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Bleeding from vagina" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with postpartum state"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Postpartum state" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with miscarriage (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Miscarriage" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with induced termination of pregnancy (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with blood glucose status ≥ 11.1 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with unable to void urine"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Unable to void urine" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with jaundice"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with abdominal mass"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Abdominal mass" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with mass of pelvic structure"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Mass of pelvic structure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with abdominal aortic aneurysm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (active_condition (snomed_concept "Abdominal aortic aneurysm" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with appendicitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (active_condition (snomed_concept "Appendicitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with peritonitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (active_condition (snomed_concept "Peritonitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with cholecystitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (active_condition (snomed_concept "Cholecystitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: abdominal pain with pancreatitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (active_condition (snomed_concept "Pancreatitis" "disorder"))
+  )
+)
+;; "No stools or flatus/wind for past 24 hours"
+(system_priority_evaluation
+  "Urgent: abdominal pain with onset of obstipation ≥ 24 hours ago and onset of unable to break wind ≥ 24 hours ago"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (>= (onset (clinical_finding (snomed_concept "Obstipation" "disorder"))) (time_ago 24 hours))
+    (>= (onset (clinical_finding (snomed_concept "Unable to break wind" "finding"))) (time_ago 24 hours))
+  )
+)
+;; "If sudden abdominal pain and any of ... check for anaphylaxis"
+(system_priority_evaluation
+  "Urgent: abdominal pain with abdominal pain (sudden onset) and generalized pruritus or generalized rash …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder"))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Insect sting" "disorder")))
+  )
+)
+;; "guarding/rigidity ... with temperature >= 38°C and abnormal vaginal discharge, infection likely":
+;; evidence inlined, because (active_condition Infectious disease) would match any infection
+(system_priority_evaluation
+  "Urgent: abdominal pain with abdominal guarding or abdominal rigidity and body temperature ≥ 38 °C …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (or (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
+        (clinical_finding (snomed_concept "Abdominal rigidity" "finding")))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+    (clinical_finding (snomed_concept "Vaginal discharge problem" "finding"))
   )
 )

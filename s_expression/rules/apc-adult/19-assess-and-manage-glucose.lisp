@@ -86,6 +86,7 @@
            (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
            (clinical_finding (snomed_concept "Recurrent infectious disease" "disorder"))))
 )
+
 (system_priority_evaluation
   "Urgent: hypoglycaemia on fingerprick glucose"
   adult
@@ -93,24 +94,117 @@
   ;; Red box 1: "Give urgent attention"
   (active_condition (snomed_concept "Hypoglycemia" "disorder"))
 )
+
 (system_priority_evaluation
-  "Urgent: glucose 11.1 or more with danger signs"
+  "Urgent: glucose 11.1 or more with decreased level of consciousness"
   adult
   Urgent
-  ;; Red box 2 = Yes -> red box 3 ("Refer urgently")
-  (and (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
-       (or (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-           (clinical_finding (snomed_concept "Chest pain" "finding"))
-           (clinical_finding (snomed_concept "Seizure" "finding"))
-           (clinical_finding (snomed_concept "Drowsy" "finding"))
-           (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-           (clinical_finding (snomed_concept "Nausea" "finding"))
-           (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-           (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-           (clinical_finding (snomed_concept "Kussmaul's respiration" "finding"))
-           (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-           (clinical_finding (snomed_concept "Dehydration" "disorder"))))
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
 )
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with chest pain"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with seizure"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with drowsy"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with clouded consciousness"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with nausea"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Nausea" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with finding of vomiting"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with abdominal pain"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with kussmaul's respiration"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Kussmaul's respiration" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with body temperature ≥ 38 °C"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: glucose 11.1 or more with dehydration"
+  adult
+  Urgent
+  (and
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+    (clinical_finding (snomed_concept "Dehydration" "disorder"))
+  )
+)
+
 (system_priority_evaluation
   "Urgent: glucose 11.1 or more with urine ketones"
   adult

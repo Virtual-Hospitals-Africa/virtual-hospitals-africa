@@ -31,7 +31,7 @@ flowchart TD
 | Diarrhoea presents (entry) | `Diarrhea` (common symptom) triggers the questions for cholera | `Check for cholera (cholera page)` |
 | C: cholera likely | Watery diarrhoea (Diarrhea + `Watery` qualifier) **and** exposure to *Vibrio cholerae* with onset within the past 5 days (`<=`). "With or without vomiting" adds no condition | `Diagnose probable cholera` |
 | Cholera → dehydration questions | `(active_condition Cholera)` triggers the dehydration check | `Check for level of dehydration in cholera` |
-| Q1 = Yes | Cholera **and** (any of drowsy / decreased consciousness / confused / difficulty breathing / weak pulse **or** `any2` of unable to drink-or-drinking-poorly, poor skin turgor, sunken eyes) | `Urgent: cholera with severe dehydration` |
+| Q1 = Yes | Cholera **and** (any of drowsy / decreased consciousness / confused / difficulty breathing / weak pulse **or** `any2` of unable to drink-or-drinking-poorly, poor skin turgor, sunken eyes) | `Urgent: cholera with severe dehydration: <bullet>` |
 | Q1 = No → Q2 = Yes | Cholera **and** `(not Q1)` **and** `any2` of restless, thirsty, dry mouth, pulse ≥ 100 | `Diagnose probable some dehydration in cholera` → `Urgent: cholera with some dehydration` (red box 1) |
 | Q2 = No: dehydration unlikely | Not modelled ("unlikely" has no form) | — |
 | Reassess every 15–30 min (red box 3) | Not modelled: reassessment after IV treatment; management | — |

@@ -40,7 +40,7 @@ flowchart TD
 |---|---|---|
 | Presenting complaint (skin colour change) | `Discoloration of skin` | `Check for causes of changes in skin colour` (task) |
 | Yellow skin → jaundice likely | `Yellow skin` | `Diagnose probable jaundice (changes in skin colour)` |
-| Red box | `Jaundice` (finding or probable diagnosis) **and** any red-box item | `Check for urgent jaundice conditions (changes in skin colour)` (task), `Urgent: jaundice with danger signs (changes in skin colour)` |
+| Red box | `Jaundice` (finding or probable diagnosis) **and** any red-box item | `Check for urgent jaundice conditions (changes in skin colour)` (task), `Urgent: jaundice with danger signs (changes in skin colour): <bullet>` |
 | Dark patches → lower legs → venous stasis likely | `Hyperpigmentation of skin` at `Structure of lower limb from knee to ankle` | `Diagnose probable venous stasis (changes in skin colour)` |
 | Dark patches → face → melasma likely | `Hyperpigmentation of skin` at `Face structure` | `Diagnose probable melasma (changes in skin colour)` |
 | Dark patches on trunk, or light patches, with fine scale → tinea versicolor likely | `Scaly skin` **and** (`Hyperpigmentation of skin` at `Trunk structure` **or** `Hypopigmentation of skin`) | `Diagnose probable tinea versicolor (changes in skin colour)` |

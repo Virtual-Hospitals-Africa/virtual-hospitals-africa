@@ -39,8 +39,8 @@ or long-term corticosteroids.
 | Node | Modelled as | Rule |
 |---|---|---|
 | Patient with a bite/sting | `(or Bite - wound, Venomous sting)`. `Insect bite - wound` (common symptom), `Snake bite - wound`, `Spider bite wound` and `Poisoning due to bite of Scorpiones` all descend from `Bite - wound`; `Insect sting` descends from `Venomous sting` | Trigger of `Check for urgent bite/sting conditions` |
-| Red box items | Each item a `check_for` finding; deep or large wound as `Deep bite wound` or `Bite - wound` + `Large`; venom in eyes as `Toxic effect of venom` at `Structure of eye proper`; spider bite as `(and Spider bite wound (or drooling, restlessness, cramp))`; shock as `(or Shock, systolic BP < 80)` | `Urgent: bite/sting with danger signs` |
-| Anaphylaxis likely | Bite/sting **and** any sudden-onset item of the list | `Diagnose probable anaphylaxis after bite/sting`; consumed by `Urgent: bite/sting with danger signs` via `(active_condition Anaphylaxis)` |
+| Red box items | Each item a `check_for` finding; deep or large wound as `Deep bite wound` or `Bite - wound` + `Large`; venom in eyes as `Toxic effect of venom` at `Structure of eye proper`; spider bite as `(and Spider bite wound (or drooling, restlessness, cramp))`; shock as `(or Shock, systolic BP < 80)` | `Urgent: bite/sting with <bullet>` |
+| Anaphylaxis likely | Bite/sting **and** any sudden-onset item of the list | `Diagnose probable anaphylaxis after bite/sting`; consumed by `Urgent: bite/sting with <bullet>` via `(active_condition Anaphylaxis)` |
 | Papular urticaria likely | Spider/insect bite or insect sting **and** extensive insect bite reaction | `Diagnose probable papular urticaria after bite/sting` |
 | Cellulitis likely | Bite/sting **and** erythema **and** warm skin **and** pain of skin | `Diagnose probable cellulitis after bite/sting` |
 | Animal-bite rabies questions (Q2, Q3) and human bite | Management routing only (PEP, rabies vaccine/immunoglobulin, antibiotics); no "likely"/"consider" diagnosis | Not modelled (management) |

@@ -33,13 +33,13 @@ crop of the image and followed A.)
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `Chest pain` (warning sign) | trigger of every task |
-| Red box criteria | `(and Chest pain (or …))` over every red-box item | `Check for urgent chest pain signs`, `Record known cardiovascular disease risk for chest pain`, `Urgent: chest pain with danger signs` |
+| Red box criteria | `(and Chest pain (or …))` over every red-box item | `Check for urgent chest pain signs`, `Record known cardiovascular disease risk for chest pain`, `Urgent: chest pain with <bullet>` |
 | Do an ECG | `check_for` ST segment elevation, ST segment depression, Electrocardiographic left bundle branch block | `Do an ECG for chest pain (doctor to review)` |
 | ECG abnormal → FEAT | any of the three ECG findings | first `or` of the ACS and stable angina rules |
 | ECG normal/unavailable → POS | not gated (cannot express "unavailable or uncertain") | — |
 | Positional question (POS) | `Pain aggravated by position` (lying down), `Tenderness of chest wall` (palpation), `Chest pain on breathing` (breathing deeply). "No" = all three recorded as No | `Check chest pain character for acute coronary syndrome` (check_for) |
 | POS = No → FEAT | `(and (no …) (no …) (no …))` | first `or` of the ACS and stable angina rules |
-| POS = Yes → Manage and refer urgently | Chest pain **and** any of the three positional findings | `Urgent: chest pain worse on lying down, palpation or breathing deeply`; `Check for tension pneumothorax or pneumonia in chest pain` |
+| POS = Yes → Manage and refer urgently | Chest pain **and** any of the three positional findings | `Urgent: chest pain worse on lying down, palpation or breathing deeply: <bullet>`; `Check for tension pneumothorax or pneumonia in chest pain` |
 | Tension pneumothorax likely | POS = Yes **and** sudden dyspnoea **and** one-sided sign (unilateral hyperresonance / unilateral decreased breath sounds / left or right sided pain) **and** trachea displaced | `Diagnose probable tension pneumothorax in chest pain` |
 | Pneumonia likely | Chest pain on breathing **and** productive cough **and** temperature ≥ 38 °C | `Diagnose probable pneumonia in chest pain` |
 | FEAT = Yes → ACS likely | chest pain at rest, chest pain worsening, chest pain prolonged, onset ≥ 10 minutes ago | second `or` of `Diagnose probable acute coronary syndrome in chest pain` |

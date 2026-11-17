@@ -28,7 +28,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `(clinical_finding Palpitations)` as the trigger | `Check for urgent palpitations conditions`, `Check for causes of palpitations` |
-| Red box (any of) | `(and Palpitations (or …red box items…))` | `Urgent: palpitations with danger signs` |
+| Red box (any of) | `(and Palpitations (or …red box items…))` | `Urgent: palpitations with <bullet>` |
 | Orthopnoea + leg swelling → heart failure likely | `probable` Heart failure: Palpitations **and** Orthopnea **and** Leg swelling symptom | `Diagnose probable heart failure from palpitations` (referenced from the priority rule via `active_condition`) |
 | New sudden asymmetric weakness/numbness, difficulty speaking, visual disturbance → consider stroke/TIA | `possible` Cerebrovascular accident and `possible` Transient ischemic attack, each Palpitations **and** any of the four sudden-onset findings | `Diagnose possible stroke from palpitations`, `Diagnose possible TIA from palpitations` |
 | Hb < 8 | Not representable (no Hb unit/observable) | — |

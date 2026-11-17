@@ -31,7 +31,11 @@
 (task
   "Check for urgent arm or hand conditions"
   adult
-  (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
+    (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
+  )
   (check_for
     ;; Arm pain with chest pain
     (clinical_finding (snomed_concept "Pain in upper limb" "finding"))
@@ -50,7 +54,11 @@
 (task
   "Check for causes of arm or hand symptoms"
   adult
-  (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
+    (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
+  )
   (check_for
     ;; Joint warm/tender/swollen or unable to do all actions comfortably: joint problem likely
     (clinical_finding (snomed_concept "Joint warm" "finding"))
@@ -193,34 +201,132 @@
 )
 
 (system_priority_evaluation
-  "Urgent: neck pain with meningitis, neurological symptoms or recent injury"
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: meningitis"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Neck pain" "finding"))
-       (or (active_condition (snomed_concept "Meningitis" "disorder"))
-           (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
-           (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
-           (clinical_finding (snomed_concept "Clumsiness" "finding"))
-           (clinical_finding (snomed_concept "Stiff limbs" "finding"))
-           (clinical_finding (snomed_concept "Abnormal gait" "finding"))
-           (clinical_finding (snomed_concept "Decreased coordination" "finding"))
-           ;; Recent injury and (x-ray abnormal [unavailable not representable] or neurological symptoms)
-           (and (clinical_finding (snomed_concept "Injury of neck" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-                (or (clinical_finding (snomed_concept "Plain X-ray of cervical spine abnormal" "finding"))
-                    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
-                    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
-                    (clinical_finding (snomed_concept "Clumsiness" "finding"))
-                    (clinical_finding (snomed_concept "Stiff limbs" "finding"))
-                    (clinical_finding (snomed_concept "Abnormal gait" "finding"))
-                    (clinical_finding (snomed_concept "Decreased coordination" "finding"))))))
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (active_condition (snomed_concept "Meningitis" "disorder"))
+  )
 )
+
 (system_priority_evaluation
-  "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness"
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: muscle weakness of limb"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
-       (or (and (clinical_finding (snomed_concept "Pain in upper limb" "finding"))
-                (clinical_finding (snomed_concept "Chest pain" "finding")))
-           (active_condition (snomed_concept "Fracture of upper limb" "disorder"))
-           (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))))
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: numbness of limbs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: clumsiness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Clumsiness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: stiff limbs"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Stiff limbs" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: abnormal gait"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Abnormal gait" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: decreased coordination"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Decreased coordination" "finding"))
+  )
+)
+;; Recent injury and (x-ray abnormal [unavailable not representable] or neurological symptoms)
+
+(system_priority_evaluation
+  "Urgent: neck pain with meningitis, neurological symptoms or recent injury: injury of neck (recent) and plain X-ray of cervical spine abnormal …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Neck pain" "finding"))
+    (clinical_finding (snomed_concept "Injury of neck" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+    (or (clinical_finding (snomed_concept "Plain X-ray of cervical spine abnormal" "finding"))
+        (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
+        (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+        (clinical_finding (snomed_concept "Clumsiness" "finding"))
+        (clinical_finding (snomed_concept "Stiff limbs" "finding"))
+        (clinical_finding (snomed_concept "Abnormal gait" "finding"))
+        (clinical_finding (snomed_concept "Decreased coordination" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness: pain in upper limb and chest pain"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
+      (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Pain in upper limb" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness: fracture of upper limb"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
+      (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Fracture of upper limb" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: arm or hand symptoms with chest pain, fracture or sudden weakness: muscle weakness of upper limb (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
+      (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
 )

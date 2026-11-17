@@ -33,7 +33,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `Cough` or `Difficulty breathing` (descendants include the recorded common symptom `Dyspnea`) | `due_to` of both `check_for` tasks and of the priority rule |
-| Red box, any item | `(and complaint (or …red-box items…))` | `Urgent: cough or difficulty breathing with red-box signs` |
+| Red box, any item | `(and complaint (or …red-box items…))` | `Urgent: cough or difficulty breathing with <bullet>` |
 | Heart failure likely | Orthopnea **and** swelling of lower limb | `Diagnose probable heart failure (cough/difficulty breathing page)` → `(active_condition Heart failure)` in the priority rule |
 | Tension pneumothorax likely | Sudden-onset dyspnoea **and** a one-sided sign (hyperresonance / decreased breath sounds / chest pain, each `Unilateral`) **and** displaced trachea **and** BP < 90/60 | `Diagnose probable tension pneumothorax (cough/difficulty breathing page)` → `(active_condition Tension pneumothorax)` in the priority rule |
 | Rapid deep breathing → glucose | not modelled: glucose is a routine vital (no `measure` task); "If > 11.1 → 19" is a cross-reference | — |

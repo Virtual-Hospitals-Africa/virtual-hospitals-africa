@@ -4,7 +4,8 @@
   "Check for urgent leg symptom conditions"
   adult
   (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
-      (clinical_finding (snomed_concept "Muscle pain" "finding")))
+      (clinical_finding (snomed_concept "Muscle pain" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
   (check_for
     ;; Fracture: unable to bear weight following injury
     (clinical_finding (snomed_concept "Unable to weight-bear" "finding"))
@@ -32,7 +33,8 @@
   "Check leg symptoms not needing urgent attention"
   adult
   (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
-      (clinical_finding (snomed_concept "Muscle pain" "finding")))
+      (clinical_finding (snomed_concept "Muscle pain" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
   (check_for
     ;; Screen for joint problem
     (clinical_finding (snomed_concept "Joint warm" "finding"))
@@ -174,14 +176,51 @@
   (and (clinical_finding (snomed_concept "Joint swelling" "finding"))
        (clinical_finding (snomed_concept "Injury of lower limb" "disorder")))
 )
+
 (system_priority_evaluation
-  "Urgent: leg symptoms with fracture, DVT or limb ischaemia"
+  "Urgent: leg symptoms with fracture, DVT or limb ischaemia: fracture of lower limb"
   adult
   Urgent
-  (and (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
-           (clinical_finding (snomed_concept "Muscle pain" "finding")))
-       (or (active_condition (snomed_concept "Fracture of lower limb" "disorder"))
-           (active_condition (snomed_concept "Deep venous thrombosis" "disorder"))
-           (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
-           (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))))
+  (and
+    (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
+        (clinical_finding (snomed_concept "Muscle pain" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
+    (active_condition (snomed_concept "Fracture of lower limb" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: leg symptoms with fracture, DVT or limb ischaemia: deep venous thrombosis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
+        (clinical_finding (snomed_concept "Muscle pain" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
+    (active_condition (snomed_concept "Deep venous thrombosis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: leg symptoms with fracture, DVT or limb ischaemia: acute lower limb ischemia"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
+        (clinical_finding (snomed_concept "Muscle pain" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
+    (active_condition (snomed_concept "Acute lower limb ischemia" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: leg symptoms with fracture, DVT or limb ischaemia: critical lower limb ischemia"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Finding of lower limb" "finding"))
+        (clinical_finding (snomed_concept "Muscle pain" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure"))))
+    (active_condition (snomed_concept "Critical lower limb ischemia" "disorder"))
+  )
 )

@@ -3,7 +3,8 @@
   "Check for urgent genital symptoms in a man"
   adult
   (or (clinical_finding (snomed_concept "Male genitalia finding" "finding"))
-      (clinical_finding (snomed_concept "Urethral discharge" "finding")))
+      (clinical_finding (snomed_concept "Urethral discharge" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Scrotal structure" "body structure"))))
   (check_for
     ;; Torsion of testicle
     (clinical_finding (snomed_concept "Swelling of scrotum" "finding"))
@@ -99,15 +100,39 @@
   (or (clinical_finding (snomed_concept "Mass of scrotum" "finding") (qualifier (snomed_concept "Painless" "qualifier value")))
       (clinical_finding (snomed_concept "Mass of testicle" "finding") (qualifier (snomed_concept "Painless" "qualifier value"))))
 )
+
 (system_priority_evaluation
-  "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism"
+  "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism: torsion of testis"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Male genitalia finding" "finding"))
-        (clinical_finding (snomed_concept "Urethral discharge" "finding")))
-    (or (active_condition (snomed_concept "Torsion of testis" "disorder"))
-        (active_condition (snomed_concept "Paraphimosis" "disorder"))
-        (active_condition (snomed_concept "Priapism" "disorder")))
+        (clinical_finding (snomed_concept "Urethral discharge" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Scrotal structure" "body structure"))))
+    (active_condition (snomed_concept "Torsion of testis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism: paraphimosis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Male genitalia finding" "finding"))
+        (clinical_finding (snomed_concept "Urethral discharge" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Scrotal structure" "body structure"))))
+    (active_condition (snomed_concept "Paraphimosis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: genital symptoms in a man with torsion, paraphimosis or priapism: priapism"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Male genitalia finding" "finding"))
+        (clinical_finding (snomed_concept "Urethral discharge" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Scrotal structure" "body structure"))))
+    (active_condition (snomed_concept "Priapism" "disorder"))
   )
 )

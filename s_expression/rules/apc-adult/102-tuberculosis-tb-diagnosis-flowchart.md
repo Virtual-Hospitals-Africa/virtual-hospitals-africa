@@ -39,5 +39,5 @@ result". Not modelled either way.)
 | TB symptoms / TB contact / abnormal screening CXR → suspected TB | `or` of Cough, Weight decreased, Night sweats, active Fever, exposure to Mycobacterium tuberculosis complex, Plain X-ray of chest for tuberculosis screening abnormal | `Diagnose possible TB from TB symptoms, TB contact or abnormal screening CXR` |
 | DS-TB in last 2 years, PLHIV screening schedule | Not modelled (timing schedule; see remaining questions) | — |
 | Red box | `check_for` of the non-vital red-box items, triggered by possible TB | `Check for urgent suspected TB conditions` |
-| Red box = Yes | `(and possible TB (or …red box…))` → Urgent | `Urgent: suspected TB with danger signs` |
+| Red box = Yes | `(and possible TB (or …red box…))` → Urgent | `Urgent: suspected TB with <bullet>` |
 | Workup, LAM, NAAT, DST branches, INH-resistant TB, RR-TB | Not modelled: lab results (NAAT, LAM, CD4, DST, culture) have no representation; the remainder is management | — |

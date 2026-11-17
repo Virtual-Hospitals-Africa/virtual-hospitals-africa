@@ -23,6 +23,6 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Vaginal bleeding (trigger) | `(clinical_finding "Bleeding from vagina")` | `Check for urgent abnormal vaginal bleeding conditions` |
-| Red box = Yes | `(and bleeding (or pregnancy, postpartum, recent miscarriage, recent termination, shock, SBP < 80, (and pallor (or pulse ≥ 100, RR ≥ 30, dizziness, asthenia, chest pain)), victim of sexual aggression, victim of rape))`. Hb < 6 not representable | `Urgent: abnormal vaginal bleeding with danger signs` |
+| Red box = Yes | `(and bleeding (or pregnancy, postpartum, recent miscarriage, recent termination, shock, SBP < 80, (and pallor (or pulse ≥ 100, RR ≥ 30, dizziness, asthenia, chest pain)), victim of sexual aggression, victim of rape))`. Hb < 6 not representable | `Urgent: abnormal vaginal bleeding with <bullet>` |
 | Approach / type of bleeding problem | Not modelled: management, examinations, investigations and referral only | — |
 | Hb < 12: likely anaemia | Not modelled: needs a haemoglobin value | — |

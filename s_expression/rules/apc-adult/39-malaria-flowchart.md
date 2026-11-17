@@ -25,7 +25,7 @@ flowchart TD
 | S (what makes us ask) | Any of the page's presenting symptoms that the app records (temperature ≥ 38, headache, fatigue, muscle pain, cough, nausea, vomiting, diarrhoea) → ask about being in a malaria area, and about the symptoms the app does not record by default (severe headache, shivering, joint pain, flu-like illness, dry cough) | `Check for exposure to a malaria area` |
 | S = suspect malaria | History of travel with high risk of exposure to communicable disease, onset within the past 3 months, **and** any of the listed symptoms | `Diagnose possible malaria` |
 | Suspected malaria → red box questions | `(diagnosis Malaria possible)` triggers the check for the red-box items | `Check for urgent signs in suspected malaria` |
-| RB = Yes | Suspected malaria **and** any red-box item (Hb < 7 not representable) | `Urgent: suspected malaria with danger signs` |
+| RB = Yes | Suspected malaria **and** any red-box item (Hb < 7 not representable) | `Urgent: suspected malaria with <bullet>` |
 | RB = Yes → "Manage as suspected severe malaria" | Same evidence as the priority rule, at `possible` certainty, as Complicated malaria | `Diagnose possible complicated (severe) malaria` |
 | Malaria test positive / negative | Laboratory and rapid-test results have no observable in the language | not modelled (see remaining questions) |
 | RISK | Routes between two management branches only | not modelled (management) |

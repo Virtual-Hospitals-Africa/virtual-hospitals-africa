@@ -25,7 +25,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Trigger | Depressed mood, Stress or Anxiety (finding) | `Check for urgent low mood, stress or anxiety conditions`, `Check for generalised anxiety disorder and PTSD features` |
-| Red box | Complaint **and** (suicidal thoughts or suicidal behaviour) | `Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour` |
+| Red box | Complaint **and** (suicidal thoughts or suicidal behaviour) | `Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour: <bullet>` |
 | GAD | Excessive worry with onset ≥ 6 months ago **and** distress **and** ≥ 3 of the six symptoms | `Diagnose probable generalised anxiety disorder (low mood, stress or anxiety page)` |
 | PTSD | Anxiety onset ≥ 1 month ago **and** victim of psychological trauma **and** ≥ 3 of the four groups | `Diagnose probable post-traumatic stress disorder (low mood, stress or anxiety page)` |
 | Phobia / panic | Not modelled: the page says "discuss/refer", not "likely" or "consider" | none |

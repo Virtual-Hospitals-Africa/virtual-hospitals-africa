@@ -105,57 +105,199 @@
     )
   )
 )
+;; meningitis likely
 (system_priority_evaluation
-  "Urgent: same-day referral after a seizure/fit"
+  "Urgent: same-day referral after a seizure/fit: meningitis"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Seizure" "finding"))
-    (or
-      ;; meningitis likely
-      (active_condition (snomed_concept "Meningitis" "disorder"))
+    (active_condition (snomed_concept "Meningitis" "disorder"))
+  )
+)
+;; new/different headache or headache getting worse/more frequent
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: headache (new)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "New" "qualifier value")))
+  )
+)
 
-      ;; new/different headache or headache getting worse/more frequent
-      (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "New" "qualifier value")))
-      (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
-      (clinical_finding (snomed_concept "Frequent headache" "finding"))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: headache (worsening)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
+  )
+)
 
-      ;; patient with HIV and no known epilepsy
-      (and (clinical_finding (snomed_concept "Human immunodeficiency virus infection" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-           (no (clinical_finding (snomed_concept "Epilepsy" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: frequent headache"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Frequent headache" "finding"))
+  )
+)
+;; patient with HIV and no known epilepsy
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: human immunodeficiency virus infection (known present) and no epilepsy (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Human immunodeficiency virus infection" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (no (clinical_finding (snomed_concept "Epilepsy" "disorder") (qualifier (snomed_concept "Known present" "qualifier value"))))
+  )
+)
+;; decreased consciousness > 1 hour after fit
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: decreased level of consciousness and onset of seizure ≥ 1 hours ago"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+    (>= (onset (clinical_finding (snomed_concept "Seizure" "finding"))) (time_ago 1 hours))
+  )
+)
+;; glucose < 3 (< 4 if diabetes); glucose >= 11.1
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: blood glucose status < 3 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
+  )
+)
 
-      ;; decreased consciousness > 1 hour after fit
-      (and (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-           (>= (onset (clinical_finding (snomed_concept "Seizure" "finding"))) (time_ago 1 hours)))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: diabetes mellitus (known present) and blood glucose status < 4 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4)
+  )
+)
 
-      ;; glucose < 3 (< 4 if diabetes); glucose >= 11.1
-      (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 3)
-      (and (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-           (< (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 4))
-      (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: blood glucose status ≥ 11.1 mmol/L"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (>= (measurement (snomed_concept "Blood glucose status" "observable entity") mmol/L) 11.1)
+  )
+)
+;; new sudden asymmetric weakness or numbness, difficulty speaking or visual disturbance
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: muscle weakness (sudden onset, asymmetry)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+  )
+)
 
-      ;; new sudden asymmetric weakness or numbness, difficulty speaking or visual disturbance
-      (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-      (clinical_finding (snomed_concept "Difficulty talking" "finding"))
-      (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: numbness (sudden onset, asymmetry)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Numbness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+  )
+)
 
-      ;; BP >= 180/130 more than 1 hour after fit has stopped
-      (and (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
-               (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 130))
-           (>= (onset (clinical_finding (snomed_concept "Seizure" "finding"))) (time_ago 1 hours)))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: difficulty talking"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Difficulty talking" "finding"))
+  )
+)
 
-      ;; alcohol/drug use: overdose or withdrawal
-      (clinical_finding (snomed_concept "Overdose" "disorder"))
-      (clinical_finding (snomed_concept "Substance withdrawal syndrome" "disorder"))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: visual disturbance"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
+  )
+)
+;; BP >= 180/130 more than 1 hour after fit has stopped
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: systolic blood pressure ≥ 180 mmHg or diastolic blood pressure ≥ 130 mmHg …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
+        (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 130))
+    (>= (onset (clinical_finding (snomed_concept "Seizure" "finding"))) (time_ago 1 hours))
+  )
+)
+;; alcohol/drug use: overdose or withdrawal
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: overdose"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Overdose" "disorder"))
+  )
+)
 
-      ;; recent head injury
-      (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: substance withdrawal syndrome"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Substance withdrawal syndrome" "disorder"))
+  )
+)
+;; recent head injury
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: injury of head (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+;; pregnant or up to 1 week postpartum
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: pregnancy"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+  )
+)
 
-      ;; pregnant or up to 1 week postpartum
-      (clinical_finding (snomed_concept "Pregnancy" "finding"))
-      (and (clinical_finding (snomed_concept "Postpartum state" "finding"))
-           (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks)))
-    )
+(system_priority_evaluation
+  "Urgent: same-day referral after a seizure/fit: postpartum state and onset of postpartum state ≤ 1 weeks ago"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Postpartum state" "finding"))
+    (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks))
   )
 )

@@ -27,7 +27,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Patient with dizziness | `(clinical_finding Dizziness)` (a recorded common symptom) | trigger of `Check for urgent dizziness conditions`, `Check for causes of dizziness not needing urgent attention`, `Measure lying and standing BP for dizziness` |
-| Red box (any of) | `(and Dizziness (or …red box items…))` | `Urgent: dizziness with danger signs` |
+| Red box (any of) | `(and Dizziness (or …red box items…))` | `Urgent: dizziness with <bullet>` |
 | Red box, focal neurology: "consider stroke or TIA" | `possible` stroke and `possible` TIA from dizziness plus any sudden-onset focal sign | `Diagnose possible stroke with dizziness`, `Diagnose possible TIA with dizziness` |
 | Anaemia likely (Hb) | Not modelled: haemoglobin has no observable/unit in the language | none |
 | Measure BP lying and standing | `measure` task for lying and standing systolic/diastolic BP | `Measure lying and standing BP for dizziness` |

@@ -23,7 +23,7 @@ flowchart TD
 |---|---|---|
 | Q0 (seizure confirmed?) | The recorded warning sign `Seizure` is the trigger for the whole page | `Check for same-day referral after a seizure/fit` (due_to) |
 | RB, meningitis bullet | Seizure **and** any of temperature ≥ 38 °C, headache, stiff neck, purpuric rash | `Diagnose probable meningitis after a seizure/fit` |
-| RB (all bullets) | Seizure **and** any red-box criterion (meningitis via `active_condition`) | `Urgent: same-day referral after a seizure/fit` |
+| RB (all bullets) | Seizure **and** any red-box criterion (meningitis via `active_condition`) | `Urgent: same-day referral after a seizure/fit: <bullet>` |
 | N1 → Stroke or TIA likely | Any focal sign (sudden asymmetric weakness/numbness, difficulty talking, visual disturbance) | `Diagnose probable stroke from focal signs (seizure/fit page)`, `Diagnose probable TIA from focal signs (seizure/fit page)` |
 | N2 → Common faint likely | Collapse **and** muscle twitch **and** any of flushing, dizziness, nausea, sweating | `Diagnose probable common faint (seizure/fit page)` |
 | If diagnosis uncertain, refer | Referral step | Not modelled (management) |

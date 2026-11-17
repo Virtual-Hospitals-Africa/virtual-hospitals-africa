@@ -33,7 +33,7 @@ flowchart TD
 
 | Node | Modelled as | Rule |
 |---|---|---|
-| Patient with face symptoms | `or` of Swelling (face), Pain in face, Weakness of face muscles, Numbness of face, Lip swelling, Swelling around eyes | due_to of `Check for urgent face symptom conditions`; first `and` arm of `Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs` |
+| Patient with face symptoms | `or` of Swelling (face), Pain in face, Weakness of face muscles, Numbness of face, Lip swelling, Swelling around eyes | due_to of `Check for urgent face symptom conditions`; first `and` arm of `Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: <bullet>` |
 | Stroke/TIA bullet | Sudden-onset unilateral face weakness with no upper facial (forehead) weakness, or sudden-onset unilateral face numbness, limb weakness or limb numbness, or difficulty talking, or visual disturbance | `Diagnose possible stroke from face symptoms`, `Diagnose possible TIA from face symptoms`, and the priority rule |
 | Anaphylaxis bullet | Sudden-onset face or tongue swelling **and** any of difficulty breathing, SBP < 90 / DBP < 60, dizziness, collapse, abdominal pain, vomiting, exposure to drug/food, insect bite/sting | `Diagnose possible anaphylaxis from face swelling` and the priority rule |
 | Facial cellulitis bullet | Facial swelling **and** pain in face **and** redness of skin of face **and** temperature ≥ 38 °C | `Diagnose probable facial cellulitis`; priority via `(active_condition Cellulitis of face)` |

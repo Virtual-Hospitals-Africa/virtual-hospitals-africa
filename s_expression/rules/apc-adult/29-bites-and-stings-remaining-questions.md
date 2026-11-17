@@ -10,7 +10,7 @@ taken from B.
   `Spider bite wound`, `Human bite - wound`, `Animal bite wound` and
   `Poisoning due to bite of Scorpiones` all descend from `Bite - wound` (checked with
   `snomed is_a`); `Insect sting` and other stings descend from `Venomous sting`.
-- **Red box → `Urgent: bite/sting with danger signs`**, `(and <bite/sting> (or …))`. The page says
+- **Red box → `Urgent: bite/sting with <bullet>`**, `(and <bite/sting> (or …))`. The page says
   "give urgent attention" and nothing escalates it, so the level is `Urgent`.
 - **Shock/systolic BP < 80** is encoded as written on this page: `(or Shock, systolic BP < 80)`
   (pre-made decision). Footnote 2 ("If SBP < 80, pulse ≥ 100, respiratory rate > 30,

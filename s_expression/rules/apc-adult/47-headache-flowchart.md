@@ -25,7 +25,7 @@ flowchart TD
 
 | Node | Modelled as | Rule |
 |---|---|---|
-| Red box | Headache **and** any of the red-box items | `Check for urgent headache conditions`, `Urgent: headache with red-box danger signs` |
+| Red box | Headache **and** any of the red-box items | `Check for urgent headache conditions`, `Urgent: headache with <bullet>` |
 | Meningitis likely | Headache and any of stiff neck, drowsy, clouded consciousness, acute confusion, purpuric rash | `Diagnose probable meningitis in headache` → `(active_condition Meningitis)` in the urgent rule |
 | Consider stroke or TIA | Headache and any sudden-onset face/arm/leg weakness or numbness, or difficulty talking | `Diagnose possible stroke in headache`, `Diagnose possible TIA in headache` |
 | Malaria likely (red box and Q2 = No) | Not encoded: no concept for "been in a malaria area" | — (see remaining questions) |

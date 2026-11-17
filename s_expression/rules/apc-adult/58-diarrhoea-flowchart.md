@@ -43,7 +43,7 @@ encoded as written, shock finding or SBP < 80.
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `Diarrhea` (common symptom) | `Check for diarrhoea urgent signs and causes` (trigger) |
-| Red box: Shock or SBP < 80 | `(or Shock (< SBP 80))` | `Urgent: diarrhoea with shock or cholera` |
+| Red box: Shock or SBP < 80 | `(or Shock (< SBP 80))` | `Urgent: diarrhoea with shock or cholera: <bullet>` |
 | Red box: watery diarrhoea + cholera outbreak area → cholera likely | Watery-qualified diarrhoea **and** exposure to *Vibrio cholerae* | `Diagnose probable cholera in diarrhoea` (first branch); priority uses `(active_condition Cholera)` |
 | Thirst, dry mouth or poor skin turgor | Diarrhoea **and** any of increased thirst, xerostomia, decreased skin turgor | `Diagnose probable dehydration in diarrhoea` |
 | Prolonged constipation followed by watery stool | Chronic constipation **and** watery-qualified diarrhoea | `Diagnose probable overflow diarrhoea` |

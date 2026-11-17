@@ -4,7 +4,7 @@
 
 - **Trigger.** Every task and rule is anchored on `(clinical_finding Dizziness)`, a recorded
   common symptom.
-- **Red box → `Urgent: dizziness with danger signs`.** The structure is `(and Dizziness (or …))`. The rule
+- **Red box → `Urgent: dizziness with <bullet>`.** The structure is `(and Dizziness (or …))`. The rule
   uses `Urgent` because the page says "give urgent attention". Chest pain and focal neurology
   carry their own higher warning-sign priority elsewhere.
 - **Shock/SBP < 80** is encoded exactly as written on this page: `(or (clinical_finding Shock)

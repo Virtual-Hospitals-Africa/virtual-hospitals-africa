@@ -142,6 +142,8 @@ function isApcKnownIssue(file_path: string, s_expression: string): boolean {
   return !!page && APC_KNOWN_ISSUES.some((issue) => issue.page === page && issue.s_expression === s_expression)
 }
 
+const CONDITIONS_DIAGNOSED_FROM_VITALS = new Set(['Fever', 'Low blood pressure'])
+
 function evidenceCollectedDuringWarningSignsOrVitals(
   finding: EvidenceFinding,
   rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule'],
@@ -151,7 +153,9 @@ function evidenceCollectedDuringWarningSignsOrVitals(
     return VITALS_SHARED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name) ||
       VITALS_COMPUTED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
   }
-  if (finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever') {
+  // Diagnosed straight from routine vitals (see "Diagnose fever" and "Diagnose low blood pressure"),
+  // so there is nothing to check for
+  if (finding.atom === 'active_condition' && CONDITIONS_DIAGNOSED_FROM_VITALS.has(finding.snomed_concept.name)) {
     return true
   }
 

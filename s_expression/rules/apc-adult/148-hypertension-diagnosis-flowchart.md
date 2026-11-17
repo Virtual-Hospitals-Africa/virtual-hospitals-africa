@@ -40,5 +40,5 @@ flowchart TD
 | Hypertensive emergency likely | `(or (>= SBP 180) (>= DBP 130))` **and** any of the four items | `Diagnose probable hypertensive emergency` |
 | Hypertensive urgency likely | BP ≥ 180/110 **and** any of the three items | `Diagnose probable hypertensive urgency` |
 | Heart failure likely | BP ≥ 180/110 **and** (orthopnoea or leg swelling) | `Diagnose probable heart failure with BP ≥ 180/110 (hypertension diagnosis)` |
-| Give urgent attention | BP ≥ 180/110 **and** any red-box symptom | `Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)` |
+| Give urgent attention | BP ≥ 180/110 **and** any red-box symptom | `Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): <bullet>` |
 | Lower chart (mild / moderate / severe hypertension, follow-up) | Not modelled: needs readings on separate occasions, averaged readings, CVD risk score; see remaining questions | — |

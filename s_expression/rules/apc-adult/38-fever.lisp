@@ -1,4 +1,14 @@
-;; Page 38 - Fever
+;; Page 38 - Fever: classified from the routine body temperature measurement (>= 38 °C)
+(system_diagnosis_rule
+  "Diagnose fever"
+  (diagnosis
+    (snomed_concept "Fever" "finding")
+    definite
+  )
+  adult
+  (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+)
+
 (task
   "Check for urgent fever conditions"
   adult
@@ -169,26 +179,146 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: fever with red-box danger signs"
+  "Urgent: fever with seizure"
   adult
   Urgent
   (and
     (or (active_condition (snomed_concept "Fever" "finding"))
         (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
-    (or (clinical_finding (snomed_concept "Seizure" "finding"))
-        (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-        (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-        (clinical_finding (snomed_concept "Shock" "disorder"))
-        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-        (active_condition (snomed_concept "Meningitis" "disorder"))
-        (active_condition (snomed_concept "Appendicitis" "disorder"))
-        (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (clinical_finding (snomed_concept "Jaundice" "finding"))
-        (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
-        (clinical_finding (snomed_concept "Easy bruising" "finding"))
-    )
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with decreased level of consciousness"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with respiratory rate ≥ 30 bpm"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with difficulty breathing"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with shock"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with meningitis"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (active_condition (snomed_concept "Meningitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with appendicitis"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (active_condition (snomed_concept "Appendicitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with abdominal pain (severe)"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with backache (severe)"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with jaundice"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with finding of tendency to bleed"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: fever with easy bruising"
+  adult
+  Urgent
+  (and
+    (or (active_condition (snomed_concept "Fever" "finding"))
+        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38))
+    (clinical_finding (snomed_concept "Easy bruising" "finding"))
   )
 )

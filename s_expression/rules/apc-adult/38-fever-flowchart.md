@@ -27,7 +27,7 @@ flowchart TD
 |---|---|---|
 | Fever definition | `(or (active_condition Fever) (>= Body temperature 38 °C))`. "In the past 3 days" for a measurement cannot be expressed; only the current temperature is compared | trigger of `Check for urgent fever conditions`, `Check for causes of fever not needing urgent attention` and the fever term of every rule below |
 | Malaria area in past 3 months | Not encoded: no SNOMED concept for having been in a malaria area | — (SNOMED gap) |
-| Red box = Yes | Fever **and** any red-box item; meningitis and appendicitis items through their probable diagnoses | `Urgent: fever with red-box danger signs` |
+| Red box = Yes | Fever **and** any red-box item; meningitis and appendicitis items through their probable diagnoses | `Urgent: fever with <bullet>` |
 | Neck stiffness, drowsy/confused or purple/red rash → meningitis likely | Fever **and** any of stiff neck, drowsy, acute confusion, purpuric rash | `Diagnose probable meningitis from fever page` |
 | Tender in right lower abdomen → appendicitis likely | Fever **and** tenderness of right lower quadrant | `Diagnose probable appendicitis from fever page` |
 | On abacavir → AHR | Pointer to page 131 only | — (cross-reference) |

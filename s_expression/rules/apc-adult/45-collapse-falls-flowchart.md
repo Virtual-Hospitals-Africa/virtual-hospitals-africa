@@ -27,7 +27,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Patient has collapsed | `(or Collapse Falls)` as trigger (Falls from the page title; unsettled) | `Check for urgent collapse/falls conditions`, `Check for causes of collapse/falls`, `Measure lying and standing blood pressure after collapse/falls` |
-| Red box (any of) | `(and (or Collapse Falls) (or …each red-box item…))` | `Urgent: collapse/falls with danger signs` |
+| Red box (any of) | `(and (or Collapse Falls) (or …each red-box item…))` | `Urgent: collapse/falls with <bullet>` |
 | "consider stroke or TIA" | Collapse/falls **and** any sudden-onset face, arm or leg weakness or numbness, difficulty talking or visual disturbance | `Diagnose possible stroke after collapse/falls`, `Diagnose possible TIA after collapse/falls` |
 | "Sudden collapse and any of … check for anaphylaxis" | Sudden-onset collapse **and** any of the listed allergy signs or exposures | `Diagnose possible anaphylaxis after sudden collapse` |
 | Q1 = Yes | Collapse/falls **and** level of reduction in systolic BP on standing ≥ 20 mmHg (diastolic drop: no observable, not modelled); lying/standing systolic and diastolic BP are measured | `Diagnose probable orthostatic hypotension after collapse/falls` |

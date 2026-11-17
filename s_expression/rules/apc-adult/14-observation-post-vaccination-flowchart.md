@@ -36,7 +36,7 @@ flowchart TD
 | IMP (improve quickly?) | **Not modelled**: the language cannot express "improved within minutes". Faint/unwell symptoms count as a body system in D1 whether or not they improved | — |
 | D1 = Yes | `any2` of the four groups (faint/unwell, skin/mucosal, respiratory, GI), each group an `or` so it counts once | `Diagnose probable anaphylaxis after vaccination`, `any2` branch |
 | D2 = Yes | `Urticaria` with qualifier `Generalized` | same rule, second branch |
-| D3 = Yes | `Low blood pressure`, `Respiratory distress`, `Swelling` of tongue or lip with `Severe (severity modifier)` | same rule, remaining branches |
+| D3 = Yes | `(active_condition Low blood pressure)` (diagnosed from SBP < 90 or DBP < 60), `Respiratory distress`, `Swelling` of tongue or lip with `Severe (severity modifier)` | same rule, remaining branches |
 | TREAT | `probable` Anaphylaxis; urgency and treatment are on page 28 (pointer-only red box) | no priority evaluation on this page |
 | ISO | Vaccination given, urticaria, and recorded absence (`no`) of every other checked sign including generalised urticaria and "generally unwell" | `Diagnose probable pseudoallergic rash after vaccination` |
 | "If in doubt, treat as anaphylaxis" | Not representable (clinical judgment) | — |

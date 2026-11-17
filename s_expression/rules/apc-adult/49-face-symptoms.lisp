@@ -11,6 +11,7 @@
       (clinical_finding (snomed_concept "Numbness of face" "finding"))
       (clinical_finding (snomed_concept "Lip swelling" "finding"))
       (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
   )
   (check_for
     ;; Stroke or TIA
@@ -300,8 +301,9 @@
     (clinical_finding (snomed_concept "Generalized aches and pains" "finding"))
   )
 )
+;; Stroke or TIA
 (system_priority_evaluation
-  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs"
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: weakness of face muscles (sudden onset, unilateral) and no upper facial weakness"
   adult
   Urgent
   (and
@@ -311,37 +313,159 @@
         (clinical_finding (snomed_concept "Numbness of face" "finding"))
         (clinical_finding (snomed_concept "Lip swelling" "finding"))
         (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
     )
-    (or
-      ;; Stroke or TIA
-      (and (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
-           (no (clinical_finding (snomed_concept "Upper facial weakness" "finding"))))
-      (clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
-      (clinical_finding (snomed_concept "Muscle weakness of limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness of limbs" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
-      (clinical_finding (snomed_concept "Difficulty talking" "finding"))
-      (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
-      ;; Anaphylaxis
-      (and
-        (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-            (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        )
-        (or (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-            (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-            (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-            (clinical_finding (snomed_concept "Dizziness" "finding"))
-            (clinical_finding (snomed_concept "Collapse" "finding"))
-            (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-            (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-            (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-            (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-            (clinical_finding (snomed_concept "Insect sting" "disorder"))
-        )
-      )
-      ;; Facial cellulitis likely / kidney disease likely
-      (active_condition (snomed_concept "Cellulitis of face" "disorder"))
-      (active_condition (snomed_concept "Kidney disease" "disorder"))
+    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
+    (no (clinical_finding (snomed_concept "Upper facial weakness" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: numbness of face (sudden onset, unilateral)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
     )
+    (clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: muscle weakness of limb (sudden onset, unilateral)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: numbness of limbs (sudden onset, unilateral)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: difficulty talking"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Difficulty talking" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: visual disturbance"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
+  )
+)
+;; Anaphylaxis
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: swelling (site: face structure, sudden onset) or swelling (site: tongue structure …"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (or (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+        (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Insect sting" "disorder"))
+    )
+  )
+)
+;; Facial cellulitis likely / kidney disease likely
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: cellulitis of face"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Cellulitis of face" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: face symptoms with stroke, anaphylaxis, facial cellulitis or kidney disease signs: kidney disease"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Pain in face" "finding"))
+        (clinical_finding (snomed_concept "Weakness of face muscles" "finding"))
+        (clinical_finding (snomed_concept "Numbness of face" "finding"))
+        (clinical_finding (snomed_concept "Lip swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling around eyes" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Kidney disease" "disorder"))
   )
 )

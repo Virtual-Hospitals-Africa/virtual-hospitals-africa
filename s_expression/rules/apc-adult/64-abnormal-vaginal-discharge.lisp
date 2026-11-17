@@ -137,29 +137,163 @@
     (no (clinical_finding (snomed_concept "Pain on movement of cervix" "finding")))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: vaginal discharge with danger signs"
+  "Urgent: vaginal discharge with delivery finding (recent)"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Delivery finding" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (clinical_finding (snomed_concept "Miscarriage" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (clinical_finding (snomed_concept "Pregnancy" "finding"))
-      (clinical_finding (snomed_concept "Missed period" "finding"))
-      (clinical_finding (snomed_concept "Menstrual period late" "finding"))
-      (clinical_finding (snomed_concept "Abnormal vaginal bleeding" "finding"))
-      (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-      (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      (clinical_finding (snomed_concept "Abdominal mass" "finding"))
-      (clinical_finding (snomed_concept "Peritonitis" "disorder"))
-      (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
-      (clinical_finding (snomed_concept "Abdominal rigidity" "finding"))
-      (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
-    )
+    (clinical_finding (snomed_concept "Delivery finding" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with induced termination of pregnancy (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with miscarriage (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Miscarriage" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with pregnancy"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with missed period"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Missed period" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with menstrual period late"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Menstrual period late" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with abnormal vaginal bleeding"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Abnormal vaginal bleeding" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with body temperature ≥ 38 °C"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with pulse, function > 100 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with shock"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with abdominal mass"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Abdominal mass" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with peritonitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Peritonitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with abdominal guarding"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with abdominal rigidity"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Abdominal rigidity" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: vaginal discharge with rebound tenderness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
   )
 )

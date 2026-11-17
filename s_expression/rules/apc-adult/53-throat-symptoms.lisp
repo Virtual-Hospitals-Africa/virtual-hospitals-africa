@@ -4,7 +4,8 @@
   adult
   (or (clinical_finding (snomed_concept "Sore throat" "finding"))
       (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
-      (clinical_finding (snomed_concept "Swallowing painful" "finding")))
+      (clinical_finding (snomed_concept "Swallowing painful" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
   (check_for
     (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
     (clinical_finding (snomed_concept "Unable to swallow" "finding"))
@@ -150,37 +151,71 @@
              (clinical_finding (snomed_concept "Nasal discharge" "finding"))))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: throat symptoms with danger signs"
+  "Urgent: throat symptoms with unable to open mouth"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Sore throat" "finding"))
         (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
-        (clinical_finding (snomed_concept "Swallowing painful" "finding")))
-    (or (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
-        (clinical_finding (snomed_concept "Unable to swallow" "finding"))
-        ;; Red swelling blocking airway
-        (and (clinical_finding (snomed_concept "Pharyngeal swelling" "finding"))
-             (clinical_finding (snomed_concept "Upper respiratory tract obstruction" "disorder")))
-        ;; Sudden face/tongue swelling and any of the anaphylaxis features
-        (and
-          (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-              (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
-          (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
-              (clinical_finding (snomed_concept "Generalized rash" "disorder"))
-              (clinical_finding (snomed_concept "Wheezing" "finding"))
-              (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-              (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-              (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-              (clinical_finding (snomed_concept "Dizziness" "finding"))
-              (clinical_finding (snomed_concept "Collapse" "finding"))
-              (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-              (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-              (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-              (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-              (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-              (clinical_finding (snomed_concept "Insect sting" "disorder"))))
-    )
+        (clinical_finding (snomed_concept "Swallowing painful" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
+    (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: throat symptoms with unable to swallow"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Sore throat" "finding"))
+        (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
+        (clinical_finding (snomed_concept "Swallowing painful" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
+    (clinical_finding (snomed_concept "Unable to swallow" "finding"))
+  )
+)
+;; Red swelling blocking airway
+(system_priority_evaluation
+  "Urgent: throat symptoms with pharyngeal swelling and upper respiratory tract obstruction"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Sore throat" "finding"))
+        (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
+        (clinical_finding (snomed_concept "Swallowing painful" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
+    (clinical_finding (snomed_concept "Pharyngeal swelling" "finding"))
+    (clinical_finding (snomed_concept "Upper respiratory tract obstruction" "disorder"))
+  )
+)
+;; Sudden face/tongue swelling and any of the anaphylaxis features
+(system_priority_evaluation
+  "Urgent: throat symptoms with swelling (site: face structure, sudden onset) or swelling (site: tongue structure …"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Sore throat" "finding"))
+        (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
+        (clinical_finding (snomed_concept "Swallowing painful" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder"))
+        (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+        (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Insect sting" "disorder")))
   )
 )

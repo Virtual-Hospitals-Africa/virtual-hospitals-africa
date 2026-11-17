@@ -5,7 +5,10 @@
 (task
   "Check for urgent eye/vision conditions"
   adult
-  (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+  )
   (check_for
     ;; Stroke or TIA likely
     (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
@@ -73,7 +76,10 @@
 (task
   "Check for causes of non-urgent eye/vision symptoms"
   adult
-  (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+  )
   (check_for
     ;; Eyes discharging or watery. Is there a prominent itch?
     (clinical_finding (snomed_concept "Discharge from eye" "finding"))
@@ -249,41 +255,294 @@
 
 ;; Page 48 - Red box: "Give urgent attention to the patient with eye or vision symptoms and any of:"
 (system_priority_evaluation
-  "Urgent: eye/vision symptoms with danger signs"
+  "Urgent: eye/vision symptoms with cerebrovascular accident"
   adult
   Urgent
   (and
-    (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
     (or
-      (active_condition (snomed_concept "Cerebrovascular accident" "disorder"))
-      (and (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
-               (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
-           (no (clinical_finding (snomed_concept "Pregnancy" "finding"))))
-      (and (clinical_finding (snomed_concept "Pain in eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
-           (or (clinical_finding (snomed_concept "Red eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
-               (clinical_finding (snomed_concept "Watery eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))))
-      (active_condition (snomed_concept "Gonococcal conjunctivitis" "disorder"))
-      (clinical_finding (snomed_concept "Herpes zoster ophthalmicus" "disorder"))
-      (clinical_finding (snomed_concept "Herpes zoster" "disorder") (finding_site (snomed_concept "Nasal structure" "body structure")))
-      (active_condition (snomed_concept "Orbital cellulitis" "disorder"))
-      (clinical_finding (snomed_concept "Exophthalmos" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Sudden visual loss" "disorder"))
-      (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Disorder of eye movements" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Penetrating wound of eye" "disorder"))
-      (and (or (clinical_finding (snomed_concept "Pregnancy" "finding"))
-               (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks)))
-           (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 140)
-               (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 90)))
-      (clinical_finding (snomed_concept "Laceration of eyelid" "disorder"))
-      (clinical_finding (snomed_concept "Penetrating wound of eyeball with foreign body" "disorder"))
-      (clinical_finding (snomed_concept "Metal foreign body in eye region" "disorder"))
-      (clinical_finding (snomed_concept "Chemical burn" "disorder"))
-      (clinical_finding (snomed_concept "Corneal ulcer" "disorder"))
-      (clinical_finding (snomed_concept "Corneal haze" "disorder"))
-      (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (active_condition (snomed_concept "Jaundice" "finding"))
-      (active_condition (snomed_concept "Acute angle closure" "disorder"))
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
     )
+    (active_condition (snomed_concept "Cerebrovascular accident" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with systolic blood pressure ≥ 180 mmHg or diastolic blood pressure ≥ 110 mmHg and no pregnancy"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
+        (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (no (clinical_finding (snomed_concept "Pregnancy" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with pain in eye (unilateral) and red eye (unilateral) or watery eye (unilateral)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Pain in eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
+    (or (clinical_finding (snomed_concept "Red eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
+        (clinical_finding (snomed_concept "Watery eye" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value"))))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with gonococcal conjunctivitis"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (active_condition (snomed_concept "Gonococcal conjunctivitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with herpes zoster ophthalmicus"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Herpes zoster ophthalmicus" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with herpes zoster (site: nasal structure)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Herpes zoster" "disorder") (finding_site (snomed_concept "Nasal structure" "body structure")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with orbital cellulitis"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (active_condition (snomed_concept "Orbital cellulitis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with exophthalmos (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Exophthalmos" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with sudden visual loss"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Sudden visual loss" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with visual disturbance (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with disorder of eye movements (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Disorder of eye movements" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with penetrating wound of eye"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Penetrating wound of eye" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with pregnancy or onset of postpartum state ≤ 1 weeks ago and systolic blood pressure ≥ 140 mmHg …"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (or (clinical_finding (snomed_concept "Pregnancy" "finding"))
+        (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks)))
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 140)
+        (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 90))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with laceration of eyelid"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Laceration of eyelid" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with penetrating wound of eyeball with foreign body"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Penetrating wound of eyeball with foreign body" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with metal foreign body in eye region"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Metal foreign body in eye region" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with chemical burn"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Chemical burn" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with corneal ulcer"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Corneal ulcer" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with corneal haze"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Corneal haze" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with ptosis of eyelid (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with jaundice"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (active_condition (snomed_concept "Jaundice" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: eye/vision symptoms with acute angle closure"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Eye / vision finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure")))
+    )
+    (active_condition (snomed_concept "Acute angle closure" "disorder"))
   )
 )

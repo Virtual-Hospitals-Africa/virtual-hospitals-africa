@@ -179,64 +179,340 @@
     (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
   )
 )
+
 (system_priority_evaluation
-  "Urgent: chest pain with danger signs"
+  "Urgent: chest pain with respiratory rate ≥ 30 bpm"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Chest pain" "finding"))
-    (or
-      (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-      (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-      (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
-      (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-      (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-      (clinical_finding (snomed_concept "Pulse irregular" "finding"))
-      (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-      (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
-
-      (clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      (clinical_finding (snomed_concept "Central chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))
-      (clinical_finding (snomed_concept "Left sided chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))
-      (clinical_finding (snomed_concept "Chest discomfort" "finding") (qualifier (snomed_concept "New" "qualifier value")))
-      (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
-      (clinical_finding (snomed_concept "Pain radiating to jaw" "finding"))
-      (clinical_finding (snomed_concept "Pain radiating to left shoulder" "finding"))
-      (clinical_finding (snomed_concept "Pain radiating to right shoulder" "finding"))
-      (clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))
-      (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
-
-      (clinical_finding (snomed_concept "Nausea" "finding"))
-      (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-      (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
-      (clinical_finding (snomed_concept "Sweating" "finding"))
-      (clinical_finding (snomed_concept "Ischemic heart disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-
-      ;; At risk of heart attack
-      (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Smoker" "finding"))
-      (clinical_finding (snomed_concept "Hypertensive disorder, systemic arterial" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Hypercholesterolemia" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (> (measurement (snomed_concept "Risk of cardiovascular disease" "observable entity") %) 20)
-      (clinical_finding (snomed_concept "Family history of ischemic heart disease" "situation"))
-    )
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
   )
 )
+
+(system_priority_evaluation
+  "Urgent: chest pain with difficulty breathing"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with systolic blood pressure ≥ 180 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with diastolic blood pressure ≥ 110 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with systolic blood pressure < 90 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with diastolic blood pressure < 60 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pulse irregular"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pulse irregular" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pulse, function > 100 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pulse, function < 50 bpm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with chest pain (severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with central chest pain (new)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Central chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with left sided chest pain (new)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Left sided chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with chest discomfort (new)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Chest discomfort" "finding") (qualifier (snomed_concept "New" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to neck"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to jaw"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to jaw" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to left shoulder"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to left shoulder" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to right shoulder"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to right shoulder" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to left arm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pain radiating to right arm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with nausea"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Nausea" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with finding of vomiting"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with pallor of skin of face"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with sweating"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Sweating" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with ischemic heart disease (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Ischemic heart disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+;; At risk of heart attack
+(system_priority_evaluation
+  "Urgent: chest pain with diabetes mellitus (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with smoker"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Smoker" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with hypertensive disorder, systemic arterial (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Hypertensive disorder, systemic arterial" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with hypercholesterolemia (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Hypercholesterolemia" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with risk of cardiovascular disease > 20 %"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (> (measurement (snomed_concept "Risk of cardiovascular disease" "observable entity") %) 20)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain with family history of ischemic heart disease"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Family history of ischemic heart disease" "situation"))
+  )
+)
+
 (system_priority_evaluation
   "Urgent: probable acute coronary syndrome in chest pain"
   adult
   Urgent
   (active_condition (snomed_concept "Acute coronary syndrome" "disorder"))
 )
+
 (system_priority_evaluation
-  "Urgent: chest pain worse on lying down, palpation or breathing deeply"
+  "Urgent: chest pain worse on lying down, palpation or breathing deeply: pain aggravated by position"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Chest pain" "finding"))
-    (or (clinical_finding (snomed_concept "Pain aggravated by position" "finding"))
-        (clinical_finding (snomed_concept "Tenderness of chest wall" "finding"))
-        (clinical_finding (snomed_concept "Chest pain on breathing" "finding")))
+    (clinical_finding (snomed_concept "Pain aggravated by position" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain worse on lying down, palpation or breathing deeply: tenderness of chest wall"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Tenderness of chest wall" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: chest pain worse on lying down, palpation or breathing deeply: chest pain on breathing"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Chest pain on breathing" "finding"))
   )
 )

@@ -33,7 +33,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Patient with anal symptoms | `(clinical_finding Anal finding)` as the task trigger (descendants such as Anal pain, Pruritus ani, Anal fissure match) | `Check for urgent anal symptom conditions` |
-| Red box = Yes | Anal finding **and** (Perianal lump **and** severe Anal pain, **or** Does not defecate) | `Urgent: anal symptoms with extremely painful lump or unable to pass stool` |
+| Red box = Yes | Anal finding **and** (Perianal lump **and** severe Anal pain, **or** Does not defecate) | `Urgent: anal symptoms with extremely painful lump or unable to pass stool: <bullet>` |
 | Painless bleeding / mucus / tenesmus → treat for STI proctitis | Anal finding **and** any of Painless rectal bleeding, Mucus in stool, Tenesmus of anus and/or rectum → `Infective proctitis` at `probable` | `Diagnose probable sexually transmitted proctitis from anal symptoms` |
 | Suspected worms → No → thin white worm with anal itch worse at night → pinworm likely | Worms in stool **and** Pruritus ani qualified `Night time` → `Enterobiasis` at `probable`. "Thin and white" and "not flat/segmented" are not representable | `Diagnose probable pinworm from anal itch at night` |
 | Suspected worms → Yes → tapeworm likely | **Not encoded**: the only discriminator (flat, white, segmented worm) has no SNOMED finding; see remaining questions | — |

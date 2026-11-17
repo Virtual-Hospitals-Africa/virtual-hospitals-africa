@@ -33,7 +33,7 @@ confusion/restlessness, weakness, **shock likely**. (The page numbers both footn
 | Q2 = No pulse felt or unsure | `Absent pulse`, or `Cardiac arrest` (warning sign) | `Emergency: emergency patient unresponsive, pulseless or not breathing` |
 | Q3 = Gasping or not breathing | `Gasping for breath`, `Agonal respiration`, `Apnea` | `Emergency: emergency patient unresponsive, pulseless or not breathing` |
 | Q3 = Breathing well / Q1 = Yes | No rule of its own; the patient goes on to the ABC assessment, whose findings drive the second priority rule | — |
-| Airway obstructed (snoring, gurgling, noisy breathing) | `Respiratory obstruction` (warning sign) or `Snoring`, `Gurgling`, `Noisy respiration` | `Emergency: emergency patient with airway, breathing, circulation or consciousness compromise` |
+| Airway obstructed (snoring, gurgling, noisy breathing) | `Respiratory obstruction` (warning sign) or `Snoring`, `Gurgling`, `Noisy respiration` | `Emergency: emergency patient with airway obstructed (snoring, gurgling, noisy breathing)`, `Emergency: emergency patient with breathing compromise`, `Emergency: emergency patient with pulse < 50 and unstable`, `Emergency: emergency patient with shock, SBP < 80, pulse >= 100 or severe bleeding` and `Emergency: emergency patient with Glasgow coma scale 8 or less` |
 | Difficulty breathing or SpO₂ < 94% | `Difficulty breathing`, SpO₂ < 94 | same |
 | RR < 9 or blue lips/tongue | RR < 9, `Blue lips`, `Blue tongue` | same |
 | Tension pneumothorax likely | Sudden-onset dyspnoea **and** (hyperresonance, decreased breath sounds or chest pain, each unilateral) **and** `Trachea displaced` | `Diagnose probable tension pneumothorax (emergency patient)`, then `(active_condition Tension pneumothorax)` in the second priority rule |

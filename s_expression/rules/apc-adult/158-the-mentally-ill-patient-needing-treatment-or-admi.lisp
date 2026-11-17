@@ -17,17 +17,43 @@
     (clinical_finding (snomed_concept "At increased risk for destructive behavior to property" "finding"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: mentally ill patient at risk of harm or property damage if referral delayed"
+  "Urgent: mentally ill patient at risk of harm or property damage if referral delayed: at increased risk of self-injurious behavior"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Mental disorder" "disorder"))
-    (or
-      (clinical_finding (snomed_concept "At increased risk of self-injurious behavior" "finding"))
-      (clinical_finding (snomed_concept "At increased risk for suicide" "finding"))
-      (clinical_finding (snomed_concept "High risk of harm to others" "finding"))
-      (clinical_finding (snomed_concept "At increased risk for destructive behavior to property" "finding"))
-    )
+    (clinical_finding (snomed_concept "At increased risk of self-injurious behavior" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mentally ill patient at risk of harm or property damage if referral delayed: at increased risk for suicide"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Mental disorder" "disorder"))
+    (clinical_finding (snomed_concept "At increased risk for suicide" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mentally ill patient at risk of harm or property damage if referral delayed: high risk of harm to others"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Mental disorder" "disorder"))
+    (clinical_finding (snomed_concept "High risk of harm to others" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mentally ill patient at risk of harm or property damage if referral delayed: at increased risk for destructive behavior to property"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Mental disorder" "disorder"))
+    (clinical_finding (snomed_concept "At increased risk for destructive behavior to property" "finding"))
   )
 )

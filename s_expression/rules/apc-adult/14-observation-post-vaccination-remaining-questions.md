@@ -16,8 +16,12 @@
   `or` so it counts once; (2) generalised urticaria (Urticaria + `Generalized`); (3) serious single-system
   signs: hypotension (`Low blood pressure`), respiratory distress, significant (`Severe`) swelling of
   tongue or lips. Oxygen sats < 92% is in the respiratory group, strict `<` as written.
-- **Hypotension has no threshold on this page**, so no BP number is imported (not "BP < 90/60", not
-  the shock definition).
+- **Hypotension has no threshold on this page.** Health workers record systolic/diastolic
+  measurements rather than a "Low blood pressure" finding, so the page uses
+  `(active_condition Low blood pressure)`, which the cross-cutting rule "Diagnose low blood pressure"
+  (`other.lisp`) derives from SBP < 90 or DBP < 60, the threshold the other APC pages use. Not the
+  shock definition. "No low blood pressure" in the pseudoallergic rash rule is written as SBP >= 90
+  and DBP >= 60, so that rule needs a BP measurement on record. **Clinician to confirm the 90/60 cut-off.**
 - **"Pseudoallergic self-limiting rash likely" → `probable` Non-allergic hypersensitivity reaction**
   (rule "Diagnose probable pseudoallergic rash after vaccination"): vaccination given, urticaria
   ("raised, red rash"), and recorded absence (`no`) of every other sign the page checks, including

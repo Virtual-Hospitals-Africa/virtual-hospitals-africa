@@ -35,7 +35,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | START (presenting complaint) | `(or Pale complexion, Pale conjunctiva, Pale discoloration of entire skin of body, Anemia)` as `clinical_finding`s | trigger of `Check for urgent pallor/anaemia conditions` |
-| RB = Yes | `(and <pallor/anaemia> (or …red box items…))`; Hb < 6 not representable | `Urgent: pallor/anaemia with danger signs` |
+| RB = Yes | `(and <pallor/anaemia> (or …red box items…))`; Hb < 6 not representable | `Urgent: pallor/anaemia with <bullet>` |
 | RB items to ask | every red-box finding that is not a routine vital | `Check for urgent pallor/anaemia conditions` |
 | MAL (question) | pallor/anaemia **and** `(active_condition Fever)` → ask about malaria area | `Check for malaria area exposure in pallor/anaemia with fever` |
 | MAL = Yes | pallor/anaemia **and** Fever **and** endemic-area finding for Malaria | `Diagnose probable malaria in pallor/anaemia` |

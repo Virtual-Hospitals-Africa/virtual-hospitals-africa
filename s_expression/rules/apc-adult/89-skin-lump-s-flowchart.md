@@ -21,7 +21,7 @@ flowchart TD
 
 | Node | Modelled as | Rule |
 |---|---|---|
-| Red box (mole) | Melanocytic nevus **and** any of: irregular outline, mixed colour, change in skin lesion, changing shape, changing colour, Lesion size, largest dimension > 6 mm, bleeds easily, itching of pigmented lesion. "Differs from surrounding moles" has no concept | `Check for mole features needing same-week referral (skin lump/s)`, `Measure width of mole (skin lump/s)`, `Urgent: mole needing same-week referral (skin lump/s)` |
+| Red box (mole) | Melanocytic nevus **and** any of: irregular outline, mixed colour, change in skin lesion, changing shape, changing colour, Lesion size, largest dimension > 6 mm, bleeds easily, itching of pigmented lesion. "Differs from surrounding moles" has no concept | `Check for mole features needing same-week referral (skin lump/s)`, `Measure width of mole (skin lump/s)`, `Urgent: mole needing same-week referral (skin lump/s): <bullet>` |
 | Boil/abscess | AND of pain of skin, firm skin mass, redness over lesion, warmth over lesion, fluctuant, skin discharge (two rules: Furuncle; Abscess of skin and/or subcutaneous tissue) | `Diagnose probable boil (skin lump/s)`, `Diagnose probable skin abscess (skin lump/s)` |
 | Warts | Round raised papule AND rough skin | `Diagnose probable warts (skin lump/s)` |
 | Molluscum | Small papule AND skin dimple AND no papule on palm AND no papule on sole | `Diagnose probable molluscum contagiosum (skin lump/s)` |

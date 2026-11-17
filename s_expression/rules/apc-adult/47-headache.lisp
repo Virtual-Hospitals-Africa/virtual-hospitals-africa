@@ -259,59 +259,252 @@
   ;; Flowchart: patient > 50 years, pain over temples (age is not representable; see remaining questions)
   (clinical_finding (snomed_concept "Temporal headache" "finding"))
 )
+;; Pregnant or 1 week postpartum, and BP >= 140/90
 (system_priority_evaluation
-  "Urgent: headache with red-box danger signs"
+  "Urgent: headache with pregnancy or onset of postpartum state ≤ 1 weeks ago and systolic blood pressure ≥ 140 mmHg …"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Headache" "finding"))
-    (or
-      ;; Pregnant or 1 week postpartum, and BP >= 140/90
-      (and (or (clinical_finding (snomed_concept "Pregnancy" "finding"))
-               (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks)))
-           (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 140)
-               (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 90)))
-      ;; BP >= 180/110 and not pregnant. "and not pregnant" only routes to page 148 instead of 177:
-      ;; a pregnant patient with BP >= 180/110 already meets the line above, so inside this "or"
-      ;; the clause changes nothing and is left out (the gate rejects "not"; "no" would need an
-      ;; explicit "not pregnant" record and would miss men)
-      (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
-      (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
-      ;; New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking
-      (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Numbness of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-      (clinical_finding (snomed_concept "Difficulty talking" "finding"))
-      ;; New vision problems or eye pain
-      (clinical_finding (snomed_concept "Abnormal vision" "finding") (qualifier (snomed_concept "New" "qualifier value")))
-      (clinical_finding (snomed_concept "Pain in eye" "finding"))
-      ;; Sudden severe headache or dizziness
-      (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      ;; Headache that is getting worse and more frequent
-      (and (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
-           (clinical_finding (snomed_concept "Frequent headache" "finding")))
-      ;; Headache that wakes patient or is worse in the morning
-      (clinical_finding (snomed_concept "Wakes up during night" "finding"))
-      (clinical_finding (snomed_concept "Morning headache" "finding"))
-      ;; Neck stiffness, drowsy/confused or purple/red rash: meningitis likely
-      (active_condition (snomed_concept "Meningitis" "disorder"))
-      ;; Persistent headache since starting ART
-      (and (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Chronic persistent" "qualifier value")))
-           (finding (snomed_concept "Procedure" "procedure") (snomed_concept "Highly active antiretroviral therapy" "procedure")))
-      ;; Decreased consciousness
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-      ;; Persistent nausea/vomiting
-      (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
-      ;; Following a first seizure
-      (clinical_finding (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "First episode" "qualifier value")))
-      ;; Recent head injury
-      (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
-      ;; Unequal pupils
-      (clinical_finding (snomed_concept "Anisocoria" "disorder"))
-    )
+    (or (clinical_finding (snomed_concept "Pregnancy" "finding"))
+        (<= (onset (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 1 weeks)))
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 140)
+        (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 90))
+  )
+)
+;; BP >= 180/110 and not pregnant. "and not pregnant" only routes to page 148 instead of 177:
+;; a pregnant patient with BP >= 180/110 already meets the line above, so inside this "or"
+;; the clause changes nothing and is left out (the gate rejects "not"; "no" would need an
+;; explicit "not pregnant" record and would miss men)
+
+(system_priority_evaluation
+  "Urgent: headache with systolic blood pressure ≥ 180 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with diastolic blood pressure ≥ 110 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110)
+  )
+)
+;; New sudden asymmetric weakness or numbness of face, arm or leg; difficulty speaking
+(system_priority_evaluation
+  "Urgent: headache with weakness of face muscles (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with muscle weakness of upper limb (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with weakness of muscle of lower limb (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with numbness of face (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with numbness of upper limb (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Numbness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with numbness of lower limb (sudden onset)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Numbness of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with difficulty talking"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Difficulty talking" "finding"))
+  )
+)
+;; New vision problems or eye pain
+(system_priority_evaluation
+  "Urgent: headache with abnormal vision (new)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Abnormal vision" "finding") (qualifier (snomed_concept "New" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with pain in eye"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Pain in eye" "finding"))
+  )
+)
+;; Sudden severe headache or dizziness
+(system_priority_evaluation
+  "Urgent: headache with headache (sudden onset, severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with dizziness (sudden onset, severe)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+;; Headache that is getting worse and more frequent
+(system_priority_evaluation
+  "Urgent: headache with headache (worsening) and frequent headache"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
+    (clinical_finding (snomed_concept "Frequent headache" "finding"))
+  )
+)
+;; Headache that wakes patient or is worse in the morning
+(system_priority_evaluation
+  "Urgent: headache with wakes up during night"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Wakes up during night" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: headache with morning headache"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Morning headache" "finding"))
+  )
+)
+;; Neck stiffness, drowsy/confused or purple/red rash: meningitis likely
+(system_priority_evaluation
+  "Urgent: headache with meningitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (active_condition (snomed_concept "Meningitis" "disorder"))
+  )
+)
+;; Persistent headache since starting ART
+(system_priority_evaluation
+  "Urgent: headache with headache (chronic persistent) and procedure Highly active antiretroviral therapy"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Chronic persistent" "qualifier value")))
+    (finding (snomed_concept "Procedure" "procedure") (snomed_concept "Highly active antiretroviral therapy" "procedure"))
+  )
+)
+;; Decreased consciousness
+(system_priority_evaluation
+  "Urgent: headache with decreased level of consciousness"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+;; Persistent nausea/vomiting
+(system_priority_evaluation
+  "Urgent: headache with persistent vomiting"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
+  )
+)
+;; Following a first seizure
+(system_priority_evaluation
+  "Urgent: headache with seizure (first episode)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "First episode" "qualifier value")))
+  )
+)
+;; Recent head injury
+(system_priority_evaluation
+  "Urgent: headache with injury of head (recent)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+;; Unequal pupils
+(system_priority_evaluation
+  "Urgent: headache with anisocoria"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Anisocoria" "disorder"))
   )
 )

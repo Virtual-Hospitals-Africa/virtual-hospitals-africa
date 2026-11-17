@@ -79,30 +79,83 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: cholera with severe dehydration"
+  "Urgent: cholera with severe dehydration: drowsy"
   adult
   Urgent
-  ;; Q1 = Yes: manage as severe dehydration and refer urgently
   (and
     (active_condition (snomed_concept "Cholera" "disorder"))
-    (or
-      (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-      (clinical_finding (snomed_concept "Acute confusion" "finding"))
-      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-      (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-      (clinical_finding (snomed_concept "Weak arterial pulse" "finding"))
-      (any2
-        (or (clinical_finding (snomed_concept "Unable to drink" "finding"))
-            (clinical_finding (snomed_concept "Difficulty drinking" "finding"))
-        )
-        (clinical_finding (snomed_concept "Decreased skin turgor" "finding"))
-        (clinical_finding (snomed_concept "Sunken eyes" "finding"))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: decreased level of consciousness"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: acute confusion"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: clouded consciousness"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: difficulty breathing"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: weak arterial pulse"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (clinical_finding (snomed_concept "Weak arterial pulse" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cholera with severe dehydration: at least two of unable to drink or difficulty drinking, decreased skin turgor, sunken eyes"
+  adult
+  Urgent
+  (and
+    (active_condition (snomed_concept "Cholera" "disorder"))
+    (any2
+      (or (clinical_finding (snomed_concept "Unable to drink" "finding"))
+          (clinical_finding (snomed_concept "Difficulty drinking" "finding"))
       )
+      (clinical_finding (snomed_concept "Decreased skin turgor" "finding"))
+      (clinical_finding (snomed_concept "Sunken eyes" "finding"))
     )
   )
 )
+
 (system_priority_evaluation
   "Urgent: cholera with some dehydration"
   adult

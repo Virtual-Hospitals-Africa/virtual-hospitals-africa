@@ -9,8 +9,8 @@
   `clinical_finding` form is used in the task trigger and in both priority rules. RR-TB is not a
   recorded common symptom or warning sign; the rules fire only once RR-TB is recorded as a finding.
 - **Two priority evaluations, both `Urgent`.**
-  - `Urgent: RR-TB routine care with criteria for hospital admission` encodes the red box.
-  - `Urgent: RR-TB with urgent symptoms at routine visit` encodes the Symptoms row
+  - `Urgent: RR-TB routine care with criteria for hospital admission: <bullet>` encodes the red box.
+  - `Urgent: RR-TB with urgent symptoms at routine visit: <bullet>` encodes the Symptoms row
     ("If respiratory rate ≥ 30, breathless at rest or while talking, … give urgent attention and refer").
   The page does not escalate beyond "urgent attention", so neither rule uses `"Very urgent"` or `Emergency`.
 - **"Unable to walk unaided"** = `Difficulty walking` OR `Unable to walk`: these are the two abnormal

@@ -9,9 +9,9 @@
   the patient with wheeze/tight chest:" with no "and any of", so `Urgent: wheeze/tight chest` uses
   the complaint alone.
 - **Life threatening → Emergency.** The page labels this tier "Life threatening", which is an
-  explicit escalation (`Emergency: life-threatening wheeze/tight chest`).
+  explicit escalation (`Emergency: life-threatening wheeze/tight chest: <bullet>`).
 - **Severe stays Urgent.** The page gives the severe tier no escalation beyond the header, so
-  `Urgent: severe wheeze/tight chest` is also Urgent. As a priority it repeats the base rule, but it
+  `Urgent: severe wheeze/tight chest: <bullet>` is also Urgent. As a priority it repeats the base rule, but it
   records the page's severe criteria and makes them used evidence.
 - **Mild/moderate** has no rule of its own: it leads only to management and is covered by the base
   Urgent rule.

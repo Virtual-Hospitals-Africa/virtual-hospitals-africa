@@ -11,7 +11,7 @@
 - **The dehydration flowchart is anchored on `(active_condition Cholera)`**, because the page applies
   it to this patient ("Decide on further management according to level of dehydration"). A
   second task, `Check for level of dehydration in cholera`, asks for every Q1/Q2 sign.
-- **Q1 = Yes → `Urgent: cholera with severe dehydration`** (red box 2, "refer urgently"). I wrote no
+- **Q1 = Yes → `Urgent: cholera with severe dehydration: <bullet>`** (red box 2, "refer urgently"). I wrote no
   probable *Severe dehydration* diagnosis, because the page says "manage as", not "likely".
 - **Q1 = No → Q2 = Yes → probable `Moderate dehydration`** ("Some dehydration likely", red box 1),
   then `Urgent: cholera with some dehydration`. `Moderate dehydration` is the concept VHA uses for

@@ -437,57 +437,317 @@
 )
 
 ;; Page 40 - red box priority
+;; Shock/systolic BP < 80 (this page's own wording)
+
 (system_priority_evaluation
-  "Urgent: suspected mpox with danger signs"
+  "Urgent: suspected mpox with shock"
   adult
   Urgent
   (and
     (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
-    (or
-      ;; Shock/systolic BP < 80 (this page's own wording)
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      ;; thirst, dry mouth, poor skin turgor, BP < 90/60: dehydration likely
-      (active_condition (snomed_concept "Dehydration" "disorder"))
-      ;; unable to pass urine or stool
-      (clinical_finding (snomed_concept "Unable to void urine" "finding"))
-      (clinical_finding (snomed_concept "Obstipation" "disorder"))
-      ;; respiratory rate >= 30, difficulty breathing at rest/while talking or SpO2 < 90%
-      (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-      (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
-      (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
-      (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 90)
-      ;; severe bleeding, pain, or discharge from the anus (proctitis likely)
-      (clinical_finding (snomed_concept "Bleeding from anus" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      (clinical_finding (snomed_concept "Anal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      (clinical_finding (snomed_concept "Discharge from anus" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      ;; paraphimosis likely
-      (active_condition (snomed_concept "Paraphimosis" "disorder"))
-      ;; unable to swallow; persistent nausea and vomiting
-      (clinical_finding (snomed_concept "Unable to swallow" "finding"))
-      (and (clinical_finding (snomed_concept "Nausea" "finding"))
-           (clinical_finding (snomed_concept "Persistent vomiting" "disorder")))
-      ;; myocarditis likely; corneal infection likely
-      (active_condition (snomed_concept "Myocarditis" "disorder"))
-      (active_condition (snomed_concept "Corneal infection" "disorder"))
-      ;; immunocompromised or at risk of severe disease
-      (clinical_finding (snomed_concept "Patient immunocompromised" "finding"))
-      (and (clinical_finding (snomed_concept "Human immunodeficiency virus infection" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-           (clinical_finding (snomed_concept "Copies of human immunodeficiency virus ribonucleic acid above reference range" "finding")))
-      (clinical_finding (snomed_concept "Malignant neoplastic disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Transplant present" "finding"))
-      (clinical_finding (snomed_concept "Pregnancy" "finding"))
-      (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Hypertensive disorder, systemic arterial" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Chronic lung disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Chronic disease of skin" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      (clinical_finding (snomed_concept "Obesity" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-      ;; decreased consciousness or confusion
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-      (clinical_finding (snomed_concept "Acute confusion" "finding"))
-      ;; extensive skin lesions; severe pain
-      (clinical_finding (snomed_concept "Skin lesion" "disorder") (qualifier (snomed_concept "Extensive" "qualifier value")))
-      (clinical_finding (snomed_concept "Severe pain" "finding"))
-    )
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+;; thirst, dry mouth, poor skin turgor, BP < 90/60: dehydration likely
+(system_priority_evaluation
+  "Urgent: suspected mpox with dehydration"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (active_condition (snomed_concept "Dehydration" "disorder"))
+  )
+)
+;; unable to pass urine or stool
+(system_priority_evaluation
+  "Urgent: suspected mpox with unable to void urine"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Unable to void urine" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with obstipation"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Obstipation" "disorder"))
+  )
+)
+;; respiratory rate >= 30, difficulty breathing at rest/while talking or SpO2 < 90%
+(system_priority_evaluation
+  "Urgent: suspected mpox with respiratory rate ≥ 30 bpm"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with dyspnea at rest"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with unable to complete a sentence in one breath"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with hemoglobin saturation with oxygen < 90 %"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 90)
+  )
+)
+;; severe bleeding, pain, or discharge from the anus (proctitis likely)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with bleeding from anus (severe)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Bleeding from anus" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with anal pain (severe)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Anal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with discharge from anus (severe)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Discharge from anus" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+;; paraphimosis likely
+(system_priority_evaluation
+  "Urgent: suspected mpox with paraphimosis"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (active_condition (snomed_concept "Paraphimosis" "disorder"))
+  )
+)
+;; unable to swallow; persistent nausea and vomiting
+(system_priority_evaluation
+  "Urgent: suspected mpox with unable to swallow"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Unable to swallow" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with nausea and persistent vomiting"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Nausea" "finding"))
+    (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
+  )
+)
+;; myocarditis likely; corneal infection likely
+(system_priority_evaluation
+  "Urgent: suspected mpox with myocarditis"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (active_condition (snomed_concept "Myocarditis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with corneal infection"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (active_condition (snomed_concept "Corneal infection" "disorder"))
+  )
+)
+;; immunocompromised or at risk of severe disease
+(system_priority_evaluation
+  "Urgent: suspected mpox with patient immunocompromised"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Patient immunocompromised" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with human immunodeficiency virus infection (known present) …"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Human immunodeficiency virus infection" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (clinical_finding (snomed_concept "Copies of human immunodeficiency virus ribonucleic acid above reference range" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with malignant neoplastic disease (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Malignant neoplastic disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with transplant present"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Transplant present" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with pregnancy"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with diabetes mellitus (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with hypertensive disorder, systemic arterial (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Hypertensive disorder, systemic arterial" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with chronic lung disease (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Chronic lung disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with chronic disease of skin (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Chronic disease of skin" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with obesity (known present)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Obesity" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+;; decreased consciousness or confusion
+(system_priority_evaluation
+  "Urgent: suspected mpox with decreased level of consciousness"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with acute confusion"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+;; extensive skin lesions; severe pain
+(system_priority_evaluation
+  "Urgent: suspected mpox with skin lesion (extensive)"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Skin lesion" "disorder") (qualifier (snomed_concept "Extensive" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: suspected mpox with severe pain"
+  adult
+  Urgent
+  (and
+    (diagnosis (snomed_concept "Monkeypox" "disorder") possible)
+    (clinical_finding (snomed_concept "Severe pain" "finding"))
   )
 )

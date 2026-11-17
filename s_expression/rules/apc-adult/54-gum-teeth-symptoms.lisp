@@ -3,7 +3,8 @@
   "Check for urgent and likely gum/teeth conditions"
   adult
   (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
-      (clinical_finding (snomed_concept "Gingivae finding" "finding")))
+      (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
   (check_for
     ;; Red box: swelling of face/jaw/next to tooth (with temperature >= 38 °C, a routine vital)
     (clinical_finding (snomed_concept "Facial swelling" "finding"))
@@ -69,22 +70,66 @@
        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure")))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: gum/teeth symptoms with danger signs"
+  "Urgent: gum/teeth symptoms with body temperature ≥ 38 °C and facial swelling or swelling (site: jaw region structure) …"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
-        (clinical_finding (snomed_concept "Gingivae finding" "finding")))
-    (or
-      (and (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-           (or (clinical_finding (snomed_concept "Facial swelling" "finding"))
-               (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Jaw region structure" "body structure")))
-               (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure")))))
-      (clinical_finding (snomed_concept "Unable to eat" "finding"))
-      (clinical_finding (snomed_concept "Unable to drink" "finding"))
-      (clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Spontaneous" "qualifier value")))
-      (clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Night time" "qualifier value")))
-    )
+        (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+    (or (clinical_finding (snomed_concept "Facial swelling" "finding"))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Jaw region structure" "body structure")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: gum/teeth symptoms with unable to eat"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
+        (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    (clinical_finding (snomed_concept "Unable to eat" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: gum/teeth symptoms with unable to drink"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
+        (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    (clinical_finding (snomed_concept "Unable to drink" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: gum/teeth symptoms with toothache (spontaneous)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
+        (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    (clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Spontaneous" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: gum/teeth symptoms with toothache (night time)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Tooth finding" "finding"))
+        (clinical_finding (snomed_concept "Gingivae finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    (clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Night time" "qualifier value")))
   )
 )

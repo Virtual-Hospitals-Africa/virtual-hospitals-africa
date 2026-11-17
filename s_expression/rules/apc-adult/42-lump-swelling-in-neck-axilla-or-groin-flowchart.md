@@ -42,7 +42,7 @@ flowchart TD
 | Red box, lump in groin | `Groin mass` triggers the red-box check | `Check for urgent lump/swelling in groin conditions` |
 | RB hernia branch | `Groin mass` **and** `Cough impulse of mass present` **and** any of `Severe pain`, vomiting, (constipation **and** unable to break wind, both onset ≥ 24 h), groin mass with `Irreducible` qualifier | `Diagnose probable incarcerated (irreducible) inguinal hernia, lump in groin`, `Diagnose probable strangulated inguinal hernia, lump in groin` |
 | RB pulsating lump | `Groin mass` with `Pulsatile` qualifier | `Diagnose probable aneurysm, pulsating lump in groin` |
-| Refer urgently | `Urgent` priority: groin mass **and** either hernia diagnosis or aneurysm | `Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm` |
+| Refer urgently | `Urgent` priority: groin mass **and** either hernia diagnosis or aneurysm | `Urgent: lump/swelling in groin with incarcerated/strangulated hernia or aneurysm: <bullet>` |
 | Lump on the skin | `Mass of skin`: cross-reference only (page 89); used as an exclusion for lymphadenopathy | `Diagnose probable lymphadenopathy, lump in neck, axilla or groin` (as `(no …)`) |
 | Thyroid mass | `Mass of neck` **and** `Thyroid gland moves with swallowing` | `Diagnose probable thyroid mass, lump in neck moving on swallowing` |
 | Inguinal hernia | `Groin mass` **and** `Cough impulse of mass present` | `Diagnose probable inguinal hernia, lump in groin` |

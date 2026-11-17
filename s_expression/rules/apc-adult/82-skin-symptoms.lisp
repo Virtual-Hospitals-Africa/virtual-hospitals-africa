@@ -3,7 +3,8 @@
   "Check for urgent skin symptom conditions"
   adult
   (or (clinical_finding (snomed_concept "Skin finding" "finding"))
-      (clinical_finding (snomed_concept "Itching" "finding")))
+      (clinical_finding (snomed_concept "Itching" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Skin structure" "body structure"))))
   (check_for
     ;; Anaphylaxis screen (red box bullet 1, check for anaphylaxis 28)
     (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
@@ -51,7 +52,8 @@
   "Check for mpox features with skin symptoms"
   adult
   (or (clinical_finding (snomed_concept "Skin finding" "finding"))
-      (clinical_finding (snomed_concept "Itching" "finding")))
+      (clinical_finding (snomed_concept "Itching" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Skin structure" "body structure"))))
   (check_for
     (clinical_finding (snomed_concept "Eruption of skin" "disorder"))
     (clinical_finding (snomed_concept "Skin lesion" "disorder"))
@@ -174,8 +176,9 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: skin symptoms with features of anaphylaxis"
+  "Urgent: skin symptoms with features of anaphylaxis: wheezing"
   adult
   Urgent
   (and
@@ -184,27 +187,171 @@
         (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
         (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     )
-    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
-        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-        (clinical_finding (snomed_concept "Dizziness" "finding"))
-        (clinical_finding (snomed_concept "Collapse" "finding"))
-        (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-        (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-        (clinical_finding (snomed_concept "Insect sting" "disorder"))
-    )
+    (clinical_finding (snomed_concept "Wheezing" "finding"))
   )
 )
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: difficulty breathing"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: systolic blood pressure < 90 mmHg"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: diastolic blood pressure < 60 mmHg"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: dizziness"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Dizziness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: collapse"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Collapse" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: abdominal pain"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: finding of vomiting"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: exposure to drug or medicament"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: exposure to food"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: insect bite - wound"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin symptoms with features of anaphylaxis: insect sting"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Generalized pruritus" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Generalized rash" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    )
+    (clinical_finding (snomed_concept "Insect sting" "disorder"))
+  )
+)
+
 (system_priority_evaluation
   "Urgent: skin symptoms with meningococcal disease likely"
   adult
   Urgent
   (active_condition (snomed_concept "Meningococcal infectious disease" "disorder"))
 )
+
 (system_priority_evaluation
   "Urgent: skin symptoms with serious drug reaction likely"
   adult

@@ -8,7 +8,7 @@ Reconciled from two independent builds (A and B); base B. See `reconcile.json` f
   `possible` Cerebrovascular accident (`Diagnose possible stroke from sudden-onset neurological
   symptoms`), an `or` of 15 symptom concepts, each with the `Sudden onset` qualifier. The page gives
   no confirming logic for a probable rule.
-- **Red box → `Urgent: new stroke/TIA`** at `Urgent`, the page's word. Every bullet in the box is a
+- **Red box → `Urgent: new stroke/TIA: <bullet>`** at `Urgent`, the page's word. Every bullet in the box is a
   management step (oxygen, nil by mouth, glucose → 19, BP handling, referral by time since onset,
   aspirin), so there is no "and any of" list. A new stroke/TIA is any one of the 15 sudden-onset
   symptoms, a recorded stroke (the `Focal neurology` warning-sign form, `Cerebrovascular

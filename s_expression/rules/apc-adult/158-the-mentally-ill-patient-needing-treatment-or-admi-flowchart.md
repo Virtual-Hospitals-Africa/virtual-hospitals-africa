@@ -33,7 +33,7 @@ prescribed intervention regardless of consent.
 | Node | Modelled as | Rule |
 |---|---|---|
 | Red box (presenting complaint) | `(clinical_finding Mental disorder)` | `Check for urgent risks in the mentally ill patient needing admission` |
-| Red box: serious harm to self/others | `At increased risk of self-injurious behavior`, `At increased risk for suicide`, `High risk of harm to others` | same task; `Urgent: mentally ill patient at risk of harm or property damage if referral delayed` |
+| Red box: serious harm to self/others | `At increased risk of self-injurious behavior`, `At increased risk for suicide`, `High risk of harm to others` | same task; `Urgent: mentally ill patient at risk of harm or property damage if referral delayed: <bullet>` |
 | Red box: serious damage to or loss of property | `At increased risk for destructive behavior to property` | same task and Urgent rule |
 | Red box: death, irreversible health problem/s | Not modelled (no SNOMED concept) | — |
 | Manage and refer urgently | Management | — (no manage tasks) |

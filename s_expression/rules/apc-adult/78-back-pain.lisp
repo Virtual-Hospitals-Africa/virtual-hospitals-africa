@@ -230,40 +230,145 @@
     (no (clinical_finding (snomed_concept "Stiff back" "finding") (qualifier (snomed_concept "Morning" "qualifier value"))))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: back pain with red box features"
+  "Urgent: back pain with retention of urine"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Backache" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Retention of urine" "disorder"))
-      (clinical_finding (snomed_concept "Urinary incontinence" "finding"))
-      (clinical_finding (snomed_concept "Incontinence of feces" "finding"))
-      (clinical_finding (snomed_concept "Numbness of saddle area" "finding"))
-      (clinical_finding (snomed_concept "Numbness of lower limb" "finding"))
-      (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding"))
-      (clinical_finding (snomed_concept "Difficulty walking" "finding"))
-      (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
-      (active_condition (snomed_concept "Acute pancreatitis" "disorder"))
-      ;; complicated pyelonephritis likely (written out: the diagnosis concept is shared with uncomplicated pyelonephritis)
-      (and
-        (clinical_finding (snomed_concept "Flank pain" "finding"))
-        (or (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
-            (clinical_finding (snomed_concept "Nitrite detected in urine" "finding")))
-        (or (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-            (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-            (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-            (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-            (clinical_finding (snomed_concept "Acute confusion" "finding"))
-            (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-            (clinical_finding (snomed_concept "Male" "finding"))
-            (clinical_finding (snomed_concept "Pregnancy" "finding"))
-            (clinical_finding (snomed_concept "Postmenopausal state" "finding")))
-      )
-      (active_condition (snomed_concept "Kidney stone" "disorder"))
-      (active_condition (snomed_concept "Abdominal aortic aneurysm" "disorder"))
-      (clinical_finding (snomed_concept "Malignant neoplastic disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-    )
+    (clinical_finding (snomed_concept "Retention of urine" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with urinary incontinence"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Urinary incontinence" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with incontinence of feces"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Incontinence of feces" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with numbness of saddle area"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Numbness of saddle area" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with numbness of lower limb"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Numbness of lower limb" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with weakness of muscle of lower limb"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with difficulty walking"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Difficulty walking" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with traumatic injury"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with acute pancreatitis"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (active_condition (snomed_concept "Acute pancreatitis" "disorder"))
+  )
+)
+;; complicated pyelonephritis likely (written out: the diagnosis concept is shared with uncomplicated pyelonephritis)
+
+(system_priority_evaluation
+  "Urgent: back pain with flank pain and leukocytes in urine or nitrite detected in urine and finding of vomiting …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Flank pain" "finding"))
+    (or (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
+        (clinical_finding (snomed_concept "Nitrite detected in urine" "finding")))
+    (or (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+        (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+        (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+        (clinical_finding (snomed_concept "Acute confusion" "finding"))
+        (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+        (clinical_finding (snomed_concept "Male" "finding"))
+        (clinical_finding (snomed_concept "Pregnancy" "finding"))
+        (clinical_finding (snomed_concept "Postmenopausal state" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with kidney stone"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (active_condition (snomed_concept "Kidney stone" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with abdominal aortic aneurysm"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (active_condition (snomed_concept "Abdominal aortic aneurysm" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: back pain with malignant neoplastic disease (known present)"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Backache" "finding"))
+    (clinical_finding (snomed_concept "Malignant neoplastic disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
   )
 )

@@ -38,8 +38,8 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Mouth symptoms (presenting complaint) | `(clinical_finding Mouth symptoms)` as task trigger | `Check for urgent mouth symptom conditions`, `Check mouth for white patches, blisters, ulcers, cracks and dry mouth` |
-| Red box, bullet 1 | Unable to open mouth | `Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs` |
-| Red box, bullet 2 | Sudden-onset face or tongue swelling AND any of wheeze, difficulty breathing, SBP < 90, DBP < 60, dizziness, collapse, abdominal pain, vomiting, exposure to drug/food, insect bite/sting | `Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs`; also `Diagnose possible anaphylaxis from mouth symptoms` (the "check for anaphylaxis" pointer) |
+| Red box, bullet 1 | Unable to open mouth | `Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs: <bullet>` |
+| Red box, bullet 2 | Sudden-onset face or tongue swelling AND any of wheeze, difficulty breathing, SBP < 90, DBP < 60, dizziness, collapse, abdominal pain, vomiting, exposure to drug/food, insect bite/sting | `Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs: <bullet>`; also `Diagnose possible anaphylaxis from mouth symptoms` (the "check for anaphylaxis" pointer) |
 | White patches → oral thrush/candida likely | White patches on oral mucosa | `Diagnose probable oral thrush (mouth symptoms page)` |
 | White patches + difficulty/pain on swallowing → oesophageal candida likely | White patches AND (difficulty swallowing OR swallowing painful) | `Diagnose probable oesophageal candida (mouth symptoms page)` |
 | Painful blisters on lips/mouth → herpes simplex likely | Blister on lip or in oral cavity | `Diagnose probable herpes simplex (mouth symptoms page)` |

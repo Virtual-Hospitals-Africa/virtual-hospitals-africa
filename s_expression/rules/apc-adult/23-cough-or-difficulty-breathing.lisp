@@ -264,32 +264,191 @@
     (>= (onset (clinical_finding (snomed_concept "Cough" "finding"))) (time_ago 2 years))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: cough or difficulty breathing with red-box signs"
+  "Urgent: cough or difficulty breathing with heart failure"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Cough" "finding"))
         (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
-    (or
-      (active_condition (snomed_concept "Heart failure" "disorder"))
-      (clinical_finding (snomed_concept "Cyanosis" "finding"))
-      (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 92)
-      (active_condition (snomed_concept "Tension pneumothorax" "disorder"))
-      (clinical_finding (snomed_concept "Wheezing" "finding"))
-      (clinical_finding (snomed_concept "Tight chest" "finding"))
-      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-      (clinical_finding (snomed_concept "Feeling agitated" "finding"))
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-      (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
-      (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
-      (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 120)
-      (clinical_finding (snomed_concept "Hemoptysis" "finding"))
-      (and (clinical_finding (snomed_concept "Swollen calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
-           (clinical_finding (snomed_concept "Pain in calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value"))))
-    )
+    (active_condition (snomed_concept "Heart failure" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with cyanosis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Cyanosis" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with hemoglobin saturation with oxygen < 92 %"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 92)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with tension pneumothorax"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (active_condition (snomed_concept "Tension pneumothorax" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with wheezing"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Wheezing" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with tight chest"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Tight chest" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with clouded consciousness"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with feeling agitated"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Feeling agitated" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with decreased level of consciousness"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with dyspnea at rest"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with unable to complete a sentence in one breath"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with respiratory rate ≥ 30 bpm"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with shock"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with pulse, function > 120 bpm"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 120)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with hemoptysis"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Hemoptysis" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: cough or difficulty breathing with swollen calf (unilateral) and pain in calf (unilateral)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Cough" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding")))
+    (clinical_finding (snomed_concept "Swollen calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
+    (clinical_finding (snomed_concept "Pain in calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
   )
 )

@@ -96,28 +96,163 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis)"
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): headache (severe, sudden onset)"
   adult
   Urgent
   (and
     (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
-    (or (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Difficulty talking" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Difficulty swallowing" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-        (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (clinical_finding (snomed_concept "Chronic kidney disease stage 5" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-        (clinical_finding (snomed_concept "Chest pain" "finding"))
-        (clinical_finding (snomed_concept "Preinfarction syndrome" "disorder"))
-        (clinical_finding (snomed_concept "Dyspnea" "finding"))
-        (clinical_finding (snomed_concept "Heart failure" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-        (clinical_finding (snomed_concept "Renal impairment" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-        (clinical_finding (snomed_concept "Orthopnea" "finding"))
-        (clinical_finding (snomed_concept "Leg swelling symptom" "finding"))
-    )
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): muscle weakness (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Muscle weakness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): seizure (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): visual disturbance (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): dizziness (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): difficulty talking (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Difficulty talking" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): difficulty swallowing (sudden onset)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Difficulty swallowing" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): headache (severe)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): chronic kidney disease stage 5 (known present)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Chronic kidney disease stage 5" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): chest pain"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): preinfarction syndrome"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Preinfarction syndrome" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): dyspnea"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Dyspnea" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): heart failure (severe)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Heart failure" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): renal impairment (known present)"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Renal impairment" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): orthopnea"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Orthopnea" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: symptomatic BP ≥ 180/110 (hypertension diagnosis): leg swelling symptom"
+  adult
+  Urgent
+  (and
+    (or (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 180) (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 110))
+    (clinical_finding (snomed_concept "Leg swelling symptom" "finding"))
   )
 )

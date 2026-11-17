@@ -171,18 +171,63 @@
        )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts"
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: intoxication caused by psychoactive substance"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Stress at work" "finding"))
-       (or
-         (clinical_finding (snomed_concept "Intoxication caused by psychoactive substance" "disorder"))
-         (clinical_finding (snomed_concept "Inappropriate behavior" "finding"))
-         (clinical_finding (snomed_concept "Aggressive behavior" "finding"))
-         (clinical_finding (snomed_concept "Physical aggression" "finding"))
-         (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
-         (clinical_finding (snomed_concept "Planning suicide" "finding"))
-       )
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Intoxication caused by psychoactive substance" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: inappropriate behavior"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Inappropriate behavior" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: aggressive behavior"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Aggressive behavior" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: physical aggression"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Physical aggression" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: suicidal thoughts"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: health worker with occupational stress and intoxication, inappropriate or aggressive behaviour, or suicidal thoughts: planning suicide"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Stress at work" "finding"))
+    (clinical_finding (snomed_concept "Planning suicide" "finding"))
   )
 )

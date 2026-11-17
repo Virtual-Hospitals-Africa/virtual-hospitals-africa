@@ -107,15 +107,27 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour"
+  "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour: suicidal thoughts"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Depressed mood" "finding"))
         (clinical_finding (snomed_concept "Stress" "finding"))
         (clinical_finding (snomed_concept "Anxiety" "finding")))
-    (or (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
-        (clinical_finding (snomed_concept "Suicidal behavior" "finding")))
+    (clinical_finding (snomed_concept "Suicidal thoughts" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: low mood, stress or anxiety with suicidal thoughts or behaviour: suicidal behavior"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Depressed mood" "finding"))
+        (clinical_finding (snomed_concept "Stress" "finding"))
+        (clinical_finding (snomed_concept "Anxiety" "finding")))
+    (clinical_finding (snomed_concept "Suicidal behavior" "finding"))
   )
 )

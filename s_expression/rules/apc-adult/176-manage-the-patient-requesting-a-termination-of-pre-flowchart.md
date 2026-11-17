@@ -32,7 +32,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | R (TOP within the past 14 days) | `(<= (onset (clinical_finding Induced termination of pregnancy)) (time_ago 14 days))` | trigger of `Check for complications after a termination of pregnancy`, and the first conjunct of every rule below |
-| Q1 = Yes → red box | TOP within 14 days **and** any of: adnexal mass with closed cervix and small uterus, abdominal guarding, rebound tenderness, offensive vaginal discharge, temperature ≥ 38 °C, SBP < 80, pulse ≥ 100, RR ≥ 30 (Hb < 6 not representable) | `Urgent: complications within 14 days of a termination of pregnancy` |
+| Q1 = Yes → red box | TOP within 14 days **and** any of: adnexal mass with closed cervix and small uterus, abdominal guarding, rebound tenderness, offensive vaginal discharge, temperature ≥ 38 °C, SBP < 80, pulse ≥ 100, RR ≥ 30 (Hb < 6 not representable) | `Urgent: complications within 14 days of a termination of pregnancy: <bullet>` |
 | Red box: "If adnexal mass, ectopic pregnancy likely" | TOP within 14 days **and** adnexal mass **and** closed cervix **and** small uterus | `Diagnose probable ectopic pregnancy after a termination of pregnancy` |
 | Q1 = No → Q2 = Yes | TOP within 14 days **and** (enlarged uterus **or** (cervical os open **and** (vaginal bleeding **or** products of conception at os/in vagina))) | `Diagnose probable incomplete termination of pregnancy` |
 | Q2 = No to both | Reassurance / contraception / mental health | not modelled (management) |

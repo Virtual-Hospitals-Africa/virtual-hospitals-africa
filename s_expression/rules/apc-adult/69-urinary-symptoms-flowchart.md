@@ -41,7 +41,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `Urinary symptoms` (finding) | `Check for urgent urinary symptom conditions` (red box) and `Check for urinary infection features` (approach below it), both triggers |
-| Red box: unable to pass urine with lower abdominal discomfort/distension | `Unable to void urine` **and** (abdominal discomfort or distension, site lower abdomen) | `Urgent: urinary symptoms with danger signs`, first branch |
+| Red box: unable to pass urine with lower abdominal discomfort/distension | `Unable to void urine` **and** (abdominal discomfort or distension, site lower abdomen) | `Urgent: urinary symptoms with <bullet>`, first branch |
 | Red box: complicated pyelonephritis likely | Flank pain **and** (leucocytes or nitrites) **and** any of the seven factors | `Diagnose probable complicated pyelonephritis (urinary symptoms)`; priority uses the criteria directly (see remaining questions) |
 | Red box: kidney disease likely | (Blood in urine or proteinuria) **and** (new face/foot swelling, SBP ≥ 140 or DBP ≥ 90, oliguria) | `Diagnose probable kidney disease (urinary symptoms)` → `(active_condition Kidney disease)` in the priority rule |
 | Red box: kidney stone likely | Blood in urine **and** sudden, severe, unilateral flank pain or inguinal pain | `Diagnose probable kidney stone (urinary symptoms)` → `(active_condition Kidney stone)` in the priority rule |

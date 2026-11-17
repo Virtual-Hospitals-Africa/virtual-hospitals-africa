@@ -29,7 +29,7 @@ flowchart TD
 
 | Node | Page wording | Rule(s) in the `.lisp` |
 |---|---|---|
-| RB (bullet 1) | "Infection (surrounding skin red/warm/swollen) with any of: systolic BP < 80, pulse > 100, temperature ≥ 38°C, confused, blisters, crepitus or severe pain" | `Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs`; findings in `Check for urgent skin ulcer or non-healing wound conditions` |
+| RB (bullet 1) | "Infection (surrounding skin red/warm/swollen) with any of: systolic BP < 80, pulse > 100, temperature ≥ 38°C, confused, blisters, crepitus or severe pain" | `Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: <bullet>`; findings in `Check for urgent skin ulcer or non-healing wound conditions` |
 | RB (bullet 2) | "Muscle pain in legs or buttocks on exercise associated with pain at rest or gangrene: critical limb ischaemia likely" | `Diagnose probable critical limb ischaemia in a patient with a skin ulcer or non-healing wound` → `Urgent: skin ulcer or non-healing wound with critical limb ischaemia` |
 | Q1 | "Is patient bedridden/in wheelchair and is ulcer in common pressure ulcer site (see below)?" | Yes → `Diagnose probable pressure ulcer (APC 2026 page 90)`; No is the first `or` block in each of the three rules below |
 | Q2 | "Is ulcer on the lower leg or foot?" | Yes is required by the arterial, venous and diabetic rules; No → no rule (investigation box, not encoded) |

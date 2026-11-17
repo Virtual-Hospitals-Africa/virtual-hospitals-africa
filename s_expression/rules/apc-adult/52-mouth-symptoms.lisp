@@ -3,7 +3,10 @@
 (task
   "Check for urgent mouth symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))
+  )
   (check_for
     (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
 
@@ -27,7 +30,10 @@
 (task
   "Check mouth for white patches, blisters, ulcers, cracks and dry mouth"
   adult
-  (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))
+  )
   (check_for
     (clinical_finding (snomed_concept "White patches on oral mucosa" "finding"))
     (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
@@ -158,24 +164,42 @@
            (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
            (clinical_finding (snomed_concept "Insect sting" "disorder"))))
 )
+
 (system_priority_evaluation
-  "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs"
+  "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs: unable to open mouth"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
-       (or (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
-           (and (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-                    (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
-                (or (clinical_finding (snomed_concept "Wheezing" "finding"))
-                    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-                    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-                    (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-                    (clinical_finding (snomed_concept "Dizziness" "finding"))
-                    (clinical_finding (snomed_concept "Collapse" "finding"))
-                    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-                    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-                    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-                    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
-                    (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-                    (clinical_finding (snomed_concept "Insect sting" "disorder"))))))
+  (and
+    (or
+      (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Unable to open mouth" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: mouth symptoms with inability to open mouth or anaphylaxis signs: swelling (site: face structure, sudden onset) or swelling (site: tongue structure …"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Mouth symptoms" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))
+    )
+    (or (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value"))))
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+        (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+        (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+        (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Food" "substance"))
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Insect sting" "disorder")))
+  )
 )

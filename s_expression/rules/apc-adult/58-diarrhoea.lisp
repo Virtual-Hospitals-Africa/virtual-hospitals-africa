@@ -118,14 +118,33 @@
     (clinical_finding (snomed_concept "Fullness of rectum due to feces" "finding"))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: diarrhoea with shock or cholera"
+  "Urgent: diarrhoea with shock or cholera: shock"
   adult
   Urgent
   (and
     (clinical_finding (snomed_concept "Diarrhea" "finding"))
-    (or (clinical_finding (snomed_concept "Shock" "disorder"))
-        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-        (active_condition (snomed_concept "Cholera" "disorder")))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: diarrhoea with shock or cholera: systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Diarrhea" "finding"))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: diarrhoea with shock or cholera: cholera"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Diarrhea" "finding"))
+    (active_condition (snomed_concept "Cholera" "disorder"))
   )
 )

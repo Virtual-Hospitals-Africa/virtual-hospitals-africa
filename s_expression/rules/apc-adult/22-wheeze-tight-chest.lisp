@@ -99,43 +99,140 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Emergency: life-threatening wheeze/tight chest"
+  "Emergency: life-threatening wheeze/tight chest: pulse, function < 50 bpm"
   adult
   Emergency
-  ;; "Assess severity of episode: Any of: pulse < 50, unable to talk, silent chest (tight chest but
-  ;; no wheeze), PEFR < 33% of predicted, drowsy or confused?" Yes: Life threatening
   (and
     (or (clinical_finding (snomed_concept "Wheezing" "finding"))
         (clinical_finding (snomed_concept "Tight chest" "finding")))
-    (or (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
-        (clinical_finding (snomed_concept "Unable to speak" "finding"))
-        (and (clinical_finding (snomed_concept "Tight chest" "finding"))
-             (no (clinical_finding (snomed_concept "Wheezing" "finding"))))
-        (< (measurement (snomed_concept "Recorded/predicted peak expiratory flow rate ratio" "observable entity") %) 33)
-        (clinical_finding (snomed_concept "Drowsy" "finding"))
-        (clinical_finding (snomed_concept "Acute confusion" "finding"))
-    )
+    (< (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 50)
   )
 )
+
 (system_priority_evaluation
-  "Urgent: severe wheeze/tight chest"
+  "Emergency: life-threatening wheeze/tight chest: unable to speak"
+  adult
+  Emergency
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Unable to speak" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Emergency: life-threatening wheeze/tight chest: tight chest and no wheezing"
+  adult
+  Emergency
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Tight chest" "finding"))
+    (no (clinical_finding (snomed_concept "Wheezing" "finding")))
+  )
+)
+
+(system_priority_evaluation
+  "Emergency: life-threatening wheeze/tight chest: recorded/predicted peak expiratory flow rate ratio < 33 %"
+  adult
+  Emergency
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (< (measurement (snomed_concept "Recorded/predicted peak expiratory flow rate ratio" "observable entity") %) 33)
+  )
+)
+
+(system_priority_evaluation
+  "Emergency: life-threatening wheeze/tight chest: drowsy"
+  adult
+  Emergency
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Emergency: life-threatening wheeze/tight chest: acute confusion"
+  adult
+  Emergency
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: hemoglobin saturation with oxygen < 90 %"
   adult
   Urgent
-  ;; "Any of: oxygen saturation < 90%, respiratory rate > 30, pulse > 120, unable to talk in full
-  ;; sentences, PEFR < 60% of predicted, agitated?" Yes: Severe
   (and
     (or (clinical_finding (snomed_concept "Wheezing" "finding"))
         (clinical_finding (snomed_concept "Tight chest" "finding")))
-    (or (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 90)
-        (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
-        (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 120)
-        (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
-        (< (measurement (snomed_concept "Recorded/predicted peak expiratory flow rate ratio" "observable entity") %) 60)
-        (clinical_finding (snomed_concept "Feeling agitated" "finding"))
-    )
+    (< (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %) 90)
   )
 )
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: respiratory rate > 30 bpm"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (> (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: pulse, function > 120 bpm"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 120)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: unable to complete a sentence in one breath"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Unable to complete a sentence in one breath" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: recorded/predicted peak expiratory flow rate ratio < 60 %"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (< (measurement (snomed_concept "Recorded/predicted peak expiratory flow rate ratio" "observable entity") %) 60)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: severe wheeze/tight chest: feeling agitated"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Wheezing" "finding"))
+        (clinical_finding (snomed_concept "Tight chest" "finding")))
+    (clinical_finding (snomed_concept "Feeling agitated" "finding"))
+  )
+)
+
 (system_priority_evaluation
   "Urgent: wheeze/tight chest"
   adult

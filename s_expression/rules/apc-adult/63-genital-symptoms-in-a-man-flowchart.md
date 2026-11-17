@@ -32,7 +32,7 @@ flowchart TD
 | Torsion of testicle likely | (Swelling of scrotum or Pain in scrotum) **and** any of: sudden-onset severe scrotal pain, Testicle out of place, Testes - transverse lie, Traumatic injury, Injury of scrotum, Injury of testis, Overexertion and strenuous movements | `Diagnose probable torsion of testis (genital symptoms in a man)` |
 | Paraphimosis likely | Fixed, retracted foreskin **and** swelling of glans **and** severe pain of glans | `Diagnose probable paraphimosis (genital symptoms in a man)` |
 | Priapism likely | Onset of prolonged erection of penis at least 4 hours ago | `Diagnose probable priapism (genital symptoms in a man)` |
-| Red box → urgent attention | Genital symptom **and** any of the three likely diagnoses | `Urgent: genital symptoms in a man with torsion, paraphimosis or priapism` |
+| Red box → urgent attention | Genital symptom **and** any of the three likely diagnoses | `Urgent: genital symptoms in a man with torsion, paraphimosis or priapism: <bullet>` |
 | Urethral discharge → treat for MUS | Urethral discharge → probable Urethritis (judgment call: "Treat for" read as the syndromic diagnosis) | `Diagnose probable male urethritis syndrome (genital symptoms in a man)` |
 | Painless lump → exclude testicular cancer | Painless mass of scrotum or of testicle → possible Malignant neoplasm of testis | `Diagnose possible testicular cancer (painless scrotal lump)` |
 | Glans inflamed → treat for BAL | Inflammatory morphology at glans penis → probable Balanitis (Balanoposthitis is a descendant) | `Diagnose probable balanitis/balanoposthitis (genital symptoms in a man)` |

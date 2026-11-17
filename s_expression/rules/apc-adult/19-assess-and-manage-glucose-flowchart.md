@@ -54,7 +54,7 @@ on the page says "symptoms⁷", which points at the dehydration footnote; read h
 | Red box 1: Give urgent attention | `(active_condition Hypoglycemia)` → Urgent | `Urgent: hypoglycaemia on fingerprick glucose` |
 | Is patient alert? Yes/No and everything below it in box 1 | Management branching only (oral vs IV glucose, recheck, refer); not modelled | — |
 | Glucose ≥ 11.1 → red box 2 items | `check_for` of the box-2 findings (temperature is a routine vital) | `Check for urgent signs when fingerprick glucose is 11.1 or more` |
-| Red box 2 = Yes → red box 3 (refer urgently) | Glucose ≥ 11.1 **and** any box-2 item → Urgent | `Urgent: glucose 11.1 or more with danger signs` |
+| Red box 2 = Yes → red box 3 (refer urgently) | Glucose ≥ 11.1 **and** any box-2 item → Urgent | `Urgent: glucose 11.1 or more with <bullet>` |
 | No → check urine for ketones | `check_for` Ketonuria when glucose ≥ 11.1 | `Check urine for ketones when fingerprick glucose is 11.1 or more` |
 | Ketones present → red box 3 (refer urgently) | Glucose ≥ 11.1 **and** Ketonuria → Urgent | `Urgent: glucose 11.1 or more with urine ketones` |
 | No ketones, not known diabetes → symptoms⁸ of diabetes? | `check_for` the six footnote-8 symptoms, due to glucose ≥ 11.1 with no ketonuria and no known diabetes | `Check for symptoms of diabetes when glucose is 11.1 or more without ketones` |

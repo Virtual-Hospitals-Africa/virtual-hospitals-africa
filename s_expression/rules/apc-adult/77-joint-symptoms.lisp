@@ -3,7 +3,10 @@
 (task
   "Check for urgent joint symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Pain of joint" "finding"))
+  (or
+    (clinical_finding (snomed_concept "Pain of joint" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+  )
   (check_for
     ;; Red box: septic arthritis likely; flowchart Q1 (joint warm/tender/swollen or unable to do all actions)
     (clinical_finding (snomed_concept "Joint warm" "finding"))
@@ -157,24 +160,74 @@
     )
   )
 )
+
 (system_priority_evaluation
-  "Urgent: joint symptoms with danger signs"
+  "Urgent: joint symptoms with infective arthritis"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Pain of joint" "finding"))
-       (or (active_condition (snomed_concept "Infective arthritis" "disorder"))
-           (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-           (active_condition (snomed_concept "Fracture of bone" "disorder"))
-           (clinical_finding (snomed_concept "Unable to weight-bear" "finding"))
-           ;; known gout acute attack (red box); not (active_condition Acute gout), which the non-urgent flowchart also diagnoses
-           (and (clinical_finding (snomed_concept "Gout" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
-                (or (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Structure of joint of hallux" "body structure")))
-                    (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Structure of midfoot region of foot" "body structure")))
-                    (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Ankle joint structure" "body structure")))
-                )
-                (no (clinical_finding (snomed_concept "Fever" "finding")))
-                (no (clinical_finding (snomed_concept "Wound" "disorder")))
-           )
-       )
+  (and
+    (or
+      (clinical_finding (snomed_concept "Pain of joint" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Infective arthritis" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: joint symptoms with body temperature ≥ 38 °C"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Pain of joint" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+    )
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: joint symptoms with fracture of bone"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Pain of joint" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+    )
+    (active_condition (snomed_concept "Fracture of bone" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: joint symptoms with unable to weight-bear"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Pain of joint" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Unable to weight-bear" "finding"))
+  )
+)
+;; known gout acute attack (red box); not (active_condition Acute gout), which the non-urgent flowchart also diagnoses
+(system_priority_evaluation
+  "Urgent: joint symptoms with gout (known present) and pain of joint (site: structure of joint of hallux) …"
+  adult
+  Urgent
+  (and
+    (or
+      (clinical_finding (snomed_concept "Pain of joint" "finding"))
+      (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
+    )
+    (clinical_finding (snomed_concept "Gout" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (or (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Structure of joint of hallux" "body structure")))
+        (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Structure of midfoot region of foot" "body structure")))
+        (clinical_finding (snomed_concept "Pain of joint" "finding") (finding_site (snomed_concept "Ankle joint structure" "body structure")))
+    )
+    (no (clinical_finding (snomed_concept "Fever" "finding")))
+    (no (clinical_finding (snomed_concept "Wound" "disorder")))
   )
 )

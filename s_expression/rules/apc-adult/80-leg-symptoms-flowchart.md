@@ -40,7 +40,7 @@ flowchart TD
 | Red box, DVT | Unilateral calf swelling **and** calf pain. Risk factors ("especially if …") not required | `Diagnose probable DVT (leg symptoms)` |
 | Red box, acute limb ischaemia | Sudden, severe leg pain at rest **and** any of leg numbness, leg weakness, white discoloration of skin sited to the leg, absent pulse in leg | `Diagnose probable acute limb ischaemia (leg symptoms)` |
 | Red box, critical limb ischaemia | Intermittent claudication **and** any of leg pain at rest, leg ulcer, gangrene of leg | `Diagnose probable critical limb ischaemia (leg symptoms)` |
-| Red box → Urgent | Complaint **and** any of the four diagnoses above | `Urgent: leg symptoms with fracture, DVT or limb ischaemia` |
+| Red box → Urgent | Complaint **and** any of the four diagnoses above | `Urgent: leg symptoms with fracture, DVT or limb ischaemia: <bullet>` |
 | Joint screen | Any of joint warm, joint tender, joint swelling, difficulty walking, difficulty sitting down, difficulty standing up | `Diagnose probable joint problem (leg symptoms)` |
 | Q1 = No → buttock pain radiating down leg | No leg swelling **and** buttock pain **and** pain radiating to left/right leg | `Diagnose probable sciatic nerve irritation (leg symptoms)` |
 | Q1 = No → exercise pain relieved by rest | No leg swelling **and** intermittent claudication | `Diagnose probable peripheral vascular disease (leg symptoms)` |

@@ -13,7 +13,7 @@ Reconciled final build from builders A and B (see `reconcile.json`).
   (`Check for causes of foot symptoms not needing urgent attention`).
 - **Red box → three `probable` rules + one Urgent priority.** Fracture (`Fracture of bone`, since
   the page says "fracture" without a site), `Acute lower limb ischemia`, `Critical lower limb
-  ischemia`. `Urgent: foot symptoms with fracture or limb ischaemia` is
+  ischemia`. `Urgent: foot symptoms with fracture or limb ischaemia: <bullet>` is
   `(and foot-symptom (or active_condition …))`. "Refer urgently" is management.
 - **Fracture:** foot symptoms AND Unable to weight-bear AND `Traumatic injury` (the page says
   "injury" without a site; the foot-symptoms condition keeps the rule in this page's context).

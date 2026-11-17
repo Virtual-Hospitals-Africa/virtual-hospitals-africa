@@ -242,33 +242,57 @@
        (no (clinical_finding (snomed_concept "Nitrite detected in urine" "finding")))
        (clinical_finding (snomed_concept "Increased frequency of urination" "finding")))
 )
+;; Unable to pass urine with lower abdominal discomfort/distension
 (system_priority_evaluation
-  "Urgent: urinary symptoms with danger signs"
+  "Urgent: urinary symptoms with unable to void urine and abdominal discomfort (site: lower abdomen structure) …"
   adult
   Urgent
-  (and (clinical_finding (snomed_concept "Urinary symptoms" "finding"))
-       (or
-         ;; Unable to pass urine with lower abdominal discomfort/distension
-         (and (clinical_finding (snomed_concept "Unable to void urine" "finding"))
-              (or (clinical_finding (snomed_concept "Abdominal discomfort" "finding") (finding_site (snomed_concept "Lower abdomen structure" "body structure")))
-                  (clinical_finding (snomed_concept "Distension of abdomen" "finding") (finding_site (snomed_concept "Lower abdomen structure" "body structure")))))
-         ;; Complicated pyelonephritis likely (criteria written out: Acute pyelonephritis is also
-         ;; diagnosed by the non-urgent uncomplicated rule)
-         (and (clinical_finding (snomed_concept "Flank pain" "finding"))
-              (or (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
-                  (clinical_finding (snomed_concept "Nitrite detected in urine" "finding")))
-              (or (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-                  (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
-                  (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
-                  (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-                  (clinical_finding (snomed_concept "Diabetes mellitus" "disorder"))
-                  (clinical_finding (snomed_concept "Male" "finding"))
-                  (clinical_finding (snomed_concept "Pregnancy" "finding"))
-                  (clinical_finding (snomed_concept "Postmenopausal state" "finding"))))
-         ;; Kidney disease likely
-         (active_condition (snomed_concept "Kidney disease" "disorder"))
-         ;; Kidney stone likely
-         (active_condition (snomed_concept "Kidney stone" "disorder"))
-       )
+  (and
+    (clinical_finding (snomed_concept "Urinary symptoms" "finding"))
+    (clinical_finding (snomed_concept "Unable to void urine" "finding"))
+    (or (clinical_finding (snomed_concept "Abdominal discomfort" "finding") (finding_site (snomed_concept "Lower abdomen structure" "body structure")))
+        (clinical_finding (snomed_concept "Distension of abdomen" "finding") (finding_site (snomed_concept "Lower abdomen structure" "body structure"))))
+  )
+)
+;; Complicated pyelonephritis likely (criteria written out: Acute pyelonephritis is also
+;; diagnosed by the non-urgent uncomplicated rule)
+
+(system_priority_evaluation
+  "Urgent: urinary symptoms with flank pain and leukocytes in urine or nitrite detected in urine and finding of vomiting …"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Urinary symptoms" "finding"))
+    (clinical_finding (snomed_concept "Flank pain" "finding"))
+    (or (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
+        (clinical_finding (snomed_concept "Nitrite detected in urine" "finding")))
+    (or (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+        (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+        (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        (>= (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+        (clinical_finding (snomed_concept "Diabetes mellitus" "disorder"))
+        (clinical_finding (snomed_concept "Male" "finding"))
+        (clinical_finding (snomed_concept "Pregnancy" "finding"))
+        (clinical_finding (snomed_concept "Postmenopausal state" "finding")))
+  )
+)
+;; Kidney disease likely
+(system_priority_evaluation
+  "Urgent: urinary symptoms with kidney disease"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Urinary symptoms" "finding"))
+    (active_condition (snomed_concept "Kidney disease" "disorder"))
+  )
+)
+;; Kidney stone likely
+(system_priority_evaluation
+  "Urgent: urinary symptoms with kidney stone"
+  adult
+  Urgent
+  (and
+    (clinical_finding (snomed_concept "Urinary symptoms" "finding"))
+    (active_condition (snomed_concept "Kidney stone" "disorder"))
   )
 )

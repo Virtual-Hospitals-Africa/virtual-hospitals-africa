@@ -20,6 +20,6 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Suspected poisoning/overdose | `(clinical_finding Poisoning)` (warning sign) | trigger of `Check for urgent poisoning/overdose conditions` |
-| Red box "any of" | `(and Poisoning (or …13 items…))` | `Urgent: poisoning/overdose with danger signs` |
+| Red box "any of" | `(and Poisoning (or …13 items…))` | `Urgent: poisoning/overdose with <bullet>` |
 | Organophosphate signs | `(and Poisoning (or signs))` | `Diagnose probable organophosphate poisoning` |
 | Toxic / unknown / non-toxic dose | Not modelled: needs a toxic-dose judgment from PIH, management routing | — |

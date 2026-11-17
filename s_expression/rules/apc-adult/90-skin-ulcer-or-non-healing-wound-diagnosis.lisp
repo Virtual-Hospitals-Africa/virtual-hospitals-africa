@@ -184,8 +184,9 @@
     (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
   )
 )
+
 (system_priority_evaluation
-  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs"
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: systolic blood pressure < 80 mmHg"
   adult
   Urgent
   (and
@@ -193,15 +194,88 @@
       (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
     (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
         (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
-    (or (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-        (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
-        (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-        (clinical_finding (snomed_concept "Acute confusion" "finding"))
-        (clinical_finding (snomed_concept "Blister of skin" "disorder"))
-        (clinical_finding (snomed_concept "Subcutaneous crepitus" "finding"))
-        (clinical_finding (snomed_concept "Severe pain" "finding")))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
   )
 )
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: pulse, function > 100 bpm"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (> (measurement (snomed_concept "Pulse, function" "observable entity") bpm) 100)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: body temperature ≥ 38 °C"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: acute confusion"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: blister of skin"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (clinical_finding (snomed_concept "Blister of skin" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: subcutaneous crepitus"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (clinical_finding (snomed_concept "Subcutaneous crepitus" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: skin ulcer or non-healing wound with infection and systemic or severe signs: severe pain"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Skin ulcer" "disorder"))
+      (clinical_finding (snomed_concept "Wound, non-healed" "morphologic abnormality")))
+    (or (clinical_finding (snomed_concept "Infected ulcer of skin" "disorder"))
+        (clinical_finding (snomed_concept "Local infection of wound" "disorder")))
+    (clinical_finding (snomed_concept "Severe pain" "finding"))
+  )
+)
+
 (system_priority_evaluation
   "Urgent: skin ulcer or non-healing wound with critical limb ischaemia"
   adult

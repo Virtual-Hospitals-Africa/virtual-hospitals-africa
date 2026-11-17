@@ -103,30 +103,169 @@
        (clinical_finding (snomed_concept "White hair" "finding"))
        (clinical_finding (snomed_concept "Iris hypopigmentation" "finding")))
 )
+
 (system_priority_evaluation
-  "Urgent: jaundice with danger signs (changes in skin colour)"
+  "Urgent: jaundice with danger signs (changes in skin colour): body temperature ≥ 38 °C"
   adult
   Urgent
   (and
     (or (clinical_finding (snomed_concept "Jaundice" "finding"))
         (active_condition (snomed_concept "Jaundice" "finding")))
-    (or
-      (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
-      ;; Hb < 12 (woman) or < 13 (man): not representable (no haemoglobin observable/unit)
-      (clinical_finding (snomed_concept "Shock" "disorder"))
-      (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
-      (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
-      (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Acute confusion" "finding"))
+    (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)
+  )
+)
+;; Hb < 12 (woman) or < 13 (man): not representable (no haemoglobin observable/unit)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): shock"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Shock" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): systolic blood pressure < 80 mmHg"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 80)
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): abdominal pain (severe)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): drowsy"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): acute confusion"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Acute confusion" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): clouded consciousness"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
     (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
-      (clinical_finding (snomed_concept "Easy bruising" "finding"))
-      (clinical_finding (snomed_concept "Bleeds easily" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): easy bruising"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Easy bruising" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): bleeds easily"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Bleeds easily" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): finding of tendency to bleed"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
     (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
-      (clinical_finding (snomed_concept "Pregnancy" "finding"))
-      (clinical_finding (snomed_concept "Alcohol dependence" "disorder"))
-      (clinical_finding (snomed_concept "Drinking binge" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))
-      (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
-      (clinical_finding (snomed_concept "Illicit drug use" "finding"))
-    )
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): pregnancy"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): alcohol dependence"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Alcohol dependence" "disorder"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): drinking binge (recent)"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Drinking binge" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): exposure to drug or medicament"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+  )
+)
+
+(system_priority_evaluation
+  "Urgent: jaundice with danger signs (changes in skin colour): illicit drug use"
+  adult
+  Urgent
+  (and
+    (or (clinical_finding (snomed_concept "Jaundice" "finding"))
+        (active_condition (snomed_concept "Jaundice" "finding")))
+    (clinical_finding (snomed_concept "Illicit drug use" "finding"))
   )
 )

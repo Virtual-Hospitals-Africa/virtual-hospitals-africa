@@ -29,7 +29,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Presenting complaint | `Vaginal discharge` (finding) | `Check for abnormal vaginal discharge findings` (task trigger) |
-| Red box | `(and Vaginal discharge (or …8 red-box items…))`; Shock/SBP < 80 as `(or Shock (< SBP 80))`; peritonitis as the disorder or its three listed signs; overdue period as `Menstrual period late`; recent delivery/TOP/miscarriage with the `Recent` qualifier | `Urgent: vaginal discharge with danger signs` |
+| Red box | `(and Vaginal discharge (or …8 red-box items…))`; Shock/SBP < 80 as `(or Shock (< SBP 80))`; peritonitis as the disorder or its three listed signs; overdue period as `Menstrual period late`; recent delivery/TOP/miscarriage with the `Recent` qualifier | `Urgent: vaginal discharge with <bullet>` |
 | SA = Yes → Y1 = No to both → Treat for cervicitis | Discharge, sexually active, `(no Lower abdominal pain)`, `(no Pain on movement of cervix)` | `Diagnose probable cervicitis (vaginal discharge)`, first branch |
 | … → "If discharge itchy, curd-like or vulva red, scratched or inflamed: add vaginal candidiasis" | Same branch **and** any of `Pruritus of vagina`, vulval erythema, vulval scratch marks, vulval inflammation (curd-like: no SNOMED concept) | `Diagnose probable vaginal candidiasis (vaginal discharge)`, second branch |
 | SA = Yes → Y1 = Yes → Y2 = No → Assess for UTI → 69 | Discharge, sexually active, lower abdominal pain, `(no Pain on movement of cervix)` | `Diagnose possible UTI (vaginal discharge, lower abdominal pain)` |

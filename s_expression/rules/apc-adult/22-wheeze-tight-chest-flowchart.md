@@ -44,8 +44,8 @@ flowchart TD
 | Silent chest needs a wheeze check | A patient presenting with tight chest is examined for wheeze | `Check for wheeze in tight chest` |
 | PEFR² | Measure `Recorded/predicted peak expiratory flow rate ratio` in % | `Measure PEFR in wheeze/tight chest` |
 | Header: urgent attention to every patient with wheeze/tight chest | `(or Wheezing Tight chest)` → Urgent | `Urgent: wheeze/tight chest` |
-| S1 = Yes (life threatening) | complaint **and** any of: pulse < 50, unable to speak, tight chest with no wheeze, PEFR < 33% predicted, drowsy, acute confusion → Emergency | `Emergency: life-threatening wheeze/tight chest` |
-| S1 = No → S2 = Yes (severe) | complaint **and** any of: SpO₂ < 90%, RR > 30, pulse > 120, unable to complete a sentence in one breath, PEFR < 60% predicted, agitated → Urgent | `Urgent: severe wheeze/tight chest` |
+| S1 = Yes (life threatening) | complaint **and** any of: pulse < 50, unable to speak, tight chest with no wheeze, PEFR < 33% predicted, drowsy, acute confusion → Emergency | `Emergency: life-threatening wheeze/tight chest: <bullet>` |
+| S1 = No → S2 = Yes (severe) | complaint **and** any of: SpO₂ < 90%, RR > 30, pulse > 120, unable to complete a sentence in one breath, PEFR < 60% predicted, agitated → Urgent | `Urgent: severe wheeze/tight chest: <bullet>` |
 | S2 = No (mild/moderate) | No separate rule; covered by the base Urgent rule | `Urgent: wheeze/tight chest` |
 | R1, R2, R3 (reassessment after 1 h / 3 h of treatment) | Not modelled: they route management after treatment and depend on time since treatment started | — (see remaining questions) |
 | Anaphylaxis bullet | Sudden-onset wheeze/tight chest **and** any listed feature → `possible` anaphylaxis | `Diagnose possible anaphylaxis from sudden wheeze/tight chest` |

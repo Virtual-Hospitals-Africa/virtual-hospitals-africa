@@ -22,8 +22,8 @@ flowchart TD
 
 | Red box item | Modelled as | Rule |
 |---|---|---|
-| Headache ↗47 | Headache (common symptom) | `Urgent: nausea/vomiting with danger signs` |
-| Chest pain ↗24 | Chest pain (warning sign) | `Urgent: nausea/vomiting with danger signs` |
+| Headache ↗47 | Headache (common symptom) | `Urgent: nausea/vomiting with <bullet>` |
+| Chest pain ↗24 | Chest pain (warning sign) | `Urgent: nausea/vomiting with <bullet>` |
 | Watery diarrhoea + cholera outbreak area in past 5 days: cholera likely | N/V **and** Diarrhea + Watery qualifier **and** exposure to *Vibrio cholerae* with onset within 5 days | `Diagnose probable cholera in nausea/vomiting` → `(active_condition Cholera)` in the urgent rule |
 | Neck stiffness, drowsy/confused or purple/red rash: meningitis likely | N/V **and** any of stiff neck, drowsy, acute confusion, purpuric rash | `Diagnose probable meningitis in nausea/vomiting` → urgent rule |
 | Guarding or rigidity: peritonitis likely | N/V **and** abdominal guarding or rigidity | `Diagnose probable peritonitis in nausea/vomiting` → urgent rule |

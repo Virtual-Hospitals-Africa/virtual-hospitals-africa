@@ -34,7 +34,7 @@ flowchart TD
 | Node | Rule(s) in `177-routine-antenatal-care.lisp` |
 |---|---|
 | Pregnant patient → red-box checks | task "Check for urgent routine antenatal care conditions" |
-| Any red-box item → Urgent | priority "Urgent: pregnant patient with antenatal danger signs" |
+| Any red-box item → Urgent | priority "Urgent: pregnant patient with <bullet>" |
 | Treat as severe pre-eclampsia | diagnosis "Diagnose probable severe pre-eclampsia in antenatal patient" (referenced by the priority rule) |
 | Treat as severe hypertension | inlined in the priority rule (no SNOMED concept) |
 | Preterm labour likely | diagnosis "Diagnose probable preterm labour in antenatal patient" (gestation < 37 weeks not representable) |

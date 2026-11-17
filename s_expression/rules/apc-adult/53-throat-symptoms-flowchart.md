@@ -25,7 +25,7 @@ flowchart TD
 | Node | Modelled as | Rule |
 |---|---|---|
 | Throat symptoms (trigger) | `(or Sore throat, Difficulty swallowing, Swallowing painful)` for the red box; `Sore throat` for the Assess box (which checks for difficulty / pain on swallowing) | due_to of `Check for urgent throat symptom conditions`; due_to of `Assess throat symptoms not needing urgent attention` |
-| Red box | `(and throat symptoms (or unable to open mouth, unable to swallow, (and pharyngeal swelling, upper respiratory tract obstruction), (and sudden face/tongue swelling (or …anaphylaxis features…))))` | `Urgent: throat symptoms with danger signs` |
+| Red box | `(and throat symptoms (or unable to open mouth, unable to swallow, (and pharyngeal swelling, upper respiratory tract obstruction), (and sudden face/tongue swelling (or …anaphylaxis features…))))` | `Urgent: throat symptoms with <bullet>` |
 | Red box, anaphylaxis bullet ("check for anaphylaxis 28") | `possible` anaphylaxis: throat symptoms **and** sudden face/tongue swelling **and** any of the listed features; this hands over to page 28's check | `Diagnose possible anaphylaxis from throat symptoms with sudden face/tongue swelling` |
 | Assess, bullet 2 | `(and (or Difficulty swallowing, Swallowing painful) White patches on oral mucosa)` → probable Candidiasis of esophagus | `Diagnose probable oesophageal candida from painful or difficult swallowing` |
 | Q1 = Yes | `(and Sore throat (or pseudomembrane in pharynx, pseudomembrane in nose))`; mild fever is "with or without" so not required | `Diagnose possible diphtheria from throat/nose pseudomembrane` |
