@@ -18,9 +18,9 @@ import { parseFindingSiteFindingsLispFile, parseLispFile, walkDirectory } from '
 import { FINDING_SITE_FINDINGS_LISP } from '../../s_expression/finding_site_findings.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { allEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
+import { allEvidenceToLookFor, allPositiveEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
+import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_SHARED_SNOMED_CONCEPT_NAMES, VITALS_COMPUTED_SNOMED_CONCEPT_NAMES, VITALS_COMPUTED_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
 import { isCheckFor } from '../../db/models/additional_tasks.ts'
 import compactMap from '../../util/compactMap.ts'
 import { allConceptsToLookFor } from '../../shared/s_expression_concepts.ts'
@@ -28,6 +28,7 @@ import { conceptDoesNotExist } from '../../db/models/snomed_concept_exists.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { COMMON_SYMPTOMS } from '../../shared/common_symptoms.ts'
 import { Maybe, Yielded } from '../../types.ts'
+import { groupBy } from '../../util/groupBy.ts'
 
 function* nodesAndConceptsTasks() {
   for (const s_expression of TASKS_LISP) {
@@ -71,7 +72,7 @@ function* nodesAndConceptsSystemDiagnosisRules() {
 }
 
 function* allFindingsToLookFor(rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule']) {
-  for (const evidence of allEvidenceToLookFor(rule.due_to)) {
+  for (const evidence of allPositiveEvidenceToLookFor(rule.due_to)) {
     switch (evidence.atom) {
       case '>':
       case '<':
@@ -109,12 +110,46 @@ function specificSnomedConceptOf(finding: EvidenceFinding): Maybe<Lang['snomed_c
 
 type EvidenceFinding = Yielded<typeof allFindingsToLookFor>
 
+// ── Known-issue skip lists for the apc-adult page review ────────────────────────────────
+// The rules under s_expression/rules/apc-adult are being reviewed page-by-page against the APC
+// page images (see docs/apc-adult-rules-briefing.md). Until a page has been reviewed, its
+// check_for findings are excluded from the coverage checks below so that the tests stay green
+// for the pages that have been completed. Remove a page number from this set once its rules
+// file has been brought up to standard.
+// Emptied for the APC 2026 rule set: the list held APC 2023 page numbers, which would skip
+// unrelated 2026 pages, so every 2026 page now gets every check.
+const APC_PAGES_NOT_YET_REVIEWED = new Set<string>([])
+
+// Individual known issues that survive a page review. Every entry MUST be explained in
+// s_expression/rules/apc-adult/<page>-<slug>-remaining-questions.md. Keyed by page number and
+// the exact (inverse) s-expression reported by the failing test.
+const APC_KNOWN_ISSUES: { page: string; s_expression: string; reason: string }[] = [
+  // { page: '20', s_expression: '(allergy (snomed_concept "Drug or medicament" "substance"))', reason: 'see 20-anaphylaxis-remaining-questions.md' },
+]
+
+function apcPageNumberOf(file_path: string): Maybe<string> {
+  if (!file_path.includes('s_expression/rules/apc-adult/')) return null
+  return file_path.split('/').pop()!.match(/^(\d+)/)?.[1] ?? null
+}
+
+function isApcPageNotYetReviewed(file_path: string): boolean {
+  const page = apcPageNumberOf(file_path)
+  return !!page && APC_PAGES_NOT_YET_REVIEWED.has(page)
+}
+
+function isApcKnownIssue(file_path: string, s_expression: string): boolean {
+  const page = apcPageNumberOf(file_path)
+  return !!page && APC_KNOWN_ISSUES.some((issue) => issue.page === page && issue.s_expression === s_expression)
+}
+
 function evidenceCollectedDuringWarningSignsOrVitals(
   finding: EvidenceFinding,
   rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule'],
 ) {
   if (finding.atom === 'measurement') {
-    return VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
+    // Height and weight are in VITALS_SHARED_SNOMED_CONCEPT_NAMES; BMI is computed from them
+    return VITALS_SHARED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name) ||
+      VITALS_COMPUTED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
   }
   if (finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever') {
     return true
@@ -148,14 +183,23 @@ describe('s_expression', () => {
       const not_found = await filter(nodesAndConceptsTasks(), conceptDoesNotExist)
       assertArrayEmpty(not_found)
     })
-    it.skip('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
+    it('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
       const checked_for_but_never_used_as_evidence = await collect(checkedForButNeverUsedAsEvidence())
-      // Deno.writeFileSync(
-      //   './checked_for_but_never_used_as_evidence.json',
-      //   new TextEncoder().encode(humanReadableJson(checked_for_but_never_used_as_evidence)),
-      // )
 
-      assertArrayEmpty(checked_for_but_never_used_as_evidence)
+      if (checked_for_but_never_used_as_evidence.length) {
+        const findings_by_file_path = groupBy(checked_for_but_never_used_as_evidence, (finding) => finding.file_path)
+        const file_path_error_messages = Array.from(findings_by_file_path, ([file_path, findings_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(findings_in_file, (finding) => finding.description),
+            ([description, findings_with_description]) => [
+              `\t${description}`,
+              ...findings_with_description.map((finding) => `\t\t${finding.never_used_as_evidence}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(['Findings we checked for that are not used as part of any system_diagnosis_rule or system_priority_evaluation', ...file_path_error_messages].join('\n\n'))
+      }
 
       async function* checkedForButNeverUsedAsEvidence() {
         const task_nodes: { file_path: string; task_node: Lang['task'] }[] = []
@@ -186,11 +230,13 @@ describe('s_expression', () => {
 
         for (const [index, { file_path, task_node }] of task_nodes.entries()) {
           if (!isCheckFor(task_node.to_be_done)) continue
+          if (isApcPageNotYetReviewed(file_path)) continue
           for (const finding of task_node.to_be_done.value) {
             const finding_s_expression = inverseSExpression(finding)
             // A rule keying off of the finding's absence still relies on us having checked for it
             if (isUsedByAnythingElse(finding_s_expression, index)) continue
             if (isUsedByAnythingElse(`(no ${finding_s_expression})`, index)) continue
+            if (isApcKnownIssue(file_path, finding_s_expression)) continue
             if (already_yielded.has(finding_s_expression)) continue
             already_yielded.add(finding_s_expression)
             yield {
@@ -217,6 +263,7 @@ describe('s_expression', () => {
 
       async function* tasksCheckingForTheirOwnDueTo() {
         for await (const file_path of walkDirectory()) {
+          if (isApcPageNotYetReviewed(file_path)) continue
           for (const task_node of await parseLispFile(file_path)) {
             if (task_node.atom !== 'task') continue
             if (!isCheckFor(task_node.to_be_done)) continue
@@ -253,12 +300,26 @@ describe('s_expression', () => {
       const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(
         systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals(),
       )
-      assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
+
+      if (rules_without_corresponding_check_for_system_diagnosis_rule.length) {
+        const rules_by_file_path = groupBy(rules_without_corresponding_check_for_system_diagnosis_rule, (rule) => rule.file_path)
+        const file_path_error_messages = Array.from(rules_by_file_path, ([file_path, rules_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(rules_in_file, (rule) => rule.description),
+            ([description, rules_with_description]) => [
+              `\t${description}`,
+              ...rules_with_description.map((rule) => `\t\t${rule.didnt_check_for}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(['Findings needed as evidence that we did not check_for', ...file_path_error_messages].join('\n\n'))
+      }
 
       async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals() {
         for await (const { file_path, system_priority_evaluations, tasks } of correspondingAPCRules()) {
           const all_checking_for = new Set(tasks.flatMap((task_node) => {
-            const due_to = allEvidenceToLookFor(task_node.due_to).map(inverseSExpression)
+            const due_to = allPositiveEvidenceToLookFor(task_node.due_to).map(inverseSExpression)
             // TODO  || isMeasurements(task_node.to_be_done)?
             const checking_for = isCheckFor(task_node.to_be_done) ? task_node.to_be_done.value.map(inverseSExpression) : []
 
@@ -282,6 +343,7 @@ describe('s_expression', () => {
                 ? normalForm(`(clinical_finding (snomed_concept "${finding.snomed_concept.name}" "${finding.snomed_concept.category}"))`)
                 : inverseSExpression(finding)
               if (all_checking_for.has(as_finding_s_expression)) continue
+              if (isApcKnownIssue(file_path, as_finding_s_expression)) continue
 
               yield {
                 file_path,
@@ -295,6 +357,7 @@ describe('s_expression', () => {
 
       async function* correspondingAPCRules() {
         for await (const file_path of walkDirectory('s_expression/rules/apc-adult')) {
+          if (isApcPageNotYetReviewed(file_path)) continue
           const rules = await parseLispFile(file_path)
           yield {
             file_path,
@@ -313,7 +376,21 @@ describe('s_expression', () => {
 
     it('leverages findings we check for in TASKS_LISP based on the apc adult guidelines', async () => {
       const rules_without_corresponding_check_for = await collect(probableSystemDiagnosisRulesWithNoCheckFor())
-      assertArrayEmpty(rules_without_corresponding_check_for)
+
+      if (rules_without_corresponding_check_for.length) {
+        const rules_by_file_path = groupBy(rules_without_corresponding_check_for, (rule) => rule.file_path)
+        const file_path_error_messages = Array.from(rules_by_file_path, ([file_path, rules_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(rules_in_file, (rule) => rule.description),
+            ([description, rules_with_description]) => [
+              `\t${description}`,
+              ...rules_with_description.map((rule) => `\t\t${rule.didnt_check_for}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(['Findings needed as evidence that we did not check_for', ...file_path_error_messages].join('\n\n'))
+      }
 
       async function* probableSystemDiagnosisRulesWithNoCheckFor() {
         for await (const { file_path, system_diagnosis_rules, tasks } of correspondingAPCRules()) {
@@ -335,6 +412,7 @@ describe('s_expression', () => {
               if (evidence_collected_during_warning_signs_or_vitals) continue
 
               const finding_s_expression = inverseSExpression(finding)
+              if (isApcKnownIssue(file_path, finding_s_expression)) continue
               if (!all_checking_for.has(finding_s_expression)) {
                 yield {
                   file_path,
@@ -349,6 +427,7 @@ describe('s_expression', () => {
 
       async function* correspondingAPCRules() {
         for await (const file_path of walkDirectory('s_expression/rules/apc-adult')) {
+          if (isApcPageNotYetReviewed(file_path)) continue
           const rules = await parseLispFile(file_path)
           yield {
             file_path,
