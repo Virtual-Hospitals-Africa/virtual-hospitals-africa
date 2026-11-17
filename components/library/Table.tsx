@@ -399,7 +399,6 @@ export default function Table<T extends Row>(
   }
 
   const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows })]
-  console.log({ columns_with_contents })
 
   const table_or_cards = (
     <>
