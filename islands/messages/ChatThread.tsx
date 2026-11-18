@@ -20,7 +20,7 @@ function SingleMessage({ message, thread }: {
         <a href={message.sender.href}>
           <Avatar
             src={message.sender.avatar_url}
-            initials={initials(message.sender.display_name)}
+            initials={initials(message.sender.display)}
           />
         </a>
         <div className='relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl'>

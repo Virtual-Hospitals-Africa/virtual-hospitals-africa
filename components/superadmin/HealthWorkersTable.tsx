@@ -12,7 +12,7 @@ export default function HealthWorkersTable({ health_workers }: { health_workers:
       data(row) {
         const primary_org = row.organizations[0]
         const href = primary_org ? `/app/organizations/${primary_org.id}/employees/${row.id}` : undefined
-        return <Person person={{ ...row, display_name: row.name, href }} />
+        return <Person person={{ ...row, display: row.name, href }} />
       },
     },
     {

@@ -51,7 +51,7 @@ function EscalationCandidateRow(
       </div>
       <span className='flex flex-col text-left max-md:min-w-0 max-md:flex-1 max-md:break-words'>
         <span className='flex items-center gap-2 font-medium text-gray-900 text-md max-md:flex-wrap'>
-          {display.display_name}
+          {display.display}
           {seniority_label && <Badge content={seniority_label} color='purple' round='md' />}
         </span>
         <span className='text-gray-500 text-sm capitalize'>

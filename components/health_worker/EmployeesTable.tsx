@@ -34,7 +34,7 @@ export default function EmployeesTable({
           <Person
             person={{
               ...row,
-              display_name: employeeDisplay(row).display_name,
+              display: employeeDisplay(row).display,
             }}
           />
         )

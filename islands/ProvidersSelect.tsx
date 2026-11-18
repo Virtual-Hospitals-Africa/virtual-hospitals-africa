@@ -60,7 +60,7 @@ export function ProviderSelectOption(
             id={`provider-${provider.employee_id}-label`}
             className='flex items-center gap-2 font-medium text-gray-900 text-md'
           >
-            {display.display_name}
+            {display.display}
             {seniority_label && <Badge content={seniority_label} color='purple' round='md' />}
           </span>
           <span

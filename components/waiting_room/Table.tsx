@@ -3,16 +3,15 @@ import capitalize from '../../util/capitalize.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import PriorityBadge from '../PriorityBadge.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Patient',
-    // headerClassName: 'pl-12',
-    data(row) {
-      return <Person person={row.patient} no_avatar />
-    },
+    type: 'person',
+    card_primary: true,
+    no_avatar: true,
+    data: (row) => row.patient,
     cellClassName: 'mb-1 font-medium',
   },
   {

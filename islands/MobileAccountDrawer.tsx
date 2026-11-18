@@ -7,12 +7,12 @@ import type { Maybe } from '../types.ts'
 
 export function MobileAccountDrawer({
   avatar_url,
-  display_name,
+  display,
   description,
   profile_href,
 }: {
   avatar_url: Maybe<string>
-  display_name: string
+  display: string
   description: string
   profile_href: string
 }) {
@@ -92,7 +92,7 @@ export function MobileAccountDrawer({
               />
               <div className='min-w-0'>
                 <p className="truncate font-['Inter'] text-sm font-semibold leading-5 text-[#1e2939]">
-                  {display_name}
+                  {display}
                 </p>
                 <p className="truncate font-['Inter'] text-xs font-normal leading-4 text-[#1e2939]">
                   {description}

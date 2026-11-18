@@ -42,7 +42,7 @@ export default HealthWorkerHomePage<OrganizationContext>(
               <Person
                 person={{
                   ...patient,
-                  display_name: patient.name || '[Unnamed Patient]',
+                  display: patient.name || '[Unnamed Patient]',
                 }}
               />
             </div>

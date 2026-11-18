@@ -13,7 +13,7 @@ export default function OrganizationTabs({ organization_id, pathname }: { organi
   const base = `/app/organizations/${organization_id}`
   return (
     <Tabs
-      navClassName='-mb-px flex flex-nowrap overflow-x-auto gap-x-2 md:gap-x-8 gap-y-2 md:px-5 sm:flex-wrap sm:overflow-visible'
+      navClassName='-mb-px flex flex-nowrap overflow-x-auto gap-x-2 md:gap-x-8 gap-y-2 sm:flex-wrap sm:overflow-visible'
       scroll_active_into_view
       tabs={TABS.map((tab) => {
         const href = `${base}/${tab_routes[tab]}`

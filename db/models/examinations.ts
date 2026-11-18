@@ -45,7 +45,7 @@
 //         'examinations.path',
 //         'examinations.consultation_step',
 //         'examinations.slug',
-//         'examinations.display_name',
+//         'examinations.display',
 //         sql<
 //           string
 //         >`'/app/organizations/' || ${opts.organization_id} || '/patients/' || ${opts.patient_id} || '/open_encounter/consultation/' || examinations.path`

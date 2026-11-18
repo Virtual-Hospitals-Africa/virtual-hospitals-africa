@@ -75,7 +75,7 @@ export function OpenEncounterWorkflowLayout({
       mobile_account={account && employee
         ? {
           avatar_url: account.avatar_url,
-          display_name: account.display_name,
+          display: account.display,
           description: account.description,
           profile_href: `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
         }

@@ -1,6 +1,6 @@
 import z from 'zod'
 import { PrescriptionFrequency } from '../../shared/prescription.ts'
-import { Maybe } from '../../types.ts'
+import { Maybe, PerSize, TimeSpecification } from '../../types.ts'
 
 export const MedicineRowSchema = z.object({
   'PUBLICATION': z.string(),
@@ -29,15 +29,6 @@ export const MedicineRowSchema = z.object({
 
 export type MedicineRow = z.infer<typeof MedicineRowSchema>
 
-export type PerSize = 'kg' | 'm2' | { kg: number }
-
-export type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
-
-export type TimeSpecification = {
-  value: number | number[]
-  units: TimeUnit
-}
-
 export type ParsedDose = {
   minimum?: number
   maximum?: number
@@ -54,8 +45,8 @@ export type ParsedDose = {
     value: number
     units: string
   }
-  concentration?: number | [number, number]
-  concentration_ratio?: [number, number]
+  concentration?: number | [min: number, max: number]
+  concentration_ratio?: [numerator: number, denominator: number]
   min?: ParsedDose[]
   max?: ParsedDose[]
   low?: ParsedDose[]

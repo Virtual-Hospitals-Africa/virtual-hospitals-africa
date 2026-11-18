@@ -388,7 +388,7 @@ export const EVENTS = {
           await notifications.insert(trx, {
             title: 'Immediate Triage Requested',
             avatar_url: '/images/heroicons/24/solid/exclamation-triangle.svg',
-            description: `${employeeDisplay(requested_by_employee).display_name} has requested immediate triage for a patient`,
+            description: `${employeeDisplay(requested_by_employee).display} has requested immediate triage for a patient`,
             employment_id: employee.employee_id,
             patient_encounter_id,
             table_name: 'patient_encounters',
