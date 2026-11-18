@@ -82,6 +82,7 @@ type TableProps<T extends Row> = {
   className?: string
   tableClassName?: string
   cardOrientation?: 'vertical' | 'horizontal'
+  mobile_card_view?: boolean
   pagination?: {
     page: number
     has_next_page: boolean
@@ -392,7 +393,7 @@ function CardWithContents<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical' }: TableProps<T>,
+  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical', mobile_card_view = false }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />
@@ -402,22 +403,24 @@ export default function Table<T extends Row>(
 
   const table_or_cards = (
     <>
-      <div className='flex flex-col gap-2 md:hidden'>
-        {rows.map((row, row_index) => (
-          <CardWithContents
-            key={row.id}
-            row={row}
-            row_index={row_index}
-            columns={columns_with_contents}
-            orientation={cardOrientation}
-          />
-        ))}
-      </div>
+      {mobile_card_view && (
+        <div className='flex flex-col gap-2 md:hidden'>
+          {rows.map((row, row_index) => (
+            <CardWithContents
+              key={row.id}
+              row={row}
+              row_index={row_index}
+              columns={columns_with_contents}
+              orientation={cardOrientation}
+            />
+          ))}
+        </div>
+      )}
       <div
         id={id}
         className={cls(
           className,
-          'overflow-x-auto w-full hidden md:block',
+          mobile_card_view ? 'overflow-x-auto w-full hidden md:block' : 'overflow-x-auto w-full',
         )}
       >
         <div className='inline-block min-w-full pt-2 align-middle'>

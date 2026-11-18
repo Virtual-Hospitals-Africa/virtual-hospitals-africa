@@ -93,6 +93,7 @@ export default function WaitingRoomTable(
   return (
     <Table
       id='waiting-room-table'
+      mobile_card_view
       columns={columns}
       rows={waiting_room}
       EmptyState={() => (
