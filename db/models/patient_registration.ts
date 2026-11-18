@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { concat, isoDate, jsonBuildObject } from '../helpers.ts'
+import { isoDate, jsonBuildObject } from '../helpers.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { description_sql } from './patients.ts'
 import { patient_new } from './patient_new.ts'
@@ -58,7 +58,7 @@ export const patient_registration = {
           description: description_sql,
         }).as('personal'),
         jsonBuildObject({
-          primary_doctor_name: concat('Dr. ', eb.ref('health_workers.name')),
+          primary_doctor_name: sql<string | null>`'Dr. ' || ${eb.ref('health_workers.name')}`,
           nearest_organization_id: eb.ref('patients.nearest_organization_id'),
           nearest_organization_name: eb.ref('organizations.name'),
         }).as('nearest_health_care'),
