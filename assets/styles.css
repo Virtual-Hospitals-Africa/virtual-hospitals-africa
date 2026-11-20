@@ -90,7 +90,7 @@
 }
 
 /* Scale all font sizes down ~85.7% on narrow screens (text-sm: 14px → 12px) */
-@media (max-width: 721px) {
+@media (max-width: 768px) {
   :root {
     --text-xs: 0.536rem;
     --text-xs--line-height: 0.75rem;
