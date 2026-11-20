@@ -169,16 +169,6 @@ export default function WarningSignsInnerContent({
   // Search keeps the input text itself. This remounts it once a save has blanked the hook query,
   // so the field and the results leave search mode on the same render.
   const search_input_key = useSignal(0)
-  const search_clear_query = useSignal<null | string>(null)
-  // A save's response runs after later renders, so it has to read the query as it is now.
-  const search_query_now = useRef(snomed_warning_signs_async_search.search.query)
-  search_query_now.current = snomed_warning_signs_async_search.search.query
-  if (search_clear_query.value !== null && !search_query_now.current.trim()) {
-    search_clear_query.value = null
-    search_input_key.value++
-  } else if (search_clear_query.value !== null && search_query_now.current !== search_clear_query.value) {
-    search_clear_query.value = null
-  }
 
   const root = useRef<HTMLDivElement>(null)
   const slide_timer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -322,9 +312,8 @@ export default function WarningSignsInnerContent({
     The input remounts only after the hook query it is clearing has actually gone blank.
     Until then the results stay, and a newer query typed over it cancels the clear.
   */
-  function clearSearchAfterSuccessfulSave(query_at_save: string) {
-    if (!shouldClearSearchAfterSave(query_at_save, search_query_now.current)) return
-    search_clear_query.value = query_at_save
+  function clearSearchAfterSuccessfulSave() {
+    search_input_key.value++
     snomed_warning_signs_async_search.setQuery('')
   }
 
@@ -339,7 +328,6 @@ export default function WarningSignsInnerContent({
       return
     }
 
-    const query_at_save = search_query_now.current
     let saved_without_post = false
     let edited: CheckedWarningSign
     checked_signs.value = checked_signs.value.map((sign) => {
@@ -363,6 +351,7 @@ export default function WarningSignsInnerContent({
         priority_level: finding.priority,
         altered_record_id,
       }
+      clearSearchAfterSuccessfulSave()
       fetch(post_route, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -372,7 +361,6 @@ export default function WarningSignsInnerContent({
           if (!response.ok) throw new Error(`clinical_finding responded ${response.status}: ${await response.text()}`)
           const json = await response.json()
           assert(json.success)
-          clearSearchAfterSuccessfulSave(query_at_save)
           checked_signs.value = checked_signs.value.map((sign) => {
             if (!isActiveSign(sign)) return sign
             if (!sign.saving) return sign
@@ -403,7 +391,7 @@ export default function WarningSignsInnerContent({
       }
     })
     assert(edited!)
-    if (saved_without_post) clearSearchAfterSuccessfulSave(query_at_save)
+    if (saved_without_post) clearSearchAfterSuccessfulSave()
   }
 
   function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
