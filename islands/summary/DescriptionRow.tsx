@@ -26,12 +26,12 @@ export default function DescriptionRow(
     <div style={{ gridColumn: 2, gridRow: row_number }}>
       <div
         role='button'
-        className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1 w-max'
+        className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1 w-fit'
         onMouseOver={() => setIsHoveredOnGroup(true)}
         onMouseLeave={() => setIsHoveredOnGroup(false)}
         onClick={() => self.location.href = first_edit_href}
       >
-        <div className='hover-desktop:text-indigo-900 flex content-center'>
+        <div className='hover-desktop:text-indigo-900 flex flex-wrap content-center'>
           {row.map((cell, index) => (
             <div key={index}>
               {cell.leading_separator}
@@ -58,7 +58,7 @@ export default function DescriptionRow(
         {first_cell.action === DescriptionListCellAction.Edit && (
           <PencilSquareIcon
             className={cls(
-              'self-center w-4 h-4 show-on-mobile lg:block',
+              'self-center w-4 h-4 shrink-0 show-on-mobile lg:block',
               isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
             )}
           />
@@ -66,7 +66,7 @@ export default function DescriptionRow(
         {first_cell.action === DescriptionListCellAction.View && (
           <EyeIcon
             className={cls(
-              'self-center w-4 h-4 show-on-mobile lg:block',
+              'self-center w-4 h-4 shrink-0 show-on-mobile lg:block',
               isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
             )}
           />

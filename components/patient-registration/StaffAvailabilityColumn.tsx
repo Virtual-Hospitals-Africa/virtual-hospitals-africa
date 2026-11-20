@@ -44,7 +44,7 @@ function StaffStatusCard({ staff }: { staff: StaffMember }) {
       )}
     >
       <div className='flex items-start justify-between gap-4'>
-        <div className='flex flex-col gap-1.5'>
+        <div className='flex min-w-0 flex-col gap-1.5'>
           <div>
             <p className='text-base font-semibold leading-snug text-gray-900'>
               {staff.name}
@@ -83,7 +83,7 @@ export default function StaffAvailabilityColumn(
   { staff }: { staff: Array<StaffMember> },
 ) {
   return (
-    <div className='flex flex-col gap-4 shrink-0'>
+    <div className='flex w-full min-w-0 flex-col gap-4 xl:w-auto xl:shrink-0'>
       <h3 className='text-lg font-semibold leading-6 text-gray-600'>
         Staff Availability
       </h3>

@@ -175,10 +175,9 @@ export const DescriptionList = (
 
   return (
     <div
-      className='grid gap-x-4 gap-y-0.5'
+      className='flex flex-col gap-y-0.5 md:grid md:items-center md:gap-x-4'
       style={{
-        gridTemplateColumns: 'max-content max-content',
-        alignItems: 'center',
+        gridTemplateColumns: 'max-content fit-content(100%)',
       }}
     >
       {elements}

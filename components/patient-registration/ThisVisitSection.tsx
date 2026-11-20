@@ -34,8 +34,8 @@ export default function ThisVisitSection(
   },
 ) {
   return (
-    <div className='flex gap-14 items-start w-full'>
-      <FormSection header='This Visit' className='max-w-250'>
+    <div className='flex w-full min-w-0 flex-col gap-8 xl:flex-row xl:items-start xl:gap-14'>
+      <FormSection header='This Visit' className='min-w-0 max-w-250'>
         <RadioButtonGroup
           name='next_workflow'
           defaultValue='continue_with_registration'
