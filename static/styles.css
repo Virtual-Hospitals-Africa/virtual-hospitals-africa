@@ -332,3 +332,38 @@ iframe#youtube_demo_iframe {
     display: block !important;
   }
 }
+
+/*
+  Priority escalation and warning-sign follow-ups share #drawer-side-panels.
+  Below md that host is the dialog frame. A panel alone fills it. When both
+  are open, escalation keeps the height of its content and follow-ups takes
+  the rest, but never less than its header and action. See side_panels.ts.
+*/
+#drawer-side-panels > .side-panel-backdrop ~ .side-panel-backdrop {
+  display: none;
+}
+
+@media (width < 48rem) {
+  #drawer-side-panels > #priority-escalation-panel,
+  #drawer-side-panels > #follow-ups-panel {
+    position: relative;
+    z-index: 10;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  #drawer-side-panels:has(#priority-escalation-panel):has(#follow-ups-panel) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(9.5rem, auto) minmax(10.5rem, 1fr);
+  }
+
+  #drawer-side-panels:has(#priority-escalation-panel):has(#follow-ups-panel) > #priority-escalation-panel,
+  #drawer-side-panels:has(#priority-escalation-panel):has(#follow-ups-panel) > #follow-ups-panel {
+    flex: none;
+    height: auto;
+    max-height: none;
+  }
+}

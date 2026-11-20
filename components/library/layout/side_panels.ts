@@ -11,6 +11,11 @@
 
   Stacking is by `order`, not by DOM insertion, because which island hydrates
   first is not something we control.
+
+  Below md the desktop column is only a sliver, so the host itself becomes the
+  dialog frame (16px from the sides, clear of the safe area). The panels stay
+  in that frame and stack. static/styles.css caps the escalation panel when
+  follow-ups is open too, and lets follow-ups fill whatever remains.
 */
 export const SIDE_PANEL_HOST_ID = 'drawer-side-panels'
 
@@ -20,9 +25,18 @@ export const SIDE_PANEL_HOST_ID = 'drawer-side-panels'
   xl:right-88 leaves a 1rem gutter). pointer-events-none because the column
   spans most of the viewport and would otherwise swallow clicks on the form
   behind it; each panel turns pointer events back on for itself.
+
+  The max-md overrides replace that column with the mobile dialog frame.
 */
 export const SIDE_PANEL_HOST_CLASS =
-  'fixed top-20 bottom-20 right-64 xl:right-88 z-40 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] flex flex-col items-stretch justify-start gap-3 pointer-events-none'
+  'fixed top-20 bottom-20 right-64 xl:right-88 z-40 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] flex flex-col items-stretch justify-start gap-3 pointer-events-none max-md:left-4! max-md:right-4! max-md:top-[max(1.5rem,env(safe-area-inset-top))]! max-md:bottom-[max(1.5rem,env(safe-area-inset-bottom))]! max-md:z-50 max-md:w-auto! max-md:max-w-none! max-md:gap-2 max-md:overflow-hidden'
+
+/*
+  One dimming layer for whichever panels are open. Each open panel renders one,
+  and static/styles.css hides every backdrop after the first so two panels do
+  not stack two masks or fight over pointer events.
+*/
+export const SIDE_PANEL_BACKDROP_CLASS = 'side-panel-backdrop pointer-events-auto fixed inset-0 z-0 bg-gray-500/75 md:hidden'
 
 /*
   min-h-0 lets a panel shrink below its content height, which is what allows

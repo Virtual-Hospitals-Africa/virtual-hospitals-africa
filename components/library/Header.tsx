@@ -19,6 +19,8 @@ export type HeaderProps = {
   }
   mobile_header_action?: ComponentChild
   notifications?: RenderedNotification[]
+  // Warning Signs mobile: avatar left, title centered, action on the right.
+  compact_mobile?: boolean
 }
 
 function HeaderLeft(
@@ -74,8 +76,28 @@ function MobileHomeHeader(
   )
 }
 
+function CompactMobileHeader(
+  { title, mobile_account, mobile_header_action }: {
+    title: string
+    mobile_account?: HeaderProps['mobile_account']
+    mobile_header_action?: ComponentChild
+  },
+) {
+  return (
+    <header className='flex items-center justify-between bg-white px-4 pt-4 pb-2 md:hidden'>
+      {mobile_account ? <MobileAccountDrawer {...mobile_account} /> : <div className='size-9 shrink-0' />}
+      <h1 className="min-w-0 flex-1 text-center font-['Inter'] text-[22px] font-semibold leading-[30px] text-[#1e1b18]">
+        {title}
+      </h1>
+      <div className='flex size-9 shrink-0 items-center justify-center'>
+        {mobile_header_action}
+      </div>
+    </header>
+  )
+}
+
 export function Header(
-  { title, variant, avatar_url, mobile_account, mobile_header_action /*, notifications */ }: HeaderProps,
+  { title, variant, avatar_url, mobile_account, mobile_header_action, compact_mobile /*, notifications */ }: HeaderProps,
 ) {
   if (variant === 'just logo') return <HeaderWithoutNav />
   const right = null
@@ -104,6 +126,21 @@ export function Header(
       {right}
     </HeaderBase>
   )
+  if (compact_mobile) {
+    return (
+      <>
+        <CompactMobileHeader
+          title={title}
+          mobile_account={mobile_account}
+          mobile_header_action={mobile_header_action}
+        />
+        <div className='hidden w-full md:block'>
+          {desktop_header}
+        </div>
+      </>
+    )
+  }
+
   if (!uses_mobile_home_header) return desktop_header
 
   return (

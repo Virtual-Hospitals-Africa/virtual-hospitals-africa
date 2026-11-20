@@ -1,6 +1,14 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { CATEGORIES, CheckedWarningSign, findChecked, searchRouteFor, signsToDisplay, tableCategories } from '../../../islands/WarningSigns/shared.ts'
+import {
+  CATEGORIES,
+  CheckedWarningSign,
+  findChecked,
+  searchRouteFor,
+  shouldClearSearchAfterSave,
+  signsToDisplay,
+  tableCategories,
+} from '../../../islands/WarningSigns/shared.ts'
 import { FindingSiteWithMaybeRecords, WarningSignWithMaybeRecord } from '../../../types.ts'
 
 const finding = (name: string) => `(clinical_finding (snomed_concept "${name}" "finding"))`
@@ -34,6 +42,22 @@ const ear: FindingSiteWithMaybeRecords = {
 }
 
 describe('islands/WarningSigns/shared.ts', () => {
+  describe('shouldClearSearchAfterSave', () => {
+    it('clears the query a successful save was made from', () => {
+      assertEquals(shouldClearSearchAfterSave('insect bite', 'insect bite'), true)
+    })
+    it('leaves a query typed while the save was in flight', () => {
+      assertEquals(shouldClearSearchAfterSave('insect bite', 'fever'), false)
+    })
+    it('leaves a search the health worker already replaced with a blank field', () => {
+      assertEquals(shouldClearSearchAfterSave('insect bite', ''), false)
+    })
+    it('leaves the field alone when the save did not start from a search', () => {
+      assertEquals(shouldClearSearchAfterSave('', ''), false)
+      assertEquals(shouldClearSearchAfterSave('   ', '   '), false)
+    })
+  })
+
   describe('signsToDisplay', () => {
     it('shows the warning signs when nothing is searched or filtered', () => {
       assertEquals(signsToDisplay({ search_results: null, finding_site: null, warning_signs: [headache, fever] }), [headache, fever])

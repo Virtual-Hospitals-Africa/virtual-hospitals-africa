@@ -54,6 +54,16 @@ export function signsToDisplay({ search_results, finding_site, warning_signs }: 
   return search_results || finding_site?.signs || warning_signs
 }
 
+/*
+  A successful save clears the search it was made from. A query typed while that
+  save was in flight is a new search and stays, as does a save that started with
+  the field already blank.
+*/
+export function shouldClearSearchAfterSave(query_at_save: string, query_now: string): boolean {
+  if (!query_at_save.trim()) return false
+  return query_now === query_at_save
+}
+
 export function searchRouteFor(search_route: string, finding_site: Maybe<FindingSiteWithMaybeRecords>): string {
   if (!finding_site) return search_route
   const params = new URLSearchParams({ finding_site: finding_site.snomed_concept.name })

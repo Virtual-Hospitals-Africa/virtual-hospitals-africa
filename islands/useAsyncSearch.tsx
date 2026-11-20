@@ -15,6 +15,7 @@ export default function useAsyncSearch<
   onQueryBlanked,
 }: AsyncSearchProps<T>): AsyncSearchHookResult<T> {
   const previous_search_route = useRef(search_route)
+  const query_ref = useRef('')
 
   const [search, setSearch] = useState({
     query: value?.name ?? '',
@@ -26,14 +27,20 @@ export default function useAsyncSearch<
     has_next_page: false,
   })
 
+  query_ref.current = search.query
+
   // Make a cancellable request when the query changes
   useEffect(() => {
     // A new search route invalidates every page we've accumulated so far
     const search_route_changed = previous_search_route.current !== search_route
     previous_search_route.current = search_route
 
-    if (skip_blank_search && !search.query) {
+    // Whitespace is not a query. A keystroke still in its debounce, or a response
+    // already on the wire, must not repopulate results after the field is cleared.
+    const query_is_blank = !search.query.trim()
+    if (skip_blank_search && query_is_blank) {
       search.active_request?.abort()
+      if (search.delay) clearTimeout(search.delay)
       onQueryBlanked?.()
       return setSearch((search) => ({
         ...search,
@@ -44,6 +51,8 @@ export default function useAsyncSearch<
         has_next_page: false,
       }))
     }
+
+    const requested_query = search.query
 
     const url = new URL(search_route, location.href)
     url.searchParams.set('page', String(search_route_changed ? 1 : search.page))
@@ -87,7 +96,7 @@ export default function useAsyncSearch<
       )
 
       setSearch((search) => {
-        if (search.active_request === request) {
+        if (search.active_request === request && search.query === requested_query) {
           assert(
             search.page === page.page,
             'Expected the page to match the request page',
@@ -109,12 +118,11 @@ export default function useAsyncSearch<
     }
 
     const delay = setTimeout(() => {
+      if (query_ref.current !== requested_query) return
       request.send()
-      setSearch((search) => ({
-        ...search,
-        delay: null,
-        active_request: request,
-      }))
+      setSearch((search) => (
+        search.query === requested_query ? { ...search, delay: null, active_request: request } : search
+      ))
     }, search_route_changed ? 0 : debounce_milliseconds)
 
     setSearch((search) => ({

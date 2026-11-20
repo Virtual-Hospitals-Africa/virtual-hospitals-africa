@@ -3,6 +3,7 @@ import { Header, HeaderProps } from '../Header.tsx'
 import { AlertListener } from '../../../islands/alert/AlertListener.tsx'
 import { Notifications } from '../../../islands/Notifications.tsx'
 import { SIDE_PANEL_HOST_CLASS, SIDE_PANEL_HOST_ID } from './side_panels.ts'
+import cls from '../../../util/cls.ts'
 
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   title: string
@@ -10,6 +11,7 @@ export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   avatar_url?: HeaderProps['avatar_url']
   mobile_account?: HeaderProps['mobile_account']
   mobile_header_action?: HeaderProps['mobile_header_action']
+  compact_mobile?: boolean
   footer: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
@@ -23,6 +25,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
     avatar_url,
     mobile_account,
     mobile_header_action,
+    compact_mobile,
     footer,
     drawer,
     children,
@@ -34,15 +37,16 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
       <AlertListener initial_url={url} />
       {sidebar}
       <div className='flex flex-row flex-1 overflow-hidden'>
-        <section className='flex flex-col flex-1 overflow-hidden'>
+        <section className={cls('flex flex-col flex-1 overflow-hidden', compact_mobile && 'max-md:bg-white')}>
           <Header
             title={title}
             variant='home page'
             avatar_url={avatar_url}
             mobile_account={mobile_account}
             mobile_header_action={mobile_header_action}
+            compact_mobile={compact_mobile}
           />
-          <div className='flex-1 flex flex-col overflow-y-auto'>
+          <div className={cls('flex-1 flex flex-col overflow-y-auto', compact_mobile && 'max-md:bg-white')}>
             {children}
           </div>
           {footer}
