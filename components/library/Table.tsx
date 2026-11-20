@@ -393,7 +393,7 @@ function CardWithContents<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical', mobile_card_view = false }: TableProps<T>,
+  { id, columns, rows, className, EmptyState, pagination, tableClassName, cardOrientation = 'vertical', mobile_card_view = true }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />

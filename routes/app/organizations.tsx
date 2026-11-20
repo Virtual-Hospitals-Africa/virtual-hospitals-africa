@@ -16,14 +16,6 @@ const KIND_OPTIONS = [
   { value: 'virtual', label: 'Virtual' },
 ] as const
 
-export const handler = {
-  GET(ctx: LoggedInHealthWorkerContext) {
-    const accept = ctx.req.headers.get('accept') || ''
-    if (!accept.includes('text/html')) {
-      return json_handler.GET(ctx)
-    }
-  },
-}
 
 export default HealthWorkerHomePage(async function Organizations(ctx: LoggedInHealthWorkerContext) {
   const search = ctx.url.searchParams.get('search') || undefined
@@ -31,6 +23,10 @@ export default HealthWorkerHomePage(async function Organizations(ctx: LoggedInHe
   const country = ctx.url.searchParams.get('country') || null
   const kind = ctx.url.searchParams.get('kind') as 'physical' | 'virtual' | null
   const page = searchPage(ctx)
+  const accept = ctx.req.headers.get('accept') || ''
+    if (!accept.includes('text/html')) {
+      return json_handler.GET(ctx)
+    }
 
   const [{ results, has_next_page }, category_rows, country_rows] = await Promise.all([
     organizations.search(
