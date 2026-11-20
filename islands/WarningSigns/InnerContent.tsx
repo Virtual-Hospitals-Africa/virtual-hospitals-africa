@@ -313,7 +313,6 @@ export default function WarningSignsInnerContent({
     Until then the results stay, and a newer query typed over it cancels the clear.
   */
   function clearSearchAfterSuccessfulSave() {
-    // if (!shouldClearSearchAfterSave(query_at_save, search_query_now.current)) return
     search_input_key.value++
     snomed_warning_signs_async_search.setQuery('')
   }
@@ -329,7 +328,6 @@ export default function WarningSignsInnerContent({
       return
     }
 
-    // const query_at_save = search_query_now.current
     let saved_without_post = false
     let edited: CheckedWarningSign
     checked_signs.value = checked_signs.value.map((sign) => {
