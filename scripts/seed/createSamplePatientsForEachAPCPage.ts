@@ -16,7 +16,7 @@ import {
   DEFAULT_MEASUREMENTS,
   setupTriage,
 } from '../../test/web/patients/open_encounter/triage/_setup.ts'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VitalMeasurement, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VitalMeasurement, VITALS_SHARED_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
 import { COMMON_CONDITIONS, CommonConditionKey } from '../../shared/brief_history.ts'
 import { forEach } from '../../util/inParallel.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -56,7 +56,7 @@ function isVitalsBasedEvidence(evidence: Evidence | QueryableEvidenceNode): bool
   return (
     finding.atom === 'measurement' &&
     finding.snomed_concept != null &&
-    VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
+    VITALS_SHARED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
   ) || (
     finding.atom === 'active_condition' &&
     finding.snomed_concept?.name === 'Fever'

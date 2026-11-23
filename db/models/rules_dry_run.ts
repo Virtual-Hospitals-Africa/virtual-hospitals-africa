@@ -155,7 +155,8 @@ async function findingsToCheckFor(
   here. The real pipeline does chain them: EvaluationAdded in events/handlers.ts runs
   insertSystemDiagnosesIfNotAlreadyIdentified for the diagnosis record too. In practice the only
   diagnoses other diagnosis rules are due to are Fever, which is diagnosed from a body
-  temperature measurement alone and so can never follow from a hypothetical finding, and
+  temperature measurement alone, Low blood pressure, which is diagnosed from the blood pressure
+  measurements alone (so neither can ever follow from a hypothetical finding), and
   Cellulitis of face, which also needs a temperature measurement and so can follow from a finding
   only when one is already on record (orbital cellulitis is due to it). If a diagnosis rule due to
   another finding-only diagnosis is ever added, this dry run will under-report and this pass
