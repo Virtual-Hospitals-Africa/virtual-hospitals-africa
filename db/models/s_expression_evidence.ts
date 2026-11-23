@@ -36,6 +36,16 @@ export function* allEvidenceToLookFor(node: QueryableEvidenceNode): Generator<Ev
   }
 }
 
+
+export function* allPositiveEvidenceToLookFor(node: QueryableEvidenceNode): Generator<EvidenceNode> {
+  for (const evidence of allEvidenceToLookFor(node)) {
+    yield (
+      'existence' in evidence && evidence.existence === 'No'
+        ? { ...evidence, existence: 'Yes', value_snomed_concept: null }
+        : evidence
+    )
+  }
+}
 type Result =
   | { satisfies: true; contributing_records: string[] }
   | { satisfies: false }
