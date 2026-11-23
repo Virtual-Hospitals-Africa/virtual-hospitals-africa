@@ -80,28 +80,28 @@ const past_tense = {
 }
 
 export async function load(target?: string) {
-  await run('load', target)
+  await seedRun('load', target)
 }
 
 export async function dump(target?: string) {
-  await run('dump', target)
+  await seedRun('dump', target)
 }
 
 export async function drop(target?: string) {
-  await run('drop', target)
+  await seedRun('drop', target)
 }
 
 export async function recreate(target?: string) {
-  await run('recreate', target)
+  await seedRun('recreate', target)
 }
 
 export async function reload(target?: string) {
-  await run('reload', target)
+  await seedRun('reload', target)
 }
 
 export async function clear_dump(target: string) {
   assert(target, 'clear_dump requires a target')
-  await run('clear_dump', target)
+  await seedRun('clear_dump', target)
 }
 
 export async function dumpAll() {
@@ -152,11 +152,11 @@ export async function loadRecreating(targets: string[]) {
 
   for (const seed_name of seed_targets) {
     const cmd = to_recreate.includes(seed_name) ? 'recreate' : 'load'
-    await run(cmd, seed_name)
+    await seedRun(cmd, seed_name)
   }
 }
 
-export async function run(cmd: Cmd, target?: string) {
+export async function seedRun(cmd: Cmd, target?: string) {
   let targets = seed_targets
   if (target) {
     const result = findTarget(target)
@@ -207,7 +207,7 @@ function main() {
   if (cmd === 'create') {
     return createSeed(target)
   }
-  run(cmd, target)
+  seedRun(cmd, target)
 }
 
 if (import.meta.main) {
