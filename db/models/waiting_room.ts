@@ -207,7 +207,14 @@ export const waiting_room = {
     const fetched_health_workers = health_workers_to_fetch.length ? await health_workers.getByIds(trx, health_workers_to_fetch) : []
     const all_health_workers = [health_worker, ...fetched_health_workers]
 
-    const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment, all_health_workers))
+    // Filter out encounters with completed workflows (being transitioned to next step)
+    const waiting_room_encounters = open_encounters.filter((encounter) => {
+      const current_workflow_status = encounter.status.patient_presence.current_workflow &&
+        encounter.workflows[encounter.status.patient_presence.current_workflow]
+      return !current_workflow_status || current_workflow_status.status !== 'completed'
+    })
+
+    const waiting_room_unsorted = waiting_room_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment, all_health_workers))
 
     return sortBy(
       waiting_room_unsorted,

@@ -16,7 +16,8 @@ export const PatientRegistrationPrimaryCareSchema = z.object({
     has_no_insurance: z.literal(true),
   }).or(z.object({
     has_no_insurance: z.boolean().optional(),
-    insurance_provider: z.string(),
+    insurance_provider_id: z.string().optional(),
+    insurance_provider_name: z.string(),
     plan_name: z.string().optional(),
     membership_number: string_or_number_as_string,
     valid_from: z.string().date(),
