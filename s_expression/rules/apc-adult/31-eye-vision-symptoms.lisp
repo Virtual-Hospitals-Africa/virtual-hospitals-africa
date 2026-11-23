@@ -9,9 +9,10 @@
   (check_for
     (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
     (clinical_finding (snomed_concept "Blurring of visual image" "finding"))
-    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-    (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
-    (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+    (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+    (clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
+    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")))
     (clinical_finding (snomed_concept "Numbness of face" "finding"))
     (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
     (clinical_finding (snomed_concept "Sudden visual loss" "disorder"))
@@ -22,7 +23,7 @@
     (clinical_finding (snomed_concept "Edema of eyelid" "disorder") (qualifier (snomed_concept "New" "qualifier value")))
     (clinical_finding (snomed_concept "Red eye" "finding"))
     (clinical_finding (snomed_concept "Pain in eye" "finding"))
-    (clinical_finding (snomed_concept "Abnormal vision" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Abnormal vision" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")))
     (clinical_finding (snomed_concept "Herpes zoster involving tip of nose" "disorder"))
     (clinical_finding (snomed_concept "Herpes zoster ophthalmicus" "disorder"))
     (clinical_finding (snomed_concept "Penetrating wound of eye" "disorder"))
@@ -30,12 +31,11 @@
     (clinical_finding (snomed_concept "Metal foreign body in eye region" "disorder"))
     (clinical_finding (snomed_concept "Penetration of eyeball with magnetic foreign body" "disorder"))
     (clinical_finding (snomed_concept "Burn of cornea" "disorder"))
-    (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden" "qualifier value")))
     (clinical_finding (snomed_concept "Swelling of eyelid" "finding"))
     (clinical_finding (snomed_concept "Headache" "finding"))
     (clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
-    (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (clinical_finding (snomed_concept "Orbital cellulitis" "disorder"))
     (clinical_finding (snomed_concept "Chemical burn" "disorder") (finding_site (snomed_concept "Structure of eye proper" "body structure")))
     (clinical_finding (snomed_concept "Corneal haze" "disorder"))
@@ -53,21 +53,23 @@
   (and
     (clinical_finding (snomed_concept "Swelling of eyelid" "finding"))
     (clinical_finding (snomed_concept "Pain in eye" "finding"))
+    (clinical_finding (snomed_concept "Red eye" "finding"))
   )
 )
 ;; Page 31 - Eye: Acute angle-closure glaucoma with painful eye and haloes/blurred vision
 (system_diagnosis_rule
-  "Diagnose probable angle-closure glaucoma"
+  "Diagnose probable Acute-on-chronic glaucoma"
   (diagnosis
-    (snomed_concept "Angle-closure glaucoma" "disorder")
+    (snomed_concept "Acute-on-chronic glaucoma" "disorder")
     probable
   )
   adult
   (and
     (clinical_finding (snomed_concept "Pain in eye" "finding"))
+    (clinical_finding (snomed_concept "Red eye" "finding"))
+    (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
+    (clinical_finding (snomed_concept "Blurring of visual image" "finding"))
     (or
-      (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
-      (clinical_finding (snomed_concept "Blurring of visual image" "finding"))
       (clinical_finding (snomed_concept "Headache" "finding"))
       (clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))
     )
@@ -83,7 +85,7 @@
     (or
       (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
       (clinical_finding (snomed_concept "Difficulty talking" "finding"))
-      (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+      (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")))
     )
   )
 )
@@ -102,7 +104,7 @@
     (clinical_finding (snomed_concept "Corneal haze" "disorder"))
     (clinical_finding (snomed_concept "Corneal opacity" "disorder"))
     (clinical_finding (snomed_concept "Herpes zoster keratoconjunctivitis" "disorder"))
-    (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden" "qualifier value")))
     (clinical_finding (snomed_concept "Metal foreign body in eye region" "disorder"))
     (clinical_finding (snomed_concept "Penetration of eyeball with magnetic foreign body" "disorder"))
     (clinical_finding (snomed_concept "Jaundice" "finding"))
