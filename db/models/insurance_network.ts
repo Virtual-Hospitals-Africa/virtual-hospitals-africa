@@ -15,5 +15,8 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: InsuranceNetworkSearch = {}
 export const insurance_network = base({
   top_level_table: 'insurance_network',
   baseQuery,
-  formatResult: (row) => row,
+  formatResult: (row) => ({
+    ...row,
+    name: row.business_name,
+  }),
 })
