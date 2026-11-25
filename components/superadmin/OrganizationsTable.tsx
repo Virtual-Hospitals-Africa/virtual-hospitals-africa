@@ -9,6 +9,7 @@ export default function OrganizationsTable({ organizations }: { organizations: R
   const columns: TableColumn<RenderedOrganization>[] = [
     {
       label: 'Name',
+      card_primary: true,
       data(row) {
         return (
           <a href={`/app/organizations/${row.id}`} class='text-indigo-600 hover:text-indigo-900 font-medium'>
@@ -43,7 +44,7 @@ export default function OrganizationsTable({ organizations }: { organizations: R
       label: 'Actions',
       type: 'actions',
       data(row) {
-        return { text: 'Dashboard', href: `/app/organizations/${row.id}/dashboard` }
+        return [{ text: 'Dashboard', href: `/app/organizations/${row.id}/dashboard` }]
       },
     },
   ]
@@ -52,6 +53,7 @@ export default function OrganizationsTable({ organizations }: { organizations: R
     <Table
       columns={columns}
       rows={organizations}
+      mobile_card_view
       EmptyState={() => (
         <EmptyState
           header='No organizations'

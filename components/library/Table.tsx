@@ -347,7 +347,7 @@ function CardWithContents<T extends Row>(
   return (
     <Card className='border-1' orientation={orientation}>
       {columns.filter((column) => column.type !== 'actions' && column.card_primary && CardFieldHasContent(column, row_index)).length > 0 && (
-        <div className='flex flex-col items-center rounded-md bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 [&_div]:!text-sm [&_div]:!font-semibold [&_div]:!text-indigo-900'>
+        <div className='flex flex-col items-center rounded-md bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 [&_div]:!text-sm [&_div]:!font-semibold [&_div]:!text-indigo-900 [&_a]:!font-semibold [&_a]:!text-indigo-900'>
           {columns.filter((column) => column.type !== 'actions' && column.card_primary && CardFieldHasContent(column, row_index)).map((column) => (
             column.type === 'person'
               ? <Person key={column.label} person={column.cell_contents[row_index] as PersonData} no_avatar={column.no_avatar} layout='row' />
@@ -379,7 +379,8 @@ function CardWithContents<T extends Row>(
       {columns.filter((column) => column.type === 'actions').map((column) => (
         <div
           key={column.label}
-          className='mt-3 flex justify-center [&>div]:w-full [&_button]:w-full [&_button]:justify-center [&_button]:bg-indigo-600 [&_button]:text-white [&_button]:font-semibold [&_button]:rounded-lg [&_button]:!px-4 [&_button]:!py-2'
+          // Styles the card's action links and buttons as primary buttons. Keep in one place for future mobile card refactors.
+          className='mt-3 flex justify-center [&>div]:w-full [&_a]:w-full [&_a]:justify-center [&_a]:bg-indigo-600 [&_a]:text-white [&_a]:font-semibold [&_a]:rounded-lg [&_a]:!px-4 [&_a]:!py-2 [&_button]:w-full [&_button]:justify-center [&_button]:bg-indigo-600 [&_button]:text-white [&_button]:font-semibold [&_button]:rounded-lg [&_button]:!px-4 [&_button]:!py-2'
         >
           <TableCellInnerContents
             row={row}
